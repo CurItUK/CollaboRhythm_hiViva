@@ -193,6 +193,7 @@ package collaboRhythm.core.controller
 		{
 			_kernel = WorkstationKernel.instance;
 
+
 			_applicationControllerModel = new ApplicationControllerModel();
 			_applicationControllerModel.isLoading = true;
 			BindingUtils.bindSetter(applicationControllerModel_isLoadingChangeHandler, _applicationControllerModel,
@@ -211,6 +212,7 @@ package collaboRhythm.core.controller
 
 			initLogging();
 
+			_logger.info("PWS: Intercept Controller Control");
 			_logger.info("Application: " + _applicationInfo.appName);
 			_logger.info("  " + _applicationInfo.appCopyright);
 			_logger.info("  Version " + _applicationInfo.appVersion);
@@ -235,6 +237,7 @@ package collaboRhythm.core.controller
 			else
 				_logger.info("  Demo mode OFF");
 
+
 			initNativeApplicationEventListeners();
 
 			initComponents();
@@ -248,6 +251,7 @@ package collaboRhythm.core.controller
 
 			_navigationProxy = new ApplicationNavigationProxy(this);
 			initializeTimers();
+
 		}
 
 		private function debugLogFonts():void
@@ -412,6 +416,7 @@ package collaboRhythm.core.controller
 		 */
 		private function checkNetworkStatus():void
 		{
+			trace("NetworkInfo.isSupported " + NetworkInfo.isSupported)
 			if (NetworkInfo.isSupported)
 			{
 				var networkInterfacesVector:Vector.<NetworkInterface> = NetworkInfo.networkInfo.findInterfaces();
