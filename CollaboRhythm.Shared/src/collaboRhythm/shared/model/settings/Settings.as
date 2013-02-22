@@ -27,6 +27,7 @@ package collaboRhythm.shared.model.settings
 		public static const MODALITY_WORKSTATION:String = "workstation";
 		public static const MODALITY_MOBILE:String = "mobile";
 		public static const MODALITY_TABLET:String = "tablet";
+		public static const MODALITY_HIVIVA:String = "hiviva";
 
 		private var _username:String;
 		private var _password:String;

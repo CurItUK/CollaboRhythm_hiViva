@@ -21,8 +21,8 @@ package collaboRhythm.shared.collaboration.model
 			_collaborationLobbyNetConnectionServiceProxy = collaborationLobbyNetConnectionServiceProxy;
 			_documentId = documentId;
 
-			_collaborationLobbyNetConnectionServiceProxy.addEventListener(getQualifiedClassName(_collaborationSynchronizationController),
-					collaborationViewSynchronization_eventHandler);
+			//_collaborationLobbyNetConnectionServiceProxy.addEventListener(getQualifiedClassName(_collaborationSynchronizationController),
+			//		collaborationViewSynchronization_eventHandler);
 		}
 
 		private function collaborationViewSynchronization_eventHandler(event:CollaborationViewSynchronizationEvent):void

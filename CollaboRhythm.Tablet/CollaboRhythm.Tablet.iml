@@ -187,7 +187,7 @@
       <library type="flex">
         <properties id="092dc380-9bdb-417d-9fd6-2c5466a86dfb" />
         <CLASSES>
-          <root url="jar://$PROJECT_FRAMEWORKS$/libs/air/applicationupdater.swc!/" />
+          <root url="jar://$FLEX_SDK_HOME$/libs/air/applicationupdater.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -197,7 +197,7 @@
       <library type="flex">
         <properties id="167a450b-eb6f-4e63-bba3-2d58755ec563" />
         <CLASSES>
-          <root url="jar://$PROJECT_FRAMEWORKS$/libs/air/applicationupdater.swc!/" />
+          <root url="jar://$FLEX_SDK_HOME$/libs/air/applicationupdater.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -218,7 +218,7 @@
       <library type="flex">
         <properties id="ae0ec781-f049-4ead-be1a-6a472f070eac" />
         <CLASSES>
-          <root url="jar://$PROJECT_FRAMEWORKS$/libs/air/applicationupdater.swc!/" />
+          <root url="jar://$FLEX_SDK_HOME$/libs/air/applicationupdater.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

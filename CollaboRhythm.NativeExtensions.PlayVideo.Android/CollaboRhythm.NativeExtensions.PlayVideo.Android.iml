@@ -37,12 +37,12 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Android 2.2 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android SDK" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$FLEX_SDK_HOME$/lib/android/FlashRuntimeExtensions.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../Flex SDK/4.6.0/lib/android/FlashRuntimeExtensions.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

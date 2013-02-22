@@ -68,7 +68,7 @@
       <library type="flex">
         <properties id="20578300-4144-4616-9584-41e120db7dfb" />
         <CLASSES>
-          <root url="jar://$PROJECT_FRAMEWORKS$/libs/mobile/mobilecomponents.swc!/" />
+          <root url="jar://$FLEX_SDK_HOME$/libs/mobile/mobilecomponents.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -78,7 +78,7 @@
       <library type="flex">
         <properties id="a01feabd-4f05-4cf7-83fc-902bed0d02fa" />
         <CLASSES>
-          <root url="jar://$PROJECT_FRAMEWORKS$/themes/Mobile/mobile.swc!/" />
+          <root url="jar://$FLEX_SDK_HOME$/themes/Mobile/mobile.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

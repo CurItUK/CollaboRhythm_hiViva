@@ -555,6 +555,7 @@ package collaboRhythm.core.controller
 
 		private function initComponents():void
 		{
+			trace("initComponents _settings.demoModeEnabled " + _settings.demoModeEnabled);
 			//	_kernel.registerComponentInstance("CurrentDateSource", ICurrentDateSource, new DefaultCurrentDateSource());
 			var dateSource:ICurrentDateSource;
 			if (_settings.demoModeEnabled || _settings.debuggingToolsEnabled)
@@ -591,8 +592,9 @@ package collaboRhythm.core.controller
 
 		public function readStates():void
 		{
-// TODO: move the classes to the plugin and register the component from the plugin
-//			_componentContainer.registerComponentInstance(ReflectionUtils.getClassInfo(InsulinTitrationDecisionSupportStatesFileStore).name, InsulinTitrationDecisionSupportStatesFileStore, new InsulinTitrationDecisionSupportStatesFileStore());
+			_logger.info("PWS readStates");
+			// TODO: move the classes to the plugin and register the component from the plugin
+			//_componentContainer.registerComponentInstance(ReflectionUtils.getClassInfo(InsulinTitrationDecisionSupportStatesFileStore).name, InsulinTitrationDecisionSupportStatesFileStore, new InsulinTitrationDecisionSupportStatesFileStore());
 			var array:Array = componentContainer.resolveAll(IInsulinTitrationDecisionSupportStatesFileStore);
 			if (array && array.length > 0)
 			{
@@ -999,11 +1001,12 @@ package collaboRhythm.core.controller
 		 */
 		public function openRecordAccount(recordAccount:Account):void
 		{
+			trace("PWS " + recordAccount)
 			activeRecordAccount = recordAccount;
-			_collaborationController.setActiveRecordAccount(recordAccount);
+			//_collaborationController.setActiveRecordAccount(recordAccount);
 
 			// TODO: Rework document retrieval
-			loadDocuments(recordAccount);
+			//loadDocuments(recordAccount);
 
 			_autoSyncTimer.start();
 		}
@@ -1355,10 +1358,10 @@ package collaboRhythm.core.controller
 
 		protected function initializeConnectivityView():void
 		{
-			_connectivityView.errorDetailsProvider = this;
-			_connectivityView.addEventListener(ConnectivityEvent.IGNORE, connectivityView_ignoreHandler);
-			_connectivityView.addEventListener(ConnectivityEvent.QUIT, connectivityView_quitHandler);
-			_connectivityView.addEventListener(ConnectivityEvent.RETRY, connectivityView_retryHandler);
+			//_connectivityView.errorDetailsProvider = this;
+			//_connectivityView.addEventListener(ConnectivityEvent.IGNORE, connectivityView_ignoreHandler);
+			//_connectivityView.addEventListener(ConnectivityEvent.QUIT, connectivityView_quitHandler);
+			//_connectivityView.addEventListener(ConnectivityEvent.RETRY, connectivityView_retryHandler);
 		}
 
 		public function getExtendedErrorDetails():String

@@ -113,6 +113,7 @@ package collaboRhythm.core.controller.apps
 		 */
 		public function createAndStartApps(activeAccount:Account, activeRecordAccount:Account):void
 		{
+
 			initializeForAccount(activeAccount, activeRecordAccount);
 
 			// TODO: find the groups by id instead of index

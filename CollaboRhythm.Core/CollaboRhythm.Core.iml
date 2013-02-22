@@ -106,7 +106,7 @@
       <library type="flex">
         <properties id="54b44051-5ccd-436c-85b0-df6a0e905c0b" />
         <CLASSES>
-          <root url="jar://$PROJECT_FRAMEWORKS$/themes/Mobile/mobile.swc!/" />
+          <root url="jar://$FLEX_SDK_HOME$/themes/Mobile/mobile.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -116,7 +116,7 @@
       <library type="flex">
         <properties id="3b60e66a-7f7d-47ab-8365-d8d4c6faf41a" />
         <CLASSES>
-          <root url="jar://$PROJECT_FRAMEWORKS$/libs/mobile/mobilecomponents.swc!/" />
+          <root url="jar://$FLEX_SDK_HOME$/libs/mobile/mobilecomponents.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -129,7 +129,7 @@
       <library type="flex">
         <properties id="36069884-1ff8-4d83-aa86-64cd52dc5be2" />
         <CLASSES>
-          <root url="jar://$PROJECT_FRAMEWORKS$/libs/air/applicationupdater.swc!/" />
+          <root url="jar://$FLEX_SDK_HOME$/libs/air/applicationupdater.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

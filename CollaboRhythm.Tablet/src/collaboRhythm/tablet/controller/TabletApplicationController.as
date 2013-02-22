@@ -202,7 +202,7 @@ package collaboRhythm.tablet.controller
 		}
 
 		public function initializeActiveView():void
-		{
+		{d:
 			var view:TabletViewBase = _tabletApplication.navigator.activeView as TabletViewBase;
 			if (view)
 			{

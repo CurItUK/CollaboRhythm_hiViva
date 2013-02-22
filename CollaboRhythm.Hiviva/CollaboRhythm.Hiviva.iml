@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="Flex" version="4">
+  <component name="FlexBuildConfigurationManager" active="CollaboRhythm.Hiviva">
+    <configurations>
+      <configuration name="CollaboRhythm.Hiviva" target-platform="Mobile" main-class="CollaboRhythmHivivaApplication" output-file="CollaboRhythmHivivaApplication.swf" output-folder="$MODULE_DIR$/../out/production/CollaboRhythm.Hiviva">
+        <dependencies>
+          <entries>
+            <entry module-name="CollaboRhythm.Core.Model" build-configuration-name="CollaboRhythm.Core.Model">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Shared" build-configuration-name="CollaboRhythm.Shared">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Core" build-configuration-name="CollaboRhythm.Core">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="8c7b44e2-5af9-4a51-85bf-e605d2d36a88">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="Desktop libraries for mobile applications" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="67def486-d2d4-44b1-a800-e7d658511fa2">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Shared.Collaboration" build-configuration-name="CollaboRhythm.Shared.Collaboration">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Shared.PluginsSupport" build-configuration-name="CollaboRhythm.Shared.PluginsSupport">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.CollaborationServer" build-configuration-name="CollaboRhythm.CollaborationServer">
+              <dependency linkage="Merged" />
+            </entry>
+          </entries>
+          <sdk name="4.6.0" />
+        </dependencies>
+        <compiler-options />
+        <packaging-air-desktop />
+        <packaging-android enabled="true" package-file-name="CollaboRhythm_Hiviva" />
+        <packaging-ios package-file-name="CollaboRhythm_Hiviva" />
+      </configuration>
+    </configurations>
+    <compiler-options />
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="4.6.0" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="8c7b44e2-5af9-4a51-85bf-e605d2d36a88" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/libs" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="67def486-d2d4-44b1-a800-e7d658511fa2" />
+        <CLASSES>
+          <root url="jar://$FLEX_SDK_HOME$/libs/air/applicationupdater.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="Desktop libraries for mobile applications" level="project" />
+    <orderEntry type="module" module-name="CollaboRhythm.Core" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.Shared" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.Core.Model" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.CollaborationServer" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.Shared.Collaboration" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.Shared.PluginsSupport" exported="" />
+  </component>
+</module>
+
