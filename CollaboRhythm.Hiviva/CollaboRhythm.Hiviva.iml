@@ -32,6 +32,9 @@
             <entry module-name="CollaboRhythm.CollaborationServer" build-configuration-name="CollaboRhythm.CollaborationServer">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-id="de93bf1e-f462-4723-a61a-f0a7bdaa8d77">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="4.6.0" />
         </dependencies>
@@ -78,6 +81,16 @@
     <orderEntry type="module" module-name="CollaboRhythm.CollaborationServer" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Collaboration" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.PluginsSupport" exported="" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="de93bf1e-f462-4723-a61a-f0a7bdaa8d77" />
+        <CLASSES>
+          <root url="file://D:/Program Files/Adobe Gaming SDK 1.0.1/Frameworks/Starling/Starling-Framework/starling/src" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 
