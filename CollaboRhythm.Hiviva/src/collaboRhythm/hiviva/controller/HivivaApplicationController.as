@@ -47,6 +47,7 @@ package collaboRhythm.hiviva.controller
 		private var _hivivaApplication:CollaboRhythmHivivaApplication;
 		private var _hivivaAppControllersMediator:HivivaAppControllersMediator;
 		private var _fullContainer:IVisualElementContainer;
+		private var _hivivaLocalStoreController:HivivaLocalStoreController;
 
 		[Embed("/resources/settings.xml", mimeType="application/octet-stream")]
 		private var _applicationSettingsEmbeddedFile:Class;
@@ -63,6 +64,7 @@ package collaboRhythm.hiviva.controller
 			_connectivityView = collaboRhythmHivivaApplication.connectivityView;
 			_busyView = collaboRhythmHivivaApplication.busyView;
 			_aboutApplicationView = collaboRhythmHivivaApplication.aboutApplicationView;
+			initLocalStore();
 			initializeConnectivityView();
 		}
 
@@ -81,6 +83,14 @@ package collaboRhythm.hiviva.controller
 
 			createSession();
 
+		}
+
+		private function initLocalStore():void
+		{
+			_hivivaLocalStoreController = new HivivaLocalStoreController();
+
+
+			_hivivaLocalStoreController.initApplicationFirstUse();
 		}
 
 		private function viewNavigator_transitionCompleteHandler(event:Event):void
@@ -306,6 +316,7 @@ package collaboRhythm.hiviva.controller
 			}
 		}
 
+
 		override public function get navigator():ViewNavigator
 		{
 			return _hivivaApplication ? _hivivaApplication.navigator : null;
@@ -314,6 +325,11 @@ package collaboRhythm.hiviva.controller
 		public function get hivivaAppControllersMediator():HivivaAppControllersMediator
 		{
 			return _hivivaAppControllersMediator;
+		}
+
+		public function get hivivaLocalStoreController():HivivaLocalStoreController
+		{
+			return _hivivaLocalStoreController;
 		}
 
 		override protected function prepareToExit():void

@@ -35,12 +35,21 @@
             <entry library-id="de93bf1e-f462-4723-a61a-f0a7bdaa8d77">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-id="d8fa7b08-8beb-4872-a84e-9d2446958e82">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="bf10e844-2331-4eb0-b166-ead93427ffac">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="708ad9ff-c9ab-4d16-b6ed-7a7b593e647a">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
-          <sdk name="4.6.0" />
+          <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options />
         <packaging-air-desktop />
-        <packaging-android enabled="true" package-file-name="CollaboRhythm_Hiviva" />
+        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva" />
         <packaging-ios package-file-name="CollaboRhythm_Hiviva" />
       </configuration>
     </configurations>
@@ -51,7 +60,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="4.6.0" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="4.6.0 - (AIR 3.4)" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
@@ -74,7 +83,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" exported="" name="Desktop libraries for mobile applications" level="project" />
     <orderEntry type="module" module-name="CollaboRhythm.Core" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Core.Model" exported="" />
@@ -85,7 +93,38 @@
       <library type="flex">
         <properties id="de93bf1e-f462-4723-a61a-f0a7bdaa8d77" />
         <CLASSES>
-          <root url="file://D:/Program Files/Adobe Gaming SDK 1.0.1/Frameworks/Starling/Starling-Framework/starling/src" />
+          <root url="file://$MODULE_DIR$/../../../Starling-Framework-master/starling/src" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="Desktop libraries for mobile applications" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="d8fa7b08-8beb-4872-a84e-9d2446958e82" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../feathers-master/source" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="bf10e844-2331-4eb0-b166-ead93427ffac" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/src/source" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="708ad9ff-c9ab-4d16-b6ed-7a7b593e647a" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/resources/UI.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
