@@ -15,7 +15,7 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="4.6.0" />
+          <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options />
         <packaging-air-desktop package-file-name="CollaboRhythm_Core_Tests" />
@@ -33,7 +33,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="CollaboRhythm.Core" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared" exported="" />
-    <orderEntry type="jdk" jdkName="4.6.0" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="4.6.0 - (AIR 3.4)" jdkType="Flex SDK Type (new)" />
     <orderEntry type="library" exported="" name="FlexUnit" level="project" />
   </component>
 </module>

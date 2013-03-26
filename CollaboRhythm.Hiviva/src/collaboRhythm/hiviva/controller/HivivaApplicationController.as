@@ -88,9 +88,7 @@ package collaboRhythm.hiviva.controller
 		private function initLocalStore():void
 		{
 			_hivivaLocalStoreController = new HivivaLocalStoreController();
-
-
-			_hivivaLocalStoreController.initApplicationFirstUse();
+			_hivivaLocalStoreController.initStoreService();
 		}
 
 		private function viewNavigator_transitionCompleteHandler(event:Event):void

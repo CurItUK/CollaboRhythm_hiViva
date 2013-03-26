@@ -42,7 +42,7 @@
     <resource url="http://collaborhythm.org/application/insulinTitrationDecisionSupportStates" location="$PROJECT_DIR$/CollaboRhythm.Plugins.InsulinTitrationSupport/src/assets/strings/insulinTitrationDecisionSupportStates.xsd" />
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="4.6.0" project-jdk-type="Flex SDK Type (new)">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="4.6.0 - (AIR 3.4)" project-jdk-type="Flex SDK Type (new)">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="SvnBranchConfigurationManager">

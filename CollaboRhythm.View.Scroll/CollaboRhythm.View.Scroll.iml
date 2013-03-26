@@ -4,7 +4,7 @@
     <configurations>
       <configuration name="CollaboRhythm.View.Scroll" target-platform="Desktop" output-type="Library" output-file="CollaboRhythm_View_Scroll.swc" output-folder="$MODULE_DIR$/../out/production/CollaboRhythm.View.Scroll">
         <dependencies>
-          <sdk name="4.6.0" />
+          <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options>
           <option name="additionalOptions" value="-locale en_US" />
@@ -24,7 +24,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="4.6.0" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="4.6.0 - (AIR 3.4)" jdkType="Flex SDK Type (new)" />
   </component>
 </module>
 

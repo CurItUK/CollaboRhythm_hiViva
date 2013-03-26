@@ -33,7 +33,7 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="4.6.0" />
+          <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options>
           <option name="additionalOptions" value="-locale en_US" />
@@ -69,7 +69,7 @@
     </orderEntry>
     <orderEntry type="module" module-name="CollaboRhythm.View.Scroll" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Model" exported="" />
-    <orderEntry type="jdk" jdkName="4.6.0" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="4.6.0 - (AIR 3.4)" jdkType="Flex SDK Type (new)" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
         <properties id="a562461a-a09c-4fd1-9371-220fcea1005b" />

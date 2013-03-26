@@ -53,7 +53,6 @@
 			_isControllerReady = value;
 		}
 
-
 		private function quitButton_clickHandler(event:MouseEvent):void
 		{
 			_hivivaApplicationController.exitApplication("quit menu button");

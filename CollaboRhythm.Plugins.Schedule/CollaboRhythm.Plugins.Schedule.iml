@@ -33,7 +33,7 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="4.6.0" />
+          <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options>
           <option name="additionalOptions" value="-locale en_US" />
@@ -89,7 +89,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="jdk" jdkName="4.6.0" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="4.6.0 - (AIR 3.4)" jdkType="Flex SDK Type (new)" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Collaboration" exported="" />
   </component>
 </module>

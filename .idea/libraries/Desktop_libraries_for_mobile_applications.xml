@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Desktop libraries for mobile applications" type="flex">
     <CLASSES>
-      <root url="jar://$FLEX_SDK_HOME$/libs/mx/mx.swc!/" />
-      <root url="jar://$FLEX_SDK_HOME$/libs/charts.swc!/" />
-      <root url="jar://$FLEX_SDK_HOME$/libs/sparkskins.swc!/" />
+      <root url="jar://$PROJECT_DIR$/../../Flex SDK/4.6.0 - (AIR 3.4)/frameworks/libs/mx/mx.swc!/" />
+      <root url="jar://$PROJECT_DIR$/../../Flex SDK/4.6.0 - (AIR 3.4)/frameworks/libs/sparkskins.swc!/" />
+      <root url="jar://$PROJECT_DIR$/../../Flex SDK/4.6.0 - (AIR 3.4)/frameworks/libs/charts.swc!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

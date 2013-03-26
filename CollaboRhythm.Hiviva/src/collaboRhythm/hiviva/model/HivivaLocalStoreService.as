@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.model
 	import collaboRhythm.hiviva.vo.AppDataVO;
 
 	import flash.data.SQLConnection;
+	import flash.data.SQLResult;
 	import flash.data.SQLStatement;
 	import flash.events.EventDispatcher;
 	import flash.events.SQLEvent;
@@ -24,14 +25,14 @@ package collaboRhythm.hiviva.model
 
 		public function initDataLoad():void
 		{
-			var localDocumentsSettingsFile:File = File.applicationStorageDirectory;
-			localDocumentsSettingsFile = localDocumentsSettingsFile.resolvePath("settings.sqlite");
-			if(localDocumentsSettingsFile.exists)
+			var localSettingsFile:File = File.applicationStorageDirectory;
+			localSettingsFile = localSettingsFile.resolvePath("settings.sqlite");
+			if(localSettingsFile.exists)
 			{
 				loadAppData();
 			} else
 			{
-				createUserDatabase();
+				createUserSettingsDatabase();
 			}
 		}
 
@@ -48,26 +49,27 @@ package collaboRhythm.hiviva.model
 
 		}
 
-		private function createUserDatabase():void
+		public function updateAppProfileType(data:String):void
 		{
-			trace("create local user file");
+			appDataVO._userAppType = data;
 
-			var sourceFile:File = File.applicationDirectory;
-			sourceFile = sourceFile.resolvePath("resources/settings.sqlite");
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
 
-			var destination:File = File.applicationStorageDirectory;
-			destination = destination.resolvePath("settings.sqlite");
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
 
-			sourceFile.copyTo(destination);
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "INSERT INTO app_settings ('profile_type') VALUES ('" + data + "') ";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+			this._sqStatement.execute();
 
-			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.DATA_LOAD_COMPLETE);
-			evt.message = HivivaLocalStoreService.APP_FIRST_TIME_USE;
-			dispatchEvent(evt);
+		}
 
-			_appDataVO = new AppDataVO();
-			_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
-
-
+		private function sqlResultHandler(e:SQLEvent):void
+		{
+			trace("sqlResultHandler " + e);
 		}
 
 		private function dataFileOpenHandler(e:SQLEvent):void
@@ -77,14 +79,31 @@ package collaboRhythm.hiviva.model
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.execute();
 
-			/*
-			var dataObj:Object = new Object(); //new Object();
-			dataObj.userAppType = this._sqStatement.getResult().data[0];
-			appLocalData = new AppDataVO(dataObj);
-			*/
+			_appDataVO = new AppDataVO();
+			_appDataVO._userAppType = this._sqStatement.getResult().data[0].profile_type;
 
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.DATA_LOAD_COMPLETE);
 			evt.message = "dataLoaded";
+			dispatchEvent(evt);
+		}
+
+		private function createUserSettingsDatabase():void
+		{
+			trace("create local user settings file");
+
+			var sourceFile:File = File.applicationDirectory;
+			sourceFile = sourceFile.resolvePath("resources/settings.sqlite");
+
+			var destination:File = File.applicationStorageDirectory;
+			destination = destination.resolvePath("settings.sqlite");
+
+			sourceFile.copyTo(destination);
+
+			_appDataVO = new AppDataVO();
+			_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
+
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.DATA_LOAD_COMPLETE);
+			evt.message = HivivaLocalStoreService.APP_FIRST_TIME_USE;
 			dispatchEvent(evt);
 		}
 
@@ -93,9 +112,5 @@ package collaboRhythm.hiviva.model
 			return _appDataVO;
 		}
 
-		public function set appDataVO (value:AppDataVO):void
-		{
-			_appDataVO = value;
-		}
 	}
 }

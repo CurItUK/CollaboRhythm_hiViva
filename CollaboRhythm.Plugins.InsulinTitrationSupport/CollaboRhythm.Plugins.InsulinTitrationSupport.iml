@@ -42,7 +42,7 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="4.6.0" />
+          <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options />
         <packaging-air-desktop />
@@ -71,8 +71,7 @@
         <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="jdk" jdkName="4.6.0" jdkType="Flex SDK Type (new)" />
-    <orderEntry type="library" exported="" name="mobile" level="project" />
+    <orderEntry type="jdk" jdkName="4.6.0 - (AIR 3.4)" jdkType="Flex SDK Type (new)" />
     <orderEntry type="module" module-name="CollaboRhythm.Plugins.Schedule.Shared" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Model" exported="" />
@@ -83,6 +82,7 @@
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Collaboration" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Messages" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.UI.Buttons" exported="" />
+    <orderEntry type="library" exported="" name="mobile" level="project" />
   </component>
 </module>
 

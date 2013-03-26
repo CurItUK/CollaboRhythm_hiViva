@@ -30,7 +30,7 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="4.6.0" />
+          <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options />
         <packaging-air-desktop />
@@ -78,7 +78,7 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="4.6.0" />
+          <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options>
           <map>
@@ -131,7 +131,7 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="4.6.0" />
+          <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options />
         <packaging-air-desktop />
@@ -159,8 +159,7 @@
     <orderEntry type="module" module-name="CollaboRhythm.Shared.PluginsSupport" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Core.Model" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Collaboration" exported="" />
-    <orderEntry type="jdk" jdkName="4.6.0" jdkType="Flex SDK Type (new)" />
-    <orderEntry type="library" exported="" name="Desktop libraries for mobile applications" level="project" />
+    <orderEntry type="jdk" jdkName="4.6.0 - (AIR 3.4)" jdkType="Flex SDK Type (new)" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
         <properties id="73cf38ed-5aae-4e11-bfce-467f52c03bdc" />
@@ -224,6 +223,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="Desktop libraries for mobile applications" level="project" />
   </component>
 </module>
 
