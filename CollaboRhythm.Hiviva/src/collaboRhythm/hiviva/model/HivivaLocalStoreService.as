@@ -67,6 +67,25 @@ package collaboRhythm.hiviva.model
 
 		}
 
+		public function resetApplication():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "DELETE FROM app_settings";
+			this._sqStatement.sqlConnection = this._sqConn;
+			//this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+			this._sqStatement.execute();
+
+			_appDataVO = null;
+			_appDataVO = new AppDataVO();
+			_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
+		}
+
 		private function sqlResultHandler(e:SQLEvent):void
 		{
 			trace("sqlResultHandler " + e);
@@ -80,7 +99,16 @@ package collaboRhythm.hiviva.model
 			this._sqStatement.execute();
 
 			_appDataVO = new AppDataVO();
-			_appDataVO._userAppType = this._sqStatement.getResult().data[0].profile_type;
+
+			try
+			{
+				_appDataVO._userAppType = this._sqStatement.getResult().data[0].profile_type;
+			}
+			catch(e:Error)
+			{
+				_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
+			}
+
 
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.DATA_LOAD_COMPLETE);
 			evt.message = "dataLoaded";

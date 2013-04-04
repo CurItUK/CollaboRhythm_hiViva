@@ -5,28 +5,21 @@
 					   actionBarVisible="false"
 					   backgroundAlpha="0">
 	<fx:Script><![CDATA[
-
 		import collaboRhythm.hiviva.controller.HivivaApplicationController;
 		import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
-		import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-		import collaboRhythm.hiviva.model.HivivaLocalStoreService;
-		import collaboRhythm.hiviva.vo.AppDataVO;
 
 		import mx.core.IVisualElementContainer;
-		import mx.core.UIComponent;
 
 		import starling.core.Starling;
 		import starling.utils.HAlign;
 		import starling.utils.VAlign;
+		import starling.events.Event;
 
 		public static const RECORD_BACKGROUND_COLOR:uint = 0xE6E7E8;
 
 		private var _widgetContainers:Vector.<IVisualElementContainer> = new Vector.<IVisualElementContainer>();
 		private var _hivivaLocalStoreController:HivivaLocalStoreController;
-		private var _applicationProfileClass:Class; //HCP or Patient , load Starling main class as per profile.
-
 		private var _starFW:Starling;
-		private var _screenHolder:UIComponent;
 
 		override protected function createChildren():void
 		{
@@ -42,73 +35,26 @@
 		{
 			_widgetContainers.push(mainWidgetsGroup);
 			_widgetContainers.push(buttonWidgetsGroup);
-			initStartupViews();
-		}
-
-		private function initStartupViews():void
-		{
-			trace("initStartupViews " + hivivaLocalStoreController.service.appDataVO._userAppType);
-			if(hivivaLocalStoreController.service.appDataVO._userAppType == HivivaLocalStoreService.APP_FIRST_TIME_USE)
-			{
-				initSplashUserChoice();
-			} else
-			{
-				initSplash();
-			}
-		}
-
-		private function initSplashUserChoice():void
-		{
-			var splash:SplashUI = new SplashUI();
-			_screenHolder = new UIComponent();
-
-			splash.hcpBtn.addEventListener(MouseEvent.CLICK, splashBtnHandler);
-			splash.patientBtn.addEventListener(MouseEvent.CLICK, splashBtnHandler);
-			_screenHolder.addChild(splash);
-			this.addElement(_screenHolder);
-		}
-
-		private function splashBtnHandler(e:Event):void
-		{
-			var selectedProfile:String;
-
-			switch(e.currentTarget.name)
-			{
-				case "hcpBtn" :
-					selectedProfile = "HCP";
-					break;
-
-				case "patientBtn" :
-					selectedProfile = "Patient";
-					break;
-			}
-
-			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PROFILE_TYPE_UPDATE);
-			evt.data = selectedProfile;
-			hivivaLocalStoreController.dispatchEvent(evt);
-		}
-
-		private function initSplash():void
-		{
-			var holder:UIComponent = new UIComponent();
-
-			var sprite:Sprite = new Sprite();
-			sprite.graphics.beginFill(0xff00000 , 1);
-			sprite.graphics.drawRect(0,0,100,100);
-			sprite.graphics.endFill();
-			holder.addChild(sprite);
-			this.addElement(holder);
+			initStarling();
 		}
 
 		private function initStarling():void
 		{
 			trace("Starling Init");
-			_starFW = new Starling(Main , stage);
+			_starFW = new Starling(Main, stage);
+			_starFW.addEventListener(starling.events.Event.ROOT_CREATED , starlingRootCreatedHandler);
 			_starFW.enableErrorChecking = true;
 			_starFW.showStats = true;
 			_starFW.showStatsAt(HAlign.RIGHT, VAlign.TOP);
 			_starFW.start();
 			trace(_starFW.viewPort);
+		}
+
+		private function starlingRootCreatedHandler(e:starling.events.Event):void
+		{
+			var main:Main = Starling.current.root as Main;
+			main.applicationController = _hivivaApplicationController as HivivaApplicationController;
+			main.initMain();
 		}
 
 		public function get widgetContainers():Vector.<IVisualElementContainer>

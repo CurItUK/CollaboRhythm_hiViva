@@ -34,6 +34,11 @@ package collaboRhythm.hiviva.controller
 			_hivivaLocalStoreService.initDataLoad();
 		}
 
+		public function resetApplication():void
+		{
+			service.resetApplication();
+		}
+
 		private function profileTypeUpdateHandler(e:LocalDataStoreEvent):void
 		{
 			_hivivaLocalStoreService.updateAppProfileType(e.data);
