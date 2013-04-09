@@ -22,10 +22,13 @@ package collaboRhythm.hiviva.view
 	{
 		private var _feathersTheme:MetalWorksMobileTheme;
 		private var _feathersNav:ScreenNavigatorWithHistory;
+
 		private var _footerBtnGroup:ButtonGroup;
+		private var _patientSettingsBtn:Button;
 		private var _transitionManager:ScreenSlidingStackTransitionManager;
 		private var _applicationController:HivivaApplicationController;
 		private var _appReset:Boolean = false;
+		private var _settingsOpen:Boolean = false;
 
 		private const TRANSITION_DURRATION:Number						= 0.4;
 
@@ -77,10 +80,10 @@ package collaboRhythm.hiviva.view
 
 			if(!this._appReset)
 			{
-				var patientSettingsBtn:Button = new Button();
-				patientSettingsBtn.label = "settings";
-				patientSettingsBtn.addEventListener(Event.TRIGGERED , pattientSettingsBtnHandler);
-				this.addChild(patientSettingsBtn);
+				this._patientSettingsBtn = new Button();
+				this._patientSettingsBtn.label = "settings";
+				this._patientSettingsBtn.addEventListener(Event.TRIGGERED , pattientSettingsBtnHandler);
+				this.addChild(this._patientSettingsBtn);
 
 
 				var patientSettingsScreen:HivivaPatientSettingsScreen = new HivivaPatientSettingsScreen();
@@ -98,6 +101,7 @@ package collaboRhythm.hiviva.view
 			this._feathersNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
 		}
 
+		//place holder for main app icons and navigation
 		private function initPatientFooterMenu():void
 		{
 			this._footerBtnGroup = new ButtonGroup();
@@ -117,14 +121,23 @@ package collaboRhythm.hiviva.view
 			this.addChild(this._footerBtnGroup);
 		}
 
+		// dummy test settings slide in out, needs tidy
 		private function pattientSettingsBtnHandler():void
 		{
+			var xLoc:Number = _settingsOpen ? 0 : this.stage.width/2;
+
 			var navTween:Tween = new Tween(this._feathersNav , 0.5 , Transitions.LINEAR);
 			var footerTween:Tween = new Tween(this._footerBtnGroup , 0.5 , Transitions.LINEAR);
-			navTween.animate("x" , this.stage.width/2);
-			footerTween.animate("x" , this.stage.width/2);
+			var settingsTween:Tween = new Tween(this._patientSettingsBtn , 0.5 , Transitions.LINEAR);
+
+
+			navTween.animate("x" , xLoc);
+			footerTween.animate("x" , xLoc);
+			settingsTween.animate("x" , xLoc);
+			settingsTween.onComplete = function():void{_settingsOpen = !_settingsOpen;} ;
 			Starling.juggler.add(navTween);
 			Starling.juggler.add(footerTween);
+			Starling.juggler.add(settingsTween);
 		}
 
 		private function homeBtnHandler():void
