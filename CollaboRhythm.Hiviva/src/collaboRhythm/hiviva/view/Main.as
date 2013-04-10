@@ -95,7 +95,8 @@ package collaboRhythm.hiviva.view
 				this._feathersNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN, new ScreenNavigatorItem(HivivaPatientClockScreen));
 				this._feathersNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen));
 				this._feathersNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
-				this._feathersNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
+				//this._feathersNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
+				this._feathersNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
 			}
 
 			this._feathersNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
@@ -111,7 +112,7 @@ package collaboRhythm.hiviva.view
 						{label: "C", triggered: clockBtnHandler },
 						{label: "T", triggered: takeMedsBtnHandler },
 						{label: "V", triggered: virusModelBtnHandler },
-						{label: "R", triggered: reportsBtnHandler }
+						{label: "D", triggered: reportsBtnHandler }
 					]
 			);
 			this._footerBtnGroup.y = this.stage.height - 100;
@@ -162,7 +163,8 @@ package collaboRhythm.hiviva.view
 
 		private function reportsBtnHandler():void
 		{
-			this._feathersNav.showScreen(HivivaScreens.PATIENT_REPORTS_SCREEN);
+			//this._feathersNav.showScreen(HivivaScreens.PATIENT_REPORTS_SCREEN);
+			this._feathersNav.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
 		}
 
 		private function navGoBack():void
