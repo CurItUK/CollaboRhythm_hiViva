@@ -1,15 +1,12 @@
 package collaboRhythm.hiviva.view
 {
 
-	import collaboRhythm.hiviva.utils.TextureLoader;
+
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Header;
 	import feathers.controls.Screen;
 	import feathers.display.TiledImage;
-
-	import starling.display.Image;
-	import starling.textures.Texture;
 
 	public class HivivaPatientHomeScreen extends Screen
 	{
@@ -45,7 +42,7 @@ package collaboRhythm.hiviva.view
 
 		private function drawBackground():void
 		{
-			_tileImage = new TiledImage(TextureLoader.getInstance().getBitmapTexture("gridBackground" , Assets.grid));
+			_tileImage = new TiledImage(Assets.getTexture("grid"));
 			addChild(_tileImage);
 		}
 	}
