@@ -1,6 +1,9 @@
 package collaboRhythm.hiviva.view
 {
 
+	import collaboRhythm.hiviva.utils.TextureLoader;
+	import collaboRhythm.hiviva.view.media.Assets;
+
 	import feathers.controls.Header;
 	import feathers.controls.Screen;
 	import feathers.display.TiledImage;
@@ -12,8 +15,7 @@ package collaboRhythm.hiviva.view
 	{
 		private var _header:Header;
 
-		[Embed(source="/resources/grid.jpg")]
-		private var grid:Class;
+
 
 		private var _tileImage:TiledImage;
 
@@ -43,13 +45,7 @@ package collaboRhythm.hiviva.view
 
 		private function drawBackground():void
 		{
-
-			var texture:Texture = Texture.fromBitmap(new grid());
-			texture.repeat = true;
-
-			_tileImage = new TiledImage(texture);
-
-
+			_tileImage = new TiledImage(TextureLoader.getInstance().getBitmapTexture("gridBackground" , Assets.grid));
 			addChild(_tileImage);
 		}
 	}
