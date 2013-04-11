@@ -81,7 +81,7 @@ package collaboRhythm.hiviva.view
 			if(!this._appReset)
 			{
 				this._patientSettingsBtn = new Button();
-				this._patientSettingsBtn.label = "settings";
+				this._patientSettingsBtn.label = "SNav";
 				this._patientSettingsBtn.addEventListener(Event.TRIGGERED , pattientSettingsBtnHandler);
 				this.addChild(this._patientSettingsBtn);
 
