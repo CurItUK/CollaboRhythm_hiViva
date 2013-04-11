@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 	import feathers.controls.Button;
+	import feathers.controls.ButtonGroup;
 	import feathers.controls.Header;
 	import feathers.controls.Screen;
 
@@ -11,6 +12,8 @@ package collaboRhythm.hiviva.view
 	public class HivivaPatientProfileScreen extends Screen
 	{
 		private var _header:Header;
+
+
 
 		public function HivivaPatientProfileScreen()
 		{
@@ -28,8 +31,11 @@ package collaboRhythm.hiviva.view
 			this._header.title = "Patient Profile";
 			addChild(this._header);
 
-
 		}
+
+
+
+
 
 	}
 }
