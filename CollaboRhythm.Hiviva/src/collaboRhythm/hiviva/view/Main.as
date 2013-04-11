@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view
 
 	import collaboRhythm.feathers.controls.ScreenNavigatorWithHistory;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 
 	import feathers.controls.Button;
@@ -23,6 +24,7 @@ package collaboRhythm.hiviva.view
 		private var _feathersTheme:MetalWorksMobileTheme;
 		private var _feathersNav:ScreenNavigatorWithHistory;
 		private var _patientNav:ScreenNavigatorWithHistory;
+		private var _patientProfileNav:ScreenNavigatorWithHistory;
 
 		private var _footerBtnGroup:ButtonGroup;
 		private var _patientSettingsBtn:Button;
@@ -88,6 +90,7 @@ package collaboRhythm.hiviva.view
 
 
 				var patientSideNavScreen:HivivaPatientSideNavScreen = new HivivaPatientSideNavScreen();
+				patientSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , patientSlideNavHandler)
 				this.addChildAt(patientSideNavScreen , 0);
 
 
@@ -102,6 +105,13 @@ package collaboRhythm.hiviva.view
 
 			this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
 		}
+
+		private function patientSlideNavHandler(e:FeathersScreenEvent):void
+		{
+			trace("patientSlideNavHandler " + e.message);
+
+		}
+
 
 		//place holder for main app icons and navigation
 		private function initPatientFooterMenu():void
@@ -128,9 +138,9 @@ package collaboRhythm.hiviva.view
 		{
 			var xLoc:Number = _settingsOpen ? 0 : this.stage.width/3;
 
-			var navTween:Tween = new Tween(this._patientNav , 0.5 , Transitions.LINEAR);
-			var footerTween:Tween = new Tween(this._footerBtnGroup , 0.5 , Transitions.LINEAR);
-			var settingsTween:Tween = new Tween(this._patientSettingsBtn , 0.5 , Transitions.LINEAR);
+			var navTween:Tween = new Tween(this._patientNav , 0.2 , Transitions.EASE_OUT);
+			var footerTween:Tween = new Tween(this._footerBtnGroup , 0.2 , Transitions.EASE_OUT);
+			var settingsTween:Tween = new Tween(this._patientSettingsBtn , 0.2 , Transitions.EASE_OUT);
 
 
 			navTween.animate("x" , xLoc);

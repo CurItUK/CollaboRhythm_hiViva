@@ -1,8 +1,12 @@
 package collaboRhythm.hiviva.view
 {
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
+
 
 	public class HivivaPatientSideNavScreen extends Screen
 	{
@@ -40,6 +44,9 @@ package collaboRhythm.hiviva.view
 
 		private function profileBtnHandler():void
 		{
+			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
+			evt.message = "profile";
+			this.dispatchEvent(evt);
 
 		}
 
