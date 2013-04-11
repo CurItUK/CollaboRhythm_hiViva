@@ -41,6 +41,8 @@ package collaboRhythm.hiviva.view
 		private var _photoHolder:Image;
 		private var _updatesCheck:Check;
 		private var _researchCheck:Check;
+		private var _cancelButton:Button;
+		private var _submitButton:Button;
 
 
 		public function HivivaPatientMyDetailsScreen()
@@ -80,6 +82,9 @@ package collaboRhythm.hiviva.view
 			this._researchCheck.isSelected = false;
 			this._researchCheck.label = "Allow anonymised data for research purposes";
 
+			this._cancelButton.label = "Cancel";
+			this._submitButton.label = "Save";
+
 			var items:Vector.<DisplayObject> = new Vector.<DisplayObject>();
 			items.push(this._instructionsText);
 			items.push(this._nameInput);
@@ -87,6 +92,7 @@ package collaboRhythm.hiviva.view
 			items.push(this._photoContainer);
 			items.push(this._updatesCheck);
 			items.push(this._researchCheck);
+			items.push(this._cancelButton);
 
 			autoLayout(items, 50);
 
@@ -94,6 +100,8 @@ package collaboRhythm.hiviva.view
 			this._emailLabel.y = this._emailInput.y;
 			this._nameInput.x = this.actualWidth / 2;
 			this._emailInput.x = this.actualWidth / 2;
+			this._submitButton.y = this._cancelButton.y;
+			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + 20;
 		}
 
 		override protected function initialize():void
@@ -124,6 +132,24 @@ package collaboRhythm.hiviva.view
 
 			this._researchCheck = new Check();
 			addChild(this._researchCheck);
+
+			this._cancelButton = new Button();
+			this._cancelButton.addEventListener(Event.TRIGGERED, cancelButtonClick);
+			addChild(this._cancelButton);
+
+			this._submitButton = new Button();
+			this._submitButton.addEventListener(Event.TRIGGERED, submitButtonClick);
+			addChild(this._submitButton);
+		}
+
+		private function cancelButtonClick(e:Event):void
+		{
+			// TODO : reset form data and return to profile home
+		}
+
+		private function submitButtonClick(e:Event):void
+		{
+			// TODO : save form data and display confirmation dialogue
 		}
 
 		private function autoLayout(items:Vector.<DisplayObject>, gap:Number):void
