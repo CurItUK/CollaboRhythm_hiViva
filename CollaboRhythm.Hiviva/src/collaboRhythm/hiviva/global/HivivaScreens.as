@@ -11,6 +11,9 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_VIRUS_MODEL_SCREEN:String			= "patientVirusModelScreen";
 		public static const PATIENT_REPORTS_SCREEN:String				= "patientReportsScreen";
 		public static const PATIENT_MY_DETAILS_SCREEN:String			= "patientMyDetailsScreen";
+		public static const PATIENT_PROFILE_SCREEN:String				= "patientProfileScreen";
+
+		public static const PATIENT_SIDE_NAV_SCREEN:String				= "patientSideNavScreen";
 
 
 	}

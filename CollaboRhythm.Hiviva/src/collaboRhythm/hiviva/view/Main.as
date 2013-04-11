@@ -86,8 +86,8 @@ package collaboRhythm.hiviva.view
 				this.addChild(this._patientSettingsBtn);
 
 
-				var patientSettingsScreen:HivivaPatientSettingsScreen = new HivivaPatientSettingsScreen();
-				this.addChildAt(patientSettingsScreen , 0);
+				var patientSideNav:HivivaPatientSideNavScreen = new HivivaPatientSideNavScreen();
+				this.addChildAt(patientSideNav , 0);
 
 
 				this._feathersNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen));
