@@ -5,7 +5,6 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Check;
 	import feathers.controls.Header;
 	import feathers.controls.Label;
-	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
@@ -34,7 +33,7 @@ package collaboRhythm.hiviva.view
 	import starling.textures.Texture;
 
 
-	public class HivivaPatientMyDetailsScreen extends Screen
+	public class HivivaPatientMyDetailsScreen extends ScreenBase
 	{
 		private var _header:Header;
 		private var _instructionsText:Label;
@@ -59,6 +58,8 @@ package collaboRhythm.hiviva.view
 
 		override protected function draw():void
 		{
+			super.draw();
+
 			this._header.width = this.actualWidth;
 
 			this._instructionsText.text = "All fields are optional except to connect to a care provider";
@@ -115,6 +116,8 @@ package collaboRhythm.hiviva.view
 
 		override protected function initialize():void
 		{
+			super.initialize();
+
 			this._header = new Header();
 			this._header.title = "My Details";
 			addChild(this._header);
