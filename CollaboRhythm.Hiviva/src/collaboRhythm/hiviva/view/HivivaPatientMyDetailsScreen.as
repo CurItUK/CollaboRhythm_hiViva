@@ -1,6 +1,8 @@
 package collaboRhythm.hiviva.view
 {
 
+	import collaboRhythm.hiviva.global.HivivaScreens;
+
 	import feathers.controls.Button;
 	import feathers.controls.Check;
 	import feathers.controls.Header;
@@ -159,12 +161,17 @@ package collaboRhythm.hiviva.view
 			this._backButton = new Button();
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
-			this._header.leftItems = new Header();
+			this._header.leftItems = new <DisplayObject>[_backButton];
 		}
 
 		private function cancelButtonClick(e:Event):void
 		{
-			// TODO : reset form data and return to profile home
+			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+		}
+
+		private function backBtnHandler(e:Event):void
+		{
+			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 		}
 
 		private function submitButtonClick(e:Event):void
