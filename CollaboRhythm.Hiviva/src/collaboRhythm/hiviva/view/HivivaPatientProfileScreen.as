@@ -38,7 +38,7 @@ package collaboRhythm.hiviva.view
 			_tileImage.width = this.actualWidth;
 			_tileImage.height = this.actualHeight;
 
-			//
+
 
 
 
