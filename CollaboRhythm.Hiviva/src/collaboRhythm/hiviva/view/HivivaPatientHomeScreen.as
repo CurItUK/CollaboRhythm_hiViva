@@ -2,8 +2,6 @@ package collaboRhythm.hiviva.view
 {
 
 	import feathers.controls.Header;
-	import feathers.controls.Screen;
-
 
 	public class HivivaPatientHomeScreen extends ScreenBase
 	{
