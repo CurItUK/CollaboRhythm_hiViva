@@ -45,5 +45,6 @@ package collaboRhythm.hiviva.view
 			_tileImage = new TiledImage(Assets.getTexture("grid"));
 			addChild(_tileImage);
 		}
+
 	}
 }

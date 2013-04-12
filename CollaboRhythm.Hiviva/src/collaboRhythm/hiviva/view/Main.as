@@ -22,7 +22,6 @@ package collaboRhythm.hiviva.view
 	public class Main extends Sprite
 	{
 		private var _feathersTheme:MetalWorksMobileTheme;
-		private var _feathersNav:ScreenNavigatorWithHistory;
 		private var _patientNav:ScreenNavigatorWithHistory;
 		private var _patientProfileNav:ScreenNavigatorWithHistory;
 
@@ -99,7 +98,7 @@ package collaboRhythm.hiviva.view
 				this._patientNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN, new ScreenNavigatorItem(HivivaPatientClockScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
-				//this._feathersNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
+				//this._patientNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
 			}
 
@@ -109,6 +108,10 @@ package collaboRhythm.hiviva.view
 		private function patientSlideNavHandler(e:FeathersScreenEvent):void
 		{
 			trace("patientSlideNavHandler " + e.message);
+			this._patientProfileNav = new ScreenNavigatorWithHistory();
+			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen));
+			this.addChild(_patientProfileNav);
+			this._patientProfileNav.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 
 		}
 
