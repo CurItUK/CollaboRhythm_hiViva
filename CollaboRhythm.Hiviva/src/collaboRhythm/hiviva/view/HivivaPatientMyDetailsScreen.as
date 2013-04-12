@@ -10,11 +10,16 @@ package collaboRhythm.hiviva.view
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
 
+	import flash.data.SQLConnection;
+	import flash.data.SQLResult;
+	import flash.data.SQLStatement;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.IOErrorEvent;
 	import flash.events.MediaEvent;
+	import flash.events.SQLEvent;
 	import flash.filesystem.File;
 	import flash.geom.Matrix;
 	import flash.media.CameraRoll;
@@ -43,6 +48,8 @@ package collaboRhythm.hiviva.view
 		private var _researchCheck:Check;
 		private var _cancelButton:Button;
 		private var _submitButton:Button;
+		private var _sqConn:SQLConnection;
+		private var _sqStatement:SQLStatement;
 
 
 		public function HivivaPatientMyDetailsScreen()
@@ -102,6 +109,8 @@ package collaboRhythm.hiviva.view
 			this._emailInput.x = this.actualWidth / 2;
 			this._submitButton.y = this._cancelButton.y;
 			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + 20;
+
+			populateOldData();
 		}
 
 		override protected function initialize():void
@@ -149,7 +158,90 @@ package collaboRhythm.hiviva.view
 
 		private function submitButtonClick(e:Event):void
 		{
-			// TODO : save form data and display confirmation dialogue
+			// TODO : display confirmation dialogue
+
+			//trace("UPDATE user_details SET user_name='" + this._nameInput.text + "', user_email='" + this._emailInput.text + "', user_updates=" + int(this._updatesCheck.isSelected) + ", user_research=" + int(this._researchCheck.isSelected));
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "UPDATE user_details SET user_name='" + this._nameInput.text + "', user_email='" + this._emailInput.text + "', user_updates=" + int(this._updatesCheck.isSelected) + ", user_research=" + int(this._researchCheck.isSelected);
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+			this._sqStatement.execute();
+		}
+
+		private function populateOldData():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "SELECT * FROM user_details";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+
+			var sqlRes:SQLResult = this._sqStatement.getResult();
+			//trace(sqlRes.data[0].user_name);
+			//trace(sqlRes.data[0].user_email);
+			//trace(sqlRes.data[0].user_updates);
+			//trace(sqlRes.data[0].user_research);
+			try
+			{
+				this._nameInput.text = sqlRes.data[0].user_name;
+			}
+			catch(e:Error)
+			{
+				//trace("fail");
+				this._nameInput.text = "";
+			}
+			this._nameInput.invalidate();
+
+			try
+			{
+				this._emailInput.text = sqlRes.data[0].user_email;
+			}
+			catch(e:Error)
+			{
+				//trace("fail");
+				this._emailInput.text = "";
+			}
+			this._emailInput.invalidate();
+
+			try
+			{
+				this._updatesCheck.isSelected = sqlRes.data[0].user_updates as Boolean;
+			}
+			catch(e:Error)
+			{
+				//trace("fail");
+				this._updatesCheck.isSelected = false;
+			}
+			this._updatesCheck.invalidate();
+
+			try
+			{
+				this._researchCheck.isSelected = sqlRes.data[0].user_research as Boolean;
+			}
+			catch(e:Error)
+			{
+				//trace("fail");
+				this._researchCheck.isSelected = false;
+			}
+			this._researchCheck.invalidate();
+
+		}
+
+		private function sqlResultHandler(e:SQLEvent):void
+		{
+			trace("sqlResultHandler " + e);
 		}
 
 		private function autoLayout(items:Vector.<DisplayObject>, gap:Number):void
