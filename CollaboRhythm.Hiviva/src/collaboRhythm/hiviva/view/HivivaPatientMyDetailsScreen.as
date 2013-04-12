@@ -24,6 +24,7 @@ package collaboRhythm.hiviva.view
 	import flash.media.CameraRoll;
 	import flash.media.MediaPromise;
 	import flash.net.URLRequest;
+	import flash.sampler.getSavedThis;
 
 	import starling.display.DisplayObject;
 
@@ -49,6 +50,7 @@ package collaboRhythm.hiviva.view
 		private var _submitButton:Button;
 		private var _sqConn:SQLConnection;
 		private var _sqStatement:SQLStatement;
+		private var _backButton:Button
 
 
 		public function HivivaPatientMyDetailsScreen()
@@ -92,6 +94,7 @@ package collaboRhythm.hiviva.view
 
 			this._cancelButton.label = "Cancel";
 			this._submitButton.label = "Save";
+			this._backButton.label = "Back";
 
 			var items:Vector.<DisplayObject> = new Vector.<DisplayObject>();
 			items.push(this._instructionsText);
@@ -152,6 +155,11 @@ package collaboRhythm.hiviva.view
 			this._submitButton = new Button();
 			this._submitButton.addEventListener(Event.TRIGGERED, submitButtonClick);
 			addChild(this._submitButton);
+
+			this._backButton = new Button();
+			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
+
+			this._header.leftItems = new Header();
 		}
 
 		private function cancelButtonClick(e:Event):void

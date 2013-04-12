@@ -5,7 +5,7 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Screen;
 
 
-	public class HivivaPatientHomeScreen extends Screen
+	public class HivivaPatientHomeScreen extends ScreenBase
 	{
 		private var _header:Header;
 
