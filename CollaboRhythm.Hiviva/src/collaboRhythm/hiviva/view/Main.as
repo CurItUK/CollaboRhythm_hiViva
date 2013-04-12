@@ -94,12 +94,11 @@ package collaboRhythm.hiviva.view
 
 
 				this._patientNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientSettingsScreen , {navGoBack:navGoBack , resetAppSettings:resetAppSettings}));
+				//this._patientNav.addScreen(HivivaScreens.PATIENT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientSettingsScreen , {navGoBack:navGoBack , resetAppSettings:resetAppSettings}));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN, new ScreenNavigatorItem(HivivaPatientClockScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
-				//this._patientNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
+				this._patientNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
 			}
 
 			this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
@@ -110,6 +109,7 @@ package collaboRhythm.hiviva.view
 			trace("patientSlideNavHandler " + e.message);
 			this._patientProfileNav = new ScreenNavigatorWithHistory();
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen));
+			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
 			this.addChild(_patientProfileNav);
 			this._patientProfileNav.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 
@@ -177,8 +177,7 @@ package collaboRhythm.hiviva.view
 
 		private function reportsBtnHandler():void
 		{
-			//this._feathersNav.showScreen(HivivaScreens.PATIENT_REPORTS_SCREEN);
-			this._patientNav.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
+			this._patientNav.showScreen(HivivaScreens.PATIENT_REPORTS_SCREEN);
 		}
 
 		private function navGoBack():void

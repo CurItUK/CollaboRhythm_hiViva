@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view
 {
+	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -78,7 +79,7 @@ package collaboRhythm.hiviva.view
 			this._menuBtnGroup = new ButtonGroup();
 			this._menuBtnGroup.dataProvider = new ListCollection(
 					[
-						{label: "My details", triggered: menuBtnHandler },
+						{label: "My details", triggered: myDetailsBtnHandler },
 						{label: "Home page photo", triggered: menuBtnHandler },
 						{label: "Daily medicines", triggered: menuBtnHandler },
 						{label: "Test results", triggered: menuBtnHandler },
@@ -103,6 +104,11 @@ package collaboRhythm.hiviva.view
 		private function sideNavBtnHandler():void
 		{
 
+		}
+
+		private function myDetailsBtnHandler():void
+		{
+			this.owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
 		}
 
 	}

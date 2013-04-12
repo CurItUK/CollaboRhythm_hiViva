@@ -13,7 +13,7 @@ package collaboRhythm.hiviva.view
 
 	import starling.events.Event;
 
-	public class HivivaSplashScreen extends Screen
+	public class HivivaSplashScreen extends ScreenBase
 	{
 
 		private var _applicationController:HivivaApplicationController;
@@ -29,11 +29,13 @@ package collaboRhythm.hiviva.view
 
 		override protected function draw():void
 		{
+			super.draw();
 			this._header.width = this.actualWidth;
 		}
 
 		override protected function initialize():void
 		{
+			super.initialize();
 			this._appType = applicationController.hivivaLocalStoreController.service.appDataVO._userAppType;
 
 			this._header = new Header();
