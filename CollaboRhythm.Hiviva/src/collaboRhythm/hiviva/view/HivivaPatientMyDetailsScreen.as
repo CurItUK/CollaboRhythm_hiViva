@@ -30,6 +30,7 @@ package collaboRhythm.hiviva.view
 	import starling.display.DisplayObject;
 
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -106,14 +107,14 @@ package collaboRhythm.hiviva.view
 			items.push(this._researchCheck);
 			items.push(this._cancelButton);
 
-			autoLayout(items, 50);
+			autoLayout(items, 50 * this.dpiScale);
 
 			this._nameLabel.y = this._nameInput.y;
 			this._emailLabel.y = this._emailInput.y;
 			this._nameInput.x = this.actualWidth / 2;
 			this._emailInput.x = this.actualWidth / 2;
 			this._submitButton.y = this._cancelButton.y;
-			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + 20;
+			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + (20 * this.dpiScale);
 
 			populateOldData();
 		}
@@ -141,7 +142,7 @@ package collaboRhythm.hiviva.view
 			this._emailInput = new TextInput();
 			addChild(this._emailInput);
 
-			setupPhotoContainer();
+			setupPhotoContainer(100 * this.dpiScale,100 * this.dpiScale,20 * this.dpiScale);
 
 			this._updatesCheck = new Check();
 			addChild(this._updatesCheck);
@@ -190,6 +191,15 @@ package collaboRhythm.hiviva.view
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
+
+			saveTempImageAsMain();
+		}
+
+		private function saveTempImageAsMain():void
+		{
+			var temp:File = File.applicationStorageDirectory.resolvePath("tempprofileimage.jpg");
+			var main:File = File.applicationStorageDirectory.resolvePath("profileimage.jpg");
+			if (temp.exists) {temp.moveTo(main,true);} else { trace("tempprofileimage.jpg doesn't exist"); }
 		}
 
 		private function populateOldData():void
@@ -274,9 +284,12 @@ package collaboRhythm.hiviva.view
 			contentLayout.layout(items,bounds);
 		}
 
-		private function setupPhotoContainer():void
+		private function setupPhotoContainer(width:Number, height:Number, gap:Number):void
 		{
 			this._photoContainer = new Sprite();
+
+			var quad:Quad = new Quad(width, height, 0x000000);
+			this._photoContainer.addChild(quad);
 
 			var destination:File = File.applicationStorageDirectory;
 			destination = destination.resolvePath("profileimage.jpg");
@@ -284,13 +297,9 @@ package collaboRhythm.hiviva.view
 			{
 				doImageLoad(destination.url);
 			}
-			else
-			{
-				// TODO : put empty holder into this._photoHolder e.g. black square ( may need guidance from design team )
-			}
 
 			var uploadPhotoButton:Button = new Button();
-			uploadPhotoButton.x = 120;
+			uploadPhotoButton.x = width + gap;
 			uploadPhotoButton.label = "Upload Photo";
 			uploadPhotoButton.addEventListener(Event.TRIGGERED, onUploadClick);
 			this._photoContainer.addChild(uploadPhotoButton);
@@ -325,12 +334,11 @@ package collaboRhythm.hiviva.view
 			var extension:String = imageSource.file.extension;
 			// set destination location
 			var destination:File = File.applicationStorageDirectory;
-			destination = destination.resolvePath("profileimage." + extension);
+			destination = destination.resolvePath("tempprofileimage." + extension);
 			// copy source to destination
 			imageSource.file.copyTo(destination, true);
 			var copiedFile:File = File.applicationStorageDirectory;
-			copiedFile = copiedFile.resolvePath("profileimage." + extension);
-			trace("destination : " + copiedFile.url);
+			copiedFile = copiedFile.resolvePath("tempprofileimage." + extension);
 
 			doImageLoad(copiedFile.url);
 		}
@@ -374,7 +382,7 @@ package collaboRhythm.hiviva.view
 			}
 			// use suitable bitmap for texture
 			this._photoHolder = new Image(Texture.fromBitmap(suitableBm));
-			constrainToProportion(this._photoHolder, 100);
+			constrainToProportion(this._photoHolder, 100 * this.dpiScale);
 
 			if (!this._photoContainer.contains(this._photoHolder)) this._photoContainer.addChild(this._photoHolder);
 		}
@@ -384,16 +392,16 @@ package collaboRhythm.hiviva.view
 			trace("Image load failed.");
 		}
 
-		private function constrainToProportion(img:Object, scale:Number):void
+		private function constrainToProportion(img:Object, size:Number):void
 		{
 			if (img.height >= img.width)
 			{
-				img.height = scale;
+				img.height = size;
 				img.scaleX = img.scaleY;
 			}
 			else
 			{
-				img.width = scale;
+				img.width = size;
 				img.scaleY = img.scaleX;
 			}
 		}
