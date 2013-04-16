@@ -7,8 +7,16 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Label;
 	import feathers.controls.TextInput;
 	import feathers.controls.TextInput;
+	import feathers.controls.TextInput;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
+
+	import flash.data.SQLConnection;
+	import flash.data.SQLResult;
+	import flash.data.SQLStatement;
+	import flash.events.SQLEvent;
+
+	import flash.filesystem.File;
 
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
@@ -25,6 +33,8 @@ package collaboRhythm.hiviva.view
 		private var _cancelButton:Button;
 		private var _submitButton:Button;
 		private var _backButton:Button;
+		private var _sqConn:SQLConnection;
+		private var _sqStatement:SQLStatement;
 
 		public function HivivaPatientTestResults()
 		{
@@ -57,6 +67,8 @@ package collaboRhythm.hiviva.view
 
 			this._submitButton.y = this._cancelButton.y;
 			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + (20 * this.dpiScale);
+
+			populateOldData();
 		}
 
 		override protected function initialize():void
@@ -103,7 +115,90 @@ package collaboRhythm.hiviva.view
 
 		private function submitButtonClick(e:Event):void
 		{
+			// TODO : display confirmation dialogue
 
+			var cd4CountInput:TextInput = this._cd4Count.getChildByName("input") as TextInput;
+			var cd4Input:TextInput = this._cd4.getChildByName("input") as TextInput;
+			var viralLoadInput:TextInput = this._viralLoad.getChildByName("input") as TextInput;
+			var dateInput:TextInput = this._date.getChildByName("input") as TextInput;
+
+			trace("UPDATE test_results SET cd4_count='" + cd4CountInput.text + "', cd4='" + cd4Input.text + "', viral_load='" + viralLoadInput.text + "', date_of_last_test=" + dateInput.text + "'");
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "UPDATE test_results SET cd4_count='" + cd4CountInput.text + "', cd4='" + cd4Input.text + "', viral_load='" + viralLoadInput.text + "', date_of_last_test=" + dateInput.text + "'";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+			this._sqStatement.execute();
+		}
+
+		private function sqlResultHandler(e:SQLEvent):void
+		{
+			trace("sqlResultHandler " + e);
+		}
+		private function populateOldData():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "SELECT * FROM test_results";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+
+			var sqlRes:SQLResult = this._sqStatement.getResult();
+
+			var cd4CountInput:TextInput = this._cd4Count.getChildByName("input") as TextInput;
+			try
+			{
+				cd4CountInput.text = sqlRes.data[0].cd4_count;
+			}
+			catch(e:Error)
+			{
+				//trace("fail");
+				cd4CountInput.text = "";
+			}
+
+			var cd4Input:TextInput = this._cd4.getChildByName("input") as TextInput;
+			try
+			{
+				cd4Input.text = sqlRes.data[0].cd4;
+			}
+			catch(e:Error)
+			{
+				//trace("fail");
+				cd4Input.text = "";
+			}
+
+			var viralLoadInput:TextInput = this._viralLoad.getChildByName("input") as TextInput;
+			try
+			{
+				viralLoadInput.text = sqlRes.data[0].viral_load;
+			}
+			catch(e:Error)
+			{
+				//trace("fail");
+				viralLoadInput.text = "";
+			}
+
+			var dateInput:TextInput = this._date.getChildByName("input") as TextInput;
+			try
+			{
+				dateInput.text = sqlRes.data[0].date_of_last_test;
+			}
+			catch(e:Error)
+			{
+				//trace("fail");
+				dateInput.text = "";
+			}
 		}
 
 		private function createInputWithLabelAndUnits(inputContainer:Sprite, labelText:String, unitsText:String):void
