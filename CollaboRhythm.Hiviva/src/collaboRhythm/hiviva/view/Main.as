@@ -110,6 +110,7 @@ package collaboRhythm.hiviva.view
 			this._patientProfileNav = new ScreenNavigatorWithHistory();
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
+			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN, new ScreenNavigatorItem(HivivaPatientHomepagePhotoScreen));
 			this.addChild(_patientProfileNav);
 			this._patientProfileNav.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 

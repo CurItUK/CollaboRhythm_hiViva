@@ -26,7 +26,6 @@ package collaboRhythm.hiviva.view
 	import flash.media.CameraRoll;
 	import flash.media.MediaPromise;
 	import flash.net.URLRequest;
-	import flash.sampler.getSavedThis;
 
 	import starling.display.DisplayObject;
 
@@ -52,7 +51,7 @@ package collaboRhythm.hiviva.view
 		private var _submitButton:Button;
 		private var _sqConn:SQLConnection;
 		private var _sqStatement:SQLStatement;
-		private var _backButton:Button
+		private var _backButton:Button;
 
 
 		public function HivivaPatientMyDetailsScreen()

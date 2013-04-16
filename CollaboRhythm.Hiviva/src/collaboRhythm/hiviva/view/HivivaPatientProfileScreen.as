@@ -80,7 +80,7 @@ package collaboRhythm.hiviva.view
 			this._menuBtnGroup.dataProvider = new ListCollection(
 					[
 						{label: "My details", triggered: myDetailsBtnHandler },
-						{label: "Home page photo", triggered: menuBtnHandler },
+						{label: "Home page photo", triggered: homepagePhotoBtnHandler },
 						{label: "Daily medicines", triggered: menuBtnHandler },
 						{label: "Test results", triggered: menuBtnHandler },
 						{label: "sign up to collaborate", triggered: menuBtnHandler },
@@ -109,6 +109,11 @@ package collaboRhythm.hiviva.view
 		private function myDetailsBtnHandler():void
 		{
 			this.owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
+		}
+
+		private function homepagePhotoBtnHandler():void
+		{
+			this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
 		}
 
 	}
