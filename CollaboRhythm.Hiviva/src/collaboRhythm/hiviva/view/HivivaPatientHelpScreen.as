@@ -1,7 +1,12 @@
 package collaboRhythm.hiviva.view
 {
 
+	import feathers.controls.Button;
 	import feathers.controls.Header;
+
+	import starling.display.DisplayObject;
+
+	import starling.events.Event;
 
 	public class HivivaPatientHelpScreen extends ScreenBase
 	{
@@ -24,6 +29,21 @@ package collaboRhythm.hiviva.view
 			this._header = new Header();
 			this._header.title = "Help Screen";
 			addChild(this._header);
+
+			var homeBtn:Button = new Button();
+			homeBtn.label = "Home";
+			homeBtn.addEventListener(Event.TRIGGERED , homeBtnHandler);
+
+
+
+			this._header.leftItems =  new <DisplayObject>[homeBtn];
+
 		}
+
+		private function homeBtnHandler():void
+		{
+			this.dispatchEventWith("navGoHome");
+		}
+
 	}
 }

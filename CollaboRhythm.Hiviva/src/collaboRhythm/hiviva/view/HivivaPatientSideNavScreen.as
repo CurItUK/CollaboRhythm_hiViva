@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.global.HivivaScreens;
 
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Screen;
@@ -45,7 +46,7 @@ package collaboRhythm.hiviva.view
 		private function profileBtnHandler():void
 		{
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
-			evt.message = "profile";
+			evt.message = HivivaScreens.PATIENT_PROFILE_SCREEN;
 			this.dispatchEvent(evt);
 
 		}
@@ -53,7 +54,7 @@ package collaboRhythm.hiviva.view
 		private function helpBtnHandler():void
 		{
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
-			evt.message = "help";
+			evt.message = HivivaScreens.PATIENT_HELP_SCREEN;
 			this.dispatchEvent(evt);
 		}
 
