@@ -82,7 +82,7 @@ package collaboRhythm.hiviva.view
 						{label: "My details", triggered: myDetailsBtnHandler },
 						{label: "Home page photo", triggered: homepagePhotoBtnHandler },
 						{label: "Daily medicines", triggered: menuBtnHandler },
-						{label: "Test results", triggered: menuBtnHandler },
+						{label: "Test results", triggered: homepageTestResultsHandler },
 						{label: "sign up to collaborate", triggered: menuBtnHandler },
 						{label: "Connect to care provider", triggered: menuBtnHandler }
 					]
@@ -114,6 +114,11 @@ package collaboRhythm.hiviva.view
 		private function homepagePhotoBtnHandler():void
 		{
 			this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
+		}
+
+		private function homepageTestResultsHandler():void
+		{
+			this.owner.showScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN);
 		}
 
 	}
