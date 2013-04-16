@@ -131,23 +131,15 @@ package collaboRhythm.hiviva.view
 		{
 			const button:Button = Button(e.currentTarget);
 			//trace(button.label + " triggered.");
-			switch(button.label)
-			{
-				case "Sport" :
-					var sportsScreen:SportsGalleryScreen = new SportsGalleryScreen();
-					addChild(sportsScreen);
-					break;
-				case "Music" :
-					break;
-				case "Cinema" :
-					break;
-				case "History" :
-					break;
-				case "Traveling" :
-					break;
-				case "Art" :
-					break;
-			}
+
+			var category:String = button.label;
+
+			initSelectedGallery(category);
+		}
+
+		private function initSelectedGallery(category:String):void
+		{
+			this.owner.showScreen(HivivaScreens.PATIENT_GALLERY_SCREEN);
 		}
 
 		private function saveTempImageAsMain():void

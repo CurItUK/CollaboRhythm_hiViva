@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
 
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
@@ -111,6 +112,7 @@ package collaboRhythm.hiviva.view
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN, new ScreenNavigatorItem(HivivaPatientHomepagePhotoScreen));
+			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_GALLERY_SCREEN, new ScreenNavigatorItem(SportsGalleryScreen));
 			this.addChild(_patientProfileNav);
 			this._patientProfileNav.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 

@@ -18,15 +18,10 @@ package collaboRhythm.hiviva.view
 
 
 
-	public class HivivaPatientProfileScreen extends Screen
+	public class HivivaPatientProfileScreen extends ScreenBase
 	{
 		private var _header:Header;
-
-		private var _tileImage:TiledImage;
-
 		private var _menuBtnGroup:ButtonGroup;
-
-
 
 		public function HivivaPatientProfileScreen()
 		{
@@ -34,20 +29,14 @@ package collaboRhythm.hiviva.view
 
 		override protected function draw():void
 		{
+			super.draw();
 			this._header.width = this.actualWidth;
-
-			_tileImage.width = this.actualWidth;
-			_tileImage.height = this.actualHeight;
-
-
-
-
-
 		}
 
 		override protected function initialize():void
 		{
 
+			super.initialize();
 			this._header = new Header();
 			this._header.title = "Patient Profile";
 
@@ -57,22 +46,10 @@ package collaboRhythm.hiviva.view
 
 			this._header.leftItems =  new <DisplayObject>[sideNavBtn];
 
-			drawBackground();
 			initProfileMenuButtons();
-
-
-
-
 			addChild(this._header);
 
 		}
-
-		private function drawBackground():void
-		{
-			_tileImage = new TiledImage(Assets.getTexture("grid"));
-			addChild(_tileImage);
-		}
-
 
 		private function initProfileMenuButtons():void
 		{
@@ -89,7 +66,6 @@ package collaboRhythm.hiviva.view
 			);
 			this._menuBtnGroup.y = 200;
 			this._menuBtnGroup.x = 50;
-
 			this._menuBtnGroup.direction = ButtonGroup.DIRECTION_VERTICAL;
 
 			this.addChild(this._menuBtnGroup);
@@ -115,6 +91,5 @@ package collaboRhythm.hiviva.view
 		{
 			this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
 		}
-
 	}
 }

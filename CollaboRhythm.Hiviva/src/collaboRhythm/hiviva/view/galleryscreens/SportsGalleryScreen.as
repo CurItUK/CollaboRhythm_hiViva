@@ -183,16 +183,20 @@ package collaboRhythm.hiviva.view.galleryscreens
 			image.x = container.width;
 			container.addChild(image);
 
+
 			container.y = this._header.height;
+
+			trace("container.height" + container.height);
+			trace("container.width" + container.width);
 			addChild(container);
 
 			this._cancelButton.y = container.height + (50 * this.dpiScale);
 
 			this._submitButton.y = this._cancelButton.y;
 			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + 20;
-			this._cancelButton.validate();
-			this._submitButton.validate();
-			this._backButton.validate();
+			this._cancelButton.invalidate();
+			this._submitButton.invalidate();
+			this._backButton.invalidate();
 		}
 	}
 }
