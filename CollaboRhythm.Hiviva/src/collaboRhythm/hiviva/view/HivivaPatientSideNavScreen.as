@@ -52,7 +52,9 @@ package collaboRhythm.hiviva.view
 
 		private function helpBtnHandler():void
 		{
-
+			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
+			evt.message = "help";
+			this.dispatchEvent(evt);
 		}
 
 		private function badgesBtnHandler():void
