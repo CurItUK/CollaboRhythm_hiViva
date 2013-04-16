@@ -12,6 +12,11 @@ package collaboRhythm.hiviva.view
 	import feathers.display.TiledImage;
 	import feathers.events.FeathersEventType;
 
+	import starling.animation.Transitions;
+
+	import starling.animation.Tween;
+	import starling.core.Starling;
+
 	import starling.display.DisplayObject;
 
 	import starling.events.Event;
@@ -22,6 +27,8 @@ package collaboRhythm.hiviva.view
 	{
 		private var _header:Header;
 		private var _menuBtnGroup:ButtonGroup;
+
+		private var _settingsOpen:Boolean = false;
 
 		public function HivivaPatientProfileScreen()
 		{
@@ -43,6 +50,10 @@ package collaboRhythm.hiviva.view
 			var sideNavBtn:Button = new Button();
 			sideNavBtn.label = "SNav";
 			sideNavBtn.addEventListener(Event.TRIGGERED , sideNavBtnHandler);
+
+			var homeBtn:Button = new Button();
+			homeBtn.label = "Home";
+			homeBtn.addEventListener(Event.TRIGGERED , homeBtnHandler);
 
 			this._header.leftItems =  new <DisplayObject>[sideNavBtn];
 
@@ -72,6 +83,11 @@ package collaboRhythm.hiviva.view
 
 		}
 
+		private function homeBtnHandler():void
+		{
+
+		}
+
 		private function menuBtnHandler():void
 		{
 
@@ -79,6 +95,13 @@ package collaboRhythm.hiviva.view
 
 		private function sideNavBtnHandler():void
 		{
+			//TODO tide tween animation with correct widths.
+			var xLoc:Number = _settingsOpen ? 0 : 200;
+
+			var navTween:Tween = new Tween(this.owner , 0.2 , Transitions.EASE_OUT);
+			navTween.animate("x" , xLoc);
+			navTween.onComplete = function():void{_settingsOpen = !_settingsOpen;} ;
+			Starling.juggler.add(navTween);
 
 		}
 

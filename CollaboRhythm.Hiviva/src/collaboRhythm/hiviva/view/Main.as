@@ -142,7 +142,7 @@ package collaboRhythm.hiviva.view
 		// dummy test settings slide in out, needs tidy
 		private function pattientSettingsBtnHandler():void
 		{
-			var xLoc:Number = _settingsOpen ? 0 : this.stage.width/3;
+			var xLoc:Number = _settingsOpen ? 0 : 200;
 
 			var navTween:Tween = new Tween(this._patientNav , 0.2 , Transitions.EASE_OUT);
 			var footerTween:Tween = new Tween(this._footerBtnGroup , 0.2 , Transitions.EASE_OUT);
