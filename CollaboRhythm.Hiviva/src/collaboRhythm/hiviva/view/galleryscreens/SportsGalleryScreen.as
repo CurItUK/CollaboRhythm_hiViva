@@ -8,6 +8,9 @@ package collaboRhythm.hiviva.view.galleryscreens
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.Scroller;
+	import feathers.data.ListCollection;
+	import feathers.layout.TiledRowsLayout;
 
 	import flash.events.FileListEvent;
 	import flash.filesystem.File;
@@ -93,13 +96,9 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 		private function saveTempImageAsMain():void
 		{
-			var temp:File, main:File;
-			if(this._chosenImage)
-			{
-				temp = File.applicationStorageDirectory.resolvePath(this._chosenImage);
-				main = File.applicationStorageDirectory.resolvePath("temphomepageimage.jpg");
-				if (temp.exists) {temp.moveTo(main,true);} else { trace(this._chosenImage + " doesn't exist or hasn't been selected"); }
-			}
+			var temp:File = File.applicationStorageDirectory.resolvePath(this._chosenImage);
+			var main:File = File.applicationStorageDirectory.resolvePath("temphomepageimage.jpg");
+			if (temp.exists) {temp.moveTo(main,true);} else { trace(this._chosenImage + " doesn't exist or hasn't been selected"); }
 		}
 
 		private function setupGallery():void
@@ -139,7 +138,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 		{
 			var image:GalleryItem, items:Vector.<GalleryItem> = new <GalleryItem>[];
 			image = e.target as GalleryItem;
-			items.push(image);
+			//items.push(image);
 
 			this._photoCount++;
 			if(this._photoCount == this._photoTotal)
@@ -178,35 +177,26 @@ package collaboRhythm.hiviva.view.galleryscreens
 				this._container.height = this.actualHeight - this._container.y;
 				*/
 
-
-				// TODO: quick fix below, needs to be replaced
-				var container:Sprite = new Sprite();
-				for(var i:int = 0; i < this._photoTotal; i++)
-				{
-					image = items[i] as GalleryItem;
-					image.x = container.width;
-					image.addEventListener(Event.TRIGGERED, assignChosenImage);
-					container.addChild(image);
-				}
-
-
 			}
+			// TODO: quick fix below, needs to be replaced
+			var container:Sprite = new Sprite();
+			image.x = container.width;
+			container.addChild(image);
+
+
 			container.y = this._header.height;
+
+			trace("container.height" + container.height);
+			trace("container.width" + container.width);
 			addChild(container);
 
-			this._cancelButton.validate();
-			this._submitButton.validate();
-			this._backButton.validate();
-
 			this._cancelButton.y = container.height + (50 * this.dpiScale);
+
 			this._submitButton.y = this._cancelButton.y;
 			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + 20;
-		}
-
-		private function assignChosenImage(e:Event):void
-		{
-			var image:GalleryItem = e.target as GalleryItem;
-			this._chosenImage = image._url;
+			this._cancelButton.invalidate();
+			this._submitButton.invalidate();
+			this._backButton.invalidate();
 		}
 	}
 }

@@ -14,9 +14,6 @@
             <entry module-name="CollaboRhythm.Core" build-configuration-name="CollaboRhythm.Core">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="8c7b44e2-5af9-4a51-85bf-e605d2d36a88">
-              <dependency linkage="Merged" />
-            </entry>
             <entry library-name="Desktop libraries for mobile applications" library-level="project">
               <dependency linkage="Merged" />
             </entry>
@@ -41,7 +38,10 @@
             <entry library-id="bf10e844-2331-4eb0-b166-ead93427ffac">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="708ad9ff-c9ab-4d16-b6ed-7a7b593e647a">
+            <entry library-id="a4a2108b-b8a3-4f0b-af72-698c911e3c4b">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="74fc4d7a-f1e4-480c-a011-131823e1bd5d">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -55,7 +55,14 @@
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
           </files-to-package>
         </packaging-android>
-        <packaging-ios package-file-name="CollaboRhythm_Hiviva" />
+        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
+          <files-to-package>
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
+          </files-to-package>
+          <AirSigningOptions keystore-path="$MODULE_DIR$/certificates/ios/iphone_dev.p12" provisioning-profile-path="$MODULE_DIR$/certificates/ios/iOS_Team_Development_Profile.mobileprovision" />
+        </packaging-ios>
       </configuration>
     </configurations>
     <compiler-options />
@@ -64,20 +71,10 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="4.6.0 - (AIR 3.4)" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="8c7b44e2-5af9-4a51-85bf-e605d2d36a88" />
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/libs" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
-      </library>
-    </orderEntry>
     <orderEntry type="module-library" exported="">
       <library type="flex">
         <properties id="67def486-d2d4-44b1-a800-e7d658511fa2" />
@@ -127,9 +124,19 @@
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="708ad9ff-c9ab-4d16-b6ed-7a7b593e647a" />
+        <properties id="a4a2108b-b8a3-4f0b-af72-698c911e3c4b" />
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/resources/UI.swc!/" />
+          <root url="jar://$MODULE_DIR$/libs/com.adobe.extensions.Vibration.ane!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="74fc4d7a-f1e4-480c-a011-131823e1bd5d" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/CollaboRhythm.ANE.ApplicationMessaging.ane!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

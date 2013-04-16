@@ -131,7 +131,7 @@ package collaboRhythm.hiviva.view
 		{
 			const button:Button = Button(e.currentTarget);
 			//trace(button.label + " triggered.");
-			/*switch(button.label)
+			switch(button.label)
 			{
 				case "Sport" :
 					var sportsScreen:SportsGalleryScreen = new SportsGalleryScreen();
@@ -147,10 +147,7 @@ package collaboRhythm.hiviva.view
 					break;
 				case "Art" :
 					break;
-			}*/
-
-			var sportsScreen:SportsGalleryScreen = new SportsGalleryScreen();
-			addChild(sportsScreen);
+			}
 		}
 
 		private function saveTempImageAsMain():void
