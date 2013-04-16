@@ -108,8 +108,9 @@ package collaboRhythm.hiviva.view
 		private function patientSlideNavHandler(e:FeathersScreenEvent):void
 		{
 			trace("patientSlideNavHandler " + e.message);
+			pattientSettingsBtnHandler();
 			this._patientProfileNav = new ScreenNavigatorWithHistory();
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen));
+			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen , {navGoHome:navGoHomeFromProfileScreen}));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN, new ScreenNavigatorItem(HivivaPatientHomepagePhotoScreen));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_GALLERY_SCREEN, new ScreenNavigatorItem(SportsGalleryScreen));
@@ -142,7 +143,7 @@ package collaboRhythm.hiviva.view
 		// dummy test settings slide in out, needs tidy
 		private function pattientSettingsBtnHandler():void
 		{
-			var xLoc:Number = _settingsOpen ? 0 : 200;
+			var xLoc:Number = _settingsOpen ? 0 : 250;
 
 			var navTween:Tween = new Tween(this._patientNav , 0.2 , Transitions.EASE_OUT);
 			var footerTween:Tween = new Tween(this._footerBtnGroup , 0.2 , Transitions.EASE_OUT);
@@ -156,6 +157,11 @@ package collaboRhythm.hiviva.view
 			Starling.juggler.add(navTween);
 			Starling.juggler.add(footerTween);
 			Starling.juggler.add(settingsTween);
+		}
+
+		private function navGoHomeFromProfileScreen():void
+		{
+			this._patientProfileNav.clearScreen();
 		}
 
 		private function homeBtnHandler():void
