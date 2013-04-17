@@ -22,7 +22,6 @@ package collaboRhythm.hiviva.view
 	import flash.events.IOErrorEvent;
 	import flash.events.MediaEvent;
 	import flash.events.SQLEvent;
-	import flash.events.TextEvent;
 	import flash.filesystem.File;
 	import flash.geom.Matrix;
 	import flash.media.CameraRoll;
@@ -38,7 +37,7 @@ package collaboRhythm.hiviva.view
 	import starling.textures.Texture;
 
 
-	public class HivivaPatientMyDetailsScreen extends ScreenBase
+	public class HivivaUserSignupScreen extends ScreenBase
 	{
 		private var _header:Header;
 		private var _instructionsText:ScrollText;
@@ -46,8 +45,6 @@ package collaboRhythm.hiviva.view
 		private var _nameInput:TextInput;
 		private var _emailLabel:Label;
 		private var _emailInput:TextInput;
-		private var _photoContainer:Sprite;
-		private var _photoHolder:Image;
 		private var _updatesCheck:Check;
 		private var _researchCheck:Check;
 		private var _cancelButton:Button;
@@ -58,7 +55,7 @@ package collaboRhythm.hiviva.view
 		private var _dataExists:Boolean;
 
 
-		public function HivivaPatientMyDetailsScreen()
+		public function HivivaUserSignupScreen()
 		{
 
 		}
@@ -69,7 +66,7 @@ package collaboRhythm.hiviva.view
 
 			this._header.width = this.actualWidth;
 
-			this._instructionsText.text = "All fields are optional except to connect to a care provider What's this?";
+			this._instructionsText.text = "By clicking the button above, you agree to the Terms of Use <br>View our Privacy Policy";
 			//this._instructionsText.y = this._header.height;
 			this._instructionsText.width = this.actualWidth;
 
@@ -98,17 +95,16 @@ package collaboRhythm.hiviva.view
 			this._researchCheck.label = "Allow anonymised data for research purposes";
 
 			this._cancelButton.label = "Cancel";
-			this._submitButton.label = "Save";
+			this._submitButton.label = "Create my Account";
 			this._backButton.label = "Back";
 
 			var items:Vector.<DisplayObject> = new Vector.<DisplayObject>();
-			items.push(this._instructionsText);
 			items.push(this._nameInput);
 			items.push(this._emailInput);
-			items.push(this._photoContainer);
 			items.push(this._updatesCheck);
 			items.push(this._researchCheck);
 			items.push(this._cancelButton);
+			items.push(this._instructionsText);
 
 			autoLayout(items, 50 * this.dpiScale);
 
@@ -127,7 +123,7 @@ package collaboRhythm.hiviva.view
 			super.initialize();
 
 			this._header = new Header();
-			this._header.title = "My Details";
+			this._header.title = "Sign up";
 			addChild(this._header);
 
 			this._instructionsText = new ScrollText();
@@ -145,8 +141,6 @@ package collaboRhythm.hiviva.view
 
 			this._emailInput = new TextInput();
 			addChild(this._emailInput);
-
-			setupPhotoContainer(100 * this.dpiScale,100 * this.dpiScale,20 * this.dpiScale);
 
 			this._updatesCheck = new Check();
 			addChild(this._updatesCheck);
@@ -182,6 +176,8 @@ package collaboRhythm.hiviva.view
 		{
 			// TODO : display confirmation dialogue
 
+			//trace("UPDATE user_details SET user_name='" + this._nameInput.text + "', user_email='" + this._emailInput.text + "', user_updates=" + int(this._updatesCheck.isSelected) + ", user_research=" + int(this._researchCheck.isSelected));
+
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
 
@@ -196,27 +192,16 @@ package collaboRhythm.hiviva.view
 			var userResearch:int = int(this._researchCheck.isSelected);
 			if(this._dataExists)
 			{
-				this._sqStatement.text = "UPDATE user_details SET user_name=" + userName + ", user_email=" + userEmail + ", user_updates=" + userUpdates + ", user_research=" + userResearch;
+				this._sqStatement.text = "UPDATE connect_user_details SET user_name=" + userName + ", user_email=" + userEmail + ", user_updates=" + userUpdates + ", user_research=" + userResearch;
 			}
 			else
 			{
-				this._sqStatement.text = "INSERT INTO user_details (user_name, user_email, user_updates, user_research) VALUES (" + userName + ", " + userEmail + ", " + userUpdates + ", " + userResearch + ")";
+				this._sqStatement.text = "INSERT INTO connect_user_details (user_name, user_email, user_updates, user_research) VALUES (" + userName + ", " + userEmail + ", " + userUpdates + ", " + userResearch + ")";
 			}
 			trace(this._sqStatement.text);
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
-
-			saveTempImageAsMain();
-		}
-
-
-
-		private function saveTempImageAsMain():void
-		{
-			var temp:File = File.applicationStorageDirectory.resolvePath("tempprofileimage.jpg");
-			var main:File = File.applicationStorageDirectory.resolvePath("profileimage.jpg");
-			if (temp.exists) {temp.moveTo(main,true);} else { trace("tempprofileimage.jpg doesn't exist"); }
 		}
 
 		private function populateOldData():void
@@ -228,7 +213,7 @@ package collaboRhythm.hiviva.view
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "SELECT * FROM user_details";
+			this._sqStatement.text = "SELECT * FROM connect_user_details";
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.execute();
 
@@ -237,6 +222,7 @@ package collaboRhythm.hiviva.view
 			//trace(sqlRes.data[0].user_email);
 			//trace(sqlRes.data[0].user_updates);
 			//trace(sqlRes.data[0].user_research);
+
 			this._dataExists = true;
 			try
 			{
@@ -301,128 +287,6 @@ package collaboRhythm.hiviva.view
 			var contentLayout:VerticalLayout = new VerticalLayout();
 			contentLayout.gap = gap;
 			contentLayout.layout(items,bounds);
-		}
-
-		private function setupPhotoContainer(width:Number, height:Number, gap:Number):void
-		{
-			this._photoContainer = new Sprite();
-
-			var quad:Quad = new Quad(width, height, 0x000000);
-			this._photoContainer.addChild(quad);
-
-			var destination:File = File.applicationStorageDirectory;
-			destination = destination.resolvePath("profileimage.jpg");
-			if (destination.exists)
-			{
-				doImageLoad(destination.url);
-			}
-
-			var uploadPhotoButton:Button = new Button();
-			uploadPhotoButton.x = width + gap;
-			uploadPhotoButton.label = "Upload Photo";
-			uploadPhotoButton.addEventListener(Event.TRIGGERED, onUploadClick);
-			this._photoContainer.addChild(uploadPhotoButton);
-
-			addChild(this._photoContainer);
-		}
-
-		private function onUploadClick(e:Event):void
-		{
-			if (CameraRoll.supportsBrowseForImage)
-			{
-				trace("Browsing for image...");
-				var mediaSource:CameraRoll = new CameraRoll();
-				mediaSource.addEventListener(MediaEvent.SELECT, imageSelected);
-				mediaSource.addEventListener(Event.CANCEL, browseCanceled);
-				mediaSource.browseForImage();
-			}
-			else
-			{
-				trace("Browsing in camera roll is not supported.");
-			}
-		}
-
-		private function imageSelected(e:MediaEvent):void
-		{
-			trace("Image selected...");
-
-			//this._photoHolder.visible = false;
-
-			var imageSource:MediaPromise = e.data;
-			// get file extension
-			var extension:String = imageSource.file.extension;
-			// set destination location
-			var destination:File = File.applicationStorageDirectory;
-			destination = destination.resolvePath("tempprofileimage." + extension);
-			// copy source to destination
-			imageSource.file.copyTo(destination, true);
-			var copiedFile:File = File.applicationStorageDirectory;
-			copiedFile = copiedFile.resolvePath("tempprofileimage." + extension);
-
-			doImageLoad(copiedFile.url);
-		}
-
-		private function doImageLoad(url:String):void
-		{
-			var imageLoader:Loader = new Loader();
-			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
-			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
-			imageLoader.load(new URLRequest(url));
-		}
-
-		private function browseCanceled(e:Event):void
-		{
-			trace("Image browse canceled.");
-		}
-
-		private function imageLoaded(e:flash.events.Event):void
-		{
-			trace("Image loaded.");
-
-			var sourceBm:Bitmap = e.target.content as Bitmap,
-					suitableBm:Bitmap,
-					xRatio:Number,
-					yRatio:Number;
-			// if source bitmap is larger than starling size limit of 2048x2048 than resize
-			if (sourceBm.width >= 2048 || sourceBm.height >= 2048)
-			{
-				// TODO: may need to remove size adjustment from bm! only adjust the data (needs formula)
-				constrainToProportion(sourceBm, 2040);
-				// copy source bitmap at adjusted size
-				var bmd:BitmapData = new BitmapData(sourceBm.width, sourceBm.height);
-				var m:Matrix = new Matrix();
-				m.scale(sourceBm.scaleX, sourceBm.scaleY);
-				bmd.draw(sourceBm, m, null, null, null, true);
-				suitableBm = new Bitmap(bmd, 'auto', true);
-			}
-			else
-			{
-				suitableBm = sourceBm;
-			}
-			// use suitable bitmap for texture
-			this._photoHolder = new Image(Texture.fromBitmap(suitableBm));
-			constrainToProportion(this._photoHolder, 100 * this.dpiScale);
-
-			if (!this._photoContainer.contains(this._photoHolder)) this._photoContainer.addChild(this._photoHolder);
-		}
-
-		private function imageLoadFailed(e:Event):void
-		{
-			trace("Image load failed.");
-		}
-
-		private function constrainToProportion(img:Object, size:Number):void
-		{
-			if (img.height >= img.width)
-			{
-				img.height = size;
-				img.scaleX = img.scaleY;
-			}
-			else
-			{
-				img.width = size;
-				img.scaleY = img.scaleX;
-			}
 		}
 	}
 }
