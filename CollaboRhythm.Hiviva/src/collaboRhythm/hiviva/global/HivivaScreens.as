@@ -20,6 +20,4 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_TEST_RESULTS_SCREEN:String			= "patientTestResultsScreen";
 		public static const PATIENT_HELP_SCREEN:String					= "patientHelpScreen";
 	}
-
-
 }
