@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hcplist>
+    <hcp>
+        <name>Barry Gearing</name>
+        <email>barry@pharmiweb.com</email>
+        <appid>123456789</appid>
+        <picture></picture>
+    </hcp>
+    <hcp>
+        <name>Andy Carey</name>
+        <email>andy@pharmiweb.com</email>
+        <appid>987654321</appid>
+        <picture></picture>
+    </hcp>
+    <hcp>
+        <name>Tom Harker</name>
+        <email>tom.harker@pharmiweb.com</email>
+        <appid>246897531</appid>
+        <picture></picture>
+    </hcp>
+    <hcp>
+        <name>Tim Gough</name>
+        <email>timg@pharmiweb.com</email>
+        <appid>135798462</appid>
+        <picture></picture>
+    </hcp>
+    <hcp>
+        <name>Russell Horton</name>
+        <email>russell@pharmiweb.com</email>
+        <appid>000000000</appid>
+        <picture></picture>
+    </hcp>
+</hcplist>
