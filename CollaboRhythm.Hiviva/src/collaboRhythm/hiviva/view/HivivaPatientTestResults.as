@@ -122,7 +122,7 @@ package collaboRhythm.hiviva.view
 			var viralLoadInput:TextInput = this._viralLoad.getChildByName("input") as TextInput;
 			var dateInput:TextInput = this._date.getChildByName("input") as TextInput;
 
-			trace("UPDATE test_results SET cd4_count='" + cd4CountInput.text + "', cd4='" + cd4Input.text + "', viral_load='" + viralLoadInput.text + "', date_of_last_test=" + dateInput.text + "'");
+			//trace("UPDATE test_results SET cd4_count='" + cd4CountInput.text + "', cd4='" + cd4Input.text + "', viral_load='" + viralLoadInput.text + "', date_of_last_test='" + dateInput.text + "'");
 
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
@@ -131,7 +131,7 @@ package collaboRhythm.hiviva.view
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "UPDATE test_results SET cd4_count='" + cd4CountInput.text + "', cd4='" + cd4Input.text + "', viral_load='" + viralLoadInput.text + "', date_of_last_test=" + dateInput.text + "'";
+			this._sqStatement.text = "UPDATE test_results SET cd4_count=" + cd4CountInput.text + ", cd4=" + cd4Input.text + ", viral_load=" + viralLoadInput.text + ", date_of_last_test=" + dateInput.text;
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
@@ -155,6 +155,10 @@ package collaboRhythm.hiviva.view
 			this._sqStatement.execute();
 
 			var sqlRes:SQLResult = this._sqStatement.getResult();
+			//trace(sqlRes.data[0].cd4_count);
+			//trace(sqlRes.data[0].cd4);
+			//trace(sqlRes.data[0].viral_load);
+			//trace(sqlRes.data[0].date_of_last_test);
 
 			var cd4CountInput:TextInput = this._cd4Count.getChildByName("input") as TextInput;
 			try
