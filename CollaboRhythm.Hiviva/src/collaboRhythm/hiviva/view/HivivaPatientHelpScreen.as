@@ -31,7 +31,7 @@ package collaboRhythm.hiviva.view
 		override protected function initialize():void
 		{
 			trace("Override initialize call");
-			super.initialize()
+			super.initialize();
 			this._header = new Header();
 			this._header.title = "Help Screen";
 			addChild(this._header);
