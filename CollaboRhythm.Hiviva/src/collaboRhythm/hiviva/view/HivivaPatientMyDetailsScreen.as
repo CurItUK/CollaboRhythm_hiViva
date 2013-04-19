@@ -333,7 +333,7 @@ package collaboRhythm.hiviva.view
 				trace("Browsing for image...");
 				var mediaSource:CameraRoll = new CameraRoll();
 				mediaSource.addEventListener(MediaEvent.SELECT, imageSelected);
-				mediaSource.addEventListener(Event.CANCEL, browseCanceled);
+				mediaSource.addEventListener(flash.events.Event.CANCEL, browseCanceled);
 				mediaSource.browseForImage();
 			}
 			else
@@ -362,17 +362,17 @@ package collaboRhythm.hiviva.view
 			doImageLoad(copiedFile.url);
 		}
 
+		private function browseCanceled(e:flash.events.Event):void
+		{
+			trace("Image browse canceled.");
+		}
+
 		private function doImageLoad(url:String):void
 		{
 			var imageLoader:Loader = new Loader();
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
 			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url));
-		}
-
-		private function browseCanceled(e:Event):void
-		{
-			trace("Image browse canceled.");
 		}
 
 		private function imageLoaded(e:flash.events.Event):void
