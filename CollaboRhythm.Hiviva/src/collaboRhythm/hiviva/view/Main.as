@@ -135,7 +135,7 @@ package collaboRhythm.hiviva.view
 						{label: "C", triggered: clockBtnHandler },
 						{label: "T", triggered: takeMedsBtnHandler },
 						{label: "V", triggered: virusModelBtnHandler },
-						{label: "D", triggered: reportsBtnHandler }
+						{label: "R", triggered: reportsBtnHandler }
 					]
 			);
 			this._footerBtnGroup.y = this.stage.height - 100;
