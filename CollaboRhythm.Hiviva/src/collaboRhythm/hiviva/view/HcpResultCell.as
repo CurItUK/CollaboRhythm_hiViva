@@ -33,8 +33,8 @@ package collaboRhythm.hiviva.view
 		private var _nameData:String;
 		private var _emailData:String;
 
-		private var _showDelete:Boolean;
 		private var _explicitWidth:Number;
+		public var _appid:String;
 		public var _isResult:Boolean;
 
 		public function HcpResultCell(hcpData:XMLList, cellWidth:Number, dpiScale:Number)
@@ -44,7 +44,7 @@ package collaboRhythm.hiviva.view
 			this._imageFilename = hcpData.picture;
 			this._nameData = hcpData.name;
 			this._emailData = hcpData.email;
-			this._showDelete = false;
+			this._appid = hcpData.appid;
 			initCell();
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}

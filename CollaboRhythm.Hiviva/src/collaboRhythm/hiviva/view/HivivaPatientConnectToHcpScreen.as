@@ -16,27 +16,17 @@ package collaboRhythm.hiviva.view
 	import feathers.layout.ViewPortBounds;
 
 	import flash.data.SQLConnection;
+	import flash.data.SQLResult;
 	import flash.data.SQLStatement;
-
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-
-	import flash.display.Loader;
-	import flash.events.IOErrorEvent;
 	import flash.events.SQLEvent;
 	import flash.filesystem.File;
-	import flash.geom.Matrix;
-	import flash.net.URLRequest;
-
 	import mx.core.ByteArrayAsset;
 
 	import starling.display.DisplayObject;
-	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	public class HivivaPatientConnectToHcpScreen extends ScreenBase
 	{
@@ -55,9 +45,12 @@ package collaboRhythm.hiviva.view
 		private var _hcpCellContainer:ScrollContainer;
 		private var _hcpCellRadioGroup:ToggleGroup;
 		private var _requestConnectionButton:Button;
-		private var _resultList:Array;
+		private var _hcpFilteredList:Array;
 		private var _hcpConnected:Boolean;
+		private var _sqConn:SQLConnection;
+		private var _sqStatement:SQLStatement;
 		private var _requestPopup:VerticalCenteredPopUpContentManager;
+		private var _requestPopupContainer:FeathersControl;
 
 		public function HivivaPatientConnectToHcpScreen()
 		{
@@ -70,9 +63,19 @@ package collaboRhythm.hiviva.view
 			this._header.width = this.actualWidth;
 			this._header.validate();
 
-			drawHcpSearch();
+			if(!this._hcpConnected)
+			{
+				drawHcpSearch();
+				drawRequestPopup();
+
+				this._requestConnectionButton.validate();
+				this._requestConnectionButton.x = (this.actualWidth / 2) - (this._requestConnectionButton.width / 2);
+				this._requestConnectionButton.y = this.actualHeight - this._requestConnectionButton.height - (30 * this.dpiScale);
+			}
+			drawResults();
 
 			this._backButton.label = "Back";
+			this._backButton.validate();
 		}
 
 		override protected function initialize():void
@@ -84,7 +87,26 @@ package collaboRhythm.hiviva.view
 			addChild(this._header);
 
 			getXMLHcpData();
-			initHcpSearch();
+			this._hcpCellContainer = new ScrollContainer();
+
+			this._requestConnectionButton = new Button();
+			this._requestConnectionButton.label = "Request Connection";
+			addChild(this._requestConnectionButton);
+			this._requestConnectionButton.addEventListener(Event.TRIGGERED, onRequestConnection);
+			this._requestConnectionButton.visible = false;
+
+			this._hcpConnected = hcpConnectionCheck();
+			if(this._hcpConnected)
+			{
+				trace("hcp is connected");
+			}
+			else
+			{
+				trace("hcp is not connected");
+				initHcpSearch();
+				initRequestPopup();
+			}
+			initResults(!this._hcpConnected);
 
 			this._backButton = new Button();
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
@@ -92,8 +114,14 @@ package collaboRhythm.hiviva.view
 			this._header.leftItems = new <DisplayObject>[_backButton];
 		}
 
-		private function backBtnHandler(e:Event):void
+		private function backBtnHandler(e:Event = null):void
 		{
+			if(contains(this._hcpCellContainer))
+			{
+				this._hcpCellRadioGroup.removeAllItems();
+				this._hcpCellContainer.removeChildren();
+			}
+
 			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 		}
 
@@ -101,7 +129,7 @@ package collaboRhythm.hiviva.view
 		{
 			var ba:ByteArrayAsset = ByteArrayAsset(new HcpData());
 			this._hcpDataXml = new XML(ba.readUTFBytes(ba.length));
-			trace(this._hcpDataXml.hcplist.hcp);
+			//trace(this._hcpDataXml.hcplist.hcp);
 		}
 
 		private function initHcpSearch():void
@@ -163,16 +191,17 @@ package collaboRhythm.hiviva.view
 
 			if(searchListLength > 0)
 			{
-				this._resultList = [];
+				this._hcpFilteredList = [];
 				for(var listCount:Number = 0; listCount < searchListLength; listCount++)
 				{
 					currItem = searchList[listCount];
 					if(currItem.toLowerCase().search(searched.toLowerCase()) != -1)
 					{
-						this._resultList.push(hcpList[listCount]);
+						this._hcpFilteredList.push(hcpList[listCount]);
 					}
 				}
-				displayResults();
+				initResults(true);
+				this._requestConnectionButton.visible = true;
 			}
 			else
 			{
@@ -180,69 +209,69 @@ package collaboRhythm.hiviva.view
 			}
 		}
 
-		private function displayResults():void
+		private function initResults(isResult:Boolean):void
 		{
-			var resultsLength:int = this._resultList.length,
+			var resultsLength:int = this._hcpFilteredList.length,
 				currItem:XMLList,
-				hcpCell:HcpResultCell,
-				gap:Number = 30 * this.dpiScale;
+				hcpCell:HcpResultCell;
 
-			this._resultInfo.text = resultsLength + " registered doctor" + (resultsLength > 1 ? "s" : "") + " found";
+			if (isResult) this._resultInfo.text = resultsLength + " registered doctor" + (resultsLength > 1 ? "s" : "") + " found";
 			if(resultsLength > 0)
 			{
 				if(!contains(this._hcpCellContainer))
 				{
-					this._hcpCellContainer = new ScrollContainer();
-					addChild(this._hcpCellContainer);
-
-					this._hcpCellContainer.width = this.actualWidth;
-					this._hcpCellContainer.y = this._resultInfo.y + this._resultInfo.height + gap;
-					this._hcpCellContainer.height = this.actualHeight - (this._hcpCellContainer.y);
-
-					var layout:VerticalLayout = new VerticalLayout();
-					layout.gap = gap;
-					this._hcpCellContainer.layout = layout;
-
 					this._hcpCellRadioGroup = new ToggleGroup();
+					addChild(this._hcpCellContainer);
 				}
 				else
 				{
-					removeAllHcpCells();
-					_hcpCellRadioGroup.removeAllItems();
+					this._hcpCellRadioGroup.removeAllItems();
+					this._hcpCellContainer.removeChildren();
 				}
 				for(var listCount:int = 0; listCount < resultsLength; listCount++)
 				{
-					currItem = XMLList(this._resultList[listCount]);
+					currItem = XMLList(this._hcpFilteredList[listCount]);
 					
-					hcpCell = new HcpResultCell(currItem,this._hcpCellContainer.width - (100 * this.dpiScale),this.dpiScale);
-					hcpCell._isResult = true;
-					hcpCell.addEventListener(Event.CLOSE, deleteHcpCell);
+					hcpCell = new HcpResultCell(currItem,(500 * this.dpiScale),this.dpiScale);
+					hcpCell._isResult = isResult;
+					hcpCell.addEventListener(Event.CLOSE, deleteHcpRecord);
+					hcpCell.addEventListener(Event.REMOVED_FROM_STAGE, deleteHcpCell);
 					this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
 					this._hcpCellContainer.addChild(hcpCell);
 				}
-				this._hcpCellContainer.validate();
-				this._requestConnectionButton = new Button();
-				this._requestConnectionButton.label = "Request Connection";
-				addChild(this._requestConnectionButton);
-				this._requestConnectionButton.addEventListener(Event.TRIGGERED, onRequestConnection);
-				this._requestConnectionButton.validate();
-				this._requestConnectionButton.x = (this.actualWidth / 2) - (this._requestConnectionButton.width / 2);
-				this._requestConnectionButton.y = this.actualHeight - this._requestConnectionButton.height - gap;
 			}
+		}
+
+		private function drawResults():void
+		{
+			var gap:Number = 30 * this.dpiScale,
+				yStartPosition:Number = this._hcpConnected ? this._header.y + this._header.height : this._resultInfo.y + this._resultInfo.height,
+				maxHeight:Number = this.actualHeight - yStartPosition;
+
+			this._hcpCellContainer.width = this.actualWidth;
+			this._hcpCellContainer.y = yStartPosition + gap;
+			this._hcpCellContainer.height = this._hcpConnected ? maxHeight : maxHeight - (this.actualHeight - this._requestConnectionButton.y);
+			//trace(this._hcpCellContainer.height);
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.gap = gap;
+			this._hcpCellContainer.layout = layout;
+
+			this._hcpCellContainer.validate();
 		}
 
 		private function onRequestConnection(e:Event):void
 		{
 			var selectedHcpInd:int = this._hcpCellRadioGroup.selectedIndex,
-				hcpCell:XMLList = XMLList(this._resultList[selectedHcpInd]);
+				hcpCell:XMLList = XMLList(this._hcpFilteredList[selectedHcpInd]);
 
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
 
-			var sqConn:SQLConnection = new SQLConnection();
-			sqConn.open(dbFile);
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
 
-			var sqStatement:SQLStatement = new SQLStatement();
+			this._sqStatement = new SQLStatement();
 
 			var name:String = "'" + hcpCell.name + "'";
 			var email:String = "'" + hcpCell.email + "'";
@@ -250,18 +279,18 @@ package collaboRhythm.hiviva.view
 			var picture:String = "'" + hcpCell.picture + "'";
 			if(this._hcpConnected)
 			{
-				sqStatement.text = "UPDATE hcp_connection SET name=" + name + ", email=" + email + ", appid=" + appid + ", picture=" + picture;
+				this._sqStatement.text = "UPDATE hcp_connection SET name=" + name + ", email=" + email + ", appid=" + appid + ", picture=" + picture;
 			}
 			else
 			{
-				sqStatement.text = "INSERT INTO hcp_connection (name, email, appid, picture) VALUES (" + name + ", " + email + ", " + appid + ", " + picture + ")";
+				this._sqStatement.text = "INSERT INTO hcp_connection (name, email, appid, picture) VALUES (" + name + ", " + email + ", " + appid + ", " + picture + ")";
 			}
-			trace(sqStatement.text);
-			sqStatement.sqlConnection = sqConn;
-			sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
-			sqStatement.execute();
+			trace(this._sqStatement.text);
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+			this._sqStatement.execute();
 
-			initRequestPopup(hcpCell.name);
+			setRequestPopupLabel(hcpCell.name);
 		}
 
 		private function sqlResultHandler(e:SQLEvent):void
@@ -269,26 +298,85 @@ package collaboRhythm.hiviva.view
 			trace("sqlResultHandler " + e);
 		}
 
-		private function initRequestPopup(name:String):void
+		private function hcpConnectionCheck():Boolean
+		{
+			var returnBool:Boolean;
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "SELECT * FROM hcp_connection";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+
+			var sqlRes:SQLResult = this._sqStatement.getResult();
+			//trace(sqlRes.data[0].name);
+			returnBool = true;
+			try
+			{
+				this._hcpFilteredList = [XML("<hcp><name>" + sqlRes.data[0].name + "</name><email>" + sqlRes.data[0].email + "</email><appid>" + sqlRes.data[0].appid + "</appid><picture>" + sqlRes.data[0].picture + "</picture></hcp>")];
+			}
+			catch(e:Error)
+			{
+				//trace("fail");
+				this._hcpFilteredList = [];
+				returnBool = false;
+			}
+			return returnBool;
+		}
+
+		private function initRequestPopup():void
 		{
 			this._requestPopup = new VerticalCenteredPopUpContentManager();
-			var requestPopup:FeathersControl = new FeathersControl();
+			this._requestPopupContainer = new FeathersControl();
 
 			var bg:Quad = new Quad(400 * this.dpiScale, 200 * this.dpiScale, 0x000000);
 			bg.name = "bg";
-			requestPopup.addChild(bg);
+			this._requestPopupContainer.addChild(bg);
 
 			var label:ScrollText = new ScrollText();
 			label.isHTML = true;
 			label.name = "label";
-			label.text = "A request to connect has been sent to Dr " + name;
-			requestPopup.addChild(label);
+			this._requestPopupContainer.addChild(label);
 
 			var closeButton:Button = new Button();
 			closeButton.name = "closeBtn";
 			closeButton.label = "Close";
 			closeButton.addEventListener(Event.TRIGGERED, closePopup);
-			requestPopup.addChild(closeButton);
+			this._requestPopupContainer.addChild(closeButton);
+		}
+
+		private function setRequestPopupLabel(name:String):void
+		{
+			var label:ScrollText = this._requestPopupContainer.getChildByName("label") as ScrollText;
+			label.text = "A request to connect has been sent to " + name;
+
+			var dummy:Sprite = new Sprite();
+			this._requestPopup.open(this._requestPopupContainer, dummy);
+			this.draw();
+		}
+
+		private function closePopup(e:Event):void
+		{
+			this._requestPopup.close();
+			backBtnHandler();
+		}
+
+		private function drawRequestPopup():void
+		{
+			var bg:Quad = this._requestPopupContainer.getChildByName("bg") as Quad;
+			var label:ScrollText = this._requestPopupContainer.getChildByName("label") as ScrollText;
+			var closeButton:Button = this._requestPopupContainer.getChildByName("closeBtn") as Button;
+
+			label.invalidate();
+			closeButton.invalidate();
+
+			this._requestPopupContainer.width = bg.width;
+			this._requestPopupContainer.height = bg.height;
+			this._requestPopupContainer.invalidate();
 
 			var items:Vector.<DisplayObject> = new Vector.<DisplayObject>();
 			items.push(label);
@@ -298,15 +386,6 @@ package collaboRhythm.hiviva.view
 
 			label.x = 10 * this.dpiScale;
 			closeButton.x = 10 * this.dpiScale;
-
-			var dummy:Sprite = new Sprite();
-
-			this._requestPopup.open(requestPopup, dummy);
-		}
-
-		private function closePopup(e:Event):void
-		{
-			this._requestPopup.close();
 		}
 
 		private function autoLayout(items:Vector.<DisplayObject>, gap:Number):void
@@ -322,23 +401,31 @@ package collaboRhythm.hiviva.view
 			contentLayout.layout(items,bounds);
 		}
 
-		private function deleteHcpCell(e:Event):void
+		private function deleteHcpRecord(e:Event):void
 		{
-			var hcpCell:HcpResultCell = e.target as HcpResultCell;
-			this._hcpCellContainer.removeChild(hcpCell);
-			hcpCell.dispose();
+			//var hcpCell:HcpResultCell = e.target as HcpResultCell;
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			//this._sqStatement.text = "DELETE FROM hcp_connection WHERE appid=" + hcpCell._appid;
+
+			// deletes all records because we only have one connection at a time
+			this._sqStatement.text = "DELETE FROM hcp_connection";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+
+			backBtnHandler();
 		}
 
-		private function removeAllHcpCells():void
+		private function deleteHcpCell(e:Event):void
 		{
-			var hcpCell:HcpResultCell,
-				hcpCellLength:int = this._hcpCellContainer.numChildren - 1;
-			for(var hcpCellCount:int = 0; hcpCellCount < hcpCellLength; hcpCellCount++)
-			{
-				hcpCell = this._hcpCellContainer.getChildAt(hcpCellCount + 1) as HcpResultCell;
-				this._hcpCellContainer.removeChild(hcpCell);
-				hcpCell.dispose();
-			}
+			var hcpResultCell:HcpResultCell = e.target as HcpResultCell;
+			hcpResultCell.dispose();
 		}
 	}
 }
