@@ -135,7 +135,7 @@ package collaboRhythm.hiviva.view
 						{label: "C", triggered: clockBtnHandler },
 						{label: "T", triggered: takeMedsBtnHandler },
 						{label: "V", triggered: virusModelBtnHandler },
-						{label: "D", triggered: reportsBtnHandler }
+						{label: "R", triggered: reportsBtnHandler }
 					]
 			);
 			this._footerBtnGroup.y = this.stage.height - 100;
@@ -153,7 +153,6 @@ package collaboRhythm.hiviva.view
 			var navTween:Tween = new Tween(this._patientNav , 0.2 , Transitions.EASE_OUT);
 			var footerTween:Tween = new Tween(this._footerBtnGroup , 0.2 , Transitions.EASE_OUT);
 			var settingsTween:Tween = new Tween(this._patientSettingsBtn , 0.2 , Transitions.EASE_OUT);
-
 
 			navTween.animate("x" , xLoc);
 			footerTween.animate("x" , xLoc);
