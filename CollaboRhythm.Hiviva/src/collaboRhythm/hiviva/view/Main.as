@@ -154,7 +154,6 @@ package collaboRhythm.hiviva.view
 			var footerTween:Tween = new Tween(this._footerBtnGroup , 0.2 , Transitions.EASE_OUT);
 			var settingsTween:Tween = new Tween(this._patientSettingsBtn , 0.2 , Transitions.EASE_OUT);
 
-
 			navTween.animate("x" , xLoc);
 			footerTween.animate("x" , xLoc);
 			settingsTween.animate("x" , xLoc);
