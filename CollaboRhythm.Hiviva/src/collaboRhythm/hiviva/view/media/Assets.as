@@ -58,6 +58,41 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/footer_icon_5.png")]
 		public static const FooterIconReportPng:Class;
 
+		[Embed(source="/assets/images/temp/side_nav_base.png")]
+		public static const SideNavBasePng:Class;
+
+		[Embed(source="/assets/images/temp/side_nav_icon_01.png")]
+		public static const SideNavIconProfilePng:Class;
+
+		[Embed(source="/assets/images/temp/side_nav_icon_02.png")]
+		public static const SideNavIconHelpPng:Class;
+
+		[Embed(source="/assets/images/temp/side_nav_icon_03.png")]
+		public static const SideNavIconMessagesPng:Class;
+
+		[Embed(source="/assets/images/temp/side_nav_icon_04.png")]
+		public static const SideNavIconBadgesPng:Class;
+
+		[Embed(source="/assets/images/temp/top_nav_icon_01.png")]
+		public static const SettingIconPng:Class;
+
+		[Embed(source="/assets/images/temp/top_nav_icon_02.png")]
+		public static const TopNavIconMessagesPng:Class;
+
+		[Embed(source="/assets/images/temp/top_nav_icon_03.png")]
+		public static const TopNavIconBadgesPng:Class;
+
+		// TTF FONTS
+
+		[Embed(source="/assets/fonts/exo-regular.ttf", fontName="ExoRegular", mimeType="application/x-font", embedAsCFF="false")]
+		public static const ExoRegularFont:Class;
+
+		[Embed(source="/assets/fonts/exo-bold.ttf", fontName="ExoBold", mimeType="application/x-font", embedAsCFF="false")]
+		public static const ExoBoldFont:Class;
+
+		[Embed(source="/assets/fonts/exo-light.ttf", fontName="ExoLight", mimeType="application/x-font", embedAsCFF="false")]
+		public static const ExoLightFont:Class;
+
 		private static var applicationTextures:Dictionary = new Dictionary();
 
 		public static function getTexture(name:String):Texture

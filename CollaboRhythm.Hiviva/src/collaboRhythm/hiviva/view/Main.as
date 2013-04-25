@@ -11,12 +11,9 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.ScreenNavigatorItem;
-	import feathers.controls.TabBar;
-	import feathers.core.TokenList;
 	import feathers.data.ListCollection;
 	import feathers.display.TiledImage;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
-	import feathers.system.DeviceCapabilities;
 
 	import source.themes.HivivaTheme;
 
@@ -27,7 +24,7 @@ package collaboRhythm.hiviva.view
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.textures.Texture;
+	import starling.textures.TextureSmoothing;
 
 	public class Main extends Sprite
 	{
@@ -44,7 +41,7 @@ package collaboRhythm.hiviva.view
 		private var _settingsOpen:Boolean = false;
 
 		private const TRANSITION_DURATION:Number						= 0.4;
-		private const SETTING_MENU_WIDTH:Number							= 250;
+		private const SETTING_MENU_WIDTH:Number							= 177;
 
 		public function Main()
 		{
@@ -67,6 +64,7 @@ package collaboRhythm.hiviva.view
 			var screenBase:TiledImage = new TiledImage(Assets.getTexture("BasePng"));
 			screenBase.width = stage.stageWidth;
 			screenBase.height = stage.stageHeight;
+			screenBase.smoothing = TextureSmoothing.NONE;
 			screenBase.flatten();
 			this._screenBackground.addChild(screenBase);
 
@@ -75,6 +73,8 @@ package collaboRhythm.hiviva.view
 			// named because the alpha for this asset needs adjusting on the home screen (screenHolder may need own class with this as a local instance)
 			topGrad.name = "topGrad";
 			topGrad.width = stage.stageWidth;
+			topGrad.smoothing = TextureSmoothing.NONE;
+			topGrad.blendMode = BlendMode.MULTIPLY;
 			topGrad.flatten();
 			this._screenBackground.addChild(topGrad);
 
@@ -82,6 +82,8 @@ package collaboRhythm.hiviva.view
 			bottomGrad.touchable = false;
 			bottomGrad.width = stage.stageWidth;
 			bottomGrad.y = stage.stageHeight - bottomGrad.height;
+			bottomGrad.smoothing = TextureSmoothing.NONE;
+			bottomGrad.blendMode = BlendMode.MULTIPLY;
 			bottomGrad.flatten();
 			this._screenBackground.addChild(bottomGrad);
 
@@ -90,6 +92,7 @@ package collaboRhythm.hiviva.view
 			settingEffect.name = "settingEffect";
 			settingEffect.height = stage.stageHeight;
 			settingEffect.x = 1 - settingEffect.width;
+			settingEffect.smoothing = TextureSmoothing.NONE;
 			settingEffect.blendMode = BlendMode.MULTIPLY;
 			this._screenBackground.addChild(settingEffect);
 		}
@@ -134,15 +137,16 @@ package collaboRhythm.hiviva.view
 			if(!this._appReset)
 			{
 				this._patientSettingsBtn = new Button();
-				this._patientSettingsBtn.label = "SNav";
+				this._patientSettingsBtn.name = "";
+				this._patientSettingsBtn.defaultIcon = new Image(Assets.getTexture("SettingIconPng"));
 				this._patientSettingsBtn.addEventListener(Event.TRIGGERED , patientSettingsBtnHandler);
 				this._screenHolder.addChild(this._patientSettingsBtn);
+				this._patientSettingsBtn.width = 130 * this._feathersTheme.scale;
+				this._patientSettingsBtn.height = 110 * this._feathersTheme.scale;
 
-
-				var patientSideNavScreen:HivivaPatientSideNavScreen = new HivivaPatientSideNavScreen();
+				var patientSideNavScreen:HivivaPatientSideNavScreen = new HivivaPatientSideNavScreen(SETTING_MENU_WIDTH, this._feathersTheme.scale);
 				patientSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , patientSlideNavHandler);
 				this.addChildAt(patientSideNavScreen , 0);
-
 
 				this._patientNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen));
 				//this._patientNav.addScreen(HivivaScreens.PATIENT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientSettingsScreen , {navGoBack:navGoBack , resetAppSettings:resetAppSettings}));
@@ -190,11 +194,11 @@ package collaboRhythm.hiviva.view
 
 			this._footerBtnGroup.dataProvider = new ListCollection(
 				[
-					{ width: footerBtnWidth, height: footerBtnHeight, name: "home", triggered: footerBtnHandler },
-					{ width: footerBtnWidth, height: footerBtnHeight, name: "clock", triggered: footerBtnHandler },
-					{ width: footerBtnWidth, height: footerBtnHeight, name: "takemeds", triggered: footerBtnHandler },
-					{ width: footerBtnWidth, height: footerBtnHeight, name: "virus", triggered: footerBtnHandler },
-					{ width: footerBtnWidth, height: footerBtnHeight, name: "report", triggered: footerBtnHandler }
+					{ width: footerBtnWidth, height: footerBtnHeight, name: "home"},
+					{ width: footerBtnWidth, height: footerBtnHeight, name: "clock"},
+					{ width: footerBtnWidth, height: footerBtnHeight, name: "takemeds"},
+					{ width: footerBtnWidth, height: footerBtnHeight, name: "virus"},
+					{ width: footerBtnWidth, height: footerBtnHeight, name: "report"}
 				]
 			);
 
@@ -203,7 +207,7 @@ package collaboRhythm.hiviva.view
 				var img:Image;
 
 				button.name = item.name;
-				button.addEventListener(Event.TRIGGERED, item.triggered);
+				button.addEventListener(Event.TRIGGERED, footerBtnHandler);
 
 				switch(item.name)
 				{

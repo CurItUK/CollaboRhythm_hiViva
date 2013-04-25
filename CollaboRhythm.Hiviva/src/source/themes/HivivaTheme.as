@@ -123,6 +123,7 @@ package source.themes
 	import feathers.display.TiledImage;
 
 	import feathers.layout.VerticalLayout;
+	import feathers.skins.ImageStateValueSelector;
 
 	import feathers.skins.ImageStateValueSelector;
 
@@ -145,6 +146,7 @@ package source.themes
 
 
 	import starling.core.Starling;
+	import starling.display.BlendMode;
 
 	import starling.display.DisplayObject;
 
@@ -157,10 +159,12 @@ package source.themes
 	import starling.events.Event;
 
 	import starling.events.ResizeEvent;
+	import starling.filters.BlurFilter;
 
 	import starling.textures.Texture;
 
 	import starling.textures.TextureAtlas;
+	import starling.textures.TextureSmoothing;
 
 
 	public class HivivaTheme extends DisplayListWatcher
@@ -336,8 +340,10 @@ package source.themes
 		protected var buttonSelectedUpSkinTextures:Scale9Textures;
 		protected var buttonSelectedDisabledSkinTextures:Scale9Textures;
 
-		protected var buttonFooterTexture:Scale9Textures;
-		protected var buttonFooterActiveTexture:Scale9Textures;
+		protected var buttonFooterTexture:Texture;
+		protected var buttonFooterActiveTexture:Texture;
+
+		protected var buttonSideNavTexture:Texture;
 
 		protected var pickerListButtonIconTexture:Texture;
 
@@ -599,8 +605,10 @@ package source.themes
 			this.buttonSelectedUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-up-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-disabled-skin"), BUTTON_SCALE9_GRID);
 
-			this.buttonFooterTexture = new Scale9Textures(Assets.getTexture("FooterIconBasePng"), new Rectangle(1,0,126,135));
-			this.buttonFooterActiveTexture = new Scale9Textures(Assets.getTexture("FooterIconActivePng"), new Rectangle(1,0,126,135));
+			this.buttonFooterTexture = Assets.getTexture("FooterIconBasePng");
+			this.buttonFooterActiveTexture = Assets.getTexture("FooterIconActivePng");
+
+			this.buttonSideNavTexture = Assets.getTexture("SideNavBasePng");
 
 			this.tabDownSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-down-skin"), TAB_SCALE9_GRID);
 
@@ -722,6 +730,7 @@ package source.themes
 
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
+			this.setInitializerForClass(Button, sideNavGroupInitializer, "side-nav-buttons");
 
 			this.setInitializerForClass(Button, simpleButtonInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
 
@@ -985,12 +994,10 @@ package source.themes
 
 		protected function homeFooterGroupInitializer(button:Button):void
 		{
-			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
 			skinSelector.defaultValue = this.buttonFooterTexture;
 			skinSelector.defaultSelectedValue = this.buttonFooterActiveTexture;
 			skinSelector.setValueForState(this.buttonFooterActiveTexture, Button.STATE_DOWN, false);
-			//skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
-			//skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
 			skinSelector.imageProperties =
 			{
 				width: 128 * this.scale,
@@ -1000,20 +1007,36 @@ package source.themes
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.defaultLabelProperties.textFormat = this.smallUIDarkTextFormat;
-			button.disabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
-			button.selectedDisabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
-
-			//button.paddingTop = button.paddingBottom = 8 * this.scale;
-			//button.paddingLeft = button.paddingRight = 16 * this.scale;
-			//button.gap = 12 * this.scale;
-
 			button.minWidth = 128 * this.scale;
 			button.minHeight = 135 * this.scale;
 			button.minTouchWidth = 128 * this.scale;
 			button.minTouchHeight = 135 * this.scale;
 		}
 
+		protected function sideNavGroupInitializer(button:Button):void
+		{
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonSideNavTexture;
+			skinSelector.imageProperties =
+			{
+				width: 177 * this.scale,
+				height: 132 * this.scale,
+				textureScale: this.scale
+			};
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.defaultLabelProperties.embedFonts = true;
+			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", 18 * this.scale, 0xc1ccd3);
+			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0x143068,0.5,0);
+
+			button.verticalAlign = Button.VERTICAL_ALIGN_BOTTOM;
+			button.paddingBottom = 33 * this.scale
+
+			button.minWidth = 177 * this.scale;
+			button.minHeight = 132 * this.scale;
+			button.minTouchWidth = 177 * this.scale;
+			button.minTouchHeight = 132 * this.scale;
+		}
 
 		protected function buttonGroupButtonInitializer(button:Button):void
 		{
