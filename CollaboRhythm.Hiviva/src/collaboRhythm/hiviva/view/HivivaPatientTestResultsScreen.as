@@ -23,7 +23,7 @@ package collaboRhythm.hiviva.view
 
 	import starling.events.Event;
 
-	public class HivivaPatientTestResults extends ScreenBase
+	public class HivivaPatientTestResultsScreen extends ScreenBase
 	{
 		private var _header:Header
 		private var _cd4Count:Sprite;
@@ -36,7 +36,7 @@ package collaboRhythm.hiviva.view
 		private var _sqConn:SQLConnection;
 		private var _sqStatement:SQLStatement;
 
-		public function HivivaPatientTestResults()
+		public function HivivaPatientTestResultsScreen()
 		{
 
 		}
