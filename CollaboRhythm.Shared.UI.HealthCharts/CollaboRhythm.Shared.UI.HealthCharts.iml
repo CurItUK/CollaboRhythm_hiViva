@@ -35,6 +35,9 @@
             <entry module-name="McCuneChart" build-configuration-name="McCuneChart">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-name="mobile" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
@@ -92,6 +95,7 @@
     </orderEntry>
     <orderEntry type="module" module-name="CollaboRhythm.Plugins.Schedule.Shared" exported="" />
     <orderEntry type="jdk" jdkName="4.6.0 - (AIR 3.4)" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="library" exported="" name="mobile" level="project" />
   </component>
 </module>
 
