@@ -89,6 +89,9 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/clockFace.png")]
 		public static const ClockFacePng:Class;
 
+		[Embed(source="/assets/images/temp/pillbox.png")]
+		public static const PillboxPng:Class;
+
 
 		// TTF FONTS
 
