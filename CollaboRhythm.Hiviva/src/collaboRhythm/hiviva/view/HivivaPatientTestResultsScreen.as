@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.Label;
+	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
 	import feathers.controls.TextInput;
 	import feathers.controls.TextInput;
@@ -23,9 +24,9 @@ package collaboRhythm.hiviva.view
 
 	import starling.events.Event;
 
-	public class HivivaPatientTestResultsScreen extends ScreenBase
+	public class HivivaPatientTestResultsScreen extends Screen
 	{
-		private var _header:Header
+		private var _header:HivivaHeader;
 		private var _cd4Count:Sprite;
 		private var _cd4:Sprite;
 		private var _viralLoad:Sprite;
@@ -46,6 +47,7 @@ package collaboRhythm.hiviva.view
 			super.draw();
 
 			this._header.width = this.actualWidth;
+			this._header.height = 110 * this.dpiScale;
 
 			layoutInputWithLabelAndUnits(this._cd4Count);
 			layoutInputWithLabelAndUnits(this._cd4);
@@ -75,7 +77,7 @@ package collaboRhythm.hiviva.view
 		{
 			super.initialize();
 
-			this._header = new Header();
+			this._header = new HivivaHeader();
 			this._header.title = "Test Results";
 			addChild(this._header);
 

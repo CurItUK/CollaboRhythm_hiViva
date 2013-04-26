@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view
 
 	import feathers.controls.Button;
 	import feathers.controls.Header;
+	import feathers.controls.Screen;
 
 	import source.themes.HivivaTheme;
 
@@ -13,9 +14,9 @@ package collaboRhythm.hiviva.view
 
 	import starling.events.Event;
 
-	public class HivivaPatientHomeScreen extends ScreenBase
+	public class HivivaPatientHomeScreen extends Screen
 	{
-		private var _header:Header;
+		private var _header:HivivaHeader;
 		private var _messagesButton:Button;
 		private var _badgesButton:Button;
 
@@ -28,6 +29,7 @@ package collaboRhythm.hiviva.view
 		{
 			super.draw();
 			this._header.width = this.actualWidth;
+			this._header.height = 110 * this.dpiScale;
 
 			this._messagesButton.width = 130 * this.dpiScale;
 			this._messagesButton.height = 110 * this.dpiScale;
@@ -39,7 +41,8 @@ package collaboRhythm.hiviva.view
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._header = new Header();
+			this._header = new HivivaHeader();
+			this._header.title = "";
 			addChild(this._header);
 
 			this._messagesButton = new Button();

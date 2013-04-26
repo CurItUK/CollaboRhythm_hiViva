@@ -5,10 +5,10 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Screen;
 
 
-	public class HivivaPatientVirusModelScreen extends ScreenBase
+	public class HivivaPatientVirusModelScreen extends Screen
 	{
 
-		private var _header:Header;
+		private var _header:HivivaHeader;
 
 		public function HivivaPatientVirusModelScreen()
 		{
@@ -19,12 +19,13 @@ package collaboRhythm.hiviva.view
 		{
 			super.draw();
 			this._header.width = this.actualWidth;
+			this._header.height = 110 * this.dpiScale;
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._header = new Header();
+			this._header = new HivivaHeader();
 			this._header.title = "Virus Model Screen";
 			addChild(this._header);
 		}

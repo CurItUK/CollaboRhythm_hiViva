@@ -10,7 +10,7 @@ package collaboRhythm.hiviva.view
 
 	public class HivivaPatientSettingsScreen extends Screen
 	{
-		private var _header:Header;
+		private var _header:HivivaHeader;
 
 		public function HivivaPatientSettingsScreen()
 		{
@@ -19,12 +19,13 @@ package collaboRhythm.hiviva.view
 		override protected function draw():void
 		{
 			this._header.width = this.actualWidth;
+			this._header.height = 110 * this.dpiScale;
 		}
 
 		override protected function initialize():void
 		{
 
-			this._header = new Header();
+			this._header = new HivivaHeader();
 			this._header.title = "Settings";
 			addChild(this._header);
 
