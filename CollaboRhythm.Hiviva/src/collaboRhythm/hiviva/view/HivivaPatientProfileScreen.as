@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Header;
 	import feathers.controls.Label;
+	import feathers.controls.Screen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.core.FeathersControl;
@@ -18,6 +19,8 @@ package collaboRhythm.hiviva.view
 	import flash.data.SQLStatement;
 	import flash.filesystem.File;
 
+	import collaboRhythm.hiviva.view.HivivaHeader;
+
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -26,9 +29,9 @@ package collaboRhythm.hiviva.view
 
 
 
-	public class HivivaPatientProfileScreen extends ScreenBase
+	public class HivivaPatientProfileScreen extends Screen
 	{
-		private var _header:Header;
+		private var _header:HivivaHeader;
 		private var _menuBtnGroup:ButtonGroup;
 		private var _userSignupPopup:VerticalCenteredPopUpContentManager;
 		private var _userSignupPopupContent:FeathersControl;
@@ -41,6 +44,7 @@ package collaboRhythm.hiviva.view
 		{
 			super.draw();
 			this._header.width = this.actualWidth;
+			this._header.height = 110 * this.dpiScale;
 
 			drawPopupContent();
 		}
@@ -48,12 +52,9 @@ package collaboRhythm.hiviva.view
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._header = new Header();
+			this._header = new HivivaHeader();
 			this._header.title = "Patient Profile";
 
-
-			var boo:ScrollText = new ScrollText();
-			boo.isHTML
 
 			var homeBtn:Button = new Button();
 			homeBtn.label = "Home";
