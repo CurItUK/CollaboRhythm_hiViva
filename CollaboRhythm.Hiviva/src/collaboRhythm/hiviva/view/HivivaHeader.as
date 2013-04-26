@@ -16,13 +16,13 @@ package collaboRhythm.hiviva.view
 		override protected function draw():void
 		{
 			super.draw();
-			drawTrueTitle();
+			if(this.title.length > 0) drawTrueTitle();
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
-			initTrueTitle();
+			if(this.title.length > 0) initTrueTitle();
 		}
 
 		private function initTrueTitle():void
@@ -40,32 +40,15 @@ package collaboRhythm.hiviva.view
 
 		private function drawTrueTitle():void
 		{
-			if(this.title != "")
-			{
-				this._titleHolder1.validate();
-				this._titleHolder2.validate();
-				this.validate();
-				var trueTitleHeight:Number = this._titleHolder1.height > this._titleHolder2.height ? this._titleHolder1.height : this._titleHolder2.height;
-				var trueTitleWidth:Number = this._titleHolder1.width + this._titleHolder2.width;
-				this._titleHolder1.x = (this.actualWidth / 2) - (trueTitleWidth / 2);
-				this._titleHolder2.x = this._titleHolder1.x + this._titleHolder1.width;
-				this._titleHolder1.y = this._titleHolder2.y = (this.actualHeight / 2) - (trueTitleHeight / 2);
-				this.title = "";
-			}
-		}
-
-		override public function set title(value:String):void
-		{
-			if(value === null)
-			{
-				value = "";
-			}
-			if(this._title == value)
-			{
-				return;
-			}
-			this._title = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this._titleHolder1.validate();
+			this._titleHolder2.validate();
+			this.validate();
+			var trueTitleHeight:Number = this._titleHolder1.height > this._titleHolder2.height ? this._titleHolder1.height : this._titleHolder2.height;
+			var trueTitleWidth:Number = this._titleHolder1.width + this._titleHolder2.width;
+			this._titleHolder1.x = (this.actualWidth / 2) - (trueTitleWidth / 2);
+			this._titleHolder2.x = this._titleHolder1.x + this._titleHolder1.width;
+			this._titleHolder1.y = this._titleHolder2.y = (this.actualHeight / 2) - (trueTitleHeight / 2);
+			this.title = "";
 		}
 	}
 }

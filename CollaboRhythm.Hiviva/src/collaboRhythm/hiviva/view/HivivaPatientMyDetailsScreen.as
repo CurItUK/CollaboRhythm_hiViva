@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Check;
 	import feathers.controls.Header;
 	import feathers.controls.Label;
+	import feathers.controls.Screen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.TextInput;
 	import feathers.layout.VerticalLayout;
@@ -38,9 +39,9 @@ package collaboRhythm.hiviva.view
 	import starling.textures.Texture;
 
 
-	public class HivivaPatientMyDetailsScreen extends ScreenBase
+	public class HivivaPatientMyDetailsScreen extends Screen
 	{
-		private var _header:Header;
+		private var _header:HivivaHeader;
 		private var _instructionsText:ScrollText;
 		private var _nameLabel:Label;
 		private var _nameInput:TextInput;
@@ -66,6 +67,8 @@ package collaboRhythm.hiviva.view
 		override protected function draw():void
 		{
 			super.draw();
+			this._header.width = this.actualWidth;
+			this._header.height = 110 * this.dpiScale;
 
 			this._header.width = this.actualWidth;
 
@@ -126,7 +129,7 @@ package collaboRhythm.hiviva.view
 		{
 			super.initialize();
 
-			this._header = new Header();
+			this._header = new HivivaHeader();
 			this._header.title = "My Details";
 			addChild(this._header);
 
