@@ -7,7 +7,6 @@ package collaboRhythm.hiviva.view
 	public class HivivaPatientClockScreen extends Screen
 	{
 
-
 		public function HivivaPatientClockScreen()
 		{
 
@@ -22,7 +21,5 @@ package collaboRhythm.hiviva.view
 		{
 
 		}
-
-
 	}
 }
