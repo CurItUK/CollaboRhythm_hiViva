@@ -82,6 +82,9 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/top_nav_icon_03.png")]
 		public static const TopNavIconBadgesPng:Class;
 
+		[Embed(source="/assets/images/temp/patient-profile-nav-button.png")]
+		public static const PatientProfilePavButtonPng:Class;
+
 		//front facing screen Items
 		[Embed(source="/assets/images/temp/clockFace.png")]
 		public static const ClockFacePng:Class;

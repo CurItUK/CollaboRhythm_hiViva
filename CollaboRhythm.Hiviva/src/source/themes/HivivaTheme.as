@@ -292,6 +292,8 @@ package source.themes
 		protected var headerTextFormat:TextFormat;
 
 
+		protected var hivavaDefaultTextFormat:TextFormat;
+
 		protected var smallUIDarkTextFormat:TextFormat;
 
 		protected var smallUILightTextFormat:TextFormat;
@@ -346,6 +348,8 @@ package source.themes
 		protected var buttonFooterActiveTexture:Texture;
 
 		protected var buttonSideNavTexture:Texture;
+
+		protected var buttonPatientProfileNavTexture:Texture;
 
 		protected var pickerListButtonIconTexture:Texture;
 
@@ -521,6 +525,7 @@ package source.themes
 			//this.headerTextFormat = new TextFormat(fontNames, Math.round(36 * this.scale), LIGHT_TEXT_COLOR, true);
 			this.headerTextFormat = new TextFormat(fontNames, Math.round(36 * this.scale), 0x000000, true);
 
+			this.hivavaDefaultTextFormat = new TextFormat("ExoRegular", Math.round(30 * this.scale), 0x4c5f76);
 
 			this.smallUIDarkTextFormat = new TextFormat(fontNames, 24 * this.scale, DARK_TEXT_COLOR, true);
 
@@ -611,6 +616,8 @@ package source.themes
 			this.buttonFooterActiveTexture = Assets.getTexture("FooterIconActivePng");
 
 			this.buttonSideNavTexture = Assets.getTexture("SideNavBasePng");
+
+			this.buttonPatientProfileNavTexture = Assets.getTexture("PatientProfilePavButtonPng")
 
 			this.tabDownSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-down-skin"), TAB_SCALE9_GRID);
 
@@ -738,6 +745,7 @@ package source.themes
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
 			this.setInitializerForClass(Button, sideNavGroupInitializer, "side-nav-buttons");
+			this.setInitializerForClass(Button, patientProfileNavGroupInitializer, "patient-profile-nav-buttons");
 
 			this.setInitializerForClass(Button, simpleButtonInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
 
@@ -1049,16 +1057,41 @@ package source.themes
 			button.stateToSkinFunction = skinSelector.updateValue;
 
 			button.defaultLabelProperties.embedFonts = true;
-			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", 18 * this.scale, 0xc1ccd3);
+			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", Math.round(18 * this.scale), 0xc1ccd3);
 			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0x143068,0.5,0);
 
 			button.verticalAlign = Button.VERTICAL_ALIGN_BOTTOM;
-			button.paddingBottom = 33 * this.scale
+			button.paddingBottom = 33 * this.scale;
 
 			button.minWidth = 177 * this.scale;
 			button.minHeight = 132 * this.scale;
 			button.minTouchWidth = 177 * this.scale;
 			button.minTouchHeight = 132 * this.scale;
+		}
+
+		protected function patientProfileNavGroupInitializer(button:Button):void
+		{
+			const assetHeight:Number = this.buttonPatientProfileNavTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonPatientProfileNavTexture;
+			skinSelector.imageProperties =
+			{
+				height: assetHeight * this.scale,
+				textureScale: this.scale
+			};
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.defaultLabelProperties.embedFonts = true;
+			button.defaultLabelProperties.textFormat = this.hivavaDefaultTextFormat;
+			button.defaultLabelProperties.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+
+			button.paddingLeft = 44 * this.scale;
+
+			button.minWidth = assetHeight * this.scale;
+			button.minHeight = assetHeight * this.scale;
+			button.minTouchWidth = assetHeight * this.scale;
+			button.minTouchHeight = assetHeight * this.scale;
 		}
 
 		protected function buttonGroupButtonInitializer(button:Button):void
