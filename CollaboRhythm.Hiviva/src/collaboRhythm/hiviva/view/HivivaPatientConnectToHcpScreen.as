@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Header;
 	import feathers.controls.Label;
 	import feathers.controls.Radio;
+	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.ScrollText;
 	import feathers.controls.TextInput;
@@ -22,18 +23,20 @@ package collaboRhythm.hiviva.view
 	import flash.filesystem.File;
 	import mx.core.ByteArrayAsset;
 
+	import collaboRhythm.hiviva.view.HivivaHeader;
+
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 
 	import starling.events.Event;
 
-	public class HivivaPatientConnectToHcpScreen extends ScreenBase
+	public class HivivaPatientConnectToHcpScreen extends Screen
 	{
 		[Embed("/resources/dummy_hcplist.xml", mimeType="application/octet-stream")]
 		private static const HcpData:Class;
 
-		private var _header:Header;
+		private var _header:HivivaHeader;
 		private var _hcpDataXml:XML;
 		private var _radioGroup:ToggleGroup;
 		private var _emailRadio:Radio;
@@ -61,7 +64,7 @@ package collaboRhythm.hiviva.view
 		{
 			super.draw();
 			this._header.width = this.actualWidth;
-			this._header.validate();
+			this._header.height = 110 * this.dpiScale;
 
 			if(!this._hcpConnected)
 			{
@@ -82,7 +85,7 @@ package collaboRhythm.hiviva.view
 		{
 			super.initialize();
 
-			this._header = new Header();
+			this._header = new HivivaHeader();
 			this._header.title = "Connect to a care provider";
 			addChild(this._header);
 
