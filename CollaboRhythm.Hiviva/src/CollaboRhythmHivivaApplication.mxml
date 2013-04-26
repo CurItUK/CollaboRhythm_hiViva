@@ -23,7 +23,9 @@
 							skinClass="collaboRhythm.hiviva.view.skins.CollaboRhythmHivivaApplicationSkin"
 							creationComplete="creationCompleteHandler(event)"
 							runtimeDPIProvider="collaboRhythm.hiviva.model.EmulatorDpiProvider"
-							currentState="uninitialized">
+							currentState="uninitialized"
+							backgroundColor="0x000000"
+							splashScreenImage="@Embed('assets/images/temp/landing-page.png')">
 	<s:states>
 		<s:State name="home" />
 		<s:State name="patientHivivaHomeView" />

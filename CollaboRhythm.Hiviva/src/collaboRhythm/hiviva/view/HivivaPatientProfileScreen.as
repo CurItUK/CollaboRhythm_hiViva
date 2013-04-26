@@ -52,6 +52,9 @@ package collaboRhythm.hiviva.view
 			this._header.title = "Patient Profile";
 
 
+			var boo:ScrollText = new ScrollText();
+			boo.isHTML
+
 			var homeBtn:Button = new Button();
 			homeBtn.label = "Home";
 			homeBtn.addEventListener(Event.TRIGGERED , homeBtnHandler);

@@ -218,6 +218,8 @@ package source.themes
 
 		public static const COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER:String = "feathers-mobile-picker-list-item-renderer";
 
+		public static const NONE_THEMED_BUTTON:String = "non-themed-button";
+
 
 		protected static function textRendererFactory():TextFieldTextRenderer
 		{
@@ -727,6 +729,8 @@ package source.themes
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 
 			this.setInitializerForClass(Button, buttonInitializer);
+
+			this.setInitializerForClass(Button, nothingInitializer, NONE_THEMED_BUTTON);
 
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");

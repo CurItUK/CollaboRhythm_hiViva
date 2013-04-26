@@ -137,7 +137,7 @@ package collaboRhythm.hiviva.view
 			if(!this._appReset)
 			{
 				this._patientSettingsBtn = new Button();
-				this._patientSettingsBtn.name = "";
+				this._patientSettingsBtn.nameList.add(HivivaTheme.NONE_THEMED_BUTTON);
 				this._patientSettingsBtn.defaultIcon = new Image(Assets.getTexture("SettingIconPng"));
 				this._patientSettingsBtn.addEventListener(Event.TRIGGERED , patientSettingsBtnHandler);
 				this._screenHolder.addChild(this._patientSettingsBtn);
@@ -156,7 +156,8 @@ package collaboRhythm.hiviva.view
 				this._patientNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
 			}
 
-			this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
+			//this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
+
 		}
 
 		private function patientSlideNavHandler(e:FeathersScreenEvent):void
@@ -165,7 +166,7 @@ package collaboRhythm.hiviva.view
 			patientSettingsBtnHandler();
 			this._patientProfileNav = new ScreenNavigatorWithHistory();
 			this._patientProfileNav.addChild(this._screenBackground);
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen , {navGoHome:navGoHomeFromProfileScreen}));
+			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen, {navGoHome:navGoHomeFromProfileScreen}));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN, new ScreenNavigatorItem(HivivaPatientHomepagePhotoScreen));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_GALLERY_SCREEN, new ScreenNavigatorItem(SportsGalleryScreen));
@@ -177,6 +178,7 @@ package collaboRhythm.hiviva.view
 
 			this._patientProfileNav.showScreen(e.message);
 
+			if(this._patientNav.activeScreenID == HivivaScreens.PATIENT_HOME_SCREEN) this._patientNav.clearScreen();
 		}
 
 
@@ -214,6 +216,7 @@ package collaboRhythm.hiviva.view
 					case "home" :
 						img = new Image(Assets.getTexture("FooterIconHomePng"));
 						button.isSelected = true;
+						_patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
 						break;
 					case "clock" :
 						img = new Image(Assets.getTexture("FooterIconClockPng"));
@@ -292,6 +295,9 @@ package collaboRhythm.hiviva.view
 		{
 			this._patientProfileNav.clearScreen();
 			this._patientNav.addChild(this._screenBackground);
+
+			this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
+
 		}
 /*
 
