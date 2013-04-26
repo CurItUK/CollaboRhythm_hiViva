@@ -138,7 +138,7 @@ package collaboRhythm.hiviva.view
 			if(!this._appReset)
 			{
 				this._patientSettingsBtn = new Button();
-				this._patientSettingsBtn.nameList.add(HivivaTheme.NONE_THEMED_BUTTON);
+				this._patientSettingsBtn.nameList.add(HivivaTheme.NONE_THEMED);
 				this._patientSettingsBtn.defaultIcon = new Image(Assets.getTexture("SettingIconPng"));
 				this._patientSettingsBtn.addEventListener(Event.TRIGGERED , patientSettingsBtnHandler);
 				this._screenHolder.addChild(this._patientSettingsBtn);
