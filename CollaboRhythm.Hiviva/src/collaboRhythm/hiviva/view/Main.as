@@ -13,6 +13,7 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.data.ListCollection;
 	import feathers.display.TiledImage;
+	import feathers.motion.transitions.ScreenFadeTransitionManager;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 
 	import source.themes.HivivaTheme;
@@ -35,7 +36,7 @@ package collaboRhythm.hiviva.view
 		private var _patientProfileNav:ScreenNavigatorWithHistory;
 		private var _footerBtnGroup:ButtonGroup;
 		private var _patientSettingsBtn:Button;
-		private var _transitionManager:ScreenSlidingStackTransitionManager;
+		private var _transitionManager:ScreenFadeTransitionManager;
 		private var _applicationController:HivivaApplicationController;
 		private var _appReset:Boolean = false;
 		private var _settingsOpen:Boolean = false;
@@ -109,7 +110,7 @@ package collaboRhythm.hiviva.view
 			this._screenHolder.addChild(this._patientNav);
 			this._patientNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete},{applicationController:applicationController}));
 
-			this._transitionManager = new ScreenSlidingStackTransitionManager(_patientNav);
+			this._transitionManager = new ScreenFadeTransitionManager(_patientNav);
 			this._transitionManager.ease = Transitions.EASE_OUT;
 			this._transitionManager.duration = TRANSITION_DURATION;
 
