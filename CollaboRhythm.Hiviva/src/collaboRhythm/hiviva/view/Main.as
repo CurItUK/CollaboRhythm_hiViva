@@ -149,7 +149,6 @@ package collaboRhythm.hiviva.view
 				this.addChildAt(patientSideNavScreen , 0);
 
 				this._patientNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen));
-				//this._patientNav.addScreen(HivivaScreens.PATIENT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientSettingsScreen , {navGoBack:navGoBack , resetAppSettings:resetAppSettings}));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN, new ScreenNavigatorItem(HivivaPatientClockScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
