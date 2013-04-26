@@ -43,12 +43,12 @@ package collaboRhythm.hiviva.view
 			addChild(this._header);
 
 			this._messagesButton = new Button();
-			this._messagesButton.nameList.add(HivivaTheme.NONE_THEMED_BUTTON);
+			this._messagesButton.nameList.add(HivivaTheme.NONE_THEMED);
 			this._messagesButton.defaultIcon = new Image(Assets.getTexture("TopNavIconMessagesPng"));
 			this._messagesButton.addEventListener(Event.TRIGGERED , messagesButtonHandler);
 
 			this._badgesButton = new Button();
-			this._badgesButton.nameList.add(HivivaTheme.NONE_THEMED_BUTTON);
+			this._badgesButton.nameList.add(HivivaTheme.NONE_THEMED);
 			this._badgesButton.defaultIcon = new Image(Assets.getTexture("TopNavIconBadgesPng"));
 			this._badgesButton.addEventListener(Event.TRIGGERED , rewardsButtonHandler);
 

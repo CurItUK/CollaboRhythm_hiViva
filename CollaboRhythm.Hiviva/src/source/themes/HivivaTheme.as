@@ -218,7 +218,7 @@ package source.themes
 
 		public static const COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER:String = "feathers-mobile-picker-list-item-renderer";
 
-		public static const NONE_THEMED_BUTTON:String = "non-themed-button";
+		public static const NONE_THEMED:String = "non-themed";
 
 
 		protected static function textRendererFactory():TextFieldTextRenderer
@@ -718,9 +718,12 @@ package source.themes
 
 			}
 
+			this.setInitializerForClass(Button, nothingInitializer, NONE_THEMED);
 
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 
+			this.setInitializerForClass(Label, HeaderLightInitializer, "header-light");
+			this.setInitializerForClass(Label, HeaderBoldInitializer, "header-bold");
 			this.setInitializerForClass(Label, labelInitializer);
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
@@ -730,7 +733,7 @@ package source.themes
 
 			this.setInitializerForClass(Button, buttonInitializer);
 
-			this.setInitializerForClass(Button, nothingInitializer, NONE_THEMED_BUTTON);
+			this.setInitializerForClass(Button, nothingInitializer, NONE_THEMED);
 
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
@@ -937,6 +940,22 @@ package source.themes
 
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 
+		}
+
+
+		protected function HeaderLightInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoLight", 44 * this.scale, 0x293d54);
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+		}
+
+
+		protected function HeaderBoldInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 44 * this.scale, 0x293d54);
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
 
