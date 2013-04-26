@@ -13,7 +13,8 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.data.ListCollection;
 	import feathers.display.TiledImage;
-	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
+	import feathers.motion.transitions.ScreenFadeTransitionManager;
+
 
 	import source.themes.HivivaTheme;
 
@@ -35,7 +36,7 @@ package collaboRhythm.hiviva.view
 		private var _patientProfileNav:ScreenNavigatorWithHistory;
 		private var _footerBtnGroup:ButtonGroup;
 		private var _patientSettingsBtn:Button;
-		private var _transitionManager:ScreenSlidingStackTransitionManager;
+		private var _transitionManager:ScreenFadeTransitionManager;
 		private var _applicationController:HivivaApplicationController;
 		private var _appReset:Boolean = false;
 		private var _settingsOpen:Boolean = false;
@@ -109,7 +110,7 @@ package collaboRhythm.hiviva.view
 			this._screenHolder.addChild(this._patientNav);
 			this._patientNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete},{applicationController:applicationController}));
 
-			this._transitionManager = new ScreenSlidingStackTransitionManager(_patientNav);
+			this._transitionManager = new ScreenFadeTransitionManager(_patientNav);
 			this._transitionManager.ease = Transitions.EASE_OUT;
 			this._transitionManager.duration = TRANSITION_DURATION;
 
@@ -149,7 +150,7 @@ package collaboRhythm.hiviva.view
 				this.addChildAt(patientSideNavScreen , 0);
 
 				this._patientNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN, new ScreenNavigatorItem(HivivaPatientClockScreen));
+				this._patientNav.addScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientViewMedicationScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
@@ -256,7 +257,7 @@ package collaboRhythm.hiviva.view
 						this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
 						break;
 					case "clock" :
-						this._patientNav.showScreen(HivivaScreens.PATIENT_CLOCK_SCREEN);
+						this._patientNav.showScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN);
 						break;
 					case "takemeds" :
 						this._patientNav.showScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN);
@@ -299,35 +300,6 @@ package collaboRhythm.hiviva.view
 			this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
 
 		}
-/*
-
-		private function homeBtnHandler(e:Event):void
-		{
-			var btn:Button = e.target as Button;
-			btn.isSelected = true;
-			this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
-		}
-
-		private function clockBtnHandler():void
-		{
-			this._patientNav.showScreen(HivivaScreens.PATIENT_CLOCK_SCREEN);
-		}
-
-		private function takeMedsBtnHandler():void
-		{
-			this._patientNav.showScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN);
-		}
-
-		private function virusModelBtnHandler():void
-		{
-			this._patientNav.showScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN);
-		}
-
-		private function reportsBtnHandler():void
-		{
-			this._patientNav.showScreen(HivivaScreens.PATIENT_REPORTS_SCREEN);
-		}
-*/
 
 		private function navGoBack():void
 		{

@@ -82,6 +82,11 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/top_nav_icon_03.png")]
 		public static const TopNavIconBadgesPng:Class;
 
+		//front facing screen Items
+		[Embed(source="/assets/images/temp/clockFace.png")]
+		public static const ClockFacePng:Class;
+
+
 		// TTF FONTS
 
 		[Embed(source="/assets/fonts/exo-regular.ttf", fontName="ExoRegular", mimeType="application/x-font", embedAsCFF="false")]

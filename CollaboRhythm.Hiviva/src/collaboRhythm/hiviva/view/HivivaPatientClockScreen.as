@@ -1,13 +1,18 @@
 package collaboRhythm.hiviva.view
 {
 
-	import feathers.controls.Header;
+	import collaboRhythm.hiviva.view.media.Assets;
+	import collaboRhythm.hiviva.view.skins.CollaboRhythmHivivaApplicationSkin;
+
 	import feathers.controls.Screen;
+	import starling.display.Image;
+	import starling.textures.Texture;
 
 
-	public class HivivaPatientClockScreen extends ScreenBase
+	public class HivivaPatientClockScreen extends Screen
 	{
-		private var _header:Header;
+
+		private var _clockFace:Image;
 
 		public function HivivaPatientClockScreen()
 		{
@@ -16,16 +21,18 @@ package collaboRhythm.hiviva.view
 
 		override protected function draw():void
 		{
-			super.draw();
-			this._header.width = this.actualWidth;
+			this._clockFace.x = this.actualWidth/2 - this._clockFace.width/2;
+			this._clockFace.y = 180;
+
 		}
 
 		override protected function initialize():void
 		{
-			super.initialize()
-			this._header = new Header();
-			this._header.title = "Clock Screen";
-			addChild(this._header);
+			this._clockFace = new Image(Assets.getTexture("ClockFacePng"));
+			addChild(this._clockFace);
+
+
+
 		}
 	}
 }
