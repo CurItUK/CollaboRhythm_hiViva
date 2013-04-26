@@ -14,7 +14,7 @@ package collaboRhythm.hiviva.view
 	import feathers.data.ListCollection;
 	import feathers.display.TiledImage;
 	import feathers.motion.transitions.ScreenFadeTransitionManager;
-	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
+
 
 	import source.themes.HivivaTheme;
 
@@ -150,7 +150,7 @@ package collaboRhythm.hiviva.view
 				this.addChildAt(patientSideNavScreen , 0);
 
 				this._patientNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN, new ScreenNavigatorItem(HivivaPatientClockScreen));
+				this._patientNav.addScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientViewMedicationScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
@@ -257,7 +257,7 @@ package collaboRhythm.hiviva.view
 						this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
 						break;
 					case "clock" :
-						this._patientNav.showScreen(HivivaScreens.PATIENT_CLOCK_SCREEN);
+						this._patientNav.showScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN);
 						break;
 					case "takemeds" :
 						this._patientNav.showScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN);
