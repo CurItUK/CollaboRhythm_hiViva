@@ -50,6 +50,8 @@ package collaboRhythm.hiviva.view
 		private function initClockPillboxNav():void
 		{
 			this._clockPillboxNav = new ScreenNavigator();
+
+
 			this.addChild(this._clockPillboxNav);
 
 			this._transitionMgr = new ScreenSlidingStackTransitionManager(this._clockPillboxNav);
