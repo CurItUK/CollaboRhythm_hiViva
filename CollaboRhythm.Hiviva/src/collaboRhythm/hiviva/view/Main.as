@@ -300,35 +300,6 @@ package collaboRhythm.hiviva.view
 			this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
 
 		}
-/*
-
-		private function homeBtnHandler(e:Event):void
-		{
-			var btn:Button = e.target as Button;
-			btn.isSelected = true;
-			this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
-		}
-
-		private function clockBtnHandler():void
-		{
-			this._patientNav.showScreen(HivivaScreens.PATIENT_CLOCK_SCREEN);
-		}
-
-		private function takeMedsBtnHandler():void
-		{
-			this._patientNav.showScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN);
-		}
-
-		private function virusModelBtnHandler():void
-		{
-			this._patientNav.showScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN);
-		}
-
-		private function reportsBtnHandler():void
-		{
-			this._patientNav.showScreen(HivivaScreens.PATIENT_REPORTS_SCREEN);
-		}
-*/
 
 		private function navGoBack():void
 		{
