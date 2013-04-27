@@ -42,7 +42,8 @@ package collaboRhythm.hiviva.view
 		private var _appReset:Boolean = false;
 		private var _settingsOpen:Boolean = false;
 
-		private const TRANSITION_DURRATION:Number						= 0.4;
+		private const TRANSITION_DURATION:Number						= 0.4;
+		private const SETTING_MENU_WIDTH:Number							= 177;
 
 		public function Main()
 		{
