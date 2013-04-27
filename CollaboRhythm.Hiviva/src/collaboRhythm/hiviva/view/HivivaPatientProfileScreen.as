@@ -1,11 +1,11 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
-	import feathers.controls.Header;
-	import feathers.controls.Label;
+	import feathers.controls.Screen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.core.FeathersControl;
@@ -26,9 +26,9 @@ package collaboRhythm.hiviva.view
 
 
 
-	public class HivivaPatientProfileScreen extends ScreenBase
+	public class HivivaPatientProfileScreen extends Screen
 	{
-		private var _header:Header;
+		private var _header:HivivaHeader;
 		private var _menuBtnGroup:ButtonGroup;
 		private var _userSignupPopup:VerticalCenteredPopUpContentManager;
 		private var _userSignupPopupContent:FeathersControl;
@@ -41,6 +41,11 @@ package collaboRhythm.hiviva.view
 		{
 			super.draw();
 			this._header.width = this.actualWidth;
+			this._header.height = 110 * this.dpiScale;
+
+			this._menuBtnGroup.validate();
+			this._menuBtnGroup.width = this.actualWidth;
+			this._menuBtnGroup.y = this._header.height + (30 * this.dpiScale);
 
 			drawPopupContent();
 		}
@@ -48,15 +53,12 @@ package collaboRhythm.hiviva.view
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._header = new Header();
+			this._header = new HivivaHeader();
 			this._header.title = "Patient Profile";
-
 
 			var homeBtn:Button = new Button();
 			homeBtn.label = "Home";
 			homeBtn.addEventListener(Event.TRIGGERED , homeBtnHandler);
-
-
 
 			this._header.leftItems =  new <DisplayObject>[homeBtn];
 
@@ -69,7 +71,11 @@ package collaboRhythm.hiviva.view
 
 		private function initProfileMenuButtons():void
 		{
+			//var btnHeight:Number = Assets.getTexture("PatientProfilePavButtonPng").height * this.dpiScale;
 			this._menuBtnGroup = new ButtonGroup();
+			this._menuBtnGroup.customButtonName = "patient-profile-nav-buttons";
+			this._menuBtnGroup.customFirstButtonName = "patient-profile-nav-buttons";
+			this._menuBtnGroup.customLastButtonName = "patient-profile-nav-buttons";
 			this._menuBtnGroup.dataProvider = new ListCollection(
 				[
 					{label: "My details", triggered: myDetailsBtnHandler },
@@ -79,12 +85,9 @@ package collaboRhythm.hiviva.view
 					{label: "Connect to care provider", triggered: connectToHcpBtnHandler }
 				]
 			);
-			this._menuBtnGroup.y = 200;
-			this._menuBtnGroup.x = 50;
 			this._menuBtnGroup.direction = ButtonGroup.DIRECTION_VERTICAL;
 
 			this.addChild(this._menuBtnGroup);
-
 		}
 
 		private function homeBtnHandler():void

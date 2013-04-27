@@ -17,9 +17,10 @@ package collaboRhythm.hiviva.view
 
 		override protected function draw():void
 		{
-
+/*
 			this._tiledBackground.width = this.actualWidth;
 			this._tiledBackground.height = this.actualHeight;
+			*/
 		}
 
 		override protected function initialize():void
@@ -30,8 +31,10 @@ package collaboRhythm.hiviva.view
 
 		private function drawBackground():void
 		{
+			/*
 			this._tiledBackground = new TiledImage(Assets.getTexture("grid"));
 			addChild(this._tiledBackground);
+			*/
 		}
 	}
 }

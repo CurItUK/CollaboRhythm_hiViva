@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Header;
+	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
 
 	import flash.display.Bitmap;
@@ -32,9 +33,9 @@ package collaboRhythm.hiviva.view
 	import starling.events.Event;
 	import starling.textures.Texture;
 
-	public class HivivaPatientHomepagePhotoScreen extends ScreenBase
+	public class HivivaPatientHomepagePhotoScreen extends Screen
 	{
-		private var _header:Header;
+		private var _header:HivivaHeader;
 		private var _gap:Number;
 		private var _galleriesButtonGroup:ButtonGroup;
 		private var _photoContainer:Sprite;
@@ -51,6 +52,8 @@ package collaboRhythm.hiviva.view
 		override protected function draw():void
 		{
 			super.draw();
+			this._header.width = this.actualWidth;
+			this._header.height = 110 * this.dpiScale;
 
 			this._gap =  50 * this.dpiScale;
 
@@ -80,7 +83,7 @@ package collaboRhythm.hiviva.view
 		{
 			super.initialize();
 
-			this._header = new Header();
+			this._header = new HivivaHeader();
 			this._header.title = "Homepage Photo";
 			addChild(this._header);
 

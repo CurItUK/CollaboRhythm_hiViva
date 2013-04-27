@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="Flex" version="4">
+  <component name="FlexBuildConfigurationManager" active="Hiviva.CollaboRhythm.Plugins.Schedule">
+    <configurations>
+      <configuration name="Hiviva.CollaboRhythm.Plugins.Schedule" target-platform="Desktop" output-type="RuntimeLoadedModule" output-file="Hiviva_CollaboRhythm_Plugins_Schedule.swf" output-folder="$MODULE_DIR$/../out/production/Hiviva.CollaboRhythm.Plugins.Schedule">
+        <dependencies target-player="11.4">
+          <entries>
+            <entry module-name="ChartBackgroundsLib" build-configuration-name="ChartBackgroundsLib">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Plugins.Schedule.Shared" build-configuration-name="CollaboRhythm.Plugins.Schedule.Shared">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Shared" build-configuration-name="CollaboRhythm.Shared">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Shared.Collaboration" build-configuration-name="CollaboRhythm.Shared.Collaboration">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Shared.Messages" build-configuration-name="CollaboRhythm.Shared.Messages">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Shared.Model" build-configuration-name="CollaboRhythm.Shared.Model">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Shared.PluginsSupport" build-configuration-name="CollaboRhythm.Shared.PluginsSupport">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Shared.UI.Buttons" build-configuration-name="CollaboRhythm.Shared.UI.Buttons">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Shared.UI.HealthCharts" build-configuration-name="CollaboRhythm.Shared.UI.HealthCharts">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="McCuneChart" build-configuration-name="McCuneChart">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="d69378c6-b434-4ab6-96f3-71e08ac01382">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="ca4e8ab4-5ce2-4399-b4dd-56ce0a49bcf8">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="fe94c8f7-2f6d-4466-8d2a-939609c77cdc">
+              <dependency linkage="Merged" />
+            </entry>
+          </entries>
+          <sdk name="4.6.0 - (AIR 3.4)" />
+        </dependencies>
+        <compiler-options />
+        <packaging-air-desktop />
+        <packaging-android />
+        <packaging-ios />
+      </configuration>
+    </configurations>
+    <compiler-options />
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="4.6.0 - (AIR 3.4)" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="d69378c6-b434-4ab6-96f3-71e08ac01382" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/libs" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="ca4e8ab4-5ce2-4399-b4dd-56ce0a49bcf8" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../Flex SDK/4.6.0 - (AIR 3.4)/frameworks/themes/Mobile/mobile.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="fe94c8f7-2f6d-4466-8d2a-939609c77cdc" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../Flex SDK/4.6.0 - (AIR 3.4)/frameworks/libs/mobile/mobilecomponents.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="CollaboRhythm.Shared" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.Shared.PluginsSupport" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.Shared.Messages" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.Shared.Collaboration" exported="" />
+    <orderEntry type="module" module-name="McCuneChart" exported="" />
+    <orderEntry type="module" module-name="ChartBackgroundsLib" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.Shared.Model" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.Plugins.Schedule.Shared" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.Shared.UI.Buttons" exported="" />
+    <orderEntry type="module" module-name="CollaboRhythm.Shared.UI.HealthCharts" exported="" />
+  </component>
+</module>
+
