@@ -13,6 +13,8 @@ package collaboRhythm.hiviva.model
 	public class HivivaLocalStoreService extends EventDispatcher
 	{
 		public static const APP_FIRST_TIME_USE:String					= "appFirstTimeUse";
+		public static const USER_APP_TYPE_PATIENT:String = "Patient";
+		public static const USER_APP_TYPE_HCP:String = "HCP";
 
 		private var _sqStatement:SQLStatement;
 		private var _sqConn:SQLConnection;
@@ -66,6 +68,10 @@ package collaboRhythm.hiviva.model
 			{
 				_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
 			}
+
+			// TODO: remove this check when HCP is working; HCP is not supported yet
+			if (_appDataVO._userAppType == USER_APP_TYPE_HCP)
+				_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
 
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.DATA_LOAD_COMPLETE);
 			evt.message = "dataLoaded";

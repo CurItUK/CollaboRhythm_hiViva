@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 
+	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 
 	import feathers.controls.Button;
@@ -15,27 +16,11 @@ package collaboRhythm.hiviva.view
 	import flash.data.SQLConnection;
 	import flash.data.SQLResult;
 	import flash.data.SQLStatement;
-
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.Loader;
-	import flash.events.IOErrorEvent;
-	import flash.events.MediaEvent;
 	import flash.events.SQLEvent;
 	import flash.filesystem.File;
-	import flash.geom.Matrix;
-	import flash.media.CameraRoll;
-	import flash.media.MediaPromise;
-	import flash.net.URLRequest;
 
 	import starling.display.DisplayObject;
-
-	import starling.display.Image;
-	import starling.display.Quad;
-	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.textures.Texture;
-
 
 	public class HivivaUserSignupScreen extends ScreenBase
 	{
@@ -53,6 +38,7 @@ package collaboRhythm.hiviva.view
 		private var _sqStatement:SQLStatement;
 		private var _backButton:Button;
 		private var _dataExists:Boolean;
+		private var _applicationController:HivivaApplicationController;
 
 
 		public function HivivaUserSignupScreen()
@@ -202,6 +188,11 @@ package collaboRhythm.hiviva.view
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
+
+			if (applicationController)
+			{
+				applicationController.createSession();
+			}
 		}
 
 		private function populateOldData():void
@@ -287,6 +278,16 @@ package collaboRhythm.hiviva.view
 			var contentLayout:VerticalLayout = new VerticalLayout();
 			contentLayout.gap = gap;
 			contentLayout.layout(items,bounds);
+		}
+
+		public function get applicationController():HivivaApplicationController
+		{
+			return _applicationController;
+		}
+
+		public function set applicationController(value:HivivaApplicationController):void
+		{
+			_applicationController = value;
 		}
 	}
 }

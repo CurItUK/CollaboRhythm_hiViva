@@ -23,9 +23,11 @@
 		<s:State name="debuggingToolsEnabled"/>
 		<s:State name="debuggingToolsDisabled"/>
 	</s:states>
+<!--
 	<fx:Declarations>
 		<s:DateTimeFormatter id="dateFormatter" dateTimePattern="MM/dd/yyyy"/>
 	</fx:Declarations>
+-->
 	<fx:Script><![CDATA[
 		import collaboRhythm.shared.controller.IApplicationControllerBase;
 		import collaboRhythm.shared.model.Account;

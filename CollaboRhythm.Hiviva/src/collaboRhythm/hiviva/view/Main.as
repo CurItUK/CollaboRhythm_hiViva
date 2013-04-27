@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
 	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
 
 	import feathers.controls.Button;
@@ -33,7 +34,7 @@ package collaboRhythm.hiviva.view
 		private var _appReset:Boolean = false;
 		private var _settingsOpen:Boolean = false;
 
-		private const TRANSITION_DURRATION:Number						= 0.4;
+		private const TRANSITION_DURRATION:Number = 0.4;
 
 		public function Main()
 		{
@@ -41,11 +42,11 @@ package collaboRhythm.hiviva.view
 
 		public function initMain():void
 		{
-			initfeathersTheme();
+			initFeathersTheme();
 			initAppNavigator();
 		}
 
-		private function initfeathersTheme():void
+		private function initFeathersTheme():void
 		{
 			this._feathersTheme = new MetalWorksMobileTheme(this.stage);
 		}
@@ -65,13 +66,14 @@ package collaboRhythm.hiviva.view
 
 		private function splashComplete(e:Event):void
 		{
+			// TODO: move controller logic out of this view class and into a controller class
 			switch(e.data.profileType)
 			{
-				case "HCP" :
+				case HivivaLocalStoreService.USER_APP_TYPE_HCP :
 					initHCPNavigator();
 					break;
 
-				case "Patient" :
+				case HivivaLocalStoreService.USER_APP_TYPE_PATIENT :
 					initPatientNavigator();
 					break;
 			}
@@ -116,7 +118,7 @@ package collaboRhythm.hiviva.view
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_GALLERY_SCREEN, new ScreenNavigatorItem(SportsGalleryScreen));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN, new ScreenNavigatorItem(HivivaPatientTestResults));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN, new ScreenNavigatorItem(HivivaPatientConnectToHcpScreen));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN, new ScreenNavigatorItem(HivivaUserSignupScreen));
+			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN, new ScreenNavigatorItem(HivivaUserSignupScreen, null, {applicationController:_applicationController}));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:navGoHomeFromProfileScreen}));
 			this.addChild(_patientProfileNav);
 

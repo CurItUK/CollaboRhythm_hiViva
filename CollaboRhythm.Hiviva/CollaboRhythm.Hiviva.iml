@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="CollaboRhythm.Hiviva">
     <configurations>
-      <configuration name="CollaboRhythm.Hiviva" target-platform="Mobile" main-class="CollaboRhythmHivivaApplication" output-file="CollaboRhythmHivivaApplication.swf" output-folder="$MODULE_DIR$/../out/production/CollaboRhythm.Hiviva">
+      <configuration name="CollaboRhythm.Hiviva" target-platform="Mobile" main-class="collaboRhythm.hiviva.view.HivivaStartup" output-file="CollaboRhythmHivivaApplication.swf" output-folder="$MODULE_DIR$/../out/production/CollaboRhythm.Hiviva">
         <dependencies>
           <entries>
             <entry module-name="CollaboRhythm.Core.Model" build-configuration-name="CollaboRhythm.Core.Model">

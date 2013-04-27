@@ -2,15 +2,8 @@ package collaboRhythm.hiviva.controller
 {
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
-	import collaboRhythm.hiviva.view.HivivaHomeView;
-	import collaboRhythm.shared.model.CodedValueFactory;
 
 	import flash.events.EventDispatcher;
-
-	import mx.rpc.soap.WebService;
-
-	import spark.components.View;
-
 
 	public class HivivaLocalStoreController extends EventDispatcher
 	{
