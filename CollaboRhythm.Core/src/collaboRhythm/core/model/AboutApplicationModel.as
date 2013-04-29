@@ -174,9 +174,10 @@ package collaboRhythm.core.model
 
 		public function get deviceDetails():String
 		{
-			var nativeDpiClause:String = Capabilities.screenDPI != FlexGlobals.topLevelApplication.applicationDPI ? " (native " + Capabilities.screenDPI + " DPI)" : "";
+			var applicationDPI:Number = FlexGlobals.topLevelApplication ? FlexGlobals.topLevelApplication.applicationDPI : NaN;
+			var nativeDpiClause:String = Capabilities.screenDPI != applicationDPI ? " (native " + Capabilities.screenDPI + " DPI)" : "";
 			return "Screen " + Capabilities.screenResolutionX + " x " + Capabilities.screenResolutionY + " at " +
-					FlexGlobals.topLevelApplication.applicationDPI + " DPI" + nativeDpiClause;
+					applicationDPI + " DPI" + nativeDpiClause;
 		}
 
 		public function get settings():Settings

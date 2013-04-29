@@ -127,7 +127,7 @@
             <entry library-id="24dcc077-6012-4bbb-8151-0999e65c7580">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="ae0ec781-f049-4ead-be1a-6a472f070eac">
+            <entry library-id="e87cb05b-92d0-4e5b-b231-e96221296d12">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -213,17 +213,17 @@
         <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="Desktop libraries for mobile applications" level="project" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="ae0ec781-f049-4ead-be1a-6a472f070eac" />
+        <properties id="e87cb05b-92d0-4e5b-b231-e96221296d12" />
         <CLASSES>
-          <root url="jar://$FLEX_SDK_HOME$/libs/air/applicationupdater.swc!/" />
+          <root url="jar://$PROJECT_FRAMEWORKS$/libs/air/applicationupdater.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" exported="" name="Desktop libraries for mobile applications" level="project" />
   </component>
 </module>
 

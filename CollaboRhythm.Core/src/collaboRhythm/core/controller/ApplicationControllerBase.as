@@ -655,7 +655,7 @@ package collaboRhythm.core.controller
 		/**
 		 * Method that should be called by subclasses to create a session with the Indivo backend server.
 		 */
-		protected function createSession():void
+		public function createSession():void
 		{
 			_logger.info("Creating session in Indivo...");
 			_applicationControllerModel.createSessionStatus = ApplicationControllerModel.CREATE_SESSION_STATUS_ATTEMPTING;
@@ -1001,12 +1001,13 @@ package collaboRhythm.core.controller
 		 */
 		public function openRecordAccount(recordAccount:Account):void
 		{
-			trace("PWS " + recordAccount)
+			trace("PWS " + recordAccount);
 			activeRecordAccount = recordAccount;
-			//_collaborationController.setActiveRecordAccount(recordAccount);
+			if (_collaborationController)
+				_collaborationController.setActiveRecordAccount(recordAccount);
 
 			// TODO: Rework document retrieval
-			//loadDocuments(recordAccount);
+			loadDocuments(recordAccount);
 
 			_autoSyncTimer.start();
 		}
@@ -1154,8 +1155,11 @@ package collaboRhythm.core.controller
 		protected function loadDocuments(recordAccount:Account):void
 		{
 			// TODO: What if we are already saving or loading? What if there are unsaved pending changes?
-			_recordSynchronizer = new RecordSynchronizer(recordAccount.primaryRecord,
-					_collaborationLobbyNetConnectionServiceProxy, backgroundProcessModel);
+			if (_collaborationLobbyNetConnectionServiceProxy)
+			{
+				_recordSynchronizer = new RecordSynchronizer(recordAccount.primaryRecord,
+						_collaborationLobbyNetConnectionServiceProxy, backgroundProcessModel);
+			}
 			_healthRecordServiceFacade = new HealthRecordServiceFacade(settings.oauthChromeConsumerKey,
 					settings.oauthChromeConsumerSecret, settings.indivoServerBaseURL, _activeAccount,
 					settings.debuggingToolsEnabled, _recordSynchronizer);
@@ -1358,10 +1362,13 @@ package collaboRhythm.core.controller
 
 		protected function initializeConnectivityView():void
 		{
-			//_connectivityView.errorDetailsProvider = this;
-			//_connectivityView.addEventListener(ConnectivityEvent.IGNORE, connectivityView_ignoreHandler);
-			//_connectivityView.addEventListener(ConnectivityEvent.QUIT, connectivityView_quitHandler);
-			//_connectivityView.addEventListener(ConnectivityEvent.RETRY, connectivityView_retryHandler);
+			if (_connectivityView)
+			{
+				_connectivityView.errorDetailsProvider = this;
+				_connectivityView.addEventListener(ConnectivityEvent.IGNORE, connectivityView_ignoreHandler);
+				_connectivityView.addEventListener(ConnectivityEvent.QUIT, connectivityView_quitHandler);
+				_connectivityView.addEventListener(ConnectivityEvent.RETRY, connectivityView_retryHandler);
+			}
 		}
 
 		public function getExtendedErrorDetails():String

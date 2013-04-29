@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="AIR Application">
     <configurations>
-      <configuration name="AIR Application" target-platform="Desktop" main-class="CollaboRhythmMobileApplication" output-file="CollaboRhythmMobileApplication.swf" output-folder="$MODULE_DIR$/bin-debug">
+      <configuration name="AIR Application" target-platform="Mobile" main-class="CollaboRhythmMobileApplication" output-file="CollaboRhythmMobileApplication.swf" output-folder="$MODULE_DIR$/bin-debug">
         <dependencies>
           <entries>
             <entry library-name="Android 2.2 Platform" library-level="application">
@@ -47,9 +47,9 @@
         <compiler-options>
           <option name="additionalOptions" value="-locale en_US" />
         </compiler-options>
-        <packaging-air-desktop package-file-name="CollaboRhythmMobileApplication" />
-        <packaging-android />
-        <packaging-ios />
+        <packaging-air-desktop />
+        <packaging-android enabled="true" package-file-name="AIR_Application" />
+        <packaging-ios package-file-name="AIR_Application" />
       </configuration>
     </configurations>
     <compiler-options />

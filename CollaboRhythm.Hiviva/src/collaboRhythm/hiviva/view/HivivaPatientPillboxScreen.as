@@ -2,12 +2,10 @@ package collaboRhythm.hiviva.view
 {
 
 	import collaboRhythm.hiviva.view.media.Assets;
-	import collaboRhythm.hiviva.view.skins.CollaboRhythmHivivaApplicationSkin;
 
 	import feathers.controls.Screen;
-	import starling.display.Image;
-	import starling.textures.Texture;
 
+	import starling.display.Image;
 
 	public class HivivaPatientPillboxScreen extends Screen
 	{

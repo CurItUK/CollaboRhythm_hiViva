@@ -56,6 +56,9 @@
             <entry module-name="CollaboRhythm.Shared.Messages" build-configuration-name="CollaboRhythm.Shared.Messages">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-name="mobile" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
@@ -129,13 +132,14 @@
       <library type="flex">
         <properties id="36069884-1ff8-4d83-aa86-64cd52dc5be2" />
         <CLASSES>
-          <root url="jar://$FLEX_SDK_HOME$/libs/air/applicationupdater.swc!/" />
+          <root url="jar://$PROJECT_FRAMEWORKS$/libs/air/applicationupdater.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Messages" exported="" />
+    <orderEntry type="library" exported="" name="mobile" level="project" />
   </component>
 </module>
 

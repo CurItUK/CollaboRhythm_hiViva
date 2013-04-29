@@ -71,13 +71,13 @@ package collaboRhythm.hiviva.view
 		private function hcpButtonHandler(e:Event):void
 		{
 			//TODO move string values to Constants in a data file
-			notifyLocalStoreController("HCP")
+			notifyLocalStoreController(HivivaLocalStoreService.USER_APP_TYPE_HCP)
 		}
 
 		private function patientButtonHandler(e:Event):void
 		{
 			//TODO move string values to Constants in a data file
-			notifyLocalStoreController("Patient")
+			notifyLocalStoreController(HivivaLocalStoreService.USER_APP_TYPE_PATIENT)
 		}
 
 		private function notifyLocalStoreController(userValue:String):void

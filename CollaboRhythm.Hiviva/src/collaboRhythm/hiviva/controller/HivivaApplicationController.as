@@ -19,34 +19,24 @@ package collaboRhythm.hiviva.controller
 
 	import collaboRhythm.core.controller.ApplicationControllerBase;
 	import collaboRhythm.core.controller.apps.AppControllersMediatorBase;
+	import collaboRhythm.hiviva.model.ViewNavigatorExtended;
 	import collaboRhythm.shared.controller.apps.AppControllerBase;
 	import collaboRhythm.shared.controller.apps.AppControllerConstructorParams;
 	import collaboRhythm.shared.model.Account;
 	import collaboRhythm.shared.model.settings.Settings;
 	import collaboRhythm.shared.view.hiviva.HivivaViewBase;
-	import collaboRhythm.hiviva.model.ViewNavigatorExtended;
-	import collaboRhythm.hiviva.model.ViewNavigatorExtendedEvent;
-	import collaboRhythm.hiviva.view.SelectRecordView;
-	import collaboRhythm.hiviva.view.HivivaFullViewContainer;
-	import collaboRhythm.hiviva.view.HivivaHomeView;
 
-	import flash.events.Event;
 	import flash.utils.Timer;
 
 	import mx.core.IVisualElementContainer;
 	import mx.events.FlexEvent;
-
-	import spark.components.ViewNavigator;
-	import spark.transitions.SlideViewTransition;
 
 	public class HivivaApplicationController extends ApplicationControllerBase
 	{
 		private static const SESSION_IDLE_TIMEOUT:int = 60 * 5;
 		private static const ACCOUNT_ID_SUFFIX:String = "@records.media.mit.edu";
 
-		private var _hivivaApplication:CollaboRhythmHivivaApplication;
 		private var _hivivaAppControllersMediator:HivivaAppControllersMediator;
-		private var _fullContainer:IVisualElementContainer;
 		private var _hivivaLocalStoreController:HivivaLocalStoreController;
 
 		[Embed("/resources/settings.xml", mimeType="application/octet-stream")]
@@ -56,14 +46,10 @@ package collaboRhythm.hiviva.controller
 
 		private var _sessionIdleTimer:Timer;
 
-		public function HivivaApplicationController(collaboRhythmHivivaApplication:CollaboRhythmHivivaApplication)
+		public function HivivaApplicationController()
 		{
-			super(collaboRhythmHivivaApplication);
+			super(null);
 
-			_hivivaApplication = collaboRhythmHivivaApplication;
-			_connectivityView = collaboRhythmHivivaApplication.connectivityView;
-			_busyView = collaboRhythmHivivaApplication.busyView;
-			_aboutApplicationView = collaboRhythmHivivaApplication.aboutApplicationView;
 			initLocalStore();
 			initializeConnectivityView();
 		}
@@ -74,15 +60,12 @@ package collaboRhythm.hiviva.controller
 
 			settings.modality = Settings.MODALITY_HIVIVA;
 
-			navigator.addEventListener(Event.COMPLETE, viewNavigator_transitionCompleteHandler);
-			navigator.addEventListener("viewChangeComplete", viewNavigator_transitionCompleteHandler);
-			navigator.addEventListener(ViewNavigatorExtendedEvent.VIEW_POPPED, viewNavigator_viewPopped);
-			navigator.addEventListener(Event.ADDED, viewNavigator_addedHandler);
+			// TODO: the collaboration controller could potentially be left uninitialized (always for Hiviva
+			// conditionally based on a user setting) but this will require more work because some other parts of the
+			// application currently assume that there is a non-null collaboration controller
+			initCollaborationController();
 
-			initializeActiveView();
-
-			createSession();
-
+			// Unlike TabletApplicationController, we will avoid creating an Indivo session here; connecting to the server is done later
 		}
 
 		private function initLocalStore():void
@@ -91,55 +74,12 @@ package collaboRhythm.hiviva.controller
 			_hivivaLocalStoreController.initStoreService();
 		}
 
-		private function viewNavigator_transitionCompleteHandler(event:Event):void
-		{
-			if (hivivaHomeView)
-			{
-				if (_openingRecordAccount)
-				{
-					showWidgets(activeRecordAccount);
-					_openingRecordAccount = false;
-				}
-			}
-			else if (_hivivaAppControllersMediator)
-			{
-				_hivivaAppControllersMediator.destroyWidgetViews();
-			}
-
-			if (_reloadWithFullView)
-			{
-				appControllersMediator.showFullView(_reloadWithFullView);
-				_reloadWithFullView = null;
-			}
-
-			trackActiveView();
-		}
-
-		private function viewNavigator_addedHandler(event:Event):void
-		{
-			var view:HivivaViewBase = event.target as HivivaViewBase;
-			if (view)
-			{
-				initializeView(view);
-			}
-		}
-
-		public function initializeActiveView():void
-		{
-			var view:HivivaViewBase = _hivivaApplication.navigator.activeView as HivivaViewBase;
-			if (view)
-			{
-				initializeView(view);
-			}
-		}
-
 		private function initializeView(view:HivivaViewBase):void
 		{
 			view.activeAccount = activeAccount;
 			view.activeRecordAccount = activeRecordAccount;
 			view.hivivaApplicationController = this;
 		}
-
 
 		override protected function activateTracking():void
 		{
@@ -176,7 +116,7 @@ package collaboRhythm.hiviva.controller
 
 		override public function showSelectRecordView():void
 		{
-			_hivivaApplication.navigator.pushView(SelectRecordView);
+//			_hivivaApplication.navigator.pushView(SelectRecordView);
 		}
 
 		override public function openRecordAccount(recordAccount:Account):void
@@ -186,17 +126,9 @@ package collaboRhythm.hiviva.controller
 				closeRecordAccount(activeRecordAccount);
 			}
 			super.openRecordAccount(recordAccount);
-			if (hivivaHomeView)
-			{
-				initializeActiveView();
-				hivivaHomeView.init();
-				showWidgets(recordAccount);
-			}
-			else
-			{
-				_openingRecordAccount = true;
-				navigator.popToFirstView();
-			}
+
+			_openingRecordAccount = true;
+			// TODO: switch to the correct screen
 
 			trackActiveView();
 		}
@@ -216,16 +148,6 @@ package collaboRhythm.hiviva.controller
 			(navigator as ViewNavigatorExtended).popViewRemote();
 		}
 
-		private function get hivivaHomeView():HivivaHomeView
-		{
-			return _hivivaApplication.hivivaHomeView;
-		}
-
-		private function get selectRecordView():SelectRecordView
-		{
-			return _hivivaApplication.selectRecordView;
-		}
-
 		// the apps are not actually loaded immediately when a record is opened
 		// only after the active record view has been made visible are they loaded, this makes the UI more responsive
 		public function showWidgets(recordAccount:Account):void
@@ -235,15 +157,15 @@ package collaboRhythm.hiviva.controller
 				var appControllerConstructorParams:AppControllerConstructorParams = new AppControllerConstructorParams();
 				appControllerConstructorParams.collaborationLobbyNetConnectionServiceProxy = _collaborationLobbyNetConnectionServiceProxy;
 				appControllerConstructorParams.navigationProxy = _navigationProxy;
-				_hivivaAppControllersMediator = new HivivaAppControllersMediator(hivivaHomeView.widgetContainers,
-						_fullContainer, _componentContainer, settings, appControllerConstructorParams, this);
+				_hivivaAppControllersMediator = new HivivaAppControllersMediator(null,
+						null, _componentContainer, settings, appControllerConstructorParams, this);
 			}
 			_hivivaAppControllersMediator.createAndStartApps(activeAccount, recordAccount);
 		}
 
 		public override function get fullContainer():IVisualElementContainer
 		{
-			return _fullContainer;
+			return null;
 		}
 
 		public override function get applicationSettingsEmbeddedFile():Class
@@ -269,8 +191,6 @@ package collaboRhythm.hiviva.controller
 			if (recordAccount)
 				recordAccount.primaryRecord.clearDocuments();
 			activeRecordAccount = null;
-			if (hivivaHomeView)
-				hivivaHomeView.visible = false;
 		}
 
 		protected override function changeDemoDate():void
@@ -282,12 +202,6 @@ package collaboRhythm.hiviva.controller
 				activeRecordAccount.primaryRecord.demographics.dispatchAgeChangeEvent();
 		}
 
-		protected override function restoreFocus():void
-		{
-			if (hivivaHomeView)
-				hivivaHomeView.setFocus();
-		}
-
 		public function pushFullView(appController:AppControllerBase):void
 		{
 			if (appController.fullView)
@@ -296,28 +210,12 @@ package collaboRhythm.hiviva.controller
 				appController.fullView.addEventListener(FlexEvent.UPDATE_COMPLETE, fullView_updateCompleteHandler,
 						false, 0, true);
 			}
-			_hivivaApplication.navigator.pushView(HivivaFullViewContainer, appController, new SlideViewTransition());
 		}
 
 		private function fullView_updateCompleteHandler(event:FlexEvent):void
 		{
 			event.target.removeEventListener(FlexEvent.UPDATE_COMPLETE, fullView_updateCompleteHandler);
 			backgroundProcessModel.updateProcess("fullViewUpdate", "Updating...", false);
-		}
-
-		public function useWidgetContainers():void
-		{
-			if (_hivivaAppControllersMediator)
-			{
-				_hivivaAppControllersMediator.widgetContainers = hivivaHomeView.widgetContainers;
-				_hivivaAppControllersMediator.showWidgetsInNewContainers();
-			}
-		}
-
-
-		override public function get navigator():ViewNavigator
-		{
-			return _hivivaApplication ? _hivivaApplication.navigator : null;
 		}
 
 		public function get hivivaAppControllersMediator():HivivaAppControllersMediator
@@ -333,11 +231,6 @@ package collaboRhythm.hiviva.controller
 		override protected function prepareToExit():void
 		{
 
-		}
-
-		private function viewNavigator_viewPopped(event:ViewNavigatorExtendedEvent):void
-		{
-			synchronizeBack();
 		}
 	}
 }
