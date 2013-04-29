@@ -10,6 +10,7 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.core.FeathersControl;
 	import feathers.data.ListCollection;
+	import feathers.display.TiledImage;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
 
@@ -18,12 +19,14 @@ package collaboRhythm.hiviva.view
 	import flash.data.SQLStatement;
 	import flash.filesystem.File;
 
+	import starling.display.BlendMode;
+
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 
 	import starling.events.Event;
-
+	import starling.textures.TextureSmoothing;
 
 
 	public class HivivaPatientProfileScreen extends Screen
@@ -32,6 +35,7 @@ package collaboRhythm.hiviva.view
 		private var _menuBtnGroup:ButtonGroup;
 		private var _userSignupPopup:VerticalCenteredPopUpContentManager;
 		private var _userSignupPopupContent:FeathersControl;
+		private var _tilesInBtns:Vector.<TiledImage>;
 
 		public function HivivaPatientProfileScreen()
 		{
@@ -43,11 +47,21 @@ package collaboRhythm.hiviva.view
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
 
+			drawMenuBtnGroup();
+			drawPopupContent();
+		}
+
+		private function drawMenuBtnGroup():void
+		{
 			this._menuBtnGroup.validate();
 			this._menuBtnGroup.width = this.actualWidth;
 			this._menuBtnGroup.y = this._header.height + (30 * this.dpiScale);
 
-			drawPopupContent();
+			for (var i:int = 0; i < _tilesInBtns.length; i++)
+			{
+				var img:TiledImage = _tilesInBtns[i];
+				img.width = this.actualWidth;
+			}
 		}
 
 		override protected function initialize():void
@@ -57,7 +71,7 @@ package collaboRhythm.hiviva.view
 			this._header.title = "Patient Profile";
 
 			var homeBtn:Button = new Button();
-			homeBtn.label = "Home";
+			homeBtn.nameList.add("home-button");
 			homeBtn.addEventListener(Event.TRIGGERED , homeBtnHandler);
 
 			this._header.leftItems =  new <DisplayObject>[homeBtn];
@@ -71,35 +85,67 @@ package collaboRhythm.hiviva.view
 
 		private function initProfileMenuButtons():void
 		{
-			//var btnHeight:Number = Assets.getTexture("PatientProfilePavButtonPng").height * this.dpiScale;
+			this._tilesInBtns = new <TiledImage>[];
 			this._menuBtnGroup = new ButtonGroup();
 			this._menuBtnGroup.customButtonName = "patient-profile-nav-buttons";
 			this._menuBtnGroup.customFirstButtonName = "patient-profile-nav-buttons";
 			this._menuBtnGroup.customLastButtonName = "patient-profile-nav-buttons";
 			this._menuBtnGroup.dataProvider = new ListCollection(
 				[
-					{label: "My details", triggered: myDetailsBtnHandler },
-					{label: "Home page photo", triggered: homepagePhotoBtnHandler },
-					{label: "Daily medicines", triggered: menuBtnHandler },
-					{label: "Test results", triggered: testResultsBtnHandler },
-					{label: "Connect to care provider", triggered: connectToHcpBtnHandler }
+					{name: "details", label: "My details"},
+					{name: "photo", label: "Home page photo"},
+					{name: "medicines", label: "Daily medicines"},
+					{name: "results", label: "Test results"},
+					{name: "connect", label: "Connect to care provider"}
 				]
 			);
+			this._menuBtnGroup.buttonInitializer = function(button:Button, item:Object):void
+			{
+				var img:TiledImage = new TiledImage(Assets.getTexture("PatientProfileNavButtonPatternPng"));
+				img.smoothing = TextureSmoothing.NONE;
+				img.blendMode =  BlendMode.MULTIPLY;
+				button.addChild(img);
+				// add to Vector to assign width post draw
+				_tilesInBtns.push(img);
+
+				button.name = item.name;
+				button.label =  item.label;
+				button.addEventListener(Event.TRIGGERED, patientProfileBtnHandler)
+			};
 			this._menuBtnGroup.direction = ButtonGroup.DIRECTION_VERTICAL;
 
 			this.addChild(this._menuBtnGroup);
 		}
 
-		private function homeBtnHandler():void
+		private function patientProfileBtnHandler(e:Event):void
+		{
+			var btn:Button = e.target as Button;
+
+			// when refactoring to own class we can use a local instance instead of storing the identifier in btn.name
+			switch(btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons")))
+			{
+				case "details" :
+					this.owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
+					break;
+				case "photo" :
+					this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
+					break;
+				case "medicines" :
+					break;
+				case "results" :
+					this.owner.showScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN);
+					break;
+				case "connect" :
+					userSignupCheck();
+					break;
+			}
+		}
+
+		private function homeBtnHandler(e:Event):void
 		{
 			this.dispatchEventWith("navGoHome");
 		}
-
-		private function menuBtnHandler():void
-		{
-
-		}
-
+/*
 
 		private function myDetailsBtnHandler():void
 		{
@@ -121,6 +167,7 @@ package collaboRhythm.hiviva.view
 			// if user signed up then go to connect to hcp else go to patient signup
 			userSignupCheck();
 		}
+*/
 
 		private function userSignupCheck():void
 		{

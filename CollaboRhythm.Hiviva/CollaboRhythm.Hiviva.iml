@@ -29,9 +29,6 @@
             <entry module-name="CollaboRhythm.CollaborationServer" build-configuration-name="CollaboRhythm.CollaborationServer">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="de93bf1e-f462-4723-a61a-f0a7bdaa8d77">
-              <dependency linkage="Merged" />
-            </entry>
             <entry library-id="d8fa7b08-8beb-4872-a84e-9d2446958e82">
               <dependency linkage="Merged" />
             </entry>
@@ -42,6 +39,9 @@
               <dependency linkage="Merged" />
             </entry>
             <entry library-id="74fc4d7a-f1e4-480c-a011-131823e1bd5d">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="de39c984-3270-41e3-944d-51c730a38909">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -91,22 +91,12 @@
     <orderEntry type="module" module-name="CollaboRhythm.CollaborationServer" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Collaboration" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.PluginsSupport" exported="" />
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="de93bf1e-f462-4723-a61a-f0a7bdaa8d77" />
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../Starling-Framework-master/starling/src" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" exported="" name="Desktop libraries for mobile applications" level="project" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
         <properties id="d8fa7b08-8beb-4872-a84e-9d2446958e82" />
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../feathers-master/source" />
+          <root url="file://$FEATHERS_HOME$" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -137,6 +127,16 @@
         <properties id="74fc4d7a-f1e4-480c-a011-131823e1bd5d" />
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/CollaboRhythm.ANE.ApplicationMessaging.ane!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="de39c984-3270-41e3-944d-51c730a38909" />
+        <CLASSES>
+          <root url="file://$STARLING_HOME$" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

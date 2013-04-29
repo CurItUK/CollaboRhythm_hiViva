@@ -30,10 +30,6 @@ package collaboRhythm.hiviva.view.media
 
 		[Embed(source="/assets/images/temp/top_gradient.png")]
 		public static const BaseTopGradPng:Class;
-/*
-		[Embed(source="/assets/images/temp/top_gradient_home.png")]
-		public static const BaseTopGradHomePng:Class;
-*/
 
 		// ICONS AND BUTTONS
 
@@ -83,7 +79,10 @@ package collaboRhythm.hiviva.view.media
 		public static const TopNavIconBadgesPng:Class;
 
 		[Embed(source="/assets/images/temp/patient-profile-nav-button.png")]
-		public static const PatientProfilePavButtonPng:Class;
+		public static const PatientProfileNavButtonPng:Class;
+
+		[Embed(source="/assets/images/temp/patient-profile-nav-button-pattern.png")]
+		public static const PatientProfileNavButtonPatternPng:Class;
 
 		//front facing screen Items
 		[Embed(source="/assets/images/temp/clockFace.png")]

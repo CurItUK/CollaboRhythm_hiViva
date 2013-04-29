@@ -349,7 +349,11 @@ package source.themes
 
 		protected var buttonSideNavTexture:Texture;
 
-		protected var buttonPatientProfileNavTexture:Texture;
+		protected var buttonPatientProfileNavTexture:Scale9Textures;
+
+		protected var buttonHomeSkinTexture:Texture;
+
+
 
 		protected var pickerListButtonIconTexture:Texture;
 
@@ -617,7 +621,12 @@ package source.themes
 
 			this.buttonSideNavTexture = Assets.getTexture("SideNavBasePng");
 
-			this.buttonPatientProfileNavTexture = Assets.getTexture("PatientProfilePavButtonPng")
+			this.buttonPatientProfileNavTexture = new Scale9Textures(Assets.getTexture("PatientProfileNavButtonPng"), new Rectangle(0,0,72,72));
+
+			this.buttonHomeSkinTexture = Assets.getTexture("FooterIconHomePng");
+
+
+
 
 			this.tabDownSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-down-skin"), TAB_SCALE9_GRID);
 
@@ -1071,8 +1080,8 @@ package source.themes
 
 		protected function patientProfileNavGroupInitializer(button:Button):void
 		{
-			const assetHeight:Number = this.buttonPatientProfileNavTexture.height;
-			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			const assetHeight:Number = 72;
+			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
 			skinSelector.defaultValue = this.buttonPatientProfileNavTexture;
 			skinSelector.imageProperties =
 			{
@@ -1083,8 +1092,9 @@ package source.themes
 
 			button.defaultLabelProperties.embedFonts = true;
 			button.defaultLabelProperties.textFormat = this.hivavaDefaultTextFormat;
-			button.defaultLabelProperties.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+
+			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 
 			button.paddingLeft = 44 * this.scale;
 

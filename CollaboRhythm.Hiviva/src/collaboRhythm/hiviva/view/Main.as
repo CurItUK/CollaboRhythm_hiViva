@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.feathers.controls.ScreenNavigatorWithHistory;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -62,7 +63,7 @@ package collaboRhythm.hiviva.view
 		{
 			this._screenBackground = new Sprite();
 
-			var screenBase:TiledImage = new TiledImage(Assets.getTexture("BasePng"));
+			var screenBase:TiledImage = new TiledImage(HivivaAssets.SCREEN_BASE);
 			screenBase.width = stage.stageWidth;
 			screenBase.height = stage.stageHeight;
 			screenBase.smoothing = TextureSmoothing.NONE;
