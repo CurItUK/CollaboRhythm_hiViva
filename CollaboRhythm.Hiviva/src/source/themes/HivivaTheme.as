@@ -758,6 +758,7 @@ package source.themes
 
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 			this.setInitializerForClass(ScrollText, popupScrollTextInitializer, "popup-text");
+			this.setInitializerForClass(ScrollText, formScrollTextInitializer, "form-text");
 
 			this.setInitializerForClass(Button, buttonInitializer);
 
@@ -995,7 +996,7 @@ package source.themes
 
 		protected function inputLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = true;
+			label.textRendererProperties.embedFonts = true;
 			label.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(30 * this.scale), 0x495c72);
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
@@ -1020,6 +1021,15 @@ package source.themes
 		{
 			text.embedFonts = true;
 			text.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x2d435c);
+			text.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
+			text.paddingRight = 36 * this.scale;
+		}
+
+		protected function formScrollTextInitializer(text:ScrollText):void
+		{
+			text.embedFonts = true;
+			text.textFormat = new TextFormat("ExoRegular", Math.round(30 * this.scale), 0x495c72);
 			text.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
 			text.paddingRight = 36 * this.scale;
@@ -1746,7 +1756,10 @@ package source.themes
 			check.disabledLabelProperties.textFormat = format;
 			check.selectedDisabledLabelProperties.embedFonts = true;
 			check.selectedDisabledLabelProperties.textFormat = format;
+			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			check.gap = 12 * this.scale;
+			check.padding = 32 * this.scale;
+			check.paddingTop = this.scale;
 			check.minTouchWidth = check.minTouchHeight = 88 * this.scale;
 		}
 

@@ -28,6 +28,7 @@ package collaboRhythm.hiviva.view
 		private function initStarling():void
 		{
 			trace("Starling Init");
+			Starling.handleLostContext = true;
 			_starFW = new Starling(Main, stage, new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight));
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			_starFW.enableErrorChecking = true;

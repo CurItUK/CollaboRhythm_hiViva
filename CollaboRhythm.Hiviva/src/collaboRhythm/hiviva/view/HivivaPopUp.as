@@ -52,8 +52,8 @@ package collaboRhythm.hiviva.view
 		private var _confirmButton:Button;
 		private var _closeButton:Button;
 
-		private static const PADDING:Number = 40;
-		private static const GAP:Number = 20;
+		private const PADDING:Number = 40;
+		private const GAP:Number = 20;
 
 		public function HivivaPopUp()
 		{
@@ -81,7 +81,9 @@ package collaboRhythm.hiviva.view
 
 			fullHeight = this._confirmButton.y + this._confirmButton.height + scaledGap + scaledPadding;
 
-			this._bg.height = this.height = fullHeight;
+			//this._bg.height = this.height = fullHeight;
+			setSizeInternal(this.actualWidth, fullHeight, true);
+
 		}
 
 		override protected function initialize():void

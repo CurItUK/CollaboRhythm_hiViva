@@ -183,7 +183,7 @@ package collaboRhythm.hiviva.view
 				trace("user is not signed up");
 				showSignupPopup();
 			}
-
+			//showSignupPopup();
 		}
 
 		private function showSignupPopup():void
