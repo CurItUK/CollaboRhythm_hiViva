@@ -29,6 +29,14 @@ package collaboRhythm.hiviva.global
 		public static const TOPNAV_ICON_BADGES:Texture						= Assets.getTexture("TopNavIconBadgesPng");
 		public static const PATIENTPROFILENAV_BUTTON:Texture				= Assets.getTexture("PatientProfileNavButtonPng");
 		public static const PATIENTPROFILENAV_BUTTON_PATTERN:Texture		= Assets.getTexture("PatientProfileNavButtonPatternPng");
+		public static const BACK_BUTTON:Texture								= Assets.getTexture("BackButtonPng");
+		// forms
+		public static const BUTTON:Texture									= Assets.getTexture("ButtonPng");
+		public static const INPUT_FIELD:Texture								= Assets.getTexture("InputFieldPng");
+		public static const TICK_BOX:Texture								= Assets.getTexture("TickBoxPng");
+		public static const TICK_BOX_ACTIVE:Texture							= Assets.getTexture("TickBoxActivePng");
+		public static const POPUP_PANEL:Texture								= Assets.getTexture("PopupPanelPng");
+		public static const CLOSE_BUTTON:Texture							= Assets.getTexture("CloseButtonPng");
 		// front facing screen Items
 		public static const CLOCK_FACE:Texture								= Assets.getTexture("ClockFacePng");
 		public static const PILL_BOX:Texture								= Assets.getTexture("PillboxPng");

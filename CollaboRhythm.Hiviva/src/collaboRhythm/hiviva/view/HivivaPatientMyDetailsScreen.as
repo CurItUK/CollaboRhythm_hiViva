@@ -166,6 +166,8 @@ package collaboRhythm.hiviva.view
 			addChild(this._submitButton);
 
 			this._backButton = new Button();
+			this._backButton.nameList.add("back-button");
+			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
