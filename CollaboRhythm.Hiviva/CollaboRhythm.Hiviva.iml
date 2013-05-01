@@ -98,7 +98,7 @@
       <library type="flex">
         <properties id="de93bf1e-f462-4723-a61a-f0a7bdaa8d77" />
         <CLASSES>
-          <root url="file://$STARLING_HOME$/starling/src" />
+          <root url="file://$STARLING_HOME$" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -109,7 +109,7 @@
       <library type="flex">
         <properties id="d8fa7b08-8beb-4872-a84e-9d2446958e82" />
         <CLASSES>
-          <root url="file://$FEATHERS_HOME$/source" />
+          <root url="file://$FEATHERS_HOME$" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

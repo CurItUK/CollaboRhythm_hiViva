@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="mobile" type="flex">
     <CLASSES>
-      <root url="jar://$PROJECT_FRAMEWORKS$/themes/Mobile/mobile.swc!/" />
-      <root url="jar://$PROJECT_FRAMEWORKS$/libs/mobile/mobilecomponents.swc!/" />
+      <root url="jar://$FLEX_SDK_HOME$/themes/Mobile/mobile.swc!/" />
+      <root url="jar://$FLEX_SDK_HOME$/libs/mobile/mobilecomponents.swc!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
