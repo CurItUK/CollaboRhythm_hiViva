@@ -13,7 +13,7 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_REPORTS_SCREEN:String				= "patientReportsScreen";
 
 		public static const PATIENT_PROFILE_SCREEN:String				= "patientProfileScreen";
-		public static const PATIENT_TAKE_MEDICATION_SCREEN:String		= "patientTakeMedicationScreen";
+		public static const PATIENT_EDIT_MEDICATION_SCREEN:String		= "patientEditMedicationScreen";
 		public static const PATIENT_MY_DETAILS_SCREEN:String			= "patientMyDetailsScreen";
 		public static const PATIENT_HOMEPAGE_PHOTO_SCREEN:String		= "patientHomepagePhotoScreen";
 		public static const PATIENT_CONNECT_TO_HCP_SCREEN:String		= "patientConnectToHcpScreen";

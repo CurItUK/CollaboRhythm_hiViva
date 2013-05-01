@@ -129,6 +129,7 @@ package collaboRhythm.hiviva.view
 					this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
 					break;
 				case "medicines" :
+					this.owner.showScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
 					break;
 				case "results" :
 					this.owner.showScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN);
