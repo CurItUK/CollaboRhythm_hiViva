@@ -132,7 +132,7 @@
       <library type="flex">
         <properties id="36069884-1ff8-4d83-aa86-64cd52dc5be2" />
         <CLASSES>
-          <root url="jar://$PROJECT_FRAMEWORKS$/libs/air/applicationupdater.swc!/" />
+          <root url="jar://$FLEX_SDK_HOME$/libs/air/applicationupdater.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
