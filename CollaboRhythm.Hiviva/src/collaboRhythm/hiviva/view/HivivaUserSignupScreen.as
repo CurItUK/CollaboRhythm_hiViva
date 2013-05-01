@@ -191,10 +191,6 @@ package collaboRhythm.hiviva.view
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
 
-			if (applicationController)
-			{
-				applicationController.createSession();
-			}
 		}
 
 		private function populateOldData():void

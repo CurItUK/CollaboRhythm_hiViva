@@ -1,7 +1,6 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.shared.controller.IApplicationControllerBase;
 
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
