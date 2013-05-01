@@ -1,8 +1,8 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
@@ -34,8 +34,8 @@ package collaboRhythm.hiviva.view
 		override protected function initialize():void
 		{
 			// needs own class
-			var btnHeight:Number = Assets.getTexture("SideNavBasePng").height * SCALE;
-			var btnWidth:Number = Assets.getTexture("SideNavBasePng").width * SCALE;
+			var btnHeight:Number = HivivaAssets.SIDENAV_BASE.height * SCALE;
+			var btnWidth:Number = HivivaAssets.SIDENAV_BASE.width * SCALE;
 
 			this._sideBtnGroup = new ButtonGroup();
 			this._sideBtnGroup.customButtonName = "side-nav-buttons";
@@ -61,16 +61,16 @@ package collaboRhythm.hiviva.view
 				switch(item.name)
 				{
 					case "profile" :
-						img = new Image(Assets.getTexture("SideNavIconProfilePng"));
+						img = new Image(HivivaAssets.SIDENAV_ICON_PATIENTPROFILE);
 						break;
 					case "help" :
-						img = new Image(Assets.getTexture("SideNavIconHelpPng"));
+						img = new Image(HivivaAssets.SIDENAV_ICON_HELP);
 						break;
 					case "messages" :
-						img = new Image(Assets.getTexture("SideNavIconMessagesPng"));
+						img = new Image(HivivaAssets.SIDENAV_ICON_MESSAGES);
 						break;
 					case "badges" :
-						img = new Image(Assets.getTexture("SideNavIconBadgesPng"));
+						img = new Image(HivivaAssets.SIDENAV_ICON_BADGES);
 						break;
 				}
 

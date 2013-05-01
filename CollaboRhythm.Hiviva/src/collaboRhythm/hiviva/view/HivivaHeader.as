@@ -21,6 +21,7 @@ package collaboRhythm.hiviva.view
 
 		override protected function initialize():void
 		{
+			this.verticalAlign = Header.VERTICAL_ALIGN_MIDDLE;
 			super.initialize();
 			if(this.title.length > 0) initTrueTitle();
 		}

@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 
+	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -47,12 +48,12 @@ package collaboRhythm.hiviva.view
 
 			this._messagesButton = new Button();
 			this._messagesButton.nameList.add(HivivaTheme.NONE_THEMED);
-			this._messagesButton.defaultIcon = new Image(Assets.getTexture("TopNavIconMessagesPng"));
+			this._messagesButton.defaultIcon = new Image(HivivaAssets.TOPNAV_ICON_MESSAGES);
 			this._messagesButton.addEventListener(Event.TRIGGERED , messagesButtonHandler);
 
 			this._badgesButton = new Button();
 			this._badgesButton.nameList.add(HivivaTheme.NONE_THEMED);
-			this._badgesButton.defaultIcon = new Image(Assets.getTexture("TopNavIconBadgesPng"));
+			this._badgesButton.defaultIcon = new Image(HivivaAssets.TOPNAV_ICON_BADGES);
 			this._badgesButton.addEventListener(Event.TRIGGERED , rewardsButtonHandler);
 
 			this._header.rightItems =  new <DisplayObject>[this._messagesButton,this._badgesButton];

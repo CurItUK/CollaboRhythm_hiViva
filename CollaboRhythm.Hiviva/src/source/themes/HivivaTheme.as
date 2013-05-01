@@ -50,6 +50,7 @@ package source.themes
 
 {
 
+	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -113,6 +114,8 @@ package source.themes
 	import feathers.core.DisplayListWatcher;
 
 	import feathers.core.FeathersControl;
+	import feathers.core.ITextEditor;
+	import feathers.core.ITextRenderer;
 
 	import feathers.core.PopUpManager;
 
@@ -123,7 +126,6 @@ package source.themes
 	import feathers.display.TiledImage;
 
 	import feathers.layout.VerticalLayout;
-	import feathers.skins.ImageStateValueSelector;
 
 	import feathers.skins.ImageStateValueSelector;
 
@@ -141,12 +143,12 @@ package source.themes
 	import flash.display.BitmapData;
 
 	import flash.geom.Rectangle;
+	import flash.text.Font;
 
 	import flash.text.TextFormat;
 
 
 	import starling.core.Starling;
-	import starling.display.BlendMode;
 
 	import starling.display.DisplayObject;
 
@@ -164,7 +166,6 @@ package source.themes
 	import starling.textures.Texture;
 
 	import starling.textures.TextureAtlas;
-	import starling.textures.TextureSmoothing;
 
 
 	public class HivivaTheme extends DisplayListWatcher
@@ -353,6 +354,12 @@ package source.themes
 
 		protected var buttonHomeSkinTexture:Texture;
 
+		protected var buttonBackSkinTexture:Texture;
+
+		protected var buttonCloseSkinTexture:Texture;
+
+
+		protected var inputFieldSkinTexture:Scale9Textures;
 
 
 		protected var pickerListButtonIconTexture:Texture;
@@ -590,7 +597,7 @@ package source.themes
 
 
 			//this.primaryBackgroundTexture = this.atlas.getTexture("primary-background");
-			this.primaryBackgroundTexture = Assets.getTexture("FixedBasePng");
+			this.primaryBackgroundTexture = HivivaAssets.FIXED_BASE;
 
 
 			const backgroundSkinTexture:Texture = this.atlas.getTexture("background-skin");
@@ -610,21 +617,28 @@ package source.themes
 			this.backgroundFocusedSkinTextures = new Scale9Textures(backgroundFocusedSkinTexture, DEFAULT_SCALE9_GRID);
 
 
-			this.buttonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-up-skin"), BUTTON_SCALE9_GRID);
+			this.buttonUpSkinTextures = new Scale9Textures(HivivaAssets.BUTTON, new Rectangle(22,22,32,32));
 			this.buttonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-down-skin"), BUTTON_SCALE9_GRID);
 			this.buttonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-disabled-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-up-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-disabled-skin"), BUTTON_SCALE9_GRID);
 
-			this.buttonFooterTexture = Assets.getTexture("FooterIconBasePng");
-			this.buttonFooterActiveTexture = Assets.getTexture("FooterIconActivePng");
+			this.buttonFooterTexture = HivivaAssets.FOOTER_ICON_BASE;
+			this.buttonFooterActiveTexture = HivivaAssets.FOOTER_ICON_ACTIVE;
 
-			this.buttonSideNavTexture = Assets.getTexture("SideNavBasePng");
+			this.buttonSideNavTexture = HivivaAssets.SIDENAV_BASE;
 
-			this.buttonPatientProfileNavTexture = new Scale9Textures(Assets.getTexture("PatientProfileNavButtonPng"), new Rectangle(0,0,72,72));
+			this.buttonPatientProfileNavTexture = new Scale9Textures(HivivaAssets.PATIENTPROFILENAV_BUTTON, new Rectangle(0,0,72,72));
 
-			this.buttonHomeSkinTexture = Assets.getTexture("FooterIconHomePng");
+			this.buttonHomeSkinTexture = HivivaAssets.FOOTER_ICON_HOME;
 
+			this.buttonBackSkinTexture = HivivaAssets.BACK_BUTTON;
+
+			this.buttonCloseSkinTexture = HivivaAssets.CLOSE_BUTTON;
+
+
+
+			this.inputFieldSkinTexture = new Scale9Textures(HivivaAssets.INPUT_FIELD, new Rectangle(11,11,32,32));
 
 
 
@@ -652,17 +666,13 @@ package source.themes
 			this.radioSelectedDisabledIconTexture = this.atlas.getTexture("radio-selected-disabled-icon");
 
 
-			this.checkUpIconTexture = backgroundSkinTexture;
+			this.checkUpIconTexture = HivivaAssets.TICK_BOX;
+			this.checkDownIconTexture = HivivaAssets.TICK_BOX_ACTIVE;
 
-			this.checkDownIconTexture = backgroundDownSkinTexture;
-
-			this.checkDisabledIconTexture = backgroundDisabledSkinTexture;
-
-			this.checkSelectedUpIconTexture = this.atlas.getTexture("check-selected-up-icon");
-
-			this.checkSelectedDownIconTexture = this.atlas.getTexture("check-selected-down-icon");
-
-			this.checkSelectedDisabledIconTexture = this.atlas.getTexture("check-selected-disabled-icon");
+//			this.checkDisabledIconTexture = backgroundDisabledSkinTexture;
+//			this.checkSelectedUpIconTexture = this.atlas.getTexture("check-selected-up-icon");
+//			this.checkSelectedDownIconTexture = this.atlas.getTexture("check-selected-down-icon");
+//			this.checkSelectedDisabledIconTexture = this.atlas.getTexture("check-selected-disabled-icon");
 
 
 			this.pageIndicatorSelectedSkinTexture = this.atlas.getTexture("page-indicator-selected-skin");
@@ -740,16 +750,21 @@ package source.themes
 
 			this.setInitializerForClass(Label, HeaderLightInitializer, "header-light");
 			this.setInitializerForClass(Label, HeaderBoldInitializer, "header-bold");
+			this.setInitializerForClass(Label, inputLabelInitializer, "input-label");
 			this.setInitializerForClass(Label, labelInitializer);
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
 					BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
 
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
+			this.setInitializerForClass(ScrollText, popupScrollTextInitializer, "popup-text");
 
 			this.setInitializerForClass(Button, buttonInitializer);
 
 			this.setInitializerForClass(Button, nothingInitializer, NONE_THEMED);
+			this.setInitializerForClass(Button, homeButtonInitializer, "home-button");
+			this.setInitializerForClass(Button, backButtonInitializer, "back-button");
+			this.setInitializerForClass(Button, closeButtonInitializer, "close-button");
 
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
@@ -830,7 +845,6 @@ package source.themes
 
 			this.setInitializerForClass(GroupedList, insetGroupedListInitializer,
 					GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
-
 		}
 
 
@@ -963,24 +977,27 @@ package source.themes
 		protected function HeaderLightInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoLight", 44 * this.scale, 0x293d54);
+			label.textRendererProperties.textFormat = new TextFormat("ExoLight", Math.round(44 * this.scale), 0x293d54);
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
-
 
 		protected function HeaderBoldInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 44 * this.scale, 0x293d54);
+			label.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(44 * this.scale), 0x293d54);
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
-
 		protected function labelInitializer(label:Label):void
 		{
-
 			label.textRendererProperties.textFormat = this.smallLightTextFormat;
+		}
 
+		protected function inputLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(30 * this.scale), 0x495c72);
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
 
@@ -994,13 +1011,18 @@ package source.themes
 
 		protected function scrollTextInitializer(text:ScrollText):void
 		{
-
 			text.textFormat = this.smallLightTextFormat;
-
 			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
-
 			text.paddingRight = 36 * this.scale;
+		}
 
+		protected function popupScrollTextInitializer(text:ScrollText):void
+		{
+			text.embedFonts = true;
+			text.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x2d435c);
+			text.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
+			text.paddingRight = 36 * this.scale;
 		}
 
 
@@ -1008,29 +1030,105 @@ package source.themes
 		{
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
 			skinSelector.defaultValue = this.buttonUpSkinTextures;
-			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
-			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
-			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
-			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+//			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
+//			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+//			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+//			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
 			skinSelector.imageProperties =
 			{
-				width: 60 * this.scale,
-				height: 60 * this.scale,
+				width: 76 * this.scale,
+				height: 76 * this.scale,
 				textureScale: this.scale
 			};
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.defaultLabelProperties.textFormat = this.smallUIDarkTextFormat;
-			button.disabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
-			button.selectedDisabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
+			var format:TextFormat = new TextFormat("ExoBold", Math.round(24 * this.scale), 0x6d7e91);
+			button.defaultLabelProperties.embedFonts = true;
+			button.defaultLabelProperties.textFormat = format;
+//			button.disabledLabelProperties.embedFonts = true;
+//			button.disabledLabelProperties.textFormat = format;
+//			button.selectedDisabledLabelProperties.embedFonts = true;
+//			button.selectedDisabledLabelProperties.textFormat = format;
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
 			button.gap = 12 * this.scale;
-			button.minWidth = button.minHeight = 60 * this.scale;
+			button.minWidth = button.minHeight = 76 * this.scale;
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
+
+		protected function homeButtonInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.buttonHomeSkinTexture.width;
+			var skinHeight:Number = this.buttonHomeSkinTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonHomeSkinTexture;
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.minWidth = skinWidth * this.scale;
+			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = skinWidth * this.scale;
+			button.minTouchHeight = skinHeight * this.scale;
+		}
+
+		protected function backButtonInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.buttonBackSkinTexture.width;
+			var skinHeight:Number = this.buttonBackSkinTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonBackSkinTexture;
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.defaultLabelProperties.embedFonts = true;
+			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", Math.round(24 * this.scale), 0xb9c4cd);
+			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,-1.5,0x000000,0.5,0);
+
+			button.labelOffsetX = 8 * this.scale;
+			button.labelOffsetY = -5 * this.scale;
+
+			button.minWidth = skinWidth * this.scale;
+			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = skinWidth * this.scale;
+			button.minTouchHeight = skinHeight * this.scale;
+		}
+
+		protected function closeButtonInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.buttonCloseSkinTexture.width;
+			var skinHeight:Number = this.buttonCloseSkinTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonCloseSkinTexture;
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.minWidth = skinWidth * this.scale;
+			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = skinWidth * this.scale;
+			button.minTouchHeight = skinHeight * this.scale;
+		}
+
+
 
 		protected function homeFooterGroupInitializer(button:Button):void
 		{
@@ -1627,45 +1725,29 @@ package source.themes
 
 		protected function checkInitializer(check:Check):void
 		{
-
 			const iconSelector:ImageStateValueSelector = new ImageStateValueSelector();
-
 			iconSelector.defaultValue = this.checkUpIconTexture;
-
-			iconSelector.defaultSelectedValue = this.checkSelectedUpIconTexture;
-
+			iconSelector.defaultSelectedValue = this.checkDownIconTexture;
 			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DOWN, false);
-
-			iconSelector.setValueForState(this.checkDisabledIconTexture, Button.STATE_DISABLED, false);
-
-			iconSelector.setValueForState(this.checkSelectedDownIconTexture, Button.STATE_DOWN, true);
-
-			iconSelector.setValueForState(this.checkSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
-
+			iconSelector.setValueForState(this.checkUpIconTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.checkUpIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DISABLED, true);
 			iconSelector.imageProperties =
-
 			{
-
 				scaleX: this.scale,
-
 				scaleY: this.scale
-
 			};
 
 			check.stateToIconFunction = iconSelector.updateValue;
-
-
-			check.defaultLabelProperties.textFormat = this.smallUILightTextFormat;
-
-			check.disabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
-
-			check.selectedDisabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
-
-
+			var format:TextFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x4c5f76);
+			check.defaultLabelProperties.embedFonts = true;
+			check.defaultLabelProperties.textFormat = format;
+			check.disabledLabelProperties.embedFonts = true;
+			check.disabledLabelProperties.textFormat = format;
+			check.selectedDisabledLabelProperties.embedFonts = true;
+			check.selectedDisabledLabelProperties.textFormat = format;
 			check.gap = 12 * this.scale;
-
 			check.minTouchWidth = check.minTouchHeight = 88 * this.scale;
-
 		}
 
 
@@ -1732,15 +1814,12 @@ package source.themes
 		protected function textInputInitializer(input:TextInput):void
 		{
 
-			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
-
+			const backgroundSkin:Scale9Image = new Scale9Image(this.inputFieldSkinTexture, this.scale);
 			backgroundSkin.width = 264 * this.scale;
-
 			backgroundSkin.height = 60 * this.scale;
-
 			input.backgroundSkin = backgroundSkin;
 
-
+/*
 			const backgroundDisabledSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
 
 			backgroundDisabledSkin.width = 264 * this.scale;
@@ -1757,22 +1836,26 @@ package source.themes
 			backgroundFocusedSkin.height = 60 * this.scale;
 
 			input.backgroundFocusedSkin = backgroundFocusedSkin;
-
+*/
 
 			input.minWidth = input.minHeight = 60 * this.scale;
-
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
-
 			input.paddingTop = input.paddingBottom = 12 * this.scale;
-
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
-
-			input.textEditorProperties.fontFamily = "Helvetica";
-
-			input.textEditorProperties.fontSize = 30 * this.scale;
-
-			input.textEditorProperties.color = LIGHT_TEXT_COLOR;
-
+			// TODO : could possibly create custom class for input texts where we have a hidden input with a CHANGED listener that then writes to a standard textfield to show custom fonts
+			input.textEditorFactory = function():ITextEditor
+			{
+			    var editor:StageTextTextEditor = new StageTextTextEditor();
+			    editor.fontFamily = "Helvetica Neue,Helvetica";
+			    editor.fontSize = 25 * scale;
+			    editor.color = 0x283c53;
+			    return editor;
+			};
+			/*
+			input.textEditorProperties.fontName = "ExoLight";
+			input.textEditorProperties.fontSize = 25 * this.scale;
+			input.textEditorProperties.color = 0x283c53;
+			*/
 		}
 
 

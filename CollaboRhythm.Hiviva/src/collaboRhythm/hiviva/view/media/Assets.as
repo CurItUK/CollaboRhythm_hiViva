@@ -84,7 +84,31 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/patient-profile-nav-button-pattern.png")]
 		public static const PatientProfileNavButtonPatternPng:Class;
 
+		[Embed(source="/assets/images/temp/back-button.png")]
+		public static const BackButtonPng:Class;
+
+		// forms
+
+		[Embed(source="/assets/images/temp/button.png")]
+		public static const ButtonPng:Class;
+
+		[Embed(source="/assets/images/temp/input_field.png")]
+		public static const InputFieldPng:Class;
+
+		[Embed(source="/assets/images/temp/tick_box.png")]
+		public static const TickBoxPng:Class;
+
+		[Embed(source="/assets/images/temp/tick_box_active.png")]
+		public static const TickBoxActivePng:Class;
+
+		[Embed(source="/assets/images/temp/popup_panel.png")]
+		public static const PopupPanelPng:Class;
+
+		[Embed(source="/assets/images/temp/close_button.png")]
+		public static const CloseButtonPng:Class;
+
 		//front facing screen Items
+
 		[Embed(source="/assets/images/temp/clockFace.png")]
 		public static const ClockFacePng:Class;
 
