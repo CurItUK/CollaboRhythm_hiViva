@@ -6,6 +6,10 @@ package collaboRhythm.hiviva.global
 
 	public class HivivaAssets
 	{
+		public static const SPLASH_SCREEN_BG:Texture						= Assets.getTexture("SplashScreenBgJpg");
+		public static const LOGO:Texture									= Assets.getTexture("LogoPng");
+		public static const SPLASH_BUTTON_PATIENT:Texture					= Assets.getTexture("SplashButtonPatientPng");
+		public static const SPLASH_BUTTON_HCP:Texture						= Assets.getTexture("SplashButtonHcpPng");
 		public static const FIXED_BASE:Texture								= Assets.getTexture("FixedBasePng");
 		public static const SETTING_EFFECT:Texture							= Assets.getTexture("SettingEffectPng");
 		public static const SCREEN_BASE:Texture								= Assets.getTexture("BasePng");

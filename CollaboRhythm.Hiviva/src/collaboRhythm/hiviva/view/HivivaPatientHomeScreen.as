@@ -21,7 +21,7 @@ package collaboRhythm.hiviva.view
 		private var _messagesButton:Button;
 		private var _badgesButton:Button;
 
-		public function HivivaPatientHomeScreenScreen()
+		public function HivivaPatientHomeScreenScreen():void
 		{
 
 		}

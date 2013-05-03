@@ -18,6 +18,9 @@ package collaboRhythm.hiviva.view
 	import flash.events.SQLEvent;
 
 	import flash.filesystem.File;
+	import flash.text.TextFormat;
+
+	import source.themes.HivivaTheme;
 
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
@@ -27,15 +30,17 @@ package collaboRhythm.hiviva.view
 	public class HivivaPatientTestResultsScreen extends Screen
 	{
 		private var _header:HivivaHeader;
-		private var _cd4Count:Sprite;
-		private var _cd4:Sprite;
-		private var _viralLoad:Sprite;
-		private var _date:Sprite;
+		private var _cd4Count:LabelAndInput;
+		private var _cd4:LabelAndInput;
+		private var _viralLoad:LabelAndInput;
+		private var _date:LabelAndInput;
 		private var _cancelButton:Button;
 		private var _submitButton:Button;
 		private var _backButton:Button;
 		private var _sqConn:SQLConnection;
 		private var _sqStatement:SQLStatement;
+
+		private var _rightLabelFormat:TextFormat;
 
 		public function HivivaPatientTestResultsScreen()
 		{
@@ -44,31 +49,42 @@ package collaboRhythm.hiviva.view
 
 		override protected function draw():void
 		{
+			var padding:Number = (32 * this.dpiScale);
+
 			super.draw();
+			this._rightLabelFormat = new TextFormat("ExoRegular", Math.round(24 * this.dpiScale), 0x495c72);
 
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
 
-			layoutInputWithLabelAndUnits(this._cd4Count);
-			layoutInputWithLabelAndUnits(this._cd4);
-			layoutInputWithLabelAndUnits(this._viralLoad);
-			layoutInputWithLabelAndUnits(this._date);
+			this._cd4Count.y = this._header.y + this._header.height;
+			this._cd4Count._labelLeft.text = "CD4 Count:";
+			this._cd4Count._labelRight.text = "Cells/mm3";
+			labelAndInputDrawProperties(this._cd4Count);
 
-			this._cancelButton.label = "Cancel";
-			this._submitButton.label = "Save";
-			this._backButton.label = "Back";
+			this._cd4.y = this._cd4Count.y + this._cd4Count.height;
+			this._cd4._labelLeft.text = "CD4:";
+			this._cd4._labelRight.text = "%";
+			labelAndInputDrawProperties(this._cd4);
 
-			var items:Vector.<DisplayObject> = new Vector.<DisplayObject>();
-			items.push(this._cd4Count);
-			items.push(this._cd4);
-			items.push(this._viralLoad);
-			items.push(this._date);
-			items.push(this._cancelButton);
+			this._viralLoad.y = this._cd4.y + this._cd4.height;
+			this._viralLoad._labelLeft.text = "Viral load:";
+			this._viralLoad._labelRight.text = "Copies/ML";
+			labelAndInputDrawProperties(this._viralLoad);
 
-			autoLayout(items, 50 * this.dpiScale);
+			this._date.y = this._viralLoad.y + this._viralLoad.height;
+			this._date._labelLeft.textRendererProperties.multiline = true;
+			this._date._labelLeft.text = "Date of \nlast test:";
+			this._date._labelRight.text = "Cal";
+			labelAndInputDrawProperties(this._date);
 
-			this._submitButton.y = this._cancelButton.y;
-			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + (20 * this.dpiScale);
+			this._submitButton.validate();
+			this._cancelButton.validate();
+			this._backButton.validate();
+
+			this._cancelButton.y = this._submitButton.y = this._date.y + this._date.height;
+			this._cancelButton.x = padding;
+			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + padding;
 
 			populateOldData();
 		}
@@ -81,28 +97,52 @@ package collaboRhythm.hiviva.view
 			this._header.title = "Test Results";
 			addChild(this._header);
 
-			this._cd4Count = new Sprite();
-			this._cd4 = new Sprite();
-			this._viralLoad = new Sprite();
-			this._date = new Sprite();
+			this._cd4Count = new LabelAndInput();
+			this._cd4Count.scale = this.dpiScale;
+			this._cd4Count.labelStructure = "leftAndRight";
+			addChild(this._cd4Count);
 
-			createInputWithLabelAndUnits(this._cd4Count,"CD4 Count:","Cells/mm3");
-			createInputWithLabelAndUnits(this._cd4,"CD4:","%");
-			createInputWithLabelAndUnits(this._viralLoad,"Viral load:","Copies/ML");
-			createInputWithLabelAndUnits(this._date,"Date of latest test:","Cal");
+			this._cd4 = new LabelAndInput();
+			this._cd4.scale = this.dpiScale;
+			this._cd4.labelStructure = "leftAndRight";
+			addChild(this._cd4);
+
+			this._viralLoad = new LabelAndInput();
+			this._viralLoad.scale = this.dpiScale;
+			this._viralLoad.labelStructure = "leftAndRight";
+			addChild(this._viralLoad);
+
+			this._date = new LabelAndInput();
+			this._date.scale = this.dpiScale;
+			this._date.labelStructure = "leftAndRight";
+			addChild(this._date);
 
 			this._cancelButton = new Button();
+			this._cancelButton.label = "Cancel";
 			this._cancelButton.addEventListener(Event.TRIGGERED, cancelButtonClick);
 			addChild(this._cancelButton);
 
 			this._submitButton = new Button();
+			this._submitButton.label = "Save";
 			this._submitButton.addEventListener(Event.TRIGGERED, submitButtonClick);
 			addChild(this._submitButton);
 
 			this._backButton = new Button();
+			this._backButton.name = "back-button";
+			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
+		}
+
+		private function labelAndInputDrawProperties(landi:LabelAndInput):void
+		{
+			landi.width = this.actualWidth;
+			landi._labelRight.textRendererProperties.textFormat = this._rightLabelFormat;
+			landi._input.width = this.actualWidth * 0.3;
+			landi._input.validate();
+			landi._input.x = (this.actualWidth * 0.5) - (landi._input.width / 2);
+			landi.validate();
 		}
 
 		private function cancelButtonClick(e:Event):void
@@ -119,11 +159,6 @@ package collaboRhythm.hiviva.view
 		{
 			// TODO : display confirmation dialogue
 
-			var cd4CountInput:TextInput = this._cd4Count.getChildByName("input") as TextInput;
-			var cd4Input:TextInput = this._cd4.getChildByName("input") as TextInput;
-			var viralLoadInput:TextInput = this._viralLoad.getChildByName("input") as TextInput;
-			var dateInput:TextInput = this._date.getChildByName("input") as TextInput;
-
 			//trace("UPDATE test_results SET cd4_count='" + cd4CountInput.text + "', cd4='" + cd4Input.text + "', viral_load='" + viralLoadInput.text + "', date_of_last_test='" + dateInput.text + "'");
 
 			var dbFile:File = File.applicationStorageDirectory;
@@ -133,7 +168,7 @@ package collaboRhythm.hiviva.view
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "UPDATE test_results SET cd4_count=" + cd4CountInput.text + ", cd4=" + cd4Input.text + ", viral_load=" + viralLoadInput.text + ", date_of_last_test=" + dateInput.text;
+			this._sqStatement.text = "UPDATE test_results SET cd4_count=" + this._cd4Count._input.text + ", cd4=" + this._cd4._input.text + ", viral_load=" + this._viralLoad._input.text + ", date_of_last_test=" + this._date._input.text;
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
@@ -162,101 +197,45 @@ package collaboRhythm.hiviva.view
 			//trace(sqlRes.data[0].viral_load);
 			//trace(sqlRes.data[0].date_of_last_test);
 
-			var cd4CountInput:TextInput = this._cd4Count.getChildByName("input") as TextInput;
 			try
 			{
-				cd4CountInput.text = sqlRes.data[0].cd4_count;
+				this._cd4Count._input.text = sqlRes.data[0].cd4_count;
 			}
 			catch(e:Error)
 			{
 				//trace("fail");
-				cd4CountInput.text = "";
+				this._cd4Count._input.text = "";
 			}
 
-			var cd4Input:TextInput = this._cd4.getChildByName("input") as TextInput;
 			try
 			{
-				cd4Input.text = sqlRes.data[0].cd4;
+				this._cd4._input.text = sqlRes.data[0].cd4;
 			}
 			catch(e:Error)
 			{
 				//trace("fail");
-				cd4Input.text = "";
+				this._cd4._input.text = "";
 			}
 
-			var viralLoadInput:TextInput = this._viralLoad.getChildByName("input") as TextInput;
 			try
 			{
-				viralLoadInput.text = sqlRes.data[0].viral_load;
+				this._viralLoad._input.text = sqlRes.data[0].viral_load;
 			}
 			catch(e:Error)
 			{
 				//trace("fail");
-				viralLoadInput.text = "";
+				this._viralLoad._input.text = "";
 			}
 
-			var dateInput:TextInput = this._date.getChildByName("input") as TextInput;
 			try
 			{
-				dateInput.text = sqlRes.data[0].date_of_last_test;
+				this._date._input.text = sqlRes.data[0].date_of_last_test;
 			}
 			catch(e:Error)
 			{
 				//trace("fail");
-				dateInput.text = "";
+				this._date._input.text = "";
 			}
-		}
-
-		private function createInputWithLabelAndUnits(inputContainer:Sprite, labelText:String, unitsText:String):void
-		{
-			var label:Label = new Label(),
-				units:Label = new Label(),
-				input:TextInput = new TextInput();
-
-			label.name = "label";
-			units.name = "units";
-			input.name = "input";
-
-			label.text = labelText;
-			units.text = unitsText;
-
-			inputContainer.addChild(label);
-			inputContainer.addChild(units);
-			inputContainer.addChild(input);
-
-			inputContainer.name = name;
-			addChild(inputContainer);
-		}
-
-		private function layoutInputWithLabelAndUnits(inputContainer:Sprite):void
-		{
-			var label:Label = inputContainer.getChildByName("label") as Label,
-				units:Label = inputContainer.getChildByName("units") as Label,
-				input:TextInput = inputContainer.getChildByName("input") as TextInput;
-
-			label.width = this.actualWidth / 3;
-			units.width = this.actualWidth / 3;
-			input.width = this.actualWidth / 3;
-
-			label.validate();
-			units.validate();
-			input.validate();
-
-			input.x = label.x + label.width;
-			units.x = input.x + input.width;
-		}
-
-		private function autoLayout(items:Vector.<DisplayObject>, gap:Number):void
-		{
-			var bounds:ViewPortBounds = new ViewPortBounds();
-			bounds.x = 0;
-			bounds.y = this._header.height;
-			bounds.maxHeight = this.actualHeight - this._header.height;
-			bounds.maxWidth = this.actualWidth;
-
-			var contentLayout:VerticalLayout = new VerticalLayout();
-			contentLayout.gap = gap;
-			contentLayout.layout(items,bounds);
 		}
 	}
 }

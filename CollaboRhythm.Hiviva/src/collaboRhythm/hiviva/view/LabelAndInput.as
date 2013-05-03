@@ -64,12 +64,11 @@ package collaboRhythm.hiviva.view
 					fullHeight = this._input.height > this._labelRight.height ? this._input.height : this._labelRight.height;
 					break;
 				default :
-					//case "leftAndRight" :
+					//case "leftAndRight" : this._input.x needs to be set externally
 					this._labelLeft.validate();
-					this._labelLeft.x = scaledPadding;
+					this._labelLeft.x = this._input.x - this._labelLeft.width - scaledPadding;
 					this._labelRight.validate();
-					this._labelRight.x = this.actualWidth - scaledPadding - this._labelRight.width;
-					// manually position input externally
+					this._labelRight.x = this._input.x + this._input.width + scaledPadding;
 					this._labelLeft.y = (this._input.y + this._input.height / 2) - (this._labelLeft.height / 2);
 					this._labelRight.y = (this._input.y + this._input.height / 2) - (this._labelRight.height / 2);
 					fullHeight = this._input.height > this._labelLeft.height ? this._input.height : this._labelLeft.height;

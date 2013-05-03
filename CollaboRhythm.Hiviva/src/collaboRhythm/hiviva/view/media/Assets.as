@@ -15,6 +15,18 @@ package collaboRhythm.hiviva.view.media
 
 		// BACKGROUND ASSETS
 
+		[Embed(source="/assets/images/temp/splash_bg.jpg")]
+		public static const SplashScreenBgJpg:Class;
+
+		[Embed(source="/assets/images/temp/logo.png")]
+		public static const LogoPng:Class;
+
+		[Embed(source="/assets/images/temp/splash_button_01.png")]
+		public static const SplashButtonPatientPng:Class;
+
+		[Embed(source="/assets/images/temp/splash_button_02.png")]
+		public static const SplashButtonHcpPng:Class;
+
 		[Embed(source="/assets/images/temp/fixed_base.png")]
 		public static const FixedBasePng:Class;
 

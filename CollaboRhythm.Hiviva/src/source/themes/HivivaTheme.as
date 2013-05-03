@@ -991,7 +991,9 @@ package source.themes
 
 		protected function labelInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.smallLightTextFormat;
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x293d54);
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
 		protected function inputLabelInitializer(label:Label):void
@@ -1691,45 +1693,55 @@ package source.themes
 
 		protected function radioInitializer(radio:Radio):void
 		{
-
 			const iconSelector:ImageStateValueSelector = new ImageStateValueSelector();
-
-			iconSelector.defaultValue = this.radioUpIconTexture;
-
-			iconSelector.defaultSelectedValue = this.radioSelectedUpIconTexture;
-
-			iconSelector.setValueForState(this.radioDownIconTexture, Button.STATE_DOWN, false);
-
-			iconSelector.setValueForState(this.radioDisabledIconTexture, Button.STATE_DISABLED, false);
-
-			iconSelector.setValueForState(this.radioSelectedDownIconTexture, Button.STATE_DOWN, true);
-
-			iconSelector.setValueForState(this.radioSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
-
+			iconSelector.defaultValue = this.checkUpIconTexture;
+			iconSelector.defaultSelectedValue = this.checkDownIconTexture;
+			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.checkUpIconTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.checkUpIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DISABLED, true);
 			iconSelector.imageProperties =
-
 			{
-
 				scaleX: this.scale,
-
 				scaleY: this.scale
-
 			};
 
 			radio.stateToIconFunction = iconSelector.updateValue;
-
-
-			radio.defaultLabelProperties.textFormat = this.smallUILightTextFormat;
-
-			radio.disabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
-
-			radio.selectedDisabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
-
-
+			var format:TextFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x4c5f76);
+			radio.defaultLabelProperties.embedFonts = true;
+			radio.defaultLabelProperties.textFormat = format;
+			radio.disabledLabelProperties.embedFonts = true;
+			radio.disabledLabelProperties.textFormat = format;
+			radio.selectedDisabledLabelProperties.embedFonts = true;
+			radio.selectedDisabledLabelProperties.textFormat = format;
+			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			radio.gap = 12 * this.scale;
-
+			radio.padding = 32 * this.scale;
+			radio.paddingTop = this.scale;
 			radio.minTouchWidth = radio.minTouchHeight = 88 * this.scale;
 
+			/*
+			const iconSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			iconSelector.defaultValue = this.radioUpIconTexture;
+			iconSelector.defaultSelectedValue = this.radioSelectedUpIconTexture;
+			iconSelector.setValueForState(this.radioDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.radioDisabledIconTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.radioSelectedDownIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.radioSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
+			iconSelector.imageProperties =
+			{
+				scaleX: this.scale,
+				scaleY: this.scale
+			};
+			radio.stateToIconFunction = iconSelector.updateValue;
+
+			radio.defaultLabelProperties.textFormat = this.smallUILightTextFormat;
+			radio.disabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
+			radio.selectedDisabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
+
+			radio.gap = 12 * this.scale;
+			radio.minTouchWidth = radio.minTouchHeight = 88 * this.scale;
+*/
 		}
 
 

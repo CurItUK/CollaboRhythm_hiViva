@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.galleryscreens
 {
+	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.ScreenBase;
 
@@ -7,20 +8,35 @@ package collaboRhythm.hiviva.view.galleryscreens
 	import feathers.controls.Header;
 	import feathers.controls.Label;
 	import feathers.controls.List;
+	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.Scroller;
 	import feathers.data.ListCollection;
+	import feathers.display.Scale9Image;
 	import feathers.layout.TiledRowsLayout;
+	import feathers.textures.Scale9Textures;
 
 	import flash.events.FileListEvent;
 	import flash.filesystem.File;
+	import flash.geom.Rectangle;
 
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
 
-	public class SportsGalleryScreen extends ScreenBase
+	public class SportsGalleryScreen extends Screen
 	{
+		private var _category:String;
+		public function get category():String
+		{
+			return this._category;
+		}
+
+		public function set category(value:String):void
+		{
+			this._category = value;
+		}
+
 		private var _header:Header;
 		private var _loadText:Label;
 		private var _cancelButton:Button;
@@ -145,38 +161,6 @@ package collaboRhythm.hiviva.view.galleryscreens
 			{
 				trace("all images loaded");
 				removeChild(this._loadText,true);
-
-				// Feathers bug! implemented as example documentation, throws "ArgumentError: horizontalScrollPosition cannot be NaN."
-				/*
-				const layout:TiledRowsLayout = new TiledRowsLayout();
-				layout.paging = TiledRowsLayout.PAGING_VERTICAL;
-				layout.gap = 0;
-				layout.paddingTop = 0;
-				layout.paddingRight = 0;
-				layout.paddingBottom = 0;
-				layout.paddingLeft = 0;
-				layout.horizontalAlign = TiledRowsLayout.HORIZONTAL_ALIGN_CENTER;
-				layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_MIDDLE;
-				layout.tileHorizontalAlign = TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER;
-				layout.tileVerticalAlign = TiledRowsLayout.TILE_VERTICAL_ALIGN_MIDDLE;
-
-				this._container = new ScrollContainer();
-				this._container.layout = layout;
-				this._container.scrollerProperties.snapToPages = TiledRowsLayout.PAGING_VERTICAL;
-				this._container.scrollerProperties.snapScrollPositionsToPixels = true;
-				this.addChild(this._container);
-
-				for(var i:int = 0; i < this._photoTotal; i++)
-				{
-					image = items[i] as GalleryItem;
-					this._container.addChild(image);
-				}
-
-				this._container.y = this._header.height;
-				this._container.width = this.actualWidth;
-				this._container.height = this.actualHeight - this._container.y;
-				*/
-
 			}
 			// TODO: quick fix below, needs to be replaced
 			var container:Sprite = new Sprite();

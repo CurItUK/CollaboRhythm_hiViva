@@ -21,6 +21,8 @@ package collaboRhythm.hiviva.view
 	import flash.data.SQLStatement;
 	import flash.events.SQLEvent;
 	import flash.filesystem.File;
+	import flash.text.TextFormat;
+
 	import mx.core.ByteArrayAsset;
 
 	import collaboRhythm.hiviva.view.HivivaHeader;
@@ -55,6 +57,8 @@ package collaboRhythm.hiviva.view
 		private var _requestPopup:VerticalCenteredPopUpContentManager;
 		private var _requestPopupContainer:FeathersControl;
 
+		private const PADDING:Number = 32;
+
 		public function HivivaPatientConnectToHcpScreen()
 		{
 
@@ -65,8 +69,17 @@ package collaboRhythm.hiviva.view
 			super.draw();
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
+			// reduce font size for large title
+			this._header._titleHolder1.textRendererProperties.textFormat = new TextFormat("ExoLight", Math.round(36 * this.dpiScale), 0x293d54);
+			this._header._titleHolder2.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(36 * this.dpiScale), 0x293d54);
+			this._header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
+			this._header.validate();
 
-			if(!this._hcpConnected)
+			if(this._hcpConnected)
+			{
+				drawResults();
+			}
+			else
 			{
 				drawHcpSearch();
 				drawRequestPopup();
@@ -75,9 +88,7 @@ package collaboRhythm.hiviva.view
 				this._requestConnectionButton.x = (this.actualWidth / 2) - (this._requestConnectionButton.width / 2);
 				this._requestConnectionButton.y = this.actualHeight - this._requestConnectionButton.height - (30 * this.dpiScale);
 			}
-			drawResults();
 
-			this._backButton.label = "Back";
 			this._backButton.validate();
 		}
 
@@ -102,6 +113,7 @@ package collaboRhythm.hiviva.view
 			if(this._hcpConnected)
 			{
 				trace("hcp is connected");
+				initResults(false);
 			}
 			else
 			{
@@ -109,9 +121,11 @@ package collaboRhythm.hiviva.view
 				initHcpSearch();
 				initRequestPopup();
 			}
-			initResults(!this._hcpConnected);
+
 
 			this._backButton = new Button();
+			this._backButton.name = "back-button";
+			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
@@ -140,10 +154,12 @@ package collaboRhythm.hiviva.view
 			this._radioGroup = new ToggleGroup();
 
 			this._emailRadio = new Radio();
+			this._emailRadio.label = "Provider's email address";
 			this._radioGroup.addItem(this._emailRadio);
 			addChild(this._emailRadio);
 
 			this._appIdRadio = new Radio();
+			this._appIdRadio.label = "Provider's app ID";
 			this._radioGroup.addItem(this._appIdRadio);
 			addChild(this._appIdRadio);
 
@@ -151,6 +167,7 @@ package collaboRhythm.hiviva.view
 			addChild(this._searchInput);
 
 			this._searchButton = new Button();
+			this._searchButton.label = "Connect";
 			this._searchButton.addEventListener(Event.TRIGGERED, doSearchHcp);
 			addChild(this._searchButton);
 
@@ -160,26 +177,28 @@ package collaboRhythm.hiviva.view
 
 		private function drawHcpSearch():void
 		{
-			var gap:Number = 30 * this.dpiScale;
-			this._emailRadio.label = "Provider's email address";
+			var scaledPadding:Number = PADDING * this.dpiScale;
+
 			this._emailRadio.validate();
-
-			this._appIdRadio.label = "Provider's app ID";
 			this._appIdRadio.validate();
-
 			this._searchInput.validate();
-
-			this._searchButton.label = "Connect";
 			this._searchButton.validate();
-
 			this._resultInfo.validate();
 
-			this._emailRadio.y = this._header.height + gap;
-			this._appIdRadio.y = this._emailRadio.y + this._emailRadio.height + gap;
-			this._searchInput.y = this._appIdRadio.y + this._appIdRadio.height + gap;
-			this._searchButton.y = this._searchInput.y;
-			this._searchButton.x = this._searchInput.x + this._searchInput.width + gap;
-			this._resultInfo.y = this._searchInput.y + this._searchInput.height + gap;
+			this._emailRadio.y = this._header.y + this._header.height + scaledPadding;
+
+			this._appIdRadio.y = this._emailRadio.y + this._emailRadio.height;
+
+			this._searchInput.y = this._appIdRadio.y + this._appIdRadio.height;
+			this._searchInput.x = scaledPadding;
+			this._searchInput.width = this.actualWidth - this._searchButton.width - (scaledPadding * 3);
+
+			this._searchButton.y = this._searchInput.y + (this._searchInput.height * 0.5) - (this._searchButton.height * 0.5);
+			this._searchButton.x = this._searchInput.x + this._searchInput.width + scaledPadding;
+
+			this._resultInfo.y = this._searchInput.y + this._searchInput.height + (scaledPadding * 0.5);
+			this._resultInfo.x = scaledPadding;
+			this._resultInfo.width = this.actualWidth - (scaledPadding * 2);
 		}
 
 		private function doSearchHcp(e:Event):void
@@ -235,26 +254,35 @@ package collaboRhythm.hiviva.view
 				{
 					currItem = XMLList(this._hcpFilteredList[listCount]);
 					
-					hcpCell = new HcpResultCell(currItem,(500 * this.dpiScale),this.dpiScale);
-					hcpCell._isResult = isResult;
+					hcpCell = new HcpResultCell();
+					hcpCell.hcpData = currItem;
+					hcpCell.isResult = isResult;
+					hcpCell.scale = this.dpiScale;
 					hcpCell.addEventListener(Event.CLOSE, deleteHcpRecord);
 					hcpCell.addEventListener(Event.REMOVED_FROM_STAGE, deleteHcpCell);
-					this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
 					this._hcpCellContainer.addChild(hcpCell);
+					this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
 				}
+				if (isResult) drawResults();
 			}
 		}
 
 		private function drawResults():void
 		{
 			var gap:Number = 30 * this.dpiScale,
-				yStartPosition:Number = this._hcpConnected ? this._header.y + this._header.height : this._resultInfo.y + this._resultInfo.height,
-				maxHeight:Number = this.actualHeight - yStartPosition;
+				yStartPosition:Number = this._hcpConnected ? this._header.y + this._header.height : this._resultInfo.y + this._resultInfo.height + gap,
+				maxHeight:Number = this.actualHeight - yStartPosition,
+				hcpCell:HcpResultCell;
 
 			this._hcpCellContainer.width = this.actualWidth;
 			this._hcpCellContainer.y = yStartPosition + gap;
 			this._hcpCellContainer.height = this._hcpConnected ? maxHeight : maxHeight - (this.actualHeight - this._requestConnectionButton.y);
-			//trace(this._hcpCellContainer.height);
+
+			for (var i:int = 0; i < this._hcpCellContainer.numChildren; i++)
+			{
+				hcpCell = this._hcpCellContainer.getChildAt(i) as HcpResultCell;
+				hcpCell.width = this.actualWidth;
+			}
 
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.gap = gap;

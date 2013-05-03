@@ -5,8 +5,8 @@ package collaboRhythm.hiviva.view
 
 	public class HivivaHeader extends Header
 	{
-		private var _titleHolder1:Label;
-		private var _titleHolder2:Label;
+		public var _titleHolder1:Label;
+		public var _titleHolder2:Label;
 
 		public function HivivaHeader()
 		{
@@ -28,13 +28,14 @@ package collaboRhythm.hiviva.view
 
 		private function initTrueTitle():void
 		{
-			var splitText:Array = this.title.split(" ",2);
+			var splitText:Array = this.title.split(" ");
 			this._titleHolder1 = new Label();
-			this._titleHolder1.name = "header-light";
-			this._titleHolder1.text = splitText[0];
+			this._titleHolder1.name = "header-bold";
+			//this._titleHolder1.text = splitText[0];
+			this._titleHolder1.text = splitText.shift();
 			this._titleHolder2 = new Label();
-			this._titleHolder2.name = "header-bold";
-			this._titleHolder2.text = " " + splitText[1];
+			this._titleHolder2.name = "header-light";
+			this._titleHolder2.text = " " + splitText.join(" ");
 			addChild(this._titleHolder1);
 			addChild(this._titleHolder2);
 		}
@@ -46,7 +47,7 @@ package collaboRhythm.hiviva.view
 			this.validate();
 			var trueTitleHeight:Number = this._titleHolder1.height > this._titleHolder2.height ? this._titleHolder1.height : this._titleHolder2.height;
 			var trueTitleWidth:Number = this._titleHolder1.width + this._titleHolder2.width;
-			this._titleHolder1.x = (this.actualWidth / 2) - (trueTitleWidth / 2);
+			this._titleHolder1.x = this.leftItemsWidth > 0 ? this.leftItemsWidth : (this.actualWidth / 2) - (trueTitleWidth / 2);
 			this._titleHolder2.x = this._titleHolder1.x + this._titleHolder1.width;
 			this._titleHolder1.y = this._titleHolder2.y = (this.actualHeight / 2) - (trueTitleHeight / 2);
 			this.title = "";
