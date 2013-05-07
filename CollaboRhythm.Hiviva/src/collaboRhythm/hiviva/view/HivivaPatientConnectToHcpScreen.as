@@ -9,9 +9,11 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.ScrollText;
+	import feathers.controls.Scroller;
 	import feathers.controls.TextInput;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.core.FeathersControl;
+	import feathers.core.PopUpManager;
 	import feathers.core.ToggleGroup;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
@@ -55,9 +57,9 @@ package collaboRhythm.hiviva.view
 		private var _sqConn:SQLConnection;
 		private var _sqStatement:SQLStatement;
 		private var _requestPopup:VerticalCenteredPopUpContentManager;
-		private var _requestPopupContainer:FeathersControl;
+		private var _requestPopupContainer:HivivaPopUp;
 
-		private const PADDING:Number = 32;
+		private const PADDING:Number = 20;
 
 		public function HivivaPatientConnectToHcpScreen()
 		{
@@ -70,10 +72,14 @@ package collaboRhythm.hiviva.view
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
 			// reduce font size for large title
-			this._header._titleHolder1.textRendererProperties.textFormat = new TextFormat("ExoLight", Math.round(36 * this.dpiScale), 0x293d54);
-			this._header._titleHolder2.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(36 * this.dpiScale), 0x293d54);
+			this._header._titleHolder1.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(36 * this.dpiScale), 0x293d54);
+			this._header._titleHolder2.textRendererProperties.textFormat = new TextFormat("ExoLight", Math.round(36 * this.dpiScale), 0x293d54);
 			this._header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
 			this._header.validate();
+
+			this._requestConnectionButton.validate();
+			this._requestConnectionButton.x = (this.actualWidth / 2) - (this._requestConnectionButton.width / 2);
+			this._requestConnectionButton.y = this.actualHeight - this._requestConnectionButton.height - (PADDING * this.dpiScale);
 
 			if(this._hcpConnected)
 			{
@@ -82,11 +88,9 @@ package collaboRhythm.hiviva.view
 			else
 			{
 				drawHcpSearch();
-				drawRequestPopup();
 
-				this._requestConnectionButton.validate();
-				this._requestConnectionButton.x = (this.actualWidth / 2) - (this._requestConnectionButton.width / 2);
-				this._requestConnectionButton.y = this.actualHeight - this._requestConnectionButton.height - (30 * this.dpiScale);
+				this._requestPopupContainer.width = 500 * dpiScale;
+				this._requestPopupContainer.validate();
 			}
 
 			this._backButton.validate();
@@ -96,11 +100,12 @@ package collaboRhythm.hiviva.view
 		{
 			super.initialize();
 
+			getXMLHcpData();
+
 			this._header = new HivivaHeader();
 			this._header.title = "Connect to a care provider";
 			addChild(this._header);
 
-			getXMLHcpData();
 			this._hcpCellContainer = new ScrollContainer();
 
 			this._requestConnectionButton = new Button();
@@ -119,7 +124,12 @@ package collaboRhythm.hiviva.view
 			{
 				trace("hcp is not connected");
 				initHcpSearch();
-				initRequestPopup();
+
+				this._requestPopupContainer = new HivivaPopUp();
+				this._requestPopupContainer.scale = this.dpiScale;
+				this._requestPopupContainer.confirmLabel = "Close";
+				this._requestPopupContainer.addEventListener(Event.COMPLETE, closePopup);
+				this._requestPopupContainer.addEventListener(Event.CLOSE, closePopup);
 			}
 
 
@@ -178,6 +188,7 @@ package collaboRhythm.hiviva.view
 		private function drawHcpSearch():void
 		{
 			var scaledPadding:Number = PADDING * this.dpiScale;
+			var horizontalAlign:Number = 32 * this.dpiScale;
 
 			this._emailRadio.validate();
 			this._appIdRadio.validate();
@@ -190,15 +201,15 @@ package collaboRhythm.hiviva.view
 			this._appIdRadio.y = this._emailRadio.y + this._emailRadio.height;
 
 			this._searchInput.y = this._appIdRadio.y + this._appIdRadio.height;
-			this._searchInput.x = scaledPadding;
-			this._searchInput.width = this.actualWidth - this._searchButton.width - (scaledPadding * 3);
+			this._searchInput.x = horizontalAlign;
+			this._searchInput.width = this.actualWidth - this._searchButton.width - (scaledPadding * 2) - horizontalAlign;
 
 			this._searchButton.y = this._searchInput.y + (this._searchInput.height * 0.5) - (this._searchButton.height * 0.5);
 			this._searchButton.x = this._searchInput.x + this._searchInput.width + scaledPadding;
 
 			this._resultInfo.y = this._searchInput.y + this._searchInput.height + (scaledPadding * 0.5);
-			this._resultInfo.x = scaledPadding;
-			this._resultInfo.width = this.actualWidth - (scaledPadding * 2);
+			this._resultInfo.x = horizontalAlign;
+			this._resultInfo.width = this.actualWidth - scaledPadding - horizontalAlign;
 		}
 
 		private function doSearchHcp(e:Event):void
@@ -208,8 +219,6 @@ package collaboRhythm.hiviva.view
 				searchListLength:int = searchList.length(),
 				searched:String = this._searchInput.text,
 				currItem:String;
-
-			if(searched.length == 0) return;
 
 			if(searchListLength > 0)
 			{
@@ -237,7 +246,11 @@ package collaboRhythm.hiviva.view
 				currItem:XMLList,
 				hcpCell:HcpResultCell;
 
-			if (isResult) this._resultInfo.text = resultsLength + " registered doctor" + (resultsLength > 1 ? "s" : "") + " found";
+			if (isResult)
+			{
+				this._resultInfo.text = resultsLength + " registered doctor" + (resultsLength > 1 ? "s" : "") + " found";
+				this._resultInfo.validate();
+			}
 			if(resultsLength > 0)
 			{
 				if(!contains(this._hcpCellContainer))
@@ -269,14 +282,22 @@ package collaboRhythm.hiviva.view
 
 		private function drawResults():void
 		{
-			var gap:Number = 30 * this.dpiScale,
-				yStartPosition:Number = this._hcpConnected ? this._header.y + this._header.height : this._resultInfo.y + this._resultInfo.height + gap,
-				maxHeight:Number = this.actualHeight - yStartPosition,
+			var scaledPadding:Number = PADDING * this.dpiScale,
+				yStartPosition:Number,
+				maxHeight:Number,
 				hcpCell:HcpResultCell;
 
+			yStartPosition = (this._hcpConnected ? this._header.y + this._header.height : this._resultInfo.y + this._resultInfo.height) + scaledPadding;
+			maxHeight = this.actualHeight - yStartPosition;
+
+			if(!this._hcpConnected)
+			{
+				maxHeight -= (this.actualHeight - this._requestConnectionButton.y) + scaledPadding;
+			}
+
 			this._hcpCellContainer.width = this.actualWidth;
-			this._hcpCellContainer.y = yStartPosition + gap;
-			this._hcpCellContainer.height = this._hcpConnected ? maxHeight : maxHeight - (this.actualHeight - this._requestConnectionButton.y);
+			this._hcpCellContainer.y = yStartPosition;
+			this._hcpCellContainer.height = maxHeight;
 
 			for (var i:int = 0; i < this._hcpCellContainer.numChildren; i++)
 			{
@@ -285,7 +306,7 @@ package collaboRhythm.hiviva.view
 			}
 
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.gap = gap;
+			layout.gap = scaledPadding;
 			this._hcpCellContainer.layout = layout;
 
 			this._hcpCellContainer.validate();
@@ -321,7 +342,8 @@ package collaboRhythm.hiviva.view
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
 
-			setRequestPopupLabel(hcpCell.name);
+			this._requestPopupContainer.message = "A request to connect has been sent to " + hcpCell.name;
+			showRequestPopup();
 		}
 
 		private function sqlResultHandler(e:SQLEvent):void
@@ -359,77 +381,19 @@ package collaboRhythm.hiviva.view
 			return returnBool;
 		}
 
-		private function initRequestPopup():void
+		private function showRequestPopup():void
 		{
-			this._requestPopup = new VerticalCenteredPopUpContentManager();
-			this._requestPopupContainer = new FeathersControl();
-
-			var bg:Quad = new Quad(400 * this.dpiScale, 200 * this.dpiScale, 0x000000);
-			bg.name = "bg";
-			this._requestPopupContainer.addChild(bg);
-
-			var label:ScrollText = new ScrollText();
-			label.isHTML = true;
-			label.name = "label";
-			this._requestPopupContainer.addChild(label);
-
-			var closeButton:Button = new Button();
-			closeButton.name = "closeBtn";
-			closeButton.label = "Close";
-			closeButton.addEventListener(Event.TRIGGERED, closePopup);
-			this._requestPopupContainer.addChild(closeButton);
-		}
-
-		private function setRequestPopupLabel(name:String):void
-		{
-			var label:ScrollText = this._requestPopupContainer.getChildByName("label") as ScrollText;
-			label.text = "A request to connect has been sent to " + name;
-
-			var dummy:Sprite = new Sprite();
-			this._requestPopup.open(this._requestPopupContainer, dummy);
-			this.draw();
+			PopUpManager.addPopUp(this._requestPopupContainer,true,true);
+			this._requestPopupContainer.validate();
+			PopUpManager.centerPopUp(this._requestPopupContainer);
+			// draw close button post center so the centering works correctly
+			this._requestPopupContainer.drawCloseButton();
 		}
 
 		private function closePopup(e:Event):void
 		{
-			this._requestPopup.close();
+			PopUpManager.removePopUp(this._requestPopupContainer);
 			backBtnHandler();
-		}
-
-		private function drawRequestPopup():void
-		{
-			var bg:Quad = this._requestPopupContainer.getChildByName("bg") as Quad;
-			var label:ScrollText = this._requestPopupContainer.getChildByName("label") as ScrollText;
-			var closeButton:Button = this._requestPopupContainer.getChildByName("closeBtn") as Button;
-
-			label.invalidate();
-			closeButton.invalidate();
-
-			this._requestPopupContainer.width = bg.width;
-			this._requestPopupContainer.height = bg.height;
-			this._requestPopupContainer.invalidate();
-
-			var items:Vector.<DisplayObject> = new Vector.<DisplayObject>();
-			items.push(label);
-			items.push(closeButton);
-
-			autoLayout(items, 50 * this.dpiScale);
-
-			label.x = 10 * this.dpiScale;
-			closeButton.x = 10 * this.dpiScale;
-		}
-
-		private function autoLayout(items:Vector.<DisplayObject>, gap:Number):void
-		{
-			var bounds:ViewPortBounds = new ViewPortBounds();
-			bounds.x = 0;
-			bounds.y = this._header.height;
-			bounds.maxHeight = this.actualHeight - this._header.height;
-			bounds.maxWidth = this.actualWidth;
-
-			var contentLayout:VerticalLayout = new VerticalLayout();
-			contentLayout.gap = gap;
-			contentLayout.layout(items,bounds);
 		}
 
 		private function deleteHcpRecord(e:Event):void

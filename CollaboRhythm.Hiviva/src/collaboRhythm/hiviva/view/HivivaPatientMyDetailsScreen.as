@@ -97,7 +97,6 @@ package collaboRhythm.hiviva.view
 			addChild(this._header);
 
 			this._instructionsText = new ScrollText();
-			this._instructionsText.name = "form-text";
 			this._instructionsText.text = "All fields are optional except to connect to a care provider What's this?";
 			addChild(this._instructionsText);
 

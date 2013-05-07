@@ -171,7 +171,10 @@ package collaboRhythm.hiviva.view
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
 			timer.start();
 
-			fadeOutUnselected();
+			this._patientButton.visible = false;
+			this._hcpButton.visible = false;
+
+			//fadeOutUnselected();
 		}
 
 		private function fadeOutUnselected():void

@@ -125,7 +125,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 			this._loadText.y = (this.actualHeight / 2) - (this._loadText.height / 2);
 			addChild(this._loadText);
 			this._loadText.validate();
-			getImageList("sport");
+			getImageList(this.category);
 		}
 
 		private function getImageList(folderName:String):void
@@ -145,7 +145,9 @@ package collaboRhythm.hiviva.view.galleryscreens
 			for(var i:int = 0; i < this._photoTotal; i++)
 			{
 				imageFile = imageFiles[i];
-				image = new GalleryItem((i + 1), imageFile.url);
+				image = new GalleryItem();
+				image.id = i + 1;
+				image.url = imageFile.url;
 				image.addEventListener(Event.COMPLETE, positionAndAddImage);
 			}
 		}
@@ -161,6 +163,8 @@ package collaboRhythm.hiviva.view.galleryscreens
 			{
 				trace("all images loaded");
 				removeChild(this._loadText,true);
+
+
 			}
 			// TODO: quick fix below, needs to be replaced
 			var container:Sprite = new Sprite();

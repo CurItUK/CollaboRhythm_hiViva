@@ -65,7 +65,7 @@ package collaboRhythm.hiviva.view
 			this._header.title = "Patient Profile";
 
 			this._homeBtn = new Button();
-			this._homeBtn.nameList.add("home-button");
+			this._homeBtn.name = "home-button";
 			this._homeBtn.addEventListener(Event.TRIGGERED , homeBtnHandler);
 
 			this._header.leftItems =  new <DisplayObject>[this._homeBtn];

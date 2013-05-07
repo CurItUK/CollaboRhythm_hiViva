@@ -8,6 +8,8 @@ package collaboRhythm.hiviva.view
 		public var _titleHolder1:Label;
 		public var _titleHolder2:Label;
 
+		private const PADDING:Number = 30;
+
 		public function HivivaHeader()
 		{
 			super();

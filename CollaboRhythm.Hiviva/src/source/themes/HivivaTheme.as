@@ -757,8 +757,6 @@ package source.themes
 					BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
 
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
-			this.setInitializerForClass(ScrollText, popupScrollTextInitializer, "popup-text");
-			this.setInitializerForClass(ScrollText, formScrollTextInitializer, "form-text");
 
 			this.setInitializerForClass(Button, buttonInitializer);
 
@@ -1014,29 +1012,12 @@ package source.themes
 
 		protected function scrollTextInitializer(text:ScrollText):void
 		{
-			text.textFormat = this.smallLightTextFormat;
-			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
-			text.paddingRight = 36 * this.scale;
-		}
-
-		protected function popupScrollTextInitializer(text:ScrollText):void
-		{
 			text.embedFonts = true;
 			text.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x2d435c);
 			text.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
 			text.paddingRight = 36 * this.scale;
 		}
-
-		protected function formScrollTextInitializer(text:ScrollText):void
-		{
-			text.embedFonts = true;
-			text.textFormat = new TextFormat("ExoRegular", Math.round(30 * this.scale), 0x495c72);
-			text.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
-			text.paddingRight = 36 * this.scale;
-		}
-
 
 		protected function buttonInitializer(button:Button):void
 		{

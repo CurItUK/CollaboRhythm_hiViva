@@ -24,7 +24,7 @@ package collaboRhythm.hiviva.view
 		{
 			_hivivaApplicationController = new HivivaApplicationController();
 			_hivivaApplicationController.main();
-			addSplashScreen();
+			//addSplashScreen();
 			initStarling();
 		}
 
@@ -73,7 +73,7 @@ package collaboRhythm.hiviva.view
 			main.applicationController = _hivivaApplicationController as HivivaApplicationController;
 			main.initMain();
 
-			removeSplashScreen();
+			//removeSplashScreen();
 		}
 	}
 }

@@ -16,31 +16,50 @@ package collaboRhythm.hiviva.view.galleryscreens
 	public class GalleryItem extends Button
 	{
 		private var _id:int;
-		public var _url:String;
+		public function set id(val:int):void
+		{
+			this._id = val;
+		}
+		public function get id():int
+		{
+			return this._id;
+		}
+
+		private var _url:String;
+		public function set url(val:String):void
+		{
+			this._url = val;
+		}
+		public function get url():String
+		{
+			return this._url;
+		}
+
 		private var _photo:Image;
 
-		public function GalleryItem(id:int, url:String)
+		public function GalleryItem()
 		{
-			this._id = id;
-			this._url = url;
-			doImageLoad();
-			addEventListener(Event.ADDED_TO_STAGE, onAdded);
+
 		}
 
-		private function onAdded(e:Event):void
+		override protected function draw():void
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
+			super.draw();
+
+			constrainToProportion(this._photo, this.actualWidth);
 		}
 
-		private function doImageLoad():void
+		override protected function initialize():void
 		{
+			super.initialize();
+
 			var imageLoader:Loader = new Loader();
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
 			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(this._url));
 		}
 
-		private function imageLoadFailed(e:Event):void
+		private function imageLoadFailed(e:IOErrorEvent):void
 		{
 			trace("Image load failed.");
 		}
@@ -50,7 +69,6 @@ package collaboRhythm.hiviva.view.galleryscreens
 			trace("Image loaded.");
 
 			this._photo = new Image(getStarlingCompatibleTexture(e.target.content));
-			constrainToProportion(this._photo, 100);
 
 			if (!contains(this._photo)) addChild(this._photo);
 			dispatchEvent(new Event(Event.COMPLETE));
@@ -83,6 +101,8 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 		private function constrainToProportion(img:Object, size:Number):void
 		{
+			// TODO : this function goes as a global method
+			// TODO : add "crop to proportion" logic
 			if (img.height >= img.width)
 			{
 				img.height = size;

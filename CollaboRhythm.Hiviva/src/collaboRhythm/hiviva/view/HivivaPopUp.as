@@ -95,7 +95,6 @@ package collaboRhythm.hiviva.view
 			addChild(this._bg);
 
 			this._label = new ScrollText();
-			this._label.name = "popup-text";
 			this._label.text = this._message;
 			addChild(this._label);
 
