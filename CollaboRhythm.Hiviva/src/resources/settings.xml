@@ -33,8 +33,8 @@
 	<collaborationEnabled>false</collaborationEnabled>
 	<rtmpBaseURI>rtmfp://adrenaline.media.mit.edu</rtmpBaseURI>
 	<debuggingToolsEnabled>true</debuggingToolsEnabled>
-	<oauthChromeConsumerKey>PWS_CONS_KEY</oauthChromeConsumerKey>
-	<oauthChromeConsumerSecret>PWS_SECR</oauthChromeConsumerSecret>
+	<oauthChromeConsumerKey>collaboRhythmChrome</oauthChromeConsumerKey>
+	<oauthChromeConsumerSecret>collaboRhythmChrome_secret93452</oauthChromeConsumerSecret>
 	<pluginSearchPaths>
 		<!--<pluginSearchPath>$APPLICATION_STORAGE_DIRECTORY$/plugins/SchedulePluginModule.swf</pluginSearchPath>
 		<pluginSearchPath>$APPLICATION_STORAGE_DIRECTORY$/plugins/HealthChartsPluginModule.swf</pluginSearchPath>
