@@ -7,9 +7,13 @@ package collaboRhythm.hiviva.view.galleryscreens
 	import flash.display.Loader;
 	import flash.events.IOErrorEvent;
 	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
 
+	import source.themes.HivivaTheme;
+
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.textures.Texture;
 
@@ -35,7 +39,29 @@ package collaboRhythm.hiviva.view.galleryscreens
 			return this._url;
 		}
 
+		private var _filename:String;
+		public function set filename(val:String):void
+		{
+			this._filename = val;
+		}
+		public function get filename():String
+		{
+			return this._filename;
+		}
+
+		private var _isActive:Boolean;
+		public function set isActive(val:Boolean):void
+		{
+			this._isActive = val;
+			this._tint.alpha = this._isActive ? 0.5 : 0;
+		}
+		public function get isActive():Boolean
+		{
+			return this._isActive;
+		}
+
 		private var _photo:Image;
+		private var _tint:Quad;
 
 		public function GalleryItem()
 		{
@@ -46,13 +72,28 @@ package collaboRhythm.hiviva.view.galleryscreens
 		{
 			super.draw();
 
-			constrainToProportion(this._photo, this.actualWidth);
+			constrainToProportion(this._photo, this.actualHeight);
+
+			this._tint.height = this._photo.height;
+			this._tint.width = this._photo.width;
+			this._tint.x = this._photo.x;
+			this._tint.y = this._photo.y;
+
+			this._hitArea = new Rectangle(this._tint.x, this._tint.y, this._tint.width, this._tint.height);
+			setSizeInternal(this._tint.width, this._tint.height, false);
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
 
+			this.name = HivivaTheme.NONE_THEMED;
+			this.label = "galleryItem";
+			this.defaultLabelProperties.visible = false;
+		}
+
+		public function doImageLoad():void
+		{
 			var imageLoader:Loader = new Loader();
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
 			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
@@ -69,10 +110,15 @@ package collaboRhythm.hiviva.view.galleryscreens
 			trace("Image loaded.");
 
 			this._photo = new Image(getStarlingCompatibleTexture(e.target.content));
+			addChild(this._photo);
 
-			if (!contains(this._photo)) addChild(this._photo);
-			dispatchEvent(new Event(Event.COMPLETE));
+			this._tint = new Quad(this._photo.width, this._photo.height, 0x000000);
+			addChild(this._tint);
+
+			this.isActive = false;
+			dispatchEventWith(Event.COMPLETE, false, {id:this._id});
 		}
+
 		private function getStarlingCompatibleTexture(content:Bitmap):Texture
 		{
 			var sourceBm:Bitmap = content as Bitmap,
@@ -103,16 +149,8 @@ package collaboRhythm.hiviva.view.galleryscreens
 		{
 			// TODO : this function goes as a global method
 			// TODO : add "crop to proportion" logic
-			if (img.height >= img.width)
-			{
-				img.height = size;
-				img.scaleX = img.scaleY;
-			}
-			else
-			{
-				img.width = size;
-				img.scaleY = img.scaleX;
-			}
+			img.height = size;
+			img.scaleX = img.scaleY;
 		}
 	}
 }
