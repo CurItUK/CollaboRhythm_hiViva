@@ -769,6 +769,7 @@ package source.themes
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
 			this.setInitializerForClass(Button, sideNavGroupInitializer, "side-nav-buttons");
 			this.setInitializerForClass(Button, patientProfileNavGroupInitializer, "patient-profile-nav-buttons");
+//			this.setInitializerForClass(Button, galleryThumbInitializer, "gallery-thumb-buttons");
 
 			this.setInitializerForClass(Button, simpleButtonInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
 
@@ -1143,6 +1144,29 @@ package source.themes
 			button.minTouchWidth = 128 * this.scale;
 			button.minTouchHeight = 135 * this.scale;
 		}
+/*
+
+		protected function galleryThumbInitializer(button:Button):void
+		{
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonFooterTexture;
+			skinSelector.defaultSelectedValue = this.buttonFooterActiveTexture;
+			skinSelector.setValueForState(this.buttonFooterActiveTexture, Button.STATE_DOWN, false);
+			skinSelector.imageProperties =
+			{
+				width: 128 * this.scale,
+				height: 135 * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.minWidth = 128 * this.scale;
+			button.minHeight = 135 * this.scale;
+			button.minTouchWidth = 128 * this.scale;
+			button.minTouchHeight = 135 * this.scale;
+		}
+*/
 
 		protected function sideNavGroupInitializer(button:Button):void
 		{

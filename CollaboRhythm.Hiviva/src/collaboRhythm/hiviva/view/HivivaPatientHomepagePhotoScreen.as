@@ -1,13 +1,19 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.view.galleryscreens.Gallery;
+	import collaboRhythm.hiviva.view.galleryscreens.GalleryItem;
 	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
 
 	import feathers.controls.Button;
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
+	import feathers.layout.HorizontalLayout;
 	import feathers.layout.TiledColumnsLayout;
+	import feathers.layout.TiledRowsLayout;
+
+	import flash.filesystem.File;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -15,13 +21,18 @@ package collaboRhythm.hiviva.view
 	public class HivivaPatientHomepagePhotoScreen extends Screen
 	{
 		private var _header:HivivaHeader;
-		private var _galleriesButtons:ScrollContainer;
+		private var _galleriesContainer:ScrollContainer;
 		private var _photoContainer:ImageUploader;
 		private var _cancelButton:Button;
 		private var _submitButton:Button;
 		private var _backButton:Button;
+		private var _galleries:Vector.<Gallery>;
+		private var _galleryCount:int;
+		private var _galleryLength:int;
+		private var _galleryPadding:Number;
 
-		private const GALLERY_BUTTON_LABELS:Array = ["Sport","Music","Cinema","History","Traveling","Art"];
+		private const GALLERY_CATEGORIES:Array = ["sport","music","cinema","history","traveling","art"];
+		private const PADDING:Number = 32
 
 		public function HivivaPatientHomepagePhotoScreen()
 		{
@@ -30,7 +41,7 @@ package collaboRhythm.hiviva.view
 
 		override protected function draw():void
 		{
-			var padding:Number = (32 * this.dpiScale);
+			var scaledPadding:Number = PADDING * this.dpiScale;
 
 			super.draw();
 			this._header.width = this.actualWidth;
@@ -38,35 +49,37 @@ package collaboRhythm.hiviva.view
 
 			this._header.width = this.actualWidth;
 			this._header.validate();
+/*
 
 			this._galleriesButtons.y = this._header.height;
 			this._galleriesButtons.width = this.actualWidth;
 			this._galleriesButtons.height = (this.actualHeight - this._galleriesButtons.y) * 0.5;
+*/
+
+			this._cancelButton.validate();
+			this._cancelButton.y = this.actualHeight - this._cancelButton.height - scaledPadding;
+			this._cancelButton.x = scaledPadding;
+
+			this._submitButton.validate();
+			this._submitButton.y = this._cancelButton.y;
+			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + (20 * this.dpiScale);
 
 			this._photoContainer.width = this.actualWidth;
 			this._photoContainer.validate();
-			this._photoContainer.y = this._galleriesButtons.y + this._galleriesButtons.height + padding;
+			this._photoContainer.y = this._cancelButton.y - scaledPadding - this._photoContainer.height;
 
-			this._cancelButton.y = this._photoContainer.y + this._photoContainer.height + padding;
-
-			this._cancelButton.validate();
-			this._submitButton.validate();
-			this._backButton.validate();
-
-			this._submitButton.y = this._cancelButton.y;
-			this._cancelButton.x = padding;
-			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + (20 * this.dpiScale);
+			if (this._galleries.length == 0) initGallery();
 		}
 
 		override protected function initialize():void
 		{
+			this._galleries = new <Gallery>[];
+
 			super.initialize();
 
 			this._header = new HivivaHeader();
 			this._header.title = "Homepage Photo";
 			addChild(this._header);
-
-			initGalleryButtons();
 
 			this._photoContainer = new ImageUploader();
 			this._photoContainer.scale = this.dpiScale;
@@ -106,32 +119,68 @@ package collaboRhythm.hiviva.view
 			this._photoContainer.saveTempImageAsMain();
 		}
 
-		private function initGalleryButtons():void
+		private function initGallery():void
 		{
-			const layout:TiledColumnsLayout = new TiledColumnsLayout();
-			layout.paging = TiledColumnsLayout.PAGING_NONE;
-			layout.gap = 0;
-			layout.padding = 0;
-			layout.horizontalAlign = TiledColumnsLayout.HORIZONTAL_ALIGN_CENTER;
-			layout.verticalAlign = TiledColumnsLayout.VERTICAL_ALIGN_MIDDLE;
-			layout.tileHorizontalAlign = TiledColumnsLayout.TILE_HORIZONTAL_ALIGN_LEFT;
-			layout.tileVerticalAlign = TiledColumnsLayout.TILE_VERTICAL_ALIGN_MIDDLE;
+			var currGalleryContainer:Gallery;
 
-			this._galleriesButtons = new ScrollContainer();
-			this._galleriesButtons.layout = layout;
-			addChild(this._galleriesButtons);
+			this._galleryPadding = 15 * this.dpiScale;
 
-			var currGalleryButton:Button,
-				galleryButtonLength:int = GALLERY_BUTTON_LABELS.length;
-			for (var i:int = 0; i < galleryButtonLength; i++)
+			const horizontalLayout:HorizontalLayout = new HorizontalLayout();
+			horizontalLayout.gap = this._galleryPadding;
+			horizontalLayout.padding = 0;
+			horizontalLayout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_LEFT;
+			horizontalLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+
+			this._galleryCount = 0;
+			this._galleryLength = GALLERY_CATEGORIES.length;
+			for (var i:int = 0; i < this._galleryLength; i++)
 			{
-				currGalleryButton = new Button();
-				currGalleryButton.label = GALLERY_BUTTON_LABELS[i];
-				currGalleryButton.addEventListener(Event.TRIGGERED, onOpenGallery);
-				this._galleriesButtons.addChild(currGalleryButton);
+				currGalleryContainer = new Gallery(GALLERY_CATEGORIES[i]);
+				currGalleryContainer.layout = horizontalLayout;
+				currGalleryContainer.addEventListener(Event.COMPLETE, galleryReady);
+				this._galleries.push(currGalleryContainer);
 			}
 		}
 
+		private function galleryReady(e:Event):void
+		{
+			var currGalleryContainer:Gallery = e.target as Gallery;
+			currGalleryContainer.removeEventListener(Event.COMPLETE, galleryReady);
+
+			this._galleryCount++;
+
+			if(this._galleryCount == this._galleryLength)
+			{
+				initGalleriesContainer();
+				this._galleries.forEach(drawGalleries);
+			}
+		}
+
+		private function initGalleriesContainer():void
+		{
+			var scaledPadding:Number = PADDING * this.dpiScale;
+			var startYPosition:Number = this._header.y + this._header.height;
+
+			this._galleriesContainer = new ScrollContainer();
+			addChild(this._galleriesContainer);
+
+			this._galleriesContainer.x = scaledPadding;
+			this._galleriesContainer.y = startYPosition;
+			this._galleriesContainer.width = this.actualWidth - (scaledPadding * 2);
+			this._galleriesContainer.height = this._photoContainer.y - startYPosition - scaledPadding;
+		}
+
+		private function drawGalleries(item:Gallery, index:int, vector:Vector.<Gallery>):void
+		{
+			var galleryHeight:Number = 125 * this.dpiScale;
+
+			this._galleriesContainer.addChild(item);
+			item.height = galleryHeight;
+			item.width = this._galleriesContainer.width;
+			item.y = (galleryHeight + this._galleryPadding) * index;
+			item.drawGallery();
+		}
+/*
 		private function onOpenGallery(e:Event):void
 		{
 			const button:Button = Button(e.currentTarget);
@@ -158,6 +207,6 @@ package collaboRhythm.hiviva.view
 			if(this.owner.hasScreen("gallery")) this.owner.removeScreen("gallery");
 			this.owner.addScreen("gallery", new ScreenNavigatorItem(SportsGalleryScreen, null, {category:category}));
 			this.owner.showScreen("gallery");
-		}
+		}*/
 	}
 }
