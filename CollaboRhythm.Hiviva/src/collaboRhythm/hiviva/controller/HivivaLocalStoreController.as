@@ -27,6 +27,26 @@ package collaboRhythm.hiviva.controller
 			_hivivaLocalStoreService.initDataLoad();
 		}
 
+		public function getMedicationList():void
+		{
+			service.addEventListener(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE,medicationsLoadCompleteHandler);
+			service.getMedicationList();
+		}
+
+		private function medicationsLoadCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE,medicationsLoadCompleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function setMedicationList():void
+		{
+
+		}
+
+
 		public function resetApplication():void
 		{
 			service.resetApplication();
@@ -34,7 +54,7 @@ package collaboRhythm.hiviva.controller
 
 		private function profileTypeUpdateHandler(e:LocalDataStoreEvent):void
 		{
-			_hivivaLocalStoreService.updateAppProfileType(e.data);
+			_hivivaLocalStoreService.updateAppProfileType(e.data.user);
 		}
 
 		private function dataLoadCompleteHandler(e:LocalDataStoreEvent):void

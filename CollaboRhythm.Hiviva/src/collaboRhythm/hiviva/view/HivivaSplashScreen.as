@@ -159,7 +159,7 @@ package collaboRhythm.hiviva.view
 		private function notifyLocalStoreController(userValue:String):void
 		{
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PROFILE_TYPE_UPDATE);
-			evt.data = userValue;
+			evt.data.user = userValue;
 			applicationController.hivivaLocalStoreController.dispatchEvent(evt);
 			this._appType = userValue;
 			closeDownScreen();

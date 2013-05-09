@@ -121,6 +121,31 @@ package collaboRhythm.hiviva.model
 
 		}
 
+		public function getMedicationList():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM medications";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getMedicationsResultHandler);
+			this._sqStatement.execute();
+		}
+
+		private function getMedicationsResultHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE);
+			evt.data.medications = result;
+			this.dispatchEvent(evt);
+
+		}
+
 		public function resetApplication():void
 		{
 			var dbFile:File = File.applicationStorageDirectory;
