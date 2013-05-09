@@ -7,10 +7,7 @@ package collaboRhythm.hiviva.view.media
 
 	public class Assets
 	{
-/*
-		[Embed(source="/resources/grid.jpg")]
-		public static const grid:Class;
-*/
+
 		// the following assets are individual image files but need to compiled into atlases
 
 		// BACKGROUND ASSETS
