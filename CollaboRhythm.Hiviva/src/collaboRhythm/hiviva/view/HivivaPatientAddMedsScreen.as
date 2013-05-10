@@ -4,35 +4,17 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RXNORMEvent;
 	import collaboRhythm.hiviva.utils.RXNORM_DrugSearch;
-	import collaboRhythm.shared.collaboration.model.SynchronizationService;
-	import collaboRhythm.shared.model.Account;
-	import collaboRhythm.shared.model.Record;
-	import collaboRhythm.shared.model.healthRecord.CollaboRhythmCodedValue;
-	import collaboRhythm.shared.model.healthRecord.document.MedicationOrder;
-	import collaboRhythm.shared.model.services.ICurrentDateSource;
-	import collaboRhythm.shared.model.services.WorkstationKernel;
 
 	import feathers.controls.Button;
 	import feathers.controls.List;
 
 	import feathers.controls.Screen;
+	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TextInput;
 	import feathers.data.ListCollection;
-
-	import flash.events.Event;
-
-	import flash.net.URLLoader;
-
-	import flash.net.URLRequest;
-
-	import mx.collections.ArrayCollection;
-
 	import starling.display.DisplayObject;
-
-	import starling.events.Event;
 
 	import starling.events.Event;
 
@@ -44,6 +26,9 @@ package collaboRhythm.hiviva.view
 		private var _backButton:Button;
 		private var _medicationSearchInput:TextInput;
 		private var _searchButton:Button;
+		private var _continueBtn:Button;
+		private var _medicationList:List;
+		private var _medications:ListCollection;
 
 		public function HivivaPatientAddMedsScreen()
 		{
@@ -99,15 +84,46 @@ package collaboRhythm.hiviva.view
 			var drugSearch:RXNORM_DrugSearch = new RXNORM_DrugSearch();
 			drugSearch.addEventListener(RXNORMEvent.DATA_LOAD_COMPLETE , drugSearchLoadHandler);
 			drugSearch.findDrug(this._medicationSearchInput.text);
-
 		}
 
 		private function drugSearchLoadHandler(e:RXNORMEvent):void
 		{
-			trace(e.data.medicationList)
+			trace(e.data.medicationList);
 
+			this._medicationList = new List();
+			this._medications = new ListCollection(e.data.medicationList);
+			this._medicationList.width = this.actualWidth;
+			//this._medicationList.height = this.actualHeight - this._header.height - 20;
+			this._medicationList.y = this._header.height + 100;
+			this._medicationList.dataProvider = this._medications;
+			this._medicationList.itemRendererProperties.labelField = "text";
 
+			this.addChild(this._medicationList);
 
+			this._medicationList.validate();
+
+			trace("this._medicationList.height " + this._medicationList.height);
+			trace("this.actualHeight " + this.actualHeight);
+
+			this._medicationList.addEventListener(starling.events.Event.CHANGE , listSelectedHandler);
+
+		}
+
+		private function listSelectedHandler(e:starling.events.Event):void
+		{
+			this._continueBtn = new Button();
+			this._continueBtn.label = "Continue";
+			this._continueBtn.addEventListener(Event.TRIGGERED, continueBtnHandler);
+			this.addChild(this._continueBtn);
+			this._continueBtn.validate();
+			this._continueBtn.y = this.actualHeight - this._continueBtn.height - 20;
+			this._continueBtn.x = 30;
+		}
+
+		private function continueBtnHandler(e:starling.events.Event):void
+		{
+			this.owner.addScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientScheduleMedsScreen, null, {applicationController:applicationController}));
+			this.owner.showScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN);
 		}
 
 		public function get localStoreController():HivivaLocalStoreController
@@ -124,8 +140,5 @@ package collaboRhythm.hiviva.view
 		{
 			_applicationController = value;
 		}
-
-
-
 	}
 }

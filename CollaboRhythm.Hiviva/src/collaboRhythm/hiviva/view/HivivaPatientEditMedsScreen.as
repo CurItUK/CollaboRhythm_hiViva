@@ -45,6 +45,9 @@ package collaboRhythm.hiviva.view
 
 		override protected function initialize():void
 		{
+
+
+
 			super.initialize();
 			this._header = new HivivaHeader();
 			this._header.title = "Enter your Regimen";
