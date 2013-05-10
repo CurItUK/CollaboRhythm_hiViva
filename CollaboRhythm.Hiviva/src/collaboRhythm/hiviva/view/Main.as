@@ -151,7 +151,7 @@ package collaboRhythm.hiviva.view
 			if(!this._appReset)
 			{
 				this._patientSettingsBtn = new Button();
-				this._patientSettingsBtn.nameList.add(HivivaTheme.NONE_THEMED);
+				this._patientSettingsBtn.name = HivivaTheme.NONE_THEMED;
 				this._patientSettingsBtn.defaultIcon = new Image(HivivaAssets.SETTINGS_ICON);
 				this._patientSettingsBtn.addEventListener(Event.TRIGGERED , patientSettingsBtnHandler);
 				this._screenHolder.addChild(this._patientSettingsBtn);
@@ -162,7 +162,7 @@ package collaboRhythm.hiviva.view
 				patientSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , patientSlideNavHandler);
 				this.addChildAt(patientSideNavScreen , 0);
 
-				this._patientNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen));
+				this._patientNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen, null, {footerHeight:this._footerBtnGroup.height}));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientViewMedicationScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen));
 				this._patientNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
@@ -258,6 +258,7 @@ package collaboRhythm.hiviva.view
 
 			this._screenHolder.addChild(this._footerBtnGroup);
 			this._footerBtnGroup.y = this._stageHeight - footerBtnHeight;
+			this._footerBtnGroup.height = footerBtnHeight;
 			this._footerBtnGroup.width = this._stageWidth;
 		}
 
@@ -266,7 +267,7 @@ package collaboRhythm.hiviva.view
 			var btn:Button = e.target as Button;
 			if(!btn.isSelected)
 			{
-				// when refactoring to own class we can use a local instance instead of storing the identifier in btn.name
+				// when refactoring to own class we can use a local property instead of storing the identifier in btn.name
 				switch(btn.name.substring(0 ,btn.name.indexOf(" home-footer-buttons")))
 				{
 					case "home" :
