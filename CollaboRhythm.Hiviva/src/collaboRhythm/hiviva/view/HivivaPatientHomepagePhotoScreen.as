@@ -2,16 +2,18 @@ package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.galleryscreens.Gallery;
-	import collaboRhythm.hiviva.view.galleryscreens.GalleryItem;
-	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
 
 	import feathers.controls.Button;
+	import feathers.controls.Label;
 	import feathers.controls.Screen;
-	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
 	import feathers.layout.HorizontalLayout;
-	import feathers.layout.TiledColumnsLayout;
-	import feathers.layout.TiledRowsLayout;
+
+	import flash.data.SQLConnection;
+	import flash.data.SQLResult;
+	import flash.data.SQLStatement;
+	import flash.events.SQLErrorEvent;
+	import flash.events.SQLEvent;
 
 	import flash.filesystem.File;
 
@@ -21,6 +23,7 @@ package collaboRhythm.hiviva.view
 	public class HivivaPatientHomepagePhotoScreen extends Screen
 	{
 		private var _header:HivivaHeader;
+		private var _loadText:Label;
 		private var _galleriesContainer:ScrollContainer;
 		private var _photoContainer:ImageUploader;
 		private var _cancelButton:Button;
@@ -30,6 +33,8 @@ package collaboRhythm.hiviva.view
 		private var _galleryCount:int;
 		private var _galleryLength:int;
 		private var _galleryPadding:Number;
+		private var _sqConn:SQLConnection;
+		private var _sqStatement:SQLStatement;
 
 		private const GALLERY_CATEGORIES:Array = ["sport","music","cinema","history","traveling","art"];
 		private const PADDING:Number = 32
@@ -47,15 +52,6 @@ package collaboRhythm.hiviva.view
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
 
-			this._header.width = this.actualWidth;
-			this._header.validate();
-/*
-
-			this._galleriesButtons.y = this._header.height;
-			this._galleriesButtons.width = this.actualWidth;
-			this._galleriesButtons.height = (this.actualHeight - this._galleriesButtons.y) * 0.5;
-*/
-
 			this._cancelButton.validate();
 			this._cancelButton.y = this.actualHeight - this._cancelButton.height - scaledPadding;
 			this._cancelButton.x = scaledPadding;
@@ -67,6 +63,10 @@ package collaboRhythm.hiviva.view
 			this._photoContainer.width = this.actualWidth;
 			this._photoContainer.validate();
 			this._photoContainer.y = this._cancelButton.y - scaledPadding - this._photoContainer.height;
+
+			this._loadText.validate();
+			this._loadText.x = (this.actualWidth / 2) - (this._loadText.width / 2);
+			this._loadText.y = this._header.height + (this._photoContainer.y - this._header.height / 2) - (this._loadText.height / 2);
 
 			if (this._galleries.length == 0) initGallery();
 		}
@@ -80,6 +80,10 @@ package collaboRhythm.hiviva.view
 			this._header = new HivivaHeader();
 			this._header.title = "Homepage Photo";
 			addChild(this._header);
+
+			this._loadText = new Label();
+			this._loadText.text = "Loading images...";
+			addChild(this._loadText);
 
 			this._photoContainer = new ImageUploader();
 			this._photoContainer.scale = this.dpiScale;
@@ -102,6 +106,9 @@ package collaboRhythm.hiviva.view
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
+
+			// test if data is there
+			populateOldData();
 		}
 
 		private function cancelButtonClick(e:Event):void
@@ -114,9 +121,114 @@ package collaboRhythm.hiviva.view
 			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 		}
 
+		private function getAllSelectedItems():Array
+		{
+			var returnArray:Array = [],
+				currGallery:Gallery,
+				currGallerySelectedItems:Array;
+
+			for (var i:int = 0; i < this._galleryLength; i++)
+			{
+				currGallery = this._galleries[i];
+				currGallerySelectedItems = currGallery.selectedItems;
+				trace(currGallerySelectedItems.length);
+				if(currGallerySelectedItems.length > 0)
+				{
+					returnArray.concat(currGallerySelectedItems);
+				}
+			}
+			return returnArray;
+		}
+
 		private function submitButtonClick(e:Event):void
 		{
 			this._photoContainer.saveTempImageAsMain();
+
+			var currGallery:Gallery,
+				currGallerySelectedItems:Array,
+				selectedItem:String,
+				sqlData:String = "",
+				isFirstItem:Boolean = true,
+				index:int = 0;
+
+			for (var i:int = 0; i < this._galleryLength; i++)
+			{
+				currGallery = this._galleries[i];
+				currGallerySelectedItems = currGallery.selectedItems;
+				if(currGallerySelectedItems.length > 0)
+				{
+					for (var j:int = 0; j < currGallerySelectedItems.length; j++)
+					{
+						index++;
+						selectedItem = currGallerySelectedItems[j];
+						if(isFirstItem)
+						{
+							sqlData += "SELECT " + index + " AS 'photoid', '" + selectedItem + "' AS 'url' ";
+							isFirstItem = false;
+						}
+						else
+						{
+							sqlData += "UNION SELECT " + index + ", '" + selectedItem + "' ";
+						}
+					}
+				}
+			}
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "INSERT INTO homepage_photos " + sqlData;
+
+			trace(this._sqStatement.text);
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+			this._sqStatement.execute();
+
+			/*
+			var userName:String = "'" + this._nameInput._input.text + "'";
+			var userEmail:String = "'" + this._emailInput._input.text + "'";
+			var userUpdates:int = int(this._updatesCheck.isSelected);
+			var userResearch:int = int(this._researchCheck.isSelected);
+			if(this._dataExists)
+			{
+				this._sqStatement.text = "UPDATE user_details SET user_name=" + userName + ", user_email=" + userEmail + ", user_updates=" + userUpdates + ", user_research=" + userResearch;
+			}
+			else
+			{
+				this._sqStatement.text = "INSERT INTO user_details (user_name, user_email, user_updates, user_research) VALUES (" + userName + ", " + userEmail + ", " + userUpdates + ", " + userResearch + ")";
+			}
+			trace(this._sqStatement.text);
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+			//this._sqStatement.execute();
+			*/
+		}
+
+		private function populateOldData():void
+		{
+			// this counts the current amount of entries for repopulation
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "SELECT COUNT(*) AS count FROM homepage_photos";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+
+			var sqlRes:SQLResult = this._sqStatement.getResult();
+			trace(sqlRes.data[0].count);
+		}
+
+		private function sqlResultHandler(e:SQLEvent):void
+		{
+			trace("sqlResultHandler " + e);
 		}
 
 		private function initGallery():void
@@ -135,9 +247,11 @@ package collaboRhythm.hiviva.view
 			this._galleryLength = GALLERY_CATEGORIES.length;
 			for (var i:int = 0; i < this._galleryLength; i++)
 			{
-				currGalleryContainer = new Gallery(GALLERY_CATEGORIES[i]);
+				currGalleryContainer = new Gallery();
+				currGalleryContainer.category = GALLERY_CATEGORIES[i];
 				currGalleryContainer.layout = horizontalLayout;
 				currGalleryContainer.addEventListener(Event.COMPLETE, galleryReady);
+				currGalleryContainer.getImageList();
 				this._galleries.push(currGalleryContainer);
 			}
 		}
@@ -151,6 +265,8 @@ package collaboRhythm.hiviva.view
 
 			if(this._galleryCount == this._galleryLength)
 			{
+				removeChild(this._loadText,true);
+
 				initGalleriesContainer();
 				this._galleries.forEach(drawGalleries);
 			}

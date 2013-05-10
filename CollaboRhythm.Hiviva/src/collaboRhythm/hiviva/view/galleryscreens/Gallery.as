@@ -24,14 +24,15 @@ package collaboRhythm.hiviva.view.galleryscreens
 			_scale = value;
 		}
 
+		private var _category:String;
+		private var _selectedItems:Array;
 		private var _itemList:Vector.<GalleryItem>;
 		private var _imageTotal:int;
 		private var _imageCount:int;
 
-		public function Gallery(category:String)
+		public function Gallery()
 		{
 			super();
-			getImageList(category);
 		}
 
 		override protected function draw():void
@@ -44,9 +45,9 @@ package collaboRhythm.hiviva.view.galleryscreens
 			super.initialize();
 		}
 
-		private function getImageList(category:String):void
+		public function getImageList():void
 		{
-			var categoryDir:File = File.applicationDirectory.resolvePath("media/stock_images/" + category);
+			var categoryDir:File = File.applicationDirectory.resolvePath("media/stock_images/" + this._category);
 			categoryDir.addEventListener(FileListEvent.DIRECTORY_LISTING, directoryListingHandler);
 			categoryDir.getDirectoryListingAsync();
 		}
@@ -57,6 +58,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 				imageFile:File,
 				image:GalleryItem;
 
+			this._selectedItems = [];
 			this._itemList = new <GalleryItem>[];
 			this._imageCount = 0;
 			this._imageTotal =  imageFiles.length;
@@ -114,7 +116,80 @@ package collaboRhythm.hiviva.view.galleryscreens
 		private function selectImage(e:Event):void
 		{
 			var currItem:GalleryItem = e.target as GalleryItem;
+
+			currItem.removeEventListener(Event.TRIGGERED, selectImage);
+
 			currItem.isActive = !currItem.isActive;
+
+			if(currItem.isActive)
+			{
+				addToSelectedItems(currItem.filename);
+			}
+			else
+			{
+				removeFromSelectedItems(currItem.filename);
+			}
+
+			currItem.addEventListener(Event.TRIGGERED, selectImage);
+		}
+
+		private function addToSelectedItems(galleryItemFilename:String):void
+		{
+			var selectedGalleryItemsLength:int = this._selectedItems.length,
+				currItem:String, itemExists:Boolean = false,
+				url:String = this._category + "/" + galleryItemFilename;
+
+			for (var i:int = 0; i < selectedGalleryItemsLength; i++)
+			{
+				currItem = this._selectedItems[i];
+				if(url == currItem)
+				{
+					itemExists = true;
+				}
+			}
+
+			if(!itemExists)
+			{
+				this._selectedItems.push(url);
+			}
+		}
+
+		private function removeFromSelectedItems(galleryItemFilename:String):void
+		{
+			var selectedGalleryItemsLength:int = this._selectedItems.length,
+				currItem:String, url:String = this._category + "/" + galleryItemFilename;
+			if(selectedGalleryItemsLength > 0)
+			{
+				for (var i:int = 0; i < selectedGalleryItemsLength; i++)
+				{
+					currItem = this._selectedItems[i];
+					if(url == currItem)
+					{
+						this._selectedItems.splice(i,1);
+					}
+				}
+
+			}
+		}
+
+		public function get selectedItems():Array
+		{
+			return _selectedItems;
+		}
+
+		public function set selectedItems(value:Array):void
+		{
+			_selectedItems = value;
+		}
+
+		public function get category():String
+		{
+			return _category;
+		}
+
+		public function set category(value:String):void
+		{
+			_category = value;
 		}
 	}
 }

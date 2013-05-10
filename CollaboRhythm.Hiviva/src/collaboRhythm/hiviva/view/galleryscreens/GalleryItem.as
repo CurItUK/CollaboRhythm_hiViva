@@ -72,7 +72,11 @@ package collaboRhythm.hiviva.view.galleryscreens
 		{
 			super.draw();
 
-			constrainToProportion(this._photo, this.actualHeight);
+
+			this._photo.height = this.actualHeight;
+			this._photo.scaleX = this._photo.scaleY;
+
+			//constrainToProportion(this._photo, this.actualHeight);
 
 			this._tint.height = this._photo.height;
 			this._tint.width = this._photo.width;
@@ -107,10 +111,14 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 		private function imageLoaded(e:flash.events.Event):void
 		{
+			var bm:Bitmap = e.target.content as Bitmap;
 			trace("Image loaded.");
 
-			this._photo = new Image(getStarlingCompatibleTexture(e.target.content));
+			//this._photo = new Image(getStarlingCompatibleTexture(e.target.content));
+			this._photo = new Image(Texture.fromBitmap(bm));
 			addChild(this._photo);
+			bm.bitmapData.dispose();
+			bm = null;
 
 			this._tint = new Quad(this._photo.width, this._photo.height, 0x000000);
 			addChild(this._tint);
@@ -119,10 +127,10 @@ package collaboRhythm.hiviva.view.galleryscreens
 			dispatchEventWith(Event.COMPLETE, false, {id:this._id});
 		}
 
-		private function getStarlingCompatibleTexture(content:Bitmap):Texture
+		/*private function getStarlingCompatibleTexture(content:Bitmap):Texture
 		{
 			var sourceBm:Bitmap = content as Bitmap,
-					suitableBm:Bitmap,
+					suitableBmd:BitmapData,
 					xRatio:Number,
 					yRatio:Number;
 			// if source bitmap is larger than starling size limit of 2048x2048 than resize
@@ -131,26 +139,36 @@ package collaboRhythm.hiviva.view.galleryscreens
 				// TODO: may need to remove size adjustment from bm! only adjust the data (needs formula)
 				constrainToProportion(sourceBm, 2040);
 				// copy source bitmap at adjusted size
-				var bmd:BitmapData = new BitmapData(sourceBm.width, sourceBm.height);
-				var m:Matrix = new Matrix();
-				m.scale(sourceBm.scaleX, sourceBm.scaleY);
-				bmd.draw(sourceBm, m, null, null, null, true);
-				suitableBm = new Bitmap(bmd, 'auto', true);
+//				var bmd:BitmapData = new BitmapData(sourceBm.width, sourceBm.height);
+				//var m:Matrix = new Matrix();
+				//m.scale(sourceBm.scaleX, sourceBm.scaleY);
+				//bmd.draw(sourceBm, m, null, null, null, true);
+
+				suitableBmd = new BitmapData(sourceBm.width, sourceBm.height);
+				suitableBmd.draw(sourceBm, m, null, null, null, true);
+
+				sourceBm.bitmapData.dispose();
 			}
 			else
 			{
-				suitableBm = sourceBm;
+				suitableBmd = sourceBm.bitmapData;
 			}
 			// use suitable bitmap for texture
-			return Texture.fromBitmap(suitableBm);
-		}
+			return Texture.fromBitmapData(suitableBmd);
+		}*/
 
 		private function constrainToProportion(img:Object, size:Number):void
 		{
-			// TODO : this function goes as a global method
-			// TODO : add "crop to proportion" logic
-			img.height = size;
-			img.scaleX = img.scaleY;
+			if (img.height >= img.width)
+			{
+				img.height = size;
+				img.scaleX = img.scaleY;
+			}
+			else
+			{
+				img.width = size;
+				img.scaleY = img.scaleX;
+			}
 		}
 	}
 }
