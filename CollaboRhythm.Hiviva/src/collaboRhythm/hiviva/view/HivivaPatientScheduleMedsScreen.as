@@ -41,6 +41,7 @@ package collaboRhythm.hiviva.view
 		private var _header:HivivaHeader;
 		private var _applicationController:HivivaApplicationController;
 		private var _backButton:Button;
+		private var _medicationResult:String;
 
 
 
@@ -81,6 +82,16 @@ package collaboRhythm.hiviva.view
 		public function get localStoreController():HivivaLocalStoreController
 		{
 			return applicationController.hivivaLocalStoreController;
+		}
+
+		public function get medicationResult():String
+		{
+			return this._medicationResult;
+		}
+
+		public function set medicationResult(value:String):void
+		{
+			this._medicationResult = value;
 		}
 
 		public function get applicationController():HivivaApplicationController
