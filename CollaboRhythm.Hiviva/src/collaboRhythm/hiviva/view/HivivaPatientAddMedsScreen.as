@@ -11,6 +11,7 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.List;
 
 	import feathers.controls.Screen;
+	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TextInput;
 	import feathers.data.ListCollection;
@@ -122,7 +123,9 @@ package collaboRhythm.hiviva.view
 
 		private function continueBtnHandler(e:starling.events.Event):void
 		{
-			this.owner.addScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientScheduleMedsScreen, null, {applicationController:applicationController}));
+			var screenParams:Object = {medicationResult:this._medicationList.selectedItem.text , applicationController:applicationController};
+			var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatientScheduleMedsScreen , null , screenParams);
+			this.owner.addScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN, screenNavigatorItem);
 			this.owner.showScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN);
 		}
 
