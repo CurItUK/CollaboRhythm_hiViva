@@ -112,6 +112,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 		private function imageLoaded(e:flash.events.Event):void
 		{
 			var bm:Bitmap = e.target.content as Bitmap;
+			bm.scaleX = bm.scaleY = 0.3;
 			trace("Image loaded.");
 
 			//this._photo = new Image(getStarlingCompatibleTexture(e.target.content));

@@ -29,8 +29,8 @@ package collaboRhythm.hiviva.global
 		public static const SIDENAV_ICON_MESSAGES:Texture					= Assets.getTexture("SideNavIconMessagesPng");
 		public static const SIDENAV_ICON_BADGES:Texture						= Assets.getTexture("SideNavIconBadgesPng");
 		public static const SETTINGS_ICON:Texture							= Assets.getTexture("SettingIconPng");
-		public static const TOPNAV_ICON_MESSAGES:Texture					= Assets.getTexture("TopNavIconMessagesPng");
-		public static const TOPNAV_ICON_BADGES:Texture						= Assets.getTexture("TopNavIconBadgesPng");
+//		public static const TOPNAV_ICON_MESSAGES:Texture					= Assets.getTexture("TopNavIconMessagesPng");
+//		public static const TOPNAV_ICON_BADGES:Texture						= Assets.getTexture("TopNavIconBadgesPng");
 		public static const PATIENTPROFILENAV_BUTTON:Texture				= Assets.getTexture("PatientProfileNavButtonPng");
 		public static const PATIENTPROFILENAV_BUTTON_PATTERN:Texture		= Assets.getTexture("PatientProfileNavButtonPatternPng");
 		public static const BACK_BUTTON:Texture								= Assets.getTexture("BackButtonPng");

@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view
 {
+	import collaboRhythm.hiviva.global.DateTransformFactory;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.galleryscreens.Gallery;
 
@@ -106,9 +107,6 @@ package collaboRhythm.hiviva.view
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
-
-			// test if data is there
-			populateOldData();
 		}
 
 		private function cancelButtonClick(e:Event):void
@@ -121,29 +119,33 @@ package collaboRhythm.hiviva.view
 			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 		}
 
-		private function getAllSelectedItems():Array
-		{
-			var returnArray:Array = [],
-				currGallery:Gallery,
-				currGallerySelectedItems:Array;
-
-			for (var i:int = 0; i < this._galleryLength; i++)
-			{
-				currGallery = this._galleries[i];
-				currGallerySelectedItems = currGallery.selectedItems;
-				trace(currGallerySelectedItems.length);
-				if(currGallerySelectedItems.length > 0)
-				{
-					returnArray.concat(currGallerySelectedItems);
-				}
-			}
-			return returnArray;
-		}
-
 		private function submitButtonClick(e:Event):void
 		{
 			this._photoContainer.saveTempImageAsMain();
 
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			/*this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "DELETE * FROM homepage_photos";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, tableDataDeleted);
+			this._sqStatement.execute();*/
+			writeImageData();
+		}
+
+		private function tableDataDeleted(e:SQLEvent):void
+		{
+			this._sqStatement.removeEventListener(SQLEvent.RESULT, tableDataDeleted);
+
+			writeImageData();
+		}
+
+		private function writeImageData():void
+		{
 			var currGallery:Gallery,
 				currGallerySelectedItems:Array,
 				selectedItem:String,
@@ -155,13 +157,13 @@ package collaboRhythm.hiviva.view
 			{
 				currGallery = this._galleries[i];
 				currGallerySelectedItems = currGallery.selectedItems;
-				if(currGallerySelectedItems.length > 0)
+				if (currGallerySelectedItems.length > 0)
 				{
 					for (var j:int = 0; j < currGallerySelectedItems.length; j++)
 					{
 						index++;
 						selectedItem = currGallerySelectedItems[j];
-						if(isFirstItem)
+						if (isFirstItem)
 						{
 							sqlData += "SELECT " + index + " AS 'photoid', '" + selectedItem + "' AS 'url' ";
 							isFirstItem = false;
@@ -174,61 +176,53 @@ package collaboRhythm.hiviva.view
 				}
 			}
 
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
-
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
-
 			this._sqStatement = new SQLStatement();
 			this._sqStatement.text = "INSERT INTO homepage_photos " + sqlData;
-
 			trace(this._sqStatement.text);
 			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+			this._sqStatement.addEventListener(SQLEvent.RESULT, tableDataWritten);
 			this._sqStatement.execute();
-
-			/*
-			var userName:String = "'" + this._nameInput._input.text + "'";
-			var userEmail:String = "'" + this._emailInput._input.text + "'";
-			var userUpdates:int = int(this._updatesCheck.isSelected);
-			var userResearch:int = int(this._researchCheck.isSelected);
-			if(this._dataExists)
-			{
-				this._sqStatement.text = "UPDATE user_details SET user_name=" + userName + ", user_email=" + userEmail + ", user_updates=" + userUpdates + ", user_research=" + userResearch;
-			}
-			else
-			{
-				this._sqStatement.text = "INSERT INTO user_details (user_name, user_email, user_updates, user_research) VALUES (" + userName + ", " + userEmail + ", " + userUpdates + ", " + userResearch + ")";
-			}
-			trace(this._sqStatement.text);
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
-			//this._sqStatement.execute();
-			*/
 		}
 
-		private function populateOldData():void
+		private function tableDataWritten(e:SQLEvent):void
 		{
-			// this counts the current amount of entries for repopulation
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
+			this._sqStatement.removeEventListener(SQLEvent.RESULT, tableDataDeleted);
 
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
+			writeDateStamp();
+		}
+
+		private function writeDateStamp():void
+		{
+			var today:Date = new Date();
+			var sqDate:String = DateTransformFactory.convertASDateToSQLDateTime(today);
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "SELECT COUNT(*) AS count FROM homepage_photos";
+			this._sqStatement.text = "UPDATE app_settings ('gallery_submission_timestamp') VALUES ('" + sqDate + "')";
+			trace(this._sqStatement.text);
 			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, tableDataWritten);
 			this._sqStatement.execute();
-
-			var sqlRes:SQLResult = this._sqStatement.getResult();
-			trace(sqlRes.data[0].count);
 		}
 
 		private function sqlResultHandler(e:SQLEvent):void
 		{
 			trace("sqlResultHandler " + e);
+		}
+
+		private function populateOldData():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "SELECT url FROM homepage_photos";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+
+			var sqlRes:SQLResult = this._sqStatement.getResult();
 		}
 
 		private function initGallery():void

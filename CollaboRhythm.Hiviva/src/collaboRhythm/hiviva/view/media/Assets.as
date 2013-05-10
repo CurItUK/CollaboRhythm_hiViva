@@ -80,12 +80,13 @@ package collaboRhythm.hiviva.view.media
 
 		[Embed(source="/assets/images/temp/top_nav_icon_01.png")]
 		public static const SettingIconPng:Class;
-
+/*
 		[Embed(source="/assets/images/temp/top_nav_icon_02.png")]
 		public static const TopNavIconMessagesPng:Class;
 
 		[Embed(source="/assets/images/temp/top_nav_icon_03.png")]
 		public static const TopNavIconBadgesPng:Class;
+*/
 
 		[Embed(source="/assets/images/temp/patient-profile-nav-button.png")]
 		public static const PatientProfileNavButtonPng:Class;
