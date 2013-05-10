@@ -100,6 +100,7 @@ package collaboRhythm.hiviva.view
 			this._addMedBtn = new Button();
 			this._addMedBtn.label = "Add a medicine";
 			this._addMedBtn.addEventListener(starling.events.Event.TRIGGERED, addMedBtnHandler);
+			this._addMedBtn.y = 100;
 			this.addChild(this._addMedBtn);
 		}
 

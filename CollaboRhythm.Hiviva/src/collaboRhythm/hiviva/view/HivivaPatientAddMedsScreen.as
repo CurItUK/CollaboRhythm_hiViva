@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RXNORMEvent;
 	import collaboRhythm.hiviva.utils.RXNORM_DrugSearch;
 	import collaboRhythm.shared.collaboration.model.SynchronizationService;
 	import collaboRhythm.shared.model.Account;
@@ -96,6 +97,16 @@ package collaboRhythm.hiviva.view
 		private function searchBtnHandler(e:starling.events.Event):void
 		{
 			var drugSearch:RXNORM_DrugSearch = new RXNORM_DrugSearch();
+			drugSearch.addEventListener(RXNORMEvent.DATA_LOAD_COMPLETE , drugSearchLoadHandler);
+			drugSearch.findDrug(this._medicationSearchInput.text);
+
+		}
+
+		private function drugSearchLoadHandler(e:RXNORMEvent):void
+		{
+			trace(e.data.medicationList)
+
+
 
 		}
 
