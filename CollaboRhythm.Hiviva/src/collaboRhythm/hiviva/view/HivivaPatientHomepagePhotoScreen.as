@@ -1,6 +1,5 @@
 package collaboRhythm.hiviva.view
 {
-	import collaboRhythm.hiviva.global.DateTransformFactory;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.galleryscreens.Gallery;
 
@@ -11,11 +10,8 @@ package collaboRhythm.hiviva.view
 	import feathers.layout.HorizontalLayout;
 
 	import flash.data.SQLConnection;
-	import flash.data.SQLResult;
 	import flash.data.SQLStatement;
-	import flash.events.SQLErrorEvent;
 	import flash.events.SQLEvent;
-
 	import flash.filesystem.File;
 
 	import starling.display.DisplayObject;
@@ -36,6 +32,10 @@ package collaboRhythm.hiviva.view
 		private var _galleryPadding:Number;
 		private var _sqConn:SQLConnection;
 		private var _sqStatement:SQLStatement;
+		private var _resultData:Array;
+		private var _dataPreExists:Boolean;
+		private var _sqDataToWrite:String;
+		private var _selectedItemsCount:int;
 
 		private const GALLERY_CATEGORIES:Array = ["sport","music","cinema","history","traveling","art"];
 		private const PADDING:Number = 32
@@ -70,6 +70,8 @@ package collaboRhythm.hiviva.view
 			this._loadText.y = this._header.height + (this._photoContainer.y - this._header.height / 2) - (this._loadText.height / 2);
 
 			if (this._galleries.length == 0) initGallery();
+
+			oldDataCheck();
 		}
 
 		override protected function initialize():void
@@ -121,37 +123,39 @@ package collaboRhythm.hiviva.view
 
 		private function submitButtonClick(e:Event):void
 		{
-			this._photoContainer.saveTempImageAsMain();
+			getSqDataFromGalleries();
+			getSqDataFromCustomImage();
 
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
-
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
-
-			/*this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "DELETE * FROM homepage_photos";
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.addEventListener(SQLEvent.RESULT, tableDataDeleted);
-			this._sqStatement.execute();*/
-			writeImageData();
+			if(this._sqDataToWrite.length > 0)
+			{
+				if(this._dataPreExists)
+				{
+					this._sqStatement = new SQLStatement();
+					this._sqStatement.text = "DELETE FROM homepage_photos";
+					this._sqStatement.sqlConnection = this._sqConn;
+					this._sqStatement.addEventListener(SQLEvent.RESULT, tableDataDeleted);
+					this._sqStatement.execute();
+				}
+				else
+				{
+					writeImageData();
+				}
+			}
+			else
+			{
+				trace("nothing selected");
+			}
 		}
 
-		private function tableDataDeleted(e:SQLEvent):void
-		{
-			this._sqStatement.removeEventListener(SQLEvent.RESULT, tableDataDeleted);
-
-			writeImageData();
-		}
-
-		private function writeImageData():void
+		private function getSqDataFromGalleries():void
 		{
 			var currGallery:Gallery,
 				currGallerySelectedItems:Array,
 				selectedItem:String,
-				sqlData:String = "",
-				isFirstItem:Boolean = true,
-				index:int = 0;
+				isFirstItem:Boolean = true;
+
+			this._selectedItemsCount = 0;
+			this._sqDataToWrite = "";
 
 			for (var i:int = 0; i < this._galleryLength; i++)
 			{
@@ -161,23 +165,52 @@ package collaboRhythm.hiviva.view
 				{
 					for (var j:int = 0; j < currGallerySelectedItems.length; j++)
 					{
-						index++;
+						this._selectedItemsCount++;
 						selectedItem = currGallerySelectedItems[j];
 						if (isFirstItem)
 						{
-							sqlData += "SELECT " + index + " AS 'photoid', '" + selectedItem + "' AS 'url' ";
+							this._sqDataToWrite += "SELECT " + this._selectedItemsCount + " AS 'photoid', '" + selectedItem +
+									"' AS 'url' ";
 							isFirstItem = false;
 						}
 						else
 						{
-							sqlData += "UNION SELECT " + index + ", '" + selectedItem + "' ";
+							this._sqDataToWrite += "UNION SELECT " + this._selectedItemsCount + ", '" + selectedItem + "' ";
 						}
 					}
 				}
 			}
+		}
 
+		private function getSqDataFromCustomImage():void
+		{
+			this._photoContainer.saveTempImageAsMain();
+			var main:File = File.applicationStorageDirectory.resolvePath(this._photoContainer.fileName);
+
+			if (main.exists)
+			{
+				if (this._sqDataToWrite.length > 0)
+				{
+					this._sqDataToWrite += "UNION SELECT " + (this._selectedItemsCount + 1) + ", '" + main.url + "'";
+				}
+				else
+				{
+					this._sqDataToWrite += "SELECT " + (this._selectedItemsCount + 1) + " AS 'photoid', '" + main.url +	"' AS 'url' ";
+				}
+			}
+		}
+
+		private function tableDataDeleted(e:SQLEvent):void
+		{
+			this._sqStatement.removeEventListener(SQLEvent.RESULT, tableDataDeleted);
+			trace("image data deleted");
+			writeImageData();
+		}
+
+		private function writeImageData():void
+		{
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "INSERT INTO homepage_photos " + sqlData;
+			this._sqStatement.text = "INSERT INTO homepage_photos " + this._sqDataToWrite;
 			trace(this._sqStatement.text);
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, tableDataWritten);
@@ -186,7 +219,7 @@ package collaboRhythm.hiviva.view
 
 		private function tableDataWritten(e:SQLEvent):void
 		{
-			this._sqStatement.removeEventListener(SQLEvent.RESULT, tableDataDeleted);
+			this._sqStatement.removeEventListener(SQLEvent.RESULT, tableDataWritten);
 
 			writeDateStamp();
 		}
@@ -194,13 +227,13 @@ package collaboRhythm.hiviva.view
 		private function writeDateStamp():void
 		{
 			var today:Date = new Date();
-			var sqDate:String = DateTransformFactory.convertASDateToSQLDateTime(today);
+			var sqDate:String = today.getDate() + "-" + today.getMonth() + "-" + today.getFullYear();
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "UPDATE app_settings ('gallery_submission_timestamp') VALUES ('" + sqDate + "')";
+			this._sqStatement.text = "UPDATE app_settings SET gallery_submission_timestamp='" + sqDate + "'";
 			trace(this._sqStatement.text);
 			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.addEventListener(SQLEvent.RESULT, tableDataWritten);
+			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
 		}
 
@@ -209,7 +242,7 @@ package collaboRhythm.hiviva.view
 			trace("sqlResultHandler " + e);
 		}
 
-		private function populateOldData():void
+		private function oldDataCheck():void
 		{
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
@@ -218,11 +251,41 @@ package collaboRhythm.hiviva.view
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "SELECT url FROM homepage_photos";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getDate);
+			this._sqStatement.text = "SELECT gallery_submission_timestamp FROM app_settings";
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.execute();
+		}
 
-			var sqlRes:SQLResult = this._sqStatement.getResult();
+		private function getDate(e:SQLEvent):void
+		{
+			this._sqStatement.removeEventListener(SQLEvent.RESULT, getDate);
+			this._resultData = this._sqStatement.getResult().data;
+
+			try
+			{
+				this._dataPreExists = this._resultData[0].gallery_submission_timestamp != null;
+				trace("gallery_submission_timestamp = " + this._resultData[0].gallery_submission_timestamp);
+			}
+			catch(e:Error)
+			{
+				trace("date stamp not there");
+				this._dataPreExists = false;
+			}
+
+			if(this._dataPreExists)
+			{
+				populateOldData();
+			}
+			else
+			{
+
+			}
+		}
+
+		private function populateOldData():void
+		{
+			// TODO: populate pre-existing data
 		}
 
 		private function initGallery():void

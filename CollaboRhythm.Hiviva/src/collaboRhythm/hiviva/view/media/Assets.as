@@ -119,6 +119,15 @@ package collaboRhythm.hiviva.view.media
 
 		//front facing screen Items
 
+		[Embed(source="/assets/images/temp/home_lens_rim.png")]
+		public static const HomeLensRimPng:Class;
+
+		[Embed(source="/assets/images/temp/home_lens_bg.png")]
+		public static const HomeLensBgPng:Class;
+
+		[Embed(source="/assets/images/temp/home_lens_shine.png")]
+		public static const HomeLensShinePng:Class;
+
 		[Embed(source="/assets/images/temp/clockFace.png")]
 		public static const ClockFacePng:Class;
 

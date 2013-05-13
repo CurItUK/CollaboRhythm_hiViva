@@ -1,35 +1,24 @@
 package collaboRhythm.hiviva.view
 {
-
 	import collaboRhythm.hiviva.global.HivivaAssets;
-	import collaboRhythm.hiviva.view.media.Assets;
 
-	import feathers.controls.Button;
-	import feathers.controls.Header;
+	import feathers.controls.Label;
 	import feathers.controls.Screen;
-	import feathers.controls.ScrollText;
 
 	import flash.data.SQLConnection;
-	import flash.data.SQLResult;
 	import flash.data.SQLStatement;
-	import flash.display.Bitmap;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.IOErrorEvent;
 	import flash.events.SQLEvent;
-
 	import flash.filesystem.File;
 	import flash.geom.Matrix;
-	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
+	import flash.system.System;
 
-	import source.themes.HivivaTheme;
-
-	import starling.display.DisplayObject;
 	import starling.display.Image;
-
-	import starling.events.Event;
+	import starling.display.Sprite;
 	import starling.textures.Texture;
 
 	public class HivivaPatientHomeScreen extends Screen
@@ -39,13 +28,19 @@ package collaboRhythm.hiviva.view
 		private var _header:HivivaHeader;
 //		private var _messagesButton:Button;
 //		private var _badgesButton:Button;
-		private var _homeImageInstructions:ScrollText;
+		private var _homeImageInstructions:Label;
 		private var _sqConn:SQLConnection;
 		private var _sqStatement:SQLStatement;
 		private var _resultData:Array;
-		private var _imageHolder:Image;
+		private var _rim:Image;
+		private var _bg:Image;
+		private var _shine:Image;
+		private var _bgImageHolder:Sprite;
+		private var _lensImageHolder:Sprite;
+		private var _dayDiff:Number;
 
 		private var IMAGE_SIZE:Number;
+		private var _usableHeight:Number;
 
 		public function HivivaPatientHomeScreenScreen():void
 		{
@@ -55,8 +50,11 @@ package collaboRhythm.hiviva.view
 		override protected function draw():void
 		{
 			super.draw();
+
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
+
+			this._usableHeight = this.actualHeight - this._footerHeight - this._header.height;
 /*
 			this._messagesButton.width = 130 * this.dpiScale;
 			this._messagesButton.height = 110 * this.dpiScale;
@@ -66,6 +64,26 @@ package collaboRhythm.hiviva.view
 */
 			// 90% of stage width
 			IMAGE_SIZE = this.actualWidth * 0.9;
+
+			this._bg.width = IMAGE_SIZE;
+			this._bg.scaleY = this._bg.scaleX;
+			this._bg.x = (this.actualWidth * 0.5) - (this._bg.width * 0.5);
+			this._bg.y = (this._usableHeight * 0.5) + this._header.height - (this._bg.height * 0.5);
+
+			this._rim.scaleX = this._bg.scaleX;
+			this._rim.scaleY = this._bg.scaleY;
+			this._rim.x = (this.actualWidth * 0.5) - (this._rim.width * 0.5);
+			this._rim.y = (this._usableHeight * 0.5) + this._header.height - (this._rim.height * 0.5);
+
+			this._shine.scaleX = this._bg.scaleX;
+			this._shine.scaleY = this._bg.scaleY;
+			this._shine.x = (this.actualWidth * 0.5) - (this._shine.width * 0.5);
+			this._shine.y = (this._usableHeight * 0.5) + this._header.height - (this._shine.height * 0.5);
+
+			this._homeImageInstructions.width = IMAGE_SIZE;
+			this._homeImageInstructions.validate();
+			this._homeImageInstructions.x =  (this.actualWidth * 0.5) - (this._homeImageInstructions.width * 0.5);
+			this._homeImageInstructions.y =  (this._usableHeight * 0.5) + this._header.height - (this._homeImageInstructions.height * 0.5);
 
 			initHomePhoto();
 		}
@@ -78,11 +96,25 @@ package collaboRhythm.hiviva.view
 			this._header.title = "";
 			addChild(this._header);
 
-			this._homeImageInstructions = new ScrollText();
-			this._homeImageInstructions.text = "Go to 'PROFILE' then 'Homepage Photo' to upload or set your home page image \n\nThe clarity of this image will adjust to how well you stay on track with your medication.";
-			this._homeImageInstructions.visible = false;
-			addChild(this._homeImageInstructions);
+			this._bgImageHolder = new Sprite();
+			addChild(this._bgImageHolder);
 
+			this._rim = new Image(HivivaAssets.HOME_LENS_RIM);
+			addChild(this._rim);
+
+			this._bg = new Image(HivivaAssets.HOME_LENS_BG);
+			addChild(this._bg);
+
+			this._lensImageHolder = new Sprite();
+			addChild(this._lensImageHolder);
+
+			this._shine = new Image(HivivaAssets.HOME_LENS_SHINE);
+			addChild(this._shine);
+
+			this._homeImageInstructions = new Label();
+			this._homeImageInstructions.name = "home-label";
+			this._homeImageInstructions.text = "Go to <FONT COLOR='#016cf9'>profile</FONT> then <FONT COLOR='#016cf9'>Homepage Photo</FONT> to upload or set your home page image <br/><br/>The clarity of this image will adjust to how well you stay on track with your medication.";
+			addChild(this._homeImageInstructions);
 /*
 			this._messagesButton = new Button();
 			this._messagesButton.nameList.add(HivivaTheme.NONE_THEMED);
@@ -116,6 +148,47 @@ package collaboRhythm.hiviva.view
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getDate);
+			this._sqStatement.text = "SELECT gallery_submission_timestamp FROM app_settings";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+		}
+
+		private function getDate(e:SQLEvent):void
+		{
+			this._sqStatement.removeEventListener(SQLEvent.RESULT, getDate);
+			this._resultData = this._sqStatement.getResult().data;
+
+			var today:Date = new Date(),
+				timeDiff:Number,
+				date:Date = new Date(),
+				sqDate:String,
+				sqDateArray:Array;
+			try
+			{
+				if(this._resultData[0].gallery_submission_timestamp != null)
+				{
+					//date = DateTransformFactory.convertSQLDateTimeToASDate(this._resultData[0].gallery_submission_timestamp);
+					sqDate = this._resultData[0].gallery_submission_timestamp;
+					sqDateArray = sqDate.split("-");
+					date.setDate(sqDateArray[0]);
+					date.setMonth(sqDateArray[1]);
+					date.setFullYear(sqDateArray[2]);
+				}
+				else
+				{
+				}
+				trace("gallery_submission_timestamp = " + this._resultData[0].gallery_submission_timestamp);
+			}
+			catch(e:Error)
+			{
+				trace("date stamp not there");
+			}
+
+			timeDiff = today.time - date.time; // diff in milliseconds
+			this._dayDiff = Math.floor(timeDiff / 86400000); // convert milliseconds into days
+
+			this._sqStatement = new SQLStatement();
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlGetAllHomeImageData);
 			this._sqStatement.text = "SELECT url FROM homepage_photos";
 			this._sqStatement.sqlConnection = this._sqConn;
@@ -127,18 +200,30 @@ package collaboRhythm.hiviva.view
 			this._sqStatement.removeEventListener(SQLEvent.RESULT, sqlGetAllHomeImageData);
 			this._resultData = this._sqStatement.getResult().data;
 
-			var resultDataLength:int, chosenImageUrl:String, chosenImageInd:int;
+			var resultDataLength:int, chosenImageUrl:String, chosenImageInd:int, daysToImagesRatio:Number;
 			try
 			{
 				resultDataLength = this._resultData.length;
 				if(resultDataLength > 0)
 				{
+					// loop images if the dayDiff exceeds the amount of images
+					daysToImagesRatio = Math.floor(this._dayDiff / resultDataLength);
+					if(daysToImagesRatio >= 1)
+					{
+						chosenImageInd = this._dayDiff - (daysToImagesRatio * resultDataLength);
+					}
+					else
+					{
+						chosenImageInd = this._dayDiff;
+					}
 
-					chosenImageUrl = this._resultData[0].url;
+					//chosenImageInd = Math.floor(Math.random() * (resultDataLength - 1));
+					chosenImageUrl = this._resultData[chosenImageInd].url;
 					// TODO: boolean to define difference between custom photo and stock photo locations in homepage photo screen
 					trace("media/stock_images/" + chosenImageUrl);
 					doImageLoad("media/stock_images/" + chosenImageUrl);
 				}
+				this._homeImageInstructions.visible = false;
 			}
 			catch(e:Error)
 			{
@@ -158,42 +243,15 @@ package collaboRhythm.hiviva.view
 		{
 			trace("Image loaded.");
 			var sourceBm:Bitmap = e.target.content as Bitmap;
-			var usableHeight:Number = this.actualHeight - this._footerHeight - this._header.height;
 
-			var circleHolder:flash.display.Sprite = new flash.display.Sprite();
+			drawBgHomeImage(sourceBm);
 
-			var bgBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
-			cropToFit(bgBm, this.actualWidth, usableHeight);
-			bgBm.alpha = 0.35;
-			circleHolder.addChild(bgBm);
+			drawLensHomeImage(sourceBm);
 
-			var bgMask:flash.display.Sprite = new flash.display.Sprite();
-			bgMask.graphics.beginFill(0x000000);
-			bgMask.graphics.drawRect((bgBm.width * 0.5) - (this.actualWidth * 0.5),(bgBm.height * 0.5) - (usableHeight * 0.5),this.actualWidth,usableHeight);
-			circleHolder.addChild(bgMask);
-
-			var circleBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
-			cropToFit(circleBm, this.actualWidth, usableHeight);
-			circleHolder.addChild(circleBm);
-
-			var circleMask:flash.display.Sprite = new flash.display.Sprite();
-			circleMask.graphics.beginFill(0x000000);
-			circleMask.graphics.drawCircle(circleBm.width * 0.5, circleBm.height * 0.5, IMAGE_SIZE * 0.5);
-			circleHolder.addChild(circleMask);
-
-			bgBm.mask = bgMask;
-			circleBm.mask = circleMask;
-
-			var bmd:BitmapData = new BitmapData(circleHolder.width, circleHolder.height, true, 0x00000000);
-			var m:Matrix = new Matrix();
-			bmd.draw(circleHolder, m, null, null, null, true);
-
-
-			this._imageHolder = new Image(Texture.fromBitmapData(bmd));
-			this._imageHolder.touchable = false;
-			this._imageHolder.x = (this.actualWidth * 0.5) - (this._imageHolder.width * 0.5);
-			this._imageHolder.y = (usableHeight * 0.5) + this._header.height - (this._imageHolder.height * 0.5);
-			addChild(this._imageHolder);
+			//clean up
+			sourceBm.bitmapData.dispose();
+			sourceBm = null;
+			System.gc();
 
 			/*var suitableBm:Bitmap = getSuitableBitmap(sourceBm);
 			this._imageHolder = new Image(Texture.fromBitmap(suitableBm));
@@ -212,40 +270,59 @@ package collaboRhythm.hiviva.view
 			trace("Image load failed.");
 		}
 
-		private function getSuitableBitmap(sourceBm:Bitmap):Bitmap
+		private function drawBgHomeImage(sourceBm:Bitmap):void
 		{
-			var bm:Bitmap;
-			// if source bitmap is larger than starling size limit of 2048x2048 than resize
-			if (sourceBm.width >= 2048 || sourceBm.height >= 2048)
-			{
-				// TODO: may need to remove size adjustment from bm! only adjust the data (needs formula)
-				constrainToProportion(sourceBm, 2040);
-				// copy source bitmap at adjusted size
-				var bmd:BitmapData = new BitmapData(sourceBm.width, sourceBm.height);
-				var m:Matrix = new Matrix();
-				m.scale(sourceBm.scaleX, sourceBm.scaleY);
-				bmd.draw(sourceBm, m, null, null, null, true);
-				bm = new Bitmap(bmd, 'auto', true);
-			}
-			else
-			{
-				bm = sourceBm;
-			}
-			return bm;
+			var bgHolder:flash.display.Sprite = new flash.display.Sprite();
+
+			var bgBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
+			cropToFit(bgBm, this.actualWidth, this._usableHeight);
+			bgBm.alpha = 0.35;
+			bgHolder.addChild(bgBm);
+
+			var bgMask:flash.display.Sprite = new flash.display.Sprite();
+			bgMask.graphics.beginFill(0x000000);
+			bgMask.graphics.drawRect((bgBm.width * 0.5) - (this.actualWidth * 0.5),(bgBm.height * 0.5) - (this._usableHeight * 0.5),this.actualWidth, this._usableHeight);
+			bgHolder.addChild(bgMask);
+
+			bgBm.mask = bgMask;
+
+			var bmd:BitmapData = new BitmapData(bgHolder.width, bgHolder.height, true, 0x00000000);
+			bmd.draw(bgHolder, new Matrix(), null, null, null, true);
+
+			var bgImage:Image = new Image(Texture.fromBitmapData(bmd));
+			bgImage.touchable = false;
+			bgImage.x = (this.actualWidth * 0.5) - (bgImage.width * 0.5);
+			bgImage.y = (this._usableHeight * 0.5) + this._header.height - (bgImage.height * 0.5);
+			this._bgImageHolder.addChild(bgImage);
+
+			bmd.dispose();
 		}
 
-		private function constrainToProportion(img:Object, size:Number):void
+		private function drawLensHomeImage(sourceBm:Bitmap):void
 		{
-			if (img.height >= img.width)
-			{
-				img.height = size;
-				img.scaleX = img.scaleY;
-			}
-			else
-			{
-				img.width = size;
-				img.scaleY = img.scaleX;
-			}
+			var circleHolder:flash.display.Sprite = new flash.display.Sprite();
+
+			var circleBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
+			cropToFit(circleBm, this.actualWidth, this._usableHeight);
+			circleHolder.addChild(circleBm);
+
+			var circleMask:flash.display.Sprite = new flash.display.Sprite();
+			circleMask.graphics.beginFill(0x000000);
+			circleMask.graphics.drawCircle(circleBm.width * 0.5, circleBm.height * 0.5, IMAGE_SIZE * 0.5);
+			circleHolder.addChild(circleMask);
+
+			circleBm.mask = circleMask;
+
+			var bmd:BitmapData = new BitmapData(circleHolder.width, circleHolder.height, true, 0x00000000);
+			bmd.draw(circleHolder, new Matrix(), null, null, null, true);
+
+			var bgImage:Image = new Image(Texture.fromBitmapData(bmd));
+			bgImage.touchable = false;
+			bgImage.x = (this.actualWidth * 0.5) - (bgImage.width * 0.5);
+			bgImage.y = (this._usableHeight * 0.5) + this._header.height - (bgImage.height * 0.5);
+			this._lensImageHolder.addChild(bgImage);
+
+			bmd.dispose();
 		}
 
 		private function cropToFit(img:Object, w:Number, h:Number):void
@@ -272,6 +349,12 @@ package collaboRhythm.hiviva.view
 		public function set footerHeight(value:Number):void
 		{
 			_footerHeight = value;
+		}
+
+		override public function dispose():void
+		{
+			super.dispose();
+			//custom clear down
 		}
 	}
 }

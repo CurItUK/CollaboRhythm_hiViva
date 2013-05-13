@@ -26,11 +26,9 @@ package collaboRhythm.hiviva.view
 	public class HivivaUserSignupScreen extends Screen
 	{
 		private var _header:HivivaHeader;
-		private var _instructionsText:ScrollText;
-		private var _nameLabel:Label;
-		private var _nameInput:TextInput;
-		private var _emailLabel:Label;
-		private var _emailInput:TextInput;
+		private var _instructionsText:Label;
+		private var _nameInput:LabelAndInput;
+		private var _emailInput:LabelAndInput;
 		private var _updatesCheck:Check;
 		private var _researchCheck:Check;
 		private var _cancelButton:Button;
@@ -50,58 +48,43 @@ package collaboRhythm.hiviva.view
 		override protected function draw():void
 		{
 			super.draw();
+			var padding:Number = (32 * this.dpiScale);
 
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
 
-			this._instructionsText.text = "By clicking the button above, you agree to the Terms of Use <br>View our Privacy Policy";
-			//this._instructionsText.y = this._header.height;
 			this._instructionsText.width = this.actualWidth;
+			this._instructionsText.y = this._header.height;
+			this._instructionsText.x = padding;
+			this._instructionsText.validate();
 
-			this._nameLabel.text = "Name";
-			//this._nameLabel.y = 100;
-			this._nameLabel.width = this.actualWidth / 2;
+			this._nameInput._labelLeft.text = "Name";
+			this._nameInput.width = this.actualWidth;
+			this._nameInput.y = this._instructionsText.y + this._instructionsText.height + padding;
+			this._nameInput._input.width = this.actualWidth * 0.7;
+			this._nameInput.validate();
 
-			//this._nameInput.y = 100;
-			this._nameInput.width = this.actualWidth / 2;
+			this._emailInput._labelLeft.text = "Email";
+			this._emailInput.width = this.actualWidth;
+			this._emailInput.y = this._nameInput.y + this._nameInput.height;
+			this._emailInput._input.width = this.actualWidth * 0.7;
+			this._emailInput.validate();
 
-			this._emailLabel.text = "Email";
-			//this._emailLabel.y = 150;
-			this._emailLabel.width = this.actualWidth / 2;
+			this._updatesCheck.width = this.actualWidth;
+			this._updatesCheck.validate();
+			this._updatesCheck.y = this._emailInput.y + this._emailInput.height;
 
-			//this._emailInput.y = 150;
-			this._emailInput.width = this.actualWidth / 2;
+			this._researchCheck.width = this.actualWidth;
+			this._researchCheck.validate();
+			this._researchCheck.y = this._updatesCheck.y + this._updatesCheck.height;
 
-			//this._photoContainer.y = 200;
+			this._cancelButton.validate();
+			this._submitButton.validate();
+			this._backButton.validate();
 
-			//this._updatesCheck.y = 250;
-			this._updatesCheck.isSelected = false;
-			this._updatesCheck.label = "Send me updates";
-
-			//this._updatesCheck.y = 300;
-			this._researchCheck.isSelected = false;
-			this._researchCheck.label = "Allow anonymised data for research purposes";
-
-			this._cancelButton.label = "Cancel";
-			this._submitButton.label = "Create my Account";
-			this._backButton.label = "Back";
-
-			var items:Vector.<DisplayObject> = new Vector.<DisplayObject>();
-			items.push(this._nameInput);
-			items.push(this._emailInput);
-			items.push(this._updatesCheck);
-			items.push(this._researchCheck);
-			items.push(this._cancelButton);
-			items.push(this._instructionsText);
-
-			autoLayout(items, 50 * this.dpiScale);
-
-			this._nameLabel.y = this._nameInput.y;
-			this._emailLabel.y = this._emailInput.y;
-			this._nameInput.x = this.actualWidth / 2;
-			this._emailInput.x = this.actualWidth / 2;
-			this._submitButton.y = this._cancelButton.y;
-			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + (20 * this.dpiScale);
+			this._cancelButton.y = this._submitButton.y = this._researchCheck.y + this._researchCheck.height;
+			this._cancelButton.x = padding;
+			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + padding;
 
 			populateOldData();
 		}
@@ -114,37 +97,43 @@ package collaboRhythm.hiviva.view
 			this._header.title = "Sign up";
 			addChild(this._header);
 
-			this._instructionsText = new ScrollText();
-			this._instructionsText.isHTML = true;
+			this._instructionsText = new Label();
+			this._instructionsText.text = "By clicking the button above, you agree to the Terms of Use <a href='http://www.google.co.uk'>View our Privacy Policy</a>";
 			addChild(this._instructionsText);
 
-			this._nameLabel = new Label();
-			addChild(this._nameLabel);
-
-			this._nameInput = new TextInput();
+			this._nameInput = new LabelAndInput();
+			this._nameInput.scale = this.dpiScale;
+			this._nameInput.labelStructure = "left";
 			addChild(this._nameInput);
 
-			this._emailLabel = new Label();
-			addChild(this._emailLabel);
-
-			this._emailInput = new TextInput();
+			this._emailInput = new LabelAndInput();
+			this._emailInput.scale = this.dpiScale;
+			this._emailInput.labelStructure = "left";
 			addChild(this._emailInput);
 
 			this._updatesCheck = new Check();
+			this._updatesCheck.isSelected = false;
+			this._updatesCheck.label = "Send me updates";
 			addChild(this._updatesCheck);
 
 			this._researchCheck = new Check();
+			this._researchCheck.isSelected = false;
+			this._researchCheck.label = "Allow anonymised data for research purposes";
 			addChild(this._researchCheck);
 
 			this._cancelButton = new Button();
+			this._cancelButton.label = "Cancel";
 			this._cancelButton.addEventListener(Event.TRIGGERED, cancelButtonClick);
 			addChild(this._cancelButton);
 
 			this._submitButton = new Button();
+			this._submitButton.label = "Create my Account";
 			this._submitButton.addEventListener(Event.TRIGGERED, submitButtonClick);
 			addChild(this._submitButton);
 
 			this._backButton = new Button();
+			this._backButton.name = "back-button";
+			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
@@ -174,8 +163,8 @@ package collaboRhythm.hiviva.view
 
 			this._sqStatement = new SQLStatement();
 
-			var userName:String = "'" + this._nameInput.text + "'";
-			var userEmail:String = "'" + this._emailInput.text + "'";
+			var userName:String = "'" + this._nameInput._input.text + "'";
+			var userEmail:String = "'" + this._emailInput._input.text + "'";
 			var userUpdates:int = int(this._updatesCheck.isSelected);
 			var userResearch:int = int(this._researchCheck.isSelected);
 			if(this._dataExists)
@@ -215,24 +204,24 @@ package collaboRhythm.hiviva.view
 			this._dataExists = true;
 			try
 			{
-				this._nameInput.text = sqlRes.data[0].user_name;
+				this._nameInput._input.text = sqlRes.data[0].user_name;
 			}
 			catch(e:Error)
 			{
 				//trace("fail");
-				this._nameInput.text = "";
+				this._nameInput._input.text = "";
 				this._dataExists = false;
 			}
 			this._nameInput.invalidate();
 
 			try
 			{
-				this._emailInput.text = sqlRes.data[0].user_email;
+				this._emailInput._input.text = sqlRes.data[0].user_email;
 			}
 			catch(e:Error)
 			{
 				//trace("fail");
-				this._emailInput.text = "";
+				this._emailInput._input.text = "";
 			}
 			this._emailInput.invalidate();
 
@@ -263,19 +252,6 @@ package collaboRhythm.hiviva.view
 		private function sqlResultHandler(e:SQLEvent):void
 		{
 			trace("sqlResultHandler " + e);
-		}
-
-		private function autoLayout(items:Vector.<DisplayObject>, gap:Number):void
-		{
-			var bounds:ViewPortBounds = new ViewPortBounds();
-			bounds.x = 0;
-			bounds.y = this._header.height;
-			bounds.maxHeight = this.actualHeight - this._header.height;
-			bounds.maxWidth = this.actualWidth;
-
-			var contentLayout:VerticalLayout = new VerticalLayout();
-			contentLayout.gap = gap;
-			contentLayout.layout(items,bounds);
 		}
 
 		public function get applicationController():HivivaApplicationController

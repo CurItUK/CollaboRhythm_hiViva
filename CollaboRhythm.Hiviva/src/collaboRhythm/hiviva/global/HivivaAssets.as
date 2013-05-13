@@ -42,6 +42,9 @@ package collaboRhythm.hiviva.global
 		public static const POPUP_PANEL:Texture								= Assets.getTexture("PopupPanelPng");
 		public static const CLOSE_BUTTON:Texture							= Assets.getTexture("CloseButtonPng");
 		// front facing screen Items
+		public static const HOME_LENS_RIM:Texture							= Assets.getTexture("HomeLensRimPng");
+		public static const HOME_LENS_BG:Texture							= Assets.getTexture("HomeLensBgPng");
+		public static const HOME_LENS_SHINE:Texture							= Assets.getTexture("HomeLensShinePng");
 		public static const CLOCK_FACE:Texture								= Assets.getTexture("ClockFacePng");
 		public static const PILL_BOX:Texture								= Assets.getTexture("PillboxPng");
 	}

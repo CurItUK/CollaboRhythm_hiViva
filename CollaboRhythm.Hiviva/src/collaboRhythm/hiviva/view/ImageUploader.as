@@ -121,7 +121,7 @@ package collaboRhythm.hiviva.view
 		{
 			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
 			var main:File = File.applicationStorageDirectory.resolvePath(this._fileName);
-			if (temp.exists) {temp.moveTo(main,true);} else { trace("temp" + this._fileName + " doesn't exist"); }
+			if(temp.exists) {temp.moveTo(main,true);} else { trace("temp" + this._fileName + " doesn't exist"); }
 		}
 
 		private function uploadButtonHandler(e:Event):void

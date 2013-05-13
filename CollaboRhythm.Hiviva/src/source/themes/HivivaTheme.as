@@ -146,6 +146,7 @@ package source.themes
 	import flash.text.Font;
 
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 
 
 	import starling.core.Starling;
@@ -751,6 +752,7 @@ package source.themes
 			this.setInitializerForClass(Label, HeaderLightInitializer, "header-light");
 			this.setInitializerForClass(Label, HeaderBoldInitializer, "header-bold");
 			this.setInitializerForClass(Label, inputLabelInitializer, "input-label");
+			this.setInitializerForClass(Label, homeLabelInitializer, "home-label");
 			this.setInitializerForClass(Label, labelInitializer);
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
@@ -992,6 +994,8 @@ package source.themes
 		{
 			label.textRendererProperties.embedFonts = true;
 			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x293d54);
+			label.textRendererProperties.wordWrap = true;
+			label.textRendererProperties.isHTML = true;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
@@ -999,6 +1003,17 @@ package source.themes
 		{
 			label.textRendererProperties.embedFonts = true;
 			label.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(30 * this.scale), 0x495c72);
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+		}
+
+
+		protected function homeLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(30 * this.scale), 0x495c72);
+			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
+			label.textRendererProperties.wordWrap = true;
+			label.textRendererProperties.isHTML = true;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 

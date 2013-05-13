@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
+	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollText;
 
@@ -20,7 +21,7 @@ package collaboRhythm.hiviva.view
 	public class HivivaPatientMyDetailsScreen extends Screen
 	{
 		private var _header:HivivaHeader;
-		private var _instructionsText:ScrollText;
+		private var _instructionsText:Label;
 		private var _nameInput:LabelAndInput;
 		private var _emailInput:LabelAndInput;
 		private var _photoContainer:ImageUploader;
@@ -51,11 +52,12 @@ package collaboRhythm.hiviva.view
 
 			this._instructionsText.width = this.actualWidth;
 			this._instructionsText.y = this._header.height;
+			this._instructionsText.x = padding;
 			this._instructionsText.validate();
 
 			this._nameInput._labelLeft.text = "Name";
 			this._nameInput.width = this.actualWidth;
-			this._nameInput.y = this._instructionsText.y + this._instructionsText.height;
+			this._nameInput.y = this._instructionsText.y + this._instructionsText.height + padding;
 			this._nameInput._input.width = this.actualWidth * 0.7;
 			this._nameInput.validate();
 
@@ -96,8 +98,8 @@ package collaboRhythm.hiviva.view
 			this._header.title = "My Details";
 			addChild(this._header);
 
-			this._instructionsText = new ScrollText();
-			this._instructionsText.text = "All fields are optional except to connect to a care provider What's this?";
+			this._instructionsText = new Label();
+			this._instructionsText.text = "All fields are optional except to connect to a care provider <a>What's this?</a>";
 			addChild(this._instructionsText);
 
 			this._nameInput = new LabelAndInput();
