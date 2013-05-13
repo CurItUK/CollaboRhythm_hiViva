@@ -30,6 +30,7 @@ package collaboRhythm.hiviva.view
 		private var _continueBtn:Button;
 		private var _medicationList:List;
 		private var _medications:ListCollection;
+		private var _medicationXMLList:XMLList;
 
 		public function HivivaPatientAddMedsScreen()
 		{
@@ -43,12 +44,13 @@ package collaboRhythm.hiviva.view
 			this._header.height = 110 * this.dpiScale;
 
 			this._searchButton.validate();
-			this._searchButton.x = 10;
-			this._searchButton.y = 100;
+			this._searchButton.x = this.actualWidth - this._searchButton.width - 10;
+			this._searchButton.y = 130;
 
 			this._medicationSearchInput.validate();
-			this._medicationSearchInput.x = this._searchButton.x + this._searchButton.width + 10;
-			this._medicationSearchInput.y = 100;
+			this._medicationSearchInput.width = this.actualWidth - this._searchButton.width - 40;
+			this._medicationSearchInput.x = 10;
+			this._medicationSearchInput.y = 135;
 
 		}
 
@@ -89,15 +91,23 @@ package collaboRhythm.hiviva.view
 
 		private function drugSearchLoadHandler(e:RXNORMEvent):void
 		{
-			trace(e.data.medicationList);
+			medicationXMLList = e.data.medicationList as XMLList;
+
+			if(this._medicationList != null)
+			{
+				this._medicationList.dataProvider = null;
+				this.removeChild(this._medicationList);
+				this._medicationList.dispose();
+				this._medicationList = null;
+			}
 
 			this._medicationList = new List();
-			this._medications = new ListCollection(e.data.medicationList);
+			this._medications = new ListCollection(medicationXMLList.name);
 			this._medicationList.width = this.actualWidth;
-			//this._medicationList.height = this.actualHeight - this._header.height - 20;
 			this._medicationList.y = this._header.height + 100;
 			this._medicationList.dataProvider = this._medications;
 			this._medicationList.itemRendererProperties.labelField = "text";
+			this._medicationList.addEventListener(starling.events.Event.CHANGE , listSelectedHandler);
 
 			this.addChild(this._medicationList);
 
@@ -106,27 +116,55 @@ package collaboRhythm.hiviva.view
 			trace("this._medicationList.height " + this._medicationList.height);
 			trace("this.actualHeight " + this.actualHeight);
 
-			this._medicationList.addEventListener(starling.events.Event.CHANGE , listSelectedHandler);
+
 
 		}
 
 		private function listSelectedHandler(e:starling.events.Event):void
 		{
-			this._continueBtn = new Button();
-			this._continueBtn.label = "Continue";
-			this._continueBtn.addEventListener(Event.TRIGGERED, continueBtnHandler);
-			this.addChild(this._continueBtn);
-			this._continueBtn.validate();
-			this._continueBtn.y = this.actualHeight - this._continueBtn.height - 20;
-			this._continueBtn.x = 30;
+			if(this._continueBtn == null)
+			{
+				this._continueBtn = new Button();
+				this._continueBtn.label = "Continue";
+				this._continueBtn.addEventListener(Event.TRIGGERED, continueBtnHandler);
+				this.addChild(this._continueBtn);
+				this._continueBtn.validate();
+				this._continueBtn.y = this.actualHeight - this._continueBtn.height - 20;
+				this._continueBtn.x = 10;
+			}
 		}
 
 		private function continueBtnHandler(e:starling.events.Event):void
 		{
-			var screenParams:Object = {medicationResult:this._medicationList.selectedItem.text , applicationController:applicationController};
+			var selectedMedicine:XML = medicationXMLList[this._medicationList.selectedIndex];
+			var screenParams:Object = {medicationResult:selectedMedicine , applicationController:applicationController};
 			var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatientScheduleMedsScreen , null , screenParams);
-			this.owner.addScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN, screenNavigatorItem);
+
+			if(this.owner.getScreenIDs().indexOf(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN) == -1)
+			{
+				this.owner.addScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN, screenNavigatorItem);
+			}
+			else
+			{
+				this.owner.removeScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN);
+				this.owner.addScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN, screenNavigatorItem);
+			}
 			this.owner.showScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN);
+		}
+
+		override public function dispose():void
+		{
+			super.dispose();
+		}
+
+		public function get medicationXMLList():XMLList
+		{
+			return _medicationXMLList;
+		}
+
+		public function set medicationXMLList(value:XMLList):void
+		{
+			_medicationXMLList = value;
 		}
 
 		public function get localStoreController():HivivaLocalStoreController

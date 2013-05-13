@@ -46,8 +46,6 @@ package collaboRhythm.hiviva.view
 		override protected function initialize():void
 		{
 
-
-
 			super.initialize();
 			this._header = new HivivaHeader();
 			this._header.title = "Enter your Regimen";
@@ -58,8 +56,6 @@ package collaboRhythm.hiviva.view
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
-
-
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
@@ -103,7 +99,7 @@ package collaboRhythm.hiviva.view
 			this._addMedBtn = new Button();
 			this._addMedBtn.label = "Add a medicine";
 			this._addMedBtn.addEventListener(starling.events.Event.TRIGGERED, addMedBtnHandler);
-			this._addMedBtn.y = 100;
+			this._addMedBtn.y = 130;
 			this.addChild(this._addMedBtn);
 		}
 

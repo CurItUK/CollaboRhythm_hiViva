@@ -21,11 +21,12 @@ package collaboRhythm.hiviva.utils
 
 		private function queryDrugName_completeHandler(e:flash.events.Event):void
 		{
+			trace("RXNORM_DrugSearch " + e.target.data);
 			var xmlResponse:XML = new XML(e.target.data);
 			var conceptXMList:XMLList = xmlResponse.drugGroup.conceptGroup.conceptProperties;
 
 			var evt:RXNORMEvent = new RXNORMEvent(RXNORMEvent.DATA_LOAD_COMPLETE);
-			evt.data.medicationList = conceptXMList.name;
+			evt.data.medicationList = conceptXMList;
 			this.dispatchEvent(evt);
 		}
 	}
