@@ -26,7 +26,7 @@ package collaboRhythm.hiviva.view
 		{
 			super.initialize();
 			this._header = new HivivaHeader();
-			this._header.title = "Virus Model Screen";
+			this._header.title = "Virus Model";
 			addChild(this._header);
 		}
 

@@ -25,7 +25,7 @@ package collaboRhythm.hiviva.view
 		{
 			super.initialize();
 			this._header = new HivivaHeader();
-			this._header.title = "Reports Screen";
+			this._header.title = "Reports";
 			addChild(this._header);
 
 
