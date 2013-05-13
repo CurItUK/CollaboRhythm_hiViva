@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.HivivaAssets;
 
 	import feathers.controls.Button;
+	import feathers.controls.Label;
 	import feathers.controls.ScrollText;
 	import feathers.core.FeathersControl;
 	import feathers.display.Scale9Image;
@@ -48,7 +49,7 @@ package collaboRhythm.hiviva.view
 		}
 
 		private var _bg:Scale9Image;
-		private var _label:ScrollText;
+		private var _label:Label;
 		private var _confirmButton:Button;
 		private var _closeButton:Button;
 
@@ -70,9 +71,9 @@ package collaboRhythm.hiviva.view
 
 			this._bg.width = this.actualWidth;
 
-			this._label.x = scaledPadding;
-			this._label.y = scaledPadding;
 			this._label.width = this.actualWidth - (scaledPadding * 2);
+			//this._label.x = scaledPadding;
+			//this._label.y = scaledPadding;
 			this._label.validate();
 
 			this._confirmButton.validate();
@@ -94,7 +95,8 @@ package collaboRhythm.hiviva.view
 			this._bg = new Scale9Image(bgTexture, this._scale);
 			addChild(this._bg);
 
-			this._label = new ScrollText();
+			this._label = new Label();
+			this._label.textRendererProperties.padding = PADDING * this._scale;
 			this._label.text = this._message;
 			addChild(this._label);
 
