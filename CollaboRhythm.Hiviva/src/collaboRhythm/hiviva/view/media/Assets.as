@@ -97,6 +97,18 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/back-button.png")]
 		public static const BackButtonPng:Class;
 
+		[Embed(source="/assets/images/temp/toggle_switch.png")]
+		public static const ToggleSwitchPng:Class;
+
+		[Embed(source="/assets/images/temp/toggle_track.png")]
+		public static const ToggleTrackPng:Class;
+
+		[Embed(source="/assets/images/temp/pillbox_icon.png")]
+		public static const PillboxIconPng:Class;
+
+		[Embed(source="/assets/images/temp/clock_icon.png")]
+		public static const ClockIconPng:Class;
+
 		// forms
 
 		[Embed(source="/assets/images/temp/button.png")]

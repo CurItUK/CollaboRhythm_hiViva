@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.events.IOErrorEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
@@ -111,7 +112,9 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 		private function imageLoaded(e:flash.events.Event):void
 		{
-			var bm:Bitmap = e.target.content as Bitmap;
+			var imageLoader:LoaderInfo = e.target as LoaderInfo;
+
+			var bm:Bitmap = imageLoader.content as Bitmap;
 			bm.scaleX = bm.scaleY = 0.3;
 			trace("Image loaded.");
 
@@ -170,6 +173,19 @@ package collaboRhythm.hiviva.view.galleryscreens
 				img.width = size;
 				img.scaleY = img.scaleX;
 			}
+		}
+
+		override public function dispose():void
+		{
+			this._tint.base.dispose();
+			this._tint.dispose();
+			removeChild(this._tint);
+			this._tint = null;
+
+			this._hitArea.setEmpty();
+			this._hitArea = null;
+
+			super.dispose();
 		}
 	}
 }

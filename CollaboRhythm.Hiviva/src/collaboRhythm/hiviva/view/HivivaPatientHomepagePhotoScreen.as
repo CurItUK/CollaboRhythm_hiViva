@@ -13,6 +13,7 @@ package collaboRhythm.hiviva.view
 	import flash.data.SQLStatement;
 	import flash.events.SQLEvent;
 	import flash.filesystem.File;
+	import flash.text.TextFormatAlign;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -65,9 +66,10 @@ package collaboRhythm.hiviva.view
 			this._photoContainer.validate();
 			this._photoContainer.y = this._cancelButton.y - scaledPadding - this._photoContainer.height;
 
+			this._loadText.width = this.actualWidth;
 			this._loadText.validate();
-			this._loadText.x = (this.actualWidth / 2) - (this._loadText.width / 2);
-			this._loadText.y = this._header.height + (this._photoContainer.y - this._header.height / 2) - (this._loadText.height / 2);
+			this._loadText.x = (this.actualWidth * 0.5) - (this._loadText.width * 0.5);
+			this._loadText.y = (this._photoContainer.y * 0.5) - (this._loadText.height * 0.5);
 
 			if (this._galleries.length == 0) initGallery();
 
@@ -85,6 +87,7 @@ package collaboRhythm.hiviva.view
 			addChild(this._header);
 
 			this._loadText = new Label();
+			this._loadText.name = "centered-label";
 			this._loadText.text = "Loading images...";
 			addChild(this._loadText);
 
@@ -157,10 +160,14 @@ package collaboRhythm.hiviva.view
 			this._selectedItemsCount = 0;
 			this._sqDataToWrite = "";
 
+			shuffleList(this._galleries);
+
 			for (var i:int = 0; i < this._galleryLength; i++)
 			{
 				currGallery = this._galleries[i];
 				currGallerySelectedItems = currGallery.selectedItems;
+				shuffleList(currGallerySelectedItems);
+
 				if (currGallerySelectedItems.length > 0)
 				{
 					for (var j:int = 0; j < currGallerySelectedItems.length; j++)
@@ -169,8 +176,7 @@ package collaboRhythm.hiviva.view
 						selectedItem = currGallerySelectedItems[j];
 						if (isFirstItem)
 						{
-							this._sqDataToWrite += "SELECT " + this._selectedItemsCount + " AS 'photoid', '" + selectedItem +
-									"' AS 'url' ";
+							this._sqDataToWrite += "SELECT " + this._selectedItemsCount + " AS 'photoid', '" + selectedItem + "' AS 'url' ";
 							isFirstItem = false;
 						}
 						else
@@ -178,6 +184,23 @@ package collaboRhythm.hiviva.view
 							this._sqDataToWrite += "UNION SELECT " + this._selectedItemsCount + ", '" + selectedItem + "' ";
 						}
 					}
+				}
+			}
+		}
+
+		private function shuffleList(list:Object):void
+		{
+			var listLength:int = list.length;
+			if (listLength > 1)
+			{
+				var i:int = listLength - 1;
+				while (i > 0)
+				{
+					var s:Number = Math.floor(Math.random()*(listLength));
+					var temp:* = list[s];
+					list[s] = list[i];
+					list[i] = temp;
+					i--;
 				}
 			}
 		}
@@ -352,6 +375,21 @@ package collaboRhythm.hiviva.view
 			item.width = this._galleriesContainer.width;
 			item.y = (galleryHeight + this._galleryPadding) * index;
 			item.drawGallery();
+		}
+
+		override public function dispose():void
+		{
+			var currGallery:Gallery;
+			for (var i:int = 0; i < this._galleryLength; i++)
+			{
+				currGallery = this._galleries[i];
+				currGallery.dispose();
+				currGallery = null;
+				this._galleries[i] = null;
+			}
+			this._galleries = null;
+
+			super.dispose();
 		}
 /*
 		private function onOpenGallery(e:Event):void

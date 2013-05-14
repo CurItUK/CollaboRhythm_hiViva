@@ -95,8 +95,7 @@ package collaboRhythm.hiviva.view
 			addChild(this._bg);
 
 			this._label = new Label();
-			// write a class in hivivaTheme for this alignment
-			this._label.textRendererProperties.align = TextFormatAlign.CENTER;
+			this._label.name = "centered-label";
 			this._label.text = this._message;
 			addChild(this._label);
 

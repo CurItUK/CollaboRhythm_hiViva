@@ -172,6 +172,24 @@ package collaboRhythm.hiviva.view.galleryscreens
 			}
 		}
 
+		override public function dispose():void
+		{
+			var image:GalleryItem;
+			for(var i:int = 0; i < this._imageTotal; i++)
+			{
+				image = this._itemList[i];
+				image.removeEventListener(Event.TRIGGERED, selectImage);
+				image.dispose();
+				removeChild(image);
+				image = null;
+				this._itemList[i] = null;
+			}
+			this._itemList = null;
+			this._selectedItems = null;
+
+			super.dispose();
+		}
+
 		public function get selectedItems():Array
 		{
 			return _selectedItems;

@@ -359,6 +359,9 @@ package source.themes
 
 		protected var buttonCloseSkinTexture:Texture;
 
+		protected var toggleSwitchTexture:Texture;
+
+		protected var toggleTrackTexture:Scale9Textures;
 
 		protected var inputFieldSkinTexture:Scale9Textures;
 
@@ -637,7 +640,9 @@ package source.themes
 
 			this.buttonCloseSkinTexture = HivivaAssets.CLOSE_BUTTON;
 
+			this.toggleSwitchTexture = HivivaAssets.TOGGLE_SWITCH;
 
+			this.toggleTrackTexture = new Scale9Textures(HivivaAssets.TOGGLE_TRACK, new Rectangle(27,27,55,3));
 
 			this.inputFieldSkinTexture = new Scale9Textures(HivivaAssets.INPUT_FIELD, new Rectangle(11,11,32,32));
 
@@ -755,6 +760,7 @@ package source.themes
 			this.setInitializerForClass(Label, homeLabelInitializer, "home-label");
 			this.setInitializerForClass(Label, splashFooterTextInitializer, "splash-footer-text");
 			this.setInitializerForClass(Label, labelInitializer);
+			this.setInitializerForClass(Label, centeredLabelInitializer, "centered-label");
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
 					BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
@@ -774,7 +780,8 @@ package source.themes
 			this.setInitializerForClass(Button, patientProfileNavGroupInitializer, "patient-profile-nav-buttons");
 //			this.setInitializerForClass(Button, galleryThumbInitializer, "gallery-thumb-buttons");
 
-			this.setInitializerForClass(Button, simpleButtonInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
+			//this.setInitializerForClass(Button, simpleButtonInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
+			this.setInitializerForClass(Button, toggleSwitchSwitchInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
 
 			this.setInitializerForClass(Button, simpleButtonInitializer, Slider.DEFAULT_CHILD_NAME_THUMB);
 
@@ -946,34 +953,44 @@ package source.themes
 
 		protected function simpleButtonInitializer(button:Button):void
 		{
-
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
-
 			skinSelector.defaultValue = this.buttonUpSkinTextures;
-
 			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
-
 			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
-
 			skinSelector.imageProperties =
-
 			{
-
 				width: 60 * this.scale,
-
 				height: 60 * this.scale,
-
 				textureScale: this.scale
-
 			};
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-
 			button.minWidth = button.minHeight = 60 * this.scale;
-
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
+		}
 
+		protected function toggleSwitchSwitchInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.toggleSwitchTexture.width;
+			var skinHeight:Number = this.toggleSwitchTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.toggleSwitchTexture;
+			//skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			//skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.minWidth = skinWidth * this.scale;
+			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = skinWidth * this.scale;
+			button.minTouchHeight = skinHeight * this.scale;
 		}
 
 
@@ -995,6 +1012,16 @@ package source.themes
 		{
 			label.textRendererProperties.embedFonts = true;
 			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x293d54);
+			label.textRendererProperties.wordWrap = true;
+			label.textRendererProperties.isHTML = true;
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+		}
+
+		protected function centeredLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x293d54);
+			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 			label.textRendererProperties.wordWrap = true;
 			label.textRendererProperties.isHTML = true;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
@@ -1315,27 +1342,21 @@ package source.themes
 
 		protected function toggleSwitchTrackInitializer(track:Button):void
 		{
-
+			var skinWidth:Number = this.toggleTrackTexture.texture.width;
+			var skinHeight:Number = this.toggleTrackTexture.texture.height;
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
-
-			skinSelector.defaultValue = this.backgroundSkinTextures;
-
-			skinSelector.setValueForState(this.backgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.defaultValue = this.toggleTrackTexture;
+			//skinSelector.setValueForState(this.backgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
 
 			skinSelector.imageProperties =
-
 			{
 
-				width: 150 * this.scale,
-
-				height: 60 * this.scale,
-
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
 				textureScale: this.scale
-
 			};
 
 			track.stateToSkinFunction = skinSelector.updateValue;
-
 		}
 
 
@@ -1854,14 +1875,11 @@ package source.themes
 
 		protected function toggleSwitchInitializer(toggle:ToggleSwitch):void
 		{
-
 			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
+			toggle.defaultLabelProperties.alpha = 0;
 
-
-			toggle.defaultLabelProperties.textFormat = this.smallUILightTextFormat;
-
-			toggle.onLabelProperties.textFormat = this.smallUISelectedTextFormat;
-
+			//toggle.defaultLabelProperties.textFormat = this.smallUILightTextFormat;
+			//toggle.onLabelProperties.textFormat = this.smallUISelectedTextFormat;
 		}
 
 
