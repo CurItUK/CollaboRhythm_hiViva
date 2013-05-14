@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.MedicationScheduleTimeList;
 	import feathers.controls.Button;
+	import feathers.controls.Label;
 	import feathers.controls.PickerList;
 	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
@@ -22,6 +23,10 @@ package collaboRhythm.hiviva.view
 		private var _backButton:Button;
 		private var _saveToProfileBtn:Button;
 		private var _medicationResult:XML;
+
+		private var _medicationLable:Label;
+		private var _takeLable:Label;
+
 
 		private var _scheduleDoseList:PickerList;
 		private var _timeListItems:Array = [];
@@ -40,9 +45,8 @@ package collaboRhythm.hiviva.view
 			this._header.height = 110 * this.dpiScale;
 
 			this._scheduleDoseList.x = 10;
-			this._scheduleDoseList.y = 130;
-			this._scheduleDoseList.validate();
 
+			initChosenMedicationInfo();
 			initAvailableSchedules();
 		}
 
@@ -77,6 +81,28 @@ package collaboRhythm.hiviva.view
 
 		}
 
+		private function initChosenMedicationInfo():void
+		{
+			this._medicationLable = new Label();
+			this._medicationLable.text = medicationResult.name;
+			this.addChild(this._medicationLable);
+			this._medicationLable.validate()
+			this._medicationLable.x = 10;
+			this._medicationLable.y = this._header.height + 10;
+			this._medicationLable.width = this.actualWidth - 10;
+
+			this._scheduleDoseList.y = this._medicationLable.y + this._medicationLable.height + 50;
+			this._scheduleDoseList.validate();
+
+			this._takeLable = new Label();
+			this._takeLable.text = "Take";
+			this.addChild(this._takeLable);
+			this._takeLable.validate();
+			this._takeLable.y = this._scheduleDoseList.y + this._scheduleDoseList.height + 40;
+			this._takeLable.x = 10;
+
+		}
+
 		private function initAvailableSchedules():void
 		{
 			clearDownListArrayObect();
@@ -101,10 +127,19 @@ package collaboRhythm.hiviva.view
 				timeList.x = 10;
 				if(i == 0 )
 				{
-					timeList.y = this._scheduleDoseList.y + this._scheduleDoseList.height + 40;
+					timeList.y = this._takeLable.y + this._takeLable.height + 30;
 				} else
 				{
-					timeList.y = PickerList(this.getChildByName("tileList" + (i-1))).y + PickerList(this.getChildByName("tileList" + (i-1))).height + 40;
+					var andLabel:Label = new Label();
+					andLabel.text = "and  ";
+					andLabel.name = "centered-label";
+					this.addChild(andLabel);
+					andLabel.validate();
+					andLabel.width = PickerList(this.getChildByName("tileList" + (i-1))).width;
+					trace(andLabel.width);
+					andLabel.x = 10;
+					andLabel.y = PickerList(this.getChildByName("tileList" + (i-1))).y + PickerList(this.getChildByName("tileList" + (i-1))).height + 20;
+					timeList.y = PickerList(this.getChildByName("tileList" + (i-1))).y + PickerList(this.getChildByName("tileList" + (i-1))).height + 60;
 				}
 				_timeListItems.push(timeList);
 

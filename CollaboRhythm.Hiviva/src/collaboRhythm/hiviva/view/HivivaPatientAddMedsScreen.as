@@ -11,7 +11,6 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.List;
 
 	import feathers.controls.Screen;
-	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TextInput;
 	import feathers.data.ListCollection;
@@ -112,14 +111,13 @@ package collaboRhythm.hiviva.view
 			this.addChild(this._medicationList);
 			this._medicationList.validate();
 
-			var useableScrollHeight:Number = this.actualHeight - this._header.height - (this._searchButton.height * 2) - 70;
+			var usableScrollHeight:Number = this.actualHeight - this._header.height - (this._searchButton.height * 2) - 70;
 
-			if(this._medicationList.height > useableScrollHeight)
+			if(this._medicationList.height > usableScrollHeight)
 			{
-				this._medicationList.height = useableScrollHeight;
+				this._medicationList.height = usableScrollHeight;
 				this._medicationList.validate();
 			}
-
 		}
 
 		private function listSelectedHandler(e:starling.events.Event):void
