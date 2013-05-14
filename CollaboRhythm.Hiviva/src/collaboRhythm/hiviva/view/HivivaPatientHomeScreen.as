@@ -113,7 +113,7 @@ package collaboRhythm.hiviva.view
 
 			this._homeImageInstructions = new Label();
 			this._homeImageInstructions.name = "home-label";
-			this._homeImageInstructions.text = "Go to <FONT COLOR='#016cf9'>profile</FONT> then <FONT COLOR='#016cf9'>Homepage Photo</FONT> to upload or set your home page image <br/><br/>The clarity of this image will adjust to how well you stay on track with your medication.";
+			this._homeImageInstructions.text = "Go to <A HREF='http://www.google.com/'><FONT COLOR='#016cf9'>profile</FONT></A> then <FONT COLOR='#016cf9'>Homepage Photo</FONT> to upload or set your home page image <br/><br/>The clarity of this image will adjust to how well you stay on track with your medication.";
 			addChild(this._homeImageInstructions);
 /*
 			this._messagesButton = new Button();

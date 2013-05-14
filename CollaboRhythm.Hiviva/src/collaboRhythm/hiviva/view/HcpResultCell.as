@@ -99,8 +99,11 @@ package collaboRhythm.hiviva.view
 
 			this._hcpName.x = this._hcpImageBg.x + this._hcpImageBg.width + gap;
 			this._hcpName.y = this._hcpImageBg.y + gap;
+			this._hcpName.width = this._bg.width - this._hcpName.x;
+
 			this._hcpEmail.x = this._hcpImageBg.x + this._hcpImageBg.width + gap;
 			this._hcpEmail.y = this._hcpName.y + this._hcpName.height;
+			this._hcpEmail.width = this._bg.width - this._hcpEmail.x;
 
 			this._hcpDelete.y = (this._bg.height * 0.5) - (this._hcpDelete.height * 0.5);
 			this._hcpDelete.x = this._bg.x + this._bg.width - gap - this._hcpDelete.width;

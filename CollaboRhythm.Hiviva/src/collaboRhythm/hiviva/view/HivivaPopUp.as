@@ -10,6 +10,7 @@ package collaboRhythm.hiviva.view
 	import feathers.textures.Scale9Textures;
 
 	import flash.geom.Rectangle;
+	import flash.text.TextFormatAlign;
 
 	import starling.events.Event;
 
@@ -71,9 +72,8 @@ package collaboRhythm.hiviva.view
 
 			this._bg.width = this.actualWidth;
 
-			this._label.width = this.actualWidth - (scaledPadding * 2);
-			//this._label.x = scaledPadding;
-			//this._label.y = scaledPadding;
+			this._label.width = this.actualWidth - (scaledPadding * 4);
+			this._label.x = this._label.y = scaledPadding * 2;
 			this._label.validate();
 
 			this._confirmButton.validate();
@@ -84,7 +84,6 @@ package collaboRhythm.hiviva.view
 
 			//this._bg.height = this.height = fullHeight;
 			setSizeInternal(this.actualWidth, fullHeight, true);
-
 		}
 
 		override protected function initialize():void
@@ -96,7 +95,8 @@ package collaboRhythm.hiviva.view
 			addChild(this._bg);
 
 			this._label = new Label();
-			this._label.textRendererProperties.padding = PADDING * this._scale;
+			// write a class in hivivaTheme for this alignment
+			this._label.textRendererProperties.align = TextFormatAlign.CENTER;
 			this._label.text = this._message;
 			addChild(this._label);
 

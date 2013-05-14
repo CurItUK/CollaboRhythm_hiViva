@@ -50,7 +50,7 @@ package collaboRhythm.hiviva.view
 
 			this._header.width = this.actualWidth;
 
-			this._instructionsText.width = this.actualWidth;
+			this._instructionsText.width = this.actualWidth - (padding * 2);
 			this._instructionsText.y = this._header.height;
 			this._instructionsText.x = padding;
 			this._instructionsText.validate();
@@ -58,7 +58,7 @@ package collaboRhythm.hiviva.view
 			this._nameInput._labelLeft.text = "Name";
 			this._nameInput.width = this.actualWidth;
 			this._nameInput.y = this._instructionsText.y + this._instructionsText.height + padding;
-			this._nameInput._input.width = this.actualWidth * 0.7 - padding;
+			this._nameInput._input.width = this.actualWidth * 0.7;
 			this._nameInput.validate();
 
 			this._emailInput._labelLeft.text = "Email";

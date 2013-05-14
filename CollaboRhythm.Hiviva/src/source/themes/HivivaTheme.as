@@ -753,6 +753,7 @@ package source.themes
 			this.setInitializerForClass(Label, HeaderBoldInitializer, "header-bold");
 			this.setInitializerForClass(Label, inputLabelInitializer, "input-label");
 			this.setInitializerForClass(Label, homeLabelInitializer, "home-label");
+			this.setInitializerForClass(Label, splashFooterTextInitializer, "splash-footer-text");
 			this.setInitializerForClass(Label, labelInitializer);
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
@@ -1006,7 +1007,6 @@ package source.themes
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
-
 		protected function homeLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
@@ -1015,6 +1015,15 @@ package source.themes
 			label.textRendererProperties.wordWrap = true;
 			label.textRendererProperties.isHTML = true;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+		}
+
+		protected function splashFooterTextInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(24 * this.scale), 0xFFFFFF);
+			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
+			label.textRendererProperties.isHTML = true;
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0x1a498a,1,0);
 		}
 
 

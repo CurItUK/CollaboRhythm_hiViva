@@ -39,6 +39,7 @@ package collaboRhythm.hiviva.view
 		private var _backButton:Button;
 		private var _sqConn:SQLConnection;
 		private var _sqStatement:SQLStatement;
+		private var _dataExists:Boolean;
 
 		private var _rightLabelFormat:TextFormat;
 
@@ -168,10 +169,26 @@ package collaboRhythm.hiviva.view
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "UPDATE test_results SET cd4_count=" + this._cd4Count._input.text + ", cd4=" + this._cd4._input.text + ", viral_load=" + this._viralLoad._input.text + ", date_of_last_test=" + this._date._input.text;
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
-			this._sqStatement.execute();
+
+			var cd4CountData:Number = Number(this._cd4Count._input.text);
+			var cd4Data:Number = Number(this._cd4._input.text);
+			var viralLoadData:Number = Number(this._viralLoad._input.text);
+			var dateData:String = "'" + this._date._input.text + "'";
+			if(!isNaN(cd4CountData) && !isNaN(cd4Data) && !isNaN(viralLoadData) && dateData.length > 0)
+			{
+				if(this._dataExists)
+				{
+					this._sqStatement.text = "UPDATE test_results SET cd4_count=" + cd4CountData + ", cd4=" + cd4Data + ", viral_load=" + viralLoadData + ", date_of_last_test=" + dateData;
+				}
+				else
+				{
+					this._sqStatement.text = "INSERT INTO test_results (cd4_count, cd4, viral_load, date_of_last_test) VALUES (" + cd4CountData + ", " + cd4Data + ", " + viralLoadData + ", " + dateData + ")";
+				}
+				trace(this._sqStatement.text);
+				this._sqStatement.sqlConnection = this._sqConn;
+				this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+				this._sqStatement.execute();
+			}
 		}
 
 		private function sqlResultHandler(e:SQLEvent):void
@@ -196,6 +213,7 @@ package collaboRhythm.hiviva.view
 			//trace(sqlRes.data[0].cd4);
 			//trace(sqlRes.data[0].viral_load);
 			//trace(sqlRes.data[0].date_of_last_test);
+			this._dataExists = true;
 
 			try
 			{
@@ -205,6 +223,7 @@ package collaboRhythm.hiviva.view
 			{
 				//trace("fail");
 				this._cd4Count._input.text = "";
+				this._dataExists = false;
 			}
 
 			try
@@ -215,6 +234,7 @@ package collaboRhythm.hiviva.view
 			{
 				//trace("fail");
 				this._cd4._input.text = "";
+				this._dataExists = false;
 			}
 
 			try
@@ -225,6 +245,7 @@ package collaboRhythm.hiviva.view
 			{
 				//trace("fail");
 				this._viralLoad._input.text = "";
+				this._dataExists = false;
 			}
 
 			try
@@ -235,6 +256,7 @@ package collaboRhythm.hiviva.view
 			{
 				//trace("fail");
 				this._date._input.text = "";
+				this._dataExists = false;
 			}
 		}
 	}

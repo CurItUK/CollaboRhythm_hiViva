@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
 
 	import feathers.controls.Button;
+	import feathers.controls.Label;
 	import feathers.controls.Screen;
 
 	import flash.events.TimerEvent;
@@ -30,6 +31,9 @@ package collaboRhythm.hiviva.view
 		private var _appType:String;
 		private var _splashBg:Image;
 		private var _logo:Image;
+		private var _footer:Label;
+		private var _termsButton:Button;
+		private var _privacyButton:Button;
 		private var _hcpButton:Button;
 		private var _patientButton:Button;
 
@@ -45,7 +49,7 @@ package collaboRhythm.hiviva.view
 			super.draw();
 
 			drawSplashBackground();
-			drawButtons();
+			if(this._appType == HivivaLocalStoreService.APP_FIRST_TIME_USE) drawButtons();
 		}
 
 		override protected function initialize():void
@@ -53,11 +57,11 @@ package collaboRhythm.hiviva.view
 			super.initialize();
 
 			initSplashBackground();
-			initButtons();
 
 			this._appType = applicationController.hivivaLocalStoreController.service.appDataVO._userAppType;
 			if(this._appType == HivivaLocalStoreService.APP_FIRST_TIME_USE)
 			{
+				initButtons();
 				initButtonListeners();
 			} else
 			{
@@ -72,10 +76,26 @@ package collaboRhythm.hiviva.view
 
 			this._logo = new Image(HivivaAssets.LOGO);
 			addChild(this._logo);
+
+			this._footer = new Label();
+			this._footer.name = "splash-footer-text";
+			this._footer.text = "An extension of MIT's CollaboRhythm project";
+			this._footer.alpha = 0.56;
+			addChild(this._footer);
+
+			this._termsButton = new Button();
+			this._termsButton.label = "Terms of Use";
+			addChild(this._termsButton);
+
+			this._privacyButton = new Button();
+			this._privacyButton.label = "Privacy Policy";
+			addChild(this._privacyButton);
 		}
 
 		private function drawSplashBackground():void
 		{
+			var padding:Number = 15 * this.dpiScale;
+
 			this._splashBg.width = this.actualWidth;
 			this._splashBg.height = this.actualHeight;
 
@@ -83,6 +103,18 @@ package collaboRhythm.hiviva.view
 			this._logo.scaleY = this._logo.scaleX;
 			this._logo.x = (this.actualWidth * 0.5) - (this._logo.width * 0.5);
 			this._logo.y = (this.actualHeight * 0.33) - (this._logo.height * 0.5);
+
+			this._termsButton.validate();
+			this._privacyButton.validate();
+			this._footer.validate();
+
+			this._termsButton.y = this._privacyButton.y = this.actualHeight - padding - this._termsButton.height;
+			this._termsButton.x = this.actualWidth * 0.5;
+			this._termsButton.x -= (this._termsButton.width + this._privacyButton.width + padding) * 0.5;
+			this._privacyButton.x = this._termsButton.x + this._termsButton.width + padding;
+
+			this._footer.width = this.actualWidth;
+			this._footer.y = this._termsButton.y - padding - this._footer.height;
 		}
 
 		private function initButtons():void
@@ -171,9 +203,6 @@ package collaboRhythm.hiviva.view
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
 			timer.start();
 
-			this._patientButton.visible = false;
-			this._hcpButton.visible = false;
-
 			//fadeOutUnselected();
 		}
 
@@ -207,6 +236,21 @@ package collaboRhythm.hiviva.view
 		private function closeDownScreen():void
 		{
 			this.dispatchEventWith("complete" , false , {profileType:this._appType});
+		}
+
+		override public function dispose():void
+		{
+			this._splashBg.texture.base.dispose();
+			this._splashBg.texture.dispose();
+			this._splashBg.dispose();
+			this._splashBg = null;
+
+			this._logo.texture.base.dispose();
+			this._logo.texture.dispose();
+			this._logo.dispose();
+			this._logo = null;
+
+			super.dispose();
 		}
 
 		public function get applicationController ():HivivaApplicationController
