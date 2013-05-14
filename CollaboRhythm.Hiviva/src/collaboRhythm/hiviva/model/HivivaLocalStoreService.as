@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.model
 
 	import flash.data.SQLConnection;
 	import flash.data.SQLResult;
+	import flash.data.SQLResult;
 	import flash.data.SQLStatement;
 	import flash.events.EventDispatcher;
 	import flash.events.SQLEvent;
@@ -167,6 +168,7 @@ package collaboRhythm.hiviva.model
 
 		private function setMedicationsResultHandler(e:SQLEvent):void
 		{
+			var lastInsertRowID:Number = this._sqStatement.getResult().lastInsertRowID;
 
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
@@ -184,12 +186,12 @@ package collaboRhythm.hiviva.model
 				if (i == 0)
 				{
 					this._sqStatement.text += "INSERT INTO medication_schedule ('time' , 'tablet_count' , 'medication_id') SELECT '" +
-							_medicationSchedule[i].time + "', '" + _medicationSchedule[i].count + "' , 3";
+							_medicationSchedule[i].time + "', '" + _medicationSchedule[i].count + "' , " + lastInsertRowID + "";
 				}
 				else
 				{
 					this._sqStatement.text += " UNION SELECT '" + _medicationSchedule[i].time + "', '" +
-							_medicationSchedule[i].count + "' , 2";
+							_medicationSchedule[i].count + "' , "+ lastInsertRowID +"";
 				}
 			}
 			this._sqStatement.addEventListener(SQLEvent.RESULT, setMedicationsScheduleResultHandler);

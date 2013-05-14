@@ -115,9 +115,6 @@ package collaboRhythm.hiviva.view
 
 			trace("this._medicationList.height " + this._medicationList.height);
 			trace("this.actualHeight " + this.actualHeight);
-
-
-
 		}
 
 		private function listSelectedHandler(e:starling.events.Event):void
