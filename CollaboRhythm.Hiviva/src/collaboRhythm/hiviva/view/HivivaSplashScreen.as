@@ -142,7 +142,7 @@ package collaboRhythm.hiviva.view
 			this._patientButton.validate();
 			this._hcpButton.width = this._patientButton.width = this.actualWidth * 0.5;
 			this._hcpButton.x = this.actualWidth * 0.5;
-			this._hcpButton.y = this._patientButton.y = (this.actualHeight * 0.8) - (this._hcpButton.height * 0.5);
+			this._hcpButton.y = this._patientButton.y = this._footer.y - this._hcpButton.height;
 		}
 
 		private function initButtonListeners():void
@@ -159,6 +159,7 @@ package collaboRhythm.hiviva.view
 
 		private function applySplashButtonProperties(button:Button):void
 		{
+			// TODO: create class in HivivaTheme
 			button.name = HivivaTheme.NONE_THEMED;
 
 			button.defaultLabelProperties.embedFonts = true;
