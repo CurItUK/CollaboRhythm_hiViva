@@ -174,7 +174,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 		override public function dispose():void
 		{
-			var image:GalleryItem;
+			/*var image:GalleryItem;
 			for(var i:int = 0; i < this._imageTotal; i++)
 			{
 				image = this._itemList[i];
@@ -183,7 +183,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 				removeChild(image);
 				image = null;
 				this._itemList[i] = null;
-			}
+			}*/
 			this._itemList = null;
 			this._selectedItems = null;
 

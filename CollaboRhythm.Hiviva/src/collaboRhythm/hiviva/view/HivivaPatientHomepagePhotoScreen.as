@@ -160,13 +160,13 @@ package collaboRhythm.hiviva.view
 			this._selectedItemsCount = 0;
 			this._sqDataToWrite = "";
 
-			shuffleList(this._galleries);
+			//shuffleList(this._galleries);
 
 			for (var i:int = 0; i < this._galleryLength; i++)
 			{
 				currGallery = this._galleries[i];
 				currGallerySelectedItems = currGallery.selectedItems;
-				shuffleList(currGallerySelectedItems);
+				//shuffleList(currGallerySelectedItems);
 
 				if (currGallerySelectedItems.length > 0)
 				{
@@ -375,21 +375,6 @@ package collaboRhythm.hiviva.view
 			item.width = this._galleriesContainer.width;
 			item.y = (galleryHeight + this._galleryPadding) * index;
 			item.drawGallery();
-		}
-
-		override public function dispose():void
-		{
-			var currGallery:Gallery;
-			for (var i:int = 0; i < this._galleryLength; i++)
-			{
-				currGallery = this._galleries[i];
-				currGallery.dispose();
-				currGallery = null;
-				this._galleries[i] = null;
-			}
-			this._galleries = null;
-
-			super.dispose();
 		}
 /*
 		private function onOpenGallery(e:Event):void
