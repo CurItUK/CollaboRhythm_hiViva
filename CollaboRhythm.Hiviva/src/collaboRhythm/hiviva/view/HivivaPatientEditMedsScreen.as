@@ -19,8 +19,6 @@ package collaboRhythm.hiviva.view
 
 	public class HivivaPatientEditMedsScreen extends Screen
 	{
-
-
 		private var _header:HivivaHeader;
 		private var _applicationController:HivivaApplicationController;
 		private var _backButton:Button;
@@ -90,32 +88,17 @@ package collaboRhythm.hiviva.view
 			var medicationCollection:ListCollection = new ListCollection(this._medications);
 			medicationList.dataProvider = medicationCollection;
 			medicationList.itemRendererProperties.labelField = "medication_name";
-
-
 			medicationList.y = this._header.height + 100;
-
-
-
-
-
 
 			this.addChild(medicationList);
 			medicationList.validate();
 
-
-
-
-
 			createAddMedButton(medicationList.height + medicationList.y + 40);
-
-
-
 		}
 
 		private function initEditMedications():void
 		{
 			createAddMedButton(130);
-
 		}
 
 		private function createAddMedButton(yloc:Number):void
@@ -127,7 +110,6 @@ package collaboRhythm.hiviva.view
 			this._addMedBtn.x = 10;
 			this.addChild(this._addMedBtn);
 		}
-
 
 		private function addMedBtnHandler(e:starling.events.Event):void
 		{
