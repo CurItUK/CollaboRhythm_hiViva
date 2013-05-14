@@ -44,8 +44,6 @@ package collaboRhythm.hiviva.view
 			this._scheduleDoseList.validate();
 
 			initAvailableSchedules();
-
-
 		}
 
 		override protected function initialize():void
