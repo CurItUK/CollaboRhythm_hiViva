@@ -60,6 +60,12 @@ package collaboRhythm.hiviva.view
 
 		private function populateMedications():void
 		{
+			var medicationsLoop:uint = this._medications.length;
+			for(var i:uint = 0 ; i < medicationsLoop ; i++)
+			{
+
+			}
+
 			var medicationList:List = new List();
 			medicationList.dataProvider = new ListCollection(this._medications);
 			medicationList.itemRendererProperties.labelField = "medication_name";
