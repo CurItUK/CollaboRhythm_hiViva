@@ -20,6 +20,8 @@ package collaboRhythm.hiviva.model
 		private var _sqConn:SQLConnection;
 		private var _appDataVO:AppDataVO;
 
+		private var _medicationSchedule:Array;
+
 		public function HivivaLocalStoreService()
 		{
 
@@ -143,7 +145,61 @@ package collaboRhythm.hiviva.model
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE);
 			evt.data.medications = result;
 			this.dispatchEvent(evt);
+		}
 
+		public function setMedicationList(medicationSchedule:Array , medicationName:String):void
+		{
+			_medicationSchedule = medicationSchedule;
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text =  "INSERT INTO medications ('medication_name') VALUES ('" + medicationName + "') ";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, setMedicationsResultHandler);
+			this._sqStatement.execute();
+
+		}
+
+		private function setMedicationsResultHandler(e:SQLEvent):void
+		{
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "";
+
+			var medicationLoop:uint = _medicationSchedule.length;
+			for (var i:uint = 0; i < medicationLoop; i++)
+			{
+				if (i == 0)
+				{
+					this._sqStatement.text += "INSERT INTO medication_schedule ('time' , 'tablet_count' , 'medication_id') SELECT '" +
+							_medicationSchedule[i].time + "', '" + _medicationSchedule[i].count + "' , 3";
+				}
+				else
+				{
+					this._sqStatement.text += " UNION SELECT '" + _medicationSchedule[i].time + "', '" +
+							_medicationSchedule[i].count + "' , 2";
+				}
+			}
+			this._sqStatement.addEventListener(SQLEvent.RESULT, setMedicationsScheduleResultHandler);
+			this._sqStatement.execute();
+		}
+
+		private function setMedicationsScheduleResultHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
 		}
 
 		public function resetApplication():void

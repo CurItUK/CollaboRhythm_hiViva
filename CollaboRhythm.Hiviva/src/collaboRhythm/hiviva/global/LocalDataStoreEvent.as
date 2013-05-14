@@ -9,6 +9,7 @@ package collaboRhythm.hiviva.global
 
 		public static const PROFILE_TYPE_UPDATE:String						= "profileTypeUpdate";
 		public static const MEDICATIONS_LOAD_COMPLETE:String				= "medicationsLoadComplete";
+		public static const MEDICATIONS_SAVE_COMPLETE:String				= "medicationsSaveComplete";
 
 		public var message:String;
 

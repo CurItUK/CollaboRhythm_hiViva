@@ -6,36 +6,11 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.MedicationScheduleTimeList;
-	import collaboRhythm.shared.collaboration.model.SynchronizationService;
-	import collaboRhythm.shared.model.Account;
-	import collaboRhythm.shared.model.Record;
-	import collaboRhythm.shared.model.healthRecord.CollaboRhythmCodedValue;
-	import collaboRhythm.shared.model.healthRecord.document.MedicationOrder;
-	import collaboRhythm.shared.model.services.ICurrentDateSource;
-	import collaboRhythm.shared.model.services.WorkstationKernel;
-
 	import feathers.controls.Button;
-	import feathers.controls.List;
 	import feathers.controls.PickerList;
-
 	import feathers.controls.Screen;
-	import feathers.controls.TextInput;
-	import feathers.controls.popups.CalloutPopUpContentManager;
-	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.data.ListCollection;
-
-	import flash.events.Event;
-
-	import flash.net.URLLoader;
-
-	import flash.net.URLRequest;
-
-	import mx.collections.ArrayCollection;
-
 	import starling.display.DisplayObject;
-
-	import starling.events.Event;
-
 	import starling.events.Event;
 
 	public class HivivaPatientScheduleMedsScreen extends Screen
@@ -45,17 +20,17 @@ package collaboRhythm.hiviva.view
 		private var _header:HivivaHeader;
 		private var _applicationController:HivivaApplicationController;
 		private var _backButton:Button;
+		private var _saveToProfileBtn:Button;
 		private var _medicationResult:XML;
 
 		private var _scheduleDoseList:PickerList;
+		private var _timeListItems:Array = [];
+		private var _tabletListItems:Array = [];
 
 
 
 		public function HivivaPatientScheduleMedsScreen()
 		{
-
-
-
 		}
 
 		override protected function draw():void
@@ -66,6 +41,11 @@ package collaboRhythm.hiviva.view
 
 			this._scheduleDoseList.x = 10;
 			this._scheduleDoseList.y = 130;
+			this._scheduleDoseList.validate();
+
+			initAvailableSchedules();
+
+
 		}
 
 		override protected function initialize():void
@@ -96,25 +76,142 @@ package collaboRhythm.hiviva.view
 			this._scheduleDoseList.typicalItem = "Three daily  ";
 			this._scheduleDoseList.addEventListener(starling.events.Event.CHANGE , doseListSelectedHandler);
 			this.addChild(this._scheduleDoseList);
-			initAvailableSchedules();
+
 		}
 
 		private function initAvailableSchedules():void
 		{
-			var loop:uint = this._scheduleDoseList.dataProvider.length;
+			clearDownListArrayObect();
+
+			var loop:uint = this._scheduleDoseList.selectedItem.count;
 			var times:ListCollection = MedicationScheduleTimeList.timeList();
+			var tablets:ListCollection = MedicationScheduleTimeList.tabletList();
 			for(var i:uint = 0 ; i < loop ; i++)
 			{
+				//timeList drop down to select time medication should be taken
 				var timeList:PickerList = new PickerList();
 				timeList.dataProvider = times;
+				timeList.listProperties.@itemRendererProperties.labelField = "text";
+				timeList.labelField = "text";
+				timeList.typicalItem = "Select time  ";
+				timeList.prompt = "Select time";
+				timeList.selectedIndex = -1;
+				timeList.name = "tileList" + i;
+				timeList.addEventListener(starling.events.Event.CHANGE , timeListTabletListChangeHandler);
 				this.addChild(timeList);
+				timeList.validate();
+				timeList.x = 10;
+				if(i == 0 )
+				{
+					timeList.y = this._scheduleDoseList.y + this._scheduleDoseList.height + 40;
+				} else
+				{
+					timeList.y = PickerList(this.getChildByName("tileList" + (i-1))).y + PickerList(this.getChildByName("tileList" + (i-1))).height + 40;
+				}
+				_timeListItems.push(timeList);
+
+				//tabletList drop down to select the amount of tablets to be taken on that time slot
+				var tabletList:PickerList = new PickerList();
+				tabletList.dataProvider = tablets;
+				tabletList.listProperties.@itemRendererProperties.labelField = "text";
+				tabletList.labelField = "text";
+				tabletList.typicalItem = "Select tablet amount ";
+				tabletList.prompt = "Select tablet amount";
+				tabletList.selectedIndex = -1;
+				tabletList.name = "tabletList" + i;
+				tabletList.addEventListener(starling.events.Event.CHANGE , timeListTabletListChangeHandler);
+				this.addChild(tabletList);
+				tabletList.validate();
+				tabletList.y = timeList.y;
+				tabletList.x = this.actualWidth - tabletList.width - 10;
+				_tabletListItems.push(tabletList);
+			}
+		}
+
+		private function timeListTabletListChangeHandler(e:starling.events.Event = null):void
+		{
+			//TODO create constant for screen edge padding's.
+
+			if(this._saveToProfileBtn != null)
+			{
+				this.removeChild(this._saveToProfileBtn);
+				this._saveToProfileBtn = null;
+			}
+
+			var loop:uint = _timeListItems.length;
+			var itemsValidated:uint = 0;
+			for(var i:uint = 0 ; i<loop ; i++)
+			{
+				if(_timeListItems[i].selectedIndex != -1 && _tabletListItems[i].selectedIndex != -1)
+				{
+					itemsValidated++;
+				}
+			}
+
+			if(itemsValidated == _timeListItems.length)
+			{
+				this._saveToProfileBtn = new Button();
+				this._saveToProfileBtn.label = "Save to profile";
+				this._saveToProfileBtn.addEventListener(starling.events.Event.TRIGGERED, saveProfileBtnHandler);
+				this.addChild(this._saveToProfileBtn);
+				this._saveToProfileBtn.validate();
+				this._saveToProfileBtn.x = 10;
+				this._saveToProfileBtn.y = this.actualHeight - this._saveToProfileBtn.height - 20;
+			}
+		}
+
+		private function saveProfileBtnHandler(e:starling.events.Event):void
+		{
+			//medicationTimes time as medication should be taken
+			//medicationTablets amount of tablets to be taken at medication time
+			var medicationScheduleData:Array = [];
+			var loop:uint = _timeListItems.length;
+			for(var i:uint = 0 ; i < loop ; i++)
+			{
+				var medicationObject:Object = {time:_timeListItems[i].selectedItem.time , count:_tabletListItems[i].selectedItem.count};
+				medicationScheduleData.push(medicationObject);
+			}
+			medicationScheduleData.sortOn("time" , Array.NUMERIC);
+			localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SAVE_COMPLETE , medicationSaveCompleteHandler);
+			localStoreController.setMedicationList(medicationScheduleData , medicationResult.name);
+		}
+
+		private function medicationSaveCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SAVE_COMPLETE , medicationSaveCompleteHandler);
+			clearDownListArrayObect();
+			this._owner.showScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
+		}
+
+		private function clearDownListArrayObect():void
+		{
+			if (this._saveToProfileBtn != null)
+			{
+				this.removeChild(this._saveToProfileBtn);
+				this._saveToProfileBtn = null;
+			}
+
+			while (_timeListItems.length > 0)
+			{
+				this.removeChild(_timeListItems[0]);
+				_timeListItems[0].removeEventListener(starling.events.Event.CHANGE, timeListTabletListChangeHandler);
+				_timeListItems[0].dataProvider = null;
+				_timeListItems[0].dispose();
+				_timeListItems[0] = null;
+				_timeListItems.shift();
+
+				this.removeChild(_tabletListItems[0]);
+				_tabletListItems[0].removeEventListener(starling.events.Event.CHANGE, timeListTabletListChangeHandler);
+				_tabletListItems[0].dataProvider = null;
+				_tabletListItems[0].dispose();
+				_tabletListItems[0] = null;
+				_tabletListItems.shift();
 			}
 		}
 
 		private function doseListSelectedHandler(e:starling.events.Event):void
 		{
-			var scheduleItemsCount:uint = this._scheduleDoseList.selectedItem.count;
-			trace(scheduleItemsCount);
+			initAvailableSchedules();
 		}
 
 		private function backBtnHandler(e:starling.events.Event):void

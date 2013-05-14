@@ -41,9 +41,17 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
-		public function setMedicationList():void
+		public function setMedicationList(medicationSchedule:Array , medicationName:String):void
 		{
+			service.addEventListener(LocalDataStoreEvent.MEDICATIONS_SAVE_COMPLETE , medicationSaveCompleteHandler);
+			service.setMedicationList(medicationSchedule , medicationName);
+		}
 
+		private function medicationSaveCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SAVE_COMPLETE , medicationSaveCompleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
 		}
 
 
