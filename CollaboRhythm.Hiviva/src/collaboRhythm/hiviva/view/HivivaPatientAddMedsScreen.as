@@ -110,13 +110,15 @@ package collaboRhythm.hiviva.view
 			this._medicationList.addEventListener(starling.events.Event.CHANGE , listSelectedHandler);
 
 			this.addChild(this._medicationList);
-
 			this._medicationList.validate();
 
-			trace("this._medicationList.height " + this._medicationList.height);
-			trace("this.actualHeight " + this.actualHeight);
+			var useableScrollHeight:Number = this.actualHeight - this._header.height - (this._searchButton.height * 2) - 70;
 
-
+			if(this._medicationList.height > useableScrollHeight)
+			{
+				this._medicationList.height = useableScrollHeight;
+				this._medicationList.validate();
+			}
 
 		}
 

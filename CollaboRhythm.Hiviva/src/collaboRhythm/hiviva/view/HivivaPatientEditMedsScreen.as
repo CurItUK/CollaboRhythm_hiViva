@@ -36,6 +36,8 @@ package collaboRhythm.hiviva.view
 			super.draw();
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
+
+			checkMedicationsExist();
 		}
 
 		override protected function initialize():void
@@ -52,8 +54,6 @@ package collaboRhythm.hiviva.view
 			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
-
-			checkMedicationsExist();
 		}
 
 		private function backBtnHandler(e:starling.events.Event):void
@@ -85,10 +85,10 @@ package collaboRhythm.hiviva.view
 		private function populateMedications():void
 		{
 			var medicationList:List = new List();
-			var medicationCollection:ListCollection = new ListCollection(this._medications);
-			medicationList.dataProvider = medicationCollection;
+			medicationList.dataProvider = new ListCollection(this._medications);
 			medicationList.itemRendererProperties.labelField = "medication_name";
-			medicationList.y = this._header.height + 100;
+			medicationList.y = this._header.height + 10;
+			medicationList.width = this.actualWidth;
 
 			this.addChild(medicationList);
 			medicationList.validate();
