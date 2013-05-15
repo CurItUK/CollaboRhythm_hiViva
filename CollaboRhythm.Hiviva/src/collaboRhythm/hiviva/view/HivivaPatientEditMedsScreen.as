@@ -112,23 +112,12 @@ package collaboRhythm.hiviva.view
 
 			}
 
-			/*
-			var medicationList:List = new List();
-			medicationList.dataProvider = new ListCollection(this._medications);
-			medicationList.itemRendererProperties.labelField = "medication_name";
-			medicationList.y = this._header.height + 10;
-			medicationList.width = this.actualWidth;
-
-			this.addChild(medicationList);
-			medicationList.validate();
-			*/
-
 			createAddMedButton(medicationHolder.height + medicationHolder.y + 40);
 		}
 
 		private function initEditMedications():void
 		{
-			createAddMedButton(130);
+			createAddMedButton(this._header.height + 30);
 		}
 
 		private function createAddMedButton(yloc:Number):void
