@@ -175,17 +175,5 @@ package collaboRhythm.hiviva.view.galleryscreens
 			}
 		}
 
-		override public function dispose():void
-		{
-			this._tint.base.dispose();
-			this._tint.dispose();
-			removeChild(this._tint);
-			this._tint = null;
-
-			this._hitArea.setEmpty();
-			this._hitArea = null;
-
-			super.dispose();
-		}
 	}
 }

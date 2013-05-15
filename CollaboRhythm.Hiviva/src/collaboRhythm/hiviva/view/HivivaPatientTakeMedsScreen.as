@@ -5,6 +5,8 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 
+	import feathers.controls.Check;
+
 	import feathers.controls.Label;
 
 	import feathers.controls.List;
@@ -68,10 +70,17 @@ package collaboRhythm.hiviva.view
 				var medicationName:Label = new Label();
 				medicationName.text = this._medications[i].medication_name;
 				medicationName.x = 10;
-				medicationName.y = i * 40 + this._header.height + 20;
+				medicationName.y = i * 70 + this._header.height + 20;
 				medicationName.width = this.actualWidth;
 				this.addChild(medicationName);
 				medicationName.validate();
+
+				var takeMedicationCheck:Check = new Check();
+
+				takeMedicationCheck.y = medicationName.y
+				this.addChild(takeMedicationCheck);
+				takeMedicationCheck.validate();
+				takeMedicationCheck.x = this.actualWidth - takeMedicationCheck.width - 20;
 
 			}
 

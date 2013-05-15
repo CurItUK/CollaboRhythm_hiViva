@@ -7,6 +7,8 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 
 	import feathers.controls.Button;
+	import feathers.controls.Check;
+	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
@@ -14,6 +16,7 @@ package collaboRhythm.hiviva.view
 	import feathers.data.ListCollection;
 
 	import starling.display.DisplayObject;
+	import starling.display.Sprite;
 
 	import starling.events.Event;
 
@@ -84,6 +87,32 @@ package collaboRhythm.hiviva.view
 
 		private function populateMedications():void
 		{
+
+			var medicationsLoop:uint = this._medications.length;
+			var medicationHolder:Sprite = new Sprite();
+			medicationHolder.y = this._header.height + 20;
+			this.addChild(medicationHolder);
+
+			for (var i:uint = 0; i < medicationsLoop; i++)
+			{
+				var medicationName:Label = new Label();
+				medicationName.text = this._medications[i].medication_name;
+				medicationName.x = 10;
+				medicationName.y = i * 70;
+				medicationName.width = this.actualWidth;
+				medicationHolder.addChild(medicationName);
+				medicationName.validate();
+
+				var takeMedicationCheck:Check = new Check();
+
+				takeMedicationCheck.y = medicationName.y
+				medicationHolder.addChild(takeMedicationCheck);
+				takeMedicationCheck.validate();
+				takeMedicationCheck.x = this.actualWidth - takeMedicationCheck.width - 20;
+
+			}
+
+			/*
 			var medicationList:List = new List();
 			medicationList.dataProvider = new ListCollection(this._medications);
 			medicationList.itemRendererProperties.labelField = "medication_name";
@@ -92,8 +121,9 @@ package collaboRhythm.hiviva.view
 
 			this.addChild(medicationList);
 			medicationList.validate();
+			*/
 
-			createAddMedButton(medicationList.height + medicationList.y + 40);
+			createAddMedButton(medicationHolder.height + medicationHolder.y + 40);
 		}
 
 		private function initEditMedications():void
