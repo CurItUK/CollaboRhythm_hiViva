@@ -66,6 +66,8 @@ package collaboRhythm.hiviva.view
 			this._screenHolder = new Sprite();
 			this.addChild(this._screenHolder);
 
+			applicationController.createSession();
+
 			drawScreenBackground();
 			initfeathersTheme();
 			initAppNavigator();

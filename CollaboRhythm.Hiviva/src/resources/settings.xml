@@ -19,8 +19,8 @@
 	<mode>patient</mode>
     <indivoServerBaseURL>http://10.177.130.79:8000</indivoServerBaseURL>
 	<!--<indivoServerBaseURL>http://indivo-dev.media.mit.edu:9291</indivoServerBaseURL>-->
-	<username>shared-csantos</username>
-	<password>shared-csantos</password>
+	<username>jsmith</username>
+	<password>jsmith</password>
 	<clinicianTeamMembers>
 		<clinicianTeamMember>shared-csantos@records.media.mit.edu</clinicianTeamMember>
 	</clinicianTeamMembers>
