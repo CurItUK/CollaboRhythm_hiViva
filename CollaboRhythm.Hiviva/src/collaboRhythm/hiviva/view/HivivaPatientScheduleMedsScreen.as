@@ -95,7 +95,7 @@ package collaboRhythm.hiviva.view
 			this._scheduleDoseList.validate();
 
 			this._takeLable = new Label();
-			this._takeLable.text = "Take";
+			this._takeLable.text = "Take ";
 			this.addChild(this._takeLable);
 			this._takeLable.validate();
 			this._takeLable.y = this._scheduleDoseList.y + this._scheduleDoseList.height + 40;
