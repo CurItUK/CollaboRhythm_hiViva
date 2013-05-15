@@ -18,6 +18,7 @@ package collaboRhythm.hiviva.view
 	import feathers.motion.transitions.ScreenFadeTransitionManager;
 
 	import flash.desktop.NativeApplication;
+	import flash.system.Capabilities;
 
 
 	import source.themes.HivivaTheme;
@@ -45,6 +46,7 @@ package collaboRhythm.hiviva.view
 		private var _appReset:Boolean = false;
 		private var _settingsOpen:Boolean = false;
 		private var _currFooterBtn:Button;
+		private var _scaleFactor:Number;
 
 		private const TRANSITION_DURATION:Number						= 0.4;
 		private const SETTING_MENU_WIDTH:Number							= 177;
@@ -61,9 +63,10 @@ package collaboRhythm.hiviva.view
 			this._stageHeight = Starling.current.viewPort.height;
 			this._stageWidth = Starling.current.viewPort.width;
 
-
 			this._screenHolder = new Sprite();
 			this.addChild(this._screenHolder);
+
+			applicationController.createSession();
 
 			drawScreenBackground();
 			initfeathersTheme();
@@ -112,7 +115,9 @@ package collaboRhythm.hiviva.view
 
 		private function initfeathersTheme():void
 		{
-			this._feathersTheme = new HivivaTheme(this.stage);
+			var isDesktop:Boolean = (Capabilities.os.indexOf("Windows") > -1);
+			this._feathersTheme = new HivivaTheme(this.stage, !isDesktop);
+			this._scaleFactor = isDesktop ? 1 : this._feathersTheme.scale;
 		}
 
 		private function initAppNavigator():void
@@ -155,10 +160,10 @@ package collaboRhythm.hiviva.view
 				this._patientSettingsBtn.defaultIcon = new Image(HivivaAssets.SETTINGS_ICON);
 				this._patientSettingsBtn.addEventListener(Event.TRIGGERED , patientSettingsBtnHandler);
 				this._screenHolder.addChild(this._patientSettingsBtn);
-				this._patientSettingsBtn.width = 130 * this._feathersTheme.scale;
-				this._patientSettingsBtn.height = 110 * this._feathersTheme.scale;
+				this._patientSettingsBtn.width = 130 * this._scaleFactor;
+				this._patientSettingsBtn.height = 110 * this._scaleFactor;
 
-				var patientSideNavScreen:HivivaPatientSideNavScreen = new HivivaPatientSideNavScreen(SETTING_MENU_WIDTH, this._feathersTheme.scale);
+				var patientSideNavScreen:HivivaPatientSideNavScreen = new HivivaPatientSideNavScreen(SETTING_MENU_WIDTH, this._scaleFactor);
 				patientSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , patientSlideNavHandler);
 				this.addChildAt(patientSideNavScreen , 0);
 
@@ -202,8 +207,8 @@ package collaboRhythm.hiviva.view
 		private function initPatientFooterMenu():void
 		{
 			// needs own class
-			var footerBtnHeight:Number = HivivaAssets.FOOTER_ICON_BASE.height * this._feathersTheme.scale;
-			var footerBtnWidth:Number = HivivaAssets.FOOTER_ICON_BASE.width * this._feathersTheme.scale;
+			var footerBtnHeight:Number = HivivaAssets.FOOTER_ICON_BASE.height * this._scaleFactor;
+			var footerBtnWidth:Number = HivivaAssets.FOOTER_ICON_BASE.width * this._scaleFactor;
 
 			this._footerBtnGroup = new ButtonGroup();
 			this._footerBtnGroup.customButtonName = "home-footer-buttons";

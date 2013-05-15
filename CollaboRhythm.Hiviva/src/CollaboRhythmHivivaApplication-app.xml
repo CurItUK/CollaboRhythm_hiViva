@@ -55,7 +55,7 @@
 	<!-- <description></description> -->
 
 	<!-- Copyright information. Optional -->
-	<copyright>Copyright 2012 John Moore, Scott Gilroy</copyright>
+	<copyright>Copyright 2013 Barry Gearing, Jawaad Shahid</copyright>
 
 	<!-- Publisher ID. Used if you're updating an application created prior to 1.5.3 -->
 	<!-- <publisherID></publisherID> -->
@@ -78,25 +78,25 @@
 		<visible>true</visible>
 
 		<!-- Whether the user can minimize the window. Optional. Default true. -->
-		<!-- <minimizable></minimizable> -->
+		<minimizable>false</minimizable>
 
 		<!-- Whether the user can maximize the window. Optional. Default true. -->
-		<!-- <maximizable></maximizable> -->
+		<maximizable>false</maximizable>
 
 		<!-- Whether the user can resize the window. Optional. Default true. -->
-		<!-- <resizable></resizable> -->
+		<resizable>false</resizable>
 
 		<!-- The window's initial width in pixels. Optional. -->
-		<!--<width>400</width>-->
+		<width>640</width>
 
 		<!-- The window's initial height in pixels. Optional. -->
-		<!--<height>300</height>-->
+		<height>988</height> <!-- +28 to compensate for system window -->
 
 		<!-- The window's initial x position. Optional. -->
-		<!-- <x></x> -->
+		<x>0</x>
 
 		<!-- The window's initial y position. Optional. -->
-		<!-- <y></y> -->
+		<y>0</y>
 
 		<!-- The window's minimum size, specified as a width/height pair in pixels, such as "400 200". Optional. -->
 		<!-- <minSize></minSize> -->
@@ -104,14 +104,14 @@
 		<!-- The window's initial maximum size, specified as a width/height pair in pixels, such as "1600 1200". Optional. -->
 		<!-- <maxSize></maxSize> -->
 
-		<!-- The initial aspect ratio of the app when launched (either "portrait" or "landscape"). Optional. Mobile only. Default is the natural orientation of the device -->
-		<aspectRatio>portrait</aspectRatio>
+		<!-- The initial aspect ratio of the app when launched (either "portrait" or "landscape"). Optional. Mobile only. Default is the natural orientation of the device
+		<aspectRatio>portrait</aspectRatio>-->
 
-		<!-- Whether the app will begin auto-orienting on launch. Optional. Mobile only. Default false -->
-		<autoOrients>false</autoOrients>
+		<!-- Whether the app will begin auto-orienting on launch. Optional. Mobile only. Default false
+		<autoOrients>false</autoOrients>-->
 
-		<!-- Whether the app launches in full screen. Optional. Mobile only. Default false -->
-		<fullScreen>true</fullScreen>
+		<!-- Whether the app launches in full screen. Optional. Mobile only. Default false
+		<fullScreen>true</fullScreen>-->
 
 		<!-- The render mode for the app (either auto, cpu, or gpu). Optional. Mobile only. Default auto -->
 		<renderMode>direct</renderMode>
@@ -125,7 +125,7 @@
 	<!-- devices supported by AIR. If you wish to restrict deployment -->
 	<!-- (i.e., to only mobile devices) then add this element and list -->
 	<!-- only the profiles which your application does support. -->
-	<supportedProfiles>extendedMobileDevice</supportedProfiles>
+	<supportedProfiles>desktop extendedDesktop</supportedProfiles>
 
 	<!-- The subpath of the standard default installation location to use. Optional. -->
 	<!-- <installFolder></installFolder> -->
@@ -226,7 +226,7 @@
 		]]>
 		</manifestAdditions> 
 	</android>-->
-	<!-- End of the schema for adding the android specific tags in AndroidManifest.xml file -->
+	<!-- End of the schema for adding the android specific tags in AndroidManifest.xml file
 
 	<extensions>
 		<extensionID>com.adobe.Vibration</extensionID>
@@ -238,7 +238,6 @@
 
 	<manifest>
 
-		<!-- See the Adobe AIR documentation for more information about setting Google Android permissions -->
 		<uses-sdk android:targetSdkVersion="11"/>
 		<uses-permission android:name="android.permission.INTERNET"/>
 		<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -269,5 +268,5 @@
 	</manifest>
 
 ]]></manifestAdditions>
-	</android>
+	</android>-->
 </application>

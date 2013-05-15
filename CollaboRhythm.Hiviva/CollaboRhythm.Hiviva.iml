@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="CollaboRhythm.Hiviva">
     <configurations>
-      <configuration name="CollaboRhythm.Hiviva" target-platform="Mobile" main-class="collaboRhythm.hiviva.view.HivivaStartup" output-file="CollaboRhythmHivivaApplication.swf" output-folder="$MODULE_DIR$/../out/production/CollaboRhythm.Hiviva">
+      <configuration name="CollaboRhythm.Hiviva" target-platform="Desktop" main-class="collaboRhythm.hiviva.view.HivivaStartup" output-file="CollaboRhythmHivivaApplication.swf" output-folder="$MODULE_DIR$/../out/production/CollaboRhythm.Hiviva">
         <dependencies>
           <entries>
             <entry module-name="CollaboRhythm.Core.Model" build-configuration-name="CollaboRhythm.Core.Model">
@@ -29,43 +29,34 @@
             <entry module-name="CollaboRhythm.CollaborationServer" build-configuration-name="CollaboRhythm.CollaborationServer">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="de93bf1e-f462-4723-a61a-f0a7bdaa8d77">
-              <dependency linkage="Merged" />
-            </entry>
             <entry library-id="d8fa7b08-8beb-4872-a84e-9d2446958e82">
               <dependency linkage="Merged" />
             </entry>
             <entry library-id="bf10e844-2331-4eb0-b166-ead93427ffac">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="a4a2108b-b8a3-4f0b-af72-698c911e3c4b">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry library-id="74fc4d7a-f1e4-480c-a011-131823e1bd5d">
-              <dependency linkage="Merged" />
-            </entry>
             <entry library-id="1c929240-c50b-48d1-b6d4-36e029de64b4">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="b35f1336-7694-4acc-bb9a-226799948b69">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="CollaboRhythm.Shared.Model" build-configuration-name="CollaboRhythm.Shared.Model">
               <dependency linkage="Merged" />
             </entry>
           </entries>
           <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options />
-        <packaging-air-desktop />
-        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
+        <packaging-air-desktop use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-app.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
-          </files-to-package>
-        </packaging-android>
-        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
-          <files-to-package>
-            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
-            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
           </files-to-package>
-          <AirSigningOptions keystore-path="$MODULE_DIR$/certificates/ios/iphone_dev.p12" provisioning-profile-path="$MODULE_DIR$/certificates/ios/iOS_Team_Development_Profile.mobileprovision" />
-        </packaging-ios>
+        </packaging-air-desktop>
+        <packaging-android />
+        <packaging-ios />
       </configuration>
     </configurations>
     <compiler-options />
@@ -94,16 +85,6 @@
     <orderEntry type="module" module-name="CollaboRhythm.CollaborationServer" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Collaboration" exported="" />
     <orderEntry type="module" module-name="CollaboRhythm.Shared.PluginsSupport" exported="" />
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="de93bf1e-f462-4723-a61a-f0a7bdaa8d77" />
-        <CLASSES>
-          <root url="file://$STARLING_HOME$" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" exported="" name="Desktop libraries for mobile applications" level="project" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
@@ -127,26 +108,6 @@
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="a4a2108b-b8a3-4f0b-af72-698c911e3c4b" />
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/com.adobe.extensions.Vibration.ane!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="74fc4d7a-f1e4-480c-a011-131823e1bd5d" />
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/CollaboRhythm.ANE.ApplicationMessaging.ane!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
         <properties id="1c929240-c50b-48d1-b6d4-36e029de64b4" />
         <CLASSES>
           <root url="jar://$FLEX_SDK_HOME$/libs/air/applicationupdater.swc!/" />
@@ -155,6 +116,17 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="b35f1336-7694-4acc-bb9a-226799948b69" />
+        <CLASSES>
+          <root url="file://$STARLING_HOME$" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="CollaboRhythm.Shared.Model" exported="" />
   </component>
 </module>
 

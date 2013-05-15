@@ -515,7 +515,6 @@ package source.themes
 					this._originalDPI = ORIGINAL_DPI_IPAD_RETINA;
 
 				}
-
 				else
 				{
 
