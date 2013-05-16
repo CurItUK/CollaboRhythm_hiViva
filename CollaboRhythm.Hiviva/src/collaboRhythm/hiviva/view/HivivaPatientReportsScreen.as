@@ -6,6 +6,22 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+
+	import flash.filesystem.FileStream;
+	import flash.utils.ByteArray;
+
+	import org.alivepdf.layout.Orientation;
+	import org.alivepdf.layout.Size;
+	import org.alivepdf.layout.Unit;
+
+	import org.alivepdf.pdf.PDF;
+	import org.alivepdf.saving.Method;
+
+
+	import starling.events.Event;
+
 
 	public class HivivaPatientReportsScreen extends Screen
 	{
@@ -19,6 +35,9 @@ package collaboRhythm.hiviva.view
 		private var _cd4Check:Check;
 		private var _viralLoadCheck:Check;
 		private var _previewAndSendBtn:Button;
+
+		private var file:File;
+		private var b:ByteArray = new ByteArray();
 
 		public function HivivaPatientReportsScreen()
 		{
@@ -119,16 +138,26 @@ package collaboRhythm.hiviva.view
 
 			this._previewAndSendBtn = new Button();
 			this._previewAndSendBtn.label = "Preview and send";
+			this._previewAndSendBtn.addEventListener(Event.TRIGGERED , previewSendHandler);
 			addChild(this._previewAndSendBtn);
-
-
-
-
-
-
 		}
 
+		private function previewSendHandler(e:starling.events.Event):void
+		{
+			var pdf:PDF = new PDF(Orientation.PORTRAIT , Unit.MM , Size.A4);
 
+			pdf.addPage();
 
+			var msg:String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lobortis elit ut urna malesuada sed porttitor odio vestibulum. Morbi egestas metus vitae urna consectetur sagittis. Aenean aliquam tincidunt velit a lacinia. Vestibulum tincidunt ante vel sem laoreet sed tempus risus ornare. Nunc ullamcorper sapien vel neque vulputate commodo. Nam faucibus neque eu libero venenatis euismod. Pellentesque ut est vitae tellus egestas consectetur. Praesent massa lacus, ultrices ut convallis vitae, tincidunt at tortor. Sed arcu risus, convallis ac fringilla at, egestas id tortor. Nam consectetur luctus mollis. Phasellus id dolor nibh, sed ultricies diam. Aliquam erat volutpat. Nulla erat lectus, vestibulum sed molestie nec, dignissim sed tellus. Sed fermentum quam id dolor porta vel tristique orci tristique. Nunc varius molestie bibendum. Curabitur in tortor eget mauris porttitor mollis. Proin a lacus mauris. Nullam dapibus nisi vitae justo eleifend ullamcorper. Maecenas dolor augue, bibendum quis mattis ut, posuere in tortor. Donec auctor dolor eget leo posuere fermentum. Curabitur tincidunt blandit venenatis. Praesent sagittis tristique ultricies. Quisque lobortis lacus non orci aliquam facilisis. Cras ut felis massa, a posuere nisi. Maecenas eget nibh ligula. Duis urna massa, dignissim non dapibus eget, mattis consequat dolor.";
+
+			pdf.writeText(12,msg);
+
+			var f:FileStream = new FileStream();
+			file = File.applicationStorageDirectory.resolvePath("report.pdf");
+			f.open(file, FileMode.WRITE);
+			var bytes:ByteArray = pdf.save(Method.LOCAL);
+			f.writeBytes(bytes);
+			f.close();
+		}
 	}
 }
