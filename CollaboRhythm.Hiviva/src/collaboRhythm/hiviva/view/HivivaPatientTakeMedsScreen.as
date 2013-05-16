@@ -96,10 +96,11 @@ package collaboRhythm.hiviva.view
 		private function drawResults():void
 		{
 			var scaledPadding:Number = PADDING * this.dpiScale;
-
+			var maxHeight:Number = this.actualHeight - (this._header.height + 20) + scaledPadding;
 			this._takeMedicationCellHolder.y = this._header.height + 20;
 			this._takeMedicationCellHolder.width = this.actualWidth;
-			this._takeMedicationCellHolder.validate();
+			this._takeMedicationCellHolder.height = maxHeight;
+
 
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.gap = scaledPadding;

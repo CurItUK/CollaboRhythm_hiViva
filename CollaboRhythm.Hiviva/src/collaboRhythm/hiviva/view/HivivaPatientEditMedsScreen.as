@@ -31,7 +31,6 @@ package collaboRhythm.hiviva.view
 		private var _backButton:Button;
 		private var _addMedBtn:Button;
 		private var _medications:Array;
-		private var _medicationListCollection:ListCollection;
 		private var _takeMedicationCellHolder:ScrollContainer;
 
 		private const PADDING:Number = 20;
