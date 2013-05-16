@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="CollaboRhythm.Hiviva">
     <configurations>
-      <configuration name="CollaboRhythm.Hiviva" target-platform="Desktop" main-class="collaboRhythm.hiviva.view.HivivaStartup" output-file="CollaboRhythmHivivaApplication.swf" output-folder="$MODULE_DIR$/../out/production/CollaboRhythm.Hiviva">
+      <configuration name="CollaboRhythm.Hiviva" target-platform="Mobile" main-class="collaboRhythm.hiviva.view.HivivaStartup" output-file="CollaboRhythmHivivaApplication.swf" output-folder="$MODULE_DIR$/../out/production/CollaboRhythm.Hiviva">
         <dependencies>
           <entries>
             <entry module-name="CollaboRhythm.Core.Model" build-configuration-name="CollaboRhythm.Core.Model">
@@ -48,15 +48,15 @@
           <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options />
-        <packaging-air-desktop use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-app.xml" package-file-name="CollaboRhythm_Hiviva">
+        <packaging-air-desktop />
+        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
-            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
           </files-to-package>
-        </packaging-air-desktop>
-        <packaging-android />
-        <packaging-ios />
+        </packaging-android>
+        <packaging-ios enabled="true" package-file-name="CollaboRhythm_Hiviva" />
       </configuration>
     </configurations>
     <compiler-options />

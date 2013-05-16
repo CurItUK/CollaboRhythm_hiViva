@@ -1,34 +1,16 @@
 package collaboRhythm.hiviva.view.components
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
-
+	import feathers.controls.Check;
 	import feathers.controls.Label;
 
-	import feathers.core.FeathersControl;
-	import feathers.display.Scale9Image;
-	import feathers.textures.Scale9Textures;
+	import starling.events.Event;
 
-	import flash.geom.Rectangle;
-
-	import starling.display.Quad;
-
-	public class TakeMedicationCell extends FeathersControl
+	public class TakeMedicationCell extends MedicationCell
 	{
-
-		private const PADDING:Number = 32;
-		private const IMAGE_SIZE:Number = 100;
-
-
-		private var _bg:Scale9Image;
-		private var _scale:Number;
-		private var _pillImageBg:Quad;
-
-		private var _brandNameLabel:Label;
-		private var _brandName:String;
-
-		private var _genericNameLabel:Label;
-		private var _genericName:String;
-
+		private var _doseDetailsLabel:Label;
+		private var _doseDetails:String;
+		private var _checkBox:Check;
+		private var _isTaken:Boolean;
 
 		public function TakeMedicationCell()
 		{
@@ -37,85 +19,62 @@ package collaboRhythm.hiviva.view.components
 
 		override protected function draw():void
 		{
-			var scaledPadding:Number = PADDING * this._scale,
-					gap:Number = scaledPadding * 0.5;
-			fullHeight:Number;
-
 			super.draw();
 
-			this._brandNameLabel.validate();
-			this._genericNameLabel.validate();
+			this._doseDetailsLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
+			this._doseDetailsLabel.y = this._genericNameLabel.y + this._genericNameLabel.height;
+			this._doseDetailsLabel.width = this._bg.width - this._pillImageBg.x;
 
-			this._bg.x = scaledPadding;
-			this._bg.width = this.actualWidth - (scaledPadding * 2);
-			this._bg.height = scaledPadding + this._pillImageBg.height + 40;
-			trace("this._genericNameLabel " + this._genericNameLabel.height);
-
-			this._pillImageBg.x = this._bg.x + gap;
-			this._pillImageBg.y = this._bg.y + gap;
-
-			this._brandNameLabel.x = this._pillImageBg.x + this._pillImageBg.width + gap;
-			this._brandNameLabel.y = this._pillImageBg.y;
-			this._brandNameLabel.width = this._bg.width - this._pillImageBg.x;
-
-			this._genericNameLabel.x = this._pillImageBg.x + this._pillImageBg.width + gap;
-			this._genericNameLabel.y = this._brandNameLabel.y + this._brandNameLabel.height;
-			this._genericNameLabel.width = this._bg.width - this._pillImageBg.x - 100;
-
-
-			setSizeInternal(this.actualWidth, this._bg.height, true);
+			this._checkBox.validate();
+			this._checkBox.x = (this._bg.x + this._bg.width) - this._gap;
+			this._checkBox.y = (this._bg.height * 0.5) - (this._checkBox.height * 0.5);
 		}
 
 		override protected function initialize():void
 		{
-			var bgTexture:Scale9Textures = new Scale9Textures(HivivaAssets.INPUT_FIELD, new Rectangle(11, 11, 32, 32));
-			this._bg = new Scale9Image(bgTexture, this._scale);
-			addChild(this._bg);
+			super.initialize();
 
-			this._pillImageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
-			addChild(this._pillImageBg);
+			this._doseDetailsLabel = new Label();
+			this._doseDetailsLabel.text = this._doseDetails;
+			this.addChild(this._doseDetailsLabel);
 
-			this._brandNameLabel = new Label();
-			this._brandNameLabel.text = this._brandName;
-			this.addChild(this._brandNameLabel);
-
-			this._genericNameLabel = new Label();
-			this._genericNameLabel.text = this.genericName;
-			this.addChild(this._genericNameLabel);
-
+			this._checkBox = new Check();
+			this._checkBox.isSelected = false;
+			this._checkBox.addEventListener(Event.CHANGE, checkBoxChangeHandler);
+			this.addChild(this._checkBox);
 		}
 
-		public function set brandName(value:String):void
+		private function checkBoxChangeHandler(e:Event = null):void
 		{
-			this._brandName = value;
+			this._checkBox.removeEventListener(Event.CHANGE, checkBoxChangeHandler);
+
+			var evt:Event = new Event(Event.CHANGE);
+			dispatchEvent(evt);
 		}
 
-		public function get brandName():String
+		public function get doseDetails():String
 		{
-			return this._brandName;
+			return _doseDetails;
 		}
 
-		public function set genericName(value:String):void
+		public function set doseDetails(value:String):void
 		{
-			this._genericName = value;
+			_doseDetails = value;
 		}
 
-		public function get genericName():String
+		public function get isTaken():Boolean
 		{
-			return this._genericName;
+			_isTaken = this._checkBox.isSelected;
+			return _isTaken;
 		}
 
-
-		public function set scale(value:Number):void
+		public function set isTaken(value:Boolean):void
 		{
-			this._scale = value;
+			_isTaken = this._checkBox.isSelected = value;
+			if(_isTaken)
+			{
+				checkBoxChangeHandler();
+			}
 		}
-
-		public function get scale():Number
-		{
-			return this._scale;
-		}
-
-
 	}
 }

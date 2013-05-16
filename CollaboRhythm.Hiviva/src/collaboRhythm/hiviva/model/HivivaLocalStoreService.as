@@ -22,6 +22,7 @@ package collaboRhythm.hiviva.model
 		private var _appDataVO:AppDataVO;
 
 		private var _medicationSchedule:Array;
+		private var _medicationAdherence:Array;
 
 		public function HivivaLocalStoreService()
 		{
@@ -201,6 +202,78 @@ package collaboRhythm.hiviva.model
 		private function setMedicationsScheduleResultHandler(e:SQLEvent):void
 		{
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+
+		public function getMedicationsSchedule():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text =  "select * from medications m left join medication_schedule ms on ms.medication_id = m.id";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getMedicationsScheduleResultHandler);
+			this._sqStatement.execute();
+
+		}
+
+		private function getMedicationsScheduleResultHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE);
+			evt.data.medicationSchedule = result;
+			this.dispatchEvent(evt);
+		}
+
+		public function getAdherence():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM medication_adherence";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getAdherenceResultHandler);
+			this._sqStatement.execute();
+		}
+
+		private function getAdherenceResultHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE);
+			evt.data.adherence = result;
+			this.dispatchEvent(evt);
+		}
+
+		public function setAdherence(medicationAdherence:Object):void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text =  "INSERT INTO medication_adherence ('date' , 'meds_taken' , 'feeling') SELECT '" +
+					medicationAdherence.date + "', '" + medicationAdherence.meds_taken + "' , '" + medicationAdherence.feeling + "'";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, setAdherenceResultHandler);
+			this._sqStatement.execute();
+		}
+
+		private function setAdherenceResultHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.ADHERENCE_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
 

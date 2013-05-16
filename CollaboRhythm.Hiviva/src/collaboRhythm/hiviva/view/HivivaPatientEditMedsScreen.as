@@ -6,7 +6,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.MedicationNameModifier;
-	import collaboRhythm.hiviva.view.components.TakeMedicationCell;
+	import collaboRhythm.hiviva.view.components.MedicationCell;
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
@@ -101,7 +101,7 @@ package collaboRhythm.hiviva.view
 			var medicationsLoop:uint = this._medications.length;
 			for (var i:uint = 0; i < medicationsLoop; i++)
 			{
-				var takeMedicationCell:TakeMedicationCell = new TakeMedicationCell();
+				var takeMedicationCell:MedicationCell = new MedicationCell();
 				takeMedicationCell.scale = this.dpiScale;
 				takeMedicationCell.brandName = MedicationNameModifier.getBrandName(this._medications[i].medication_name);
 				takeMedicationCell.genericName = MedicationNameModifier.getGenericName(this._medications[i].medication_name);
