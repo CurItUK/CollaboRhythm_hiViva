@@ -5,15 +5,19 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.utils.MedicationNameModifier;
+	import collaboRhythm.hiviva.view.components.TakeMedicationCell;
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.Screen;
+	import feathers.controls.ScrollContainer;
 	import feathers.controls.TextInput;
 	import feathers.data.ListCollection;
 	import feathers.data.ListCollection;
+	import feathers.layout.VerticalLayout;
 
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
@@ -28,6 +32,9 @@ package collaboRhythm.hiviva.view
 		private var _addMedBtn:Button;
 		private var _medications:Array;
 		private var _medicationListCollection:ListCollection;
+		private var _takeMedicationCellHolder:ScrollContainer;
+
+		private const PADDING:Number = 20;
 
 
 		public function HivivaPatientEditMedsScreen()
@@ -57,6 +64,8 @@ package collaboRhythm.hiviva.view
 			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
+
+			this._takeMedicationCellHolder = new ScrollContainer();
 		}
 
 		private function backBtnHandler(e:starling.events.Event):void
@@ -66,7 +75,7 @@ package collaboRhythm.hiviva.view
 
 		private function checkMedicationsExist():void
 		{
-			localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE , medicationsLoadCompleteHandler );
+			localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE, medicationsLoadCompleteHandler);
 			localStoreController.getMedicationList();
 		}
 
@@ -87,33 +96,39 @@ package collaboRhythm.hiviva.view
 
 		private function populateMedications():void
 		{
+			this.addChild(this._takeMedicationCellHolder);
+
 
 			var medicationsLoop:uint = this._medications.length;
-			var medicationHolder:Sprite = new Sprite();
-			medicationHolder.y = this._header.height + 20;
-			this.addChild(medicationHolder);
-
 			for (var i:uint = 0; i < medicationsLoop; i++)
 			{
-				var medicationName:Label = new Label();
-				medicationName.text = this._medications[i].medication_name;
-				medicationName.x = 10;
-				medicationName.y = i * 70;
-				medicationName.width = this.actualWidth;
-				medicationHolder.addChild(medicationName);
-				medicationName.validate();
-
-				var takeMedicationCheck:Check = new Check();
-
-				takeMedicationCheck.y = medicationName.y
-				medicationHolder.addChild(takeMedicationCheck);
-				takeMedicationCheck.validate();
-				takeMedicationCheck.x = this.actualWidth - takeMedicationCheck.width - 20;
-
+				var takeMedicationCell:TakeMedicationCell = new TakeMedicationCell();
+				takeMedicationCell.scale = this.dpiScale;
+				takeMedicationCell.brandName = MedicationNameModifier.getBrandName(this._medications[i].medication_name);
+				takeMedicationCell.genericName = MedicationNameModifier.getGenericName(this._medications[i].medication_name);
+				takeMedicationCell.width = this.actualWidth;
+				this._takeMedicationCellHolder.addChild(takeMedicationCell);
 			}
+			drawResults();
 
-			createAddMedButton(medicationHolder.height + medicationHolder.y + 40);
 		}
+
+		private function drawResults():void
+		{
+			var scaledPadding:Number = PADDING * this.dpiScale;
+
+			this._takeMedicationCellHolder.y = this._header.height + 20;
+			this._takeMedicationCellHolder.width = this.actualWidth;
+			this._takeMedicationCellHolder.validate();
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.gap = scaledPadding;
+			this._takeMedicationCellHolder.layout = layout;
+			this._takeMedicationCellHolder.validate();
+
+			createAddMedButton(this._takeMedicationCellHolder.height + this._takeMedicationCellHolder.y + 40);
+		}
+
 
 		private function initEditMedications():void
 		{
@@ -149,7 +164,6 @@ package collaboRhythm.hiviva.view
 		{
 			_applicationController = value;
 		}
-
 
 
 	}

@@ -98,37 +98,15 @@ package collaboRhythm.hiviva.view
 					navAwayEvent.message = HivivaScreens.PATIENT_HELP_SCREEN;
 					break;
 				case "messages" :
+					navAwayEvent.message = HivivaScreens.PATIENT_MESSAGES_SCREEN;
 					break;
 				case "badges" :
+					navAwayEvent.message = HivivaScreens.PATIENT_BADGES_SCREEN;
 					break;
 			}
 
 			this.dispatchEvent(navAwayEvent);
 		}
 
-		private function profileBtnHandler():void
-		{
-			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
-			evt.message = HivivaScreens.PATIENT_PROFILE_SCREEN;
-			this.dispatchEvent(evt);
-
-		}
-
-		private function helpBtnHandler():void
-		{
-			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
-			evt.message = HivivaScreens.PATIENT_HELP_SCREEN;
-			this.dispatchEvent(evt);
-		}
-
-		private function badgesBtnHandler():void
-		{
-
-		}
-
-		private function messagesBtnHandler():void
-		{
-
-		}
 	}
 }

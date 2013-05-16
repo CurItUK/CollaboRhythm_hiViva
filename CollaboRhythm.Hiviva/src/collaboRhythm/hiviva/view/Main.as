@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
+	import collaboRhythm.hiviva.view.HivivaPatientBagesScreen;
 	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -66,7 +67,7 @@ package collaboRhythm.hiviva.view
 			this._screenHolder = new Sprite();
 			this.addChild(this._screenHolder);
 
-			applicationController.createSession();
+
 
 			drawScreenBackground();
 			initfeathersTheme();
@@ -195,6 +196,8 @@ package collaboRhythm.hiviva.view
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientAddMedsScreen, null, {applicationController:_applicationController}));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN, new ScreenNavigatorItem(HivivaUserSignupScreen, null, {applicationController:_applicationController}));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:navGoHomeFromProfileScreen}));
+			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:navGoHomeFromProfileScreen}));
+			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:navGoHomeFromProfileScreen}));
 			this.addChild(_patientProfileNav);
 
 			this._patientProfileNav.showScreen(e.message);
