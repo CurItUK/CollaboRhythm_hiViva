@@ -36,13 +36,13 @@ package collaboRhythm.hiviva.view
 			this._reportDatesLabel.width = 200;
 			this._reportDatesLabel.validate();
 
-			this._startLabel.y = this._reportDatesLabel.y + this._reportDatesLabel.height + 60;
-			this._startLabel.x = 10
+			this._startLabel.y = this._reportDatesLabel.y + this._reportDatesLabel.height + 20;
+			this._startLabel.x = 20
 			this._startLabel.width = 200;
 			this._startLabel.validate();
 
 			this._finishLabel.y = this._startLabel.y + this._startLabel.height + 60;
-			this._finishLabel.x = 10;
+			this._finishLabel.x = 20;
 			this._finishLabel.width = 200;
 			this._finishLabel.validate();
 
@@ -82,7 +82,7 @@ package collaboRhythm.hiviva.view
 			this.addChild(this._header);
 
 			this._reportDatesLabel = new Label();
-			this._reportDatesLabel.text = "Report dates";
+			this._reportDatesLabel.text = "<font face='ExoBold'>Report dates</font>";
 			this.addChild(this._reportDatesLabel);
 
 			this._startLabel = new Label();
@@ -94,7 +94,7 @@ package collaboRhythm.hiviva.view
 			this.addChild(this._finishLabel);
 
 			this._includeLabel = new Label();
-			this._includeLabel.text = "Include";
+			this._includeLabel.text = "<font face='ExoBold'>Include</font>";
 			this.addChild(this._includeLabel);
 
 			this._adherenceCheck = new Check();
