@@ -30,6 +30,7 @@ package collaboRhythm.hiviva.view.components
 
 		protected var _genericNameLabel:Label;
 		protected var _genericName:String;
+		protected var _medicationScheduleId:int;
 
 
 		public function MedicationCell()
@@ -50,7 +51,7 @@ package collaboRhythm.hiviva.view.components
 			this._bg.x = this._scaledPadding;
 			this._bg.width = this.actualWidth - (this._scaledPadding * 2);
 			this._bg.height = this._pillImageBg.height + this._scaledPadding;
-			trace("this._genericNameLabel " + this._genericNameLabel.height);
+			//trace("this._genericNameLabel " + this._genericNameLabel.height);
 
 			this._pillImageBg.x = this._bg.x + this._gap;
 			this._pillImageBg.y = this._bg.y + this._gap;
@@ -118,5 +119,14 @@ package collaboRhythm.hiviva.view.components
 		}
 
 
+		public function get medicationScheduleId():int
+		{
+			return _medicationScheduleId;
+		}
+
+		public function set medicationScheduleId(value:int):void
+		{
+			_medicationScheduleId = value;
+		}
 	}
 }

@@ -78,6 +78,7 @@ package collaboRhythm.hiviva.controller
 		{
 			service.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE);
+			evt.data = e.data;
 			this.dispatchEvent(evt);
 		}
 

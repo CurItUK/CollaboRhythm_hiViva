@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.utils.MedicationNameModifier;
 
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
@@ -160,20 +161,13 @@ package collaboRhythm.hiviva.view
 			this._resultData = this._sqStatement.getResult().data;
 
 			var today:Date = new Date(),
-				timeDiff:Number,
-				date:Date = new Date(),
-				sqDate:String,
-				sqDateArray:Array;
+				date:Date = new Date();
 			try
 			{
 				if(this._resultData[0].gallery_submission_timestamp != null)
 				{
 					//date = DateTransformFactory.convertSQLDateTimeToASDate(this._resultData[0].gallery_submission_timestamp);
-					sqDate = this._resultData[0].gallery_submission_timestamp;
-					sqDateArray = sqDate.split("-");
-					date.setDate(sqDateArray[0]);
-					date.setMonth(sqDateArray[1]);
-					date.setFullYear(sqDateArray[2]);
+					date = MedicationNameModifier.getAS3DatefromString(this._resultData[0].gallery_submission_timestamp);
 				}
 				else
 				{
@@ -184,9 +178,7 @@ package collaboRhythm.hiviva.view
 			{
 				trace("date stamp not there");
 			}
-
-			timeDiff = today.time - date.time; // diff in milliseconds
-			this._dayDiff = Math.floor(timeDiff / 86400000); // convert milliseconds into days
+			this._dayDiff = MedicationNameModifier.getDaysDiff(today, date);
 
 			this._sqStatement = new SQLStatement();
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlGetAllHomeImageData);

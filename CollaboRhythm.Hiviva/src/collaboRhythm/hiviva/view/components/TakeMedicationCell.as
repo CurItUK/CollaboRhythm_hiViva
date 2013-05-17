@@ -10,7 +10,7 @@ package collaboRhythm.hiviva.view.components
 		private var _doseDetailsLabel:Label;
 		private var _doseDetails:String;
 		private var _checkBox:Check;
-		private var _isTaken:Boolean;
+		private var _isChanged:Boolean;
 
 		public function TakeMedicationCell()
 		{
@@ -26,8 +26,8 @@ package collaboRhythm.hiviva.view.components
 			this._doseDetailsLabel.width = this._bg.width - this._pillImageBg.x;
 
 			this._checkBox.validate();
-			this._checkBox.x = (this._bg.x + this._bg.width) - this._gap;
-			this._checkBox.y = (this._bg.height * 0.5) - (this._checkBox.height * 0.5);
+			this._checkBox.x = (this._bg.x + this._bg.width) - this._gap - this._checkBox.width;
+			this._checkBox.y = this._bg.y + (this._bg.height * 0.5) - (this._checkBox.height * 0.5);
 		}
 
 		override protected function initialize():void
@@ -39,17 +39,10 @@ package collaboRhythm.hiviva.view.components
 			this.addChild(this._doseDetailsLabel);
 
 			this._checkBox = new Check();
-			this._checkBox.isSelected = false;
-			this._checkBox.addEventListener(Event.CHANGE, checkBoxChangeHandler);
+			this._checkBox.padding = 0;
 			this.addChild(this._checkBox);
-		}
 
-		private function checkBoxChangeHandler(e:Event = null):void
-		{
-			this._checkBox.removeEventListener(Event.CHANGE, checkBoxChangeHandler);
-
-			var evt:Event = new Event(Event.CHANGE);
-			dispatchEvent(evt);
+			this._isChanged = false;
 		}
 
 		public function get doseDetails():String
@@ -62,19 +55,24 @@ package collaboRhythm.hiviva.view.components
 			_doseDetails = value;
 		}
 
-		public function get isTaken():Boolean
+		public function get isChanged():Boolean
 		{
-			_isTaken = this._checkBox.isSelected;
-			return _isTaken;
+			return _isChanged;
 		}
 
-		public function set isTaken(value:Boolean):void
+		public function set isChanged(value:Boolean):void
 		{
-			_isTaken = this._checkBox.isSelected = value;
-			if(_isTaken)
-			{
-				checkBoxChangeHandler();
-			}
+			_isChanged = value;
+		}
+
+		public function get checkBox():Check
+		{
+			return _checkBox;
+		}
+
+		public function set checkBox(value:Check):void
+		{
+			_checkBox = value;
 		}
 	}
 }

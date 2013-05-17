@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.utils.MedicationNameModifier;
 	import collaboRhythm.hiviva.view.galleryscreens.Gallery;
 
 	import feathers.controls.Button;
@@ -250,7 +251,7 @@ package collaboRhythm.hiviva.view
 		private function writeDateStamp():void
 		{
 			var today:Date = new Date();
-			var sqDate:String = today.getDate() + "-" + today.getMonth() + "-" + today.getFullYear();
+			var sqDate:String = MedicationNameModifier.getSQLStringFromDate(today);
 
 			this._sqStatement = new SQLStatement();
 			this._sqStatement.text = "UPDATE app_settings SET gallery_submission_timestamp='" + sqDate + "'";
