@@ -50,6 +50,9 @@
             <entry library-id="bfdf37e3-1928-4cb0-8e4d-1d7b1808c551">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-id="c0860af3-ec88-4467-bbbb-a196d09672eb">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
@@ -148,6 +151,16 @@
         <properties id="bfdf37e3-1928-4cb0-8e4d-1d7b1808c551" />
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/CollaboRhythm.ANE.ApplicationMessaging.ane!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="c0860af3-ec88-4467-bbbb-a196d09672eb" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/purePDF.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
