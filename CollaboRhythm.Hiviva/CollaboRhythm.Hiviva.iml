@@ -44,6 +44,9 @@
             <entry module-name="CollaboRhythm.Shared.Model" build-configuration-name="CollaboRhythm.Shared.Model">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-id="7b0edb5a-4ee2-4ce0-a31c-0067f3acf949">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
@@ -127,6 +130,16 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Model" exported="" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="7b0edb5a-4ee2-4ce0-a31c-0067f3acf949" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/AlivePDF.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

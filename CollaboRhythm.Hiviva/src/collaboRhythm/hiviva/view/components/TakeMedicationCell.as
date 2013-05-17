@@ -2,6 +2,8 @@ package collaboRhythm.hiviva.view.components
 {
 	import feathers.controls.Check;
 	import feathers.controls.Label;
+	import feathers.controls.Radio;
+	import feathers.core.ToggleGroup;
 
 	import starling.events.Event;
 
@@ -9,8 +11,9 @@ package collaboRhythm.hiviva.view.components
 	{
 		private var _doseDetailsLabel:Label;
 		private var _doseDetails:String;
-		private var _checkBox:Check;
-		private var _isTaken:Boolean;
+		private var _yesNoRadioGroup:ToggleGroup;
+		private var _yesRadio:Radio;
+		private var _noRadio:Radio;
 
 		public function TakeMedicationCell()
 		{
@@ -25,9 +28,13 @@ package collaboRhythm.hiviva.view.components
 			this._doseDetailsLabel.y = this._genericNameLabel.y + this._genericNameLabel.height;
 			this._doseDetailsLabel.width = this._bg.width - this._pillImageBg.x;
 
-			this._checkBox.validate();
-			this._checkBox.x = (this._bg.x + this._bg.width) - this._gap;
-			this._checkBox.y = (this._bg.height * 0.5) - (this._checkBox.height * 0.5);
+			this._yesRadio.validate();
+			this._noRadio.validate();
+
+			this._yesRadio.x = (this._bg.x + this._bg.width) - this._gap - (this._noRadio.width + this._yesRadio.width);
+			this._yesRadio.y = (this._bg.height * 0.5) - (this._yesRadio.height * 0.5);
+			this._noRadio.x = this._yesRadio.x + this._yesRadio.width;
+			this._noRadio.y = this._yesRadio.y;
 		}
 
 		override protected function initialize():void
@@ -38,18 +45,18 @@ package collaboRhythm.hiviva.view.components
 			this._doseDetailsLabel.text = this._doseDetails;
 			this.addChild(this._doseDetailsLabel);
 
-			this._checkBox = new Check();
-			this._checkBox.isSelected = false;
-			this._checkBox.addEventListener(Event.CHANGE, checkBoxChangeHandler);
-			this.addChild(this._checkBox);
-		}
+			this._yesNoRadioGroup = new ToggleGroup();
+			//this._yesNoRadioGroup.addEventListener(Event.CHANGE,);
 
-		private function checkBoxChangeHandler(e:Event = null):void
-		{
-			this._checkBox.removeEventListener(Event.CHANGE, checkBoxChangeHandler);
+			this._yesRadio = new Radio();
+			this._yesRadio.label = "Yes";
+			this._yesNoRadioGroup.addItem(this._yesRadio);
+			this.addChild(this._yesRadio);
 
-			var evt:Event = new Event(Event.CHANGE);
-			dispatchEvent(evt);
+			this._noRadio = new Radio();
+			this._noRadio.label = "No";
+			this._yesNoRadioGroup.addItem(this._noRadio);
+			this.addChild(this._noRadio);
 		}
 
 		public function get doseDetails():String
@@ -60,21 +67,6 @@ package collaboRhythm.hiviva.view.components
 		public function set doseDetails(value:String):void
 		{
 			_doseDetails = value;
-		}
-
-		public function get isTaken():Boolean
-		{
-			_isTaken = this._checkBox.isSelected;
-			return _isTaken;
-		}
-
-		public function set isTaken(value:Boolean):void
-		{
-			_isTaken = this._checkBox.isSelected = value;
-			if(_isTaken)
-			{
-				checkBoxChangeHandler();
-			}
 		}
 	}
 }

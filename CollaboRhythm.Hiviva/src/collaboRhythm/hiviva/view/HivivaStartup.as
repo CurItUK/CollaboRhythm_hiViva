@@ -77,14 +77,9 @@ package collaboRhythm.hiviva.view
 			var viewPort:Rectangle;
 			trace("Starling Init");
 			Starling.handleLostContext = true;
-			if(Capabilities.os.indexOf("Windows") > -1)
-			{
-				viewPort = new Rectangle(0, 0, 640, 960);
-			}
-			else
-			{
-				viewPort = new Rectangle(0, 0, this._sw, this._sh);
-			}
+			// if this is a desktop air
+			//viewPort = new Rectangle(0, 0, 640, 960);
+			viewPort = new Rectangle(0, 0, this._sw, this._sh);
 			_starFW = new Starling(Main, stage, viewPort);
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			_starFW.enableErrorChecking = true;
