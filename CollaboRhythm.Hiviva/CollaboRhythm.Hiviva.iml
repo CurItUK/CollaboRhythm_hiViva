@@ -44,6 +44,12 @@
             <entry module-name="CollaboRhythm.Shared.Model" build-configuration-name="CollaboRhythm.Shared.Model">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-id="90f4fa36-af6b-422b-afbe-daad00f7ec06">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="8815cf4a-e789-4558-ba5f-4c43079195b4">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
@@ -56,7 +62,7 @@
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
           </files-to-package>
         </packaging-android>
-        <packaging-ios enabled="true" package-file-name="CollaboRhythm_Hiviva" />
+        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva" />
       </configuration>
     </configurations>
     <compiler-options />
@@ -127,6 +133,26 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="CollaboRhythm.Shared.Model" exported="" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="90f4fa36-af6b-422b-afbe-daad00f7ec06" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/AlivePDF.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="8815cf4a-e789-4558-ba5f-4c43079195b4" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/com.adobe.extensions.Vibration.ane!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

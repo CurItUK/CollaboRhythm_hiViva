@@ -22,7 +22,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../SDK/4.6.0 - (AIR 3.4)gfbxgf/lib/android/FlashRuntimeExtensions.jar!/" />
+          <root url="jar://E:/BarryGearing_Content/Projects/Flash Development/frameworks/flex_sdk_4.6.0/lib/android/FlashRuntimeExtensions.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
