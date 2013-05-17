@@ -8,10 +8,8 @@ package collaboRhythm.hiviva.view
 
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
-
 	import flash.filesystem.FileStream;
 	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
@@ -20,14 +18,10 @@ package collaboRhythm.hiviva.view
 	import org.alivepdf.layout.Orientation;
 	import org.alivepdf.layout.Size;
 	import org.alivepdf.layout.Unit;
-
 	import org.alivepdf.pdf.PDF;
 	import org.alivepdf.saving.Method;
 
 	import starling.core.Starling;
-
-
-
 	import starling.events.Event;
 
 
@@ -181,13 +175,13 @@ package collaboRhythm.hiviva.view
 		{
 			//TODO replace sprites with graphic images
 
-			this._alphaUnderlay = new Sprite();
+			this._alphaUnderlay = new flash.display.Sprite();
 			this._alphaUnderlay.graphics.beginFill(0x000000, 0.8);
 			this._alphaUnderlay.graphics.drawRect(0, 0, Starling.current.nativeStage.stage.stageWidth, Starling.current.nativeStage.stage.stageHeight);
 			this._alphaUnderlay.graphics.endFill();
 			Starling.current.nativeOverlay.addChild(this._alphaUnderlay);
 
-			this._cancelBtn = new Sprite();
+			this._cancelBtn = new flash.display.Sprite();
 			this._cancelBtn.graphics.beginFill(0xff0000, 1);
 			this._cancelBtn.graphics.drawRect(0, 0, 200, 50);
 			this._cancelBtn.graphics.endFill();
@@ -196,7 +190,7 @@ package collaboRhythm.hiviva.view
 			this._cancelBtn.addEventListener(MouseEvent.CLICK, cancelBtnHandler)
 			this._alphaUnderlay.addChild(this._cancelBtn);
 
-			this._mailBtn = new Sprite();
+			this._mailBtn = new flash.display.Sprite();
 			this._mailBtn.graphics.beginFill(0x0000ff, 1);
 			this._mailBtn.graphics.drawRect(0, 0, 200, 50);
 			this._mailBtn.graphics.endFill();
@@ -206,12 +200,18 @@ package collaboRhythm.hiviva.view
 			this._alphaUnderlay.addChild(this._mailBtn);
 
 
+
+			/*
 			var padding:Number = 100;
 			this._stageWebView = new StageWebView();
 			this._stageWebView.stage = Starling.current.nativeStage.stage;
 			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - padding);
 			var pdf:File = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
+			trace("found the file " + pdf.exists);
+			trace("pdf.nativePath" + pdf.nativePath);
+			trace("pdf.url" + pdf.url);
 			this._stageWebView.loadURL(pdf.nativePath);
+			*/
 
 		}
 

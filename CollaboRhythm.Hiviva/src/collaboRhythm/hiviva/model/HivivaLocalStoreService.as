@@ -22,7 +22,7 @@ package collaboRhythm.hiviva.model
 		private var _appDataVO:AppDataVO;
 
 		private var _medicationSchedule:Array;
-		private var _medicationAdherence:Array;
+		private var _medicationAdherenceToSet:Object;
 
 		public function HivivaLocalStoreService()
 		{
@@ -257,6 +257,8 @@ package collaboRhythm.hiviva.model
 
 		public function setAdherence(medicationAdherence:Object):void
 		{
+			_medicationAdherenceToSet = medicationAdherence;
+
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
 
@@ -265,8 +267,35 @@ package collaboRhythm.hiviva.model
 
 			this._sqStatement = new SQLStatement();
 			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.text =  "INSERT INTO medication_adherence ('date' , 'meds_taken' , 'feeling') SELECT '" +
-					medicationAdherence.date + "', '" + medicationAdherence.meds_taken + "' , '" + medicationAdherence.feeling + "'";
+			this._sqStatement.text = "SELECT * FROM medication_adherence";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, checkAdherenceResultHandler);
+			this._sqStatement.execute();
+		}
+
+		private function checkAdherenceResultHandler(e:SQLEvent):void
+		{
+			var sqResult:SQLResult = this._sqStatement.getResult();
+			var lastIndex:Number = sqResult.lastInsertRowID;
+			var result:Array = sqResult.data;
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			try
+			{
+				if(_medicationAdherenceToSet.date == result[lastIndex].date)
+				{
+					this._sqStatement.text =  "UPDATE medication_adherence SET data='" + _medicationAdherenceToSet.data + "' WHERE date='" + _medicationAdherenceToSet.date + "'";
+				}
+				else
+				{
+					this._sqStatement.text =  "INSERT INTO medication_adherence ('date' , 'data') SELECT '" + _medicationAdherenceToSet.date + "', '" + _medicationAdherenceToSet.data + "'";
+				}
+			}
+			catch(e:Error)
+			{
+				this._sqStatement.text =  "INSERT INTO medication_adherence ('date' , 'data') SELECT '" + _medicationAdherenceToSet.date + "', '" + _medicationAdherenceToSet.data + "'";
+			}
+			trace(this._sqStatement.text);
 			this._sqStatement.addEventListener(SQLEvent.RESULT, setAdherenceResultHandler);
 			this._sqStatement.execute();
 		}

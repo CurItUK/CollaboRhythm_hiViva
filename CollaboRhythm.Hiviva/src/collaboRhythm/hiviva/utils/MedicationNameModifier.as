@@ -47,5 +47,30 @@ package collaboRhythm.hiviva.utils
 
 			return timeText;
 		}
+
+		public static function getAS3DatefromString(value:String):Date
+		{
+			var date:Date = new Date();
+			var sqDateArray:Array = value.split("-");
+			date.setDate(sqDateArray[0]);
+			date.setMonth(sqDateArray[1]);
+			date.setFullYear(sqDateArray[2]);
+
+			return date;
+		}
+
+		public static function getSQLStringFromDate(value:Date):String
+		{
+			var sqDate:String = value.getDate() + "-" + value.getMonth() + "-" + value.getFullYear();
+
+			return sqDate;
+		}
+
+		public static function getDaysDiff(endDate:Date, startDate:Date):Number
+		{
+			var dayDiff:Number = Math.floor((endDate.time - startDate.time) / 86400000);
+
+			return dayDiff;
+		}
 	}
 }
