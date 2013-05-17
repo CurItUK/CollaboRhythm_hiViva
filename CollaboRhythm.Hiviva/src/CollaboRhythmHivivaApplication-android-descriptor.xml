@@ -58,10 +58,10 @@
     <!--<publisherID></publisherID>-->
 
     <!-- Identifies the ActionScript extensions used by an application. -->
-    <extensions>
+	<!-- <extensions>
         <extensionID>CollaboRhythm.ANE.ApplicationMessaging</extensionID>
         <extensionID>com.adobe.Vibration</extensionID>
-    </extensions>
+    </extensions> -->
 
     <!-- Settings for the application's initial window. Required. -->
     <initialWindow>

@@ -54,6 +54,46 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getMedicationsSchedule():void
+		{
+			service.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE,medicationScheduleLoadCompleteHandler);
+			service.getMedicationsSchedule();
+		}
+
+		private function medicationScheduleLoadCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE,medicationScheduleLoadCompleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function getAdherence():void
+		{
+			service.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
+			service.getAdherence();
+		}
+
+		private function adherenceLoadCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function setAdherence(medicationAdherence:Object):void
+		{
+			service.addEventListener(LocalDataStoreEvent.ADHERENCE_SAVE_COMPLETE , adherenceSaveCompleteHandler);
+			service.setAdherence(medicationAdherence);
+		}
+
+		private function adherenceSaveCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.ADHERENCE_SAVE_COMPLETE , adherenceSaveCompleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.ADHERENCE_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 
 		public function resetApplication():void
 		{

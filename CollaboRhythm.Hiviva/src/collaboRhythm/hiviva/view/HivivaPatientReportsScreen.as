@@ -6,10 +6,15 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 
 	import flash.filesystem.FileStream;
+	import flash.geom.Rectangle;
+	import flash.media.StageWebView;
 	import flash.utils.ByteArray;
 
 	import org.alivepdf.layout.Orientation;
@@ -18,6 +23,9 @@ package collaboRhythm.hiviva.view
 
 	import org.alivepdf.pdf.PDF;
 	import org.alivepdf.saving.Method;
+
+	import starling.core.Starling;
+
 
 
 	import starling.events.Event;
@@ -36,8 +44,11 @@ package collaboRhythm.hiviva.view
 		private var _viralLoadCheck:Check;
 		private var _previewAndSendBtn:Button;
 
-		private var file:File;
-		private var b:ByteArray = new ByteArray();
+		private var _pdfFile:File;
+		private var _stageWebView:StageWebView
+		private var _alphaUnderlay:Sprite
+		private var _cancelBtn:Sprite
+		private var _mailBtn:Sprite
 
 		public function HivivaPatientReportsScreen()
 		{
@@ -138,26 +149,93 @@ package collaboRhythm.hiviva.view
 
 			this._previewAndSendBtn = new Button();
 			this._previewAndSendBtn.label = "Preview and send";
-			this._previewAndSendBtn.addEventListener(Event.TRIGGERED , previewSendHandler);
+			this._previewAndSendBtn.addEventListener(starling.events.Event.TRIGGERED, previewSendHandler);
 			addChild(this._previewAndSendBtn);
 		}
 
 		private function previewSendHandler(e:starling.events.Event):void
 		{
-			var pdf:PDF = new PDF(Orientation.PORTRAIT , Unit.MM , Size.A4);
+			//TODO move PDF creating into UTILS class
+			//TODO move fileStream - report PDF file creation to local service class
+
+			var pdf:PDF = new PDF(Orientation.PORTRAIT, Unit.MM, Size.A4);
 
 			pdf.addPage();
 
 			var msg:String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lobortis elit ut urna malesuada sed porttitor odio vestibulum. Morbi egestas metus vitae urna consectetur sagittis. Aenean aliquam tincidunt velit a lacinia. Vestibulum tincidunt ante vel sem laoreet sed tempus risus ornare. Nunc ullamcorper sapien vel neque vulputate commodo. Nam faucibus neque eu libero venenatis euismod. Pellentesque ut est vitae tellus egestas consectetur. Praesent massa lacus, ultrices ut convallis vitae, tincidunt at tortor. Sed arcu risus, convallis ac fringilla at, egestas id tortor. Nam consectetur luctus mollis. Phasellus id dolor nibh, sed ultricies diam. Aliquam erat volutpat. Nulla erat lectus, vestibulum sed molestie nec, dignissim sed tellus. Sed fermentum quam id dolor porta vel tristique orci tristique. Nunc varius molestie bibendum. Curabitur in tortor eget mauris porttitor mollis. Proin a lacus mauris. Nullam dapibus nisi vitae justo eleifend ullamcorper. Maecenas dolor augue, bibendum quis mattis ut, posuere in tortor. Donec auctor dolor eget leo posuere fermentum. Curabitur tincidunt blandit venenatis. Praesent sagittis tristique ultricies. Quisque lobortis lacus non orci aliquam facilisis. Cras ut felis massa, a posuere nisi. Maecenas eget nibh ligula. Duis urna massa, dignissim non dapibus eget, mattis consequat dolor.";
 
-			pdf.writeText(12,msg);
+			pdf.writeText(12, msg);
 
-			var f:FileStream = new FileStream();
-			file = File.applicationStorageDirectory.resolvePath("report.pdf");
-			f.open(file, FileMode.WRITE);
+			var fileStream:FileStream = new FileStream();
+
+			this._pdfFile = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
+
+			fileStream.open(this._pdfFile, FileMode.WRITE);
 			var bytes:ByteArray = pdf.save(Method.LOCAL);
-			f.writeBytes(bytes);
-			f.close();
+			fileStream.writeBytes(bytes);
+			fileStream.close();
+			displaySavedPDF();
+		}
+
+		private function displaySavedPDF():void
+		{
+			//TODO replace sprites with graphic images
+
+			this._alphaUnderlay = new Sprite();
+			this._alphaUnderlay.graphics.beginFill(0x000000, 0.8);
+			this._alphaUnderlay.graphics.drawRect(0, 0, Starling.current.nativeStage.stage.stageWidth, Starling.current.nativeStage.stage.stageHeight);
+			this._alphaUnderlay.graphics.endFill();
+			Starling.current.nativeOverlay.addChild(this._alphaUnderlay);
+
+			this._cancelBtn = new Sprite();
+			this._cancelBtn.graphics.beginFill(0xff0000, 1);
+			this._cancelBtn.graphics.drawRect(0, 0, 200, 50);
+			this._cancelBtn.graphics.endFill();
+			this._cancelBtn.x = 20;
+			this._cancelBtn.y = Starling.current.nativeStage.stage.stageHeight - this._cancelBtn.height - 20;
+			this._cancelBtn.addEventListener(MouseEvent.CLICK, cancelBtnHandler)
+			this._alphaUnderlay.addChild(this._cancelBtn);
+
+			this._mailBtn = new Sprite();
+			this._mailBtn.graphics.beginFill(0x0000ff, 1);
+			this._mailBtn.graphics.drawRect(0, 0, 200, 50);
+			this._mailBtn.graphics.endFill();
+			this._mailBtn.x = Starling.current.nativeStage.stage.stageWidth - this._mailBtn.width - 20;
+			this._mailBtn.y = Starling.current.nativeStage.stage.stageHeight - this._mailBtn.height - 20;
+			this._mailBtn.addEventListener(MouseEvent.CLICK, mailBtnHandler)
+			this._alphaUnderlay.addChild(this._mailBtn);
+
+
+			var padding:Number = 100;
+			this._stageWebView = new StageWebView();
+			this._stageWebView.stage = Starling.current.nativeStage.stage;
+			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - padding);
+			var pdf:File = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
+			this._stageWebView.loadURL(pdf.nativePath);
+
+		}
+
+		private function cancelBtnHandler(e:MouseEvent):void
+		{
+			e.stopImmediatePropagation();
+			e.stopPropagation();
+			this._cancelBtn.removeEventListener(MouseEvent.CLICK, cancelBtnHandler)
+			this._mailBtn.removeEventListener(MouseEvent.CLICK, mailBtnHandler)
+			this._alphaUnderlay.removeChild(this._mailBtn);
+			this._alphaUnderlay.removeChild(this._cancelBtn);
+			this._cancelBtn = null;
+			this._mailBtn = null;
+
+			this._stageWebView.viewPort = null;
+			this._stageWebView.dispose();
+			this._stageWebView = null;
+
+			Starling.current.nativeOverlay.removeChild(this._alphaUnderlay);
+		}
+
+		private function mailBtnHandler(e:MouseEvent):void
+		{
+
 		}
 	}
 }
