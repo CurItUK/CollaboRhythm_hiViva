@@ -46,6 +46,11 @@ package collaboRhythm.hiviva.view
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
 
+			this._addMedBtn.validate();
+			this._addMedBtn.y = this.actualHeight - this._addMedBtn.height - 20;
+			this._addMedBtn.x = 20;
+
+
 			checkMedicationsExist();
 		}
 
@@ -61,6 +66,11 @@ package collaboRhythm.hiviva.view
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
+
+			this._addMedBtn = new Button();
+			this._addMedBtn.label = "Add a medicine";
+			this._addMedBtn.addEventListener(starling.events.Event.TRIGGERED, addMedBtnHandler);
+			this.addChild(this._addMedBtn);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
@@ -87,10 +97,6 @@ package collaboRhythm.hiviva.view
 			{
 				populateMedications();
 			}
-			else
-			{
-				initEditMedications();
-			}
 		}
 
 		private function populateMedications():void
@@ -115,9 +121,11 @@ package collaboRhythm.hiviva.view
 		private function drawResults():void
 		{
 			var scaledPadding:Number = PADDING * this.dpiScale;
-
+			var maxHeight:Number = this.actualHeight - this._header.height - (scaledPadding * 2) - this._addMedBtn.height - 30;
 			this._takeMedicationCellHolder.y = this._header.height + 20;
+			this._takeMedicationCellHolder.height = maxHeight;
 			this._takeMedicationCellHolder.width = this.actualWidth;
+
 			this._takeMedicationCellHolder.validate();
 
 			var layout:VerticalLayout = new VerticalLayout();
@@ -125,23 +133,7 @@ package collaboRhythm.hiviva.view
 			this._takeMedicationCellHolder.layout = layout;
 			this._takeMedicationCellHolder.validate();
 
-			createAddMedButton(this._takeMedicationCellHolder.height + this._takeMedicationCellHolder.y + 40);
-		}
 
-
-		private function initEditMedications():void
-		{
-			createAddMedButton(this._header.height + 30);
-		}
-
-		private function createAddMedButton(yloc:Number):void
-		{
-			this._addMedBtn = new Button();
-			this._addMedBtn.label = "Add a medicine";
-			this._addMedBtn.addEventListener(starling.events.Event.TRIGGERED, addMedBtnHandler);
-			this._addMedBtn.y = yloc;
-			this._addMedBtn.x = 10;
-			this.addChild(this._addMedBtn);
 		}
 
 		private function addMedBtnHandler(e:starling.events.Event):void

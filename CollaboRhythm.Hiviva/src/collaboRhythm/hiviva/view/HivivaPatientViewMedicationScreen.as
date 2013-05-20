@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 
+	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 
@@ -29,6 +30,11 @@ package collaboRhythm.hiviva.view
 		private var _transitionMgr:ScreenSlidingStackTransitionManager;
 		private var _clockIcon:Image;
 		private var _pillboxIcon:Image;
+		private var _footerHeight:Number;
+		private var _usableHeaderHeight:Number;
+		private var _applicationController:HivivaApplicationController;
+
+
 
 		public function HivivaPatientViewMedicationScreen()
 		{
@@ -40,6 +46,8 @@ package collaboRhythm.hiviva.view
 			super.draw();
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
+
+
 
 			this._clockPillboxToggle.validate();
 			this._clockPillboxToggle.x = this.actualWidth / 2 - this._clockPillboxToggle.width/2;
@@ -53,7 +61,10 @@ package collaboRhythm.hiviva.view
 			this._pillboxIcon.x = this._clockPillboxToggle.x + this._clockPillboxToggle.width;
 			this._pillboxIcon.y -= this._pillboxIcon.height * 0.5;
 
-			this._clockPillboxNav.showScreen(HivivaScreens.PATIENT_CLOCK_SCREEN);
+			useableHeaderHeight = this._header.height +  this._clockPillboxToggle.height;
+
+			initClockPillboxNav();
+
 		}
 
 		override protected function initialize():void
@@ -75,20 +86,22 @@ package collaboRhythm.hiviva.view
 			this._pillboxIcon.alpha = 0.5;
 			addChild(this._pillboxIcon);
 
-			initClockPillboxNav();
+
 
 		}
 
 		private function initClockPillboxNav():void
 		{
 			this._clockPillboxNav = new ScreenNavigator();
-			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN , new ScreenNavigatorItem(HivivaPatientClockScreen));
-			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_PILLBOX_SCREEN , new ScreenNavigatorItem(HivivaPatientPillboxScreen));
+			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN , new ScreenNavigatorItem(HivivaPatientClockScreen , null , {applicationController:_applicationController ,footerHeight:footerHeight , headerHeight:useableHeaderHeight}));
+			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_PILLBOX_SCREEN , new ScreenNavigatorItem(HivivaPatientPillboxScreen, null , {applicationController:_applicationController ,footerHeight:footerHeight , headerHeight:useableHeaderHeight}));
 			this.addChild(this._clockPillboxNav);
 
 			this._transitionMgr = new ScreenSlidingStackTransitionManager(this._clockPillboxNav);
 			this._transitionMgr.ease = Transitions.EASE_OUT;
 			this._transitionMgr.duration = TRANSITION_DURATION;
+
+			this._clockPillboxNav.showScreen(HivivaScreens.PATIENT_CLOCK_SCREEN);
 
 
 		}
@@ -114,9 +127,37 @@ package collaboRhythm.hiviva.view
 
 		override public function dispose():void
 		{
-
-
 			super.dispose();
+		}
+
+		public function get applicationController():HivivaApplicationController
+		{
+			return _applicationController;
+		}
+
+		public function set applicationController(value:HivivaApplicationController):void
+		{
+			_applicationController = value;
+		}
+
+		public function get footerHeight():Number
+		{
+			return _footerHeight;
+		}
+
+		public function set footerHeight(value:Number):void
+		{
+			_footerHeight = value;
+		}
+
+		public function get useableHeaderHeight():Number
+		{
+			return _usableHeaderHeight;
+		}
+
+		public function set useableHeaderHeight(value:Number):void
+		{
+			_usableHeaderHeight = value;
 		}
 	}
 }
