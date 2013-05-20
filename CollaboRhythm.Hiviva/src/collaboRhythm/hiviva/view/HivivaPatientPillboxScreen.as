@@ -19,6 +19,8 @@ package collaboRhythm.hiviva.view
 		private var _footerHeight:Number;
 		private var _headerHeight:Number;
 		private var _applicationController:HivivaApplicationController;
+		private var _amMedication:Array = [];
+		private var _pmMedication:Array = [];
 
 		public function HivivaPatientPillboxScreen()
 		{
@@ -57,7 +59,22 @@ package collaboRhythm.hiviva.view
 		{
 			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE , medicationLoadCompleteHandler)
 			trace(e.data.medicationSchedule);
+			var loop:uint = e.data.medicationSchedule.length;
+			for(var i:uint = 0 ; i < loop ; i++)
+			{
+				if(e.data.medicationSchedule[i].time >= 0 || e.data.medicationSchedule[i].time <= 11)
+				{
+					_amMedication.push(e.data.medicationSchedule[i]);
+				}
+				else if(e.data.medicationSchedule[i].time >= 12 || e.data.medicationSchedule[i].time <= 23)
+				{
+					_pmMedication.push(e.data.medicationSchedule[i]);
+				}
+			}
+			trace(_amMedication);
+			trace(_pmMedication);
 		}
+
 
 		public function get applicationController():HivivaApplicationController
 		{
