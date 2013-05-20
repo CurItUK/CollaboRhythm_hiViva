@@ -109,6 +109,9 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/clock_icon.png")]
 		public static const ClockIconPng:Class;
 
+		[Embed(source="/assets/images/temp/clockface_hand.png")]
+		public static const ClockFaceHandPng:Class;
+
 		[Embed(source="/assets/images/temp/tablet1.png")]
 		public static const Tablet1Png:Class;
 
