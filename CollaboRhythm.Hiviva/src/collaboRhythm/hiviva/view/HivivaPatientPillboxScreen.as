@@ -21,6 +21,11 @@ package collaboRhythm.hiviva.view
 		private var _applicationController:HivivaApplicationController;
 		private var _amMedication:Array = [];
 		private var _pmMedication:Array = [];
+		private var _amTableXloc:Number;
+		private var _pmTableXloc:Number;
+		private var _amTableYloc:Number;
+		private var _pmTableYloc:Number;
+		private var _pillboxYCellSpacing:Number;
 
 		public function HivivaPatientPillboxScreen()
 		{
@@ -38,6 +43,15 @@ package collaboRhythm.hiviva.view
 
 			this._pillBox.x = (this.actualWidth * 0.5) - (this._pillBox.width * 0.5);
 			this._pillBox.y = (this._usableHeight * 0.5) + headerHeight - (this._pillBox.height * 0.5);
+
+			this._pillboxYCellSpacing = this._pillBox.height / 8;
+
+
+			this._amTableXloc = this._pillBox.x + 120;
+			this._pmTableXloc = this._pillBox.x + this._pillBox.width/2 + 60;
+
+			this._amTableYloc = this._pillBox.y + this._pillboxYCellSpacing + 20;
+			this._pmTableYloc = this._pillBox.y + this._pillboxYCellSpacing + 20;
 			initPillboxMedication();
 		}
 
@@ -57,24 +71,68 @@ package collaboRhythm.hiviva.view
 
 		private function medicationLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
+			//Build list of medications into their time slots am,pm
 			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE , medicationLoadCompleteHandler)
-			trace(e.data.medicationSchedule);
-			var loop:uint = e.data.medicationSchedule.length;
-			for(var i:uint = 0 ; i < loop ; i++)
+			if (e.data.medicationSchedule != null)
 			{
-				if(e.data.medicationSchedule[i].time >= 0 || e.data.medicationSchedule[i].time <= 11)
+				trace(e.data.medicationSchedule);
+				var loop:uint = e.data.medicationSchedule.length;
+				for (var i:uint = 0; i < loop; i++)
 				{
-					_amMedication.push(e.data.medicationSchedule[i]);
+					if (e.data.medicationSchedule[i].time >= 0 && e.data.medicationSchedule[i].time <= 11)
+					{
+						_amMedication.push(e.data.medicationSchedule[i]);
+					}
+					else if (e.data.medicationSchedule[i].time >= 12 && e.data.medicationSchedule[i].time <= 23)
+					{
+						_pmMedication.push(e.data.medicationSchedule[i]);
+					}
 				}
-				else if(e.data.medicationSchedule[i].time >= 12 || e.data.medicationSchedule[i].time <= 23)
-				{
-					_pmMedication.push(e.data.medicationSchedule[i]);
-				}
+				buildTabletAMCells();
+				buildTabletPMCells();
 			}
-			trace(_amMedication);
-			trace(_pmMedication);
 		}
 
+		private function buildTabletAMCells():void
+		{
+			trace("buildTabletAMCells " + _amMedication.length);
+			var daysLoop:uint = 7;
+			for(var j:uint=0  ; j <daysLoop ; j++)
+			{
+				var loop:uint = _amMedication.length;
+				if (loop > 0)
+				{
+					for (var i:uint = 0; i < loop; i++)
+					{
+						var tablet:Image = new Image(Assets.getTexture("Tablet1Png"));
+						this.addChild(tablet);
+						tablet.x = this._amTableXloc + (i * tablet.width) + 10;
+						tablet.y = this._amTableYloc + this._pillboxYCellSpacing * j;
+					}
+				}
+			}
+		}
+
+		private function buildTabletPMCells():void
+		{
+			trace("buildTabletAMCells " + _pmMedication.length);
+			var daysLoop:uint = 7;
+			for(var j:uint=0  ; j <daysLoop ; j++)
+			{
+				var loop:uint = _pmMedication.length;
+				if (loop > 0)
+				{
+					for (var i:uint = 0; i < loop; i++)
+					{
+						var tablet:Image = new Image(Assets.getTexture("Tablet1Png"));
+						this.addChild(tablet);
+						tablet.x = this._pmTableXloc + (i * tablet.width) + 10;
+						tablet.y = this._pmTableYloc;
+						tablet.y = this._pmTableYloc + this._pillboxYCellSpacing * j;
+					}
+				}
+			}
+		}
 
 		public function get applicationController():HivivaApplicationController
 		{
