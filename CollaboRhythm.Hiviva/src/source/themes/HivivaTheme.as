@@ -365,6 +365,8 @@ package source.themes
 
 		protected var inputFieldSkinTexture:Scale9Textures;
 
+		protected var feelingSliderTrackSkinTextures:Scale9Textures;
+		protected var feelingSliderSwitchSkinTextures:Texture;
 
 		protected var pickerListButtonIconTexture:Texture;
 
@@ -645,6 +647,8 @@ package source.themes
 
 			this.inputFieldSkinTexture = new Scale9Textures(HivivaAssets.INPUT_FIELD, new Rectangle(11,11,32,32));
 
+			this.feelingSliderTrackSkinTextures = new Scale9Textures(HivivaAssets.FEELING_SLIDER_TRACK, new Rectangle(50,46,386,2));
+			this.feelingSliderSwitchSkinTextures = HivivaAssets.FEELING_SLIDER_SWITCH;
 
 
 			this.tabDownSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-down-skin"), TAB_SCALE9_GRID);
@@ -760,6 +764,7 @@ package source.themes
 			this.setInitializerForClass(Label, splashFooterTextInitializer, "splash-footer-text");
 			this.setInitializerForClass(Label, labelInitializer);
 			this.setInitializerForClass(Label, centeredLabelInitializer, "centered-label");
+			this.setInitializerForClass(Label, feelingSliderLabelInitializer, "feeling-slider-label");
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
 					BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
@@ -783,6 +788,7 @@ package source.themes
 			this.setInitializerForClass(Button, toggleSwitchSwitchInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
 
 			this.setInitializerForClass(Button, simpleButtonInitializer, Slider.DEFAULT_CHILD_NAME_THUMB);
+			this.setInitializerForClass(Button, feelingSwitchInitializer, "feeling-slider");
 
 			this.setInitializerForClass(Button, pickerListButtonInitializer, PickerList.DEFAULT_CHILD_NAME_BUTTON);
 
@@ -833,6 +839,7 @@ package source.themes
 			this.setInitializerForClass(Check, checkInitializer);
 
 			this.setInitializerForClass(Slider, sliderInitializer);
+			this.setInitializerForClass(Slider, feelingSliderInitializer, "feeling-slider");
 
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
 
@@ -969,6 +976,27 @@ package source.themes
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 
+		protected function feelingSwitchInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.feelingSliderSwitchSkinTextures.width;
+			var skinHeight:Number = this.feelingSliderSwitchSkinTextures.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.feelingSliderSwitchSkinTextures;
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.minWidth = skinWidth * this.scale;
+			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = skinWidth * this.scale;
+			button.minTouchHeight = skinHeight * this.scale;
+		}
+
 		protected function toggleSwitchSwitchInitializer(button:Button):void
 		{
 			var skinWidth:Number = this.toggleSwitchTexture.width;
@@ -1020,6 +1048,16 @@ package source.themes
 		{
 			label.textRendererProperties.embedFonts = true;
 			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x293d54);
+			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
+			label.textRendererProperties.wordWrap = true;
+			label.textRendererProperties.isHTML = true;
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+		}
+
+		protected function feelingSliderLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(16 * this.scale), 0x293d54);
 			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 			label.textRendererProperties.wordWrap = true;
 			label.textRendererProperties.isHTML = true;
@@ -1824,51 +1862,54 @@ package source.themes
 			check.minTouchWidth = check.minTouchHeight = 88 * this.scale;
 		}
 
-
 		protected function sliderInitializer(slider:Slider):void
 		{
-
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
 
-
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
-
 			skinSelector.defaultValue = this.backgroundSkinTextures;
-
 			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
-
 			skinSelector.setValueForState(this.backgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
-
 			skinSelector.imageProperties =
-
 			{
-
 				textureScale: this.scale
-
 			};
-
 			if (slider.direction == Slider.DIRECTION_VERTICAL)
 			{
-
 				skinSelector.imageProperties.width = 60 * this.scale;
-
 				skinSelector.imageProperties.height = 210 * this.scale;
-
 			}
-
 			else
 			{
-
 				skinSelector.imageProperties.width = 210 * this.scale;
-
 				skinSelector.imageProperties.height = 60 * this.scale;
-
 			}
-
 			slider.minimumTrackProperties.stateToSkinFunction = skinSelector.updateValue;
-
 			slider.maximumTrackProperties.stateToSkinFunction = skinSelector.updateValue;
+		}
 
+		protected function feelingSliderInitializer(slider:Slider):void
+		{
+			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
+
+			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
+			skinSelector.defaultValue = this.feelingSliderTrackSkinTextures;
+			skinSelector.imageProperties =
+			{
+				textureScale: this.scale
+			};
+			/*if (slider.direction == Slider.DIRECTION_VERTICAL)
+			{
+				skinSelector.imageProperties.width = 60 * this.scale;
+				skinSelector.imageProperties.height = 210 * this.scale;
+			}
+			else*/
+			{
+				skinSelector.imageProperties.width = 486 * this.scale;
+				skinSelector.imageProperties.height = 92 * this.scale;
+			}
+			slider.minimumTrackProperties.stateToSkinFunction = skinSelector.updateValue;
+			slider.maximumTrackProperties.stateToSkinFunction = skinSelector.updateValue;
 		}
 
 

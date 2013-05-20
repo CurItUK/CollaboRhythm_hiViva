@@ -54,21 +54,40 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 		private function directoryListingHandler(e:FileListEvent):void
 		{
-			var imageFiles:Array = e.files,
+			var thumbFiles:Array = [],
+				imageFiles:Array = [],
+				files:Array = e.files,
+				file:File,
+				thumbFile:File,
 				imageFile:File,
 				image:GalleryItem;
+
+			for (var j:int = 0; j < files.length; j++)
+			{
+				file = files[j];
+				// file is a not a thumbnail, add it to imageFiles and remove it from thumbFiles
+				if (file.name.indexOf("-thumb") == -1)
+				{
+					imageFiles.push(files[j]);
+				}
+				else
+				{
+					thumbFiles.push(files[j]);
+				}
+			}
 
 			this._selectedItems = [];
 			this._itemList = new <GalleryItem>[];
 			this._imageCount = 0;
-			this._imageTotal =  imageFiles.length;
+			this._imageTotal =  thumbFiles.length;
 			for(var i:int = 0; i < this._imageTotal; i++)
 			{
+				thumbFile = thumbFiles[i];
 				imageFile = imageFiles[i];
 
 				image = new GalleryItem();
 				image.id = i + 1;
-				image.url = imageFile.url;
+				image.url = thumbFile.url;
 				image.filename = imageFile.name;
 
 				image.addEventListener(Event.COMPLETE, imageLoaded);
@@ -117,8 +136,6 @@ package collaboRhythm.hiviva.view.galleryscreens
 		{
 			var currItem:GalleryItem = e.target as GalleryItem;
 
-			currItem.removeEventListener(Event.TRIGGERED, selectImage);
-
 			currItem.isActive = !currItem.isActive;
 
 			if(currItem.isActive)
@@ -129,8 +146,6 @@ package collaboRhythm.hiviva.view.galleryscreens
 			{
 				removeFromSelectedItems(currItem.filename);
 			}
-
-			currItem.addEventListener(Event.TRIGGERED, selectImage);
 		}
 
 		private function addToSelectedItems(galleryItemFilename:String):void

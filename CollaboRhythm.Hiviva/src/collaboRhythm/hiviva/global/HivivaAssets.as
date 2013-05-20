@@ -38,6 +38,11 @@ package collaboRhythm.hiviva.global
 		public static const TOGGLE_TRACK:Texture							= Assets.getTexture("ToggleTrackPng");
 		public static const PILLBOX_ICON:Texture							= Assets.getTexture("PillboxIconPng");
 		public static const CLOCK_ICON:Texture								= Assets.getTexture("ClockIconPng");
+
+		public static const FEELING_SLIDER_TRACK:Texture					= Assets.getTexture("FeelingSliderTrack");
+		public static const FEELING_SLIDER_SWITCH:Texture					= Assets.getTexture("FeelingSliderSwitch");
+		public static const FEELING_SLIDER_CLOUD:Texture					= Assets.getTexture("FeelingSliderCloud");
+		public static const FEELING_SLIDER_SUN:Texture						= Assets.getTexture("FeelingSliderSun");
 		// forms
 		public static const BUTTON:Texture									= Assets.getTexture("ButtonPng");
 		public static const INPUT_FIELD:Texture								= Assets.getTexture("InputFieldPng");

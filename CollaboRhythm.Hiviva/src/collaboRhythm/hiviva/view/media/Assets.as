@@ -121,6 +121,18 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/tablet4.png")]
 		public static const Tablet4Png:Class;
 
+		[Embed(source="/assets/images/temp/feeling_slider_track.png")]
+		public static const FeelingSliderTrack:Class;
+
+		[Embed(source="/assets/images/temp/feeling_slider_switch.png")]
+		public static const FeelingSliderSwitch:Class;
+
+		[Embed(source="/assets/images/temp/feeling_slider_cloud.png")]
+		public static const FeelingSliderCloud:Class;
+
+		[Embed(source="/assets/images/temp/feeling_slider_sun.png")]
+		public static const FeelingSliderSun:Class;
+
 		// forms
 
 		[Embed(source="/assets/images/temp/button.png")]

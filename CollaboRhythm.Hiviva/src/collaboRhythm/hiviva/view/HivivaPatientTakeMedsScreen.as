@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view
 
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.MedicationNameModifier;
 	import collaboRhythm.hiviva.utils.MedicationNameModifier;
@@ -22,6 +23,8 @@ package collaboRhythm.hiviva.view
 	import feathers.data.ListCollection;
 	import feathers.layout.VerticalLayout;
 
+	import starling.display.Image;
+
 	import starling.events.Event;
 
 
@@ -30,6 +33,11 @@ package collaboRhythm.hiviva.view
 		private var _header:HivivaHeader;
 		private var _feelingQuestion:Label;
 		private var _feelingSlider:Slider;
+		private var _feelingSliderLeftLabel:Label;
+		private var _feelingSliderCenterLabel:Label;
+		private var _feelingSliderRightLabel:Label;
+		private var _feelingSliderLeftImage:Image;
+		private var _feelingSliderRightImage:Image;
 		private var _submitButton:Button;
 		private var _applicationController:HivivaApplicationController;
 		private var _medicationSchedule:Array;
@@ -53,14 +61,34 @@ package collaboRhythm.hiviva.view
 			this._header.height = 110 * this.dpiScale;
 
 			this._feelingQuestion.validate();
-			this._feelingQuestion.width = this.actualWidth - (scaledPadding * 2);
-			this._feelingQuestion.x = scaledPadding;
+			this._feelingQuestion.width = this.actualWidth - (scaledPadding * 10);
+			this._feelingQuestion.x = scaledPadding * 5;
 			this._feelingQuestion.y = this._header.y + this._header.height;
 
 			this._feelingSlider.validate();
-			this._feelingSlider.width = this._feelingQuestion.width;
-			this._feelingSlider.x = this._feelingQuestion.x;
+			this._feelingSlider.width = this._feelingQuestion.width + (scaledPadding * 3);
+			this._feelingSlider.x = this._feelingQuestion.x - (scaledPadding * 1.5);
 			this._feelingSlider.y = this._feelingQuestion.y + this._feelingQuestion.height;
+
+			this._feelingSliderLeftImage.y = this._feelingSliderRightImage.y = this._feelingSlider.y + (this._feelingSlider.height * 0.5)
+
+			this._feelingSliderLeftImage.x = this._feelingSlider.x - this._feelingSliderLeftImage.width;
+			this._feelingSliderLeftImage.y -= this._feelingSliderLeftImage.height * 0.5;
+
+			this._feelingSliderRightImage.x = this._feelingSlider.x + this._feelingSlider.width;
+			this._feelingSliderRightImage.y -= this._feelingSliderRightImage.height * 0.5;
+
+			this._feelingSliderLeftLabel.validate();
+			this._feelingSliderLeftLabel.y = this._feelingSlider.y + this._feelingSlider.height;
+			this._feelingSliderLeftLabel.x = this._feelingSliderLeftImage.x + (this._feelingSliderLeftImage.width * 0.5) - (this._feelingSliderLeftLabel.width * 0.5);
+
+			this._feelingSliderCenterLabel.validate();
+			this._feelingSliderCenterLabel.y = this._feelingSlider.y + this._feelingSlider.height;
+			this._feelingSliderCenterLabel.x = this._feelingSlider.x + (this._feelingSlider.width * 0.5) - (this._feelingSliderCenterLabel.width * 0.5);
+
+			this._feelingSliderRightLabel.validate();
+			this._feelingSliderRightLabel.y = this._feelingSlider.y + this._feelingSlider.height;
+			this._feelingSliderRightLabel.x = this._feelingSliderRightImage.x + (this._feelingSliderRightImage.width * 0.5) - (this._feelingSliderRightLabel.width * 0.5);
 
 			this._submitButton.validate();
 			this._submitButton.x = scaledPadding;
@@ -81,6 +109,8 @@ package collaboRhythm.hiviva.view
 			addChild(this._feelingQuestion);
 
 			this._feelingSlider = new Slider();
+			this._feelingSlider.name = "feeling-slider";
+			this._feelingSlider.customThumbName = "feeling-slider";
 			this._feelingSlider.minimum = 0;
 			this._feelingSlider.maximum = 100;
 			this._feelingSlider.value = 50;
@@ -89,6 +119,28 @@ package collaboRhythm.hiviva.view
 			this._feelingSlider.direction = Slider.DIRECTION_HORIZONTAL;
 			this._feelingSlider.liveDragging = false;
 			this.addChild(this._feelingSlider);
+
+			this._feelingSliderLeftImage = new Image(HivivaAssets.FEELING_SLIDER_CLOUD);
+			addChild(this._feelingSliderLeftImage);
+
+			this._feelingSliderRightImage = new Image(HivivaAssets.FEELING_SLIDER_SUN);
+			addChild(this._feelingSliderRightImage);
+
+			this._feelingSliderLeftLabel = new Label();
+			this._feelingSliderLeftLabel.name = "feeling-slider-label";
+			this._feelingSliderLeftLabel.text = "AWFUL";
+			addChild(this._feelingSliderLeftLabel);
+
+			this._feelingSliderCenterLabel = new Label();
+			this._feelingSliderCenterLabel.name = "feeling-slider-label";
+			this._feelingSliderCenterLabel.text = "OK";
+			addChild(this._feelingSliderCenterLabel);
+
+			this._feelingSliderRightLabel = new Label();
+			this._feelingSliderRightLabel.name = "feeling-slider-label";
+			this._feelingSliderRightLabel.text = "AWESOME";
+			addChild(this._feelingSliderRightLabel);
+
 			// to check value on submit this._feelingSlider.value;
 
 			this._takeMedicationCellHolder = new ScrollContainer();
@@ -187,8 +239,8 @@ package collaboRhythm.hiviva.view
 		private function drawResults():void
 		{
 			var scaledPadding:Number = PADDING * this.dpiScale;
-			var maxHeight:Number = this.actualHeight - (this._feelingSlider.y + this._feelingSlider.height) - this._submitButton.height - this._footerHeight - (scaledPadding * 3);
-			this._takeMedicationCellHolder.y = this._feelingSlider.y + this._feelingSlider.height + scaledPadding;
+			var maxHeight:Number = this.actualHeight - (this._feelingSliderRightLabel.y + this._feelingSliderRightLabel.height) - this._submitButton.height - this._footerHeight - (scaledPadding * 3);
+			this._takeMedicationCellHolder.y = this._feelingSliderRightLabel.y + this._feelingSliderRightLabel.height + scaledPadding;
 			this._takeMedicationCellHolder.width = this.actualWidth;
 			this._takeMedicationCellHolder.height = maxHeight;
 
