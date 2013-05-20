@@ -109,16 +109,16 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/clock_icon.png")]
 		public static const ClockIconPng:Class;
 
-		[Embed(source="/assets/images/temp/tablet1.png.png")]
+		[Embed(source="/assets/images/temp/tablet1.png")]
 		public static const Tablet1Png:Class;
 
-		[Embed(source="/assets/images/temp/tablet2.png.png")]
+		[Embed(source="/assets/images/temp/tablet2.png")]
 		public static const Tablet2Png:Class;
 
-		[Embed(source="/assets/images/temp/tablet3.png.png")]
+		[Embed(source="/assets/images/temp/tablet3.png")]
 		public static const Tablet3Png:Class;
 
-		[Embed(source="/assets/images/temp/tablet4.png.png")]
+		[Embed(source="/assets/images/temp/tablet4.png")]
 		public static const Tablet4Png:Class;
 
 		// forms
