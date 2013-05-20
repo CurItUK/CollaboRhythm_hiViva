@@ -23,6 +23,7 @@ package collaboRhythm.hiviva.model
 
 		private var _medicationSchedule:Array;
 		private var _medicationAdherenceToSet:Object;
+		private var _medicationIdToDelete:int;
 
 		public function HivivaLocalStoreService()
 		{
@@ -205,6 +206,43 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
+		public function deleteMedication(medicationId:int):void
+		{
+			this._medicationIdToDelete = medicationId;
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text =  "DELETE FROM medications WHERE id=" + this._medicationIdToDelete;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, deleteMedicationHandler);
+			this._sqStatement.execute();
+		}
+
+		private function deleteMedicationHandler(e:SQLEvent):void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text =  "DELETE FROM medication_schedule WHERE medication_id=" + this._medicationIdToDelete;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, deleteMedicationScheduleHandler);
+			this._sqStatement.execute();
+		}
+
+		private function deleteMedicationScheduleHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_DELETE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
 
 		public function getMedicationsSchedule():void
 		{

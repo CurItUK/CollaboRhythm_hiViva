@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.MedicationNameModifier;
+	import collaboRhythm.hiviva.view.components.EditMedicationCell;
 	import collaboRhythm.hiviva.view.components.MedicationCell;
 
 	import feathers.controls.Button;
@@ -107,15 +108,26 @@ package collaboRhythm.hiviva.view
 			var medicationsLoop:uint = this._medications.length;
 			for (var i:uint = 0; i < medicationsLoop; i++)
 			{
-				var takeMedicationCell:MedicationCell = new MedicationCell();
-				takeMedicationCell.scale = this.dpiScale;
-				takeMedicationCell.brandName = MedicationNameModifier.getBrandName(this._medications[i].medication_name);
-				takeMedicationCell.genericName = MedicationNameModifier.getGenericName(this._medications[i].medication_name);
-				takeMedicationCell.width = this.actualWidth;
-				this._takeMedicationCellHolder.addChild(takeMedicationCell);
+				var editMedicationCell:EditMedicationCell = new EditMedicationCell();
+				editMedicationCell.applicationController = _applicationController;
+				editMedicationCell.medicationId = int(this._medications[i].id);
+				editMedicationCell.scale = this.dpiScale;
+				editMedicationCell.brandName = MedicationNameModifier.getBrandName(this._medications[i].medication_name);
+				editMedicationCell.genericName = MedicationNameModifier.getGenericName(this._medications[i].medication_name);
+				editMedicationCell.width = this.actualWidth;
+				this._takeMedicationCellHolder.addChild(editMedicationCell);
+				editMedicationCell.addEventListener(Event.REMOVED_FROM_STAGE, editMedicationCellRemoved);
 			}
 			drawResults();
 
+		}
+
+		private function editMedicationCellRemoved(e:Event):void
+		{
+			var editMedicationCell:EditMedicationCell = e.target as EditMedicationCell;
+			editMedicationCell.removeEventListener(Event.REMOVED_FROM_STAGE, editMedicationCellRemoved);
+			trace("medication cell removed");
+			this._takeMedicationCellHolder.validate();
 		}
 
 		private function drawResults():void
