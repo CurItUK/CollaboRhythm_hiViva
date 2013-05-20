@@ -1,10 +1,15 @@
 package collaboRhythm.hiviva.view
 {
 
+
+
 	import feathers.controls.Button;
 	import feathers.controls.Check;
 	import feathers.controls.Label;
+	import feathers.controls.PickerList;
 	import feathers.controls.Screen;
+	import feathers.controls.TextInput;
+	import feathers.core.PopUpManager;
 
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -13,6 +18,8 @@ package collaboRhythm.hiviva.view
 	import flash.filesystem.FileStream;
 	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.utils.ByteArray;
 
 	import org.alivepdf.layout.Orientation;
@@ -29,6 +36,10 @@ package collaboRhythm.hiviva.view
 	{
 		private var _header:HivivaHeader;
 		private var _startLabel:Label;
+		private var _startDateInput:TextInput;
+		private var _finishDateInput:TextInput;
+
+
 		private var _finishLabel:Label;
 		private var _reportDatesLabel:Label;
 		private var _includeLabel:Label;
@@ -41,8 +52,8 @@ package collaboRhythm.hiviva.view
 		private var _pdfFile:File;
 		private var _stageWebView:StageWebView
 		private var _alphaUnderlay:Sprite
-		private var _cancelBtn:Sprite
-		private var _mailBtn:Sprite
+
+		private var _pdfPopupContainer:HivivaPDFPopUp;
 
 		public function HivivaPatientReportsScreen()
 		{
@@ -61,14 +72,24 @@ package collaboRhythm.hiviva.view
 			this._reportDatesLabel.validate();
 
 			this._startLabel.y = this._reportDatesLabel.y + this._reportDatesLabel.height + 20;
-			this._startLabel.x = 20
+			this._startLabel.x = 50
 			this._startLabel.width = 200;
 			this._startLabel.validate();
 
+			this._startDateInput.y = this._startLabel.y;
+			this._startDateInput.width = this.actualWidth - this._startLabel.width - 200;
+			this._startDateInput.x = this._startLabel.x + this._startLabel.width + 10;
+			this._startDateInput.validate();
+
 			this._finishLabel.y = this._startLabel.y + this._startLabel.height + 60;
-			this._finishLabel.x = 20;
+			this._finishLabel.x = 50;
 			this._finishLabel.width = 200;
 			this._finishLabel.validate();
+
+			this._finishDateInput.y = this._finishLabel.y;
+			this._finishDateInput.width = this.actualWidth - this._finishLabel.width - 200;
+			this._finishDateInput.x = this._finishLabel.x + this._finishLabel.width + 10;
+			this._finishDateInput.validate();
 
 			this._includeLabel.y = this._finishLabel.y + this._finishLabel.height + 30;
 			this._includeLabel.x = 10;
@@ -113,9 +134,15 @@ package collaboRhythm.hiviva.view
 			this._startLabel.text = "Start";
 			this.addChild(this._startLabel);
 
+			this._startDateInput = new TextInput();
+			this.addChild(this._startDateInput);
+
 			this._finishLabel = new Label();
 			this._finishLabel.text = "Finish";
 			this.addChild(this._finishLabel);
+
+			this._finishDateInput = new TextInput();
+			this.addChild(this._finishDateInput);
 
 			this._includeLabel = new Label();
 			this._includeLabel.text = "<font face='ExoBold'>Include</font>";
@@ -173,68 +200,49 @@ package collaboRhythm.hiviva.view
 
 		private function displaySavedPDF():void
 		{
-			//TODO replace sprites with graphic images
+			this._pdfPopupContainer = new HivivaPDFPopUp();
+			this._pdfPopupContainer.scale = this.dpiScale;
+			this._pdfPopupContainer.width = this.actualWidth;
+			this._pdfPopupContainer.height = this.actualHeight;
+			this._pdfPopupContainer.addEventListener("sendMail", mailBtnHandler);
+			this._pdfPopupContainer.addEventListener(Event.CLOSE, closePopup);
+			this._pdfPopupContainer.validate();
 
-			this._alphaUnderlay = new flash.display.Sprite();
-			this._alphaUnderlay.graphics.beginFill(0x000000, 0.8);
-			this._alphaUnderlay.graphics.drawRect(0, 0, Starling.current.nativeStage.stage.stageWidth, Starling.current.nativeStage.stage.stageHeight);
-			this._alphaUnderlay.graphics.endFill();
-			Starling.current.nativeOverlay.addChild(this._alphaUnderlay);
-
-			this._cancelBtn = new flash.display.Sprite();
-			this._cancelBtn.graphics.beginFill(0xff0000, 1);
-			this._cancelBtn.graphics.drawRect(0, 0, 200, 50);
-			this._cancelBtn.graphics.endFill();
-			this._cancelBtn.x = 20;
-			this._cancelBtn.y = Starling.current.nativeStage.stage.stageHeight - this._cancelBtn.height - 20;
-			this._cancelBtn.addEventListener(MouseEvent.CLICK, cancelBtnHandler)
-			this._alphaUnderlay.addChild(this._cancelBtn);
-
-			this._mailBtn = new flash.display.Sprite();
-			this._mailBtn.graphics.beginFill(0x0000ff, 1);
-			this._mailBtn.graphics.drawRect(0, 0, 200, 50);
-			this._mailBtn.graphics.endFill();
-			this._mailBtn.x = Starling.current.nativeStage.stage.stageWidth - this._mailBtn.width - 20;
-			this._mailBtn.y = Starling.current.nativeStage.stage.stageHeight - this._mailBtn.height - 20;
-			this._mailBtn.addEventListener(MouseEvent.CLICK, mailBtnHandler)
-			this._alphaUnderlay.addChild(this._mailBtn);
+			PopUpManager.addPopUp(this._pdfPopupContainer, true, true);
+			this._pdfPopupContainer.validate();
 
 
-
-			/*
-			var padding:Number = 100;
+			var padding:Number = 150;
 			this._stageWebView = new StageWebView();
 			this._stageWebView.stage = Starling.current.nativeStage.stage;
 			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - padding);
 			var pdf:File = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
-			trace("found the file " + pdf.exists);
-			trace("pdf.nativePath" + pdf.nativePath);
-			trace("pdf.url" + pdf.url);
 			this._stageWebView.loadURL(pdf.nativePath);
-			*/
 
 		}
 
-		private function cancelBtnHandler(e:MouseEvent):void
+		private function closePopup(e:Event):void
 		{
-			e.stopImmediatePropagation();
-			e.stopPropagation();
-			this._cancelBtn.removeEventListener(MouseEvent.CLICK, cancelBtnHandler)
-			this._mailBtn.removeEventListener(MouseEvent.CLICK, mailBtnHandler)
-			this._alphaUnderlay.removeChild(this._mailBtn);
-			this._alphaUnderlay.removeChild(this._cancelBtn);
-			this._cancelBtn = null;
-			this._mailBtn = null;
-
 			this._stageWebView.viewPort = null;
 			this._stageWebView.dispose();
 			this._stageWebView = null;
 
-			Starling.current.nativeOverlay.removeChild(this._alphaUnderlay);
+			PopUpManager.removePopUp(this._pdfPopupContainer);
+
 		}
 
-		private function mailBtnHandler(e:MouseEvent):void
+
+
+		private function mailBtnHandler(e:starling.events.Event):void
 		{
+			closePopup(e);
+			//TODO add mail native extentions for IOS and Android
+			//http://diadraw.com/projects/adobe-air-native-e-mail-extension/
+
+			var mailURL:String = "mailto:?subject='My Patient Report'&body='My Patient Report'";
+			var urlReq:URLRequest = new URLRequest(mailURL);
+			navigateToURL(urlReq);
+
 
 		}
 	}
