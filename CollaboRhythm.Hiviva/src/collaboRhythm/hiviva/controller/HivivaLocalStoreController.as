@@ -20,11 +20,39 @@ package collaboRhythm.hiviva.controller
 			this.addEventListener(LocalDataStoreEvent.PROFILE_TYPE_UPDATE , profileTypeUpdateHandler);
 		}
 
+		public function getGalleryImages():void
+		{
+			service.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
+			service.getGalleryImages()
+		}
+
+		private function getGalleryImagesHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function initStoreService():void
 		{
 			_hivivaLocalStoreService = new HivivaLocalStoreService();
 			_hivivaLocalStoreService.addEventListener(LocalDataStoreEvent.DATA_LOAD_COMPLETE , dataLoadCompleteHandler);
 			_hivivaLocalStoreService.initDataLoad();
+		}
+
+		public function getGalleryTimeStamp():void
+		{
+			service.addEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE,getGalleryTimeStampHandler);
+			service.getGalleryTimeStamp()
+		}
+
+		private function getGalleryTimeStampHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE,getGalleryTimeStampHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
 		}
 
 		public function getMedicationList():void

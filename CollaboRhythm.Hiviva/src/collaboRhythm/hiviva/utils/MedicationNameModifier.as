@@ -68,7 +68,15 @@ package collaboRhythm.hiviva.utils
 
 		public static function getDaysDiff(endDate:Date, startDate:Date):Number
 		{
-			var dayDiff:Number = Math.floor((endDate.time - startDate.time) / 86400000);
+			var dayDiff:Number;
+			if (endDate > startDate)
+			{
+				dayDiff = Math.floor((endDate.time - startDate.time) / 86400000);
+			}
+			else
+			{
+				dayDiff = 0;
+			}
 
 			return dayDiff;
 		}

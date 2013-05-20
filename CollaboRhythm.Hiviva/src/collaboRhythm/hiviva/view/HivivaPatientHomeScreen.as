@@ -1,6 +1,9 @@
 package collaboRhythm.hiviva.view
 {
+	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.MedicationNameModifier;
 
 	import feathers.controls.Label;
@@ -12,8 +15,8 @@ package collaboRhythm.hiviva.view
 	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.IOErrorEvent;
-	import flash.events.SQLEvent;
-	import flash.filesystem.File;
+	import flash.filters.BitmapFilter;
+	import flash.filters.BitmapFilterQuality;
 	import flash.filters.BlurFilter;
 	import flash.geom.Matrix;
 	import flash.net.URLRequest;
@@ -26,20 +29,19 @@ package collaboRhythm.hiviva.view
 	public class HivivaPatientHomeScreen extends Screen
 	{
 		private var _footerHeight:Number;
+		private var _applicationController:HivivaApplicationController;
 
 		private var _header:HivivaHeader;
 //		private var _messagesButton:Button;
 //		private var _badgesButton:Button;
 		private var _homeImageInstructions:Label;
-		private var _sqConn:SQLConnection;
-		private var _sqStatement:SQLStatement;
-		private var _resultData:Array;
 		private var _rim:Image;
 		private var _bg:Image;
 		private var _shine:Image;
 		private var _bgImageHolder:Sprite;
 		private var _lensImageHolder:Sprite;
 		private var _dayDiff:Number;
+		private var _adherencePercent:Number;
 
 		private var IMAGE_SIZE:Number;
 		private var _usableHeight:Number;
@@ -143,85 +145,74 @@ package collaboRhythm.hiviva.view
 
 		private function initHomePhoto():void
 		{
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
-
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
-
-			this._sqStatement = new SQLStatement();
-			this._sqStatement.addEventListener(SQLEvent.RESULT, getDate);
-			this._sqStatement.text = "SELECT gallery_submission_timestamp FROM app_settings";
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.execute();
+			localStoreController.addEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE, getGalleryTimeStampHandler);
+			localStoreController.getGalleryTimeStamp();
 		}
 
-		private function getDate(e:SQLEvent):void
+		private function getGalleryTimeStampHandler(e:LocalDataStoreEvent):void
 		{
-			this._sqStatement.removeEventListener(SQLEvent.RESULT, getDate);
-			this._resultData = this._sqStatement.getResult().data;
+			localStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE,getGalleryTimeStampHandler);
 
-			var today:Date = new Date(),
+			var timeStamp:String = e.data.timeStamp,
+				today:Date = new Date(),
 				date:Date = new Date();
+
 			try
 			{
-				if(this._resultData[0].gallery_submission_timestamp != null)
+				if(timeStamp != null)
 				{
-					//date = DateTransformFactory.convertSQLDateTimeToASDate(this._resultData[0].gallery_submission_timestamp);
-					date = MedicationNameModifier.getAS3DatefromString(this._resultData[0].gallery_submission_timestamp);
+					//date = DateTransformFactory.convertSQLDateTimeToASDate(timeStamp);
+					date = MedicationNameModifier.getAS3DatefromString(timeStamp);
+
+					this._dayDiff = MedicationNameModifier.getDaysDiff(today, date);
+
+					localStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
+					localStoreController.getGalleryImages();
+
+					this._homeImageInstructions.visible = false;
 				}
 				else
 				{
+					this._homeImageInstructions.visible = true;
 				}
-				trace("gallery_submission_timestamp = " + this._resultData[0].gallery_submission_timestamp);
+				trace("gallery_submission_timestamp = " + timeStamp);
 			}
 			catch(e:Error)
 			{
 				trace("date stamp not there");
-			}
-			this._dayDiff = MedicationNameModifier.getDaysDiff(today, date);
-
-			this._sqStatement = new SQLStatement();
-			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlGetAllHomeImageData);
-			this._sqStatement.text = "SELECT url FROM homepage_photos";
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.execute();
-		}
-
-		private function sqlGetAllHomeImageData(e:SQLEvent):void
-		{
-			this._sqStatement.removeEventListener(SQLEvent.RESULT, sqlGetAllHomeImageData);
-			this._resultData = this._sqStatement.getResult().data;
-
-			var resultDataLength:int, chosenImageUrl:String, chosenImageInd:int, daysToImagesRatio:Number;
-			try
-			{
-				resultDataLength = this._resultData.length;
-				if(resultDataLength > 0)
-				{
-					// loop images if the dayDiff exceeds the amount of images
-					daysToImagesRatio = Math.floor(this._dayDiff / resultDataLength);
-					if(daysToImagesRatio >= 1)
-					{
-						chosenImageInd = this._dayDiff - (daysToImagesRatio * resultDataLength);
-					}
-					else
-					{
-						chosenImageInd = this._dayDiff;
-					}
-
-					//chosenImageInd = Math.floor(Math.random() * (resultDataLength - 1));
-					chosenImageUrl = this._resultData[chosenImageInd].url;
-					// TODO: boolean to define difference between custom photo and stock photo locations in homepage photo screen
-					trace("media/stock_images/" + chosenImageUrl);
-					doImageLoad("media/stock_images/" + chosenImageUrl);
-				}
-				this._homeImageInstructions.visible = false;
-			}
-			catch(e:Error)
-			{
 				this._homeImageInstructions.visible = true;
 			}
+		}
+
+		private function getGalleryImagesHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
+
+			var imageUrls:Array = e.data.imageUrls;
+
+			var resultDataLength:int, chosenImageUrl:String, chosenImageInd:int, daysToImagesRatio:Number;
+
+			resultDataLength = imageUrls.length;
+			if(resultDataLength > 0)
+			{
+				// start again if the dayDiff exceeds the amount of images
+				daysToImagesRatio = Math.floor(this._dayDiff / resultDataLength);
+				if(daysToImagesRatio >= 1)
+				{
+					chosenImageInd = this._dayDiff - (daysToImagesRatio * resultDataLength);
+				}
+				else
+				{
+					chosenImageInd = this._dayDiff;
+				}
+
+				//chosenImageInd = Math.floor(Math.random() * (resultDataLength - 1));
+				chosenImageUrl = imageUrls[chosenImageInd].url;
+				// TODO: boolean to define difference between custom photo and stock photo locations in homepage photo screen
+				trace("media/stock_images/" + chosenImageUrl);
+				doImageLoad("media/stock_images/" + chosenImageUrl);
+			}
+			this._homeImageInstructions.visible = false;
 		}
 
 		private function doImageLoad(url:String):void
@@ -299,6 +290,13 @@ package collaboRhythm.hiviva.view
 			cropToFit(circleBm, this.actualWidth, this._usableHeight);
 			circleHolder.addChild(circleBm);
 
+			var blurValue:Number = Math.ceil((20 / 100) * this._adherencePercent);
+			var filter:BitmapFilter = new flash.filters.BlurFilter(blurValue, blurValue, BitmapFilterQuality.HIGH);
+			var myFilters:Array = [];
+			myFilters.push(filter);
+
+			circleBm.filters = myFilters;
+
 			var circleMask:flash.display.Sprite = new flash.display.Sprite();
 			circleMask.graphics.beginFill(0x000000);
 			circleMask.graphics.drawCircle(circleBm.width * 0.5, circleBm.height * 0.5, IMAGE_SIZE * 0.5);
@@ -314,6 +312,7 @@ package collaboRhythm.hiviva.view
 			bgImage.x = (this.actualWidth * 0.5) - (bgImage.width * 0.5);
 			bgImage.y = (this._usableHeight * 0.5) + this._header.height - (bgImage.height * 0.5);
 			this._lensImageHolder.addChild(bgImage);
+			//bgImage.filter = new starling.filters.BlurFilter(1,1,0.2);
 
 			bmd.dispose();
 		}
@@ -332,6 +331,21 @@ package collaboRhythm.hiviva.view
 				img.height = h;
 				img.scaleX = img.scaleY;
 			}
+		}
+
+		public function get localStoreController():HivivaLocalStoreController
+		{
+			return applicationController.hivivaLocalStoreController;
+		}
+
+		public function get applicationController():HivivaApplicationController
+		{
+			return _applicationController;
+		}
+
+		public function set applicationController(value:HivivaApplicationController):void
+		{
+			_applicationController = value;
 		}
 
 		public function get footerHeight():Number

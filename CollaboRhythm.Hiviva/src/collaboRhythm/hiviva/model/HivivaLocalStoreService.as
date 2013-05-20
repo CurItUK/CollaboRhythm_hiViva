@@ -126,6 +126,54 @@ package collaboRhythm.hiviva.model
 
 		}
 
+		public function getGalleryImages():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getGalleryImagesHandler);
+			this._sqStatement.text = "SELECT url FROM homepage_photos";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+		}
+
+		private function getGalleryImagesHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE);
+			evt.data.imageUrls = result;
+			this.dispatchEvent(evt);
+		}
+
+		public function getGalleryTimeStamp():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getGalleryTimeStampHandler);
+			this._sqStatement.text = "SELECT gallery_submission_timestamp FROM app_settings";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+		}
+
+		private function getGalleryTimeStampHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE);
+			evt.data.timeStamp = result[0].gallery_submission_timestamp;
+			this.dispatchEvent(evt);
+		}
+
 		public function getMedicationList():void
 		{
 			var dbFile:File = File.applicationStorageDirectory;
