@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 
+	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Screen;
@@ -15,6 +16,7 @@ package collaboRhythm.hiviva.view
 		private var _usableHeight:Number;
 		private var _footerHeight:Number;
 		private var _headerHeight:Number;
+		private var _applicationController:HivivaApplicationController;
 
 		public function HivivaPatientClockScreen()
 		{
@@ -44,6 +46,16 @@ package collaboRhythm.hiviva.view
 
 
 
+		}
+
+		public function get applicationController():HivivaApplicationController
+		{
+			return _applicationController;
+		}
+
+		public function set applicationController(value:HivivaApplicationController):void
+		{
+			_applicationController = value;
 		}
 
 		public function get footerHeight():Number

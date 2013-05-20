@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 
+	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 
@@ -31,6 +32,7 @@ package collaboRhythm.hiviva.view
 		private var _pillboxIcon:Image;
 		private var _footerHeight:Number;
 		private var _usableHeaderHeight:Number;
+		private var _applicationController:HivivaApplicationController;
 
 
 
@@ -91,8 +93,8 @@ package collaboRhythm.hiviva.view
 		private function initClockPillboxNav():void
 		{
 			this._clockPillboxNav = new ScreenNavigator();
-			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN , new ScreenNavigatorItem(HivivaPatientClockScreen , null , {footerHeight:footerHeight , headerHeight:useableHeaderHeight}));
-			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_PILLBOX_SCREEN , new ScreenNavigatorItem(HivivaPatientPillboxScreen, null , {footerHeight:footerHeight , headerHeight:useableHeaderHeight}));
+			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN , new ScreenNavigatorItem(HivivaPatientClockScreen , null , {applicationController:_applicationController ,footerHeight:footerHeight , headerHeight:useableHeaderHeight}));
+			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_PILLBOX_SCREEN , new ScreenNavigatorItem(HivivaPatientPillboxScreen, null , {applicationController:_applicationController ,footerHeight:footerHeight , headerHeight:useableHeaderHeight}));
 			this.addChild(this._clockPillboxNav);
 
 			this._transitionMgr = new ScreenSlidingStackTransitionManager(this._clockPillboxNav);
@@ -126,6 +128,16 @@ package collaboRhythm.hiviva.view
 		override public function dispose():void
 		{
 			super.dispose();
+		}
+
+		public function get applicationController():HivivaApplicationController
+		{
+			return _applicationController;
+		}
+
+		public function set applicationController(value:HivivaApplicationController):void
+		{
+			_applicationController = value;
 		}
 
 		public function get footerHeight():Number
