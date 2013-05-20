@@ -77,6 +77,7 @@ package collaboRhythm.hiviva.view
 			{
 				trace(e.data.medicationSchedule);
 				var loop:uint = e.data.medicationSchedule.length;
+
 				for (var i:uint = 0; i < loop; i++)
 				{
 					if (e.data.medicationSchedule[i].time >= 0 && e.data.medicationSchedule[i].time <= 11)
@@ -97,18 +98,26 @@ package collaboRhythm.hiviva.view
 		{
 			trace("buildTabletAMCells " + _amMedication.length);
 			var daysLoop:uint = 7;
+
 			for(var j:uint=0  ; j <daysLoop ; j++)
 			{
 				var loop:uint = _amMedication.length;
 				if (loop > 0)
 				{
+					var tabletColorCount:uint = 1;
 					for (var i:uint = 0; i < loop; i++)
 					{
-						var tablet:Image = new Image(Assets.getTexture("Tablet1Png"));
+						var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
+						tabletColorCount++;
+						if (tabletColorCount > 4)
+						{
+							tabletColorCount = 1;
+						}
 						this.addChild(tablet);
 						tablet.x = this._amTableXloc + (i * tablet.width) + 10;
 						tablet.y = this._amTableYloc + this._pillboxYCellSpacing * j;
 					}
+					tabletColorCount = 1;
 				}
 			}
 		}
@@ -117,19 +126,27 @@ package collaboRhythm.hiviva.view
 		{
 			trace("buildTabletAMCells " + _pmMedication.length);
 			var daysLoop:uint = 7;
+
 			for(var j:uint=0  ; j <daysLoop ; j++)
 			{
 				var loop:uint = _pmMedication.length;
 				if (loop > 0)
 				{
+					var tabletColorCount:uint = 1;
 					for (var i:uint = 0; i < loop; i++)
 					{
-						var tablet:Image = new Image(Assets.getTexture("Tablet1Png"));
+						var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
+						tabletColorCount ++;
+						if(tabletColorCount > 4)
+						{
+							tabletColorCount =1;
+						}
 						this.addChild(tablet);
 						tablet.x = this._pmTableXloc + (i * tablet.width) + 10;
 						tablet.y = this._pmTableYloc;
 						tablet.y = this._pmTableYloc + this._pillboxYCellSpacing * j;
 					}
+					tabletColorCount = 1;
 				}
 			}
 		}
