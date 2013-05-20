@@ -169,6 +169,7 @@ package collaboRhythm.hiviva.view
 				takeMedicationCell.doseDetails = MedicationNameModifier.getNeatTabletText(this._medicationSchedule[i].tablet_count) + " " + MedicationNameModifier.getNeatTime(this._medicationSchedule[i].time);
 				takeMedicationCell.width = this.actualWidth;
 				this._takeMedicationCellHolder.addChild(takeMedicationCell);
+				takeMedicationCell.checkBox.addEventListener(Event.TRIGGERED, medCellChangeHandler);
 			}
 			drawResults();
 
@@ -241,8 +242,6 @@ package collaboRhythm.hiviva.view
 							takeMedicationCell.checkBox.isSelected = true;
 							takeMedicationCell.validate();
 						}
-
-						takeMedicationCell.checkBox.addEventListener(Event.TRIGGERED, medCellChangeHandler);
 					}
 				}
 			}

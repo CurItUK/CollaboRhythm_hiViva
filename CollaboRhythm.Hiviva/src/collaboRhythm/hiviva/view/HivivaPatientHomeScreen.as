@@ -14,6 +14,7 @@ package collaboRhythm.hiviva.view
 	import flash.events.IOErrorEvent;
 	import flash.events.SQLEvent;
 	import flash.filesystem.File;
+	import flash.filters.BlurFilter;
 	import flash.geom.Matrix;
 	import flash.net.URLRequest;
 	import flash.system.System;
