@@ -30,7 +30,6 @@ package collaboRhythm.hiviva.view.components
 
 		protected var _genericNameLabel:Label;
 		protected var _genericName:String;
-		protected var _medicationScheduleId:int;
 
 
 		public function MedicationCell()
@@ -116,17 +115,6 @@ package collaboRhythm.hiviva.view.components
 		public function get scale():Number
 		{
 			return this._scale;
-		}
-
-
-		public function get medicationScheduleId():int
-		{
-			return _medicationScheduleId;
-		}
-
-		public function set medicationScheduleId(value:int):void
-		{
-			_medicationScheduleId = value;
 		}
 	}
 }

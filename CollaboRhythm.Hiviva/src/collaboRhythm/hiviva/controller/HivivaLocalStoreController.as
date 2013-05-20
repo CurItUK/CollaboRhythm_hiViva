@@ -68,6 +68,19 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function deleteMedication(medicationId:int):void
+		{
+			service.addEventListener(LocalDataStoreEvent.MEDICATIONS_DELETE_COMPLETE, deleteMedicationCompleteHandler);
+			service.deleteMedication(medicationId);
+		}
+
+		private function deleteMedicationCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.MEDICATIONS_DELETE_COMPLETE , deleteMedicationCompleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_DELETE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function getAdherence():void
 		{
 			service.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);

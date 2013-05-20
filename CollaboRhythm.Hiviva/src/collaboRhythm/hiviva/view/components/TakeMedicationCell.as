@@ -11,6 +11,7 @@ package collaboRhythm.hiviva.view.components
 		private var _doseDetails:String;
 		private var _checkBox:Check;
 		private var _isChanged:Boolean;
+		private var _medicationScheduleId:int;
 
 		public function TakeMedicationCell()
 		{
@@ -73,6 +74,17 @@ package collaboRhythm.hiviva.view.components
 		public function set checkBox(value:Check):void
 		{
 			_checkBox = value;
+		}
+
+
+		public function get medicationScheduleId():int
+		{
+			return _medicationScheduleId;
+		}
+
+		public function set medicationScheduleId(value:int):void
+		{
+			_medicationScheduleId = value;
 		}
 	}
 }
