@@ -127,7 +127,7 @@ package collaboRhythm.hiviva.view
 			this._patientNav = new ScreenNavigatorWithHistory();
 			this._patientNav.addChild(this._screenBackground);
 			this._screenHolder.addChild(this._patientNav);
-			this._patientNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete},{applicationController:applicationController}));
+			this._patientNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete},{applicationController:_applicationController}));
 
 			this._transitionManager = new ScreenFadeTransitionManager(_patientNav);
 			this._transitionManager.ease = Transitions.EASE_OUT;
@@ -187,7 +187,7 @@ package collaboRhythm.hiviva.view
 			patientSettingsBtnHandler();
 			this._patientProfileNav = new ScreenNavigatorWithHistory();
 			this._patientProfileNav.addChild(this._screenBackground);
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen, {navGoHome:navGoHomeFromProfileScreen}));
+			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen, {navGoHome:navGoHomeFromProfileScreen}, {applicationController:_applicationController}));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN, new ScreenNavigatorItem(HivivaPatientHomepagePhotoScreen));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_GALLERY_SCREEN, new ScreenNavigatorItem(SportsGalleryScreen));

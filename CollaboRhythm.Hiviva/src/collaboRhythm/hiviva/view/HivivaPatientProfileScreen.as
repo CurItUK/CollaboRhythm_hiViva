@@ -1,10 +1,14 @@
 package collaboRhythm.hiviva.view
 {
+	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
+	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.core.PopUpManager;
 	import feathers.data.ListCollection;
@@ -23,11 +27,16 @@ package collaboRhythm.hiviva.view
 
 	public class HivivaPatientProfileScreen extends Screen
 	{
+		private var _applicationController:HivivaApplicationController;
 		private var _header:HivivaHeader;
 		private var _homeBtn:Button;
 		private var _menuBtnGroup:ButtonGroup;
 		private var _userSignupPopupContent:HivivaPopUp;
 		private var _tilesInBtns:Vector.<TiledImage>;
+		private var _appIdLabel:Label;
+		private var _appId:Label;
+
+		private var _scaledPadding:Number;
 
 		public function HivivaPatientProfileScreen()
 		{
@@ -36,10 +45,21 @@ package collaboRhythm.hiviva.view
 		override protected function draw():void
 		{
 			super.draw();
+
+			this._scaledPadding = 44 * this.dpiScale;
+
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
 
 			drawMenuBtnGroup();
+
+			this._appIdLabel.validate();
+			this._appIdLabel.x = this._scaledPadding;
+			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + (20 * this.dpiScale);
+
+			this._appId.validate();
+			this._appId.x = this.actualWidth - this._scaledPadding - this._appId.width;
+			this._appId.y = this._appIdLabel.y;
 
 			this._userSignupPopupContent.width = 500 * dpiScale;
 			this._userSignupPopupContent.validate();
@@ -51,10 +71,12 @@ package collaboRhythm.hiviva.view
 			this._menuBtnGroup.width = this.actualWidth;
 			this._menuBtnGroup.y = this._header.height + (30 * this.dpiScale);
 
+			var patternHeight:Number = Button(this._menuBtnGroup.getChildAt(0)).height;
 			for (var i:int = 0; i < _tilesInBtns.length; i++)
 			{
 				var img:TiledImage = _tilesInBtns[i];
 				img.width = this.actualWidth;
+				img.height = patternHeight;
 			}
 		}
 
@@ -73,12 +95,35 @@ package collaboRhythm.hiviva.view
 			initProfileMenuButtons();
 			addChild(this._header);
 
+			this._appIdLabel = new Label();
+			this._appIdLabel.name = "patient-profile-appid";
+			this._appIdLabel.text = "Your app ID";
+			addChild(this._appIdLabel);
+
+			this._appId = new Label();
+			this._appId.name = "patient-profile-appid";
+			addChild(this._appId);
+			localStoreController.addEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
+			localStoreController.getAppId();
+
 			this._userSignupPopupContent = new HivivaPopUp();
 			this._userSignupPopupContent.scale = this.dpiScale;
 			this._userSignupPopupContent.message = "You will need to create an account in order to connect to a care provider";
 			this._userSignupPopupContent.confirmLabel = "Sign up";
 			this._userSignupPopupContent.addEventListener(Event.COMPLETE, userSignupScreen);
 			this._userSignupPopupContent.addEventListener(Event.CLOSE, closePopup);
+		}
+
+		private function getAppId(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
+
+			var appIdData:String = e.data.app_id;
+			this._appId.text = appIdData;
+
+			this._appId.validate();
+			this._appId.x = this.actualWidth - this._scaledPadding - this._appId.width;
+			this._appId.y = this._appIdLabel.y;
 		}
 
 		private function initProfileMenuButtons():void
@@ -206,6 +251,21 @@ package collaboRhythm.hiviva.view
 		private function closePopup(e:Event):void
 		{
 			PopUpManager.removePopUp(this._userSignupPopupContent);
+		}
+
+		public function get localStoreController():HivivaLocalStoreController
+		{
+			return applicationController.hivivaLocalStoreController;
+		}
+
+		public function get applicationController():HivivaApplicationController
+		{
+			return _applicationController;
+		}
+
+		public function set applicationController(value:HivivaApplicationController):void
+		{
+			_applicationController = value;
 		}
 	}
 }

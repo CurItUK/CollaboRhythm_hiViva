@@ -24,6 +24,7 @@ package collaboRhythm.hiviva.view
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.filters.ColorMatrixFilter;
 	import starling.textures.Texture;
 
 	public class HivivaPatientHomeScreen extends Screen
@@ -45,6 +46,7 @@ package collaboRhythm.hiviva.view
 
 		private var IMAGE_SIZE:Number;
 		private var _usableHeight:Number;
+		private var _today:Date;
 
 		public function HivivaPatientHomeScreenScreen():void
 		{
@@ -89,6 +91,7 @@ package collaboRhythm.hiviva.view
 			this._homeImageInstructions.x =  (this.actualWidth * 0.5) - (this._homeImageInstructions.width * 0.5);
 			this._homeImageInstructions.y =  (this._usableHeight * 0.5) + this._header.height - (this._homeImageInstructions.height * 0.5);
 
+			this._today = new Date();
 			initHomePhoto();
 		}
 
@@ -154,20 +157,18 @@ package collaboRhythm.hiviva.view
 			localStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE,getGalleryTimeStampHandler);
 
 			var timeStamp:String = e.data.timeStamp,
-				today:Date = new Date(),
 				date:Date = new Date();
 
 			try
 			{
 				if(timeStamp != null)
 				{
-					//date = DateTransformFactory.convertSQLDateTimeToASDate(timeStamp);
 					date = HivivaModifier.getAS3DatefromString(timeStamp);
 
-					this._dayDiff = HivivaModifier.getDaysDiff(today, date);
+					this._dayDiff = HivivaModifier.getDaysDiff(this._today, date);
 
-					localStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
-					localStoreController.getGalleryImages();
+					localStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE,getAdherenceHandler);
+					localStoreController.getAdherence();
 
 					this._homeImageInstructions.visible = false;
 				}
@@ -182,6 +183,28 @@ package collaboRhythm.hiviva.view
 				trace("date stamp not there");
 				this._homeImageInstructions.visible = true;
 			}
+		}
+
+		private function getAdherenceHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE,getAdherenceHandler);
+
+			var allAdherenceData:Array = e.data.adherence,
+				latestAdherenceData:Object;
+
+			this._adherencePercent = 0;
+			if (allAdherenceData != null)
+			{
+				latestAdherenceData = allAdherenceData[allAdherenceData.length - 1];
+				if(latestAdherenceData.date == HivivaModifier.getSQLStringFromDate(this._today))
+				{
+					this._adherencePercent = allAdherenceData[allAdherenceData.length - 1].adherence_percentage;
+				}
+			}
+			trace("this._adherencePercent = " + this._adherencePercent);
+
+			localStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
+			localStoreController.getGalleryImages();
 		}
 
 		private function getGalleryImagesHandler(e:LocalDataStoreEvent):void
@@ -205,14 +228,11 @@ package collaboRhythm.hiviva.view
 				{
 					chosenImageInd = this._dayDiff;
 				}
-
-				//chosenImageInd = Math.floor(Math.random() * (resultDataLength - 1));
 				chosenImageUrl = imageUrls[chosenImageInd].url;
 				// TODO: boolean to define difference between custom photo and stock photo locations in homepage photo screen
 				trace("media/stock_images/" + chosenImageUrl);
 				doImageLoad("media/stock_images/" + chosenImageUrl);
 			}
-			this._homeImageInstructions.visible = false;
 		}
 
 		private function doImageLoad(url:String):void
@@ -291,9 +311,10 @@ package collaboRhythm.hiviva.view
 			circleHolder.addChild(circleBm);
 
 			var blurValue:Number = Math.ceil((20 / 100) * this._adherencePercent);
-			var filter:BitmapFilter = new flash.filters.BlurFilter(blurValue, blurValue, BitmapFilterQuality.HIGH);
+
+			var blurFilter:BitmapFilter = new flash.filters.BlurFilter(20 - blurValue, 20 - blurValue, BitmapFilterQuality.HIGH);
 			var myFilters:Array = [];
-			myFilters.push(filter);
+			myFilters.push(blurFilter);
 
 			circleBm.filters = myFilters;
 
@@ -312,7 +333,11 @@ package collaboRhythm.hiviva.view
 			bgImage.x = (this.actualWidth * 0.5) - (bgImage.width * 0.5);
 			bgImage.y = (this._usableHeight * 0.5) + this._header.height - (bgImage.height * 0.5);
 			this._lensImageHolder.addChild(bgImage);
-			//bgImage.filter = new starling.filters.BlurFilter(1,1,0.2);
+
+			var colorFilter:ColorMatrixFilter = new ColorMatrixFilter();
+			trace("colorFilter.adjustSaturation = " + (-1 + (this._adherencePercent / 100)));
+			colorFilter.adjustSaturation(-1 + (this._adherencePercent / 100));
+			this._lensImageHolder.filter = colorFilter;
 
 			bmd.dispose();
 		}

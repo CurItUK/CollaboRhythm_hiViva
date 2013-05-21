@@ -167,10 +167,13 @@ package collaboRhythm.hiviva.view
 					data.push("id:" + takeMedicationCell.medicationScheduleId + ";" + "feeling:" + this._feelingSlider.value)
 				}
 			}
+
+			var adherencePer:Number = (data.length / medicationsLoop) * 100;
+
 			if (data.length > 0)
 			{
 				localStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_SAVE_COMPLETE, adherenceSaveCompleteHandler);
-				localStoreController.setAdherence({date:today, data:data});
+				localStoreController.setAdherence({date:today, data:data, adherence_percentage:adherencePer});
 			}
 		}
 

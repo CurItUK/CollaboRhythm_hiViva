@@ -8,6 +8,8 @@ package collaboRhythm.hiviva.global
 		public static const DATA_LOAD_UPDATE:String							= "dataLoadUpdate";
 
 		public static const PROFILE_TYPE_UPDATE:String						= "profileTypeUpdate";
+		public static const APP_ID_SAVE_COMPLETE:String						= "appIdSaveComplete";
+		public static const APP_ID_LOAD_COMPLETE:String						= "appIdLoadComplete";
 		public static const GALLERY_TIMESTAMP_LOAD_COMPLETE:String			= "galleryTimeStampLoadComplete";
 		public static const GALLERY_IMAGES_LOAD_COMPLETE:String				= "galleryImagesLoadComplete";
 		public static const MEDICATIONS_LOAD_COMPLETE:String				= "medicationsLoadComplete";

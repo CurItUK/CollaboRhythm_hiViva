@@ -294,7 +294,7 @@ package source.themes
 		protected var headerTextFormat:TextFormat;
 
 
-		protected var hivavaDefaultTextFormat:TextFormat;
+		protected var hivivaDefaultTextFormat:TextFormat;
 
 		protected var smallUIDarkTextFormat:TextFormat;
 
@@ -541,7 +541,7 @@ package source.themes
 			//this.headerTextFormat = new TextFormat(fontNames, Math.round(36 * this.scale), LIGHT_TEXT_COLOR, true);
 			this.headerTextFormat = new TextFormat(fontNames, Math.round(36 * this.scale), 0x000000, true);
 
-			this.hivavaDefaultTextFormat = new TextFormat("ExoRegular", Math.round(30 * this.scale), 0x4c5f76);
+			this.hivivaDefaultTextFormat = new TextFormat("ExoRegular", Math.round(30 * this.scale), 0x4c5f76);
 
 			this.smallUIDarkTextFormat = new TextFormat(fontNames, 24 * this.scale, DARK_TEXT_COLOR, true);
 
@@ -765,6 +765,7 @@ package source.themes
 			this.setInitializerForClass(Label, labelInitializer);
 			this.setInitializerForClass(Label, centeredLabelInitializer, "centered-label");
 			this.setInitializerForClass(Label, feelingSliderLabelInitializer, "feeling-slider-label");
+			this.setInitializerForClass(Label, patientProfileAppidLabelInitializer, "patient-profile-appid");
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
 					BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
@@ -1064,6 +1065,14 @@ package source.themes
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
+		protected function patientProfileAppidLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(30 * this.scale), 0x708295);
+			label.textRendererProperties.wordWrap = false;
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+		}
+
 		protected function inputLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
@@ -1294,7 +1303,7 @@ package source.themes
 			button.stateToSkinFunction = skinSelector.updateValue;
 
 			button.defaultLabelProperties.embedFonts = true;
-			button.defaultLabelProperties.textFormat = this.hivavaDefaultTextFormat;
+			button.defaultLabelProperties.textFormat = this.hivivaDefaultTextFormat;
 			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 
 			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;

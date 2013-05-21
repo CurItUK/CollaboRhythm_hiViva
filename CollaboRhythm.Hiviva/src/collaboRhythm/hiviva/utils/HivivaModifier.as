@@ -81,6 +81,33 @@ package collaboRhythm.hiviva.utils
 			return dayDiff;
 		}
 
+		public static function generateAppId():String
+		{
+			var appId:String = "",
+				segmentLength:int = 3,
+				segment:String;
+
+			for (var i:int = 0; i < segmentLength; i++)
+			{
+				segment = int(Math.random() * 999).toString();
+				if (segment.length == 1)
+				{
+					appId += "00";
+				}
+				else if (segment.length == 2)
+				{
+					appId += "0";
+				}
+				appId += segment;
+				if(i < (segmentLength - 1))
+				{
+					appId += "-";
+				}
+			}
+
+			return appId;
+		}
+
 		public static function degreesToRadians(deg:Number):Number
 		{
 			return deg * (Math.PI/180);

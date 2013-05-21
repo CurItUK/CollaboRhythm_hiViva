@@ -1,9 +1,11 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -58,11 +60,12 @@ package collaboRhythm.hiviva.view
 
 			initSplashBackground();
 
-			this._appType = applicationController.hivivaLocalStoreController.service.appDataVO._userAppType;
+			this._appType = localStoreController.service.appDataVO._userAppType;
 			if(this._appType == HivivaLocalStoreService.APP_FIRST_TIME_USE)
 			{
 				initButtons();
 				initButtonListeners();
+
 			} else
 			{
 				initDefaultSplash();
@@ -193,7 +196,7 @@ package collaboRhythm.hiviva.view
 		{
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PROFILE_TYPE_UPDATE);
 			evt.data.user = userValue;
-			applicationController.hivivaLocalStoreController.dispatchEvent(evt);
+			localStoreController.dispatchEvent(evt);
 			this._appType = userValue;
 			closeDownScreen();
 		}
@@ -252,6 +255,11 @@ package collaboRhythm.hiviva.view
 			this._logo = null;
 
 			super.dispose();
+		}
+
+		public function get localStoreController():HivivaLocalStoreController
+		{
+			return applicationController.hivivaLocalStoreController;
 		}
 
 		public function get applicationController ():HivivaApplicationController

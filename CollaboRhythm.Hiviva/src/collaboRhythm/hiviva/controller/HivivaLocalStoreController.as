@@ -20,6 +20,20 @@ package collaboRhythm.hiviva.controller
 			this.addEventListener(LocalDataStoreEvent.PROFILE_TYPE_UPDATE , profileTypeUpdateHandler);
 		}
 
+		public function getAppId():void
+		{
+			service.addEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE, getAppIdHandler);
+			service.getAppId();
+		}
+
+		private function getAppIdHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE, getAppIdHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function getGalleryImages():void
 		{
 			service.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);

@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.model
 {
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.vo.AppDataVO;
 
 	import flash.data.SQLConnection;
@@ -75,8 +76,10 @@ package collaboRhythm.hiviva.model
 			}
 
 			// TODO: remove this check when HCP is working; HCP is not supported yet
-			if (_appDataVO._userAppType == USER_APP_TYPE_HCP)
-				_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
+//			if (_appDataVO._userAppType == USER_APP_TYPE_HCP)
+//				_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
+
+
 
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.DATA_LOAD_COMPLETE);
 			evt.message = "dataLoaded";
@@ -86,6 +89,46 @@ package collaboRhythm.hiviva.model
 		private function sqlResultHandler(e:SQLEvent):void
 		{
 			trace("sqlResultHandler " + e);
+		}
+
+		public function setAppId(appId:String):void
+		{
+			trace("appId generated " + appId);
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "UPDATE app_settings SET app_id='" + appId + "'";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+			this._sqStatement.execute();
+		}
+
+		public function getAppId():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "SELECT app_id FROM app_settings";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getAppIdHandler);
+			this._sqStatement.execute();
+		}
+
+		private function getAppIdHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE);
+			evt.data.app_id = result[0].app_id;
+			this.dispatchEvent(evt);
 		}
 
 		private function createUserSettingsDatabase():void
@@ -103,6 +146,8 @@ package collaboRhythm.hiviva.model
 			_appDataVO = new AppDataVO();
 			_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
 
+			setAppId(HivivaModifier.generateAppId());
+
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.DATA_LOAD_COMPLETE);
 			evt.message = HivivaLocalStoreService.APP_FIRST_TIME_USE;
 			dispatchEvent(evt);
@@ -119,7 +164,7 @@ package collaboRhythm.hiviva.model
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "INSERT INTO app_settings ('profile_type') VALUES ('" + data + "') ";
+			this._sqStatement.text = "UPDATE app_settings SET profile_type='" + data + "'";
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
@@ -370,16 +415,22 @@ package collaboRhythm.hiviva.model
 			{
 				if(_medicationAdherenceToSet.date == result[lastIndex].date)
 				{
-					this._sqStatement.text =  "UPDATE medication_adherence SET data='" + _medicationAdherenceToSet.data + "' WHERE date='" + _medicationAdherenceToSet.date + "'";
+					this._sqStatement.text =  	"UPDATE medication_adherence SET data='" + _medicationAdherenceToSet.data +
+												"', adherence_percentage='" + _medicationAdherenceToSet.adherence_percentage +
+												"' WHERE date='" + _medicationAdherenceToSet.date + "'";
 				}
 				else
 				{
-					this._sqStatement.text =  "INSERT INTO medication_adherence ('date' , 'data') SELECT '" + _medicationAdherenceToSet.date + "', '" + _medicationAdherenceToSet.data + "'";
+					this._sqStatement.text =  	"INSERT INTO medication_adherence ('date' , 'data' , 'adherence_percentage') SELECT '" + _medicationAdherenceToSet.date +
+												"', '" + _medicationAdherenceToSet.data +
+												"', '" + _medicationAdherenceToSet.adherence_percentage + "'";
 				}
 			}
 			catch(e:Error)
 			{
-				this._sqStatement.text =  "INSERT INTO medication_adherence ('date' , 'data') SELECT '" + _medicationAdherenceToSet.date + "', '" + _medicationAdherenceToSet.data + "'";
+				this._sqStatement.text =  	"INSERT INTO medication_adherence ('date' , 'data' , 'adherence_percentage') SELECT '" + _medicationAdherenceToSet.date +
+											"', '" + _medicationAdherenceToSet.data +
+											"', '" + _medicationAdherenceToSet.adherence_percentage + "'";
 			}
 			trace(this._sqStatement.text);
 			this._sqStatement.addEventListener(SQLEvent.RESULT, setAdherenceResultHandler);
