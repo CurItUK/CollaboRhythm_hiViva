@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view
 
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
@@ -32,7 +33,9 @@ package collaboRhythm.hiviva.view
 		private var _amMedication:Array = [];
 		private var _pmMedication:Array = [];
 		private var _clockTimer:Timer;
+
 		private const CLOCK_TICK:uint						= 120000; //5 Minutes
+		private const CLOCK_ANGLE_DEGREES:Number			= 15;
 
 		public function HivivaPatientClockScreen()
 		{
@@ -61,11 +64,6 @@ package collaboRhythm.hiviva.view
 			this._clockHandHolder.x = this._clockFace.x + this._clockFace.width / 2;
 			this._clockHandHolder.y = this._clockFace.y + this._clockFace.height / 2 - this._clockHandCenterPoint;
 
-			var deg:Number = 135;
-			var rad:Number = deg * (Math.PI/180);
-			this._clockHandHolder.rotation = rad;
-			trace("this._clockHandHolder rotation " + this._clockHandHolder.rotation);
-
 			initClockHandRotation();
 			initClockMedication();
 
@@ -73,7 +71,6 @@ package collaboRhythm.hiviva.view
 
 		override protected function initialize():void
 		{
-
 
 			this._clockFace = new Image(Assets.getTexture("ClockFacePng"));
 			this.addChild(this._clockFace);
@@ -90,22 +87,18 @@ package collaboRhythm.hiviva.view
 
 		private function initClockHandRotation():void
 		{
-			var currentDate:Date = new Date();
-			trace("Current time hours : " + currentDate.getHours());
-
-
 			this._clockTimer = new Timer(CLOCK_TICK, 0);
 			this._clockTimer.addEventListener(TimerEvent.TIMER, timerTickHandler);
 			this._clockTimer.start();
+			timerTickHandler();
 		}
 
-		private function timerTickHandler(e:TimerEvent):void
+		private function timerTickHandler(e:TimerEvent = null):void
 		{
-			this._clockHandHolder.rotation += 0.1;
-			trace(this._clockHandHolder.rotation);
+			var currentDate:Date = new Date();
+			var currentTime:Number = currentDate.getHours();
 
-			//this._clockHand.x = (this.actualWidth * 0.5) - (this._clockHand.width * 0.5);
-			//this._clockHand.y = (this._usableHeight * 0.5) + headerHeight - (this._clockHand.height * 0.5);
+			this._clockHandHolder.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * currentTime);
 		}
 
 		private function initClockMedication():void
