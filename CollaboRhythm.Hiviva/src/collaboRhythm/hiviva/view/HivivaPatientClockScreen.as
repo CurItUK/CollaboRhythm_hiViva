@@ -33,6 +33,8 @@ package collaboRhythm.hiviva.view
 		private var _amMedication:Array = [];
 		private var _pmMedication:Array = [];
 		private var _clockTimer:Timer;
+		private var _clockCenterX:Number;
+		private var _clockCenterY:Number;
 
 		private const CLOCK_TICK:uint						= 120000; //5 Minutes
 		private const CLOCK_ANGLE_DEGREES:Number			= 15;
@@ -48,13 +50,11 @@ package collaboRhythm.hiviva.view
 			this._clockHandCenterPoint = 25;
 
 			IMAGE_SIZE = this.actualWidth * 0.9;
-
 			this._usableHeight = this.actualHeight - footerHeight - headerHeight;
 
 
 			this._clockFace.width = IMAGE_SIZE;
 			this._clockFace.scaleY = this._clockFace.scaleX;
-
 			this._clockFace.x = (this.actualWidth * 0.5) - (this._clockFace.width * 0.5);
 			this._clockFace.y = (this._usableHeight * 0.5) + headerHeight - (this._clockFace.height * 0.5);
 
@@ -63,6 +63,9 @@ package collaboRhythm.hiviva.view
 
 			this._clockHandHolder.x = this._clockFace.x + this._clockFace.width / 2;
 			this._clockHandHolder.y = this._clockFace.y + this._clockFace.height / 2 - this._clockHandCenterPoint;
+
+			this._clockCenterX = this._clockHandHolder.x;
+			this._clockCenterY = this._clockHandHolder.y;
 
 			initClockHandRotation();
 			initClockMedication();
@@ -103,16 +106,14 @@ package collaboRhythm.hiviva.view
 
 		private function initClockMedication():void
 		{
-			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE,
-					medicationLoadCompleteHandler);
+			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE, medicationLoadCompleteHandler);
 			applicationController.hivivaLocalStoreController.getMedicationsSchedule()
 		}
 
 		private function medicationLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
 			//Build list of medications into their time slots am,pm
-			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE,
-					medicationLoadCompleteHandler);
+			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE, medicationLoadCompleteHandler);
 			if (e.data.medicationSchedule != null)
 			{
 				trace(e.data.medicationSchedule);
@@ -137,22 +138,34 @@ package collaboRhythm.hiviva.view
 		private function buildTabletAMCells():void
 		{
 			trace("buildTabletAMCells " + _amMedication.length);
+			var clockHandSpacing:Number = 20;
+
 			var loop:uint = _amMedication.length;
 			if (loop > 0)
 			{
 				var tabletColorCount:uint = 1;
 				for (var i:uint = 0; i < loop; i++)
 				{
+					var holderCell:Sprite = new Sprite();
+					holderCell.width = this._clockFace.width;
+					holderCell.height = this._clockFace.height;
+
+					var tabletCell:Sprite = new Sprite();
 					var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
-					var tabletCount:Label = new Label();
-					tabletCount.text = _amMedication[i].tablet_count;
+					tabletCell.addChild(tablet);
+					tablet.x = clockHandSpacing + (i * tablet.width) + 10;
+					holderCell.addChild(tabletCell);
 					tabletColorCount++;
 					if (tabletColorCount > 4)
 					{
 						tabletColorCount = 1;
 					}
-					this.addChild(tablet);
-					this.addChild(tabletCount);
+					this.addChild(holderCell);
+					holderCell.x = this._clockCenterX;
+					holderCell.y = this._clockCenterY;
+					trace(Number(_amMedication[i].time));
+					holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * Number(_amMedication[i].time)) - HivivaModifier.degreesToRadians(90);
+
 				}
 			}
 		}
@@ -160,22 +173,34 @@ package collaboRhythm.hiviva.view
 		private function buildTabletPMCells():void
 		{
 			trace("buildTabletAMCells " + _pmMedication.length);
+			var clockHandSpacing:Number = 20;
+
 			var loop:uint = _pmMedication.length;
 			if (loop > 0)
 			{
 				var tabletColorCount:uint = 1;
 				for (var i:uint = 0; i < loop; i++)
 				{
+					var holderCell:Sprite = new Sprite();
+					holderCell.width = this._clockFace.width;
+					holderCell.height = this._clockFace.height;
+
+					var tabletCell:Sprite = new Sprite();
 					var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
-					var tabletCount:Label = new Label();
-					tabletCount.text = _pmMedication[i].tablet_count;
+					tabletCell.addChild(tablet);
+					tablet.x = clockHandSpacing + (i * tablet.width) + 10;
+					holderCell.addChild(tabletCell);
 					tabletColorCount++;
 					if (tabletColorCount > 4)
 					{
 						tabletColorCount = 1;
 					}
-					this.addChild(tablet);
-					this.addChild(tabletCount);
+					this.addChild(holderCell);
+					holderCell.x = this._clockCenterX;
+					holderCell.y = this._clockCenterY;
+					trace(Number(_pmMedication[i].time));
+					holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES *	Number(_pmMedication[i].time)) - HivivaModifier.degreesToRadians(90);
+
 				}
 			}
 		}
