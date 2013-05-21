@@ -153,6 +153,7 @@ package collaboRhythm.hiviva.view
 					var tabletCell:Sprite = new Sprite();
 					var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
 					tabletCell.addChild(tablet);
+					tablet.y = -tablet.width/2;
 					tablet.x = clockHandSpacing + (i * tablet.width) + 10;
 					holderCell.addChild(tabletCell);
 					tabletColorCount++;
@@ -189,6 +190,7 @@ package collaboRhythm.hiviva.view
 					var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
 					tabletCell.addChild(tablet);
 					tablet.x = clockHandSpacing + (i * tablet.width) + 10;
+					tablet.y = -tablet.width/2;
 					holderCell.addChild(tabletCell);
 					tabletColorCount++;
 					if (tabletColorCount > 4)
