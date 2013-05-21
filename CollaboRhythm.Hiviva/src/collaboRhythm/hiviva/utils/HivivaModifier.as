@@ -1,9 +1,9 @@
 package collaboRhythm.hiviva.utils
 {
-	// TODO: change class name
-	public class MedicationNameModifier
+
+	public class HivivaModifier
 	{
-		public function MedicationNameModifier()
+		public function HivivaModifier()
 		{
 		}
 
@@ -79,6 +79,11 @@ package collaboRhythm.hiviva.utils
 			}
 
 			return dayDiff;
+		}
+
+		public static function degreesToRadians(deg:Number):Number
+		{
+			return deg * (Math.PI/180);
 		}
 	}
 }

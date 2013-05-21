@@ -4,7 +4,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.utils.MedicationNameModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
@@ -162,9 +162,9 @@ package collaboRhythm.hiviva.view
 				if(timeStamp != null)
 				{
 					//date = DateTransformFactory.convertSQLDateTimeToASDate(timeStamp);
-					date = MedicationNameModifier.getAS3DatefromString(timeStamp);
+					date = HivivaModifier.getAS3DatefromString(timeStamp);
 
-					this._dayDiff = MedicationNameModifier.getDaysDiff(today, date);
+					this._dayDiff = HivivaModifier.getDaysDiff(today, date);
 
 					localStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
 					localStoreController.getGalleryImages();

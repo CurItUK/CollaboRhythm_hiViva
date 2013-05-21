@@ -5,8 +5,8 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.utils.MedicationNameModifier;
-	import collaboRhythm.hiviva.utils.MedicationNameModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.components.MedicationCell;
 	import collaboRhythm.hiviva.view.components.TakeMedicationCell;
 
@@ -158,7 +158,7 @@ package collaboRhythm.hiviva.view
 			var medicationsLoop:uint = this._medicationSchedule.length,
 				takeMedicationCell:TakeMedicationCell,
 				data:Array = [],
-				today:String = MedicationNameModifier.getSQLStringFromDate(new Date());
+				today:String = HivivaModifier.getSQLStringFromDate(new Date());
 			for (var i:uint = 0; i < medicationsLoop; i++)
 			{
 				takeMedicationCell = this._takeMedicationCellHolder.getChildAt(i) as TakeMedicationCell;
@@ -216,9 +216,9 @@ package collaboRhythm.hiviva.view
 				var takeMedicationCell:TakeMedicationCell = new TakeMedicationCell();
 				takeMedicationCell.medicationScheduleId = this._medicationSchedule[i].id;
 				takeMedicationCell.scale = this.dpiScale;
-				takeMedicationCell.brandName = MedicationNameModifier.getBrandName(this._medicationSchedule[i].medication_name);
-				takeMedicationCell.genericName = MedicationNameModifier.getGenericName(this._medicationSchedule[i].medication_name);
-				takeMedicationCell.doseDetails = MedicationNameModifier.getNeatTabletText(this._medicationSchedule[i].tablet_count) + " " + MedicationNameModifier.getNeatTime(this._medicationSchedule[i].time);
+				takeMedicationCell.brandName = HivivaModifier.getBrandName(this._medicationSchedule[i].medication_name);
+				takeMedicationCell.genericName = HivivaModifier.getGenericName(this._medicationSchedule[i].medication_name);
+				takeMedicationCell.doseDetails = HivivaModifier.getNeatTabletText(this._medicationSchedule[i].tablet_count) + " " + HivivaModifier.getNeatTime(this._medicationSchedule[i].time);
 				takeMedicationCell.width = this.actualWidth;
 				this._takeMedicationCellHolder.addChild(takeMedicationCell);
 				takeMedicationCell.checkBox.addEventListener(Event.TRIGGERED, medCellChangeHandler);
@@ -266,8 +266,8 @@ package collaboRhythm.hiviva.view
 		private function populateCurrentAdherence():void
 		{
 			var today:Date = new Date(),
-				latestAdherenceDate:Date = MedicationNameModifier.getAS3DatefromString(this._latestAdherenceData.date),
-				dayDiff:Number = MedicationNameModifier.getDaysDiff(today, latestAdherenceDate),
+				latestAdherenceDate:Date = HivivaModifier.getAS3DatefromString(this._latestAdherenceData.date),
+				dayDiff:Number = HivivaModifier.getDaysDiff(today, latestAdherenceDate),
 				latestAdherenceData:Array = String(this._latestAdherenceData.data).split(","),
 				rawIdData:String,
 				medicationId:int,

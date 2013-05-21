@@ -5,7 +5,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.utils.MedicationNameModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.components.EditMedicationCell;
 	import collaboRhythm.hiviva.view.components.MedicationCell;
 
@@ -112,8 +112,8 @@ package collaboRhythm.hiviva.view
 				editMedicationCell.applicationController = _applicationController;
 				editMedicationCell.medicationId = int(this._medications[i].id);
 				editMedicationCell.scale = this.dpiScale;
-				editMedicationCell.brandName = MedicationNameModifier.getBrandName(this._medications[i].medication_name);
-				editMedicationCell.genericName = MedicationNameModifier.getGenericName(this._medications[i].medication_name);
+				editMedicationCell.brandName = HivivaModifier.getBrandName(this._medications[i].medication_name);
+				editMedicationCell.genericName = HivivaModifier.getGenericName(this._medications[i].medication_name);
 				editMedicationCell.width = this.actualWidth;
 				this._takeMedicationCellHolder.addChild(editMedicationCell);
 				editMedicationCell.addEventListener(Event.REMOVED_FROM_STAGE, editMedicationCellRemoved);
