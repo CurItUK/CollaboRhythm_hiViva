@@ -1,4 +1,4 @@
-package collaboRhythm.hiviva.view
+package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaAssets;
@@ -13,14 +13,14 @@ package collaboRhythm.hiviva.view
 	import starling.events.Event;
 
 
-	public class HivivaPatientSideNavScreen extends Screen
+	public class HivivaHcpSideNavScreen extends Screen
 	{
 
 		private var WIDTH:Number;
 		private var SCALE:Number;
 		private var _sideBtnGroup:ButtonGroup;
 
-		public function HivivaPatientSideNavScreen(gWidth:Number, scale:Number)
+		public function HivivaHcpSideNavScreen(gWidth:Number, scale:Number)
 		{
 			WIDTH = gWidth;
 			SCALE = scale;
@@ -45,9 +45,9 @@ package collaboRhythm.hiviva.view
 			this._sideBtnGroup.dataProvider = new ListCollection(
 				[
 					{ width: btnWidth, height: btnHeight, name: "profile", label: "PROFILE" },
-					{ width: btnWidth, height: btnHeight, name: "help", label: "HELP"},
-					{ width: btnWidth, height: btnHeight, name: "messages", label: "MESSAGES"},
-					{ width: btnWidth, height: btnHeight, name: "badges", label: "BADGES"}
+					{ width: btnWidth, height: btnHeight, name: "display", label: "DISPLAY SETTINGS"},
+					{ width: btnWidth, height: btnHeight, name: "alerts", label: "ALERTS"},
+					{ width: btnWidth, height: btnHeight, name: "connect", label: "CONNECT TO PATIENT"}
 				]
 			);
 			this._sideBtnGroup.buttonInitializer = function(button:Button, item:Object):void
@@ -63,13 +63,13 @@ package collaboRhythm.hiviva.view
 					case "profile" :
 						img = new Image(HivivaAssets.SIDENAV_ICON_PATIENTPROFILE);
 						break;
-					case "help" :
+					case "display" :
 						img = new Image(HivivaAssets.SIDENAV_ICON_HELP);
 						break;
-					case "messages" :
+					case "alerts" :
 						img = new Image(HivivaAssets.SIDENAV_ICON_MESSAGES);
 						break;
-					case "badges" :
+					case "connect" :
 						img = new Image(HivivaAssets.SIDENAV_ICON_BADGES);
 						break;
 				}
@@ -94,13 +94,13 @@ package collaboRhythm.hiviva.view
 				case "profile" :
 					navAwayEvent.message = HivivaScreens.PATIENT_PROFILE_SCREEN;
 					break;
-				case "help" :
+				case "display" :
 					navAwayEvent.message = HivivaScreens.PATIENT_HELP_SCREEN;
 					break;
-				case "messages" :
+				case "alerts" :
 					navAwayEvent.message = HivivaScreens.PATIENT_MESSAGES_SCREEN;
 					break;
-				case "badges" :
+				case "connect" :
 					navAwayEvent.message = HivivaScreens.PATIENT_BADGES_SCREEN;
 					break;
 			}

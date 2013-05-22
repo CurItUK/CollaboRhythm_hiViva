@@ -1,5 +1,6 @@
-package collaboRhythm.hiviva.view
+package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.galleryscreens.Gallery;

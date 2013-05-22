@@ -1,5 +1,6 @@
-package collaboRhythm.hiviva.view
+package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.view.*;
 
 	import feathers.controls.Header;
 	import feathers.controls.Screen;

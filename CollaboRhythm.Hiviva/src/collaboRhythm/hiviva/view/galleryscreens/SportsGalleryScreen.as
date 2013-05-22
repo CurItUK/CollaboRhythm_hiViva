@@ -2,7 +2,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
-	import collaboRhythm.hiviva.view.ScreenBase;
+	import collaboRhythm.hiviva.view.screens.shared.ScreenBase;
 
 	import feathers.controls.Button;
 	import feathers.controls.Header;

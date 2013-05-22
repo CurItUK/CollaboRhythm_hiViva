@@ -1,4 +1,4 @@
-package collaboRhythm.hiviva.view
+package collaboRhythm.hiviva.view.screens.shared
 {
 	import collaboRhythm.hiviva.view.media.Assets;
 
