@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPSideNavScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientBagesScreen;
 	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -55,8 +56,8 @@ package collaboRhythm.hiviva.view
 		private var _screenHolder:Sprite;
 		private var _screenBackground:Sprite;
 		private var _feathersTheme:HivivaTheme;
-		private var _patientNav:ScreenNavigatorWithHistory;
-		private var _patientProfileNav:ScreenNavigatorWithHistory;
+		private var _mainScreenNav:ScreenNavigatorWithHistory;
+		private var _settingsNav:ScreenNavigatorWithHistory;
 		private var _footerBtnGroup:ButtonGroup;
 		private var _settingsBtn:Button;
 		private var _transitionManager:ScreenFadeTransitionManager;
@@ -64,6 +65,7 @@ package collaboRhythm.hiviva.view
 		private var _appReset:Boolean = false;
 		private var _settingsOpen:Boolean = false;
 		private var _currFooterBtn:Button;
+		private var _currMainScreenId:String;
 		private var _scaleFactor:Number;
 
 		private const TRANSITION_DURATION:Number						= 0.4;
@@ -141,16 +143,16 @@ package collaboRhythm.hiviva.view
 
 		private function initAppNavigator():void
 		{
-			this._patientNav = new ScreenNavigatorWithHistory();
-			this._patientNav.addChild(this._screenBackground);
-			this._screenHolder.addChild(this._patientNav);
-			this._patientNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete},{applicationController:_applicationController}));
+			this._mainScreenNav = new ScreenNavigatorWithHistory();
+			this._mainScreenNav.addChild(this._screenBackground);
+			this._screenHolder.addChild(this._mainScreenNav);
+			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete},{applicationController:_applicationController}));
 
-			this._transitionManager = new ScreenFadeTransitionManager(_patientNav);
+			this._transitionManager = new ScreenFadeTransitionManager(_mainScreenNav);
 			this._transitionManager.ease = Transitions.EASE_OUT;
 			this._transitionManager.duration = TRANSITION_DURATION;
 
-			this._patientNav.showScreen(HivivaScreens.SPLASH_SCREEN);
+			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 		}
 
 		private function splashComplete(e:Event):void
@@ -167,10 +169,12 @@ package collaboRhythm.hiviva.view
 			switch(e.data.profileType)
 			{
 				case HivivaLocalStoreService.USER_APP_TYPE_HCP :
+					initHCPSettingsNavigator();
 					initHCPNavigator();
 					break;
 
 				case HivivaLocalStoreService.USER_APP_TYPE_PATIENT :
+					initPatientSettingsNavigator();
 					initPatientNavigator();
 					break;
 			}
@@ -193,58 +197,68 @@ package collaboRhythm.hiviva.view
 			if(!this._appReset)
 			{
 				var patientSideNavScreen:HivivaPatientSideNavScreen = new HivivaPatientSideNavScreen(SETTING_MENU_WIDTH, this._scaleFactor);
-				patientSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , patientSlideNavHandler);
+				patientSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , settingsNavHandler);
 				this.addChildAt(patientSideNavScreen , 0);
 
-				this._patientNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientViewMedicationScreen , null , {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen , null , {applicationController:_applicationController,footerHeight:this._footerBtnGroup.height}));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientViewMedicationScreen , null , {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen , null , {applicationController:_applicationController,footerHeight:this._footerBtnGroup.height}));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
 
 			}
 		}
 
 		private function initHCPNavigator():void
 		{
+			initHcpFooterMenu();
+
 			if(!this._appReset)
 			{
-				var patientSideNavScreen:HivivaPatientSideNavScreen = new HivivaPatientSideNavScreen(SETTING_MENU_WIDTH, this._scaleFactor);
-				patientSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , patientSlideNavHandler);
-				this.addChildAt(patientSideNavScreen , 0);
-
-				this._patientNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientViewMedicationScreen , null , {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen , null , {applicationController:_applicationController,footerHeight:this._footerBtnGroup.height}));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
-				this._patientNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
-
+				var hcpSideNavScreen:HivivaHCPSideNavScreen = new HivivaHCPSideNavScreen(SETTING_MENU_WIDTH, this._scaleFactor);
+				hcpSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , settingsNavHandler);
+				this.addChildAt(hcpSideNavScreen , 0);
+/*
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientViewMedicationScreen , null , {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen , null , {applicationController:_applicationController,footerHeight:this._footerBtnGroup.height}));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
+*/
 			}
 		}
 
-		private function patientSlideNavHandler(e:FeathersScreenEvent):void
+		private function initHCPSettingsNavigator():void
 		{
-			trace("patientSlideNavHandler " + e.message);
+
+		}
+
+		private function initPatientSettingsNavigator():void
+		{
+			this._settingsNav = new ScreenNavigatorWithHistory();
+			this._settingsNav.addChild(this._screenBackground);
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen, {navGoHome:goBackToLastMainScreen}, {applicationController:_applicationController}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN, new ScreenNavigatorItem(HivivaPatientHomepagePhotoScreen));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_GALLERY_SCREEN, new ScreenNavigatorItem(SportsGalleryScreen));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN, new ScreenNavigatorItem(HivivaPatientTestResultsScreen));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN, new ScreenNavigatorItem(HivivaPatientConnectToHcpScreen));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientEditMedsScreen, null, {applicationController:_applicationController}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientAddMedsScreen, null, {applicationController:_applicationController}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN, new ScreenNavigatorItem(HivivaPatientUserSignupScreen, null, {applicationController:_applicationController}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:goBackToLastMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:goBackToLastMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToLastMainScreen}));
+			this.addChild(_settingsNav);
+		}
+
+		private function settingsNavHandler(e:FeathersScreenEvent):void
+		{
+			trace("settingsNavHandler " + e.message);
 			settingsBtnHandler();
-			this._patientProfileNav = new ScreenNavigatorWithHistory();
-			this._patientProfileNav.addChild(this._screenBackground);
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen, {navGoHome:navGoHomeFromProfileScreen}, {applicationController:_applicationController}));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN, new ScreenNavigatorItem(HivivaPatientHomepagePhotoScreen));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_GALLERY_SCREEN, new ScreenNavigatorItem(SportsGalleryScreen));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN, new ScreenNavigatorItem(HivivaPatientTestResultsScreen));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN, new ScreenNavigatorItem(HivivaPatientConnectToHcpScreen));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientEditMedsScreen, null, {applicationController:_applicationController}));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientAddMedsScreen, null, {applicationController:_applicationController}));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN, new ScreenNavigatorItem(HivivaPatientUserSignupScreen, null, {applicationController:_applicationController}));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:navGoHomeFromProfileScreen}));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:navGoHomeFromProfileScreen}));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:navGoHomeFromProfileScreen}));
-			this.addChild(_patientProfileNav);
-
-			this._patientProfileNav.showScreen(e.message);
-
-			if(this._patientNav.activeScreenID == HivivaScreens.PATIENT_HOME_SCREEN) this._patientNav.clearScreen();
+			this._settingsNav.showScreen(e.message);
+			this._currMainScreenId = this._mainScreenNav.activeScreenID;
+			this._mainScreenNav.clearScreen();
 		}
 
 		//place holder for main app icons and navigation
@@ -274,7 +288,7 @@ package collaboRhythm.hiviva.view
 				var img:Image;
 
 				button.name = item.name;
-				button.addEventListener(Event.TRIGGERED, footerBtnHandler);
+				button.addEventListener(Event.TRIGGERED, patientFooterBtnHandler);
 
 				switch(item.name)
 				{
@@ -282,7 +296,7 @@ package collaboRhythm.hiviva.view
 						img = new Image(HivivaAssets.FOOTER_ICON_HOME);
 						button.isSelected = true;
 						_currFooterBtn = button;
-						_patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
+						_mainScreenNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
 						break;
 					case "clock" :
 						img = new Image(HivivaAssets.FOOTER_ICON_CLOCK);
@@ -310,7 +324,7 @@ package collaboRhythm.hiviva.view
 			this._footerBtnGroup.width = this._stageWidth;
 		}
 
-		private function footerBtnHandler(e:Event):void
+		private function patientFooterBtnHandler(e:Event):void
 		{
 			var btn:Button = e.target as Button;
 			if(!btn.isSelected)
@@ -319,19 +333,19 @@ package collaboRhythm.hiviva.view
 				switch(btn.name.substring(0 ,btn.name.indexOf(" home-footer-buttons")))
 				{
 					case "home" :
-						this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
+						this._mainScreenNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
 						break;
 					case "clock" :
-						this._patientNav.showScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN);
+						this._mainScreenNav.showScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN);
 						break;
 					case "takemeds" :
-						this._patientNav.showScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN);
+						this._mainScreenNav.showScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN);
 						break;
 					case "virus" :
-						this._patientNav.showScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN);
+						this._mainScreenNav.showScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN);
 						break;
 					case "report" :
-						this._patientNav.showScreen(HivivaScreens.PATIENT_REPORTS_SCREEN);
+						this._mainScreenNav.showScreen(HivivaScreens.PATIENT_REPORTS_SCREEN);
 						break;
 				}
 				this._currFooterBtn.isSelected = false;
@@ -340,28 +354,114 @@ package collaboRhythm.hiviva.view
 			}
 		}
 
-		private function navGoHomeFromProfileScreen():void
+		//place holder for main app icons and navigation
+		private function initHcpFooterMenu():void
 		{
-			this._patientProfileNav.clearScreen();
-			this._patientNav.addChild(this._screenBackground);
+			// needs own class
+			var footerBtnHeight:Number = HivivaAssets.FOOTER_ICON_BASE.height * this._scaleFactor;
+			var footerBtnWidth:Number = HivivaAssets.FOOTER_ICON_BASE.width * this._scaleFactor;
 
-			this._patientNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
-			this._currFooterBtn.isSelected = false;
-			this._currFooterBtn = this._footerBtnGroup.getChildAt(0) as Button;
+			this._footerBtnGroup = new ButtonGroup();
+			this._footerBtnGroup.customButtonName = "home-footer-buttons";
+			this._footerBtnGroup.customFirstButtonName = "home-footer-buttons";
+			this._footerBtnGroup.customLastButtonName = "home-footer-buttons";
+
+			this._footerBtnGroup.dataProvider = new ListCollection(
+				[
+					{ width: footerBtnWidth, height: footerBtnHeight, name: "home"},
+					{ width: footerBtnWidth, height: footerBtnHeight, name: "adherence"},
+					{ width: footerBtnWidth, height: footerBtnHeight, name: "reports"},
+					{ width: footerBtnWidth, height: footerBtnHeight, name: "messages"}
+				]
+			);
+
+			this._footerBtnGroup.buttonInitializer = function(button:Button, item:Object):void
+			{
+				var img:Image;
+
+				button.name = item.name;
+				button.addEventListener(Event.TRIGGERED, hcpFooterBtnHandler);
+
+				switch(item.name)
+				{
+					case "home" :
+						img = new Image(HivivaAssets.FOOTER_ICON_HOME);
+						button.isSelected = true;
+						_currFooterBtn = button;
+						_mainScreenNav.showScreen(HivivaScreens.HCP_HOME_SCREEN);
+						break;
+					case "adherence" :
+						img = new Image(HivivaAssets.FOOTER_ICON_CLOCK);
+						break;
+					case "reports" :
+						img = new Image(HivivaAssets.FOOTER_ICON_MEDIC);
+						break;
+					case "messages" :
+						img = new Image(HivivaAssets.FOOTER_ICON_VIRUS);
+						break;
+				}
+				img.width = item.width;
+				img.height = item.height;
+				button.addChild(img);
+			};
+
+			this._footerBtnGroup.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+
+			this._screenHolder.addChild(this._footerBtnGroup);
+			this._footerBtnGroup.y = this._stageHeight - footerBtnHeight;
+			this._footerBtnGroup.height = footerBtnHeight;
+			this._footerBtnGroup.width = this._stageWidth;
+		}
+
+		private function hcpFooterBtnHandler(e:Event):void
+		{
+			var btn:Button = e.target as Button;
+			if(!btn.isSelected)
+			{
+				// when refactoring to own class we can use a local property instead of storing the identifier in btn.name
+				switch(btn.name.substring(0 ,btn.name.indexOf(" home-footer-buttons")))
+				{
+					case "home" :
+						this._mainScreenNav.showScreen(HivivaScreens.HCP_HOME_SCREEN);
+						break;
+					case "adherence" :
+						this._mainScreenNav.showScreen(HivivaScreens.HCP_ADHERENCE_SCREEN);
+						break;
+					case "reports" :
+						this._mainScreenNav.showScreen(HivivaScreens.HCP_REPORTS_SCREEN);
+						break;
+					case "messages" :
+						this._mainScreenNav.showScreen(HivivaScreens.HCP_MESSAGES_SCREEN);
+						break;
+				}
+				this._currFooterBtn.isSelected = false;
+				this._currFooterBtn = e.target as Button;
+				this._currFooterBtn.isSelected = true;
+			}
+		}
+
+		private function goBackToLastMainScreen():void
+		{
+			this._settingsNav.clearScreen();
+			this._mainScreenNav.addChild(this._screenBackground);
+
+			this._mainScreenNav.showScreen(this._currMainScreenId);
+			/*this._currFooterBtn.isSelected = false;
+			this._currFooterBtn = this._footerBtnGroup.getChildAt(0) as Button;*/
 			this._currFooterBtn.isSelected = true;
 		}
 
 		private function navGoBack():void
 		{
-			_patientNav.goBack();
+			_mainScreenNav.goBack();
 		}
 
 		private function resetAppSettings():void
 		{
 			applicationController.hivivaLocalStoreController.resetApplication();
 			this._appReset = true;
-			this._patientNav.clearHistory();
-			this._patientNav.showScreen(HivivaScreens.SPLASH_SCREEN);
+			this._mainScreenNav.clearHistory();
+			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 		}
 
 		public function get applicationController():HivivaApplicationController
