@@ -31,5 +31,6 @@ package collaboRhythm.hiviva.global
 		public static const HCP_REPORTS_SCREEN:String					= "hcpReportsScreen";
 		public static const HCP_MESSAGES_SCREEN:String					= "hcpMessagesScreen";
 
+
 	}
 }

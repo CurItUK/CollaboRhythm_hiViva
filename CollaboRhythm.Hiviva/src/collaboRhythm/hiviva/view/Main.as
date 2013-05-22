@@ -7,6 +7,10 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAllPatientsAdherenceScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHomeScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessagesInbox;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPSideNavScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientBagesScreen;
 	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
@@ -165,6 +169,9 @@ package collaboRhythm.hiviva.view
 			this._settingsBtn.width = (this._stageWidth * 0.2);
 			this._settingsBtn.scaleY = this._settingsBtn.scaleX;
 
+			this._settingsNav = new ScreenNavigatorWithHistory();
+			this.addChild(this._settingsNav);
+
 			// TODO: move controller logic out of this view class and into a controller class
 			switch(e.data.profileType)
 			{
@@ -218,13 +225,11 @@ package collaboRhythm.hiviva.view
 				var hcpSideNavScreen:HivivaHCPSideNavScreen = new HivivaHCPSideNavScreen(SETTING_MENU_WIDTH, this._scaleFactor);
 				hcpSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , settingsNavHandler);
 				this.addChildAt(hcpSideNavScreen , 0);
-/*
-				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
-				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientViewMedicationScreen , null , {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
-				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen , null , {applicationController:_applicationController,footerHeight:this._footerBtnGroup.height}));
-				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
-				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
-*/
+
+				this._mainScreenNav.addScreen(HivivaScreens.HCP_HOME_SCREEN, new ScreenNavigatorItem(HivivaHCPHomeScreen));
+				this._mainScreenNav.addScreen(HivivaScreens.HCP_ADHERENCE_SCREEN, new ScreenNavigatorItem(HivivaHCPAllPatientsAdherenceScreen));
+				this._mainScreenNav.addScreen(HivivaScreens.HCP_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaHCPReportsScreen));
+				this._mainScreenNav.addScreen(HivivaScreens.HCP_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaHCPMessagesInbox));
 			}
 		}
 
@@ -235,8 +240,6 @@ package collaboRhythm.hiviva.view
 
 		private function initPatientSettingsNavigator():void
 		{
-			this._settingsNav = new ScreenNavigatorWithHistory();
-			this._settingsNav.addChild(this._screenBackground);
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen, {navGoHome:goBackToLastMainScreen}, {applicationController:_applicationController}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN, new ScreenNavigatorItem(HivivaPatientHomepagePhotoScreen));
@@ -249,13 +252,13 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:goBackToLastMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:goBackToLastMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToLastMainScreen}));
-			this.addChild(_settingsNav);
 		}
 
 		private function settingsNavHandler(e:FeathersScreenEvent):void
 		{
 			trace("settingsNavHandler " + e.message);
 			settingsBtnHandler();
+			if(!this._settingsNav.contains(this._screenBackground)) this._settingsNav.addChild(this._screenBackground);
 			this._settingsNav.showScreen(e.message);
 			this._currMainScreenId = this._mainScreenNav.activeScreenID;
 			this._mainScreenNav.clearScreen();
