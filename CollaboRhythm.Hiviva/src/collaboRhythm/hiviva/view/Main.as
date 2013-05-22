@@ -7,7 +7,11 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAlertSettings;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAllPatientsAdherenceScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPConnectToPatientScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPDisplaySettings;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPEditProfile;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHomeScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessagesInbox;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;
@@ -235,6 +239,10 @@ package collaboRhythm.hiviva.view
 
 		private function initHCPSettingsNavigator():void
 		{
+			this._settingsNav.addScreen(HivivaScreens.HCP_EDIT_PROFILE, new ScreenNavigatorItem(HivivaHCPEditProfile, {navGoHome:goBackToLastMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.HCP_DISPLAY_SETTINGS, new ScreenNavigatorItem(HivivaHCPDisplaySettings, {navGoHome:goBackToLastMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.HCP_ALERT_SETTINGS, new ScreenNavigatorItem(HivivaHCPAlertSettings, {navGoHome:goBackToLastMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.HCP_CONNECT_PATIENT, new ScreenNavigatorItem(HivivaHCPConnectToPatientScreen, {navGoHome:goBackToLastMainScreen}));
 
 		}
 
