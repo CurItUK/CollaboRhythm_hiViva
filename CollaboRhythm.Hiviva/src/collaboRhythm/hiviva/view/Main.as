@@ -25,7 +25,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientTestResultsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientViewMedicationScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientVirusModelScreen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaUserSignupScreen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientUserSignupScreen;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaSplashScreen;
 
 	import feathers.controls.Button;
@@ -236,7 +236,7 @@ package collaboRhythm.hiviva.view
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN, new ScreenNavigatorItem(HivivaPatientConnectToHcpScreen));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientEditMedsScreen, null, {applicationController:_applicationController}));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientAddMedsScreen, null, {applicationController:_applicationController}));
-			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN, new ScreenNavigatorItem(HivivaUserSignupScreen, null, {applicationController:_applicationController}));
+			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN, new ScreenNavigatorItem(HivivaPatientUserSignupScreen, null, {applicationController:_applicationController}));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:navGoHomeFromProfileScreen}));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:navGoHomeFromProfileScreen}));
 			this._patientProfileNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:navGoHomeFromProfileScreen}));

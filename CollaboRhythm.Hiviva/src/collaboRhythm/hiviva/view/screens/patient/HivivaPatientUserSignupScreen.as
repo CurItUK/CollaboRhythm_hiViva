@@ -24,7 +24,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
-	public class HivivaUserSignupScreen extends Screen
+	public class HivivaPatientUserSignupScreen extends Screen
 	{
 		private var _header:HivivaHeader;
 		private var _instructionsText:Label;
@@ -41,7 +41,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _applicationController:HivivaApplicationController;
 
 
-		public function HivivaUserSignupScreen()
+		public function HivivaPatientUserSignupScreen()
 		{
 
 		}

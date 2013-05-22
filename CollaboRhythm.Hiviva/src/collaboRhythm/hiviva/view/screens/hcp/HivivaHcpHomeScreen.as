@@ -2,9 +2,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import feathers.controls.Screen;
 
-	public class HcpHomeScreen extends Screen
+	public class HivivaHcpHomeScreen extends Screen
 	{
-		public function HcpHomeScreen()
+		public function HivivaHcpHomeScreen()
 		{
 			super();
 		}
