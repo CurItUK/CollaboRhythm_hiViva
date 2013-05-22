@@ -16,7 +16,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessagesInbox;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPSideNavScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPSideNavigationScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaHCPHelpScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientBagesScreen;
 	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
@@ -77,6 +77,7 @@ package collaboRhythm.hiviva.view
 		private var _currFooterBtn:Button;
 		private var _currMainScreenId:String;
 		private var _scaleFactor:Number;
+		private var _profile:String;
 
 		private const TRANSITION_DURATION:Number						= 0.4;
 		private const SETTING_MENU_WIDTH:Number							= 177;
@@ -167,6 +168,8 @@ package collaboRhythm.hiviva.view
 
 		private function splashComplete(e:Event):void
 		{
+			this._profile = e.data.profileType;
+
 			this._settingsBtn = new Button();
 			this._settingsBtn.name = HivivaTheme.NONE_THEMED;
 			this._settingsBtn.defaultIcon = new Image(HivivaAssets.SETTINGS_ICON);
@@ -179,7 +182,7 @@ package collaboRhythm.hiviva.view
 			this.addChild(this._settingsNav);
 
 			// TODO: move controller logic out of this view class and into a controller class
-			switch(e.data.profileType)
+			switch(this._profile)
 			{
 				case HivivaLocalStoreService.USER_APP_TYPE_HCP :
 					initHCPSettingsNavigator();
@@ -228,7 +231,7 @@ package collaboRhythm.hiviva.view
 
 			if(!this._appReset)
 			{
-				var hcpSideNavScreen:HivivaHCPSideNavScreen = new HivivaHCPSideNavScreen(SETTING_MENU_WIDTH, this._scaleFactor);
+				var hcpSideNavScreen:HivivaHCPSideNavigationScreen = new HivivaHCPSideNavigationScreen(SETTING_MENU_WIDTH, this._scaleFactor);
 				hcpSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , settingsNavHandler);
 				this.addChildAt(hcpSideNavScreen , 0);
 
@@ -272,7 +275,8 @@ package collaboRhythm.hiviva.view
 			settingsBtnHandler();
 			if(!this._settingsNav.contains(this._screenBackground)) this._settingsNav.addChild(this._screenBackground);
 			this._settingsNav.showScreen(e.message);
-			this._currMainScreenId = this._mainScreenNav.activeScreenID;
+			//this._currMainScreenId = this._mainScreenNav.activeScreenID;
+			this._currMainScreenId = this._profile == HivivaLocalStoreService.USER_APP_TYPE_HCP ? HivivaScreens.HCP_HOME_SCREEN : HivivaScreens.PATIENT_HOME_SCREEN;
 			this._mainScreenNav.clearScreen();
 		}
 
@@ -461,8 +465,9 @@ package collaboRhythm.hiviva.view
 			this._mainScreenNav.addChild(this._screenBackground);
 
 			this._mainScreenNav.showScreen(this._currMainScreenId);
-			/*this._currFooterBtn.isSelected = false;
-			this._currFooterBtn = this._footerBtnGroup.getChildAt(0) as Button;*/
+			// currently goes back to home screen so select first button on footer menu
+			this._currFooterBtn.isSelected = false;
+			this._currFooterBtn = this._footerBtnGroup.getChildAt(0) as Button;
 			this._currFooterBtn.isSelected = true;
 		}
 

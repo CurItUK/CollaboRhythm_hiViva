@@ -13,14 +13,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import starling.events.Event;
 
 
-	public class HivivaHCPSideNavScreen extends Screen
+	public class HivivaHCPSideNavigationScreen extends Screen
 	{
 
 		private var WIDTH:Number;
 		private var SCALE:Number;
 		private var _sideBtnGroup:ButtonGroup;
 
-		public function HivivaHCPSideNavScreen(gWidth:Number, scale:Number)
+		public function HivivaHCPSideNavigationScreen(gWidth:Number, scale:Number)
 		{
 			WIDTH = gWidth;
 			SCALE = scale;
@@ -45,9 +45,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._sideBtnGroup.dataProvider = new ListCollection(
 				[
 					{ width: btnWidth, height: btnHeight, name: "profile", label: "PROFILE" },
-					{ width: btnWidth, height: btnHeight, name: "display", label: "DISPLAY SETTINGS"},
-					{ width: btnWidth, height: btnHeight, name: "alerts", label: "ALERTS"},
-					{ width: btnWidth, height: btnHeight, name: "connect", label: "CONNECT TO PATIENT"}
+					{ width: btnWidth, height: btnHeight, name: "help", label: "HELP"}
 				]
 			);
 			this._sideBtnGroup.buttonInitializer = function(button:Button, item:Object):void
@@ -63,14 +61,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 					case "profile" :
 						img = new Image(HivivaAssets.SIDENAV_ICON_PATIENTPROFILE);
 						break;
-					case "display" :
+					case "help" :
 						img = new Image(HivivaAssets.SIDENAV_ICON_HELP);
-						break;
-					case "alerts" :
-						img = new Image(HivivaAssets.SIDENAV_ICON_MESSAGES);
-						break;
-					case "connect" :
-						img = new Image(HivivaAssets.SIDENAV_ICON_BADGES);
 						break;
 				}
 
@@ -92,16 +84,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			switch(btn.name.substring(0 ,btn.name.indexOf(" side-nav-buttons")))
 			{
 				case "profile" :
-					navAwayEvent.message = HivivaScreens.PATIENT_PROFILE_SCREEN;
+					navAwayEvent.message = HivivaScreens.HCP_PROFILE_SCREEN;
 					break;
-				case "display" :
-					navAwayEvent.message = HivivaScreens.PATIENT_HELP_SCREEN;
-					break;
-				case "alerts" :
-					navAwayEvent.message = HivivaScreens.PATIENT_MESSAGES_SCREEN;
-					break;
-				case "connect" :
-					navAwayEvent.message = HivivaScreens.PATIENT_BADGES_SCREEN;
+				case "help" :
+					navAwayEvent.message = HivivaScreens.HCP_HELP_SCREEN;
 					break;
 			}
 
