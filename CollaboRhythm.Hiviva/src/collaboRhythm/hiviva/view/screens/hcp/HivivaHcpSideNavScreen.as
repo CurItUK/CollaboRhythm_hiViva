@@ -13,14 +13,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import starling.events.Event;
 
 
-	public class HivivaHcpSideNavScreen extends Screen
+	public class HivivaHCPSideNavScreen extends Screen
 	{
 
 		private var WIDTH:Number;
 		private var SCALE:Number;
 		private var _sideBtnGroup:ButtonGroup;
 
-		public function HivivaHcpSideNavScreen(gWidth:Number, scale:Number)
+		public function HivivaHCPSideNavScreen(gWidth:Number, scale:Number)
 		{
 			WIDTH = gWidth;
 			SCALE = scale;
