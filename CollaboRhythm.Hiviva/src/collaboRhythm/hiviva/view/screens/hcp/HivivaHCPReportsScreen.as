@@ -7,10 +7,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import feathers.controls.Button;
 	import feathers.controls.Check;
 	import feathers.controls.Label;
+	import feathers.controls.List;
 	import feathers.controls.PickerList;
 	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
 	import feathers.core.PopUpManager;
+	import feathers.data.ListCollection;
 
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -31,6 +33,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	import starling.core.Starling;
 	import starling.events.Event;
+	import starling.events.Event;
 
 
 	public class HivivaHCPReportsScreen extends Screen
@@ -49,10 +52,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _cd4Check:Check;
 		private var _viralLoadCheck:Check;
 		private var _previewAndSendBtn:Button;
+		private var _patientPickerList:PickerList;
+		private var _patientLabel:Label;
 
 		private var _pdfFile:File;
 		private var _stageWebView:StageWebView
-		private var _alphaUnderlay:Sprite
+
 
 		private var _pdfPopupContainer:HivivaPDFPopUp;
 
@@ -67,39 +72,48 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
 
-			this._reportDatesLabel.y = this._header.height + 10;
+			this._patientLabel.y = this._header.height;
+			this._patientLabel.x = 10;
+			this._patientLabel.width = 200;
+			this._patientLabel.validate();
+
+			this._patientPickerList.y = this._patientLabel.y + this._patientLabel.height + 10;
+			this._patientPickerList.x = 10;
+			this._patientPickerList.validate();
+
+			this._reportDatesLabel.y = this._patientPickerList.y + this._patientPickerList.height + 10;
 			this._reportDatesLabel.x = 10;
 			this._reportDatesLabel.width = 200;
 			this._reportDatesLabel.validate();
 
-			this._startLabel.y = this._reportDatesLabel.y + this._reportDatesLabel.height + 20;
-			this._startLabel.x = 50
-			this._startLabel.width = 200;
+			this._startLabel.y = this._reportDatesLabel.y + this._reportDatesLabel.height + 10;
+			this._startLabel.x = 10
+			this._startLabel.width = 120;
 			this._startLabel.validate();
 
 			this._startDateInput.y = this._startLabel.y;
-			this._startDateInput.width = this.actualWidth - this._startLabel.width - 200;
+			this._startDateInput.width = 120;
 			this._startDateInput.x = this._startLabel.x + this._startLabel.width + 10;
 			this._startDateInput.validate();
 
-			this._finishLabel.y = this._startLabel.y + this._startLabel.height + 60;
-			this._finishLabel.x = 50;
+			this._finishLabel.y = this._startLabel.y ;
+			this._finishLabel.x = this._startDateInput.x + this._startDateInput.width + 10;
 			this._finishLabel.width = 200;
 			this._finishLabel.validate();
 
 			this._finishDateInput.y = this._finishLabel.y;
-			this._finishDateInput.width = this.actualWidth - this._finishLabel.width - 200;
+			this._finishDateInput.width = 200;
 			this._finishDateInput.x = this._finishLabel.x + this._finishLabel.width + 10;
 			this._finishDateInput.validate();
 
-			this._includeLabel.y = this._finishLabel.y + this._finishLabel.height + 30;
+			this._includeLabel.y = this._finishDateInput.y + this._finishDateInput.height + 10;
 			this._includeLabel.x = 10;
 			this._includeLabel.width = 200;
 			this._includeLabel.validate();
 
 			this._adherenceCheck.width = this.actualWidth;
 			this._adherenceCheck.validate();
-			this._adherenceCheck.y = this._includeLabel.y + this._includeLabel.height + 20;
+			this._adherenceCheck.y = this._includeLabel.y + this._includeLabel.height + 10;
 
 			this._feelingCheck.width = this.actualWidth;
 			this._feelingCheck.validate();
@@ -115,7 +129,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._previewAndSendBtn.validate();
 			this._previewAndSendBtn.x = this.actualWidth / 2 - this._previewAndSendBtn.width / 2;
-			this._previewAndSendBtn.y = this._viralLoadCheck.y + this._viralLoadCheck.height + 20;
+			this._previewAndSendBtn.y = this._viralLoadCheck.y + this._viralLoadCheck.height;
 
 
 		}
@@ -126,6 +140,31 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header = new HivivaHeader();
 			this._header.title = "Generate Reports";
 			this.addChild(this._header);
+
+			this._patientLabel = new Label();
+			this._patientLabel.text = "<font face='ExoBold'>Patients</font>";
+			this.addChild(this._patientLabel);
+
+			this._patientPickerList = new PickerList();
+			var patients:ListCollection = new ListCollection(
+					[
+						{text: "Patient 1"},
+						{text: "Patient 2"},
+						{text: "Patient 3"},
+						{text: "Patient 4"},
+						{text: "Patient 5"},
+						{text: "Patient 6"}
+					]
+			);
+
+			this._patientPickerList.dataProvider = patients;
+			this._patientPickerList.listProperties.@itemRendererProperties.labelField = "text";
+			this._patientPickerList.prompt = "Select patient";
+			this._patientPickerList.selectedIndex = -1;
+			this._patientPickerList.labelField = "text";
+			this._patientPickerList.typicalItem = "Patient 6         ";
+			this._patientPickerList.addEventListener(starling.events.Event.CHANGE, patientSelectedHandler);
+			this.addChild(this._patientPickerList);
 
 			this._reportDatesLabel = new Label();
 			this._reportDatesLabel.text = "<font face='ExoBold'>Report dates</font>";
@@ -174,6 +213,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._previewAndSendBtn.addEventListener(starling.events.Event.TRIGGERED, previewSendHandler);
 			addChild(this._previewAndSendBtn);
 		}
+
+		private function patientSelectedHandler(e:Event):void
+		{
+			//TODO change patient PDF report details
+		}
+
+
 
 		private function previewSendHandler(e:starling.events.Event):void
 		{
