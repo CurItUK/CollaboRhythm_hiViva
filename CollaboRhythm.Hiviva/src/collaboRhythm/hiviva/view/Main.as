@@ -239,6 +239,10 @@ package collaboRhythm.hiviva.view
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_ADHERENCE_SCREEN, new ScreenNavigatorItem(HivivaHCPAllPatientsAdherenceScreen));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaHCPReportsScreen));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaHCPMessagesInbox));
+
+				// add listeners for homepage user signup check, to hide / show the footer and settings button
+				addEventListener(FeathersScreenEvent.HIDE_MAIN_NAV, hideMainNav);
+				addEventListener(FeathersScreenEvent.SHOW_MAIN_NAV, showMainNav);
 			}
 		}
 
@@ -246,10 +250,10 @@ package collaboRhythm.hiviva.view
 		{
 			this._settingsNav.addScreen(HivivaScreens.HCP_PROFILE_SCREEN, new ScreenNavigatorItem(HivivaHCPProfileScreen, {navGoHome:goBackToMainScreen}, {applicationController:_applicationController}));
 			this._settingsNav.addScreen(HivivaScreens.HCP_HELP_SCREEN, new ScreenNavigatorItem(HivivaHCPHelpScreen, {navGoHome:goBackToMainScreen}));
-			this._settingsNav.addScreen(HivivaScreens.HCP_EDIT_PROFILE, new ScreenNavigatorItem(HivivaHCPEditProfile, {navGoHome:goBackToMainScreen}, {applicationController:_applicationController}));
-			this._settingsNav.addScreen(HivivaScreens.HCP_DISPLAY_SETTINGS, new ScreenNavigatorItem(HivivaHCPDisplaySettings, {navGoHome:goBackToMainScreen}));
-			this._settingsNav.addScreen(HivivaScreens.HCP_ALERT_SETTINGS, new ScreenNavigatorItem(HivivaHCPAlertSettings, {navGoHome:goBackToMainScreen}));
-			this._settingsNav.addScreen(HivivaScreens.HCP_CONNECT_PATIENT, new ScreenNavigatorItem(HivivaHCPConnectToPatientScreen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.HCP_EDIT_PROFILE, new ScreenNavigatorItem(HivivaHCPEditProfile, null, {applicationController:_applicationController}));
+			this._settingsNav.addScreen(HivivaScreens.HCP_DISPLAY_SETTINGS, new ScreenNavigatorItem(HivivaHCPDisplaySettings));
+			this._settingsNav.addScreen(HivivaScreens.HCP_ALERT_SETTINGS, new ScreenNavigatorItem(HivivaHCPAlertSettings));
+			this._settingsNav.addScreen(HivivaScreens.HCP_CONNECT_PATIENT, new ScreenNavigatorItem(HivivaHCPConnectToPatientScreen));
 
 		}
 
@@ -469,6 +473,24 @@ package collaboRhythm.hiviva.view
 			this._currFooterBtn.isSelected = false;
 			this._currFooterBtn = this._footerBtnGroup.getChildAt(0) as Button;
 			this._currFooterBtn.isSelected = true;
+		}
+
+		private function hideMainNav(e:FeathersScreenEvent):void
+		{
+			this._settingsBtn.touchable = false;
+			this._settingsBtn.visible = false;
+
+			this._footerBtnGroup.touchable = false;
+			this._footerBtnGroup.visible = false;
+		}
+
+		private function showMainNav(e:FeathersScreenEvent):void
+		{
+			this._settingsBtn.touchable = true;
+			this._settingsBtn.visible = true;
+
+			this._footerBtnGroup.touchable = true;
+			this._footerBtnGroup.visible = true;
 		}
 
 		private function navGoBack():void

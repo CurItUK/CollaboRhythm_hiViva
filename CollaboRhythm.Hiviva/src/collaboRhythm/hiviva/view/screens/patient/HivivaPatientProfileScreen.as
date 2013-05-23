@@ -62,7 +62,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._appId.x = this.actualWidth - this._scaledPadding - this._appId.width;
 			this._appId.y = this._appIdLabel.y;
 
-			this._userSignupPopupContent.width = 500 * dpiScale;
+			this._userSignupPopupContent.width = this.actualWidth * 0.75;
 			this._userSignupPopupContent.validate();
 		}
 
@@ -201,7 +201,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			_sqConn.open(dbFile);
 
 			var _sqStatement:SQLStatement = new SQLStatement();
-			_sqStatement.text = "SELECT * FROM connect_user_details";
+			_sqStatement.text = "SELECT * FROM patient_profile";
 			_sqStatement.sqlConnection = _sqConn;
 			_sqStatement.execute();
 
@@ -213,7 +213,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			try
 			{
-				isUserSignedUp = String(sqlRes.data[0].user_name).length > 0;
+				isUserSignedUp = String(sqlRes.data[0].name).length > 0;
 			}
 			catch(e:Error)
 			{

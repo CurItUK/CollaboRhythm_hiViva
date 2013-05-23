@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
@@ -27,7 +28,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _cancelButton:Button;
 		private var _submitButton:Button;
 		private var _backButton:Button;
-
+		private var _isThisFromHome:Boolean;
 
 		public function HivivaHCPEditProfile()
 		{
@@ -82,6 +83,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + padding;
 
 			populateOldData();
+
+			if(this._isThisFromHome)
+			{
+				this._backButton.visible = false;
+				this._cancelButton.visible = false;
+			}
 		}
 
 		override protected function initialize():void
@@ -139,6 +146,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			populateOldData();
+
+			this._isThisFromHome = this.owner.hasScreen(HivivaScreens.HCP_HOME_SCREEN);
 		}
 
 		private function cancelButtonClick(e:Event):void
@@ -173,6 +182,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			trace(LocalDataStoreEvent.HCP_PROFILE_SAVE_COMPLETE);
 
 			// TODO: show success message
+
+			if(this._isThisFromHome)
+			{
+				dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV, true));
+				this.owner.showScreen(HivivaScreens.HCP_HOME_SCREEN);
+			}
 		}
 
 		private function populateOldData():void

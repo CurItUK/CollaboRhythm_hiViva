@@ -7,6 +7,8 @@ package collaboRhythm.hiviva.global
 	{
 
 		public static const NAVIGATE_AWAY:String						= "navigateAway";
+		public static const HIDE_MAIN_NAV:String						= "hideMainNav";
+		public static const SHOW_MAIN_NAV:String						= "showMainNav";
 
 		public var message:String;
 
