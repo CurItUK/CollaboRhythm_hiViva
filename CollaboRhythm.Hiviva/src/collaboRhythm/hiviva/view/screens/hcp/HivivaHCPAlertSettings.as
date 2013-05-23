@@ -39,10 +39,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._instructionsLabel.y = this._header.y + this._header.height;
 			this._instructionsLabel.x = scaledPadding;
-
 			this._instructionsLabel.width = this.actualWidth - (scaledPadding * 2);
-			this._instructionsLabel.y = this._header.height;
-			this._instructionsLabel.x = scaledPadding;
 			this._instructionsLabel.validate();
 
 			this._requestsCheck.width = this._instructionsLabel.width;
