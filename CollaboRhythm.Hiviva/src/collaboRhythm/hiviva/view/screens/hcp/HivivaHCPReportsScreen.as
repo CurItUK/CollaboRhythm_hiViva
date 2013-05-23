@@ -81,23 +81,23 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientPickerList.x = 10;
 			this._patientPickerList.validate();
 
-			this._reportDatesLabel.y = this._patientPickerList.y + this._patientPickerList.height + 10;
+			this._reportDatesLabel.y = this._patientPickerList.y + this._patientPickerList.height + 20;
 			this._reportDatesLabel.x = 10;
 			this._reportDatesLabel.width = 200;
 			this._reportDatesLabel.validate();
 
 			this._startLabel.y = this._reportDatesLabel.y + this._reportDatesLabel.height + 10;
 			this._startLabel.x = 10
-			this._startLabel.width = 120;
+			this._startLabel.width = 200;
 			this._startLabel.validate();
 
 			this._startDateInput.y = this._startLabel.y;
-			this._startDateInput.width = 120;
+			this._startDateInput.width = 200;
 			this._startDateInput.x = this._startLabel.x + this._startLabel.width + 10;
 			this._startDateInput.validate();
 
-			this._finishLabel.y = this._startLabel.y ;
-			this._finishLabel.x = this._startDateInput.x + this._startDateInput.width + 10;
+			this._finishLabel.y = this._startDateInput.y + this._startDateInput.height + 10;
+			this._finishLabel.x = 10;
 			this._finishLabel.width = 200;
 			this._finishLabel.validate();
 
@@ -106,7 +106,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._finishDateInput.x = this._finishLabel.x + this._finishLabel.width + 10;
 			this._finishDateInput.validate();
 
-			this._includeLabel.y = this._finishDateInput.y + this._finishDateInput.height + 10;
+			this._includeLabel.y = this._finishDateInput.y + this._finishDateInput.height + 20;
 			this._includeLabel.x = 10;
 			this._includeLabel.width = 200;
 			this._includeLabel.validate();
