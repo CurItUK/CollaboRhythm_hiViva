@@ -11,8 +11,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 
 	import feathers.controls.Screen;
+	import feathers.controls.ScrollContainer;
+	import feathers.controls.Scroller;
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
+	import feathers.layout.VerticalLayout;
 
 	import starling.display.DisplayObject;
 
@@ -22,6 +25,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 	public class HivivaHCPDisplaySettings extends Screen
 	{
 		private var _header:HivivaHeader;
+		private var _content:ScrollContainer;
+		private var _contentLayout:VerticalLayout;
 		private var _orderInstructionsLabel:Label;
 		private var _orderTypeGroup:ToggleGroup;
 		private var _adherenceRadio:Radio;
@@ -36,7 +41,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _submitButton:Button;
 		private var _backButton:Button;
 
-		private const PADDING:Number = 32;
+		private var _customHeight:Number = 0;
 
 		public function HivivaHCPDisplaySettings()
 		{
@@ -45,53 +50,36 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		override protected function draw():void
 		{
-			var scaledPadding:Number = PADDING * this.dpiScale;
-
 			super.draw();
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
 
-			this._orderInstructionsLabel.y = this._header.y + this._header.height;
-			this._orderInstructionsLabel.x = scaledPadding;
-			this._orderInstructionsLabel.width = this.actualWidth - (scaledPadding * 2);
-			this._orderInstructionsLabel.validate();
+			var horizontalPadding:Number = this.actualWidth * 0.04;
+			var verticalPadding:Number = this.actualHeight * 0.02;
+			var contentHeight:Number;
 
-			this._adherenceRadio.y = this._orderInstructionsLabel.y + this._orderInstructionsLabel.height + scaledPadding;
-			this._adherenceRadio.x = scaledPadding;
-			this._adherenceRadio.width = this.actualWidth - (scaledPadding * 2);
-			this._adherenceRadio.validate();
+			this._header.paddingLeft = this._header.paddingRight = horizontalPadding;
+			this._header.paddingTop = verticalPadding;
+			this._header.width = this.actualWidth - (horizontalPadding * 2);
+			this._header.height = (110 * this.dpiScale) - verticalPadding;
+			this._header.validate();
 
-			this._tolerabilityRadio.y = this._adherenceRadio.y + this._adherenceRadio.height + scaledPadding;
-			this._tolerabilityRadio.x = scaledPadding;
-			this._tolerabilityRadio.width = this.actualWidth - (scaledPadding * 2);
-			this._tolerabilityRadio.validate();
+			contentHeight = this._customHeight > 0 ? this._customHeight : this.actualHeight;
+			contentHeight -= (this._header.y + this._header.height);
 
-			this._ascendingRadio.y = this._tolerabilityRadio.y + this._tolerabilityRadio.height + scaledPadding;
-			this._ascendingRadio.x = scaledPadding;
-			this._ascendingRadio.width = this.actualWidth - (scaledPadding * 2);
-			this._ascendingRadio.validate();
+			this._content.y = this._header.y + this._header.height;
+			this._content.width = this.actualWidth - (horizontalPadding * 2);
+			this._content.height = contentHeight - verticalPadding;
 
-			this._descendingRadio.y = this._ascendingRadio.y + this._ascendingRadio.height + scaledPadding;
-			this._descendingRadio.x = scaledPadding;
-			this._descendingRadio.width = this.actualWidth - (scaledPadding * 2);
-			this._descendingRadio.validate();
+			this._contentLayout.paddingLeft = this._contentLayout.paddingRight = horizontalPadding;
+			this._contentLayout.paddingTop = this._contentLayout.paddingBottom = verticalPadding;
+			this._contentLayout.gap = verticalPadding;
 
-			this._fromInstructionsLabel.y = this._descendingRadio.y + this._descendingRadio.height + scaledPadding;
-			this._fromInstructionsLabel.x = scaledPadding;
-			this._fromInstructionsLabel.width = this.actualWidth - (scaledPadding * 2);
-			this._fromInstructionsLabel.validate();
+			this._orderInstructionsLabel.width = this._content.width;
+			this._fromInstructionsLabel.width = this._content.width;
 
-			this._fromPickerList.y = this._fromInstructionsLabel.y + this._fromInstructionsLabel.height + scaledPadding;
-			this._fromPickerList.x = scaledPadding;
-			this._fromPickerList.validate();
+			this._content.validate();
 
-			this._submitButton.validate();
-			this._cancelButton.validate();
-			this._backButton.validate();
-
-			this._cancelButton.y = this._submitButton.y = this._fromPickerList.y + this._fromPickerList.height + scaledPadding;
-			this._cancelButton.x = scaledPadding;
-			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + scaledPadding;
+			this._submitButton.y = this._cancelButton.y;
+			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + horizontalPadding;
 
 			populateOldData();
 		}
@@ -103,37 +91,45 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.title = "Display settings";
 			this.addChild(this._header);
 
+			this._content = new ScrollContainer();
+			this._content.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
+			this._content.verticalScrollPolicy = Scroller.SCROLL_POLICY_ON;
+			addChild(this._content);
+
+			this._contentLayout = new VerticalLayout();
+			this._content.layout = this._contentLayout;
+
 			this._orderInstructionsLabel = new Label();
 			this._orderInstructionsLabel.text = "<FONT FACE='ExoBold'>Home page</FONT><br />Order my patients by:";
-			addChild(this._orderInstructionsLabel);
+			this._content.addChild(this._orderInstructionsLabel);
 
 			this._orderTypeGroup = new ToggleGroup();
 
 			this._adherenceRadio = new Radio();
 			this._adherenceRadio.label = "Adherence";
 			this._orderTypeGroup.addItem(this._adherenceRadio);
-			addChild(this._adherenceRadio);
+			this._content.addChild(this._adherenceRadio);
 
 			this._tolerabilityRadio = new Radio();
 			this._tolerabilityRadio.label = "Tolerability";
 			this._orderTypeGroup.addItem(this._tolerabilityRadio);
-			addChild(this._tolerabilityRadio);
+			this._content.addChild(this._tolerabilityRadio);
 
 			this._orderByGroup = new ToggleGroup();
 
 			this._ascendingRadio = new Radio();
 			this._ascendingRadio.label = "Ascending";
 			this._orderByGroup.addItem(this._ascendingRadio);
-			addChild(this._ascendingRadio);
+			this._content.addChild(this._ascendingRadio);
 
 			this._descendingRadio = new Radio();
 			this._descendingRadio.label = "Descending";
 			this._orderByGroup.addItem(this._descendingRadio);
-			addChild(this._descendingRadio);
+			this._content.addChild(this._descendingRadio);
 
 			this._fromInstructionsLabel = new Label();
 			this._fromInstructionsLabel.text = "Show patient data from:";
-			addChild(this._fromInstructionsLabel);
+			this._content.addChild(this._fromInstructionsLabel);
 
 			this._fromPickerList = new PickerList();
 			var scheduleDoseAmounts:ListCollection = new ListCollection(
@@ -147,17 +143,17 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._fromPickerList.labelField = "text";
 			this._fromPickerList.typicalItem = "Last month  ";
 //			this._fromPickerList.addEventListener(Event.CHANGE , doseListSelectedHandler);
-			this.addChild(this._fromPickerList);
+			this._content.addChild(this._fromPickerList);
 
 			this._cancelButton = new Button();
 			this._cancelButton.label = "Cancel";
 			this._cancelButton.addEventListener(Event.TRIGGERED, cancelButtonClick);
-			addChild(this._cancelButton);
+			this._content.addChild(this._cancelButton);
 
 			this._submitButton = new Button();
 			this._submitButton.label = "Save";
 			this._submitButton.addEventListener(Event.TRIGGERED, submitButtonClick);
-			addChild(this._submitButton);
+			this._content.addChild(this._submitButton);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -170,7 +166,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function cancelButtonClick(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
 
 		private function submitButtonClick(e:Event):void
@@ -187,6 +183,16 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function populateOldData():void
 		{
 			// TODO: get data from sql
+		}
+
+		public function get customHeight():Number
+		{
+			return _customHeight;
+		}
+
+		public function set customHeight(value:Number):void
+		{
+			_customHeight = value;
 		}
 	}
 }

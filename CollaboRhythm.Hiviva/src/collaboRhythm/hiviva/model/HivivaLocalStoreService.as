@@ -25,6 +25,8 @@ package collaboRhythm.hiviva.model
 		private var _medicationSchedule:Array;
 		private var _medicationAdherenceToSet:Object;
 		private var _medicationIdToDelete:int;
+		private var _patientProfile:Object;
+		private var _hcpProfile:Object;
 
 		public function HivivaLocalStoreService()
 		{
@@ -440,6 +442,166 @@ package collaboRhythm.hiviva.model
 		private function setAdherenceResultHandler(e:SQLEvent):void
 		{
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.ADHERENCE_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function getPatientProfile():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM patient_profile";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getPatientProfileHandler);
+			this._sqStatement.execute();
+		}
+
+		private function getPatientProfileHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE);
+			evt.data.patientProfile = result;
+			this.dispatchEvent(evt);
+		}
+
+		public function setPatientProfile(patientProfile:Object):void
+		{
+			this._patientProfile = patientProfile;
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM patient_profile";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, checkPatientProfileHandler);
+			this._sqStatement.execute();
+		}
+
+		private function checkPatientProfileHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, setPatientProfileHandler);
+
+			try
+			{
+				if(result != null)
+				{
+					this._sqStatement.text = "UPDATE patient_profile SET name=" +
+							this._patientProfile.name + ", email=" +
+							this._patientProfile.email + ", updates=" +
+							this._patientProfile.updates + ", research=" +
+							this._patientProfile.research;
+				}
+				else
+				{
+					this._sqStatement.text = "INSERT INTO patient_profile (name, email, updates, research) VALUES (" +
+							this._patientProfile.name + ", " + this._patientProfile.email + ", " + this._patientProfile.updates + ", " + this._patientProfile.research + ")";
+				}
+			}
+			catch(e:Error)
+			{
+				this._sqStatement.text = "INSERT INTO patient_profile (name, email, updates, research) VALUES (" +
+						this._patientProfile.name + ", " + this._patientProfile.email + ", " + this._patientProfile.updates + ", " + this._patientProfile.research + ")";
+			}
+
+			this._sqStatement.execute();
+		}
+
+		private function setPatientProfileHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_PROFILE_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function getHcpProfile():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM hcp_profile";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getHcpProfileHandler);
+			this._sqStatement.execute();
+		}
+
+		private function getHcpProfileHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_PROFILE_LOAD_COMPLETE);
+			evt.data.hcpProfile = result;
+			this.dispatchEvent(evt);
+		}
+
+		public function setHcpProfile(hcpProfile:Object):void
+		{
+			this._hcpProfile = hcpProfile;
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM hcp_profile";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, checkHcpProfileHandler);
+			this._sqStatement.execute();
+		}
+
+		private function checkHcpProfileHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, setHcpProfileHandler);
+
+			try
+			{
+				if(result != null)
+				{
+					this._sqStatement.text = "UPDATE hcp_profile SET name=" +
+							this._hcpProfile.name + ", email=" +
+							this._hcpProfile.email + ", updates=" +
+							this._hcpProfile.updates + ", research=" +
+							this._hcpProfile.research;
+				}
+				else
+				{
+					this._sqStatement.text = "INSERT INTO hcp_profile (name, email, updates, research) VALUES (" +
+							this._hcpProfile.name + ", " + this._hcpProfile.email + ", " + this._hcpProfile.updates + ", " + this._hcpProfile.research + ")";
+				}
+			}
+			catch(e:Error)
+			{
+				this._sqStatement.text = "INSERT INTO hcp_profile (name, email, updates, research) VALUES (" +
+						this._hcpProfile.name + ", " + this._hcpProfile.email + ", " + this._hcpProfile.updates + ", " + this._hcpProfile.research + ")";
+			}
+
+			this._sqStatement.execute();
+		}
+
+		private function setHcpProfileHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_PROFILE_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
 

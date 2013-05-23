@@ -150,6 +150,59 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getPatientProfile():void
+		{
+			service.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+			service.getPatientProfile();
+		}
+
+		private function getPatientProfileHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function setPatientProfile(patientProfile:Object):void
+		{
+			service.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_SAVE_COMPLETE, setPatientProfileHandler);
+			service.setPatientProfile(patientProfile);
+		}
+
+		private function setPatientProfileHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_SAVE_COMPLETE, setPatientProfileHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_PROFILE_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function getHcpProfile():void
+		{
+			service.addEventListener(LocalDataStoreEvent.HCP_PROFILE_LOAD_COMPLETE, getHcpProfileHandler);
+			service.getHcpProfile()
+		}
+
+		private function getHcpProfileHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.HCP_PROFILE_LOAD_COMPLETE, getHcpProfileHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_PROFILE_LOAD_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function setHcpProfile(hcpProfile:Object):void
+		{
+			service.addEventListener(LocalDataStoreEvent.HCP_PROFILE_SAVE_COMPLETE, setHcpProfileHandler);
+			service.setHcpProfile(hcpProfile);
+		}
+
+		private function setHcpProfileHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.HCP_PROFILE_SAVE_COMPLETE, setHcpProfileHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_PROFILE_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
 
 		public function resetApplication():void
 		{

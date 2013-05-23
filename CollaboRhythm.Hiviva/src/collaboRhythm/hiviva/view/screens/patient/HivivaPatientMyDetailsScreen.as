@@ -1,5 +1,8 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
 	import collaboRhythm.hiviva.global.HivivaScreens;
@@ -8,19 +11,13 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Check;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
-	import feathers.controls.ScrollText;
-
-	import flash.data.SQLConnection;
-	import flash.data.SQLResult;
-	import flash.data.SQLStatement;
-	import flash.events.SQLEvent;
-	import flash.filesystem.File;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
 	public class HivivaPatientMyDetailsScreen extends Screen
 	{
+		private var _applicationController:HivivaApplicationController;
 		private var _header:HivivaHeader;
 		private var _instructionsText:Label;
 		private var _nameInput:LabelAndInput;
@@ -30,10 +27,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _researchCheck:Check;
 		private var _cancelButton:Button;
 		private var _submitButton:Button;
-		private var _sqConn:SQLConnection;
-		private var _sqStatement:SQLStatement;
 		private var _backButton:Button;
-		private var _dataExists:Boolean;
 
 
 		public function HivivaPatientMyDetailsScreen()
@@ -160,102 +154,71 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function submitButtonClick(e:Event):void
 		{
-			// TODO : display confirmation dialogue
+			// TODO: validation
 
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
+			var patientProfile:Object = {};
+			patientProfile.name = "'" + this._nameInput._input.text + "'";
+			patientProfile.email = "'" + this._emailInput._input.text + "'";
+			patientProfile.updates = int(this._updatesCheck.isSelected);
+			patientProfile.research = int(this._researchCheck.isSelected);
 
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
-
-			this._sqStatement = new SQLStatement();
-
-			var userName:String = "'" + this._nameInput._input.text + "'";
-			var userEmail:String = "'" + this._emailInput._input.text + "'";
-			var userUpdates:int = int(this._updatesCheck.isSelected);
-			var userResearch:int = int(this._researchCheck.isSelected);
-			if(this._dataExists)
-			{
-				this._sqStatement.text = "UPDATE user_details SET user_name=" + userName + ", user_email=" + userEmail + ", user_updates=" + userUpdates + ", user_research=" + userResearch;
-			}
-			else
-			{
-				this._sqStatement.text = "INSERT INTO user_details (user_name, user_email, user_updates, user_research) VALUES (" + userName + ", " + userEmail + ", " + userUpdates + ", " + userResearch + ")";
-			}
-			trace(this._sqStatement.text);
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
-			this._sqStatement.execute();
+			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_SAVE_COMPLETE, setPatientProfileHandler);
+			localStoreController.setPatientProfile(patientProfile);
 
 			this._photoContainer.saveTempImageAsMain();
 		}
 
+		private function setPatientProfileHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_SAVE_COMPLETE, setPatientProfileHandler);
+			trace(LocalDataStoreEvent.PATIENT_PROFILE_SAVE_COMPLETE);
+
+			// TODO: show success message
+		}
+
 		private function populateOldData():void
 		{
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
-
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
-
-			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "SELECT * FROM user_details";
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.execute();
-
-			var sqlRes:SQLResult = this._sqStatement.getResult();
-			//trace(sqlRes.data[0].user_name);
-			//trace(sqlRes.data[0].user_email);
-			//trace(sqlRes.data[0].user_updates);
-			//trace(sqlRes.data[0].user_research);
-			this._dataExists = true;
-			try
-			{
-				this._nameInput._input.text = sqlRes.data[0].user_name;
-			}
-			catch(e:Error)
-			{
-				//trace("fail");
-				this._nameInput._input.text = "";
-				this._dataExists = false;
-			}
-
-			try
-			{
-				this._emailInput._input.text = sqlRes.data[0].user_email;
-			}
-			catch(e:Error)
-			{
-				//trace("fail");
-				this._emailInput._input.text = "";
-			}
-
-			try
-			{
-				this._updatesCheck.isSelected = sqlRes.data[0].user_updates as Boolean;
-			}
-			catch(e:Error)
-			{
-				//trace("fail");
-				this._updatesCheck.isSelected = false;
-			}
-
-			try
-			{
-				this._researchCheck.isSelected = sqlRes.data[0].user_research as Boolean;
-			}
-			catch(e:Error)
-			{
-				//trace("fail");
-				this._researchCheck.isSelected = false;
-			}
+			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+			localStoreController.getPatientProfile();
 
 			this._photoContainer.getMainImage();
 		}
 
-		private function sqlResultHandler(e:SQLEvent):void
+		private function getPatientProfileHandler(e:LocalDataStoreEvent):void
 		{
-			trace("sqlResultHandler " + e);
+			localStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+
+			var patientProfile:Array = e.data.patientProfile;
+
+			try
+			{
+				if(patientProfile != null)
+				{
+					this._nameInput._input.text = patientProfile[0].name;
+					this._emailInput._input.text = patientProfile[0].email;
+					this._updatesCheck.isSelected = patientProfile[0].updates as Boolean;
+					this._researchCheck.isSelected = patientProfile[0].research as Boolean;
+				}
+			}
+			catch(e:Error)
+			{
+
+			}
+		}
+
+		public function get localStoreController():HivivaLocalStoreController
+		{
+			return applicationController.hivivaLocalStoreController;
+		}
+
+		public function get applicationController():HivivaApplicationController
+		{
+			return _applicationController;
+		}
+
+		public function set applicationController(value:HivivaApplicationController):void
+		{
+			_applicationController = value;
 		}
 	}
 }

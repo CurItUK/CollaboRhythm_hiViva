@@ -146,7 +146,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function cancelButtonClick(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
 
 		private function submitButtonClick(e:Event):void
