@@ -208,7 +208,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function getMedicationResults():void
 		{
 			//applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.)
-			applicationController.hivivaLocalStoreController.getAdherence();
+			//applicationController.hivivaLocalStoreController.getAdherence();
 		}
 
 		public function get applicationController():HivivaApplicationController
