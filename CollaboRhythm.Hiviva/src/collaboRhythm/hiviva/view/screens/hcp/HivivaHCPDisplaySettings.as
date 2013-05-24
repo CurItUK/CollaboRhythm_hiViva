@@ -1,6 +1,9 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
 	import feathers.controls.Button;
@@ -24,6 +27,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	public class HivivaHCPDisplaySettings extends Screen
 	{
+		private var _applicationController:HivivaApplicationController;
 		private var _header:HivivaHeader;
 		private var _content:ScrollContainer;
 		private var _contentLayout:VerticalLayout;
@@ -36,6 +40,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _descendingRadio:Radio;
 		private var _fromInstructionsLabel:Label;
 		private var _fromPickerList:PickerList;
+		private var _scheduleDoseAmounts:ListCollection;
 
 		private var _cancelButton:Button;
 		private var _submitButton:Button;
@@ -132,13 +137,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._fromInstructionsLabel);
 
 			this._fromPickerList = new PickerList();
-			var scheduleDoseAmounts:ListCollection = new ListCollection(
+			this._scheduleDoseAmounts = new ListCollection(
 					[
 						{text: "Last week"},
 						{text: "Last month"},
 						{text: "All time"}
 					]);
-			this._fromPickerList.dataProvider = scheduleDoseAmounts;
+			this._fromPickerList.dataProvider = this._scheduleDoseAmounts;
 			this._fromPickerList.listProperties.@itemRendererProperties.labelField = "text";
 			this._fromPickerList.labelField = "text";
 			this._fromPickerList.typicalItem = "Last month  ";
@@ -172,7 +177,20 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function submitButtonClick(e:Event):void
 		{
 			// TODO: validate
-			// TODO: write data to sql
+
+			var displaySettings:Object = {};
+			displaySettings.stat_type = Radio(this._orderTypeGroup.selectedItem).label;
+			displaySettings.direction = Radio(this._orderByGroup.selectedItem).label;
+			displaySettings.from_date = this._fromPickerList.selectedItem.text;
+
+			localStoreController.addEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_SAVE_COMPLETE, setHcpDisplaySettingsHandler);
+			localStoreController.setHcpDisplaySettings(displaySettings);
+		}
+
+		private function setHcpDisplaySettingsHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_SAVE_COMPLETE, setHcpDisplaySettingsHandler);
+			trace('display settings saved');
 		}
 
 		private function backBtnHandler(e:Event):void
@@ -182,7 +200,70 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function populateOldData():void
 		{
-			// TODO: get data from sql
+			localStoreController.addEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_LOAD_COMPLETE, getHcpDisplaySettingsHandler);
+			localStoreController.getHcpDisplaySettings();
+		}
+
+		private function getHcpDisplaySettingsHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_LOAD_COMPLETE, getHcpDisplaySettingsHandler);
+
+			var settings:Array = e.data.settings;
+			var loopLength:int = this._scheduleDoseAmounts.length;
+
+			try
+			{
+				if(settings != null)
+				{
+					switch(settings[0].stat_type)
+					{
+						case "Adherence" :
+							this._adherenceRadio.isSelected = true;
+							break;
+						case "Tolerability" :
+							this._tolerabilityRadio.isSelected = true;
+							break;
+					}
+
+					switch(settings[0].direction)
+					{
+						case "Ascending" :
+							this._ascendingRadio.isSelected = true;
+							break;
+						case "Descending" :
+							this._descendingRadio.isSelected = true;
+							break;
+					}
+
+					for (var i:int = 0; i < loopLength; i++)
+					{
+						if(this._scheduleDoseAmounts.data[i].text == settings[0].from_date)
+						{
+							this._fromPickerList.selectedIndex = i;
+							break;
+						}
+					}
+				}
+			}
+			catch(e:Error)
+			{
+
+			}
+		}
+
+		public function get localStoreController():HivivaLocalStoreController
+		{
+			return applicationController.hivivaLocalStoreController;
+		}
+
+		public function get applicationController():HivivaApplicationController
+		{
+			return _applicationController;
+		}
+
+		public function set applicationController(value:HivivaApplicationController):void
+		{
+			_applicationController = value;
 		}
 
 		public function get customHeight():Number

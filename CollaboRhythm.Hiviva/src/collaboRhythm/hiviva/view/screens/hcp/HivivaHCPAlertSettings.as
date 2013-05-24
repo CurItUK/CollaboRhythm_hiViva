@@ -1,6 +1,9 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import feathers.controls.Button;
 	import feathers.controls.Check;
@@ -11,6 +14,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	public class HivivaHCPAlertSettings extends Screen
 	{
+		private var _applicationController:HivivaApplicationController;
 		private var _header:HivivaHeader;
 		private var _instructionsLabel:Label;
 		private var _requestsCheck:Check;
@@ -152,7 +156,20 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function submitButtonClick(e:Event):void
 		{
 			// TODO: validate
-			// TODO: write data to sql
+
+			var alertSettings:Object = {};
+			alertSettings.requests = this._requestsCheck.isSelected ? 1 : -1;
+			alertSettings.adherence = this._adherenceCheck.isSelected ? this._adherenceLabelInput._input.text : "";
+			alertSettings.tolerability = this._tolerabilityCheck.isSelected ? this._tolerabilityLabelInput._input.text : "";
+
+			localStoreController.addEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_SAVE_COMPLETE, setHcpAlertSettingsHandler);
+			localStoreController.setHcpAlertSettings(alertSettings);
+		}
+
+		private function setHcpAlertSettingsHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_SAVE_COMPLETE, setHcpAlertSettingsHandler);
+			trace('alert settings saved');
 		}
 
 		private function backBtnHandler(e:Event):void
@@ -162,7 +179,52 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function populateOldData():void
 		{
-			// TODO: get data from sql
+			localStoreController.addEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_LOAD_COMPLETE, getHcpAlertSettingsHandler);
+			localStoreController.getHcpAlertSettings();
+		}
+
+		private function getHcpAlertSettingsHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_LOAD_COMPLETE, getHcpAlertSettingsHandler);
+
+			var settings:Array = e.data.settings;
+
+			try
+			{
+				if(settings != null)
+				{
+					this._requestsCheck.isSelected = settings[0].requests == "1";
+					if(settings[0].adherence.length > 0)
+					{
+						this._adherenceCheck.isSelected = true;
+						this._adherenceLabelInput._input.text = settings[0].adherence;
+					}
+					if(settings[0].tolerability.length > 0)
+					{
+						this._tolerabilityCheck.isSelected = true;
+						this._tolerabilityLabelInput._input.text = settings[0].tolerability;
+					}
+				}
+			}
+			catch(e:Error)
+			{
+
+			}
+		}
+
+		public function get localStoreController():HivivaLocalStoreController
+		{
+			return applicationController.hivivaLocalStoreController;
+		}
+
+		public function get applicationController():HivivaApplicationController
+		{
+			return _applicationController;
+		}
+
+		public function set applicationController(value:HivivaApplicationController):void
+		{
+			_applicationController = value;
 		}
 	}
 }
