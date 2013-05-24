@@ -17,6 +17,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.textures.TextureSmoothing;
 
 	public class HivivaPatientClockScreen extends Screen
 	{
@@ -149,9 +150,13 @@ package collaboRhythm.hiviva.view.screens.patient
 					var holderCell:Sprite = new Sprite();
 					holderCell.width = this._clockFace.width;
 					holderCell.height = this._clockFace.height;
-
 					var tabletCell:Sprite = new Sprite();
+					//var timeSegment:Image = new Image(Assets.getTexture("ClockFaceSegmentPng"));
+					//timeSegment.smoothing = TextureSmoothing.TRILINEAR;
+
+					//timeSegment.rotation = timeSegment.rotation - HivivaModifier.degreesToRadians(7.5);
 					var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
+					//tabletCell.addChild(timeSegment);
 					tabletCell.addChild(tablet);
 					tablet.y = -tablet.width/2;
 					tablet.x = clockHandSpacing + (i * tablet.width) + 10;
