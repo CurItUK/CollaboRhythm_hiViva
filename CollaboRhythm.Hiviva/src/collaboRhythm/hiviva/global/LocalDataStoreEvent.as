@@ -22,6 +22,10 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_PROFILE_SAVE_COMPLETE:String			= "patientProfileSaveComplete";
 		public static const HCP_PROFILE_LOAD_COMPLETE:String				= "hcpProfileLoadComplete";
 		public static const HCP_PROFILE_SAVE_COMPLETE:String				= "hcpProfileSaveComplete";
+		public static const HCP_DISPLAY_SETTINGS_SAVE_COMPLETE:String		= "hcpDisplaySettingsSaveComplete";
+		public static const HCP_DISPLAY_SETTINGS_LOAD_COMPLETE:String		= "hcpDisplaySettingsLoadComplete";
+		public static const HCP_ALERT_SETTINGS_SAVE_COMPLETE:String			= "hcpAlertSettingsSaveComplete";
+		public static const HCP_ALERT_SETTINGS_LOAD_COMPLETE:String			= "hcpAlertSettingsLoadComplete";
 
 		public var message:String;
 

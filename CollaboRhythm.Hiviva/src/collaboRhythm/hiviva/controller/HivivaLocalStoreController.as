@@ -204,6 +204,60 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getHcpDisplaySettings():void
+		{
+			service.addEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_LOAD_COMPLETE, getHcpDisplaySettingsHandler);
+			service.getHcpDisplaySettings()
+		}
+
+		private function getHcpDisplaySettingsHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_LOAD_COMPLETE, getHcpDisplaySettingsHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_LOAD_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function setHcpDisplaySettings(displaySettings:Object):void
+		{
+			service.addEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_SAVE_COMPLETE, setHcpDisplaySettingsHandler);
+			service.setHcpDisplaySettings(displaySettings);
+		}
+
+		private function setHcpDisplaySettingsHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_SAVE_COMPLETE, setHcpDisplaySettingsHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function getHcpAlertSettings():void
+		{
+			service.addEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_LOAD_COMPLETE, getHcpAlertSettingsHandler);
+			service.getHcpAlertSettings()
+		}
+
+		private function getHcpAlertSettingsHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_LOAD_COMPLETE, getHcpAlertSettingsHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_ALERT_SETTINGS_LOAD_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function setHcpAlertSettings(alertSettings:Object):void
+		{
+			service.addEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_SAVE_COMPLETE, setHcpAlertSettingsHandler);
+			service.setHcpAlertSettings(alertSettings);
+		}
+
+		private function setHcpAlertSettingsHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_SAVE_COMPLETE, setHcpAlertSettingsHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_ALERT_SETTINGS_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function resetApplication():void
 		{
 			service.resetApplication();

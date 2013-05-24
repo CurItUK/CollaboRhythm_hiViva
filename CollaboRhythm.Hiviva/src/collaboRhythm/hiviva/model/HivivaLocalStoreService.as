@@ -27,6 +27,8 @@ package collaboRhythm.hiviva.model
 		private var _medicationIdToDelete:int;
 		private var _patientProfile:Object;
 		private var _hcpProfile:Object;
+		private var _displaySettings:Object;
+		private var _alertSettings:Object;
 
 		public function HivivaLocalStoreService()
 		{
@@ -602,6 +604,164 @@ package collaboRhythm.hiviva.model
 		private function setHcpProfileHandler(e:SQLEvent):void
 		{
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_PROFILE_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function getHcpDisplaySettings():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM hcp_display_settings";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getHcpDisplaySettingsHandler);
+			this._sqStatement.execute();
+		}
+
+		private function getHcpDisplaySettingsHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_LOAD_COMPLETE);
+			evt.data.settings = result;
+			this.dispatchEvent(evt);
+		}
+
+		public function setHcpDisplaySettings(displaySettings:Object):void
+		{
+			this._displaySettings = displaySettings;
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM hcp_display_settings";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, checkHcpDisplaySettingsHandler);
+			this._sqStatement.execute();
+		}
+
+		private function checkHcpDisplaySettingsHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, setHcpDisplaySettingsHandler);
+
+			try
+			{
+				if(result != null)
+				{
+					this._sqStatement.text = "UPDATE hcp_display_settings SET stat_type='" +
+							this._displaySettings.stat_type + "', direction='" +
+							this._displaySettings.direction + "', from_date='" +
+							this._displaySettings.from_date + "'";
+				}
+				else
+				{
+					this._sqStatement.text = "INSERT INTO hcp_display_settings (stat_type, direction, from_date) VALUES ('" +
+							this._displaySettings.stat_type + "', '" + this._displaySettings.direction + "', '" + this._displaySettings.from_date + "')";
+				}
+			}
+			catch(e:Error)
+			{
+				this._sqStatement.text = "INSERT INTO hcp_display_settings (stat_type, direction, from_date) VALUES ('" +
+						this._displaySettings.stat_type + "', '" + this._displaySettings.direction + "', '" + this._displaySettings.from_date + "')";
+			}
+
+			this._sqStatement.execute();
+		}
+
+		private function setHcpDisplaySettingsHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function getHcpAlertSettings():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM hcp_alert_settings";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getHcpAlertSettingsHandler);
+			this._sqStatement.execute();
+		}
+
+		private function getHcpAlertSettingsHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_ALERT_SETTINGS_LOAD_COMPLETE);
+			evt.data.settings = result;
+			this.dispatchEvent(evt);
+		}
+
+		public function setHcpAlertSettings(alertSettings:Object):void
+		{
+			this._alertSettings = alertSettings;
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM hcp_alert_settings";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, checkHcpAlertSettingsHandler);
+			this._sqStatement.execute();
+		}
+
+		private function checkHcpAlertSettingsHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, setHcpAlertSettingsHandler);
+
+			try
+			{
+				if(result != null)
+				{
+					this._sqStatement.text = "UPDATE hcp_alert_settings SET requests='" +
+							this._alertSettings.requests + "', adherence='" +
+							this._alertSettings.adherence + "', tolerability='" +
+							this._alertSettings.tolerability + "'";
+				}
+				else
+				{
+					this._sqStatement.text = "INSERT INTO hcp_alert_settings (requests, adherence, tolerability) VALUES ('" +
+							this._alertSettings.requests + "', '" + this._alertSettings.adherence + "', '" + this._alertSettings + "')";
+				}
+			}
+			catch(e:Error)
+			{
+				this._sqStatement.text = "INSERT INTO hcp_alert_settings (requests, adherence, tolerability) VALUES ('" +
+						this._alertSettings.requests + "', '" + this._alertSettings.adherence + "', '" + this._alertSettings + "')";
+			}
+
+			this._sqStatement.execute();
+		}
+
+		private function setHcpAlertSettingsHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_ALERT_SETTINGS_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
 
