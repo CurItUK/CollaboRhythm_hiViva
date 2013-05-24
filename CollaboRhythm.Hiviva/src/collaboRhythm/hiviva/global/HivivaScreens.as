@@ -37,5 +37,6 @@ package collaboRhythm.hiviva.global
 		public static const HCP_DISPLAY_SETTINGS:String					= "hcpDisplaySettings";
 		public static const HCP_ALERT_SETTINGS:String					= "hcpAlertSettings";
 		public static const HCP_CONNECT_PATIENT:String					= "hcpConnectPatient";
+		public static const HCP_ADD_PATIENT:String						= "hcpAddPatient";
 	}
 }
