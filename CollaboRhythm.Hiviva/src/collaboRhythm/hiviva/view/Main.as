@@ -12,7 +12,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPConnectToPatientScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPDisplaySettings;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPEditProfile;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHomeScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHomesScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessagesInbox;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;
@@ -235,7 +235,7 @@ package collaboRhythm.hiviva.view
 				hcpSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , settingsNavHandler);
 				this.addChildAt(hcpSideNavScreen , 0);
 
-				this._mainScreenNav.addScreen(HivivaScreens.HCP_HOME_SCREEN, new ScreenNavigatorItem(HivivaHCPHomeScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
+				this._mainScreenNav.addScreen(HivivaScreens.HCP_HOME_SCREEN, new ScreenNavigatorItem(HivivaHCPHomesScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_ADHERENCE_SCREEN, new ScreenNavigatorItem(HivivaHCPAllPatientsAdherenceScreen));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaHCPReportsScreen));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaHCPMessagesInbox));

@@ -13,7 +13,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	import starling.events.Event;
 
-	public class HivivaHCPHomeScreen extends Screen
+	public class HivivaHCPHomesScreen extends Screen
 	{
 		private var _footerHeight:Number;
 		private var _applicationController:HivivaApplicationController;
@@ -21,7 +21,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private var _hasHcpSignedUp:Boolean;
 
-		public function HivivaHCPHomeScreen()
+		public function HivivaHCPHomesScreen()
 		{
 			super();
 		}
@@ -78,7 +78,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function forceSignUpPopup():void
 		{
 
-			// TODO: double call on init, so remove if popup already added
+			// TODO: double call on init, so remove if popup already added PROBLEM POPUP NOT CENTERING!!!
 			if(PopUpManager.isPopUp(this._userSignupPopupContent)) PopUpManager.removePopUp(this._userSignupPopupContent);
 			PopUpManager.addPopUp(this._userSignupPopupContent,true,true);
 			this._userSignupPopupContent.validate();
