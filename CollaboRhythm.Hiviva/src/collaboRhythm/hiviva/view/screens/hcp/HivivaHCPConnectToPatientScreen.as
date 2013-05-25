@@ -94,6 +94,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 				trace("connectionsLength " + e.data.connections.length);
 				var connectionsLength:uint = e.data.connections.length;
 
+				clearDownPatientCells();
+
 				this._patientCellRadioGroup = new ToggleGroup();
 				addChild(this._patientCellContainer);
 
