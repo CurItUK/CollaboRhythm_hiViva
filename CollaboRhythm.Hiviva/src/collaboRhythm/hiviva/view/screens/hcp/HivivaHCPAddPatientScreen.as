@@ -61,29 +61,54 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function draw():void
 		{
 			super.draw();
+
+
+			var scaledPadding:Number = PADDING * this.dpiScale;
+			var horizontalAlign:Number = 32 * this.dpiScale;
+
+
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
+
 			// reduce font size for large title
 			this._header._titleHolder1.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(36 * this.dpiScale), 0x293d54);
 			this._header._titleHolder2.textRendererProperties.textFormat = new TextFormat("ExoLight", Math.round(36 * this.dpiScale), 0x293d54);
 			this._header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
 			this._header.validate();
 
+			this._appIdLabel.validate();
+			this._searchButton.validate();
+			this._searchInput.validate();
+			this._resultInfo.validate();
+
+			this._appIdLabel.y = this._header.y + this._header.height + scaledPadding;
+			this._appIdLabel.x = 10;
+			this._appIdLabel.width = 200;
+
+			this._searchInput.y = this._appIdLabel.y + this._appIdLabel.height;
+			this._searchInput.x = horizontalAlign;
+			this._searchInput.width = this.actualWidth - this._searchButton.width - (scaledPadding * 2) - horizontalAlign;
+
+			this._searchButton.y = this._searchInput.y + (this._searchInput.height * 0.5) - (this._searchButton.height * 0.5);
+			this._searchButton.x = this._searchInput.x + this._searchInput.width + scaledPadding;
+
+			this._resultInfo.y = this._searchInput.y + this._searchInput.height + (scaledPadding * 0.5);
+			this._resultInfo.x = horizontalAlign;
+			this._resultInfo.width = this.actualWidth - scaledPadding - horizontalAlign;
+
 			this._requestConnectionButton.validate();
 			this._requestConnectionButton.x = (this.actualWidth / 2) - (this._requestConnectionButton.width / 2);
 			this._requestConnectionButton.y = this.actualHeight - this._requestConnectionButton.height - (PADDING * this.dpiScale);
 
-			drawPatientSearch();
-
-			this._requestPopupContainer.width = 500 * dpiScale;
 			this._requestPopupContainer.validate();
+			this._requestPopupContainer.width = 500 * dpiScale;
+
+			getXMLPatientData();
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
-
-			getXMLPatientData();
 
 			this._header = new HivivaHeader();
 			this._header.title = "Add a patient";
@@ -93,11 +118,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._requestConnectionButton = new Button();
 			this._requestConnectionButton.label = "Request Connection";
-			addChild(this._requestConnectionButton);
 			this._requestConnectionButton.addEventListener(Event.TRIGGERED, onRequestConnection);
 			this._requestConnectionButton.visible = false;
-
-			initPatientSearch();
+			addChild(this._requestConnectionButton);
 
 			this._requestPopupContainer = new HivivaPopUp();
 			this._requestPopupContainer.scale = this.dpiScale;
@@ -111,6 +134,22 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
+
+
+			this._appIdLabel = new Label();
+			this._appIdLabel.text = "Patient app ID";
+			addChild(this._appIdLabel);
+
+			this._searchInput = new TextInput();
+			addChild(this._searchInput);
+
+			this._searchButton = new Button();
+			this._searchButton.label = "Find";
+			this._searchButton.addEventListener(Event.TRIGGERED, doSearchPatient);
+			addChild(this._searchButton);
+
+			this._resultInfo = new Label();
+			addChild(this._resultInfo);
 		}
 
 		private function backBtnHandler(e:Event = null):void
@@ -130,109 +169,71 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientDataXml = new XML(ba.readUTFBytes(ba.length));
 		}
 
-		private function initPatientSearch():void
-		{
-			this._appIdLabel = new Label();
-			this._appIdLabel.text = "Patient app ID";
-			addChild(this._appIdLabel);
-
-			this._searchInput = new TextInput();
-			addChild(this._searchInput);
-
-			this._searchButton = new Button();
-			this._searchButton.label = "Connect";
-			this._searchButton.addEventListener(Event.TRIGGERED, doSearchPatient);
-			addChild(this._searchButton);
-
-			this._resultInfo = new Label();
-			addChild(this._resultInfo);
-		}
-
-		private function drawPatientSearch():void
-		{
-			var scaledPadding:Number = PADDING * this.dpiScale;
-			var horizontalAlign:Number = 32 * this.dpiScale;
-
-			this._appIdLabel.validate();
-			this._searchInput.validate();
-			this._searchButton.validate();
-			this._resultInfo.validate();
-
-			this._appIdLabel.y = this._header.y + this._header.height + scaledPadding;
-
-			this._searchInput.y = this._appIdLabel.y + this._appIdLabel.height;
-			this._searchInput.x = horizontalAlign;
-			this._searchInput.width = this.actualWidth - this._searchButton.width - (scaledPadding * 2) - horizontalAlign;
-
-			this._searchButton.y = this._searchInput.y + (this._searchInput.height * 0.5) - (this._searchButton.height * 0.5);
-			this._searchButton.x = this._searchInput.x + this._searchInput.width + scaledPadding;
-
-			this._resultInfo.y = this._searchInput.y + this._searchInput.height + (scaledPadding * 0.5);
-			this._resultInfo.x = horizontalAlign;
-			this._resultInfo.width = this.actualWidth - scaledPadding - horizontalAlign;
-		}
-
 		private function doSearchPatient(e:Event):void
 		{
-			var patientList:XMLList = this._patientDataXml.patient,
-				patientListLength:int = patientList.length(),
-				searched:String = this._searchInput.text,
-				currItem:String;
-
-			if(patientListLength > 0)
+			if(this._searchInput.text != "")
 			{
-				this._patientFilteredList = [];
-				for(var listCount:Number = 0; listCount < patientListLength; listCount++)
+				var patientList:XMLList = this._patientDataXml.patient;
+				var patientListLength:int = patientList.length();
+				var foundItem:XML;
+
+				if (patientListLength > 0)
 				{
-					currItem = patientList[listCount];
-					if(currItem.toLowerCase().search(searched.toLowerCase()) != -1)
+					this._patientFilteredList = [];
+					for (var listCount:Number = 0; listCount < patientListLength; listCount++)
 					{
-						this._patientFilteredList.push(currItem);
+
+						if (patientList[listCount].appid == this._searchInput.text)
+						{
+							foundItem = patientList[listCount];
+							this._patientFilteredList.push(foundItem);
+							break;
+						}
 					}
 				}
-				initResults();
-				this._requestConnectionButton.visible = true;
-			}
-			else
+				if(this._patientFilteredList.length > 0)
+				{
+					initResults();
+				}
+				else
+				{
+					this._resultInfo.text = "0 registered patients found";
+				}
+
+			} else
 			{
-				this._resultInfo.text = "0 registered patients found";
+				this._resultInfo.text = "Please enter a patient appID";
 			}
 		}
 
 		private function initResults():void
 		{
-			var resultsLength:int = this._patientFilteredList.length,
-				currItem:XMLList,
-				patientCell:PatientResultCell;
 
-			this._resultInfo.text = resultsLength + " registered patient" + (resultsLength > 1 ? "s" : "") + " found";
+			var patientCell:PatientResultCell;
+
+			this._resultInfo.text = "registered patient found";
 			this._resultInfo.validate();
 
-			if(resultsLength > 0)
-			{
-				if(!contains(this._patientCellContainer))
-				{
-					this._patientCellRadioGroup = new ToggleGroup();
-					addChild(this._patientCellContainer);
-				}
-				else
-				{
-					this._patientCellRadioGroup.removeAllItems();
-					this._patientCellContainer.removeChildren();
-				}
-				for(var listCount:int = 0; listCount < resultsLength; listCount++)
-				{
-					currItem = XMLList(this._patientFilteredList[listCount]);
 
-					patientCell = new PatientResultCell();
-					patientCell.patientData = currItem;
-					patientCell.isResult = true;
-					patientCell.scale = this.dpiScale;
-					this._patientCellContainer.addChild(patientCell);
-					this._patientCellRadioGroup.addItem(patientCell._patientSelect);
-				}
-				drawResults();
+			if (!contains(this._patientCellContainer))
+			{
+				this._patientCellRadioGroup = new ToggleGroup();
+				addChild(this._patientCellContainer);
 			}
+			else
+			{
+				this._patientCellRadioGroup.removeAllItems();
+				this._patientCellContainer.removeChildren();
+			}
+
+			patientCell = new PatientResultCell();
+			patientCell.patientData = this._patientFilteredList[0];
+			patientCell.isResult = true;
+			patientCell.scale = this.dpiScale;
+			this._patientCellContainer.addChild(patientCell);
+			this._patientCellRadioGroup.addItem(patientCell._patientSelect);
+
+			drawResults();
 		}
 
 		private function drawResults():void
@@ -260,8 +261,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.gap = scaledPadding;
 			this._patientCellContainer.layout = layout;
-
 			this._patientCellContainer.validate();
+			this._requestConnectionButton.visible = true;
 		}
 
 		private function onRequestConnection(e:Event):void

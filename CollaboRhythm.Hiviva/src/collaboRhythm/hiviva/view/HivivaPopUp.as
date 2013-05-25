@@ -17,38 +17,8 @@ package collaboRhythm.hiviva.view
 	public class HivivaPopUp extends FeathersControl
 	{
 		private var _scale:Number;
-
-		public function set scale(value:Number):void
-		{
-			this._scale = value;
-		}
-		public function get scale():Number
-		{
-			return this._scale;
-		}
-
 		private var _message:String;
-
-		public function set message(value:String):void
-		{
-			this._message = value;
-		}
-		public function get message():String
-		{
-			return this._message;
-		}
-
 		private var _confirmLabel:String;
-
-		public function set confirmLabel(value:String):void
-		{
-			this._confirmLabel = value;
-		}
-		public function get confirmLabel():String
-		{
-			return this._confirmLabel;
-		}
-
 		private var _bg:Scale9Image;
 		private var _label:Label;
 		private var _confirmButton:Button;
@@ -126,6 +96,36 @@ package collaboRhythm.hiviva.view
 		private function closeButtonHandler(e:Event):void
 		{
 			dispatchEvent(new Event(Event.CLOSE));
+		}
+
+		public function set scale(value:Number):void
+		{
+			this._scale = value;
+		}
+
+		public function get scale():Number
+		{
+			return this._scale;
+		}
+
+		public function set message(value:String):void
+		{
+			this._message = value;
+		}
+
+		public function get message():String
+		{
+			return this._message;
+		}
+
+		public function set confirmLabel(value:String):void
+		{
+			this._confirmLabel = value;
+		}
+
+		public function get confirmLabel():String
+		{
+			return this._confirmLabel;
 		}
 	}
 }

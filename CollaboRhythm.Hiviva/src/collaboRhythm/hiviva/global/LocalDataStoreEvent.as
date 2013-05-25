@@ -26,6 +26,10 @@ package collaboRhythm.hiviva.global
 		public static const HCP_DISPLAY_SETTINGS_LOAD_COMPLETE:String		= "hcpDisplaySettingsLoadComplete";
 		public static const HCP_ALERT_SETTINGS_SAVE_COMPLETE:String			= "hcpAlertSettingsSaveComplete";
 		public static const HCP_ALERT_SETTINGS_LOAD_COMPLETE:String			= "hcpAlertSettingsLoadComplete";
+		public static const HCP_CONNECTIONS_LOAD_COMPLETE:String			= "hcpConnectionsLoadComplete";
+		public static const HCP_CONNECTION_DELETE_COMPLETE :String			= "hcpConnectionDeleteComplete";
+
+
 
 		public var message:String;
 

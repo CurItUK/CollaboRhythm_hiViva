@@ -25,37 +25,8 @@ package collaboRhythm.hiviva.view
 	public class PatientResultCell extends FeathersControl
 	{
 		private var _scale:Number;
-		public function set scale(value:Number):void
-		{
-			this._scale = value;
-		}
-		public function get scale():Number
-		{
-			return this._scale;
-		}
-
 		private var _isResult:Boolean;
-		public function set isResult(value:Boolean):void
-		{
-			this._isResult = value;
-		}
-		public function get isResult():Boolean
-		{
-			return this._isResult;
-		}
-		/*
-		{picture:String, name:String, email:String, appid:String}
-		*/
-		private var _patientData:XMLList;
-		public function set patientData(value:XMLList):void
-		{
-			this._patientData = value;
-		}
-		public function get patientData():XMLList
-		{
-			return this._patientData;
-		}
-
+		private var _patientData:XML;
 		private var _bg:Scale9Image;
 		private var _patientImageBg:Quad;
 		private var _photoHolder:Image;
@@ -214,6 +185,7 @@ package collaboRhythm.hiviva.view
 		{
 			this._patientImageBg.dispose();
 			this._photoHolder.dispose();
+			this._patientSelect.dispose();
 			removeChildren(0,-1,true);
 			removeEventListeners();
 
@@ -221,6 +193,36 @@ package collaboRhythm.hiviva.view
 			this._photoHolder = null;
 
 			super.dispose();
+		}
+
+		public function set scale(value:Number):void
+		{
+			this._scale = value;
+		}
+
+		public function get scale():Number
+		{
+			return this._scale;
+		}
+
+		public function set isResult(value:Boolean):void
+		{
+			this._isResult = value;
+		}
+
+		public function get isResult():Boolean
+		{
+			return this._isResult;
+		}
+
+		public function set patientData(value:XML):void
+		{
+			this._patientData = value;
+		}
+
+		public function get patientData():XML
+		{
+			return this._patientData;
 		}
 	}
 }

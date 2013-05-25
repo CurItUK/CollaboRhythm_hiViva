@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAddPatientScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAlertSettings;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAllPatientsAdherenceScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPConnectToPatientScreen;
@@ -253,7 +254,8 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.HCP_EDIT_PROFILE, new ScreenNavigatorItem(HivivaHCPEditProfile, null, {applicationController:_applicationController}));
 			this._settingsNav.addScreen(HivivaScreens.HCP_DISPLAY_SETTINGS, new ScreenNavigatorItem(HivivaHCPDisplaySettings, null, {applicationController:_applicationController}));
 			this._settingsNav.addScreen(HivivaScreens.HCP_ALERT_SETTINGS, new ScreenNavigatorItem(HivivaHCPAlertSettings, null, {applicationController:_applicationController}));
-			this._settingsNav.addScreen(HivivaScreens.HCP_CONNECT_PATIENT, new ScreenNavigatorItem(HivivaHCPConnectToPatientScreen));
+			this._settingsNav.addScreen(HivivaScreens.HCP_CONNECT_PATIENT, new ScreenNavigatorItem(HivivaHCPConnectToPatientScreen, null, {applicationController:_applicationController}));
+			this._settingsNav.addScreen(HivivaScreens.HCP_ADD_PATIENT, new ScreenNavigatorItem(HivivaHCPAddPatientScreen));
 
 		}
 

@@ -1,52 +1,32 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
-
 	import feathers.controls.Button;
 	import feathers.controls.Header;
-	import feathers.controls.Label;
-
-
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
-	import feathers.controls.TextInput;
 	import feathers.core.PopUpManager;
 	import feathers.core.ToggleGroup;
 	import feathers.layout.VerticalLayout;
 
-	import flash.data.SQLConnection;
-	import flash.data.SQLResult;
-	import flash.data.SQLStatement;
-	import flash.events.SQLEvent;
-
-	import flash.filesystem.File;
-
 	import flash.text.TextFormat;
-
-	import mx.core.ByteArrayAsset;
-
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 
 	public class HivivaHCPConnectToPatientScreen extends Screen
 	{
 		private var _header:HivivaHeader;
-		private var _patientCellContainer:ScrollContainer;
 		private var _addConnectionButton:Button;
-		private var _patientConnected:Boolean;
-		private var _deletePopupContainer:HivivaPopUp;
 		private var _backButton:Button;
+		private var _applicationController:HivivaApplicationController;
+		private var _patientCellContainer:ScrollContainer;
 		private var _patientCellRadioGroup:ToggleGroup;
-		private var _appIdLabel:Label;
-		private var _searchInput:TextInput;
-		private var _searchButton:Button;
-		private var _resultInfo:Label;
-		private var _patientFilteredList:Array;
-		private var _sqConn:SQLConnection;
-		private var _sqStatement:SQLStatement;
+		private var _deletePopupContainer:HivivaPopUp;
+		private var _selectedPatientCellForDelete:PatientResultCell;
 
 		private const PADDING:Number = 20;
 
@@ -60,6 +40,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			super.draw();
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
+
 			// reduce font size for large title
 			this._header._titleHolder1.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(36 * this.dpiScale), 0x293d54);
 			this._header._titleHolder2.textRendererProperties.textFormat = new TextFormat("ExoLight", Math.round(36 * this.dpiScale), 0x293d54);
@@ -70,12 +51,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._addConnectionButton.x = (this.actualWidth / 2) - (this._addConnectionButton.width / 2);
 			this._addConnectionButton.y = this.actualHeight - this._addConnectionButton.height - (PADDING * this.dpiScale);
 
-			drawResults();
-
-			this._deletePopupContainer.width = 500 * dpiScale;
-			this._deletePopupContainer.validate();
-
 			this._backButton.validate();
+
+			getHcpConnections();
 		}
 
 		override protected function initialize():void
@@ -86,21 +64,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.title = "Connected patients";
 			addChild(this._header);
 
-			this._patientCellContainer = new ScrollContainer();
-
 			this._addConnectionButton = new Button();
-			this._addConnectionButton.label = "Request Connection";
-			addChild(this._addConnectionButton);
+			this._addConnectionButton.label = "Add a connection";
 			this._addConnectionButton.addEventListener(Event.TRIGGERED, onAddConnection);
-			this._addConnectionButton.visible = false;
-
-			initResults();
-
-			this._deletePopupContainer = new HivivaPopUp();
-			this._deletePopupContainer.scale = this.dpiScale;
-			this._deletePopupContainer.confirmLabel = "Delete";
-			this._deletePopupContainer.addEventListener(Event.COMPLETE, closePopup);
-			this._deletePopupContainer.addEventListener(Event.CLOSE, closePopup);
+			addChild(this._addConnectionButton);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -108,62 +75,53 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
+
+			this._patientCellContainer = new ScrollContainer();
 		}
 
-		private function backBtnHandler(e:Event = null):void
+		private function getHcpConnections():void
 		{
-			if(contains(this._patientCellContainer))
-			{
-				this._patientCellRadioGroup.removeAllItems();
-				this._patientCellContainer.removeChildren();
-			}
-
-			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			applicationController.hivivaLocalStoreController.getHCPConnections();
 		}
 
-		private function initResults():void
+		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
 		{
-			var resultsLength:int = this._patientFilteredList.length,
-				currItem:XMLList,
-				patientCell:PatientResultCell;
-
-			if(resultsLength > 0)
+			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			trace(e.data.connections);
+			if(e.data.connections != null)
 			{
-				if(!contains(this._patientCellContainer))
-				{
-					this._patientCellRadioGroup = new ToggleGroup();
-					addChild(this._patientCellContainer);
-				}
-				else
-				{
-					this._patientCellRadioGroup.removeAllItems();
-					this._patientCellContainer.removeChildren();
-				}
-				for(var listCount:int = 0; listCount < resultsLength; listCount++)
-				{
-					currItem = XMLList(this._patientFilteredList[listCount]);
+				trace("connectionsLength " + e.data.connections.length);
+				var connectionsLength:uint = e.data.connections.length;
 
-					patientCell = new PatientResultCell();
-					patientCell.patientData = currItem;
+				this._patientCellRadioGroup = new ToggleGroup();
+				addChild(this._patientCellContainer);
+
+
+				for (var listCount:int = 0; listCount < connectionsLength; listCount++)
+				{
+					var patientCell:PatientResultCell = new PatientResultCell();
+					patientCell.patientData = generateXMLNode(e.data.connections[listCount]);
 					patientCell.isResult = false;
 					patientCell.scale = this.dpiScale;
 					patientCell.addEventListener(Event.CLOSE, deleteHcpRecord);
-					patientCell.addEventListener(Event.REMOVED_FROM_STAGE, deleteHcpCell);
+					//patientCell.addEventListener(Event.REMOVED_FROM_STAGE, deleteHcpCell);
 					this._patientCellContainer.addChild(patientCell);
 					this._patientCellRadioGroup.addItem(patientCell._patientSelect);
 				}
+				drawResults();
 			}
 		}
 
 		private function drawResults():void
 		{
-			var scaledPadding:Number = PADDING * this.dpiScale,
-				yStartPosition:Number,
-				maxHeight:Number,
-				patientCell:PatientResultCell;
+			var scaledPadding:Number = PADDING * this.dpiScale;
+			var yStartPosition:Number;
+			var maxHeight:Number;
+			var patientCell:PatientResultCell;
 
-			yStartPosition = this._resultInfo.y + this._resultInfo.height + scaledPadding;
-			maxHeight = this.actualHeight - yStartPosition;
+			yStartPosition = this._header.height;
+			maxHeight = this.actualHeight - yStartPosition - this._addConnectionButton.height - (PADDING * this.dpiScale);
 
 			this._patientCellContainer.width = this.actualWidth;
 			this._patientCellContainer.y = yStartPosition;
@@ -182,124 +140,111 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientCellContainer.validate();
 		}
 
-		private function onAddConnection(e:Event):void
+		private function generateXMLNode(record:Object):XML
 		{
-			var selectedHcpInd:int = this._patientCellRadioGroup.selectedIndex,
-				patientCell:XMLList = XMLList(this._patientFilteredList[selectedHcpInd]);
+			var xmlRecord:XML = XML("<patient><name>" + record.name + "</name><email>"
+					+  record.email + "</email><appid>"
+					+  record.appid + "</appid><picture>"
+					+ record.picture + "</picture></patient>");
 
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
+			return xmlRecord;
+		}
 
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
+		private function deleteHcpRecord(e:Event):void
+		{
+			trace("deleteHcpRecord confirmation");
+			selectedPatientCellForDelete = e.target as PatientResultCell;
 
-			this._sqStatement = new SQLStatement();
 
-			var name:String = "'" + patientCell.name + "'";
-			var email:String = "'" + patientCell.email + "'";
-			var appid:String = "'" + patientCell.appid + "'";
-			var picture:String = "'" + patientCell.picture + "'";
-			if(this._patientConnected)
-			{
-				this._sqStatement.text = "UPDATE patient_connection SET name=" + name + ", email=" + email + ", appid=" + appid + ", picture=" + picture;
-			}
-			else
-			{
-				this._sqStatement.text = "INSERT INTO patient_connection (name, email, appid, picture) VALUES (" + name + ", " + email + ", " + appid + ", " + picture + ")";
-			}
-			trace(this._sqStatement.text);
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
-			this._sqStatement.execute();
+			this._deletePopupContainer = new HivivaPopUp();
+			this._deletePopupContainer.scale = this.dpiScale;
+			this._deletePopupContainer.confirmLabel = "Delete";
+			this._deletePopupContainer.addEventListener(Event.COMPLETE, deleteHcpCell);
+			this._deletePopupContainer.addEventListener(Event.CLOSE, closePopup);
+			this._deletePopupContainer.width = 500 * dpiScale;
+			this._deletePopupContainer.validate();
 
-			this._deletePopupContainer.message = "A request to connect has been sent to " + patientCell.name;
+			this._deletePopupContainer.message = "This will delete your connection with " + selectedPatientCellForDelete.patientData.name;
+
 			showRequestPopup();
-		}
-
-		private function sqlResultHandler(e:SQLEvent):void
-		{
-			trace("sqlResultHandler " + e);
-		}
-
-		private function populateOldData():void
-		{
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
-
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
-
-			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "SELECT * FROM patient_connection";
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.execute();
-
-			var data:Array = this._sqStatement.getResult().data,
-				dataLength:int;
-
-			this._patientFilteredList = [];
-			try
-			{
-				if(data != null)
-				{
-					dataLength = data.length;
-					for (var i:int = 0; i < dataLength; i++)
-					{
-						this._patientFilteredList.push(	XML("<patient><name>" + data[i].name +
-															"</name><email>" + data[i].email +
-															"</email><appid>" + data[i].appid +
-															"</appid><picture>" + data[i].picture +
-															"</picture></patient>"))
-					}
-
-				}
-			}
-			catch(e:Error)
-			{
-
-			}
 		}
 
 		private function showRequestPopup():void
 		{
-			PopUpManager.addPopUp(this._deletePopupContainer,true,true);
+			PopUpManager.addPopUp(this._deletePopupContainer, true, true);
 			this._deletePopupContainer.validate();
 			PopUpManager.centerPopUp(this._deletePopupContainer);
-			// draw close button post center so the centering works correctly
 			this._deletePopupContainer.drawCloseButton();
+		}
+
+		private function deleteHcpCell(e:Event):void
+		{
+			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTION_DELETE_COMPLETE , deleteHCPConnectionCompleteHandler);
+			applicationController.hivivaLocalStoreController.deleteHCPConnection(selectedPatientCellForDelete.patientData.appid);
+		}
+
+		private function deleteHCPConnectionCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTION_DELETE_COMPLETE , deleteHCPConnectionCompleteHandler);
+			clearDownPatientCells();
+			clearDownPopup();
+			getHcpConnections();
+		}
+
+		private function clearDownPopup():void
+		{
+			PopUpManager.removePopUp(this._deletePopupContainer);
+			this._deletePopupContainer.removeEventListener(Event.COMPLETE, deleteHcpCell);
+			this._deletePopupContainer.removeEventListener(Event.CLOSE, closePopup);
+			this._deletePopupContainer.dispose();
+			this._deletePopupContainer = null;
 		}
 
 		private function closePopup(e:Event):void
 		{
 			PopUpManager.removePopUp(this._deletePopupContainer);
-
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
-
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
-
-			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "DELETE FROM patient_connection WHERE appid=" + patientCell._appid;
-
-			// deletes all records because we only have one connection at a time
-			//this._sqStatement.text = "DELETE FROM patient_connection";
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.execute();
 		}
 
-		private function deleteHcpRecord(e:Event):void
+		private function backBtnHandler(e:Event = null):void
 		{
-			var patientCell:PatientResultCell = e.target as PatientResultCell;
-
-			this._deletePopupContainer.message = "This will delete your connection with " + patientCell.name;
-			showRequestPopup();
+			clearDownPatientCells();
+			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
 
-		private function deleteHcpCell(e:Event):void
+		private function onAddConnection(e:Event):void
 		{
-			var hcpResultCell:PatientResultCell = e.target as PatientResultCell;
-			hcpResultCell.dispose();
+			clearDownPatientCells();
+			this.owner.showScreen(HivivaScreens.HCP_ADD_PATIENT);
 		}
+
+		private function clearDownPatientCells():void
+		{
+			if (contains(this._patientCellContainer))
+			{
+				this._patientCellRadioGroup.removeAllItems();
+				this._patientCellContainer.removeChildren();
+			}
+		}
+
+		public function get selectedPatientCellForDelete():PatientResultCell
+		{
+			return this._selectedPatientCellForDelete;
+		}
+
+		public function set selectedPatientCellForDelete(cell:PatientResultCell):void
+		{
+			this._selectedPatientCellForDelete = cell;
+		}
+
+		public function get applicationController():HivivaApplicationController
+		{
+			return _applicationController;
+		}
+
+		public function set applicationController(value:HivivaApplicationController):void
+		{
+			_applicationController = value;
+		}
+
 	}
 }
