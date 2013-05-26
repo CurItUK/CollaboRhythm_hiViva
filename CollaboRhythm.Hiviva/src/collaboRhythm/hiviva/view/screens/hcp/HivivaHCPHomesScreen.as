@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaPopUp;
 	import collaboRhythm.hiviva.view.PatientResultCell;
+	import collaboRhythm.hiviva.view.screens.PatientResultCellHome;
 
 	import feathers.controls.Button;
 
@@ -14,7 +15,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.controls.ScrollContainer;
 	import feathers.core.PopUpManager;
+	import feathers.layout.VerticalLayout;
 
 	import starling.events.Event;
 
@@ -23,6 +26,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _footerHeight:Number;
 		private var _applicationController:HivivaApplicationController;
 		private var _userSignupPopupContent:HivivaPopUp;
+		private var _patientCellContainer:ScrollContainer;
+		private var _connectToPatientBtn:Button;
 
 		private const PADDING:Number = 20;
 
@@ -35,12 +40,24 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.draw();
 
+			var scaledPadding:Number = PADDING * this.dpiScale;
+			_connectToPatientBtn.validate();
+			_connectToPatientBtn.x = this.actualWidth / 2 - _connectToPatientBtn.width / 2;
+			_connectToPatientBtn.y = this.actualHeight - _connectToPatientBtn.height - scaledPadding - footerHeight;
+
 			checkHCPSignupStatus();
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
+
+			_connectToPatientBtn = new Button();
+			_connectToPatientBtn.label = "Connect to patient";
+			_connectToPatientBtn.addEventListener(Event.TRIGGERED, connectToPatientBtnHandler);
+			this.addChild(_connectToPatientBtn);
+
+			this._patientCellContainer = new ScrollContainer();
 
 		}
 
@@ -64,7 +81,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 		}
 
-
 		private function getHcpConnections():void
 		{
 			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE, getHcpListCompleteHandler)
@@ -74,14 +90,23 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
 		{
 			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE, getHcpListCompleteHandler)
-			trace(e.data.connections);
 			if (e.data.connections != null)
 			{
 				var connectionsLength:uint = e.data.connections.length;
 
+				for (var listCount:int = 0; listCount < connectionsLength; listCount++)
+				{
+					var patientCell:PatientResultCellHome = new PatientResultCellHome();
+					patientCell.patientData = generateXMLNode(e.data.connections[listCount]);
+					patientCell.isResult = false;
 
+					patientCell.scale = this.dpiScale;
+					patientCell.addEventListener(FeathersScreenEvent.PATIENT_PROFILE_SELECTED , profileSelectedHandler);
+					this._patientCellContainer.addChild(patientCell);
+				}
 
-
+				addChild(this._patientCellContainer);
+				drawResults();
 			}
 			else
 			{
@@ -89,9 +114,52 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 		}
 
-		private function initAlertText():void
+		private function profileSelectedHandler(e:FeathersScreenEvent):void
+		{
+			trace("Profile Selected " + e.evtData.profile);
+			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_PATIENT_PROFILE , appID:e.evtData.profile.appid});
+		}
+
+		private function drawResults():void
 		{
 			var scaledPadding:Number = PADDING * this.dpiScale;
+			var yStartPosition:Number;
+			var maxHeight:Number;
+			var patientCell:PatientResultCellHome;
+
+			yStartPosition = 120;
+			maxHeight = this.actualHeight - yStartPosition -  _connectToPatientBtn.height - footerHeight - 2 * (PADDING * this.dpiScale);
+
+			this._patientCellContainer.width = this.actualWidth;
+			this._patientCellContainer.y = yStartPosition;
+			this._patientCellContainer.height = maxHeight;
+
+			for (var i:int = 0; i < this._patientCellContainer.numChildren; i++)
+			{
+				patientCell = this._patientCellContainer.getChildAt(i) as PatientResultCellHome;
+				patientCell.width = this.actualWidth;
+
+			}
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.gap = scaledPadding;
+			this._patientCellContainer.layout = layout;
+			this._patientCellContainer.validate();
+		}
+
+		private function generateXMLNode(record:Object):XML
+		{
+			var xmlRecord:XML = XML("<patient><name>" + record.name + "</name><email>"
+					+ record.email + "</email><appid>"
+					+ record.appid + "</appid><picture>"
+					+ record.picture + "</picture></patient>");
+
+			return xmlRecord;
+		}
+
+		private function initAlertText():void
+		{
+
 			var alertLabel:Label = new Label();
 			alertLabel.text = "Connect to a patient to get started.";
 
@@ -99,16 +167,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			alertLabel.validate();
 			alertLabel.x = this.actualWidth/2 - alertLabel.width/2;
 			alertLabel.y = alertLabel.height * 4;
-
-			var connectToPatientBtn:Button = new Button();
-			connectToPatientBtn.label = "Connect to patient";
-			connectToPatientBtn.addEventListener(Event.TRIGGERED , connectToPatientBtnHandler);
-			this.addChild(connectToPatientBtn);
-
-			connectToPatientBtn.validate();
-			connectToPatientBtn.x = this.actualWidth / 2 - connectToPatientBtn.width / 2;
-			connectToPatientBtn.y = this.actualHeight - connectToPatientBtn.height - scaledPadding - footerHeight;
-		}
+	}
 
 		private function connectToPatientBtnHandler(e:Event):void
 		{

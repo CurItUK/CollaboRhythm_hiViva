@@ -15,6 +15,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPEditProfile;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHomesScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessagesInbox;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPPatientProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPSideNavigationScreen;
@@ -79,6 +80,8 @@ package collaboRhythm.hiviva.view
 		private var _currMainScreenId:String;
 		private var _scaleFactor:Number;
 		private var _profile:String;
+		private var _selectedHCPPatientProfileAppID:String;
+		private var _main:Main;
 
 		private const TRANSITION_DURATION:Number						= 0.4;
 		private const SETTING_MENU_WIDTH:Number							= 177;
@@ -92,6 +95,8 @@ package collaboRhythm.hiviva.view
 
 		public function initMain():void
 		{
+			this._main = this;
+
 			this._stageHeight = Starling.current.viewPort.height;
 			this._stageWidth = Starling.current.viewPort.width;
 
@@ -256,6 +261,7 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.HCP_ALERT_SETTINGS, new ScreenNavigatorItem(HivivaHCPAlertSettings, null, {applicationController:_applicationController}));
 			this._settingsNav.addScreen(HivivaScreens.HCP_CONNECT_PATIENT, new ScreenNavigatorItem(HivivaHCPConnectToPatientScreen, null, {applicationController:_applicationController}));
 			this._settingsNav.addScreen(HivivaScreens.HCP_ADD_PATIENT, new ScreenNavigatorItem(HivivaHCPAddPatientScreen));
+			this._settingsNav.addScreen(HivivaScreens.HCP_PATIENT_PROFILE, new ScreenNavigatorItem(HivivaHCPPatientProfileScreen, {navGoHome:goBackToMainScreen},{applicationController:_applicationController , main:main}));
 
 		}
 
@@ -277,6 +283,10 @@ package collaboRhythm.hiviva.view
 
 		private function navigateToDirectProfileMenu(e:Event):void
 		{
+			if(e.data.appID != null)
+			{
+				selectedHCPPatientProfileAppID = e.data.appID;
+			}
 			var navAwayEvent:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
 			navAwayEvent.message = e.data.profileMenu;
 			settingsNavHandler(navAwayEvent , true);
@@ -526,6 +536,21 @@ package collaboRhythm.hiviva.view
 		public function set applicationController(value:HivivaApplicationController):void
 		{
 			_applicationController = value;
+		}
+
+		public function set selectedHCPPatientProfileAppID(appid:String):void
+		{
+			this._selectedHCPPatientProfileAppID = appid;
+		}
+
+		public function get selectedHCPPatientProfileAppID():String
+		{
+			return this._selectedHCPPatientProfileAppID;
+		}
+
+		public function get main():Main
+		{
+			return this._main;
 		}
 	}
 }
