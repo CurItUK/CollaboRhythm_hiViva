@@ -236,7 +236,7 @@ package collaboRhythm.hiviva.view
 				hcpSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , settingsNavHandler);
 				this.addChildAt(hcpSideNavScreen , 0);
 
-				this._mainScreenNav.addScreen(HivivaScreens.HCP_HOME_SCREEN, new ScreenNavigatorItem(HivivaHCPHomesScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
+				this._mainScreenNav.addScreen(HivivaScreens.HCP_HOME_SCREEN, new ScreenNavigatorItem(HivivaHCPHomesScreen, {mainToSubNav:navigateToDirectProfileMenu}, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_ADHERENCE_SCREEN, new ScreenNavigatorItem(HivivaHCPAllPatientsAdherenceScreen));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaHCPReportsScreen));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaHCPMessagesInbox));
@@ -275,10 +275,20 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
 		}
 
-		private function settingsNavHandler(e:FeathersScreenEvent):void
+		private function navigateToDirectProfileMenu(e:Event):void
+		{
+			var navAwayEvent:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
+			navAwayEvent.message = e.data.profileMenu;
+			settingsNavHandler(navAwayEvent , true);
+		}
+
+		private function settingsNavHandler(e:FeathersScreenEvent , mainToSubmenuDirect:Boolean = false):void
 		{
 			trace("settingsNavHandler " + e.message);
-			settingsBtnHandler();
+			if(!mainToSubmenuDirect)
+			{
+				settingsBtnHandler();
+			}
 			if(!this._settingsNav.contains(this._screenBackground)) this._settingsNav.addChild(this._screenBackground);
 			this._settingsNav.showScreen(e.message);
 			//this._currMainScreenId = this._mainScreenNav.activeScreenID;
