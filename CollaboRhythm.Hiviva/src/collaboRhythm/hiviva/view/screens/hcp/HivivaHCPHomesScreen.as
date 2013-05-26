@@ -6,6 +6,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaPopUp;
+	import collaboRhythm.hiviva.view.PatientResultCell;
+
+	import feathers.controls.Button;
+
+	import feathers.controls.Label;
 
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
@@ -19,7 +24,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _applicationController:HivivaApplicationController;
 		private var _userSignupPopupContent:HivivaPopUp;
 
-		private var _hasHcpSignedUp:Boolean;
+		private const PADDING:Number = 20;
 
 		public function HivivaHCPHomesScreen()
 		{
@@ -30,22 +35,17 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.draw();
 
-			this._userSignupPopupContent.width = this.actualWidth * 0.75;
-			this._userSignupPopupContent.validate();
+			checkHCPSignupStatus();
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
 
-			this._userSignupPopupContent = new HivivaPopUp();
-			this._userSignupPopupContent.scale = this.dpiScale;
-			this._userSignupPopupContent.message = "You will need to create an account in order to connect to a care provider";
-			this._userSignupPopupContent.confirmLabel = "Sign up";
-			this._userSignupPopupContent.addEventListener(Event.COMPLETE, userSignupScreen);
-			this._userSignupPopupContent.addEventListener(Event.CLOSE, userSignupScreen);
+		}
 
-			// check if hcp signed up
+		private function checkHCPSignupStatus():void
+		{
 			localStoreController.addEventListener(LocalDataStoreEvent.HCP_PROFILE_LOAD_COMPLETE, getHcpProfileHandler);
 			localStoreController.getHcpProfile();
 		}
@@ -54,45 +54,93 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_PROFILE_LOAD_COMPLETE, getHcpProfileHandler);
 
-			var hcpProfile:Array = e.data.hcpProfile;
-
-			this._hasHcpSignedUp = true;
-			try
+			if(e.data.hcpProfile != null)
 			{
-				if(hcpProfile == null)
-				{
-					this._hasHcpSignedUp = false;
-				}
+				getHcpConnections();
 			}
-			catch(e:Error)
+			else
 			{
-				this._hasHcpSignedUp = false;
-			}
-			if (!this._hasHcpSignedUp)
-			{
-				this.owner.addScreen(HivivaScreens.HCP_EDIT_PROFILE, new ScreenNavigatorItem(HivivaHCPEditProfile, null, {applicationController:_applicationController}));
-				forceSignUpPopup();
+				initPatientSignupProcess();
 			}
 		}
 
-		private function forceSignUpPopup():void
-		{
 
-			// TODO: double call on init, so remove if popup already added PROBLEM POPUP NOT CENTERING!!!
-			if(PopUpManager.isPopUp(this._userSignupPopupContent)) PopUpManager.removePopUp(this._userSignupPopupContent);
+		private function getHcpConnections():void
+		{
+			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE, getHcpListCompleteHandler)
+			applicationController.hivivaLocalStoreController.getHCPConnections();
+		}
+
+		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE, getHcpListCompleteHandler)
+			trace(e.data.connections);
+			if (e.data.connections != null)
+			{
+				var connectionsLength:uint = e.data.connections.length;
+
+
+
+
+			}
+			else
+			{
+				initAlertText();
+			}
+		}
+
+		private function initAlertText():void
+		{
+			var scaledPadding:Number = PADDING * this.dpiScale;
+			var alertLabel:Label = new Label();
+			alertLabel.text = "Connect to a patient to get started.";
+
+			this.addChild(alertLabel);
+			alertLabel.validate();
+			alertLabel.x = this.actualWidth/2 - alertLabel.width/2;
+			alertLabel.y = alertLabel.height * 4;
+
+			var connectToPatientBtn:Button = new Button();
+			connectToPatientBtn.label = "Connect to patient";
+			connectToPatientBtn.addEventListener(Event.TRIGGERED , connectToPatientBtnHandler);
+			this.addChild(connectToPatientBtn);
+
+			connectToPatientBtn.validate();
+			connectToPatientBtn.x = this.actualWidth / 2 - connectToPatientBtn.width / 2;
+			connectToPatientBtn.y = this.actualHeight - connectToPatientBtn.height - scaledPadding - footerHeight;
+		}
+
+		private function connectToPatientBtnHandler(e:Event):void
+		{
+			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_CONNECT_PATIENT});
+		}
+
+		private function initPatientSignupProcess():void
+		{
+			this.owner.addScreen(HivivaScreens.HCP_EDIT_PROFILE, new ScreenNavigatorItem(HivivaHCPEditProfile, null, {applicationController:_applicationController}));
+
+			this._userSignupPopupContent = new HivivaPopUp();
+			this._userSignupPopupContent.scale = this.dpiScale;
+			this._userSignupPopupContent.confirmLabel = "Sign up";
+			this._userSignupPopupContent.addEventListener(Event.COMPLETE, userSignupScreen);
+			this._userSignupPopupContent.addEventListener(Event.CLOSE, userSignupScreen);
+			this._userSignupPopupContent.width = this.actualWidth * 0.75;
+			this._userSignupPopupContent.validate();
+			this._userSignupPopupContent.message = "You will need to create an account in order to connect to a care provider";
+
 			PopUpManager.addPopUp(this._userSignupPopupContent,true,true);
 			this._userSignupPopupContent.validate();
 			PopUpManager.centerPopUp(this._userSignupPopupContent);
-			// draw close button post center so the centering works correctly
+
 			this._userSignupPopupContent.drawCloseButton();
 		}
 
 		private function userSignupScreen(e:Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_EDIT_PROFILE);
+			this._userSignupPopupContent.removeEventListener(Event.COMPLETE, userSignupScreen);
+			this._userSignupPopupContent.removeEventListener(Event.CLOSE, userSignupScreen);
 			PopUpManager.removePopUp(this._userSignupPopupContent);
-			trace("open HCP_EDIT_PROFILE");
-
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV, true));
 		}
 
