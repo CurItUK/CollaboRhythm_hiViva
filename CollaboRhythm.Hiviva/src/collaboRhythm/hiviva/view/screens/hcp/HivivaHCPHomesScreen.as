@@ -19,6 +19,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import feathers.core.PopUpManager;
 	import feathers.layout.VerticalLayout;
 
+	import flash.events.Event;
+
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+
 	import starling.events.Event;
 
 	public class HivivaHCPHomesScreen extends Screen
@@ -28,6 +33,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _userSignupPopupContent:HivivaPopUp;
 		private var _patientCellContainer:ScrollContainer;
 		private var _connectToPatientBtn:Button;
+		private var _patientsData:XML;
+		private var _patients:Array;
+		private var _filterdPatients:Array;
 
 		private const PADDING:Number = 20;
 
@@ -54,7 +62,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			_connectToPatientBtn = new Button();
 			_connectToPatientBtn.label = "Connect to patient";
-			_connectToPatientBtn.addEventListener(Event.TRIGGERED, connectToPatientBtnHandler);
+			_connectToPatientBtn.addEventListener(starling.events.Event.TRIGGERED, connectToPatientBtnHandler);
 			this.addChild(_connectToPatientBtn);
 
 			this._patientCellContainer = new ScrollContainer();
@@ -92,26 +100,66 @@ package collaboRhythm.hiviva.view.screens.hcp
 			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE, getHcpListCompleteHandler)
 			if (e.data.connections != null)
 			{
-				var connectionsLength:uint = e.data.connections.length;
-
-				for (var listCount:int = 0; listCount < connectionsLength; listCount++)
-				{
-					var patientCell:PatientResultCellHome = new PatientResultCellHome();
-					patientCell.patientData = generateXMLNode(e.data.connections[listCount]);
-					patientCell.isResult = false;
-
-					patientCell.scale = this.dpiScale;
-					patientCell.addEventListener(FeathersScreenEvent.PATIENT_PROFILE_SELECTED , profileSelectedHandler);
-					this._patientCellContainer.addChild(patientCell);
-				}
-
-				addChild(this._patientCellContainer);
-				drawResults();
+				this._patients = e.data.connections;
+				initPatientXMLData();
 			}
 			else
 			{
 				initAlertText();
 			}
+		}
+
+		private function initPatientXMLData():void
+		{
+			var patientToLoadURL:String = "/resources/dummy_patientlist.xml";
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(flash.events.Event.COMPLETE, patientXMLFileLoadHandler);
+			loader.load(new URLRequest(patientToLoadURL));
+		}
+
+		private function patientXMLFileLoadHandler(e:flash.events.Event):void
+		{
+			_patientsData = XML(e.target.data);
+			drawPatientProfiles();
+		}
+
+		private function drawPatientProfiles():void
+		{
+			var patientsXMLList:XMLList = patientsData.patient;
+			_filterdPatients = [];
+
+			var patientsLength:uint = patientsXMLList.length();
+			var innerLoop:uint = patients.length;
+			for (var i:uint = 0; i < patientsLength; i++)
+			{
+
+				for (var j:uint = 0; j < innerLoop; j++)
+				{
+					if (patientsXMLList[i].appid == patients[j].appid)
+					{
+						_filterdPatients.push(patientsXMLList[i]);
+
+					}
+				}
+
+			}
+
+			var connectionsLength:uint = _filterdPatients.length;
+
+			for (var listCount:int = 0; listCount < connectionsLength; listCount++)
+			{
+				var patientCell:PatientResultCellHome = new PatientResultCellHome();
+				patientCell.patientData = _filterdPatients[listCount];
+				patientCell.isResult = false;
+
+				patientCell.scale = this.dpiScale;
+				patientCell.addEventListener(FeathersScreenEvent.PATIENT_PROFILE_SELECTED, profileSelectedHandler);
+				this._patientCellContainer.addChild(patientCell);
+			}
+
+			addChild(this._patientCellContainer);
+			drawResults();
+
 		}
 
 		private function profileSelectedHandler(e:FeathersScreenEvent):void
@@ -169,7 +217,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			alertLabel.y = alertLabel.height * 4;
 	}
 
-		private function connectToPatientBtnHandler(e:Event):void
+		private function connectToPatientBtnHandler(e:starling.events.Event):void
 		{
 			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_CONNECT_PATIENT});
 		}
@@ -181,8 +229,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._userSignupPopupContent = new HivivaPopUp();
 			this._userSignupPopupContent.scale = this.dpiScale;
 			this._userSignupPopupContent.confirmLabel = "Sign up";
-			this._userSignupPopupContent.addEventListener(Event.COMPLETE, userSignupScreen);
-			this._userSignupPopupContent.addEventListener(Event.CLOSE, userSignupScreen);
+			this._userSignupPopupContent.addEventListener(starling.events.Event.COMPLETE, userSignupScreen);
+			this._userSignupPopupContent.addEventListener(starling.events.Event.CLOSE, userSignupScreen);
 			this._userSignupPopupContent.width = this.actualWidth * 0.75;
 			this._userSignupPopupContent.validate();
 			this._userSignupPopupContent.message = "You will need to create an account in order to connect to a care provider";
@@ -194,11 +242,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._userSignupPopupContent.drawCloseButton();
 		}
 
-		private function userSignupScreen(e:Event):void
+		private function userSignupScreen(e:starling.events.Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_EDIT_PROFILE);
-			this._userSignupPopupContent.removeEventListener(Event.COMPLETE, userSignupScreen);
-			this._userSignupPopupContent.removeEventListener(Event.CLOSE, userSignupScreen);
+			this._userSignupPopupContent.removeEventListener(starling.events.Event.COMPLETE, userSignupScreen);
+			this._userSignupPopupContent.removeEventListener(starling.events.Event.CLOSE, userSignupScreen);
 			PopUpManager.removePopUp(this._userSignupPopupContent);
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV, true));
 		}
@@ -227,5 +275,26 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			_footerHeight = value;
 		}
+
+		public function set patientsData(value:XML):void
+		{
+			this._patientsData = value;
+		}
+
+		public function get patientsData():XML
+		{
+			return this._patientsData;
+		}
+
+		public function set patients(value:Array):void
+		{
+			this._patients = value;
+		}
+
+		public function get patients():Array
+		{
+			return this._patients;
+		}
+
 	}
 }
