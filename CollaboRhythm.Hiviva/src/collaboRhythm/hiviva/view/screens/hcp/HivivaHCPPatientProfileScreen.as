@@ -2,16 +2,33 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.view.*;
 
 	import feathers.controls.Button;
-
-
+	import feathers.controls.Label;
 	import feathers.controls.Screen;
+	import feathers.display.Scale9Image;
+	import feathers.textures.Scale9Textures;
+
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
+	import flash.geom.Matrix;
+
+	import flash.geom.Rectangle;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 
 	import starling.display.DisplayObject;
-
+	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.events.Event;
+
+	import starling.textures.Texture;
 
 
 	public class HivivaHCPPatientProfileScreen extends Screen
@@ -20,6 +37,16 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _backButton:Button;
 		private var _main:Main;
 		private var _applicationController:HivivaApplicationController;
+		private var _bg:Scale9Image;
+		private var _patientImageBg:Quad;
+		private var _photoHolder:Image;
+		private var _patientEmail:Label;
+		private var _patientData:XML;
+		private var _adherenceLabel:Label;
+		private var _tolerability:Label;
+
+		private const IMAGE_SIZE:Number = 100;
+		private const PADDING:Number = 32;
 
 		public function HivivaHCPPatientProfileScreen()
 		{
@@ -31,29 +58,186 @@ package collaboRhythm.hiviva.view.screens.hcp
 			super.draw();
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
-			trace("draw");
+
+			initPatientXMLData();
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
 			this._header = new HivivaHeader();
-			this._header.title = _main.selectedHCPPatientProfileAppID;
+			this._header.title = _main.selectedHCPPatientProfile.name;
 			this.addChild(this._header);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
-			trace("initialize");
+		}
+
+		private function initPatientXMLData():void
+		{
+			var patientToLoadURL:String = "/resources/patient_" +  _main.selectedHCPPatientProfile.appID + ".xml";
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(flash.events.Event.COMPLETE , patientXMLFileLoadHandler);
+			loader.load(new URLRequest(patientToLoadURL));
+		}
+
+		private function patientXMLFileLoadHandler(e:flash.events.Event):void
+		{
+			_patientData = XML(e.target.data);
+			drawPatientProfile();
 
 		}
 
-		private function backBtnHandler(e:Event):void
+		private function drawPatientProfile():void
+		{
+			var scaledPadding:Number = PADDING * this.dpiScale;
+			var gap:Number = scaledPadding * 0.5;
+			var fullHeight:Number;
+
+			var bgTexture:Scale9Textures = new Scale9Textures(HivivaAssets.INPUT_FIELD, new Rectangle(11, 11, 32, 32));
+			this._bg = new Scale9Image(bgTexture, this.dpiScale);
+			addChild(this._bg);
+
+			this._patientImageBg = new Quad(IMAGE_SIZE * this.dpiScale, IMAGE_SIZE * this.dpiScale, 0x000000);
+			this._patientImageBg.touchable = false;
+			addChild(this._patientImageBg);
+
+			this._bg.x = scaledPadding;
+			this._bg.y = this._header.height + scaledPadding;
+			this._bg.width = this.actualWidth - (scaledPadding * 2);
+			this._bg.height = scaledPadding + this._patientImageBg.height;
+
+			this._patientImageBg.x = this._bg.x + gap;
+			this._patientImageBg.y = this._bg.y + gap;
+
+			this._patientEmail = new Label();
+			this._patientEmail.text = _patientData.email;
+			addChild(this._patientEmail);
+			this._patientEmail.validate();
+
+			this._patientEmail.x = this._patientImageBg.x + this._patientImageBg.width + gap;
+			this._patientEmail.y = this._patientImageBg.y;
+			this._patientEmail.width = this._bg.width - this._patientEmail.x;
+
+			this._adherenceLabel = new Label();
+			this._adherenceLabel.text = "<font face='ExoBold'>Overall adherence:</font> 81%";
+			addChild(this._adherenceLabel);
+			this._adherenceLabel.validate();
+
+			this._adherenceLabel.x = this._patientEmail.x;
+			this._adherenceLabel.y = this._patientEmail.y + this._adherenceLabel.height + gap;
+			this._adherenceLabel.width = this._bg.width - this._adherenceLabel.x;
+
+			this._tolerability = new Label();
+			this._tolerability.text = "<font face='ExoBold'>Overall tolerability:</font> 4.5";
+			addChild(this._tolerability);
+			this._tolerability.validate();
+
+			this._tolerability.x = this._patientEmail.x;
+			this._tolerability.y = this._adherenceLabel.y + this._adherenceLabel.height + gap;
+			this._tolerability.width = this._bg.width - this._tolerability.x;
+
+			doImageLoad("media/patients/" + _patientData.picture);
+
+		}
+
+		private function backBtnHandler(e:starling.events.Event):void
 		{
 			this.dispatchEventWith("navGoHome");
+		}
+
+		private function doImageLoad(url:String):void
+		{
+			var imageLoader:Loader = new Loader();
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
+			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
+			imageLoader.load(new URLRequest(url));
+		}
+
+		private function imageLoaded(e:flash.events.Event):void
+		{
+			trace("Image loaded.");
+
+			var suitableBm:Bitmap = getSuitableBitmap(e.target.content as Bitmap);
+
+			this._photoHolder = new Image(Texture.fromBitmap(suitableBm));
+			this._photoHolder.touchable = false;
+			constrainToProportion(this._photoHolder, IMAGE_SIZE * this.dpiScale);
+			// TODO : Check if if (img.height >= img.width) then position accordingly. right now its only Ypos
+			this._photoHolder.x = this._patientImageBg.x;
+			this._photoHolder.y = this._patientImageBg.y + (this._patientImageBg.height / 2) -
+					(this._photoHolder.height / 2);
+			if (!contains(this._photoHolder)) addChild(this._photoHolder);
+		}
+
+		private function imageLoadFailed(e:flash.events.Event):void
+		{
+			trace("Image load failed.");
+		}
+
+		private function getSuitableBitmap(sourceBm:Bitmap):Bitmap
+		{
+			var bm:Bitmap;
+			// if source bitmap is larger than starling size limit of 2048x2048 than resize
+			if (sourceBm.width >= 2048 || sourceBm.height >= 2048)
+			{
+				// TODO: may need to remove size adjustment from bm! only adjust the data (needs formula)
+				constrainToProportion(sourceBm, 2040);
+				// copy source bitmap at adjusted size
+				var bmd:BitmapData = new BitmapData(sourceBm.width, sourceBm.height);
+				var m:Matrix = new Matrix();
+				m.scale(sourceBm.scaleX, sourceBm.scaleY);
+				bmd.draw(sourceBm, m, null, null, null, true);
+				bm = new Bitmap(bmd, 'auto', true);
+			}
+			else
+			{
+				bm = sourceBm;
+			}
+			return bm;
+		}
+
+		private function constrainToProportion(img:Object, size:Number):void
+		{
+			if (img.height >= img.width)
+			{
+				img.height = size;
+				img.scaleX = img.scaleY;
+			}
+			else
+			{
+				img.width = size;
+				img.scaleY = img.scaleX;
+			}
+		}
+
+		override public function dispose():void
+		{
+
+			this._patientImageBg.dispose();
+			this._photoHolder.dispose();
+
+			removeChildren(0, -1, true);
+			removeEventListeners();
+
+			this._patientImageBg = null;
+			this._photoHolder = null;
+
+			super.dispose();
+		}
+
+		public function set patientData(value:XML):void
+		{
+			this._patientData = value;
+		}
+
+		public function get patientData():XML
+		{
+			return this._patientData;
 		}
 
 		public function get main():Main

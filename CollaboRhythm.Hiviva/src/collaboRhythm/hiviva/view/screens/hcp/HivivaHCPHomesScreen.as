@@ -117,7 +117,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function profileSelectedHandler(e:FeathersScreenEvent):void
 		{
 			trace("Profile Selected " + e.evtData.profile);
-			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_PATIENT_PROFILE , appID:e.evtData.profile.appid});
+			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_PATIENT_PROFILE , patientName:e.evtData.profile.name , appID:e.evtData.profile.appid});
 		}
 
 		private function drawResults():void
