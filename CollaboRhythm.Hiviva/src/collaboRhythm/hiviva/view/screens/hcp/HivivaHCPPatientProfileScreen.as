@@ -3,11 +3,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientReportsScreen;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
+	import feathers.controls.ScreenNavigatorItem;
 	import feathers.display.Scale9Image;
 	import feathers.textures.Scale9Textures;
 
@@ -43,7 +46,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _patientEmail:Label;
 		private var _patientData:XML;
 		private var _adherenceLabel:Label;
-		private var _tolerability:Label;
+		private var _tolerabilityLabel:Label;
+		private var _generateReportBtn:Button;
+		private var _sendMessageBtn:Button;
+
 
 		private const IMAGE_SIZE:Number = 100;
 		private const PADDING:Number = 32;
@@ -100,23 +106,23 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			var bgTexture:Scale9Textures = new Scale9Textures(HivivaAssets.INPUT_FIELD, new Rectangle(11, 11, 32, 32));
 			this._bg = new Scale9Image(bgTexture, this.dpiScale);
-			addChild(this._bg);
+			this.addChild(this._bg);
 
 			this._patientImageBg = new Quad(IMAGE_SIZE * this.dpiScale, IMAGE_SIZE * this.dpiScale, 0x000000);
 			this._patientImageBg.touchable = false;
-			addChild(this._patientImageBg);
+			this.addChild(this._patientImageBg);
 
 			this._bg.x = scaledPadding;
 			this._bg.y = this._header.height + scaledPadding;
 			this._bg.width = this.actualWidth - (scaledPadding * 2);
-			this._bg.height = scaledPadding + this._patientImageBg.height;
+
 
 			this._patientImageBg.x = this._bg.x + gap;
 			this._patientImageBg.y = this._bg.y + gap;
 
 			this._patientEmail = new Label();
 			this._patientEmail.text = _patientData.email;
-			addChild(this._patientEmail);
+			this.addChild(this._patientEmail);
 			this._patientEmail.validate();
 
 			this._patientEmail.x = this._patientImageBg.x + this._patientImageBg.width + gap;
@@ -124,22 +130,45 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientEmail.width = this._bg.width - this._patientEmail.x;
 
 			this._adherenceLabel = new Label();
-			this._adherenceLabel.text = "<font face='ExoBold'>Overall adherence:</font> 81%";
-			addChild(this._adherenceLabel);
+			this._adherenceLabel.text = "<font face='ExoBold'>Overall adherence:</font>  " + String(calculateOverallAdherence()) + "%";
+			this.addChild(this._adherenceLabel);
 			this._adherenceLabel.validate();
 
 			this._adherenceLabel.x = this._patientEmail.x;
 			this._adherenceLabel.y = this._patientEmail.y + this._adherenceLabel.height + gap;
 			this._adherenceLabel.width = this._bg.width - this._adherenceLabel.x;
 
-			this._tolerability = new Label();
-			this._tolerability.text = "<font face='ExoBold'>Overall tolerability:</font> 4.5";
-			addChild(this._tolerability);
-			this._tolerability.validate();
+			this._tolerabilityLabel = new Label();
+			this._tolerabilityLabel.text = "<font face='ExoBold'>Overall tolerability:</font>  " + String(calculateOverallTolerability()) + "%";
+			this.addChild(this._tolerabilityLabel);
+			this._tolerabilityLabel.validate();
 
-			this._tolerability.x = this._patientEmail.x;
-			this._tolerability.y = this._adherenceLabel.y + this._adherenceLabel.height + gap;
-			this._tolerability.width = this._bg.width - this._tolerability.x;
+			this._tolerabilityLabel.x = this._patientEmail.x;
+			this._tolerabilityLabel.y = this._adherenceLabel.y + this._adherenceLabel.height + gap;
+			this._tolerabilityLabel.width = this._bg.width - this._tolerabilityLabel.x;
+
+			this._sendMessageBtn = new Button();
+			this._sendMessageBtn.label = "Send message";
+			this._sendMessageBtn.addEventListener(starling.events.Event.TRIGGERED, sendMessageBtnHandler);
+			this.addChild(this._sendMessageBtn);
+
+			this._sendMessageBtn.validate();
+			this._sendMessageBtn.x = this._patientEmail.x;
+			this._sendMessageBtn.y = _tolerabilityLabel.y + _tolerabilityLabel.height + 2 * gap;
+
+			this._generateReportBtn = new Button();
+			this._generateReportBtn.label = "Generate report";
+			this._generateReportBtn.addEventListener(starling.events.Event.TRIGGERED, generateReportsBtnHandler);
+			this.addChild(this._generateReportBtn);
+
+			this._generateReportBtn.validate();
+			this._generateReportBtn.x = this._sendMessageBtn.x + this._sendMessageBtn.width + gap;
+			this._generateReportBtn.y = this._sendMessageBtn.y;
+
+			var sendMessageBtnY:Number = this._sendMessageBtn.y - (this._header.height + scaledPadding);
+			var bgFinalHeight:Number =  sendMessageBtnY + this._sendMessageBtn.height + gap;
+			this._bg.height = bgFinalHeight;
+
 
 			doImageLoad("media/patients/" + _patientData.picture);
 
@@ -149,6 +178,68 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			this.dispatchEventWith("navGoHome");
 		}
+
+		private function sendMessageBtnHandler(e:starling.events.Event):void
+		{
+
+		}
+
+		private function generateReportsBtnHandler(e:starling.events.Event):void
+		{
+
+			var selectedPatient:XML = _patientData;
+			var screenParams:Object = {selectedPatient: selectedPatient, applicationController: applicationController};
+			var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaHCPPatientReportsScreen, null, screenParams);
+
+			if (this.owner.getScreenIDs().indexOf(HivivaScreens.HCP_PATIENT_PROFILE_REPORT) == -1)
+			{
+				this.owner.addScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT, screenNavigatorItem);
+			}
+			else
+			{
+				this.owner.removeScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT);
+				this.owner.addScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT, screenNavigatorItem);
+			}
+			this.owner.showScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT);
+
+
+		}
+
+		private function calculateOverallAdherence():Number
+		{
+			var history:XMLList = _patientData.medicationHistory.history;
+			var historyCount:uint = history.length();
+			var avgAdherence:Number = 0;
+			if(historyCount >0)
+			{
+				for(var i:uint = 0 ; i <historyCount ; i++)
+				{
+					avgAdherence += parseInt(history[i].adherence);
+				}
+				avgAdherence = (avgAdherence / historyCount);
+			}
+
+			return Math.round(avgAdherence);
+		}
+
+		private function calculateOverallTolerability():Number
+		{
+			var history:XMLList = _patientData.medicationHistory.history;
+			var historyCount:uint = history.length();
+			var avgTolerability:Number = 0;
+			if (historyCount > 0)
+			{
+				for (var i:uint = 0; i < historyCount; i++)
+				{
+					avgTolerability += parseInt(history[i].tolerability);
+				}
+				avgTolerability = (avgTolerability / historyCount);
+			}
+
+			return  Math.round(avgTolerability);
+		}
+
+
 
 		private function doImageLoad(url:String):void
 		{

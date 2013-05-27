@@ -42,7 +42,7 @@
     <patient>
         <name>Andy Carey</name>
         <email>andy@pharmiweb.com</email>
-        <appid>987654321</appid>
+        <appid>987-654-321</appid>
         <picture>dummy.png</picture>
 		<medicationHistory>
 			<history>
@@ -65,7 +65,7 @@
     <patient>
         <name>Tom Harker</name>
         <email>tom.harker@pharmiweb.com</email>
-        <appid>246897531</appid>
+        <appid>246-897-531</appid>
         <picture>dummy.png</picture>
 		<medicationHistory>
 			<history>
@@ -88,7 +88,7 @@
     <patient>
         <name>Tim Gough</name>
         <email>timg@pharmiweb.com</email>
-        <appid>135798462</appid>
+        <appid>135-798-462</appid>
         <picture>dummy.png</picture>
 		<medicationHistory>
 			<history>
@@ -111,7 +111,7 @@
     <patient>
         <name>Russell Horton</name>
         <email>russell@pharmiweb.com</email>
-        <appid>000000000</appid>
+        <appid>000-000-000</appid>
         <picture>dummy.png</picture>
 		<medicationHistory>
 			<history>

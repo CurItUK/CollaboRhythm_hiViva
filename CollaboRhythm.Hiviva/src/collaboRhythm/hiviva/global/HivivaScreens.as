@@ -28,9 +28,7 @@ package collaboRhythm.hiviva.global
 
 		public static const HCP_HOME_SCREEN:String						= "hcpHomeScreen";
 		public static const HCP_ADHERENCE_SCREEN:String					= "hcpAdherenceScreen";
-		public static const HCP_REPORTS_SCREEN:String					= "hcpReportsScreen";
 		public static const HCP_MESSAGES_SCREEN:String					= "hcpMessagesScreen";
-
 		public static const HCP_PROFILE_SCREEN:String					= "hcpProfileScreen";
 		public static const HCP_HELP_SCREEN:String						= "hcpHelpScreen";
 		public static const HCP_EDIT_PROFILE:String						= "hcpEditProfile";
@@ -39,6 +37,10 @@ package collaboRhythm.hiviva.global
 		public static const HCP_CONNECT_PATIENT:String					= "hcpConnectPatient";
 		public static const HCP_ADD_PATIENT:String						= "hcpAddPatient";
 		public static const HCP_PATIENT_PROFILE:String					= "hcpPatientProfile";
+
+		//HCP Reporting screens
+		public static const HCP_REPORTS_SCREEN:String					= "hcpReportsScreen";
+		public static const HCP_PATIENT_PROFILE_REPORT:String			= "hcpPatientProfileReport";
 
 
 

@@ -8,18 +8,28 @@
 	<medicationHistory>
 		<history>
 			<date>01-01-2013</date>
-			<adherence>50</adherence>
-			<tolerability>75</tolerability>
+			<adherence>90</adherence>
+			<tolerability>80</tolerability>
 		</history>
 		<history>
 			<date>01-02-2013</date>
 			<adherence>80</adherence>
-			<tolerability>45</tolerability>
+			<tolerability>50</tolerability>
 		</history>
 		<history>
 			<date>01-03-2013</date>
-			<adherence>70</adherence>
+			<adherence>95</adherence>
 			<tolerability>55</tolerability>
+		</history>
+		<history>
+			<date>01-04-2013</date>
+			<adherence>100</adherence>
+			<tolerability>55</tolerability>
+		</history>
+		<history>
+			<date>01-05-2013</date>
+			<adherence>95</adherence>
+			<tolerability>70</tolerability>
 		</history>
 	</medicationHistory>
 </patient>
