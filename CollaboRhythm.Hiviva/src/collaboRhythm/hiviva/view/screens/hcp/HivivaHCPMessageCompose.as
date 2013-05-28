@@ -2,9 +2,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
 	import feathers.controls.Button;
+	import feathers.controls.Label;
 
 
 	import feathers.controls.Screen;
@@ -19,6 +21,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _header:HivivaHeader;
 		private var _applicationController:HivivaApplicationController;
 		private var _backButton:Button;
+		private var _patients:Array;
 
 		public function HivivaHCPMessageCompose()
 		{
@@ -48,6 +51,44 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		}
 
+		private function getHcpConnections():void
+		{
+			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE, getHcpListCompleteHandler)
+			applicationController.hivivaLocalStoreController.getHCPConnections();
+		}
+
+		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE, getHcpListCompleteHandler)
+			if (e.data.connections != null)
+			{
+				this._patients = e.data.connections;
+				initPatientSelectList();
+			}
+			else
+			{
+				initAlertText();
+			}
+		}
+
+		private function initPatientSelectList():void
+		{
+
+
+		}
+
+		private function initAlertText():void
+		{
+
+			var alertLabel:Label = new Label();
+			alertLabel.text = "Connect to a patient to get started.";
+
+			this.addChild(alertLabel);
+			alertLabel.validate();
+			alertLabel.x = this.actualWidth / 2 - alertLabel.width / 2;
+			alertLabel.y = alertLabel.height * 4;
+		}
+
 		private function backBtnHandler(e:starling.events.Event):void
 		{
 			this.dispatchEventWith("navGoHome");
@@ -67,7 +108,5 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			_applicationController = value;
 		}
-
-
 	}
 }

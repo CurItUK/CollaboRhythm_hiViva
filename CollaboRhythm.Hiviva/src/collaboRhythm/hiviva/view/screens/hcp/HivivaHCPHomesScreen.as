@@ -201,9 +201,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this.addChild(alertLabel);
 			alertLabel.validate();
-			alertLabel.x = this.actualWidth/2 - alertLabel.width/2;
+			alertLabel.x = this.actualWidth / 2 - alertLabel.width / 2;
 			alertLabel.y = alertLabel.height * 4;
-	}
+		}
 
 		private function connectToPatientBtnHandler(e:starling.events.Event):void
 		{
