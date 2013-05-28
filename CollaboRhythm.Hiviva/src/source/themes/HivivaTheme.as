@@ -757,8 +757,9 @@ package source.themes
 
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 
-			this.setInitializerForClass(Label, HeaderLightInitializer, "header-light");
-			this.setInitializerForClass(Label, HeaderBoldInitializer, "header-bold");
+			//this.setInitializerForClass(Label, headerLabelInitializer, "header");
+			//this.setInitializerForClass(Label, HeaderBoldInitializer, "header-bold");
+			this.setInitializerForClass(Label, validationLabelInitializer, "validation-label");
 			this.setInitializerForClass(Label, inputLabelInitializer, "input-label");
 			this.setInitializerForClass(Label, homeLabelInitializer, "home-label");
 			this.setInitializerForClass(Label, splashFooterTextInitializer, "splash-footer-text");
@@ -1021,20 +1022,15 @@ package source.themes
 			button.minTouchHeight = skinHeight * this.scale;
 		}
 
-
-		protected function HeaderLightInitializer(label:Label):void
+/*
+		protected function headerLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.isHTML = true;
+			label.textRendererProperties.wordWrap = true;
 			label.textRendererProperties.textFormat = new TextFormat("ExoLight", Math.round(44 * this.scale), 0x293d54);
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-		}
-
-		protected function HeaderBoldInitializer(label:Label):void
-		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(44 * this.scale), 0x293d54);
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-		}
+		}*/
 
 		protected function labelInitializer(label:Label):void
 		{
@@ -1073,6 +1069,15 @@ package source.themes
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
+		protected function validationLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0xb9c4cd);
+			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
+			label.textRendererProperties.wordWrap = true;
+			label.textRendererProperties.isHTML = true;
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(-1,1.5,0x000000,0.5,0);
+		}
 		protected function inputLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
@@ -1866,8 +1871,8 @@ package source.themes
 			check.selectedDisabledLabelProperties.textFormat = format;
 			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			check.gap = 12 * this.scale;
-			check.padding = 32 * this.scale;
-			check.paddingTop = this.scale;
+//			check.padding = 32 * this.scale;
+//			check.paddingTop = this.scale;
 			check.minTouchWidth = check.minTouchHeight = 88 * this.scale;
 		}
 
@@ -2050,12 +2055,14 @@ package source.themes
 
 					header.paddingLeft = 14 * this.scale;
 
-			/*
-			const backgroundSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, 0x000000);
-
-			header.backgroundSkin = backgroundSkin;
-			*/
-			header.titleProperties.textFormat = this.headerTextFormat;
+			//header.titleProperties.textFormat = this.headerTextFormat;
+/*
+			header.titleProperties.embedFonts = true;
+			header.titleProperties.isHTML = true;
+			header.titleProperties.wordWrap = true;
+			header.titleProperties.textFormat = new TextFormat("ExoLight", Math.round(44 * this.scale), 0x293d54);
+			header.titleProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);*/
+			//label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
 

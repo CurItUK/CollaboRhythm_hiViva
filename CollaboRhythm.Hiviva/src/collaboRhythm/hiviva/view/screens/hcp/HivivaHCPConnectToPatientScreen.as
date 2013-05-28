@@ -42,10 +42,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.height = 110 * this.dpiScale;
 
 			// reduce font size for large title
-			this._header._titleHolder1.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(36 * this.dpiScale), 0x293d54);
+			/*this._header._titleHolder1.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(36 * this.dpiScale), 0x293d54);
 			this._header._titleHolder2.textRendererProperties.textFormat = new TextFormat("ExoLight", Math.round(36 * this.dpiScale), 0x293d54);
 			this._header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
-			this._header.validate();
+			this._header.validate();*/
 
 			this._addConnectionButton.validate();
 			this._addConnectionButton.x = (this.actualWidth / 2) - (this._addConnectionButton.width / 2);

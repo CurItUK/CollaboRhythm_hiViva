@@ -1,58 +1,84 @@
 package collaboRhythm.hiviva.view
 {
 	import feathers.controls.Header;
-	import feathers.controls.Label;
+	import feathers.controls.text.TextFieldTextRenderer;
+	import feathers.core.ITextRenderer;
+
+	import flash.text.TextFormat;
+
+	import starling.filters.BlurFilter;
 
 	public class HivivaHeader extends Header
 	{
-		public var _titleHolder1:Label;
-		public var _titleHolder2:Label;
 
-		private const PADDING:Number = 30;
+		private var _scale:Number = 1;
+		private var _fontSize:Number = 44;
+		private const VERTICAL_PADDING:Number = 20;
+		private const HORIZONTOL_PADDING:Number = 10;
 
 		public function HivivaHeader()
 		{
 			super();
+			this.titleAlign = Header.TITLE_ALIGN_CENTER;
+			this.verticalAlign = Header.VERTICAL_ALIGN_MIDDLE;
 		}
 
 		override protected function draw():void
 		{
 			super.draw();
-			if(this.title.length > 0) drawTrueTitle();
 		}
 
 		override protected function initialize():void
 		{
-			this.verticalAlign = Header.VERTICAL_ALIGN_MIDDLE;
+			this.titleFactory = headerTitleFactory;
 			super.initialize();
-			if(this.title.length > 0) initTrueTitle();
+			this.paddingLeft = this.paddingRight = HORIZONTOL_PADDING * this._scale;
+			this.paddingBottom = this.paddingTop = VERTICAL_PADDING * this._scale;
 		}
 
-		private function initTrueTitle():void
+
+		public function initTrueTitle():void
 		{
-			var splitText:Array = this.title.split(" ");
-			this._titleHolder1 = new Label();
-			this._titleHolder1.name = "header-bold";
-			//this._titleHolder1.text = splitText[0];
-			this._titleHolder1.text = splitText.shift();
-			this._titleHolder2 = new Label();
-			this._titleHolder2.name = "header-light";
-			this._titleHolder2.text = " " + splitText.join(" ");
-			addChild(this._titleHolder1);
-			addChild(this._titleHolder2);
+			var splitText:Array;
+			if(this.title.length > 0)
+			{
+				splitText = this.title.split(" ");
+				this.title = "<font face='ExoBold'>" + splitText.shift() + "</font> " + splitText.join(" ");
+				this.validate();
+			}
 		}
 
-		private function drawTrueTitle():void
+		private function headerTitleFactory():ITextRenderer
 		{
-			this._titleHolder1.validate();
-			this._titleHolder2.validate();
-			this.validate();
-			var trueTitleHeight:Number = this._titleHolder1.height > this._titleHolder2.height ? this._titleHolder1.height : this._titleHolder2.height;
-			var trueTitleWidth:Number = this._titleHolder1.width + this._titleHolder2.width;
-			this._titleHolder1.x = this.leftItemsWidth > 0 ? this.leftItemsWidth : (this.actualWidth / 2) - (trueTitleWidth / 2);
-			this._titleHolder2.x = this._titleHolder1.x + this._titleHolder1.width;
-			this._titleHolder1.y = this._titleHolder2.y = (this.actualHeight / 2) - (trueTitleHeight / 2);
-			this.title = "";
+			var titleRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+
+			//styles here
+			titleRenderer.embedFonts = true;
+			titleRenderer.isHTML = true;
+			titleRenderer.textFormat = new TextFormat("ExoLight", Math.round(this._fontSize * this._scale), 0x293d54);
+			titleRenderer.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+
+			return titleRenderer;
+		}
+
+		public function get scale():Number
+		{
+			return _scale;
+		}
+
+		public function set scale(value:Number):void
+		{
+			_scale = value;
+		}
+
+		public function get fontSize():Number
+		{
+			return _fontSize;
+		}
+
+		public function set fontSize(value:Number):void
+		{
+			_fontSize = value;
 		}
 	}
 }

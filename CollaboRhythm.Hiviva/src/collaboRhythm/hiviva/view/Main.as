@@ -227,7 +227,7 @@ package collaboRhythm.hiviva.view
 				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientViewMedicationScreen , null , {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen , null , {applicationController:_applicationController,footerHeight:this._footerBtnGroup.height}));
 				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
-				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 
 			}
 		}

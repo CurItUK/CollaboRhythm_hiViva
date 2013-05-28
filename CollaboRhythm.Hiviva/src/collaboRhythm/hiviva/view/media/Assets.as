@@ -159,6 +159,12 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/close_button.png")]
 		public static const CloseButtonPng:Class;
 
+		[Embed(source="/assets/images/temp/validation_bg.png")]
+		public static const ValidationBgPng:Class;
+
+		[Embed(source="/assets/images/temp/header_line.png")]
+		public static const HeaderLinePng:Class;
+
 		//front facing screen Items
 
 		[Embed(source="/assets/images/temp/home_lens_rim.png")]

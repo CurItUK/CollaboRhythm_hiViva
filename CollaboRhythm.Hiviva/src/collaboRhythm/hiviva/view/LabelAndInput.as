@@ -50,16 +50,14 @@ package collaboRhythm.hiviva.view
 			switch(this._labelStructure)
 			{
 				case "left" :
-					this._input.x = this.actualWidth - scaledPadding - this._input.width;
+					this._input.x = this.actualWidth - this._input.width;
 					this._labelLeft.validate();
-					this._labelLeft.x = scaledPadding;
 					this._labelLeft.y = (this._input.y + this._input.height / 2) - (this._labelLeft.height / 2);
 					fullHeight = this._input.height > this._labelLeft.height ? this._input.height : this._labelLeft.height;
 					break;
 				case "right" :
-					this._input.x = scaledPadding;
 					this._labelRight.validate();
-					this._labelRight.x = this.actualWidth - scaledPadding - this._labelRight.width;
+					this._labelRight.x = this.actualWidth - this._labelRight.width;
 					this._labelRight.y = (this._input.y + this._input.height / 2) - (this._labelRight.height / 2);
 					fullHeight = this._input.height > this._labelRight.height ? this._input.height : this._labelRight.height;
 					break;
@@ -75,7 +73,7 @@ package collaboRhythm.hiviva.view
 					break;
 			}
 
-			fullHeight += (scaledPadding * 0.75);
+			//fullHeight += (scaledPadding * 0.75);
 
 			setSizeInternal(this.actualWidth, fullHeight, true);
 		}

@@ -72,9 +72,7 @@ package collaboRhythm.hiviva.view
 
 			super.draw();
 
-			this._bg.width = this.actualWidth - (scaledPadding * 2);
-
-			this._bg.x = scaledPadding;
+			this._bg.width = this.actualWidth;
 
 			this._imageBg.x = this._bg.x + (scaledPadding * 0.5);
 			this._imageBg.y = this._bg.y + (scaledPadding * 0.5);
