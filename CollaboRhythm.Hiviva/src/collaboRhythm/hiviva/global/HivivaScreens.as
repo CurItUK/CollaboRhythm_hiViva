@@ -37,6 +37,7 @@ package collaboRhythm.hiviva.global
 		public static const HCP_CONNECT_PATIENT:String					= "hcpConnectPatient";
 		public static const HCP_ADD_PATIENT:String						= "hcpAddPatient";
 		public static const HCP_PATIENT_PROFILE:String					= "hcpPatientProfile";
+		public static const HCP_COMPOSE_MESSAGE:String					= "hcpComposeMessage";
 
 		//HCP Reporting screens
 		public static const HCP_REPORTS_SCREEN:String					= "hcpReportsScreen";

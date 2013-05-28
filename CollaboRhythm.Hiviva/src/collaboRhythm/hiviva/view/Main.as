@@ -14,6 +14,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPDisplaySettings;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPEditProfile;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHomesScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessageCompose;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessagesInbox;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPPatientProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPProfileScreen;
@@ -244,7 +245,7 @@ package collaboRhythm.hiviva.view
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_HOME_SCREEN, new ScreenNavigatorItem(HivivaHCPHomesScreen, {mainToSubNav:navigateToDirectProfileMenu}, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_ADHERENCE_SCREEN, new ScreenNavigatorItem(HivivaHCPAllPatientsAdherenceScreen));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaHCPReportsScreen));
-				this._mainScreenNav.addScreen(HivivaScreens.HCP_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaHCPMessagesInbox));
+				this._mainScreenNav.addScreen(HivivaScreens.HCP_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaHCPMessagesInbox ,  {mainToSubNav:navigateToDirectProfileMenu} , {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 
 				// add listeners for homepage user signup check, to hide / show the footer and settings button
 				addEventListener(FeathersScreenEvent.HIDE_MAIN_NAV, hideMainNav);
@@ -262,6 +263,8 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.HCP_CONNECT_PATIENT, new ScreenNavigatorItem(HivivaHCPConnectToPatientScreen, null, {applicationController:_applicationController}));
 			this._settingsNav.addScreen(HivivaScreens.HCP_ADD_PATIENT, new ScreenNavigatorItem(HivivaHCPAddPatientScreen));
 			this._settingsNav.addScreen(HivivaScreens.HCP_PATIENT_PROFILE, new ScreenNavigatorItem(HivivaHCPPatientProfileScreen, {navGoHome:goBackToMainScreen},{applicationController:_applicationController , main:main}));
+			this._settingsNav.addScreen(HivivaScreens.HCP_COMPOSE_MESSAGE, new ScreenNavigatorItem(HivivaHCPMessageCompose, {navGoHome:goBackToMainScreen},{applicationController:_applicationController}));
+
 
 		}
 

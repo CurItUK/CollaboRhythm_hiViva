@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+    <message>
+		<date>01022013</date>
+		<body>Patient Barry Gearing adherence levels below 95%</body>
+	</message>
+	 <message>
+		<date>01022013</date>
+		<body>Patient James adherence levels below 92%</body>
+	</message>
+	 <message>
+		<date>02022013</date>
+		<body>New Patient Barry Gearing has not logged in for 10 days</body>
+	</message>
+	 <message>
+		<date>03202013</date>
+		<body>New Patient Barry Gearing has not logged in for 20 days</body>
+	</message>
+</messages>
