@@ -125,6 +125,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function drawPatientProfiles():void
 		{
+			//TODO add better xml search for patients by appid.
 			var patientsXMLList:XMLList = patientsData.patient;
 			_filterdPatients = [];
 
@@ -132,7 +133,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var innerLoop:uint = patients.length;
 			for (var i:uint = 0; i < patientsLength; i++)
 			{
-
 				for (var j:uint = 0; j < innerLoop; j++)
 				{
 					if (patientsXMLList[i].appid == patients[j].appid)
@@ -141,7 +141,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 					}
 				}
-
 			}
 
 			var connectionsLength:uint = _filterdPatients.length;
@@ -186,23 +185,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			{
 				patientCell = this._patientCellContainer.getChildAt(i) as PatientResultCellHome;
 				patientCell.width = this.actualWidth;
-
 			}
 
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.gap = scaledPadding;
 			this._patientCellContainer.layout = layout;
 			this._patientCellContainer.validate();
-		}
-
-		private function generateXMLNode(record:Object):XML
-		{
-			var xmlRecord:XML = XML("<patient><name>" + record.name + "</name><email>"
-					+ record.email + "</email><appid>"
-					+ record.appid + "</appid><picture>"
-					+ record.picture + "</picture></patient>");
-
-			return xmlRecord;
 		}
 
 		private function initAlertText():void

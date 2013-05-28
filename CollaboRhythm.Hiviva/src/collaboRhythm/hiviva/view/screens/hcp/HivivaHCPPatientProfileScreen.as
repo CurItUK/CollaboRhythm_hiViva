@@ -4,6 +4,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientReportsScreen;
 
@@ -129,8 +131,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientEmail.y = this._patientImageBg.y;
 			this._patientEmail.width = this._bg.width - this._patientEmail.x;
 
+			var avgAdherence:Number = HivivaModifier.calculateOverallAdherence(_patientData.medicationHistory.history);
 			this._adherenceLabel = new Label();
-			this._adherenceLabel.text = "<font face='ExoBold'>Overall adherence:</font>  " + String(calculateOverallAdherence()) + "%";
+			this._adherenceLabel.text = "<font face='ExoBold'>Overall adherence:</font>  " + String(avgAdherence) + "%";
 			this.addChild(this._adherenceLabel);
 			this._adherenceLabel.validate();
 
@@ -138,8 +141,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._adherenceLabel.y = this._patientEmail.y + this._adherenceLabel.height + gap;
 			this._adherenceLabel.width = this._bg.width - this._adherenceLabel.x;
 
+			var avgTolerability:Number = HivivaModifier.calculateOverallTolerability(_patientData.medicationHistory.history);
 			this._tolerabilityLabel = new Label();
-			this._tolerabilityLabel.text = "<font face='ExoBold'>Overall tolerability:</font>  " + String(calculateOverallTolerability()) + "%";
+			this._tolerabilityLabel.text = "<font face='ExoBold'>Overall tolerability:</font>  " + String(avgTolerability) + "%";
 			this.addChild(this._tolerabilityLabel);
 			this._tolerabilityLabel.validate();
 
@@ -201,45 +205,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 				this.owner.addScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT, screenNavigatorItem);
 			}
 			this.owner.showScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT);
-
-
 		}
-
-		private function calculateOverallAdherence():Number
-		{
-			var history:XMLList = _patientData.medicationHistory.history;
-			var historyCount:uint = history.length();
-			var avgAdherence:Number = 0;
-			if(historyCount >0)
-			{
-				for(var i:uint = 0 ; i <historyCount ; i++)
-				{
-					avgAdherence += parseInt(history[i].adherence);
-				}
-				avgAdherence = (avgAdherence / historyCount);
-			}
-
-			return Math.round(avgAdherence);
-		}
-
-		private function calculateOverallTolerability():Number
-		{
-			var history:XMLList = _patientData.medicationHistory.history;
-			var historyCount:uint = history.length();
-			var avgTolerability:Number = 0;
-			if (historyCount > 0)
-			{
-				for (var i:uint = 0; i < historyCount; i++)
-				{
-					avgTolerability += parseInt(history[i].tolerability);
-				}
-				avgTolerability = (avgTolerability / historyCount);
-			}
-
-			return  Math.round(avgTolerability);
-		}
-
-
 
 		private function doImageLoad(url:String):void
 		{

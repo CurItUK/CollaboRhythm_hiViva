@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens
 {
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -99,8 +100,10 @@ package collaboRhythm.hiviva.view.screens
 
 			addChild(this._patientName);
 
-			this._adherenceTolerabilityLabel = new Label()
-			this._adherenceTolerabilityLabel.text = "81% / 4.2";
+			var avgTolerability:Number = HivivaModifier.calculateOverallTolerability(patientData.medicationHistory.history);
+			var avgAdherence:Number = HivivaModifier.calculateOverallAdherence(patientData.medicationHistory.history);
+			this._adherenceTolerabilityLabel = new Label();
+			this._adherenceTolerabilityLabel.text = String(avgAdherence) +  "% / " + String(avgTolerability) + "%";
 
 			addChild(this._adherenceTolerabilityLabel);
 

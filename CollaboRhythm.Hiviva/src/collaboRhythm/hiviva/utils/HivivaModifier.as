@@ -112,5 +112,39 @@ package collaboRhythm.hiviva.utils
 		{
 			return deg * (Math.PI/180);
 		}
+
+		public static function calculateOverallTolerability(tolerabilityXMLList:XMLList):Number
+		{
+			var history:XMLList = tolerabilityXMLList;
+			var historyCount:uint = history.length();
+			var avgTolerability:Number = 0;
+			if (historyCount > 0)
+			{
+				for (var i:uint = 0; i < historyCount; i++)
+				{
+					avgTolerability += parseInt(history[i].tolerability);
+				}
+				avgTolerability = (avgTolerability / historyCount);
+			}
+
+			return  Math.round(avgTolerability);
+		}
+
+		public static function calculateOverallAdherence(adherenceXMLList:XMLList):Number
+		{
+			var history:XMLList = adherenceXMLList;
+			var historyCount:uint = history.length();
+			var avgAdherence:Number = 0;
+			if (historyCount > 0)
+			{
+				for (var i:uint = 0; i < historyCount; i++)
+				{
+					avgAdherence += parseInt(history[i].adherence);
+				}
+				avgAdherence = (avgAdherence / historyCount);
+			}
+
+			return Math.round(avgAdherence);
+		}
 	}
 }
