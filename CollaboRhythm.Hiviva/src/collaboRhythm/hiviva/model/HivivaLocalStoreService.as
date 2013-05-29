@@ -811,6 +811,30 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
+		public function addHCPConnection(patient:Object):void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "INSERT INTO patient_connection (name, email, appid, picture) VALUES (" +
+					patient.name + ", " + patient.email + ", " + patient.appid + ", " + patient.picture + ")";
+
+			trace(this._sqStatement.text);
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, addHCPConnectionHandler);
+			this._sqStatement.execute();
+		}
+
+		private function addHCPConnectionHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_CONNECTION_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function getPatientConnections():void
 		{
 			var dbFile:File = File.applicationStorageDirectory;
@@ -854,6 +878,30 @@ package collaboRhythm.hiviva.model
 		private function deletePatientConnectionHandler(e:SQLEvent):void
 		{
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_CONNECTION_DELETE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function addPatientConnection(hcp:Object):void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "INSERT INTO hcp_connection (name, email, appid, picture) VALUES (" +
+					hcp.name + ", " + hcp.email + ", " + hcp.appid + ", " + hcp.picture + ")";
+
+			trace(this._sqStatement.text);
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, addPatientConnectionHandler);
+			this._sqStatement.execute();
+		}
+
+		private function addPatientConnectionHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_CONNECTION_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
 

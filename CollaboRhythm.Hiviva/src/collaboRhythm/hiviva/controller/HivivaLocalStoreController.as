@@ -286,6 +286,20 @@ package collaboRhythm.hiviva.controller
 		}
 
 
+		public function addHCPConnection(patient:Object):void
+		{
+			service.addEventListener(LocalDataStoreEvent.HCP_CONNECTION_SAVE_COMPLETE, addHCPConnectionHandler);
+			service.addHCPConnection(patient);
+		}
+
+		private function addHCPConnectionHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.HCP_CONNECTION_SAVE_COMPLETE, addHCPConnectionHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_CONNECTION_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+
 		public function getPatientConnections():void
 		{
 			service.addEventListener(LocalDataStoreEvent.PATIENT_CONNECTIONS_LOAD_COMPLETE, patientConnectionsLoadedHandler);
@@ -310,6 +324,19 @@ package collaboRhythm.hiviva.controller
 		{
 			service.removeEventListener(LocalDataStoreEvent.PATIENT_CONNECTION_DELETE_COMPLETE, patientConnectionDeleteHandler);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_CONNECTION_DELETE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function addPatientConnection(hcp:Object):void
+		{
+			service.addEventListener(LocalDataStoreEvent.PATIENT_CONNECTION_SAVE_COMPLETE, addPatientConnectionHandler);
+			service.addPatientConnection(hcp);
+		}
+
+		private function addPatientConnectionHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PATIENT_CONNECTION_SAVE_COMPLETE, addPatientConnectionHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_CONNECTION_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
 
