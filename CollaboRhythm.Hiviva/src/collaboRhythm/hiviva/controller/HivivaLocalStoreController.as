@@ -285,6 +285,34 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+
+		public function getPatientConnections():void
+		{
+			service.addEventListener(LocalDataStoreEvent.PATIENT_CONNECTIONS_LOAD_COMPLETE, patientConnectionsLoadedHandler);
+			service.getPatientConnections();
+		}
+
+		private function patientConnectionsLoadedHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PATIENT_CONNECTIONS_LOAD_COMPLETE, patientConnectionsLoadedHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_CONNECTIONS_LOAD_COMPLETE);
+			evt.data  = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function deletePatientConnection(appid:String):void
+		{
+			service.addEventListener(LocalDataStoreEvent.PATIENT_CONNECTION_DELETE_COMPLETE, patientConnectionDeleteHandler);
+			service.deletePatientConnection(appid);
+		}
+
+		private function patientConnectionDeleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PATIENT_CONNECTION_DELETE_COMPLETE, patientConnectionDeleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_CONNECTION_DELETE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function resetApplication():void
 		{
 			service.resetApplication();

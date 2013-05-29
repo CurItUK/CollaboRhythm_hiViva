@@ -65,6 +65,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function preValidateContent():void
 		{
+			super.preValidateContent();
 			this._reportDatesLabel.width = this._innerWidth;
 
 			this._startDateInput._labelLeft.text = "Start";
@@ -80,11 +81,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._feelingCheck.width = this._innerWidth;
 			this._cd4Check.width = this._innerWidth;
 			this._viralLoadCheck.width = this._innerWidth;
-			this._viralLoadCheck.width = this._innerWidth;
 		}
 
 		override protected function postValidateContent():void
 		{
+			super.postValidateContent();
 		}
 
 		override protected function initialize():void

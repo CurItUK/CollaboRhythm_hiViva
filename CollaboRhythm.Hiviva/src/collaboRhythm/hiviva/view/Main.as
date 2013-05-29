@@ -153,8 +153,8 @@ package collaboRhythm.hiviva.view
 
 		private function initfeathersTheme():void
 		{
-			//var isDesktop:Boolean = true;
-			var isDesktop:Boolean = false;
+			var isDesktop:Boolean = true;
+//			var isDesktop:Boolean = false;
 			this._feathersTheme = new HivivaTheme(this.stage, !isDesktop);
 			this._scaleFactor = isDesktop ? 1 : this._feathersTheme.scale;
 		}
@@ -244,7 +244,7 @@ package collaboRhythm.hiviva.view
 
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_HOME_SCREEN, new ScreenNavigatorItem(HivivaHCPHomesScreen, {mainToSubNav:navigateToDirectProfileMenu}, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_ADHERENCE_SCREEN, new ScreenNavigatorItem(HivivaHCPAllPatientsAdherenceScreen));
-				this._mainScreenNav.addScreen(HivivaScreens.HCP_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaHCPReportsScreen));
+				this._mainScreenNav.addScreen(HivivaScreens.HCP_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaHCPReportsScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaHCPMessagesInbox ,  {mainToSubNav:navigateToDirectProfileMenu} , {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 
 				// add listeners for homepage user signup check, to hide / show the footer and settings button

@@ -1083,6 +1083,7 @@ package source.themes
 			label.textRendererProperties.embedFonts = true;
 			label.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(30 * this.scale), 0x495c72);
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			label.textRendererProperties.isHTML = true;
 		}
 
 		protected function homeLabelInitializer(label:Label):void
@@ -1817,8 +1818,8 @@ package source.themes
 			radio.selectedDisabledLabelProperties.textFormat = format;
 			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			radio.gap = 12 * this.scale;
-			radio.padding = 32 * this.scale;
-			radio.paddingTop = this.scale;
+			/*radio.padding = 32 * this.scale;
+			radio.paddingTop = this.scale;*/
 			radio.minTouchWidth = radio.minTouchHeight = 88 * this.scale;
 
 			/*

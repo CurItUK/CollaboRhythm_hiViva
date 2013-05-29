@@ -811,6 +811,52 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
+		public function getPatientConnections():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM hcp_connection";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getPatientConnectionsHandler);
+			this._sqStatement.execute();
+
+		}
+
+		private function getPatientConnectionsHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_CONNECTIONS_LOAD_COMPLETE);
+			evt.data.connections = result;
+			this.dispatchEvent(evt);
+		}
+
+		public function deletePatientConnection(appid:String):void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "DELETE FROM hcp_connection WHERE appid=" + appid;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, deletePatientConnectionHandler);
+			this._sqStatement.execute();
+
+		}
+
+		private function deletePatientConnectionHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_CONNECTION_DELETE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function resetApplication():void
 		{
 			var dbFile:File = File.applicationStorageDirectory;

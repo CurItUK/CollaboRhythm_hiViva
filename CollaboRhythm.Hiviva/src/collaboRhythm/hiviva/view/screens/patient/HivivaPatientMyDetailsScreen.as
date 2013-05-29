@@ -38,6 +38,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function preValidateContent():void
 		{
+			super.preValidateContent();
 			this._instructionsText.width = this._innerWidth;
 
 			this._nameInput._labelLeft.text = "Name";
@@ -59,6 +60,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function postValidateContent():void
 		{
+			super.postValidateContent();
 			this._submitButton.y = this._cancelButton.y;
 			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + this._componentGap;
 		}

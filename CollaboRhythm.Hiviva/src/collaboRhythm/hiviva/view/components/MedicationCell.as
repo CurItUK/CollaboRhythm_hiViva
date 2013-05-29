@@ -14,11 +14,8 @@ package collaboRhythm.hiviva.view.components
 
 	public class MedicationCell extends FeathersControl
 	{
-
-		private const PADDING:Number = 32;
 		private const IMAGE_SIZE:Number = 100;
 
-		protected var _scaledPadding:Number;
 		protected var _gap:Number;
 
 		protected var _bg:Scale9Image;
@@ -39,17 +36,15 @@ package collaboRhythm.hiviva.view.components
 
 		override protected function draw():void
 		{
-			this._scaledPadding = PADDING * this._scale;
-			this._gap = this._scaledPadding * 0.5;
+			this._gap = 15 * this._scale;
 
 			super.draw();
 
 			this._brandNameLabel.validate();
 			this._genericNameLabel.validate();
 
-			this._bg.x = this._scaledPadding;
-			this._bg.width = this.actualWidth - (this._scaledPadding * 2);
-			this._bg.height = this._pillImageBg.height + this._scaledPadding;
+			this._bg.width = this.actualWidth;
+			this._bg.height = this._pillImageBg.height + (this._gap * 2);
 			//trace("this._genericNameLabel " + this._genericNameLabel.height);
 
 			this._pillImageBg.x = this._bg.x + this._gap;

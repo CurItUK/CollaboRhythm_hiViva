@@ -1,16 +1,20 @@
 package collaboRhythm.hiviva.view
 {
+	import collaboRhythm.hiviva.global.HivivaAssets;
+
 	import feathers.controls.Header;
 	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.ITextRenderer;
 
 	import flash.text.TextFormat;
 
+	import starling.display.Image;
+
 	import starling.filters.BlurFilter;
 
 	public class HivivaHeader extends Header
 	{
-
+		private var _headerLine:Image;
 		private var _scale:Number = 1;
 		private var _fontSize:Number = 44;
 		private const VERTICAL_PADDING:Number = 20;
@@ -26,6 +30,9 @@ package collaboRhythm.hiviva.view
 		override protected function draw():void
 		{
 			super.draw();
+
+			this._headerLine.width = this.actualWidth;
+			this._headerLine.y = this.actualHeight - 1;
 		}
 
 		override protected function initialize():void
@@ -34,6 +41,9 @@ package collaboRhythm.hiviva.view
 			super.initialize();
 			this.paddingLeft = this.paddingRight = HORIZONTOL_PADDING * this._scale;
 			this.paddingBottom = this.paddingTop = VERTICAL_PADDING * this._scale;
+
+			this._headerLine = new Image(HivivaAssets.HEADER_LINE);
+			addChild(this._headerLine);
 		}
 
 

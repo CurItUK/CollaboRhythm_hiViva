@@ -24,7 +24,7 @@ package collaboRhythm.hiviva.view.components
 			super.draw();
 
 			this._delete.validate();
-			this._delete.x = this._bg.x + this._bg.width - this._scaledPadding - this._delete.width;
+			this._delete.x = this._bg.x + this._bg.width - this._gap - this._delete.width;
 			this._delete.y = this._bg.y + (this._bg.height * 0.5) - (this._delete.height * 0.5);
 		}
 

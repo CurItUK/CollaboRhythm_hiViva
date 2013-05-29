@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
 
@@ -25,12 +26,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import starling.events.Event;
 
 
-	public class HivivaHCPDisplaySettings extends Screen
+	public class HivivaHCPDisplaySettings extends ValidationScreen
 	{
-		private var _applicationController:HivivaApplicationController;
-		private var _header:HivivaHeader;
-		private var _content:ScrollContainer;
-		private var _contentLayout:VerticalLayout;
 		private var _orderInstructionsLabel:Label;
 		private var _orderTypeGroup:ToggleGroup;
 		private var _adherenceRadio:Radio;
@@ -46,8 +43,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _submitButton:Button;
 		private var _backButton:Button;
 
-		private var _customHeight:Number = 0;
-
 		public function HivivaHCPDisplaySettings()
 		{
 
@@ -56,53 +51,29 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function draw():void
 		{
 			super.draw();
+		}
 
-			var horizontalPadding:Number = this.actualWidth * 0.04;
-			var verticalPadding:Number = this.actualHeight * 0.02;
-			var contentHeight:Number;
-
-			this._header.paddingLeft = this._header.paddingRight = horizontalPadding;
-			this._header.paddingTop = verticalPadding;
-			this._header.width = this.actualWidth - (horizontalPadding * 2);
-			this._header.height = (110 * this.dpiScale) - verticalPadding;
-			this._header.validate();
-
-			contentHeight = this._customHeight > 0 ? this._customHeight : this.actualHeight;
-			contentHeight -= (this._header.y + this._header.height);
-
-			this._content.y = this._header.y + this._header.height;
-			this._content.width = this.actualWidth - (horizontalPadding * 2);
-			this._content.height = contentHeight - verticalPadding;
-
-			this._contentLayout.paddingLeft = this._contentLayout.paddingRight = horizontalPadding;
-			this._contentLayout.paddingTop = this._contentLayout.paddingBottom = verticalPadding;
-			this._contentLayout.gap = verticalPadding;
+		override protected function preValidateContent():void
+		{
+			super.preValidateContent();
 
 			this._orderInstructionsLabel.width = this._content.width;
 			this._fromInstructionsLabel.width = this._content.width;
+		}
 
-			this._content.validate();
+		override protected function postValidateContent():void
+		{
+			super.postValidateContent();
 
 			this._submitButton.y = this._cancelButton.y;
-			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + horizontalPadding;
-
-			populateOldData();
+			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + this._componentGap;
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._header = new HivivaHeader();
+
 			this._header.title = "Display settings";
-			this.addChild(this._header);
-
-			this._content = new ScrollContainer();
-			this._content.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
-			this._content.verticalScrollPolicy = Scroller.SCROLL_POLICY_ON;
-			addChild(this._content);
-
-			this._contentLayout = new VerticalLayout();
-			this._content.layout = this._contentLayout;
 
 			this._orderInstructionsLabel = new Label();
 			this._orderInstructionsLabel.text = "<FONT FACE='ExoBold'>Home page</FONT><br />Order my patients by:";
@@ -166,6 +137,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
+
+			populateOldData();
 		}
 
 
@@ -190,7 +163,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function setHcpDisplaySettingsHandler(e:LocalDataStoreEvent):void
 		{
 			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_SAVE_COMPLETE, setHcpDisplaySettingsHandler);
-			trace('display settings saved');
+			showFormValidation("Your display settings have been saved...");
 		}
 
 		private function backBtnHandler(e:Event):void
@@ -249,31 +222,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			{
 
 			}
-		}
-
-		public function get localStoreController():HivivaLocalStoreController
-		{
-			return applicationController.hivivaLocalStoreController;
-		}
-
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
-
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
-
-		public function get customHeight():Number
-		{
-			return _customHeight;
-		}
-
-		public function set customHeight(value:Number):void
-		{
-			_customHeight = value;
 		}
 	}
 }
