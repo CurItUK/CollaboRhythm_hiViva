@@ -48,6 +48,19 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function setGalleryImages(imageUrls:Array):void
+		{
+			service.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_SAVE_COMPLETE,setGalleryImagesHandler);
+			service.setGalleryImages(imageUrls);
+		}
+
+		private function setGalleryImagesHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.GALLERY_IMAGES_SAVE_COMPLETE,setGalleryImagesHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_IMAGES_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function initStoreService():void
 		{
 			_hivivaLocalStoreService = new HivivaLocalStoreService();
@@ -66,6 +79,19 @@ package collaboRhythm.hiviva.controller
 			service.removeEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE,getGalleryTimeStampHandler);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE);
 			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function setGalleryTimeStamp(date:String):void
+		{
+			service.addEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_SAVE_COMPLETE,setGalleryTimeStampHandler);
+			service.setGalleryTimeStamp(date);
+		}
+
+		private function setGalleryTimeStampHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_SAVE_COMPLETE,setGalleryTimeStampHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_TIMESTAMP_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
 

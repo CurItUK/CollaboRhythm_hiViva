@@ -23,6 +23,7 @@ package collaboRhythm.hiviva.model
 		private var _appDataVO:AppDataVO;
 
 		private var _medicationSchedule:Array;
+		private var _galleryImageUrls:Array;
 		private var _medicationAdherenceToSet:Object;
 		private var _medicationIdToDelete:int;
 		private var _patientProfile:Object;
@@ -199,6 +200,61 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
+		public function setGalleryImages(imageUrls:Array):void
+		{
+			this._galleryImageUrls = imageUrls;
+
+			if(this._galleryImageUrls.length > 0)
+			{
+				var dbFile:File = File.applicationStorageDirectory;
+				dbFile = dbFile.resolvePath("settings.sqlite");
+
+				this._sqConn = new SQLConnection();
+				this._sqConn.open(dbFile);
+
+				this._sqStatement = new SQLStatement();
+				this._sqStatement.addEventListener(SQLEvent.RESULT, deleteGalleryImagesHandler);
+				this._sqStatement.text = "DELETE FROM homepage_photos";
+				this._sqStatement.sqlConnection = this._sqConn;
+				this._sqStatement.execute();
+			}
+		}
+
+		private function deleteGalleryImagesHandler(e:SQLEvent):void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.addEventListener(SQLEvent.RESULT, setGalleryImagesHandler);
+
+			var urlsLoop:uint = this._galleryImageUrls.length;
+			for (var i:uint = 0; i < urlsLoop; i++)
+			{
+				if (i == 0)
+				{
+					this._sqStatement.text += "INSERT INTO homepage_photos ('url') SELECT '" + this._galleryImageUrls[i] + "'";
+				}
+				else
+				{
+					this._sqStatement.text += " UNION SELECT '" + this._galleryImageUrls[i] + "'";
+				}
+			}
+
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+		}
+
+		private function setGalleryImagesHandler(e:SQLEvent):void
+		{
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_IMAGES_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function getGalleryTimeStamp():void
 		{
 			var dbFile:File = File.applicationStorageDirectory;
@@ -220,6 +276,28 @@ package collaboRhythm.hiviva.model
 			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE);
 			evt.data.timeStamp = result[0].gallery_submission_timestamp;
+			this.dispatchEvent(evt);
+		}
+
+		public function setGalleryTimeStamp(date:String):void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.addEventListener(SQLEvent.RESULT, setGalleryTimeStampHandler);
+			this._sqStatement.text = "UPDATE app_settings SET gallery_submission_timestamp='" + date + "'";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+		}
+
+		private function setGalleryTimeStampHandler(e:SQLEvent):void
+		{
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_TIMESTAMP_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
 

@@ -16,6 +16,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.IOErrorEvent;
+	import flash.filesystem.File;
 	import flash.filters.BitmapFilter;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.BlurFilter;
@@ -183,6 +184,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				trace("date stamp not there");
 				this._homeImageInstructions.visible = true;
+				//TODO: delete all old image entries in sql
 			}
 		}
 
@@ -229,10 +231,21 @@ package collaboRhythm.hiviva.view.screens.patient
 				{
 					chosenImageInd = this._dayDiff;
 				}
+
 				chosenImageUrl = imageUrls[chosenImageInd].url;
+				if(chosenImageUrl == "homepageimage.jpg")
+				{
+					var appStoreDir:File = File.applicationStorageDirectory;
+					trace(appStoreDir.url + chosenImageUrl);
+					doImageLoad(appStoreDir.url + chosenImageUrl);
+				}
+				else
+				{
+					trace("media/stock_images/" + chosenImageUrl);
+					doImageLoad("media/stock_images/" + chosenImageUrl);
+				}
 				// TODO: boolean to define difference between custom photo and stock photo locations in homepage photo screen
-				trace("media/stock_images/" + chosenImageUrl);
-				doImageLoad("media/stock_images/" + chosenImageUrl);
+
 			}
 		}
 

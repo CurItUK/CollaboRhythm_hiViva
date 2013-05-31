@@ -29,6 +29,13 @@ package collaboRhythm.hiviva.global
 		public static const SIDENAV_ICON_MESSAGES:Texture					= Assets.getTexture("SideNavIconMessagesPng");
 		public static const SIDENAV_ICON_BADGES:Texture						= Assets.getTexture("SideNavIconBadgesPng");
 		public static const SETTINGS_ICON:Texture							= Assets.getTexture("SettingIconPng");
+		public static const ART_ICON:Texture								= Assets.getTexture("ArtIconPng");
+		public static const CINEMA_ICON:Texture								= Assets.getTexture("CinemaIconPng");
+		public static const HISTORY_ICON:Texture							= Assets.getTexture("HistoryIconPng");
+		public static const MUSIC_ICON:Texture								= Assets.getTexture("MusicIconPng");
+		public static const SPORTS_ICON:Texture								= Assets.getTexture("SportsIconPng");
+		public static const TRAVEL_ICON:Texture								= Assets.getTexture("TravelIconPng");
+		public static const UPLOAD_ICON:Texture								= Assets.getTexture("UploadIconPng");
 //		public static const TOPNAV_ICON_MESSAGES:Texture					= Assets.getTexture("TopNavIconMessagesPng");
 //		public static const TOPNAV_ICON_BADGES:Texture						= Assets.getTexture("TopNavIconBadgesPng");
 		public static const PATIENTPROFILENAV_BUTTON:Texture				= Assets.getTexture("PatientProfileNavButtonPng");
@@ -45,6 +52,7 @@ package collaboRhythm.hiviva.global
 		public static const FEELING_SLIDER_SUN:Texture						= Assets.getTexture("FeelingSliderSun");
 		// forms
 		public static const BUTTON:Texture									= Assets.getTexture("ButtonPng");
+		public static const BORDERLESS_BUTTON:Texture						= Assets.getTexture("BorderlessButtonPng");
 		public static const INPUT_FIELD:Texture								= Assets.getTexture("InputFieldPng");
 		public static const TICK_BOX:Texture								= Assets.getTexture("TickBoxPng");
 		public static const TICK_BOX_ACTIVE:Texture							= Assets.getTexture("TickBoxActivePng");

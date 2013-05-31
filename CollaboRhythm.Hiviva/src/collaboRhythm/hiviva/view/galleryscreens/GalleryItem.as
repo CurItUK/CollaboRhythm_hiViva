@@ -8,6 +8,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 	import flash.display.LoaderInfo;
 	import flash.events.IOErrorEvent;
 	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
 
@@ -54,12 +55,14 @@ package collaboRhythm.hiviva.view.galleryscreens
 		public function set isActive(val:Boolean):void
 		{
 			this._isActive = val;
-			this._tint.alpha = this._isActive ? 0.5 : 0;
+			this._tint.alpha = this._isActive ? 1 : 0;
 		}
 		public function get isActive():Boolean
 		{
 			return this._isActive;
 		}
+
+		private var _givenWidth:Number;
 
 		private var _photo:Image;
 		private var _tint:Quad;
@@ -73,19 +76,18 @@ package collaboRhythm.hiviva.view.galleryscreens
 		{
 			super.draw();
 
+			if(this._photo.width != this._photo.height || this._photo.width != this._givenWidth)
+			{
+				clipImage(this._photo);
+				this._photo.width = this._photo.height = this._givenWidth;
+			}
 
-			this._photo.height = this.actualHeight;
-			this._photo.scaleX = this._photo.scaleY;
+			this._tint.height = this._photo.height + 10;
+			this._tint.width = this._photo.width + 10;
+			this._tint.x = this._photo.x - 5;
+			this._tint.y = this._photo.y - 5;
 
-			//constrainToProportion(this._photo, this.actualHeight);
-
-			this._tint.height = this._photo.height;
-			this._tint.width = this._photo.width;
-			this._tint.x = this._photo.x;
-			this._tint.y = this._photo.y;
-
-			this._hitArea = new Rectangle(this._tint.x, this._tint.y, this._tint.width, this._tint.height);
-			setSizeInternal(this._tint.width, this._tint.height, false);
+			setSizeInternal(this._photo.width, this._photo.height, false);
 		}
 
 		override protected function initialize():void
@@ -120,12 +122,12 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 			//this._photo = new Image(getStarlingCompatibleTexture(e.target.content));
 			this._photo = new Image(Texture.fromBitmap(bm));
-			addChild(this._photo);
 			bm.bitmapData.dispose();
 			bm = null;
 
-			this._tint = new Quad(this._photo.width, this._photo.height, 0x000000);
+			this._tint = new Quad(this._photo.width, this._photo.height, 0x0073ff);
 			addChild(this._tint);
+			addChild(this._photo);
 
 			this.isActive = false;
 			dispatchEventWith(Event.COMPLETE, false, {id:this._id});
@@ -175,5 +177,55 @@ package collaboRhythm.hiviva.view.galleryscreens
 			}
 		}
 
+		private function clipImage(img:Image):void
+		{
+			var 	sizeDiff:Number,
+					sizeRatio:Number,
+					top:Number = 0,
+					left:Number = 0,
+					right:Number = 1,
+					bottom:Number = 1;
+
+			if(img.height > img.width)
+			{
+				// this is a portrait image
+				sizeDiff = (img.height - img.width) * 0.5;
+
+				top = sizeRatio;
+				left = 0;
+				right = 1;
+				bottom = 1 - sizeRatio;
+			}
+			else if (img.height < img.width)
+			{
+				sizeDiff = (img.width - img.height ) * 0.5;
+
+				top = 0;
+				left = sizeRatio;
+				right = 1 - sizeRatio;
+				bottom = 1;
+			}
+
+			trace("top = " + top);
+			trace("right = " + right);
+			trace("bottom = " + bottom);
+			trace("left = " + left);
+			trace("==============================================================");
+
+			img.setTexCoords(0, new Point(left, top));
+			img.setTexCoords(1, new Point(right, top));
+			img.setTexCoords(2, new Point(left, bottom));
+			img.setTexCoords(3, new Point(right, bottom));
+		}
+
+		public function get givenWidth():Number
+		{
+			return _givenWidth;
+		}
+
+		public function set givenWidth(value:Number):void
+		{
+			_givenWidth = value;
+		}
 	}
 }

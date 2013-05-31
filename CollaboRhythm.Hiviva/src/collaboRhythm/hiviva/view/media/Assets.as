@@ -80,6 +80,27 @@ package collaboRhythm.hiviva.view.media
 
 		[Embed(source="/assets/images/temp/top_nav_icon_01.png")]
 		public static const SettingIconPng:Class;
+
+		[Embed(source="/assets/images/temp/icon_art.png")]
+		public static const ArtIconPng:Class;
+
+		[Embed(source="/assets/images/temp/icon_cinema.png")]
+		public static const CinemaIconPng:Class;
+
+		[Embed(source="/assets/images/temp/icon_history.png")]
+		public static const HistoryIconPng:Class;
+
+		[Embed(source="/assets/images/temp/icon_music.png")]
+		public static const MusicIconPng:Class;
+
+		[Embed(source="/assets/images/temp/icon_sports.png")]
+		public static const SportsIconPng:Class;
+
+		[Embed(source="/assets/images/temp/icon_travel.png")]
+		public static const TravelIconPng:Class;
+
+		[Embed(source="/assets/images/temp/icon_upload.png")]
+		public static const UploadIconPng:Class;
 /*
 		[Embed(source="/assets/images/temp/top_nav_icon_02.png")]
 		public static const TopNavIconMessagesPng:Class;
@@ -143,6 +164,9 @@ package collaboRhythm.hiviva.view.media
 
 		[Embed(source="/assets/images/temp/button.png")]
 		public static const ButtonPng:Class;
+
+		[Embed(source="/assets/images/temp/button_borderless.png")]
+		public static const BorderlessButtonPng:Class;
 
 		[Embed(source="/assets/images/temp/input_field.png")]
 		public static const InputFieldPng:Class;

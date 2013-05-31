@@ -100,7 +100,9 @@ package collaboRhythm.hiviva.view
 			addChild(this._imageBg);
 
 			this._uploadButton = new Button();
-			this._uploadButton.label = "^ UPLOAD PHOTO";
+			this._uploadButton.defaultIcon = new Image(HivivaAssets.UPLOAD_ICON);
+			this._uploadButton.iconPosition = Button.ICON_POSITION_LEFT;
+			this._uploadButton.label = "UPLOAD PHOTO";
 			this._uploadButton.addEventListener(Event.TRIGGERED, uploadButtonHandler);
 			addChild(this._uploadButton);
 		}
@@ -115,11 +117,12 @@ package collaboRhythm.hiviva.view
 			}
 		}
 
-		public function saveTempImageAsMain():void
+		public function saveTempImageAsMain():Boolean
 		{
 			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
 			var main:File = File.applicationStorageDirectory.resolvePath(this._fileName);
-			if(temp.exists) {temp.moveTo(main,true);} else { trace("temp" + this._fileName + " doesn't exist"); }
+			if(temp.exists) temp.moveTo(main,true);
+			return main.exists;
 		}
 
 		private function uploadButtonHandler(e:Event):void

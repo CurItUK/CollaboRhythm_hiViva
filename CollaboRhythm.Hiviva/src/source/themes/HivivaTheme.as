@@ -341,6 +341,7 @@ package source.themes
 		protected var backgroundFocusedSkinTextures:Scale9Textures;
 
 		protected var buttonUpSkinTextures:Scale9Textures;
+		protected var borderlessButtonUpSkinTextures:Scale9Textures;
 		protected var buttonDownSkinTextures:Scale9Textures;
 		protected var buttonDisabledSkinTextures:Scale9Textures;
 		protected var buttonSelectedUpSkinTextures:Scale9Textures;
@@ -622,7 +623,8 @@ package source.themes
 			this.backgroundFocusedSkinTextures = new Scale9Textures(backgroundFocusedSkinTexture, DEFAULT_SCALE9_GRID);
 
 
-			this.buttonUpSkinTextures = new Scale9Textures(HivivaAssets.BUTTON, new Rectangle(22,22,32,32));
+			this.buttonUpSkinTextures = new Scale9Textures(HivivaAssets.BUTTON, new Rectangle(22,22,158,30));
+			this.borderlessButtonUpSkinTextures = new Scale9Textures(HivivaAssets.BORDERLESS_BUTTON, new Rectangle(25,25,242,31));
 			this.buttonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-down-skin"), BUTTON_SCALE9_GRID);
 			this.buttonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-disabled-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-up-skin"), BUTTON_SCALE9_GRID);
@@ -774,6 +776,7 @@ package source.themes
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 
 			this.setInitializerForClass(Button, buttonInitializer);
+			this.setInitializerForClass(Button, borderButtonInitializer, "border-button");
 
 			this.setInitializerForClass(Button, nothingInitializer, NONE_THEMED);
 			this.setInitializerForClass(Button, homeButtonInitializer, "home-button");
@@ -784,6 +787,7 @@ package source.themes
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
 			this.setInitializerForClass(Button, sideNavGroupInitializer, "side-nav-buttons");
 			this.setInitializerForClass(Button, patientProfileNavGroupInitializer, "patient-profile-nav-buttons");
+			this.setInitializerForClass(Button, galleryButtonGroupInitializer, "gallery-category-buttons");
 //			this.setInitializerForClass(Button, galleryThumbInitializer, "gallery-thumb-buttons");
 
 			//this.setInitializerForClass(Button, simpleButtonInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
@@ -1123,7 +1127,7 @@ package source.themes
 			text.paddingRight = 36 * this.scale;
 		}
 
-		protected function buttonInitializer(button:Button):void
+		protected function borderButtonInitializer(button:Button):void
 		{
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
 			skinSelector.defaultValue = this.buttonUpSkinTextures;
@@ -1150,6 +1154,38 @@ package source.themes
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
+			button.gap = 12 * this.scale;
+			button.minWidth = button.minHeight = 76 * this.scale;
+			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function buttonInitializer(button:Button):void
+		{
+			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
+			skinSelector.defaultValue = this.borderlessButtonUpSkinTextures;
+//			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
+//			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+//			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+//			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			skinSelector.imageProperties =
+			{
+				width: 76 * this.scale,
+				height: 76 * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			var format:TextFormat = new TextFormat("ExoBold", Math.round(24 * this.scale), 0x6d7e91);
+			button.defaultLabelProperties.embedFonts = true;
+			button.defaultLabelProperties.textFormat = format;
+//			button.disabledLabelProperties.embedFonts = true;
+//			button.disabledLabelProperties.textFormat = format;
+//			button.selectedDisabledLabelProperties.embedFonts = true;
+//			button.selectedDisabledLabelProperties.textFormat = format;
+
+			button.paddingTop = button.paddingBottom = 8 * this.scale;
+			button.paddingLeft = button.paddingRight = 30 * this.scale;
 			button.gap = 12 * this.scale;
 			button.minWidth = button.minHeight = 76 * this.scale;
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
@@ -1246,6 +1282,31 @@ package source.themes
 			button.minHeight = 135 * this.scale;
 			button.minTouchWidth = 128 * this.scale;
 			button.minTouchHeight = 135 * this.scale;
+		}
+
+		protected function galleryButtonGroupInitializer(button:Button):void
+		{
+			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
+			skinSelector.defaultValue = this.borderlessButtonUpSkinTextures;
+			//skinSelector.defaultSelectedValue = this.buttonFooterActiveTexture;
+			//skinSelector.setValueForState(this.buttonFooterActiveTexture, Button.STATE_DOWN, false);
+			skinSelector.imageProperties =
+			{
+				width: 292 * this.scale,
+				height: 79 * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			var format:TextFormat = new TextFormat("ExoBold", Math.round(24 * this.scale), 0x6d7e91);
+			button.defaultLabelProperties.embedFonts = true;
+			button.defaultLabelProperties.textFormat = format;
+
+			button.minWidth = 292 * this.scale;
+			button.minHeight = 79 * this.scale;
+			button.minTouchWidth = 292 * this.scale;
+			button.minTouchHeight = 79 * this.scale;
 		}
 /*
 
