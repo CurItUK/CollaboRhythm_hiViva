@@ -233,7 +233,6 @@ package collaboRhythm.hiviva.view.screens.patient
 					}
 				}
 				initResults(true);
-				this._requestConnectionButton.visible = true;
 			}
 			else
 			{
@@ -278,6 +277,8 @@ package collaboRhythm.hiviva.view.screens.patient
 					this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
 				}
 				if (isResult) drawResults();
+
+				this._requestConnectionButton.visible = true;
 			}
 		}
 

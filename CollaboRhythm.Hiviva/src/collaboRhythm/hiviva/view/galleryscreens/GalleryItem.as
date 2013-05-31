@@ -1,5 +1,7 @@
 package collaboRhythm.hiviva.view.galleryscreens
 {
+	import collaboRhythm.hiviva.utils.HivivaModifier;
+
 	import feathers.controls.Button;
 
 	import flash.display.Bitmap;
@@ -78,7 +80,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 			if(this._photo.width != this._photo.height || this._photo.width != this._givenWidth)
 			{
-				clipImage(this._photo);
+				HivivaModifier.clipImage(this._photo);
 				this._photo.width = this._photo.height = this._givenWidth;
 			}
 
@@ -126,6 +128,8 @@ package collaboRhythm.hiviva.view.galleryscreens
 			bm = null;
 
 			this._tint = new Quad(this._photo.width, this._photo.height, 0x0073ff);
+			this._tint.alpha = this._isActive ? 1 : 0;
+
 			addChild(this._tint);
 			addChild(this._photo);
 
@@ -175,47 +179,6 @@ package collaboRhythm.hiviva.view.galleryscreens
 				img.width = size;
 				img.scaleY = img.scaleX;
 			}
-		}
-
-		private function clipImage(img:Image):void
-		{
-			var 	sizeDiff:Number,
-					sizeRatio:Number,
-					top:Number = 0,
-					left:Number = 0,
-					right:Number = 1,
-					bottom:Number = 1;
-
-			if(img.height > img.width)
-			{
-				// this is a portrait image
-				sizeDiff = (img.height - img.width) * 0.5;
-
-				top = sizeRatio;
-				left = 0;
-				right = 1;
-				bottom = 1 - sizeRatio;
-			}
-			else if (img.height < img.width)
-			{
-				sizeDiff = (img.width - img.height ) * 0.5;
-
-				top = 0;
-				left = sizeRatio;
-				right = 1 - sizeRatio;
-				bottom = 1;
-			}
-
-			trace("top = " + top);
-			trace("right = " + right);
-			trace("bottom = " + bottom);
-			trace("left = " + left);
-			trace("==============================================================");
-
-			img.setTexCoords(0, new Point(left, top));
-			img.setTexCoords(1, new Point(right, top));
-			img.setTexCoords(2, new Point(left, bottom));
-			img.setTexCoords(3, new Point(right, bottom));
 		}
 
 		public function get givenWidth():Number

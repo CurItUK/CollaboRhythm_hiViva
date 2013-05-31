@@ -36,7 +36,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 			this._cancelButton.x = (this.actualHeight * 0.02)
 			this._submitButton.y = this._cancelButton.y = this.actualHeight -
 					this._submitButton.height - (this.actualHeight * 0.02);
-			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + (this.actualHeight * 0.04);
+			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + (this.actualHeight * 0.02);
 
 			this._customHeight = this.actualHeight - this._cancelButton.height - (this.actualHeight * 0.02);
 			super.draw();
@@ -77,8 +77,8 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-			getImagesFromDirectory();
 			_urls = GalleryData.getUrlsByCategory(this._category);
+			getImagesFromDirectory();
 		}
 
 		private function cancelButtonClick(e:Event):void
@@ -93,7 +93,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 		private function submitButtonClick(e:Event):void
 		{
-			trace(_urls.length);
+			GalleryData.comingFromGallery = true;
 			GalleryData.setUrlsByCategory(this._category,_urls);
 			this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
 		}
@@ -162,9 +162,9 @@ package collaboRhythm.hiviva.view.galleryscreens
 		{
 			var image:GalleryItem,
 				yPos:Number = this._verticalPadding,
-				xPos:Number = this._horizontalPadding,
-				imageWidth:Number = (this._innerWidth - this._componentGap - 30) / 3,
-				currUrl:String, currImageUrl:String, gap:Number = this._componentGap * 0.5;
+				xPos:Number = this._horizontalPadding, gap:Number = this._componentGap * 0.5,
+				imageWidth:Number = (this._innerWidth - gap - 30) / 3,
+				currUrl:String, currImageUrl:String;
 			if (this._imageCount == this._imageTotal)
 			{
 				this._imageCount = 0;
@@ -178,7 +178,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 					currImageUrl = this._category + "/" + image.filename;
 					for (var j:int = 0; j < _urls.length; j++)
 					{
-						currUrl = this._urls[i];
+						currUrl = this._urls[j];
 						if(currImageUrl == currUrl)
 						{
 							image.isActive = true;

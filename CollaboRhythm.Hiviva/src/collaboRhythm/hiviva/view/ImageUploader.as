@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 
 	import feathers.controls.Button;
 
@@ -176,10 +177,10 @@ package collaboRhythm.hiviva.view
 
 			var suitableBm:Bitmap = getSuitableBitmap(e.target.content as Bitmap);
 			this._imageHolder = new Image(Texture.fromBitmap(suitableBm));
-			constrainToProportion(this._imageHolder, IMAGE_SIZE * this._scale);
-			// TODO : Check if if (img.height >= img.width) then position accordingly. right now its only Ypos
+			HivivaModifier.clipImage(this._imageHolder);
+			this._imageHolder.width = this._imageHolder.height = IMAGE_SIZE * this._scale;
 			this._imageHolder.x = this._imageBg.x;
-			this._imageHolder.y = this._imageBg.y + (this._imageBg.height / 2) - (this._imageHolder.height / 2);
+			this._imageHolder.y = this._imageBg.y;
 			if (!contains(this._imageHolder)) addChild(this._imageHolder);
 		}
 

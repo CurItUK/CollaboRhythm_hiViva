@@ -244,7 +244,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function userSignupScreen(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN);
+			this.owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
 			PopUpManager.removePopUp(this._userSignupPopupContent);
 			trace("open PATIENT_USER_SIGNUP_SCREEN");
 		}

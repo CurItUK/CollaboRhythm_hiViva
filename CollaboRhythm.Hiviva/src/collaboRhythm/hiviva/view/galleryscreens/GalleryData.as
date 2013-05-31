@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 	public class GalleryData
 	{
 		public static var ImageData:Array = [];
+		public static var comingFromGallery:Boolean = false;
 
 		public static function getUrlsByCategory(category:String):Array
 		{

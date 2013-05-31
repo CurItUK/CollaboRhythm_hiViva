@@ -1,5 +1,8 @@
 package collaboRhythm.hiviva.utils
 {
+	import flash.geom.Point;
+
+	import starling.display.Image;
 
 	public class HivivaModifier
 	{
@@ -145,6 +148,43 @@ package collaboRhythm.hiviva.utils
 			}
 
 			return Math.round(avgAdherence);
+		}
+
+
+
+		public static function clipImage(img:Image):void
+		{
+			var 	sizeDiff:Number,
+					sizeRatio:Number,
+					top:Number = 0,
+					left:Number = 0,
+					right:Number = 1,
+					bottom:Number = 1;
+
+			if(img.height > img.width)
+			{
+				// this is a portrait image
+				sizeDiff = (img.height - img.width);
+				sizeRatio = sizeDiff / img.height;
+				top = (sizeRatio * 0.5);
+				left = 0;
+				right = 1;
+				bottom = 1 - (sizeRatio * 0.5);
+			}
+			else if (img.height < img.width)
+			{
+				sizeDiff = (img.width - img.height );
+				sizeRatio = sizeDiff / img.width;
+				top = 0;
+				left = (sizeRatio * 0.5);
+				right = 1 - (sizeRatio * 0.5);
+				bottom = 1;
+			}
+
+			img.setTexCoords(0, new Point(left, top));
+			img.setTexCoords(1, new Point(right, top));
+			img.setTexCoords(2, new Point(left, bottom));
+			img.setTexCoords(3, new Point(right, bottom));
 		}
 	}
 }
