@@ -68,6 +68,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 		private var _photo:Image;
 		private var _tint:Quad;
+		private var _isClipped:Boolean = false;
 
 		public function GalleryItem()
 		{
@@ -78,10 +79,11 @@ package collaboRhythm.hiviva.view.galleryscreens
 		{
 			super.draw();
 
-			if(this._photo.width != this._photo.height || this._photo.width != this._givenWidth)
+			if(!this._isClipped)
 			{
 				HivivaModifier.clipImage(this._photo);
 				this._photo.width = this._photo.height = this._givenWidth;
+				this._isClipped = true;
 			}
 
 			this._tint.height = this._photo.height + 10;
@@ -133,52 +135,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 			addChild(this._tint);
 			addChild(this._photo);
 
-			this.isActive = false;
 			dispatchEventWith(Event.COMPLETE, false, {id:this._id});
-		}
-
-		/*private function getStarlingCompatibleTexture(content:Bitmap):Texture
-		{
-			var sourceBm:Bitmap = content as Bitmap,
-					suitableBmd:BitmapData,
-					xRatio:Number,
-					yRatio:Number;
-			// if source bitmap is larger than starling size limit of 2048x2048 than resize
-			if (sourceBm.width >= 2048 || sourceBm.height >= 2048)
-			{
-				// TODO: may need to remove size adjustment from bm! only adjust the data (needs formula)
-				constrainToProportion(sourceBm, 2040);
-				// copy source bitmap at adjusted size
-//				var bmd:BitmapData = new BitmapData(sourceBm.width, sourceBm.height);
-				//var m:Matrix = new Matrix();
-				//m.scale(sourceBm.scaleX, sourceBm.scaleY);
-				//bmd.draw(sourceBm, m, null, null, null, true);
-
-				suitableBmd = new BitmapData(sourceBm.width, sourceBm.height);
-				suitableBmd.draw(sourceBm, m, null, null, null, true);
-
-				sourceBm.bitmapData.dispose();
-			}
-			else
-			{
-				suitableBmd = sourceBm.bitmapData;
-			}
-			// use suitable bitmap for texture
-			return Texture.fromBitmapData(suitableBmd);
-		}*/
-
-		private function constrainToProportion(img:Object, size:Number):void
-		{
-			if (img.height >= img.width)
-			{
-				img.height = size;
-				img.scaleX = img.scaleY;
-			}
-			else
-			{
-				img.width = size;
-				img.scaleY = img.scaleX;
-			}
 		}
 
 		public function get givenWidth():Number

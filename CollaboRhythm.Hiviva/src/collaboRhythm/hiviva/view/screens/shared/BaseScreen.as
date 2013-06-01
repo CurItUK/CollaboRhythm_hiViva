@@ -10,6 +10,8 @@ package collaboRhythm.hiviva.view.screens.shared
 	import feathers.controls.Scroller;
 	import feathers.layout.VerticalLayout;
 
+	import starling.display.DisplayObject;
+
 	import starling.display.Image;
 
 	public class BaseScreen extends Screen
@@ -34,9 +36,9 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			super.draw();
 
-			this._horizontalPadding = this.actualWidth * 0.04;
-			this._verticalPadding = this.actualHeight * 0.02;
-			this._componentGap = this.actualHeight * 0.04;
+			this._horizontalPadding = (this.actualWidth * 0.04) * this.dpiScale;
+			this._verticalPadding = (this.actualHeight * 0.02) * this.dpiScale;
+			this._componentGap = (this.actualHeight * 0.04) * this.dpiScale;
 
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
@@ -54,6 +56,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._innerWidth = this._content.width - this._horizontalPadding;
 
+			//setChildrenHeights();
 			preValidateContent();
 			this._content.validate();
 			postValidateContent();
@@ -93,6 +96,21 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._content.verticalScrollPosition = 0;
 			this._content.verticalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
 		}
+/*
+
+		protected function setChildrenHeights():void
+		{
+			var childrenLoop:int = this._content.numChildren;
+			var childHeight:Number = (this._content.height / childrenLoop) - this._componentGap;
+			var child:DisplayObject;
+			for (var i:int = 0; i < (childrenLoop - 1); i++)
+			{
+				child = this._content.getChildAt(i+1) as DisplayObject;
+				child.height = childHeight;
+			}
+
+		}
+*/
 
 		public function get localStoreController():HivivaLocalStoreController
 		{

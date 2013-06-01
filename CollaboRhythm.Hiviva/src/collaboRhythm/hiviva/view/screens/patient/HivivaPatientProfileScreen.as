@@ -36,6 +36,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _tilesInBtns:Vector.<TiledImage>;
 		private var _appIdLabel:Label;
 		private var _appId:Label;
+		private var _userIsSignedUp:Boolean;
 
 		private var _scaledPadding:Number;
 
@@ -47,16 +48,16 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.draw();
 
-			this._scaledPadding = 44 * this.dpiScale;
+			this._scaledPadding = (this.actualWidth * 0.04) * this.dpiScale;
 
 			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
-
+			this._header.paddingLeft = this._scaledPadding;
+			this._header.initTrueTitle();
 			drawMenuBtnGroup();
 
 			this._appIdLabel.validate();
 			this._appIdLabel.x = this._scaledPadding;
-			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + (20 * this.dpiScale);
+			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + this._scaledPadding;
 
 			this._appId.validate();
 			this._appId.x = this.actualWidth - this._scaledPadding - this._appId.width;
@@ -66,26 +67,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._userSignupPopupContent.validate();
 		}
 
-		private function drawMenuBtnGroup():void
-		{
-			this._menuBtnGroup.validate();
-			this._menuBtnGroup.width = this.actualWidth;
-			this._menuBtnGroup.y = this._header.height + (30 * this.dpiScale);
-
-			var patternHeight:Number = Button(this._menuBtnGroup.getChildAt(0)).height;
-			for (var i:int = 0; i < _tilesInBtns.length; i++)
-			{
-				var img:TiledImage = _tilesInBtns[i];
-				img.width = this.actualWidth;
-				img.height = patternHeight;
-			}
-		}
-
 		override protected function initialize():void
 		{
 			super.initialize();
 			this._header = new HivivaHeader();
 			this._header.title = "Patient Profile";
+			addChild(this._header);
 
 			this._homeBtn = new Button();
 			this._homeBtn.name = "home-button";
@@ -93,8 +80,12 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._header.leftItems =  new <DisplayObject>[this._homeBtn];
 
-			initProfileMenuButtons();
-			addChild(this._header);
+			this._tilesInBtns = new <TiledImage>[];
+			this._menuBtnGroup = new ButtonGroup();
+			this._menuBtnGroup.customButtonName = "patient-profile-nav-buttons";
+			this._menuBtnGroup.customFirstButtonName = "patient-profile-nav-buttons";
+			this._menuBtnGroup.customLastButtonName = "patient-profile-nav-buttons";
+			addChild(this._menuBtnGroup);
 
 			this._appIdLabel = new Label();
 			this._appIdLabel.name = "patient-profile-appid";
@@ -113,6 +104,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._userSignupPopupContent.confirmLabel = "Sign up";
 			this._userSignupPopupContent.addEventListener(Event.COMPLETE, userSignupScreen);
 			this._userSignupPopupContent.addEventListener(Event.CLOSE, closePopup);
+
+			userSignupCheck();
 		}
 
 		private function getAppId(e:LocalDataStoreEvent):void
@@ -127,38 +120,78 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._appId.y = this._appIdLabel.y;
 		}
 
+		private function userSignupCheck():void
+		{
+			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+			localStoreController.getPatientProfile();
+		}
+
+		private function getPatientProfileHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+
+			var patientProfile:Array = e.data.patientProfile;
+
+			try
+			{
+				this._userIsSignedUp = patientProfile != null;
+			}
+			catch(e:Error)
+			{
+				this._userIsSignedUp = false;
+			}
+			trace("this._userIsSignedUp = " + this._userIsSignedUp);
+
+			initProfileMenuButtons();
+		}
+
 		private function initProfileMenuButtons():void
 		{
-			this._tilesInBtns = new <TiledImage>[];
-			this._menuBtnGroup = new ButtonGroup();
-			this._menuBtnGroup.customButtonName = "patient-profile-nav-buttons";
-			this._menuBtnGroup.customFirstButtonName = "patient-profile-nav-buttons";
-			this._menuBtnGroup.customLastButtonName = "patient-profile-nav-buttons";
-			this._menuBtnGroup.dataProvider = new ListCollection(
+			var lc:ListCollection = new ListCollection(
 				[
-					{name: "details", label: "My details"},
 					{name: "photo", label: "Home page photo"},
 					{name: "medicines", label: "Daily medicines"},
 					{name: "results", label: "Test results"},
 					{name: "connect", label: "Connect to care provider"}
 				]
 			);
-			this._menuBtnGroup.buttonInitializer = function(button:Button, item:Object):void
-			{
-				var img:TiledImage = new TiledImage(HivivaAssets.PATIENTPROFILENAV_BUTTON_PATTERN);
-				img.smoothing = TextureSmoothing.NONE;
-				img.blendMode =  BlendMode.MULTIPLY;
-				button.addChild(img);
-				// add to Vector to assign width post draw
-				_tilesInBtns.push(img);
 
-				button.name = item.name;
-				button.label =  item.label;
-				button.addEventListener(Event.TRIGGERED, patientProfileBtnHandler)
-			};
+			if (this._userIsSignedUp) lc.addItemAt({name: "details", label: "My details"}, 0);
+
+			this._menuBtnGroup.dataProvider = lc;
+			this._menuBtnGroup.buttonInitializer = patientProfileBtnInitializer;
 			this._menuBtnGroup.direction = ButtonGroup.DIRECTION_VERTICAL;
 
-			this.addChild(this._menuBtnGroup);
+			drawMenuBtnGroup();
+		}
+
+		private function drawMenuBtnGroup():void
+		{
+			this._menuBtnGroup.width = this.actualWidth;
+			this._menuBtnGroup.y = this._header.height;
+			this._menuBtnGroup.validate();
+
+			var patternHeight:Number = Button(this._menuBtnGroup.getChildAt(0)).height;
+			for (var i:int = 0; i < _tilesInBtns.length; i++)
+			{
+				var img:TiledImage = _tilesInBtns[i];
+				img.width = this.actualWidth;
+				img.height = patternHeight;
+			}
+		}
+
+		private function patientProfileBtnInitializer(button:Button, item:Object):void
+		{
+			var img:TiledImage = new TiledImage(HivivaAssets.PATIENTPROFILENAV_BUTTON_PATTERN);
+			img.smoothing = TextureSmoothing.NONE;
+			img.blendMode =  BlendMode.MULTIPLY;
+			button.addChild(img);
+			// add to Vector to assign width post draw
+			_tilesInBtns.push(img);
+
+			button.name = item.name;
+			button.label =  item.label;
+			button.addEventListener(Event.TRIGGERED, patientProfileBtnHandler)
 		}
 
 		private function patientProfileBtnHandler(e:Event):void
@@ -181,7 +214,14 @@ package collaboRhythm.hiviva.view.screens.patient
 					this.owner.showScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN);
 					break;
 				case "connect" :
-					userSignupCheck();
+					if (this._userIsSignedUp)
+					{
+						this.owner.showScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN);
+					}
+					else
+					{
+						showSignupPopup();
+					}
 					break;
 			}
 		}
@@ -189,48 +229,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function homeBtnHandler(e:Event):void
 		{
 			this.dispatchEventWith("navGoHome");
-		}
-
-		private function userSignupCheck():void
-		{
-			var isUserSignedUp:Boolean = false;
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
-
-			var _sqConn:SQLConnection = new SQLConnection();
-			_sqConn.open(dbFile);
-
-			var _sqStatement:SQLStatement = new SQLStatement();
-			_sqStatement.text = "SELECT * FROM patient_profile";
-			_sqStatement.sqlConnection = _sqConn;
-			_sqStatement.execute();
-
-			var sqlRes:SQLResult = _sqStatement.getResult();
-			//trace(sqlRes.data[0].user_name);
-			//trace(sqlRes.data[0].user_email);
-			//trace(sqlRes.data[0].user_updates);
-			//trace(sqlRes.data[0].user_research);
-
-			try
-			{
-				isUserSignedUp = String(sqlRes.data[0].name).length > 0;
-			}
-			catch(e:Error)
-			{
-				isUserSignedUp = false;
-			}
-
-			if(isUserSignedUp)
-			{
-				trace("user is signed up");
-				this.owner.showScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN);
-			}
-			else
-			{
-				trace("user is not signed up");
-				showSignupPopup();
-			}
-			//showSignupPopup();
 		}
 
 		private function showSignupPopup():void

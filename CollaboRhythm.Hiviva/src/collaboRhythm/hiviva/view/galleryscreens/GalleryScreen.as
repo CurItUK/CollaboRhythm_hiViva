@@ -182,6 +182,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 						if(currImageUrl == currUrl)
 						{
 							image.isActive = true;
+							trace(currImageUrl + " is active");
 						}
 					}
 

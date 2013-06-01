@@ -539,10 +539,10 @@ package source.themes
 			const fontNames:String = "Helvetica Neue,Helvetica,Roboto,Arial,_sans";
 
 
-			//this.headerTextFormat = new TextFormat(fontNames, Math.round(36 * this.scale), LIGHT_TEXT_COLOR, true);
-			this.headerTextFormat = new TextFormat(fontNames, Math.round(36 * this.scale), 0x000000, true);
+			//this.headerTextFormat = new TextFormat(fontNames, 36 * this.scale, LIGHT_TEXT_COLOR, true);
+			this.headerTextFormat = new TextFormat(fontNames, 36 * this.scale, 0x000000, true);
 
-			this.hivivaDefaultTextFormat = new TextFormat("ExoRegular", Math.round(30 * this.scale), 0x4c5f76);
+			this.hivivaDefaultTextFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x4c5f76);
 
 			this.smallUIDarkTextFormat = new TextFormat(fontNames, 24 * this.scale, DARK_TEXT_COLOR, true);
 
@@ -769,6 +769,7 @@ package source.themes
 			this.setInitializerForClass(Label, centeredLabelInitializer, "centered-label");
 			this.setInitializerForClass(Label, feelingSliderLabelInitializer, "feeling-slider-label");
 			this.setInitializerForClass(Label, patientProfileAppidLabelInitializer, "patient-profile-appid");
+			this.setInitializerForClass(Label, instructionsLabelInitializer, "instructions-label");
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
 					BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
@@ -1032,14 +1033,14 @@ package source.themes
 			label.textRendererProperties.embedFonts = true;
 			label.textRendererProperties.isHTML = true;
 			label.textRendererProperties.wordWrap = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoLight", Math.round(44 * this.scale), 0x293d54);
+			label.textRendererProperties.textFormat = new TextFormat("ExoLight", 44 * this.scale, 0x293d54);
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}*/
 
 		protected function labelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x293d54);
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x293d54);
 			label.textRendererProperties.wordWrap = true;
 			label.textRendererProperties.isHTML = true;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
@@ -1048,7 +1049,7 @@ package source.themes
 		protected function centeredLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x293d54);
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x293d54);
 			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 			label.textRendererProperties.wordWrap = true;
 			label.textRendererProperties.isHTML = true;
@@ -1058,7 +1059,7 @@ package source.themes
 		protected function feelingSliderLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(16 * this.scale), 0x293d54);
+			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 16 * this.scale, 0x293d54);
 			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 			label.textRendererProperties.wordWrap = true;
 			label.textRendererProperties.isHTML = true;
@@ -1068,15 +1069,24 @@ package source.themes
 		protected function patientProfileAppidLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(30 * this.scale), 0x708295);
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x708295);
 			label.textRendererProperties.wordWrap = false;
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+		}
+
+		protected function instructionsLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 20 * this.scale, 0x4c5f76);
+			label.textRendererProperties.wordWrap = true;
+			label.textRendererProperties.isHTML = true;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
 		protected function validationLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0xb9c4cd);
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0xb9c4cd);
 			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 			label.textRendererProperties.wordWrap = true;
 			label.textRendererProperties.isHTML = true;
@@ -1085,7 +1095,7 @@ package source.themes
 		protected function inputLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(30 * this.scale), 0x495c72);
+			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0x495c72);
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 			label.textRendererProperties.isHTML = true;
 		}
@@ -1093,7 +1103,7 @@ package source.themes
 		protected function homeLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", Math.round(30 * this.scale), 0x495c72);
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x495c72);
 			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 			label.textRendererProperties.wordWrap = true;
 			label.textRendererProperties.isHTML = true;
@@ -1103,7 +1113,7 @@ package source.themes
 		protected function splashFooterTextInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(24 * this.scale), 0xFFFFFF);
+			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 24 * this.scale, 0xFFFFFF);
 			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 			label.textRendererProperties.isHTML = true;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0x1a498a,1,0);
@@ -1121,7 +1131,7 @@ package source.themes
 		protected function scrollTextInitializer(text:ScrollText):void
 		{
 			text.embedFonts = true;
-			text.textFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x2d435c);
+			text.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x2d435c);
 			text.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
 			text.paddingRight = 36 * this.scale;
@@ -1144,7 +1154,7 @@ package source.themes
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			var format:TextFormat = new TextFormat("ExoBold", Math.round(24 * this.scale), 0x6d7e91);
+			var format:TextFormat = new TextFormat("ExoBold", 24 * this.scale, 0x6d7e91);
 			button.defaultLabelProperties.embedFonts = true;
 			button.defaultLabelProperties.textFormat = format;
 //			button.disabledLabelProperties.embedFonts = true;
@@ -1155,7 +1165,7 @@ package source.themes
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
 			button.gap = 12 * this.scale;
-			button.minWidth = button.minHeight = 76 * this.scale;
+			button.minWidth = button.minHeight = 88 * this.scale;
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 
@@ -1176,7 +1186,7 @@ package source.themes
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			var format:TextFormat = new TextFormat("ExoBold", Math.round(24 * this.scale), 0x6d7e91);
+			var format:TextFormat = new TextFormat("ExoBold", 24 * this.scale, 0x6d7e91);
 			button.defaultLabelProperties.embedFonts = true;
 			button.defaultLabelProperties.textFormat = format;
 //			button.disabledLabelProperties.embedFonts = true;
@@ -1187,7 +1197,7 @@ package source.themes
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 30 * this.scale;
 			button.gap = 12 * this.scale;
-			button.minWidth = button.minHeight = 76 * this.scale;
+			button.minWidth = button.minHeight = 88 * this.scale;
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 
@@ -1208,8 +1218,8 @@ package source.themes
 
 			button.minWidth = skinWidth * this.scale;
 			button.minHeight = skinHeight * this.scale;
-			button.minTouchWidth = skinWidth * this.scale;
-			button.minTouchHeight = skinHeight * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
 		}
 
 		protected function backButtonInitializer(button:Button):void
@@ -1228,7 +1238,7 @@ package source.themes
 			button.stateToSkinFunction = skinSelector.updateValue;
 
 			button.defaultLabelProperties.embedFonts = true;
-			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", Math.round(24 * this.scale), 0xb9c4cd);
+			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", 24 * this.scale, 0xb9c4cd);
 			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,-1.5,0x000000,0.5,0);
 
 			button.labelOffsetX = 8 * this.scale;
@@ -1293,20 +1303,20 @@ package source.themes
 			skinSelector.imageProperties =
 			{
 				width: 292 * this.scale,
-				height: 79 * this.scale,
+				height: 88 * this.scale,
 				textureScale: this.scale
 			};
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			var format:TextFormat = new TextFormat("ExoBold", Math.round(24 * this.scale), 0x6d7e91);
+			var format:TextFormat = new TextFormat("ExoBold", 24 * this.scale, 0x6d7e91);
 			button.defaultLabelProperties.embedFonts = true;
 			button.defaultLabelProperties.textFormat = format;
 
 			button.minWidth = 292 * this.scale;
-			button.minHeight = 79 * this.scale;
+			button.minHeight = 88 * this.scale;
 			button.minTouchWidth = 292 * this.scale;
-			button.minTouchHeight = 79 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
 		}
 /*
 
@@ -1345,7 +1355,7 @@ package source.themes
 			button.stateToSkinFunction = skinSelector.updateValue;
 
 			button.defaultLabelProperties.embedFonts = true;
-			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", Math.round(18 * this.scale), 0xc1ccd3);
+			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", 18 * this.scale, 0xc1ccd3);
 			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0x143068,0.5,0);
 
 			button.verticalAlign = Button.VERTICAL_ALIGN_BOTTOM;
@@ -1359,7 +1369,7 @@ package source.themes
 
 		protected function patientProfileNavGroupInitializer(button:Button):void
 		{
-			const assetHeight:Number = 72;
+			const assetHeight:Number = 88;
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
 			skinSelector.defaultValue = this.buttonPatientProfileNavTexture;
 			skinSelector.imageProperties =
@@ -1870,7 +1880,7 @@ package source.themes
 			};
 
 			radio.stateToIconFunction = iconSelector.updateValue;
-			var format:TextFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x4c5f76);
+			var format:TextFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x4c5f76);
 			radio.defaultLabelProperties.embedFonts = true;
 			radio.defaultLabelProperties.textFormat = format;
 			radio.disabledLabelProperties.embedFonts = true;
@@ -1924,13 +1934,11 @@ package source.themes
 			};
 
 			check.stateToIconFunction = iconSelector.updateValue;
-			var format:TextFormat = new TextFormat("ExoRegular", Math.round(24 * this.scale), 0x4c5f76);
+			var format:TextFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x4c5f76);
 			check.defaultLabelProperties.embedFonts = true;
 			check.defaultLabelProperties.textFormat = format;
-			check.disabledLabelProperties.embedFonts = true;
-			check.disabledLabelProperties.textFormat = format;
-			check.selectedDisabledLabelProperties.embedFonts = true;
-			check.selectedDisabledLabelProperties.textFormat = format;
+			check.defaultLabelProperties.wordWrap = true;
+			check.defaultLabelProperties.isHTML = true;
 			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			check.gap = 12 * this.scale;
 //			check.padding = 32 * this.scale;
@@ -2026,11 +2034,9 @@ package source.themes
 			input.backgroundFocusedSkin = backgroundFocusedSkin;
 */
 
-			input.minWidth = input.minHeight = 60 * this.scale;
+			input.minWidth = input.minHeight = 88 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
-			input.paddingTop = input.paddingBottom = 12 * this.scale;
-			input.paddingLeft = input.paddingRight = 16 * this.scale;
-			// TODO : could possibly create custom class for input texts where we have a hidden input with a CHANGED listener that then writes to a standard textfield to show custom fonts
+			input.padding = 25 * this.scale;
 			input.textEditorFactory = function():ITextEditor
 			{
 			    var editor:StageTextTextEditor = new StageTextTextEditor();
@@ -2122,7 +2128,7 @@ package source.themes
 			header.titleProperties.embedFonts = true;
 			header.titleProperties.isHTML = true;
 			header.titleProperties.wordWrap = true;
-			header.titleProperties.textFormat = new TextFormat("ExoLight", Math.round(44 * this.scale), 0x293d54);
+			header.titleProperties.textFormat = new TextFormat("ExoLight", 44 * this.scale, 0x293d54);
 			header.titleProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);*/
 			//label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}

@@ -360,9 +360,8 @@ package collaboRhythm.hiviva.view
 						img = new Image(HivivaAssets.FOOTER_ICON_REPORT);
 						break;
 				}
-				img.width = item.width;
-				img.height = item.height;
-				button.addChild(img);
+
+				button.defaultIcon = img;
 			};
 
 			this._footerBtnGroup.direction = ButtonGroup.DIRECTION_HORIZONTAL;

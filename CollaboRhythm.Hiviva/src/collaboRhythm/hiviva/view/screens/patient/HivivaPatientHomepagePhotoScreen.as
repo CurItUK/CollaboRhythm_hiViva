@@ -181,6 +181,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					{
 						allImageData.unshift(categoryUrls[i]);
 					}
+					trace(categoryUrls[i]);
 				}
 			}
 
