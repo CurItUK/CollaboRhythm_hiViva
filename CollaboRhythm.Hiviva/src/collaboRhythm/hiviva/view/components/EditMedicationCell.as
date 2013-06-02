@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 
 	import feathers.controls.Button;
@@ -11,6 +12,7 @@ package collaboRhythm.hiviva.view.components
 	public class EditMedicationCell extends MedicationCell
 	{
 		private var _applicationController:HivivaApplicationController;
+		private var _edit:Button;
 		private var _delete:Button;
 		private var _medicationId:int;
 
@@ -24,16 +26,30 @@ package collaboRhythm.hiviva.view.components
 			super.draw();
 
 			this._delete.validate();
-			this._delete.x = this._bg.x + this._bg.width - this._gap - this._delete.width;
-			this._delete.y = this._bg.y + (this._bg.height * 0.5) - (this._delete.height * 0.5);
+			this._delete.x = this.actualWidth - this._gap - this._delete.width;
+			this._delete.y = (this.actualHeight * 0.5) - (this._delete.height * 0.5);
+/*
+
+			this._edit.validate();
+			this._edit.x = this._delete.x - this._edit.width;
+			this._edit.y = (this.actualHeight * 0.5) - (this._edit.height * 0.5);
+*/
+
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
+/*
+
+			this._edit = new Button();
+			this._edit.name = "edit-cell-button";
+			this._edit.addEventListener(Event.TRIGGERED, editData);
+			addChild(this._edit);
+*/
 
 			this._delete = new Button();
-			this._delete.label = "X";
+			this._delete.name = "delete-cell-button";
 			this._delete.addEventListener(Event.TRIGGERED, deleteData);
 			addChild(this._delete);
 		}
@@ -52,6 +68,13 @@ package collaboRhythm.hiviva.view.components
 			trace("medication with id:" + _medicationId + " deleted.");
 			this.removeFromParent(true);
 		}
+
+/*
+		private function editData(e:Event):void
+		{
+			// dispatch even with relevant date to call edit in parent
+		}
+*/
 
 		public function get medicationId():int
 		{

@@ -101,6 +101,12 @@ package collaboRhythm.hiviva.view.media
 
 		[Embed(source="/assets/images/temp/icon_upload.png")]
 		public static const UploadIconPng:Class;
+
+		[Embed(source="/assets/images/temp/edit_icon.png")]
+		public static const DeleteCellIconPng:Class;
+
+		[Embed(source="/assets/images/temp/delete_icon.png")]
+		public static const EditCellIconPng:Class;
 /*
 		[Embed(source="/assets/images/temp/top_nav_icon_02.png")]
 		public static const TopNavIconMessagesPng:Class;
@@ -205,6 +211,9 @@ package collaboRhythm.hiviva.view.media
 
 		[Embed(source="/assets/images/temp/pillbox.png")]
 		public static const PillboxPng:Class;
+
+		[Embed(source="/assets/images/temp/snakey_thing.png")]
+		public static const SnakeyThingPng:Class;
 
 
 		// TTF FONTS

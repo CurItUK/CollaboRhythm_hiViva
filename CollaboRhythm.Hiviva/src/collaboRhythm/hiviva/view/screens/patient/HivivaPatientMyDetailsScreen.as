@@ -5,7 +5,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.*;
 
 	import collaboRhythm.hiviva.global.HivivaScreens;
-	import collaboRhythm.hiviva.view.components.CancelAndSave;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
@@ -33,7 +33,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _seperator2:Image;
 		private var _researchTitle:Label;
 		private var _researchCheck:Check;
-		private var _cancelAndSave:CancelAndSave;
+		private var _cancelAndSave:BoxedButtons;
 		//private var _cancelButton:Button;
 		//private var _submitButton:Button;
 		private var _agreeLabel:Label;
@@ -160,7 +160,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._emailTitle = new Label();
 			this._emailTitle.name = "input-label";
-			this._emailTitle.text = "<font face='ExoBold'>Send me updates about the app</font>";
+			this._emailTitle.text = "<font face='ExoBold'>Get email updates</font>";
 			this._content.addChild(this._emailTitle);
 
 			this._updatesCheck = new Check();
@@ -191,9 +191,10 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._researchCheck.label = "Allow anonymised data for research purposes <font color='#016cf9'>What’s this?</font>";
 			this._content.addChild(this._researchCheck);
 
-			this._cancelAndSave = new CancelAndSave();
+			this._cancelAndSave = new BoxedButtons();
 			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
 			this._cancelAndSave.scale = this.dpiScale;
+			this._cancelAndSave.labels = ["Cancel", "Save"];
 			this._content.addChild(this._cancelAndSave);
 
 			this._agreeLabel = new Label();
@@ -217,11 +218,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			var button:String = e.data.button;
 			switch(button)
 			{
-				case "cancel" :
+				case "Cancel" :
 					this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 					hideFormValidation();
 					break;
-				case "save" :
+				case "Save" :
 					var formValidation:String = patientMyDetailsCheck();
 					if(formValidation.length == 0)
 					{
@@ -256,7 +257,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var patientProfile:Object = {};
 			patientProfile.name = "'" + this._nameInput._input.text + "'";
 			patientProfile.updates = int(this._updatesCheck.isSelected);
-			patientProfile.email = this._updatesCheck.isSelected ? "'" + this._emailInput._input.text + "'" : "";
+			patientProfile.email = this._updatesCheck.isSelected ? "'" + this._emailInput._input.text + "'" : "''";
 			patientProfile.research = int(this._researchCheck.isSelected);
 
 			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_SAVE_COMPLETE, setPatientProfileHandler);

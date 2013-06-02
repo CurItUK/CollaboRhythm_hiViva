@@ -50,11 +50,20 @@ package collaboRhythm.hiviva.view
 
 		public function initTrueTitle():void
 		{
-			var splitText:Array;
+			var splitText:Array,
+				boldTextInd:int = this.title.indexOf("<font face='ExoBold'>");
 			if(this.title.length > 0)
 			{
-				splitText = this.title.split(" ");
-				this.title = "<font face='ExoBold'>" + splitText.shift() + "</font> " + splitText.join(" ");
+				if (boldTextInd > -1)
+				{
+					splitText = this.title.split("</font>");
+					this.title = splitText.shift() + "</font>" + splitText.toString();
+				}
+				else
+				{
+					splitText = this.title.split(" ");
+					this.title = "<font face='ExoBold'>" + splitText.shift() + "</font> " + splitText.join(" ");
+				}
 				this.validate();
 			}
 		}

@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
 
@@ -10,6 +11,8 @@ package collaboRhythm.hiviva.view.components
 
 	import flash.geom.Rectangle;
 
+	import starling.display.Image;
+
 	import starling.display.Quad;
 
 	public class MedicationCell extends FeathersControl
@@ -18,8 +21,8 @@ package collaboRhythm.hiviva.view.components
 
 		protected var _gap:Number;
 
-//		protected var _bg:Scale9Image;
-		protected var _bg:Quad;
+		protected var _bg:Scale9Image;
+		protected var _seperator:Image;
 		protected var _scale:Number;
 		protected var _pillImageBg:Quad;
 
@@ -41,34 +44,31 @@ package collaboRhythm.hiviva.view.components
 
 			super.draw();
 
+			this._seperator.width = this.actualWidth;
+
 			this._brandNameLabel.validate();
 			this._genericNameLabel.validate();
-
-			this._bg.width = this.actualWidth;
-			this._bg.height = this._pillImageBg.height + (this._gap * 2);
 			//trace("this._genericNameLabel " + this._genericNameLabel.height);
 
-			this._pillImageBg.x = this._bg.x + this._gap;
-			this._pillImageBg.y = this._bg.y + this._gap;
+			this._pillImageBg.x = this._gap;
+			this._pillImageBg.y = this._gap;
 
 			this._brandNameLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
 			this._brandNameLabel.y = this._pillImageBg.y;
-			this._brandNameLabel.width = this._bg.width - this._pillImageBg.x;
+			this._brandNameLabel.width = this.actualWidth - this._pillImageBg.x;
 
 			this._genericNameLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
 			this._genericNameLabel.y = this._brandNameLabel.y + this._brandNameLabel.height;
-			this._genericNameLabel.width = this._bg.width - this._pillImageBg.x;
+			this._genericNameLabel.width = this.actualWidth - this._pillImageBg.x;
 
 
-			setSizeInternal(this.actualWidth, this._bg.height, true);
+			setSizeInternal(this.actualWidth, this._pillImageBg.height + (this._gap * 2), true);
 		}
 
 		override protected function initialize():void
 		{
-//			var bgTexture:Scale9Textures = new Scale9Textures(HivivaAssets.INPUT_FIELD, new Rectangle(11, 11, 32, 32));
-			this._bg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
-			this._bg.alpha = 0;
-			addChild(this._bg);
+			this._seperator = new Image(Assets.getTexture(HivivaAssets.HEADER_LINE));
+			addChild(this._seperator);
 
 			this._pillImageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
 			addChild(this._pillImageBg);

@@ -5,7 +5,7 @@ package collaboRhythm.hiviva.view.components
 
 	import starling.events.Event;
 
-	public class TakeMedicationCell extends MedicationCell
+	public class SelectMedicationCell extends MedicationCell
 	{
 		private var _doseDetailsLabel:Label;
 		private var _doseDetails:String;
@@ -13,7 +13,7 @@ package collaboRhythm.hiviva.view.components
 		private var _isChanged:Boolean;
 		private var _medicationScheduleId:int;
 
-		public function TakeMedicationCell()
+		public function SelectMedicationCell()
 		{
 			super();
 		}
@@ -24,11 +24,11 @@ package collaboRhythm.hiviva.view.components
 
 			this._doseDetailsLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
 			this._doseDetailsLabel.y = this._genericNameLabel.y + this._genericNameLabel.height;
-			this._doseDetailsLabel.width = this._bg.width - this._pillImageBg.x;
+			this._doseDetailsLabel.width = this.actualWidth - this._pillImageBg.x;
 
 			this._checkBox.validate();
-			this._checkBox.x = (this._bg.x + this._bg.width) - this._gap - this._checkBox.width;
-			this._checkBox.y = this._bg.y + (this._bg.height * 0.5) - (this._checkBox.height * 0.5);
+			this._checkBox.x = this.actualWidth - this._gap - this._checkBox.width;
+			this._checkBox.y = (this.actualHeight * 0.5) - (this._checkBox.height * 0.5);
 		}
 
 		override protected function initialize():void

@@ -3,7 +3,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.view.components.TakeMedicationCell;
+	import collaboRhythm.hiviva.view.components.SelectMedicationCell;
 	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
@@ -143,12 +143,12 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			// submit changed data only
 			var medicationsLoop:uint = this._medicationSchedule.length,
-				takeMedicationCell:TakeMedicationCell,
+				takeMedicationCell:SelectMedicationCell,
 				data:Array = [],
 				today:String = HivivaModifier.getSQLStringFromDate(new Date());
 			for (var i:uint = 0; i < medicationsLoop; i++)
 			{
-				takeMedicationCell = this._takeMedicationCellHolder.getChildAt(i) as TakeMedicationCell;
+				takeMedicationCell = this._takeMedicationCellHolder.getChildAt(i) as SelectMedicationCell;
 				if(takeMedicationCell.checkBox.isSelected)
 				{
 					data.push("id:" + takeMedicationCell.medicationScheduleId + ";" + "feeling:" + this._feelingSlider.value)
@@ -200,7 +200,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var medicationsLoop:uint = this._medicationSchedule.length;
 			for (var i:uint = 0; i < medicationsLoop; i++)
 			{
-				var takeMedicationCell:TakeMedicationCell = new TakeMedicationCell();
+				var takeMedicationCell:SelectMedicationCell = new SelectMedicationCell();
 				takeMedicationCell.medicationScheduleId = this._medicationSchedule[i].id;
 				takeMedicationCell.scale = this.dpiScale;
 				takeMedicationCell.brandName = HivivaModifier.getBrandName(this._medicationSchedule[i].medication_name);
@@ -256,7 +256,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				rawIdData:String,
 				medicationId:int,
 				feeling:Number,
-				takeMedicationCell:TakeMedicationCell;
+				takeMedicationCell:SelectMedicationCell;
 			// latestAdherence.date
 			// latestAdherence.data[i].medication_id
 			// latestAdherence.data[i].feeling
@@ -272,7 +272,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					var medicationsLoop:uint = this._medicationSchedule.length;
 					for (var j:uint = 0; j < medicationsLoop; j++)
 					{
-						takeMedicationCell = this._takeMedicationCellHolder.getChildAt(j) as TakeMedicationCell;
+						takeMedicationCell = this._takeMedicationCellHolder.getChildAt(j) as SelectMedicationCell;
 						if(takeMedicationCell.medicationScheduleId == medicationId)
 						{
 							takeMedicationCell.checkBox.isSelected = true;

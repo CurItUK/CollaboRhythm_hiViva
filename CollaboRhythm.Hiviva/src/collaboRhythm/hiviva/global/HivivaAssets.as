@@ -45,6 +45,8 @@ package collaboRhythm.hiviva.global
 		public static const TOGGLE_TRACK:String							= "ToggleTrackPng";
 		public static const PILLBOX_ICON:String							= "PillboxIconPng";
 		public static const CLOCK_ICON:String								= "ClockIconPng";
+		public static const DELETE_CELL_ICON:String								= "DeleteCellIconPng";
+		public static const EDIT_CELL_ICON:String								= "EditCellIconPng";
 
 		public static const FEELING_SLIDER_TRACK:String					= "FeelingSliderTrack";
 		public static const FEELING_SLIDER_SWITCH:String					= "FeelingSliderSwitch";
@@ -66,5 +68,6 @@ package collaboRhythm.hiviva.global
 		public static const HOME_LENS_SHINE:String							= "HomeLensShinePng";
 		public static const CLOCK_FACE:String								= "ClockFacePng";
 		public static const PILL_BOX:String								= "PillboxPng";
+		public static const SNAKEY_THING:String								= "SnakeyThingPng";
 	}
 }

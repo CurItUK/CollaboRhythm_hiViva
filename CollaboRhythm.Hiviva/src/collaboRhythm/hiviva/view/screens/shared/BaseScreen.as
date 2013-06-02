@@ -10,6 +10,8 @@ package collaboRhythm.hiviva.view.screens.shared
 	import feathers.controls.Scroller;
 	import feathers.layout.VerticalLayout;
 
+	import flash.system.System;
+
 	import starling.display.DisplayObject;
 
 	import starling.display.Image;
@@ -96,21 +98,12 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._content.verticalScrollPosition = 0;
 			this._content.verticalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
 		}
-/*
 
-		protected function setChildrenHeights():void
+		override public function dispose():void
 		{
-			var childrenLoop:int = this._content.numChildren;
-			var childHeight:Number = (this._content.height / childrenLoop) - this._componentGap;
-			var child:DisplayObject;
-			for (var i:int = 0; i < (childrenLoop - 1); i++)
-			{
-				child = this._content.getChildAt(i+1) as DisplayObject;
-				child.height = childHeight;
-			}
-
+			super.dispose();
+			System.gc();
 		}
-*/
 
 		public function get localStoreController():HivivaLocalStoreController
 		{

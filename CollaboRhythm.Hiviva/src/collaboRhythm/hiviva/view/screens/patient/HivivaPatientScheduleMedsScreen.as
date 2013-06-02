@@ -1,5 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
@@ -7,26 +9,27 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.MedicationScheduleTimeList;
+	import collaboRhythm.hiviva.view.media.Assets;
+	import collaboRhythm.hiviva.view.screens.shared.BaseScreen;
+
 	import feathers.controls.Button;
 	import feathers.controls.Label;
+	import feathers.controls.List;
 	import feathers.controls.PickerList;
 	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 	import starling.events.Event;
 
-	public class HivivaPatientScheduleMedsScreen extends Screen
+	public class HivivaPatientScheduleMedsScreen extends BaseScreen
 	{
-
-
-		private var _header:HivivaHeader;
-		private var _applicationController:HivivaApplicationController;
 		private var _backButton:Button;
 		private var _saveToProfileBtn:Button;
 		private var _medicationResult:XML;
-
-		private var _medicationLable:Label;
-		private var _takeLable:Label;
+		private var _seperator:Image;
+		private var _medicationLabel:List;
+		private var _takeLabel:Label;
 
 
 		private var _scheduleDoseList:PickerList;
@@ -42,10 +45,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function draw():void
 		{
 			super.draw();
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
-
-			this._scheduleDoseList.x = 10;
 
 			initChosenMedicationInfo();
 			initAvailableSchedules();
@@ -55,9 +54,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			trace("Selected Medicine is " + medicationResult);
 			super.initialize();
-			this._header = new HivivaHeader();
+
 			this._header.title = "Schedule Medicine";
-			this.addChild(this._header);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -66,7 +64,27 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
+		}
+
+		private function initChosenMedicationInfo():void
+		{
+			this._medicationLabel = new List();
+			this._medicationLabel.dataProvider = new ListCollection(medicationResult.name);
+			this._medicationLabel.itemRendererProperties.labelFunction = labelFunction;
+			this._medicationLabel.isSelectable = false;
+			this._content.addChild(this._medicationLabel);
+			this._medicationLabel.width = this.actualWidth;
+			this._medicationLabel.x = -this._horizontalPadding;
+			this._medicationLabel.validate();
+
+			this._seperator = new Image(Assets.getTexture(HivivaAssets.HEADER_LINE));
+			this._content.addChild(this._seperator);
+			this._seperator.width = this.actualWidth;
+			this._seperator.y = this._medicationLabel.y + this._medicationLabel.height;
+			this._seperator.x = -this._horizontalPadding;
+
 			this._scheduleDoseList = new PickerList();
+			this._scheduleDoseList.customButtonName = "border-button";
 			var schduleDoseAmounts:ListCollection = new ListCollection(
 					[
 						{text: "Once daily" , count:1},
@@ -78,30 +96,25 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._scheduleDoseList.labelField = "text";
 			this._scheduleDoseList.typicalItem = "Three daily  ";
 			this._scheduleDoseList.addEventListener(starling.events.Event.CHANGE , doseListSelectedHandler);
-			this.addChild(this._scheduleDoseList);
+			this._content.addChild(this._scheduleDoseList);
+			this._scheduleDoseList.validate();
+			this._scheduleDoseList.y = this._seperator.y + this._componentGap;
 
+			this._takeLabel = new Label();
+			this._takeLabel.text = "<font face='ExoBold'>Take</font>";
+			this.addChild(this._takeLabel);
+			this._takeLabel.validate();
+			this._takeLabel.y = this._scheduleDoseList.y + this._scheduleDoseList.height + 40;
+			this._takeLabel.x = 10;
 		}
 
-		private function initChosenMedicationInfo():void
+		private function labelFunction( item:Object ):String
 		{
-			this._medicationLable = new Label();
-			this._medicationLable.text = medicationResult.name;
-			this.addChild(this._medicationLable);
-			this._medicationLable.validate()
-			this._medicationLable.x = 10;
-			this._medicationLable.y = this._header.height + 10;
-			this._medicationLable.width = this.actualWidth - 10;
+			var itemXML:XML = item as XML;
+			var str:String = "<font face='ExoBold'>" + HivivaModifier.getBrandName(itemXML.toString()) + "</font> <br/>" +
+								HivivaModifier.getGenericName(itemXML.toString());
 
-			this._scheduleDoseList.y = this._medicationLable.y + this._medicationLable.height + 50;
-			this._scheduleDoseList.validate();
-
-			this._takeLable = new Label();
-			this._takeLable.text = "Take ";
-			this.addChild(this._takeLable);
-			this._takeLable.validate();
-			this._takeLable.y = this._scheduleDoseList.y + this._scheduleDoseList.height + 40;
-			this._takeLable.x = 10;
-
+			return str;
 		}
 
 		private function initAvailableSchedules():void
@@ -128,7 +141,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				timeList.x = 10;
 				if(i == 0 )
 				{
-					timeList.y = this._takeLable.y + this._takeLable.height + 30;
+					timeList.y = this._takeLabel.y + this._takeLabel.height + 30;
 				} else
 				{
 					var andLabel:Label = new Label();
@@ -253,11 +266,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.owner.showScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN);
 		}
 
-		public function get localStoreController():HivivaLocalStoreController
-		{
-			return applicationController.hivivaLocalStoreController;
-		}
-
 		public function get medicationResult():XML
 		{
 			return this._medicationResult;
@@ -267,18 +275,5 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			this._medicationResult = value;
 		}
-
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
-
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
-
-
-
 	}
 }

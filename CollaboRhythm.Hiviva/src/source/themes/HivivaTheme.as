@@ -360,6 +360,10 @@ package source.themes
 
 		protected var buttonCloseSkinTexture:Texture;
 
+		protected var buttonDeleteCellSkinTexture:Texture;
+
+		protected var buttonEditCellSkinTexture:Texture;
+
 		protected var toggleSwitchTexture:Texture;
 
 		protected var toggleTrackTexture:Scale9Textures;
@@ -436,6 +440,8 @@ package source.themes
 		protected var verticalScrollBarThumbSkinTextures:Scale3Textures;
 
 		protected var horizontalScrollBarThumbSkinTextures:Scale3Textures;
+
+		protected var seperatorLineTexture:Scale9Textures;
 
 
 		override public function dispose():void
@@ -643,6 +649,10 @@ package source.themes
 
 			this.buttonCloseSkinTexture = Assets.getTexture(HivivaAssets.CLOSE_BUTTON);
 
+			this.buttonDeleteCellSkinTexture = Assets.getTexture(HivivaAssets.DELETE_CELL_ICON);
+
+			this.buttonEditCellSkinTexture = Assets.getTexture(HivivaAssets.EDIT_CELL_ICON);
+
 			this.toggleSwitchTexture = Assets.getTexture(HivivaAssets.TOGGLE_SWITCH);
 
 			this.toggleTrackTexture = new Scale9Textures(Assets.getTexture(HivivaAssets.TOGGLE_TRACK), new Rectangle(27,27,55,3));
@@ -676,6 +686,7 @@ package source.themes
 
 			this.radioSelectedDisabledIconTexture = this.atlas.getTexture("radio-selected-disabled-icon");
 
+			this.seperatorLineTexture = new Scale9Textures(Assets.getTexture(HivivaAssets.HEADER_LINE), new Rectangle(0,2,10,2));
 
 			this.checkUpIconTexture = Assets.getTexture(HivivaAssets.TICK_BOX);
 			this.checkDownIconTexture = Assets.getTexture(HivivaAssets.TICK_BOX_ACTIVE);
@@ -783,6 +794,8 @@ package source.themes
 			this.setInitializerForClass(Button, homeButtonInitializer, "home-button");
 			this.setInitializerForClass(Button, backButtonInitializer, "back-button");
 			this.setInitializerForClass(Button, closeButtonInitializer, "close-button");
+			this.setInitializerForClass(Button, deleteCellButtonInitializer, "delete-cell-button");
+			this.setInitializerForClass(Button, editCellButtonInitializer, "edit-cell-button");
 
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
@@ -1246,8 +1259,8 @@ package source.themes
 
 			button.minWidth = skinWidth * this.scale;
 			button.minHeight = skinHeight * this.scale;
-			button.minTouchWidth = skinWidth * this.scale;
-			button.minTouchHeight = skinHeight * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
 		}
 
 		protected function closeButtonInitializer(button:Button):void
@@ -1267,8 +1280,50 @@ package source.themes
 
 			button.minWidth = skinWidth * this.scale;
 			button.minHeight = skinHeight * this.scale;
-			button.minTouchWidth = skinWidth * this.scale;
-			button.minTouchHeight = skinHeight * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function deleteCellButtonInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.buttonDeleteCellSkinTexture.width;
+			var skinHeight:Number = this.buttonDeleteCellSkinTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonDeleteCellSkinTexture;
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.minWidth = skinWidth * this.scale;
+			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function editCellButtonInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.buttonEditCellSkinTexture.width;
+			var skinHeight:Number = this.buttonEditCellSkinTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonEditCellSkinTexture;
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.minWidth = skinWidth * this.scale;
+			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
 		}
 
 
@@ -1537,60 +1592,40 @@ package source.themes
 		{
 
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
-
-			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
-
-			skinSelector.defaultSelectedValue = this.itemRendererSelectedSkinTextures;
-
-			skinSelector.setValueForState(this.itemRendererSelectedSkinTextures, Button.STATE_DOWN, false);
-
+			skinSelector.defaultValue = this.seperatorLineTexture;
+			//skinSelector.defaultSelectedValue = this.itemRendererSelectedSkinTextures;
+			//skinSelector.setValueForState(this.itemRendererSelectedSkinTextures, Button.STATE_DOWN, false);
 			skinSelector.imageProperties =
-
 			{
-
 				width: 88 * this.scale,
-
-				height: 88 * this.scale,
-
+				//height: 88 * this.scale,
 				textureScale: this.scale
-
 			};
 
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-
-			renderer.defaultLabelProperties.textFormat = this.largeLightTextFormat;
-
-			renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
-
-			renderer.defaultSelectedLabelProperties.textFormat = this.largeDarkTextFormat;
-
+			renderer.defaultLabelProperties.embedFonts = true;
+			renderer.defaultLabelProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x293d54);
+			renderer.defaultLabelProperties.wordWrap = true;
+			renderer.defaultLabelProperties.isHTML = true;
+			renderer.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			//renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
+			//renderer.defaultSelectedLabelProperties.textFormat = this.largeDarkTextFormat;
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-
 			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
-
 			renderer.paddingLeft = 32 * this.scale;
-
 			renderer.paddingRight = 24 * this.scale;
-
 			renderer.gap = 20 * this.scale;
-
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
-
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
-
 			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
 
 			renderer.minWidth = renderer.minHeight = 88 * this.scale;
-
 			renderer.minTouchWidth = renderer.minTouchHeight = 88 * this.scale;
 
-
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
-
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
-
 		}
 
 
