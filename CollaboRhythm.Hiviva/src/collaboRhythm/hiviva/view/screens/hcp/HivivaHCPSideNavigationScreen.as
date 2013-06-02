@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
@@ -34,8 +35,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function initialize():void
 		{
 			// needs own class
-			var btnHeight:Number = HivivaAssets.SIDENAV_BASE.height * SCALE;
-			var btnWidth:Number = HivivaAssets.SIDENAV_BASE.width * SCALE;
+			var btnHeight:Number = Assets.getTexture(HivivaAssets.SIDENAV_BASE).height * SCALE;
+			var btnWidth:Number = Assets.getTexture(HivivaAssets.SIDENAV_BASE).width * SCALE;
 
 			this._sideBtnGroup = new ButtonGroup();
 			this._sideBtnGroup.customButtonName = "side-nav-buttons";
@@ -59,10 +60,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 				switch(item.name)
 				{
 					case "profile" :
-						img = new Image(HivivaAssets.SIDENAV_ICON_PATIENTPROFILE);
+						img = new Image(Assets.getTexture(HivivaAssets.SIDENAV_ICON_PATIENTPROFILE));
 						break;
 					case "help" :
-						img = new Image(HivivaAssets.SIDENAV_ICON_HELP);
+						img = new Image(Assets.getTexture(HivivaAssets.SIDENAV_ICON_HELP));
 						break;
 				}
 

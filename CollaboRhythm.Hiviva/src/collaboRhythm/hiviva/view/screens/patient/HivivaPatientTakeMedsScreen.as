@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.components.TakeMedicationCell;
+	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
@@ -107,10 +108,10 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._feelingSlider.liveDragging = false;
 			this._content.addChild(this._feelingSlider);
 
-			this._feelingSliderLeftImage = new Image(HivivaAssets.FEELING_SLIDER_CLOUD);
+			this._feelingSliderLeftImage = new Image(Assets.getTexture(HivivaAssets.FEELING_SLIDER_CLOUD));
 			this._content.addChild(this._feelingSliderLeftImage);
 
-			this._feelingSliderRightImage = new Image(HivivaAssets.FEELING_SLIDER_SUN);
+			this._feelingSliderRightImage = new Image(Assets.getTexture(HivivaAssets.FEELING_SLIDER_SUN));
 			this._content.addChild(this._feelingSliderRightImage);
 
 			this._feelingSliderLeftLabel = new Label();

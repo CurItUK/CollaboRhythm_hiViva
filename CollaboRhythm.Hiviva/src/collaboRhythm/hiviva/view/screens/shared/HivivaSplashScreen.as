@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -74,10 +75,10 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function initSplashBackground():void
 		{
-			this._splashBg = new Image(HivivaAssets.SPLASH_SCREEN_BG);
+			this._splashBg = new Image(Assets.getTexture(HivivaAssets.SPLASH_SCREEN_BG));
 			addChild(this._splashBg);
 
-			this._logo = new Image(HivivaAssets.LOGO);
+			this._logo = new Image(Assets.getTexture(HivivaAssets.LOGO));
 			addChild(this._logo);
 
 			this._footer = new Label();
@@ -123,12 +124,12 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function initButtons():void
 		{
 			this._hcpButton = new Button();
-			this._hcpButton.defaultSkin = new Image(HivivaAssets.SPLASH_BUTTON_HCP);
+			this._hcpButton.defaultSkin = new Image(Assets.getTexture(HivivaAssets.SPLASH_BUTTON_HCP));
 			applySplashButtonProperties(this._hcpButton);
 			this._hcpButton.label = "I’m a healthcare \nprofessional \nor carer";
 
 			this._patientButton = new Button();
-			this._patientButton.defaultSkin = new Image(HivivaAssets.SPLASH_BUTTON_PATIENT);
+			this._patientButton.defaultSkin = new Image(Assets.getTexture(HivivaAssets.SPLASH_BUTTON_PATIENT));
 			this._patientButton.label = "I am a patient";
 			applySplashButtonProperties(this._patientButton);
 

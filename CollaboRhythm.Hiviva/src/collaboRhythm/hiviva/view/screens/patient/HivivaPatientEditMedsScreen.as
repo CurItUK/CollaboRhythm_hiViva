@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.view.*;
 
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
@@ -40,6 +41,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		public function HivivaPatientEditMedsScreen()
 		{
+			HivivaAssets
 		}
 
 		override protected function draw():void

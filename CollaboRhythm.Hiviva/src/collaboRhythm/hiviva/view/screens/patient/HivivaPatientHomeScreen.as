@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
@@ -108,16 +109,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._bgImageHolder = new Sprite();
 			addChild(this._bgImageHolder);
 
-			this._rim = new Image(HivivaAssets.HOME_LENS_RIM);
+			this._rim = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_RIM));
 			addChild(this._rim);
 
-			this._bg = new Image(HivivaAssets.HOME_LENS_BG);
+			this._bg = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_BG));
 			addChild(this._bg);
 
 			this._lensImageHolder = new Sprite();
 			addChild(this._lensImageHolder);
 
-			this._shine = new Image(HivivaAssets.HOME_LENS_SHINE);
+			this._shine = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_SHINE));
 			addChild(this._shine);
 
 			this._homeImageInstructions = new Label();

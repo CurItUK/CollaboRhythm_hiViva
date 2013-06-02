@@ -14,6 +14,8 @@ package collaboRhythm.hiviva.view
 
 	import starling.core.Starling;
 	import starling.events.Event;
+	import starling.utils.HAlign;
+	import starling.utils.VAlign;
 
 	public class HivivaStartup extends Sprite
 	{
@@ -82,8 +84,8 @@ package collaboRhythm.hiviva.view
 			_starFW = new Starling(Main, stage, viewPort);
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			_starFW.enableErrorChecking = true;
-			//_starFW.showStats = true;
-			//_starFW.showStatsAt(HAlign.RIGHT, VAlign.TOP);
+			_starFW.showStats = true;
+			_starFW.showStatsAt(HAlign.RIGHT, VAlign.TOP);
 			_starFW.start();
 			trace(_starFW.viewPort);
 		}

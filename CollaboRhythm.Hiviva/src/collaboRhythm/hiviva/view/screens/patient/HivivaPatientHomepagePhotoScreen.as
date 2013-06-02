@@ -8,6 +8,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.galleryscreens.Gallery;
 	import collaboRhythm.hiviva.view.galleryscreens.GalleryData;
 	import collaboRhythm.hiviva.view.galleryscreens.GalleryScreen;
+	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
@@ -290,22 +291,22 @@ package collaboRhythm.hiviva.view.screens.patient
 				switch(category)
 				{
 					case "SPORT" :
-						button.defaultIcon = new Image(HivivaAssets.SPORTS_ICON);
+						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.SPORTS_ICON));
 						break;
 					case "MUSIC" :
-						button.defaultIcon = new Image(HivivaAssets.MUSIC_ICON);
+						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.MUSIC_ICON));
 						break;
 					case "CINEMA" :
-						button.defaultIcon = new Image(HivivaAssets.CINEMA_ICON);
+						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.CINEMA_ICON));
 						break;
 					case "HISTORY" :
-						button.defaultIcon = new Image(HivivaAssets.HISTORY_ICON);
+						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.HISTORY_ICON));
 						break;
 					case "TRAVEL" :
-						button.defaultIcon = new Image(HivivaAssets.TRAVEL_ICON);
+						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.TRAVEL_ICON));
 						break;
 					case "ART" :
-						button.defaultIcon = new Image(HivivaAssets.ART_ICON);
+						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.ART_ICON));
 						break;
 				}
 				this._galleryBtnContainer.addChild(button);

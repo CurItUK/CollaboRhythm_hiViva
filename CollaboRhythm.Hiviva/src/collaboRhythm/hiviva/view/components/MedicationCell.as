@@ -18,7 +18,8 @@ package collaboRhythm.hiviva.view.components
 
 		protected var _gap:Number;
 
-		protected var _bg:Scale9Image;
+//		protected var _bg:Scale9Image;
+		protected var _bg:Quad;
 		protected var _scale:Number;
 		protected var _pillImageBg:Quad;
 
@@ -64,15 +65,16 @@ package collaboRhythm.hiviva.view.components
 
 		override protected function initialize():void
 		{
-			var bgTexture:Scale9Textures = new Scale9Textures(HivivaAssets.INPUT_FIELD, new Rectangle(11, 11, 32, 32));
-			this._bg = new Scale9Image(bgTexture, this._scale);
+//			var bgTexture:Scale9Textures = new Scale9Textures(HivivaAssets.INPUT_FIELD, new Rectangle(11, 11, 32, 32));
+			this._bg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
+			this._bg.alpha = 0;
 			addChild(this._bg);
 
 			this._pillImageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
 			addChild(this._pillImageBg);
 
 			this._brandNameLabel = new Label();
-			this._brandNameLabel.text = this._brandName;
+			this._brandNameLabel.text = "<font face='ExoBold'>" + this._brandName + "</font>";
 			this.addChild(this._brandNameLabel);
 
 			this._genericNameLabel = new Label();

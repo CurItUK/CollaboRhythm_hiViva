@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientClockScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientPillboxScreen;
 
@@ -82,10 +83,10 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._clockPillboxToggle.addEventListener( Event.CHANGE, toggleHandler );
 			addChild(this._clockPillboxToggle);
 
-			this._clockIcon = new Image(HivivaAssets.CLOCK_ICON);
+			this._clockIcon = new Image(Assets.getTexture(HivivaAssets.CLOCK_ICON));
 			addChild(this._clockIcon);
 
-			this._pillboxIcon = new Image(HivivaAssets.PILLBOX_ICON);
+			this._pillboxIcon = new Image(Assets.getTexture(HivivaAssets.PILLBOX_ICON));
 			this._pillboxIcon.alpha = 0.5;
 			addChild(this._pillboxIcon);
 

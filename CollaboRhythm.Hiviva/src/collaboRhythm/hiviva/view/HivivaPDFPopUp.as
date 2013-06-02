@@ -23,7 +23,7 @@ package collaboRhythm.hiviva.view
 		private const PADDING:Number = 40;
 		private const GAP:Number = 20;
 
-		private var _cancelBtn:Button
+		private var _cancelBtn:Button;
 		private var _mailBtn:Button;
 
 		public function HivivaPDFPopUp()

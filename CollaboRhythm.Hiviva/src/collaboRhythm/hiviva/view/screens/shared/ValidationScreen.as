@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -51,7 +52,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			super.initialize();
 
-			this._validationBg = new Image(HivivaAssets.VALIDATION_BG);
+			this._validationBg = new Image(Assets.getTexture(HivivaAssets.VALIDATION_BG));
 			this._validationBg.visible = false;
 			addChild(this._validationBg);
 

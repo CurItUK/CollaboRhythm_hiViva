@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
@@ -182,7 +183,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function patientProfileBtnInitializer(button:Button, item:Object):void
 		{
-			var img:TiledImage = new TiledImage(HivivaAssets.PATIENTPROFILENAV_BUTTON_PATTERN);
+			var img:TiledImage = new TiledImage(Assets.getTexture(HivivaAssets.PATIENTPROFILENAV_BUTTON_PATTERN));
 			img.smoothing = TextureSmoothing.NONE;
 			img.blendMode =  BlendMode.MULTIPLY;
 			button.addChild(img);

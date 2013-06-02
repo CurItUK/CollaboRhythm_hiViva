@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.components.CancelAndSave;
+	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
@@ -15,6 +16,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.textures.Texture;
 
 	public class HivivaPatientMyDetailsScreen extends ValidationScreen
 	{
@@ -125,6 +127,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.initialize();
 
+			var seperatorTexture:Texture = Assets.getTexture(HivivaAssets.HEADER_LINE);
+
 			this._header.title = "My Details";
 
 			this._instructionsText = new Label();
@@ -151,7 +155,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._photoContainer.fileName = "userprofileimage.jpg";
 			this._content.addChild(this._photoContainer);
 
-			this._seperator1 = new Image(HivivaAssets.HEADER_LINE);
+			this._seperator1 = new Image(seperatorTexture);
 			this._content.addChild(this._seperator1);
 
 			this._emailTitle = new Label();
@@ -161,7 +165,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._updatesCheck = new Check();
 			this._updatesCheck.isSelected = false;
-			this._updatesCheck.label = "Send me updates";
+			this._updatesCheck.label = "Send me updates about the app";
 			this._content.addChild(this._updatesCheck);
 
 			this._emailInput = new LabelAndInput();
@@ -174,7 +178,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._emailInputIns.text = "Only required if you would like to receive app notifications by email";
 			this._content.addChild(this._emailInputIns);
 
-			this._seperator2 = new Image(HivivaAssets.HEADER_LINE);
+			this._seperator2 = new Image(seperatorTexture);
 			this._content.addChild(this._seperator2);
 
 			this._researchTitle = new Label();

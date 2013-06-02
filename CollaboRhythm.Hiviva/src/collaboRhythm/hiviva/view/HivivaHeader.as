@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Header;
 	import feathers.controls.text.TextFieldTextRenderer;
@@ -42,7 +43,7 @@ package collaboRhythm.hiviva.view
 			this.paddingLeft = this.paddingRight = HORIZONTOL_PADDING * this._scale;
 			this.paddingBottom = this.paddingTop = VERTICAL_PADDING * this._scale;
 
-			this._headerLine = new Image(HivivaAssets.HEADER_LINE);
+			this._headerLine = new Image(Assets.getTexture(HivivaAssets.HEADER_LINE));
 			addChild(this._headerLine);
 		}
 
