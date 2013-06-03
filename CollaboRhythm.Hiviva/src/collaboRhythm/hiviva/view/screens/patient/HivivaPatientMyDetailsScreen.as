@@ -67,7 +67,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._emailTitle.width = this._innerWidth;
 
-			this._updatesCheck.width = this._innerWidth;
+			this._updatesCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
 
 			this._emailInput._labelLeft.text = "Email";
 			this._emailInput.width = this._innerWidth;
@@ -77,7 +77,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._researchTitle.width = this._innerWidth;
 
-			this._researchCheck.width = this._innerWidth;
+			this._researchCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
 
 			this._cancelAndSave.width = this._innerWidth;
 

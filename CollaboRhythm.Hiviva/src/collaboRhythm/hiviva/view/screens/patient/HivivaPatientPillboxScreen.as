@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.view.components.SuperscriptCircle;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
@@ -110,7 +111,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					for (var i:uint = 0; i < loop; i++)
 					{
 						var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
-						var tabletCount:Label = new Label();
+						var tabletCount:SuperscriptCircle = new SuperscriptCircle();
 						tabletCount.text = _amMedication[i].tablet_count;
 						tabletColorCount++;
 						if (tabletColorCount > 4)
@@ -121,8 +122,8 @@ package collaboRhythm.hiviva.view.screens.patient
 						this.addChild(tabletCount);
 						tablet.x = this._amTableXloc + (i * tablet.width) + 10;
 						tablet.y = this._amTableYloc + this._pillboxYCellSpacing * j;
-						tabletCount.x = tablet.x + tablet.width/2;
-						tabletCount.y = tablet.y - tablet.height/3;
+						tabletCount.x = tablet.x + tablet.width/3;
+						tabletCount.y = tablet.y - tablet.height/2;
 					}
 					tabletColorCount = 1;
 				}
@@ -143,20 +144,19 @@ package collaboRhythm.hiviva.view.screens.patient
 					for (var i:uint = 0; i < loop; i++)
 					{
 						var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
-						var tabletCount:Label = new Label();
-						tabletCount.text = _pmMedication[i].tablet_count;
-						tabletColorCount ++;
-						if(tabletColorCount > 4)
+						var tabletCount:SuperscriptCircle = new SuperscriptCircle();
+						tabletCount.text = _amMedication[i].tablet_count;
+						tabletColorCount++;
+						if (tabletColorCount > 4)
 						{
-							tabletColorCount =1;
+							tabletColorCount = 1;
 						}
 						this.addChild(tablet);
 						this.addChild(tabletCount);
-						tablet.x = this._pmTableXloc + (i * tablet.width) + 10;
-						tablet.y = this._pmTableYloc;
-						tablet.y = this._pmTableYloc + this._pillboxYCellSpacing * j;
-						tabletCount.x = tablet.x + tablet.width/2;
-						tabletCount.y = tablet.y - tablet.height/3;
+						tablet.x = this._amTableXloc + (i * tablet.width) + 10;
+						tablet.y = this._amTableYloc + this._pillboxYCellSpacing * j;
+						tabletCount.x = tablet.x + tablet.width/3;
+						tabletCount.y = tablet.y - tablet.height/2;
 					}
 					tabletColorCount = 1;
 				}

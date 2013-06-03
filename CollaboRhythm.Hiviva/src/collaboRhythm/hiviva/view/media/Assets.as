@@ -195,6 +195,12 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/header_line.png")]
 		public static const HeaderLinePng:Class;
 
+		[Embed(source="/assets/images/temp/calendar-button.png")]
+		public static const calendarButtonPng:Class;
+
+		[Embed(source="/assets/images/temp/calendar_day_cell.png")]
+		public static const calendarDayCellPng:Class;
+
 		//front facing screen Items
 
 		[Embed(source="/assets/images/temp/home_lens_rim.png")]
@@ -214,6 +220,9 @@ package collaboRhythm.hiviva.view.media
 
 		[Embed(source="/assets/images/temp/snakey_thing.png")]
 		public static const SnakeyThingPng:Class;
+
+		[Embed(source="/assets/images/temp/superscript_circle.png")]
+		public static const SuperscriptCirclePng:Class;
 
 
 		// TTF FONTS

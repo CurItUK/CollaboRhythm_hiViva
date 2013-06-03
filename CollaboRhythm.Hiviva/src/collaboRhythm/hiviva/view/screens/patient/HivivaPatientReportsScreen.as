@@ -1,6 +1,8 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.components.Calendar;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 
@@ -11,9 +13,9 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
 	import feathers.core.PopUpManager;
+	import feathers.events.FeathersEventType;
 
 	import flash.display.Sprite;
-	import flash.events.MouseEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -37,7 +39,9 @@ package collaboRhythm.hiviva.view.screens.patient
 	{
 		private var _footerHeight:Number;
 		private var _startDateInput:LabelAndInput;
+		private var _startDateButton:Button;
 		private var _finishDateInput:LabelAndInput;
+		private var _finishDateButton:Button;
 		private var _reportDatesLabel:Label;
 		private var _includeLabel:Label;
 		private var _adherenceCheck:Check;
@@ -45,6 +49,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _cd4Check:Check;
 		private var _viralLoadCheck:Check;
 		private var _previewAndSendBtn:Button;
+		private var _calendar:Calendar;
+		private var _activeCalendarInput:TextInput;
 
 		private var _pdfFile:File;
 		private var _stageWebView:StageWebView
@@ -61,6 +67,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			this._customHeight = this.actualHeight - this._footerHeight;
 			super.draw();
+			this._content.validate();
 		}
 
 		override protected function preValidateContent():void
@@ -69,23 +76,41 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._reportDatesLabel.width = this._innerWidth;
 
 			this._startDateInput._labelLeft.text = "Start";
-			this._startDateInput.width = this._innerWidth;
-			this._startDateInput._input.width = this._innerWidth * 0.7;
+			this._startDateInput.width = this._innerWidth * 0.75;
+			this._startDateInput._input.width = this._innerWidth * 0.5;
 
 			this._finishDateInput._labelLeft.text = "Finish";
-			this._finishDateInput.width = this._innerWidth;
-			this._finishDateInput._input.width = this._innerWidth * 0.7;
+			this._finishDateInput.width = this._innerWidth * 0.75;
+			this._finishDateInput._input.width = this._innerWidth * 0.5;
 
 			this._includeLabel.width = this._innerWidth;
-			this._adherenceCheck.width = this._innerWidth;
-			this._feelingCheck.width = this._innerWidth;
-			this._cd4Check.width = this._innerWidth;
-			this._viralLoadCheck.width = this._innerWidth;
+
+			this._adherenceCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
+			this._feelingCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
+			this._cd4Check.defaultLabelProperties.width = this._innerWidth * 0.9;
+			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
 		}
 
 		override protected function postValidateContent():void
 		{
 			super.postValidateContent();
+
+			this._startDateButton.x = this._startDateInput.width + this._componentGap;
+			this._startDateButton.y = this._startDateInput.y + this._startDateInput._input.y + (this._startDateInput._input.height * 0.5);
+			this._startDateButton.y -= this._startDateButton.height * 0.5;
+
+			this._finishDateInput.y = this._startDateInput.y + this._startDateInput.height + this._componentGap;
+
+			this._finishDateButton.x = this._finishDateInput.width + this._componentGap;
+			this._finishDateButton.y = this._finishDateInput.y + this._finishDateInput._input.y + (this._finishDateInput._input.height * 0.5);
+			this._finishDateButton.y -= this._finishDateButton.height * 0.5;
+
+			this._includeLabel.y = this._finishDateInput.y + this._finishDateInput.height + this._componentGap;
+			this._adherenceCheck.y = this._includeLabel.y + this._includeLabel.height + this._componentGap;
+			this._feelingCheck.y = this._adherenceCheck.y + this._adherenceCheck.height + this._componentGap;
+			this._cd4Check.y = this._feelingCheck.y + this._feelingCheck.height + this._componentGap;
+			this._viralLoadCheck.y = this._cd4Check.y + this._cd4Check.height + this._componentGap;
+			this._previewAndSendBtn.y = this._viralLoadCheck.y + this._viralLoadCheck.height + this._componentGap;
 		}
 
 		override protected function initialize():void
@@ -102,11 +127,23 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._startDateInput.scale = this.dpiScale;
 			this._startDateInput.labelStructure = "left";
 			this._content.addChild(this._startDateInput);
+			this._startDateInput._input.isEnabled = false;
+
+			this._startDateButton = new Button();
+			this._startDateButton.addEventListener(Event.TRIGGERED, startDateCalendarHandler);
+			this._startDateButton.name = "calendar-button";
+			this._content.addChild(this._startDateButton);
 
 			this._finishDateInput = new LabelAndInput();
 			this._finishDateInput.scale = this.dpiScale;
 			this._finishDateInput.labelStructure = "left";
 			this._content.addChild(this._finishDateInput);
+			this._finishDateInput._input.isEnabled = false;
+
+			this._finishDateButton = new Button();
+			this._finishDateButton.addEventListener(Event.TRIGGERED, finishDateCalendarHandler);
+			this._finishDateButton.name = "calendar-button";
+			this._content.addChild(this._finishDateButton);
 
 			this._includeLabel = new Label();
 			this._includeLabel.text = "<font face='ExoBold'>Include</font>";
@@ -136,6 +173,33 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._previewAndSendBtn.label = "Preview and send";
 			this._previewAndSendBtn.addEventListener(starling.events.Event.TRIGGERED, previewSendHandler);
 			this._content.addChild(this._previewAndSendBtn);
+
+			this._calendar = new Calendar();
+			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler)
+		}
+
+		private function calendarButtonHandler(e:FeathersScreenEvent):void
+		{
+			PopUpManager.removePopUp(this._calendar);
+			this._activeCalendarInput.text = e.evtData.date;
+		}
+
+		private function startDateCalendarHandler(e:Event):void
+		{
+			this._activeCalendarInput = this._startDateInput._input;
+			PopUpManager.addPopUp(this._calendar,true,false);
+			this._calendar.width = this.actualWidth;
+			this._calendar.validate();
+			//PopUpManager.centerPopUp(this._calendar);
+		}
+
+		private function finishDateCalendarHandler(e:Event):void
+		{
+			this._activeCalendarInput = this._finishDateInput._input;
+			PopUpManager.addPopUp(this._calendar,true,false);
+			this._calendar.width = this.actualWidth;
+			this._calendar.validate();
+			//PopUpManager.centerPopUp(this._calendar);
 		}
 
 		private function previewSendHandler(e:starling.events.Event):void

@@ -145,6 +145,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._medicationList.width = this.actualWidth;
 				this._medicationList.y = this._content.y + this._medicationSearchInput.y + this._medicationSearchInput.height + this._componentGap;
 				this._medicationList.dataProvider = this._medications;
+				this._medicationList.itemRendererProperties.labelName = "lighter-color-label";
 				this._medicationList.itemRendererProperties.labelFunction = labelFunction;
 				this._medicationList.itemRendererProperties.accessoryFunction = accessoryFunction;
 				this._medicationList.isSelectable = false;

@@ -62,6 +62,8 @@ package collaboRhythm.hiviva.global
 		public static const CLOSE_BUTTON:String							= "CloseButtonPng";
 		public static const VALIDATION_BG:String							= "ValidationBgPng";
 		public static const HEADER_LINE:String								= "HeaderLinePng";
+		public static const CALENDAR_BUTTON:String								= "calendarButtonPng";
+		public static const CALENDAR_DAY_CELL:String								= "calendarDayCellPng";
 		// front facing screen Items
 		public static const HOME_LENS_RIM:String							= "HomeLensRimPng";
 		public static const HOME_LENS_BG:String							= "HomeLensBgPng";
@@ -69,5 +71,6 @@ package collaboRhythm.hiviva.global
 		public static const CLOCK_FACE:String								= "ClockFacePng";
 		public static const PILL_BOX:String								= "PillboxPng";
 		public static const SNAKEY_THING:String								= "SnakeyThingPng";
+		public static const SUPERSCRIPT_CIRCLE:String								= "SuperscriptCirclePng";
 	}
 }

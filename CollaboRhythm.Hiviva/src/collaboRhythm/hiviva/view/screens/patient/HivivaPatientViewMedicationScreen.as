@@ -8,6 +8,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientClockScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientPillboxScreen;
+	import collaboRhythm.hiviva.view.screens.shared.BaseScreen;
 
 	import feathers.controls.Header;
 	import feathers.controls.Screen;
@@ -24,11 +25,10 @@ package collaboRhythm.hiviva.view.screens.patient
 	import starling.events.Event;
 
 
-	public class HivivaPatientViewMedicationScreen extends Screen
+	public class HivivaPatientViewMedicationScreen extends BaseScreen
 	{
 		private const TRANSITION_DURATION:Number						= 0.4;
 		
-		private var _header:HivivaHeader;
 		private var _clockPillboxToggle:ToggleSwitch;
 		private var _clockPillboxNav:ScreenNavigator;
 		private var _transitionMgr:ScreenSlidingStackTransitionManager;
@@ -36,7 +36,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _pillboxIcon:Image;
 		private var _footerHeight:Number;
 		private var _usableHeaderHeight:Number;
-		private var _applicationController:HivivaApplicationController;
 
 
 
@@ -48,14 +47,21 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function draw():void
 		{
 			super.draw();
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
 
-
-
-			this._clockPillboxToggle.validate();
 			this._clockPillboxToggle.x = this.actualWidth / 2 - this._clockPillboxToggle.width/2;
-			this._clockPillboxToggle.y = 100;
+
+			if(this._clockIcon == null)
+			{
+				this._clockIcon = new Image(Assets.getTexture(HivivaAssets.CLOCK_ICON));
+				this._content.addChild(this._clockIcon);
+			}
+
+			if(this._pillboxIcon == null)
+			{
+				this._pillboxIcon = new Image(Assets.getTexture(HivivaAssets.PILLBOX_ICON));
+				this._pillboxIcon.alpha = 0.5;
+				this._content.addChild(this._pillboxIcon);
+			}
 
 			this._pillboxIcon.y = this._clockIcon.y = this._clockPillboxToggle.y + (this._clockPillboxToggle.height * 0.5)
 
@@ -68,37 +74,25 @@ package collaboRhythm.hiviva.view.screens.patient
 			useableHeaderHeight = this._header.height +  this._clockPillboxToggle.height;
 
 			initClockPillboxNav();
-
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._header = new HivivaHeader();
+
 			this._header.title = "Your Medication";
-			addChild(this._header);
 
 			this._clockPillboxToggle = new ToggleSwitch();
 			this._clockPillboxToggle.isSelected = false;
 			this._clockPillboxToggle.addEventListener( Event.CHANGE, toggleHandler );
-			addChild(this._clockPillboxToggle);
-
-			this._clockIcon = new Image(Assets.getTexture(HivivaAssets.CLOCK_ICON));
-			addChild(this._clockIcon);
-
-			this._pillboxIcon = new Image(Assets.getTexture(HivivaAssets.PILLBOX_ICON));
-			this._pillboxIcon.alpha = 0.5;
-			addChild(this._pillboxIcon);
-
-
-
+			this._content.addChild(this._clockPillboxToggle);
 		}
 
 		private function initClockPillboxNav():void
 		{
 			this._clockPillboxNav = new ScreenNavigator();
-			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN , new ScreenNavigatorItem(HivivaPatientClockScreen , null , {applicationController:_applicationController ,footerHeight:footerHeight , headerHeight:useableHeaderHeight}));
-			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_PILLBOX_SCREEN , new ScreenNavigatorItem(HivivaPatientPillboxScreen, null , {applicationController:_applicationController ,footerHeight:footerHeight , headerHeight:useableHeaderHeight}));
+			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_CLOCK_SCREEN , new ScreenNavigatorItem(HivivaPatientClockScreen , null , {applicationController:applicationController ,footerHeight:footerHeight , headerHeight:useableHeaderHeight}));
+			this._clockPillboxNav.addScreen(HivivaScreens.PATIENT_PILLBOX_SCREEN , new ScreenNavigatorItem(HivivaPatientPillboxScreen, null , {applicationController:applicationController ,footerHeight:footerHeight , headerHeight:useableHeaderHeight}));
 			this.addChild(this._clockPillboxNav);
 
 			this._transitionMgr = new ScreenSlidingStackTransitionManager(this._clockPillboxNav);
@@ -106,8 +100,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._transitionMgr.duration = TRANSITION_DURATION;
 
 			this._clockPillboxNav.showScreen(HivivaScreens.PATIENT_CLOCK_SCREEN);
-
-
 		}
 
 		private function toggleHandler(e:Event):void
@@ -132,16 +124,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		override public function dispose():void
 		{
 			super.dispose();
-		}
-
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
-
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
 		}
 
 		public function get footerHeight():Number

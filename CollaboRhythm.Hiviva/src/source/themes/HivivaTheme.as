@@ -295,6 +295,7 @@ package source.themes
 
 
 		protected var hivivaDefaultTextFormat:TextFormat;
+		protected var hivivaLighterTextFormat:TextFormat;
 
 		protected var smallUIDarkTextFormat:TextFormat;
 
@@ -363,6 +364,10 @@ package source.themes
 		protected var buttonDeleteCellSkinTexture:Texture;
 
 		protected var buttonEditCellSkinTexture:Texture;
+
+		protected var buttonCalendarSkinTexture:Texture;
+
+		protected var buttonCalendarDayCellSkinTexture:Texture;
 
 		protected var toggleSwitchTexture:Texture;
 
@@ -550,6 +555,8 @@ package source.themes
 
 			this.hivivaDefaultTextFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x4c5f76);
 
+			this.hivivaLighterTextFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x293d54);
+
 			this.smallUIDarkTextFormat = new TextFormat(fontNames, 24 * this.scale, DARK_TEXT_COLOR, true);
 
 			this.smallUILightTextFormat = new TextFormat(fontNames, 24 * this.scale, LIGHT_TEXT_COLOR, true);
@@ -652,6 +659,10 @@ package source.themes
 			this.buttonDeleteCellSkinTexture = Assets.getTexture(HivivaAssets.DELETE_CELL_ICON);
 
 			this.buttonEditCellSkinTexture = Assets.getTexture(HivivaAssets.EDIT_CELL_ICON);
+
+			this.buttonCalendarSkinTexture = Assets.getTexture(HivivaAssets.CALENDAR_BUTTON);
+
+			this.buttonCalendarDayCellSkinTexture = Assets.getTexture(HivivaAssets.CALENDAR_DAY_CELL);
 
 			this.toggleSwitchTexture = Assets.getTexture(HivivaAssets.TOGGLE_SWITCH);
 
@@ -774,6 +785,7 @@ package source.themes
 			//this.setInitializerForClass(Label, HeaderBoldInitializer, "header-bold");
 			this.setInitializerForClass(Label, validationLabelInitializer, "validation-label");
 			this.setInitializerForClass(Label, inputLabelInitializer, "input-label");
+			this.setInitializerForClass(Label, lighterLabelInitializer, "lighter-color-label");
 			this.setInitializerForClass(Label, homeLabelInitializer, "home-label");
 			this.setInitializerForClass(Label, splashFooterTextInitializer, "splash-footer-text");
 			this.setInitializerForClass(Label, labelInitializer);
@@ -781,6 +793,8 @@ package source.themes
 			this.setInitializerForClass(Label, feelingSliderLabelInitializer, "feeling-slider-label");
 			this.setInitializerForClass(Label, patientProfileAppidLabelInitializer, "patient-profile-appid");
 			this.setInitializerForClass(Label, instructionsLabelInitializer, "instructions-label");
+			this.setInitializerForClass(Label, calendarDaysLabelInitializer, "calendar-days");
+			this.setInitializerForClass(Label, superscriptLabelInitializer, "superscript-label");
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
 					BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
@@ -796,6 +810,8 @@ package source.themes
 			this.setInitializerForClass(Button, closeButtonInitializer, "close-button");
 			this.setInitializerForClass(Button, deleteCellButtonInitializer, "delete-cell-button");
 			this.setInitializerForClass(Button, editCellButtonInitializer, "edit-cell-button");
+			this.setInitializerForClass(Button, calendarButtonInitializer, "calendar-button");
+			this.setInitializerForClass(Button, calendarDayCellButtonInitializer, "calendar-day-cell");
 
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
@@ -1096,6 +1112,21 @@ package source.themes
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
+		protected function calendarDaysLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 30 * this.scale, 0xFFFFFF);
+			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
+			label.textRendererProperties.isHTML = true;
+		}
+
+		protected function superscriptLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 14 * this.scale, 0xFFFFFF);
+			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
+		}
+
 		protected function validationLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
@@ -1109,6 +1140,13 @@ package source.themes
 		{
 			label.textRendererProperties.embedFonts = true;
 			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0x495c72);
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			label.textRendererProperties.isHTML = true;
+		}
+		protected function lighterLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = this.hivivaLighterTextFormat;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 			label.textRendererProperties.isHTML = true;
 		}
@@ -1319,6 +1357,56 @@ package source.themes
 			};
 
 			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.minWidth = skinWidth * this.scale;
+			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function calendarButtonInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.buttonCalendarSkinTexture.width;
+			var skinHeight:Number = this.buttonCalendarSkinTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonCalendarSkinTexture;
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.minWidth = 88 * this.scale;
+			button.minHeight = 88 * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function calendarDayCellButtonInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.buttonCalendarDayCellSkinTexture.width;
+			var skinHeight:Number = this.buttonCalendarDayCellSkinTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonCalendarDayCellSkinTexture;
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.defaultLabelProperties.embedFonts = true;
+			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0x454545);
+			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,-1.5,0xFFFFFF,0.5,0);
+
+			button.disabledLabelProperties.embedFonts = true;
+			button.disabledLabelProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0xaeaeae);
+			button.disabledLabelProperties.filter = BlurFilter.createDropShadow(1,-1.5,0xFFFFFF,0.5,0);
 
 			button.minWidth = skinWidth * this.scale;
 			button.minHeight = skinHeight * this.scale;
@@ -1974,6 +2062,7 @@ package source.themes
 			check.defaultLabelProperties.textFormat = format;
 			check.defaultLabelProperties.wordWrap = true;
 			check.defaultLabelProperties.isHTML = true;
+
 			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			check.gap = 12 * this.scale;
 //			check.padding = 32 * this.scale;

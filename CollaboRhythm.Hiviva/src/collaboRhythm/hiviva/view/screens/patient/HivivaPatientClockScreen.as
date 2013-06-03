@@ -77,10 +77,12 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 
 			this._clockFace = new Image(Assets.getTexture("ClockFacePng"));
+			this._clockFace.touchable = false;
 			this.addChild(this._clockFace);
 
 			this._clockHand = new Image(Assets.getTexture("ClockFaceHandPng"));
 			this._clockHandHolder = new Sprite();
+			this._clockHandHolder.touchable = false;
 			this._clockHandHolder.addChild(this._clockHand);
 
 			this._clockHand.x = -this._clockHand.width / 2;
