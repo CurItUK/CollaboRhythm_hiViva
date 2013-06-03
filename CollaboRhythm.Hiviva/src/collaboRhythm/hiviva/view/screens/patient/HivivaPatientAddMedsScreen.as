@@ -190,8 +190,16 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._continueBtn.addEventListener(Event.TRIGGERED, continueBtnHandler);
 				this.addChild(this._continueBtn);
 				this._continueBtn.validate();
-				this._continueBtn.y = this.actualHeight - this._continueBtn.height - 20;
-				this._continueBtn.x = 10;
+				this._continueBtn.y = this.actualHeight - this._continueBtn.height - this._verticalPadding;
+				this._continueBtn.x = this._horizontalPadding;
+
+				var usableScrollHeight:Number = this._continueBtn.y - this._componentGap - this._medicationList.y;
+
+				if(this._medicationList.height > usableScrollHeight)
+				{
+					this._medicationList.height = usableScrollHeight;
+					this._medicationList.validate();
+				}
 			}
 		}
 

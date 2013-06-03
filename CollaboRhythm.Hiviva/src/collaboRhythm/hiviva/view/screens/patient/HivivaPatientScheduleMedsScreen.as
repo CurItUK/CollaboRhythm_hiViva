@@ -9,6 +9,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.MedicationScheduleTimeList;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.shared.BaseScreen;
 
@@ -25,7 +26,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	public class HivivaPatientScheduleMedsScreen extends BaseScreen
 	{
 		private var _backButton:Button;
-		private var _saveToProfileBtn:Button;
+		private var _saveToProfileBtn:BoxedButtons;
 		private var _medicationResult:XML;
 		private var _seperator:Image;
 		private var _medicationLabel:List;
@@ -45,6 +46,10 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function draw():void
 		{
 			super.draw();
+
+			this._componentGap = (this.actualHeight * 0.02) * this.dpiScale;
+			this._content.width = this.actualWidth;
+			this._content.validate();
 
 			initChosenMedicationInfo();
 			initAvailableSchedules();
@@ -74,14 +79,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._medicationLabel.isSelectable = false;
 			this._content.addChild(this._medicationLabel);
 			this._medicationLabel.width = this.actualWidth;
-			this._medicationLabel.x = -this._horizontalPadding;
 			this._medicationLabel.validate();
 
 			this._seperator = new Image(Assets.getTexture(HivivaAssets.HEADER_LINE));
 			this._content.addChild(this._seperator);
 			this._seperator.width = this.actualWidth;
 			this._seperator.y = this._medicationLabel.y + this._medicationLabel.height;
-			this._seperator.x = -this._horizontalPadding;
 
 			this._scheduleDoseList = new PickerList();
 			this._scheduleDoseList.customButtonName = "border-button";
@@ -98,14 +101,17 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._scheduleDoseList.addEventListener(starling.events.Event.CHANGE , doseListSelectedHandler);
 			this._content.addChild(this._scheduleDoseList);
 			this._scheduleDoseList.validate();
+			this._scheduleDoseList.x = this._horizontalPadding;
 			this._scheduleDoseList.y = this._seperator.y + this._componentGap;
 
 			this._takeLabel = new Label();
+			this._takeLabel.name = "centered-label";
 			this._takeLabel.text = "<font face='ExoBold'>Take</font>";
-			this.addChild(this._takeLabel);
+			this._content.addChild(this._takeLabel);
 			this._takeLabel.validate();
-			this._takeLabel.y = this._scheduleDoseList.y + this._scheduleDoseList.height + 40;
-			this._takeLabel.x = 10;
+			this._takeLabel.y = this._scheduleDoseList.y + this._scheduleDoseList.height + this._componentGap;
+			this._takeLabel.x = this._horizontalPadding;
+			this._takeLabel.width = this._scheduleDoseList.width;
 		}
 
 		private function labelFunction( item:Object ):String
@@ -128,6 +134,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				//timeList drop down to select time medication should be taken
 				var timeList:PickerList = new PickerList();
+				timeList.customButtonName = "border-button";
 				timeList.dataProvider = times;
 				timeList.listProperties.@itemRendererProperties.labelField = "text";
 				timeList.labelField = "text";
@@ -136,29 +143,30 @@ package collaboRhythm.hiviva.view.screens.patient
 				timeList.selectedIndex = -1;
 				timeList.name = "tileList" + i;
 				timeList.addEventListener(starling.events.Event.CHANGE , timeListTabletListChangeHandler);
-				this.addChild(timeList);
+				this._content.addChild(timeList);
 				timeList.validate();
-				timeList.x = 10;
+				timeList.x = this._horizontalPadding;
 				if(i == 0 )
 				{
-					timeList.y = this._takeLabel.y + this._takeLabel.height + 30;
+					timeList.y = this._takeLabel.y + this._takeLabel.height + this._componentGap;
 				} else
 				{
+					var prevListItem:PickerList = this._content.getChildByName("tileList" + (i-1)) as PickerList;
 					var andLabel:Label = new Label();
 					andLabel.text = "and  ";
 					andLabel.name = "centered-label";
-					this.addChild(andLabel);
+					this._content.addChild(andLabel);
 					andLabel.validate();
-					andLabel.width = PickerList(this.getChildByName("tileList" + (i-1))).width;
-					trace(andLabel.width);
-					andLabel.x = 10;
-					andLabel.y = PickerList(this.getChildByName("tileList" + (i-1))).y + PickerList(this.getChildByName("tileList" + (i-1))).height + 20;
-					timeList.y = PickerList(this.getChildByName("tileList" + (i-1))).y + PickerList(this.getChildByName("tileList" + (i-1))).height + 60;
+					andLabel.width = prevListItem.width;
+					andLabel.x = this._horizontalPadding;
+					andLabel.y = prevListItem.y + prevListItem.height + this._componentGap;
+					timeList.y = andLabel.y + andLabel.height;
 				}
 				_timeListItems.push(timeList);
 
 				//tabletList drop down to select the amount of tablets to be taken on that time slot
 				var tabletList:PickerList = new PickerList();
+				tabletList.customButtonName = "border-button";
 				tabletList.dataProvider = tablets;
 				tabletList.listProperties.@itemRendererProperties.labelField = "text";
 				tabletList.labelField = "text";
@@ -167,13 +175,18 @@ package collaboRhythm.hiviva.view.screens.patient
 				tabletList.selectedIndex = -1;
 				tabletList.name = "tabletList" + i;
 				tabletList.addEventListener(starling.events.Event.CHANGE , timeListTabletListChangeHandler);
-				this.addChild(tabletList);
+				this._content.addChild(tabletList);
 				tabletList.validate();
 				tabletList.y = timeList.y;
-				tabletList.x = this.actualWidth - tabletList.width - 10;
+				tabletList.x = this._innerWidth - tabletList.width;
 				_tabletListItems.push(tabletList);
 			}
 		}
+/*
+		private function getListObjectByName(listName:String, styleName:String):PickerList
+		{
+			var actualName:String = listName.substring(0, listName.indexOf(" " + styleName))
+		}*/
 
 		private function timeListTabletListChangeHandler(e:starling.events.Event = null):void
 		{
@@ -181,7 +194,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			if(this._saveToProfileBtn != null)
 			{
-				this.removeChild(this._saveToProfileBtn);
+				this._content.removeChild(this._saveToProfileBtn);
 				this._saveToProfileBtn = null;
 			}
 
@@ -197,13 +210,20 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			if(itemsValidated == _timeListItems.length)
 			{
-				this._saveToProfileBtn = new Button();
-				this._saveToProfileBtn.label = "Save to profile";
+
+				this._saveToProfileBtn = new BoxedButtons();
+				this._saveToProfileBtn.scale = this.dpiScale;
+				this._saveToProfileBtn.labels = ["Add to my profile"];
 				this._saveToProfileBtn.addEventListener(starling.events.Event.TRIGGERED, saveProfileBtnHandler);
 				this.addChild(this._saveToProfileBtn);
+				this._saveToProfileBtn.x = this._horizontalPadding;
+				this._saveToProfileBtn.width = this._innerWidth;
 				this._saveToProfileBtn.validate();
-				this._saveToProfileBtn.x = 10;
-				this._saveToProfileBtn.y = this.actualHeight - this._saveToProfileBtn.height - 20;
+				this._saveToProfileBtn.y = this._content.y + this._content.height -
+											this._saveToProfileBtn.height - this._verticalPadding;
+				this._content.height = this._contentHeight - this._verticalPadding -
+										this._saveToProfileBtn.height - this._componentGap;
+				this._content.validate();
 			}
 		}
 
@@ -234,20 +254,20 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			if (this._saveToProfileBtn != null)
 			{
-				this.removeChild(this._saveToProfileBtn);
+				this._content.removeChild(this._saveToProfileBtn);
 				this._saveToProfileBtn = null;
 			}
 
 			while (_timeListItems.length > 0)
 			{
-				this.removeChild(_timeListItems[0]);
+				this._content.removeChild(_timeListItems[0]);
 				_timeListItems[0].removeEventListener(starling.events.Event.CHANGE, timeListTabletListChangeHandler);
 				_timeListItems[0].dataProvider = null;
 				_timeListItems[0].dispose();
 				_timeListItems[0] = null;
 				_timeListItems.shift();
 
-				this.removeChild(_tabletListItems[0]);
+				this._content.removeChild(_tabletListItems[0]);
 				_tabletListItems[0].removeEventListener(starling.events.Event.CHANGE, timeListTabletListChangeHandler);
 				_tabletListItems[0].dataProvider = null;
 				_tabletListItems[0].dispose();

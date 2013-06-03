@@ -686,7 +686,7 @@ package source.themes
 
 			this.radioSelectedDisabledIconTexture = this.atlas.getTexture("radio-selected-disabled-icon");
 
-			this.seperatorLineTexture = new Scale9Textures(Assets.getTexture(HivivaAssets.HEADER_LINE), new Rectangle(0,2,10,2));
+			this.seperatorLineTexture = new Scale9Textures(Assets.getTexture(HivivaAssets.HEADER_LINE), new Rectangle(0,2,10,3));
 
 			this.checkUpIconTexture = Assets.getTexture(HivivaAssets.TICK_BOX);
 			this.checkDownIconTexture = Assets.getTexture(HivivaAssets.TICK_BOX_ACTIVE);

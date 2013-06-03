@@ -102,10 +102,10 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/icon_upload.png")]
 		public static const UploadIconPng:Class;
 
-		[Embed(source="/assets/images/temp/edit_icon.png")]
+		[Embed(source="/assets/images/temp/delete_icon.png")]
 		public static const DeleteCellIconPng:Class;
 
-		[Embed(source="/assets/images/temp/delete_icon.png")]
+		[Embed(source="/assets/images/temp/edit_icon.png")]
 		public static const EditCellIconPng:Class;
 /*
 		[Embed(source="/assets/images/temp/top_nav_icon_02.png")]
