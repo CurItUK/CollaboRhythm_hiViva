@@ -795,6 +795,7 @@ package source.themes
 			this.setInitializerForClass(Label, instructionsLabelInitializer, "instructions-label");
 			this.setInitializerForClass(Label, calendarDaysLabelInitializer, "calendar-days");
 			this.setInitializerForClass(Label, superscriptLabelInitializer, "superscript-label");
+			this.setInitializerForClass(Label, messageDateLabelInitializer, "message-date-label");
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
 					BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
@@ -1149,6 +1150,12 @@ package source.themes
 			label.textRendererProperties.textFormat = this.hivivaLighterTextFormat;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 			label.textRendererProperties.isHTML = true;
+		}
+		protected function messageDateLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 20 * this.scale, 0x293d54);
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 		}
 
 		protected function homeLabelInitializer(label:Label):void

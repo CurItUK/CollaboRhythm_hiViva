@@ -366,6 +366,32 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function loadPatientMessagesViewed():void
+		{
+			service.addEventListener(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE, loadPatientMessagesViewedHandler);
+			service.loadPatientMessagesViewed();
+		}
+
+		private function loadPatientMessagesViewedHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE, loadPatientMessagesViewedHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function savePatientMessagesViewed(viewedIds:Array):void
+		{
+			service.addEventListener(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_SAVE_COMPLETE, savePatientMessagesViewedHandler);
+			service.savePatientMessagesViewed(viewedIds);
+		}
+
+		private function savePatientMessagesViewedHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_SAVE_COMPLETE, savePatientMessagesViewedHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function resetApplication():void
 		{
 			service.resetApplication();

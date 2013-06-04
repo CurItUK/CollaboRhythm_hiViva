@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
@@ -7,6 +8,8 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.media.Assets;
+
+	import feathers.controls.Button;
 
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
@@ -25,8 +28,13 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.net.URLRequest;
 	import flash.system.System;
 
+	import source.themes.HivivaTheme;
+
+	import starling.display.DisplayObject;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.filters.ColorMatrixFilter;
 	import starling.textures.Texture;
 
@@ -36,8 +44,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _applicationController:HivivaApplicationController;
 
 		private var _header:HivivaHeader;
-//		private var _messagesButton:Button;
-//		private var _badgesButton:Button;
+		private var _messagesButton:Button;
+		private var _badgesButton:Button;
 		private var _homeImageInstructions:Label;
 		private var _rim:Image;
 		private var _bg:Image;
@@ -94,8 +102,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._homeImageInstructions.x =  (this.actualWidth * 0.5) - (this._homeImageInstructions.width * 0.5);
 			this._homeImageInstructions.y =  (this._usableHeight * 0.5) + this._header.height - (this._homeImageInstructions.height * 0.5);
 
-			this._today = new Date();
-			initHomePhoto();
+			if(this._today == null)
+			{
+				this._today = new Date();
+				initHomePhoto();
+				checkForNewMessages();
+				checkForNewBadges();
+			}
 		}
 
 		override protected function initialize():void
@@ -125,29 +138,66 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._homeImageInstructions.name = "home-label";
 			this._homeImageInstructions.text = "Go to <A HREF='http://www.google.com/'><FONT COLOR='#016cf9'>profile</FONT></A> then <FONT COLOR='#016cf9'>Homepage Photo</FONT> to upload or set your home page image <br/><br/>The clarity of this image will adjust to how well you stay on track with your medication.";
 			addChild(this._homeImageInstructions);
-/*
+
 			this._messagesButton = new Button();
-			this._messagesButton.nameList.add(HivivaTheme.NONE_THEMED);
-			this._messagesButton.defaultIcon = new Image(HivivaAssets.TOPNAV_ICON_MESSAGES);
+			this._messagesButton.name = HivivaTheme.NONE_THEMED;
+			this._messagesButton.defaultIcon = new Image(Assets.getTexture(HivivaAssets.TOPNAV_ICON_MESSAGES));
 			this._messagesButton.addEventListener(Event.TRIGGERED , messagesButtonHandler);
 
 			this._badgesButton = new Button();
-			this._badgesButton.nameList.add(HivivaTheme.NONE_THEMED);
-			this._badgesButton.defaultIcon = new Image(HivivaAssets.TOPNAV_ICON_BADGES);
+			this._badgesButton.name = HivivaTheme.NONE_THEMED;
+			this._badgesButton.defaultIcon = new Image(Assets.getTexture(HivivaAssets.TOPNAV_ICON_BADGES));
 			this._badgesButton.addEventListener(Event.TRIGGERED , rewardsButtonHandler);
 
-			this._header.rightItems =  new <DisplayObject>[this._messagesButton,this._badgesButton];*/
+			this._header.rightItems =  new <DisplayObject>[this._messagesButton,this._badgesButton];
+
+			this._messagesButton.visible = false;
+			this._badgesButton.visible = false;
 		}
-		/*
+
 		private function messagesButtonHandler(e:Event):void
 		{
-			
+			this.owner.showScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN);
 		}
 
 		private function rewardsButtonHandler(e:Event):void
 		{
+			this.owner.showScreen(HivivaScreens.PATIENT_BADGES_SCREEN);
+		}
 
-		}*/
+		private function checkForNewMessages():void
+		{
+			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+			localStoreController.getPatientProfile();
+		}
+
+		private function getPatientProfileHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+
+			var patientProfile:Array = e.data.patientProfile,
+				userIsSignedUp:Boolean;
+
+			try
+			{
+				userIsSignedUp = patientProfile != null;
+			}
+			catch(e:Error)
+			{
+				userIsSignedUp = false;
+			}
+			if(userIsSignedUp) getMessages();
+		}
+
+		private function getMessages():void
+		{
+			
+		}
+
+		private function checkForNewBadges():void
+		{
+
+		}
 
 		private function initHomePhoto():void
 		{
@@ -401,7 +451,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		override public function dispose():void
 		{
 			super.dispose();
-			//custom clear down
+			System.gc();
 		}
 	}
 }

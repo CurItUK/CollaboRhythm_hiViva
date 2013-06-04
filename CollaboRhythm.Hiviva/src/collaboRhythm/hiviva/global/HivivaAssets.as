@@ -36,8 +36,8 @@ package collaboRhythm.hiviva.global
 		public static const SPORTS_ICON:String								= "SportsIconPng";
 		public static const TRAVEL_ICON:String								= "TravelIconPng";
 		public static const UPLOAD_ICON:String								= "UploadIconPng";
-//		public static const TOPNAV_ICON_MESSAGES:String					= "TopNavIconMessagesPng";
-//		public static const TOPNAV_ICON_BADGES:String						= "TopNavIconBadgesPng";
+		public static const TOPNAV_ICON_MESSAGES:String					= "TopNavIconMessagesPng";
+		public static const TOPNAV_ICON_BADGES:String						= "TopNavIconBadgesPng";
 		public static const PATIENTPROFILENAV_BUTTON:String				= "PatientProfileNavButtonPng";
 		public static const PATIENTPROFILENAV_BUTTON_PATTERN:String		= "PatientProfileNavButtonPatternPng";
 		public static const BACK_BUTTON:String								= "BackButtonPng";

@@ -30,6 +30,7 @@ package collaboRhythm.hiviva.model
 		private var _hcpProfile:Object;
 		private var _displaySettings:Object;
 		private var _alertSettings:Object;
+		private var _viewedMessagesIds:Array;
 
 		public function HivivaLocalStoreService()
 		{
@@ -968,8 +969,10 @@ package collaboRhythm.hiviva.model
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "INSERT INTO hcp_connection (name, email, appid, picture) VALUES (" +
-					hcp.name + ", " + hcp.email + ", " + hcp.appid + ", " + hcp.picture + ")";
+			this._sqStatement.text = "INSERT INTO hcp_connection (name, email, appid, picture) VALUES ('" +
+					hcp.name + "', '" + hcp.email + "', '" + hcp.appid + "', '" + hcp.picture + "')";
+			/*this._sqStatement.text = "UPDATE hcp_connection SET name='" +
+								hcp.name + "', email='" + hcp.email + "', appid='" + hcp.appid + "', picture='" + hcp.picture + "'";*/
 
 			trace(this._sqStatement.text);
 			this._sqStatement.sqlConnection = this._sqConn;
@@ -980,6 +983,72 @@ package collaboRhythm.hiviva.model
 		private function addPatientConnectionHandler(e:SQLEvent):void
 		{
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_CONNECTION_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function loadPatientMessagesViewed():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "SELECT viewed_ids FROM patient_messages";
+
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, loadPatientMessagesViewedHandler);
+			this._sqStatement.execute();
+		}
+
+		private function loadPatientMessagesViewedHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE);
+			evt.data.viewedIds = result;
+			this.dispatchEvent(evt);
+		}
+
+		public function savePatientMessagesViewed(viewedIds:Array):void
+		{
+			this._viewedMessagesIds = viewedIds;
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "DELETE FROM patient_messages";
+
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, deletePatientMessagesViewedHandler);
+			this._sqStatement.execute();
+		}
+
+		private function deletePatientMessagesViewedHandler(e:SQLEvent):void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+
+			this._sqStatement.text = "INSERT INTO patient_messages (viewed_ids) VALUES ('" +
+					this._viewedMessagesIds.join(",") + "')";
+
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, savePatientMessagesViewedHandler);
+			this._sqStatement.execute();
+		}
+
+		private function savePatientMessagesViewedHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
 

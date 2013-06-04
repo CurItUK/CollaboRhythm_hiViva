@@ -145,7 +145,7 @@ package collaboRhythm.hiviva.view
 
 		private function onHcpDelete(e:Event):void
 		{
-			dispatchEvent(new Event(Event.CLOSE));
+			this.removeFromParent(true);
 		}
 
 		private function doImageLoad(url:String):void

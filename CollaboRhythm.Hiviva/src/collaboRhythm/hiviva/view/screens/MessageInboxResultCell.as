@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
+	import feathers.controls.Check;
 	import feathers.controls.Label;
 	import feathers.controls.Radio;
 	import feathers.core.FeathersControl;
@@ -29,10 +30,16 @@ package collaboRhythm.hiviva.view.screens
 	public class MessageInboxResultCell extends FeathersControl
 	{
 		private var _scale:Number;
-		private var _messageData:XML;
-		private var _bg:Scale9Image;
+		private var _seperator:Image;
 		private var _viewMessageBtn:Button;
-		private var _messageDetail:Label;
+		private var _primaryLabel:Label;
+		private var _primaryText:String = "";
+		private var _secondaryLabel:Label;
+		private var _secondaryText:String = "";
+		private var _dateLabel:Label;
+		private var _dateText:String = "";
+		private var _check:Check;
+		private var _uniqueId:String;
 		private const IMAGE_SIZE:Number = 100;
 		private const PADDING:Number = 32;
 
@@ -45,41 +52,62 @@ package collaboRhythm.hiviva.view.screens
 		{
 			var scaledPadding:Number = PADDING * this._scale,
 				gap:Number = scaledPadding * 0.5;
-				fullHeight:Number;
 
 			super.draw();
 
-			this._messageDetail.validate();
+			this._primaryLabel.validate();
+			this._secondaryLabel.validate();
+			this._dateLabel.validate();
+			this._check.validate();
 
+			this._seperator.width = this.actualWidth;
 
-			this._bg.x = scaledPadding;
-			this._bg.width = this.actualWidth - (scaledPadding * 2);
-			this._bg.height = scaledPadding + this._messageDetail.height;
+			_check.x = scaledPadding;
 
-			this._messageDetail.x = this._bg.x + scaledPadding;
-			this._messageDetail.y = this._bg.y + scaledPadding;
-			this._messageDetail.width = this._bg.width - scaledPadding;
+			this._primaryLabel.y = gap;
+			this._primaryLabel.x = this._check.x + this._check.width + gap;
+			this._primaryLabel.width = this.actualWidth - this._primaryLabel.x - scaledPadding - _dateLabel.width - gap;
 
+			this._secondaryLabel.y = this._primaryLabel.y + this._primaryLabel.height;
+			this._secondaryLabel.x = this._primaryLabel.x;
+			this._secondaryLabel.width = this._primaryLabel.width;
 
-			this._viewMessageBtn.validate();
-			this._viewMessageBtn.width = this._bg.width;
-			this._viewMessageBtn.height = this._bg.height;
-			this._viewMessageBtn.x =  this._bg.x;
-			this._viewMessageBtn.y = this._bg.y;
-			setSizeInternal(this.actualWidth, this._bg.height, true);
+			_dateLabel.x = this.actualWidth - this._dateLabel.width - scaledPadding;
+			_dateLabel.y = this._primaryLabel.y + (this._primaryLabel.height + this._secondaryLabel.height) * 0.5;
+			_dateLabel.y -= this._dateLabel.height * 0.5;
+
+			_check.y = this._primaryLabel.y + (this._primaryLabel.height + this._secondaryLabel.height) * 0.5;
+			_check.y -= this._check.height * 0.5;
+
+			this._viewMessageBtn.x =  this._primaryLabel.x;
+			this._viewMessageBtn.width = this.actualWidth - this._viewMessageBtn.x;
+			this._viewMessageBtn.height = this._primaryLabel.y + this._primaryLabel.height + this._secondaryLabel.height + gap;
+
+			setSizeInternal(this.actualWidth, this._viewMessageBtn.height, true);
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
-			var bgTexture:Scale9Textures = new Scale9Textures(Assets.getTexture(HivivaAssets.INPUT_FIELD), new Rectangle(11,11,32,32));
-			this._bg = new Scale9Image(bgTexture, this._scale);
-			addChild(this._bg);
+			this._seperator = new Image(Assets.getTexture(HivivaAssets.HEADER_LINE));
+			addChild(this._seperator);
 
-			this._messageDetail = new Label();
-			this._messageDetail.text = "<font face='ExoBold'>" + messageData.date + " :</font>  " + messageData.body;
-			this.addChild(this._messageDetail);
+			this._primaryLabel = new Label();
+			this._primaryLabel.text = _primaryText;
+			this.addChild(this._primaryLabel);
 
+			this._secondaryLabel = new Label();
+			this._secondaryLabel.name = "message-date-label";
+			this._secondaryLabel.text = _secondaryText;
+			this.addChild(this._secondaryLabel);
+
+			this._dateLabel = new Label();
+			this._dateLabel.name = "message-date-label";
+			this._dateLabel.text = _dateText;
+			this.addChild(this._dateLabel);
+
+			this._check = new Check();
+			this.addChild(this._check);
 
 			this._viewMessageBtn = new Button();
 			this._viewMessageBtn.label = "";
@@ -90,15 +118,13 @@ package collaboRhythm.hiviva.view.screens
 
 		private function messageCellSelectHandler(e:Event):void
 		{
-
-			//var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.PATIENT_PROFILE_SELECTED);
-			//evt.evtData.profile = patientData;
-			//this.dispatchEvent(evt);
+			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.HCP_MESSAGE_SELECTED);
+			this.dispatchEvent(evt);
 		}
 
 		override public function dispose():void
 		{
-			this._bg.removeEventListener(Event.TRIGGERED , messageCellSelectHandler);
+			this._seperator.removeEventListener(Event.TRIGGERED , messageCellSelectHandler);
 			super.dispose();
 		}
 
@@ -112,14 +138,49 @@ package collaboRhythm.hiviva.view.screens
 			return this._scale;
 		}
 
-		public function set messageData(value:XML):void
+		public function get primaryText():String
 		{
-			this._messageData = value;
+			return _primaryText;
 		}
 
-		public function get messageData():XML
+		public function set primaryText(value:String):void
 		{
-			return this._messageData;
+			_primaryText = value;
+		}
+
+		public function get secondaryText():String
+		{
+			return _secondaryText;
+		}
+
+		public function set secondaryText(value:String):void
+		{
+			_secondaryText = value;
+		}
+
+		public function get dateText():String
+		{
+			return _dateText;
+		}
+
+		public function set dateText(value:String):void
+		{
+			_dateText = value;
+		}
+
+		public function get check():Check
+		{
+			return _check;
+		}
+
+		public function get uniqueId():String
+		{
+			return _uniqueId;
+		}
+
+		public function set uniqueId(value:String):void
+		{
+			_uniqueId = value;
 		}
 	}
 }
