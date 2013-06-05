@@ -116,8 +116,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function drawXMLResults():void
 		{
-
-
 			this._cellContainer = new ScrollContainer();
 			var messagesXMLList:XMLList = this._hcpMessageData.message;
 			var viewedIdsLength:int = this._viewedIds.length;

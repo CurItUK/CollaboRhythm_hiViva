@@ -2125,6 +2125,7 @@ package source.themes
 			}
 			slider.minimumTrackProperties.stateToSkinFunction = skinSelector.updateValue;
 			slider.maximumTrackProperties.stateToSkinFunction = skinSelector.updateValue;
+			slider.maximumTrackProperties.padding = 0;
 		}
 
 

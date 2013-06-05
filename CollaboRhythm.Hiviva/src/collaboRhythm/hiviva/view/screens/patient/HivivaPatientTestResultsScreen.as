@@ -1,7 +1,9 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.view.components.Calendar;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
@@ -11,6 +13,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.TextInput;
 	import feathers.controls.TextInput;
 	import feathers.controls.TextInput;
+	import feathers.core.PopUpManager;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
 
@@ -35,12 +38,14 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _cd4:LabelAndInput;
 		private var _viralLoad:LabelAndInput;
 		private var _date:LabelAndInput;
+		private var _dateButton:Button;
 		private var _cancelButton:Button;
 		private var _submitButton:Button;
 		private var _backButton:Button;
 		private var _sqConn:SQLConnection;
 		private var _sqStatement:SQLStatement;
 		private var _dataExists:Boolean;
+		private var _calendar:Calendar;
 
 		private var _rightLabelFormat:TextFormat;
 
@@ -51,8 +56,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function draw():void
 		{
-			super.draw();
 			this._rightLabelFormat = new TextFormat("ExoRegular", Math.round(24 * this.dpiScale), 0x495c72);
+			super.draw();
+
+			this._dateButton.x = this._date.x + this._date._labelRight.x;
+			this._dateButton.y = this._date.y + this._date._labelRight.y - (this._dateButton.height * 0.5);
+
+			this._content.validate();
 		}
 
 		override protected function preValidateContent():void
@@ -73,7 +83,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._date._labelLeft.textRendererProperties.multiline = true;
 			this._date._labelLeft.text = "Date of <br/>last test:";
-			this._date._labelRight.text = "Cal";
+			this._date._labelRight.text = "";
 			labelAndInputDrawProperties(this._date);
 
 			this._submitButton.width = this._cancelButton.width = this._innerWidth * 0.25;
@@ -83,7 +93,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.postValidateContent();
 
-			this._submitButton.y = this._cancelButton.y;
+			this._submitButton.y = this._cancelButton.y = this._dateButton.y;
 			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + this._componentGap;
 		}
 
@@ -112,6 +122,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._date.scale = this.dpiScale;
 			this._date.labelStructure = "leftAndRight";
 			this._content.addChild(this._date);
+			this._date._input.isEnabled = false;
+
+			this._calendar = new Calendar();
+			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler)
+
+			this._dateButton = new Button();
+			this._dateButton.addEventListener(Event.TRIGGERED, dateCalendarHandler);
+			this._dateButton.name = "calendar-button";
+			this._content.addChild(this._dateButton);
 
 			this._cancelButton = new Button();
 			this._cancelButton.label = "Cancel";
@@ -141,6 +160,20 @@ package collaboRhythm.hiviva.view.screens.patient
 			landi._input.validate();
 			landi._input.x = (this.actualWidth * 0.5) - (landi._input.width / 2);
 			landi.validate();
+		}
+
+		private function dateCalendarHandler(e:Event):void
+		{
+			PopUpManager.addPopUp(this._calendar,true,false);
+			this._calendar.width = this.actualWidth;
+			this._calendar.validate();
+			//PopUpManager.centerPopUp(this._calendar);
+		}
+
+		private function calendarButtonHandler(e:FeathersScreenEvent):void
+		{
+			PopUpManager.removePopUp(this._calendar);
+			this._date._input.text = e.evtData.date;
 		}
 
 		private function cancelButtonClick(e:Event):void

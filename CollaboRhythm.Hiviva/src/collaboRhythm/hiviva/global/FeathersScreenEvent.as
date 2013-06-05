@@ -13,6 +13,7 @@ package collaboRhythm.hiviva.global
 		public static const HCP_MESSAGE_SELECTED:String					= "hcpMessageSelected";
 		//public static const PATIENT_EDIT_MEDICINE_CELL:String			= "patientEditMedicineCell";
 		public static const CALENDAR_BUTTON_TRIGGERED:String			= "calendarButtonTriggered";
+		public static const SETTING_SCREEN_FROM_HOME:String				= "settingScreenFromHome";
 
 		public var message:String;
 		public var evtData:Object =  {};

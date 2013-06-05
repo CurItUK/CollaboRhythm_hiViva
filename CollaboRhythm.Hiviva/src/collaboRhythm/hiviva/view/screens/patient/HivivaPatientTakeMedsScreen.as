@@ -251,17 +251,17 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			var today:Date = new Date(),
 				latestAdherenceDate:Date = HivivaModifier.getAS3DatefromString(this._latestAdherenceData.date),
-				dayDiff:Number = HivivaModifier.getDaysDiff(today, latestAdherenceDate),
 				latestAdherenceData:Array = String(this._latestAdherenceData.data).split(","),
 				rawIdData:String,
 				medicationId:int,
 				feeling:Number,
 				takeMedicationCell:SelectMedicationCell;
+
 			// latestAdherence.date
 			// latestAdherence.data[i].medication_id
 			// latestAdherence.data[i].feeling
 			// its the same day since the last adherence update so select taken medicines
-			if (dayDiff == 0)
+			if (HivivaModifier.getDaysDiff(today, latestAdherenceDate) == 0)
 			{
 				for (var i:int = 0; i < latestAdherenceData.length; i++)
 				{

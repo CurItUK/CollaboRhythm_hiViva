@@ -124,8 +124,6 @@ package collaboRhythm.hiviva.view
 
 			var topGrad:TiledImage = new TiledImage(Assets.getTexture(HivivaAssets.SCREEN_BASE_TOP_GRADIENT));
 			topGrad.touchable = false;
-			// named because the alpha for this asset needs adjusting on the home screen (screenHolder may need own class with this as a local instance)
-			topGrad.name = "topGrad";
 			topGrad.width = this._stageWidth;
 			topGrad.smoothing = TextureSmoothing.NONE;
 			topGrad.blendMode = BlendMode.MULTIPLY;
@@ -223,10 +221,10 @@ package collaboRhythm.hiviva.view
 				patientSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , settingsNavHandler);
 				this.addChildAt(patientSideNavScreen , 0);
 
-				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen, {navGoSettings:navGoSettings}, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientViewMedicationScreen , null , {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen , null , {applicationController:_applicationController,footerHeight:this._footerBtnGroup.height}));
-				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
+				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 				this._mainScreenNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 
 			}
@@ -280,8 +278,8 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientAddMedsScreen, null, {applicationController:_applicationController}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN, new ScreenNavigatorItem(HivivaPatientUserSignupScreen, null, {applicationController:_applicationController}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:goBackToMainScreen}));
-			this._settingsNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:goBackToMainScreen}));
-			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:goBackToMainScreen}, {applicationController:_applicationController}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}, {applicationController:_applicationController}));
 		}
 
 		private function navigateToDirectProfileMenu(e:Event):void
@@ -293,16 +291,28 @@ package collaboRhythm.hiviva.view
 			}
 			var navAwayEvent:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
 			navAwayEvent.message = e.data.profileMenu;
-			settingsNavHandler(navAwayEvent , true);
+
+			settingsNavHandler(navAwayEvent);
 		}
 
-		private function settingsNavHandler(e:FeathersScreenEvent , mainToSubmenuDirect:Boolean = false):void
+		private function navGoSettings(e:Event):void
+		{
+			var feathEvent:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
+			feathEvent.message = e.data.screen;
+			settingsNavHandler(feathEvent);
+		}
+
+		private function settingsNavHandler(e:FeathersScreenEvent, mainToSubmenuDirect:Boolean = false):void
 		{
 			trace("settingsNavHandler " + e.message);
-			if(!mainToSubmenuDirect)
+
+			// TODO : what is the purpose of this boolean?
+			/*if(!mainToSubmenuDirect)
 			{
 				settingsBtnHandler();
-			}
+			}*/
+			if(_settingsOpen) settingsBtnHandler();
+
 			if(!this._settingsNav.contains(this._screenBackground)) this._settingsNav.addChild(this._screenBackground);
 			this._settingsNav.showScreen(e.message);
 			//this._currMainScreenId = this._mainScreenNav.activeScreenID;

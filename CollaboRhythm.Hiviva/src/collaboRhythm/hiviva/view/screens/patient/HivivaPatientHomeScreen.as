@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
@@ -151,18 +152,18 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._header.rightItems =  new <DisplayObject>[this._messagesButton,this._badgesButton];
 
-			this._messagesButton.visible = false;
-			this._badgesButton.visible = false;
+//			this._messagesButton.visible = false;
+//			this._badgesButton.visible = false;
 		}
 
 		private function messagesButtonHandler(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN);
+			this.dispatchEventWith("navGoSettings", false, {screen:HivivaScreens.PATIENT_MESSAGES_SCREEN});
 		}
 
 		private function rewardsButtonHandler(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_BADGES_SCREEN);
+			this.dispatchEventWith("navGoSettings", false, {screen:HivivaScreens.PATIENT_BADGES_SCREEN});
 		}
 
 		private function checkForNewMessages():void

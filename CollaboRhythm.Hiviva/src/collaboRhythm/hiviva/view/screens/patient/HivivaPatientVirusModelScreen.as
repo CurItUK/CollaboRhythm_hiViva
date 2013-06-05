@@ -5,11 +5,13 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.*;
 
 	import feathers.controls.Button;
+	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.Slider;
 
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 
 
 	import starling.events.Event;
@@ -33,6 +35,9 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _footerHeight:Number;
 		private var _headerHeight:Number;
 		private var _applicationController:HivivaApplicationController;
+		private var _dump:ImageLoader;
+
+		private var _scaledPadding:Number;
 
 		public function HivivaPatientVirusModelScreen()
 		{
@@ -41,64 +46,73 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function draw():void
 		{
-			super.draw();
+
+			this._scaledPadding = (this.actualWidth * 0.02) * this.dpiScale;
+			var innerWidth:Number = this.actualWidth - (this._scaledPadding * 2);
+
 			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
-
-
+			this._header.initTrueTitle();
 
 			this._adheranceLabel.validate();
-			this._adheranceLabel.width = 200;
-			this._adheranceLabel.x = 10;
-			this._adheranceLabel.y = this._header.height + 10;
+			this._adheranceLabel.width = innerWidth * 0.25;
+			this._adheranceLabel.x = this._scaledPadding * 2;
+			this._adheranceLabel.y = this._header.height + this._scaledPadding;
 
 			this._adheranceResultLabel.validate();
-			this._adheranceResultLabel.width = 100;
-			this._adheranceResultLabel.x = this.actualWidth / 3;
+			this._adheranceResultLabel.width = innerWidth * 0.15;
+			this._adheranceResultLabel.x = this._adheranceLabel.x + this._adheranceLabel.width;
 			this._adheranceResultLabel.y = this._adheranceLabel.y;
 
 			this._adheranceSlider.validate();
-			this._adheranceSlider.width = this.actualWidth / 2;
-			this._adheranceSlider.x = this.actualWidth / 2;
-			this._adheranceSlider.y = this._adheranceLabel.y;
+			this._adheranceSlider.width = innerWidth * 0.6;
+			this._adheranceSlider.x = this._adheranceResultLabel.x + this._adheranceResultLabel.width;
+			this._adheranceSlider.y = this._adheranceResultLabel.y + (this._adheranceResultLabel.height * 0.5) -
+					(this._adheranceSlider.height * 0.25);
+
 
 			this._viralLoadLabel.validate();
-			this._viralLoadLabel.width = 200;
-			this._viralLoadLabel.x = 10;
-			this._viralLoadLabel.y = this._adheranceSlider.y + this._adheranceSlider.height;
+			this._viralLoadLabel.width = innerWidth * 0.25;
+			this._viralLoadLabel.x = this._scaledPadding * 2;
+			this._viralLoadLabel.y = this._adheranceSlider.y + this._adheranceSlider.height + this._scaledPadding;
 
 			this._viralLoadResultLabel.validate();
-			this._viralLoadResultLabel.width = 100;
-			this._viralLoadResultLabel.x = this.actualWidth / 3;
+			this._viralLoadResultLabel.width = innerWidth * 0.15;
+			this._viralLoadResultLabel.x = this._viralLoadLabel.x + this._viralLoadLabel.width;
 			this._viralLoadResultLabel.y = this._viralLoadLabel.y;
 
 			this._viralLoadSlider.validate();
-			this._viralLoadSlider.width = this.actualWidth / 2;
-			this._viralLoadSlider.x = this.actualWidth / 2;
-			this._viralLoadSlider.y = this._viralLoadResultLabel.y;
+			this._viralLoadSlider.width = innerWidth * 0.6;
+			this._viralLoadSlider.x = this._viralLoadResultLabel.x + this._viralLoadResultLabel.width;
+			this._viralLoadSlider.y = this._viralLoadResultLabel.y + (this._viralLoadResultLabel.height * 0.5) -
+					(this._viralLoadSlider.height * 0.25);
+
 
 			this._CD4CountLabel.validate();
-			this._CD4CountLabel.width = 200;
-			this._CD4CountLabel.x = 10;
-			this._CD4CountLabel.y = this._viralLoadSlider.y + this._viralLoadSlider.height;
+			this._CD4CountLabel.width = innerWidth * 0.25;
+			this._CD4CountLabel.x = this._scaledPadding * 2;
+			this._CD4CountLabel.y = this._viralLoadSlider.y + this._viralLoadSlider.height + this._scaledPadding;
 
 			this._CD4CountResultLabel.validate();
-			this._CD4CountResultLabel.width = 100;
-			this._CD4CountResultLabel.x = this.actualWidth / 3;
+			this._CD4CountResultLabel.width = innerWidth * 0.15;
+			this._CD4CountResultLabel.x = this._CD4CountLabel.x + this._CD4CountLabel.width;
 			this._CD4CountResultLabel.y = this._CD4CountLabel.y;
 
 			this._CD4CountSlider.validate();
-			this._CD4CountSlider.width = this.actualWidth / 2;
-			this._CD4CountSlider.x = this.actualWidth / 2;
-			this._CD4CountSlider.y = this._CD4CountLabel.y;
+			this._CD4CountSlider.width = innerWidth * 0.6;
+			this._CD4CountSlider.x = this._CD4CountResultLabel.x + this._CD4CountResultLabel.width;
+			this._CD4CountSlider.y = this._CD4CountResultLabel.y + (this._CD4CountResultLabel.height * 0.5) -
+					(this._CD4CountSlider.height * 0.25);
+
 
 			this._resteBtn.validate();
 			this._resteBtn.width = this.actualWidth / 3;
 			this._resteBtn.x = this.actualWidth / 2 - this._resteBtn.width / 2;
-			this._resteBtn.y = this._CD4CountSlider.y + this._CD4CountSlider.height + 20;
+			this._resteBtn.y = this._CD4CountSlider.y + this._CD4CountSlider.height;
+
+			this._dump.y = this._resteBtn.y + this._resteBtn.height + this._scaledPadding;
+			this._dump.height = this.actualHeight - this._footerHeight - this._dump.y;
 
 			getMedicationResults();
-
 		}
 
 		override protected function initialize():void
@@ -121,6 +135,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.addChild(this._adheranceLabel);
 
 			this._adheranceResultLabel = new Label();
+			this._adheranceResultLabel.name = "centered-label";
 			this._adheranceResultLabel.text = "";
 			this.addChild(this._adheranceResultLabel);
 
@@ -142,6 +157,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.addChild(this._viralLoadLabel);
 
 			this._viralLoadResultLabel = new Label();
+			this._viralLoadResultLabel.name = "centered-label";
 			this._viralLoadResultLabel.text = "";
 			this.addChild(this._viralLoadResultLabel);
 
@@ -159,10 +175,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.addChild(this._viralLoadSlider);
 
 			this._CD4CountLabel = new Label();
-			this._CD4CountLabel.text = "CD4 count";
+			this._CD4CountLabel.text = "CD4 count:";
 			this.addChild(this._CD4CountLabel);
 
 			this._CD4CountResultLabel = new Label();
+			this._CD4CountResultLabel.name = "centered-label";
 			this._CD4CountResultLabel.text = "";
 			this.addChild(this._CD4CountResultLabel);
 
@@ -179,10 +196,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._CD4CountSlider.addEventListener(Event.CHANGE, CD4CountSliderChangeHandler );
 			this.addChild(this._CD4CountSlider);
 
+			this._dump = new ImageLoader();
+			this._dump.source = "media/virus_model_dummy.png";
+			this.addChild(this._dump);
+
 			this._resteBtn = new Button();
 			this._resteBtn.label = "RESET";
 			this.addChild(this._resteBtn);
-
 		}
 
 		private function helpBtnHandler(e:Event):void

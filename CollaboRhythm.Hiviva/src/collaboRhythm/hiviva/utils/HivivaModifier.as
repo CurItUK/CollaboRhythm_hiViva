@@ -56,15 +56,15 @@ package collaboRhythm.hiviva.utils
 			var date:Date = new Date();
 			var sqDateArray:Array = value.split("-");
 			date.setDate(sqDateArray[0]);
-			date.setMonth(sqDateArray[1]);
+			date.setMonth(Number(sqDateArray[1]) - 1);
 			date.setFullYear(sqDateArray[2]);
-
+			//trace(date.getDate());
 			return date;
 		}
 
 		public static function getSQLStringFromDate(value:Date):String
 		{
-			var sqDate:String = value.getDate() + "-" + value.getMonth() + "-" + value.getFullYear();
+			var sqDate:String = value.getDate() + "-" + Number(value.getMonth() + 1) + "-" + value.getFullYear();
 
 			return sqDate;
 		}
@@ -72,9 +72,15 @@ package collaboRhythm.hiviva.utils
 		public static function getDaysDiff(endDate:Date, startDate:Date):Number
 		{
 			var dayDiff:Number;
-			if (endDate > startDate)
+			var endMidnight:Date = endDate;
+			var startMidnight:Date = startDate;
+
+			endMidnight.setHours(0,0,0,0);
+			startMidnight.setHours(0,0,0,0);
+
+			if (endMidnight > startMidnight)
 			{
-				dayDiff = Math.floor((endDate.time - startDate.time) / 86400000);
+				dayDiff = (endMidnight.time - startMidnight.time) / 86400000;
 			}
 			else
 			{
