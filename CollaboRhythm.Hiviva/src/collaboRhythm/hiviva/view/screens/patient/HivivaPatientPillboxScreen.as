@@ -92,8 +92,8 @@ package collaboRhythm.hiviva.view.screens.patient
 						_pmMedication.push(e.data.medicationSchedule[i]);
 					}
 				}
-				buildTabletAMCells();
-				buildTabletPMCells();
+				if(_amMedication.length > 0) buildTabletAMCells();
+				if(_pmMedication.length > 0) buildTabletPMCells();
 			}
 		}
 
@@ -145,7 +145,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					{
 						var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
 						var tabletCount:SuperscriptCircle = new SuperscriptCircle();
-						tabletCount.text = _amMedication[i].tablet_count;
+						tabletCount.text = _pmMedication[i].tablet_count;
 						tabletColorCount++;
 						if (tabletColorCount > 4)
 						{
@@ -153,8 +153,8 @@ package collaboRhythm.hiviva.view.screens.patient
 						}
 						this.addChild(tablet);
 						this.addChild(tabletCount);
-						tablet.x = this._amTableXloc + (i * tablet.width) + 10;
-						tablet.y = this._amTableYloc + this._pillboxYCellSpacing * j;
+						tablet.x = this._pmTableXloc + (i * tablet.width) + 10;
+						tablet.y = this._pmTableYloc + this._pillboxYCellSpacing * j;
 						tabletCount.x = tablet.x + tablet.width/3;
 						tabletCount.y = tablet.y - tablet.height/2;
 					}

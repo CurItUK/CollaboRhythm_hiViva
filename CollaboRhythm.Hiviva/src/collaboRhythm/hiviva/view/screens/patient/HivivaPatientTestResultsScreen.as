@@ -35,7 +35,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	public class HivivaPatientTestResultsScreen extends ValidationScreen
 	{
 		private var _cd4Count:LabelAndInput;
-		private var _cd4:LabelAndInput;
+//		private var _cd4:LabelAndInput;
 		private var _viralLoad:LabelAndInput;
 		private var _date:LabelAndInput;
 		private var _dateButton:Button;
@@ -72,10 +72,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._cd4Count._labelLeft.text = "CD4 Count:";
 			this._cd4Count._labelRight.text = "Cells/mm3";
 			labelAndInputDrawProperties(this._cd4Count);
+/*
 
 			this._cd4._labelLeft.text = "CD4:";
 			this._cd4._labelRight.text = "%";
 			labelAndInputDrawProperties(this._cd4);
+*/
 
 			this._viralLoad._labelLeft.text = "Viral load:";
 			this._viralLoad._labelRight.text = "Copies/ML";
@@ -107,11 +109,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._cd4Count.scale = this.dpiScale;
 			this._cd4Count.labelStructure = "leftAndRight";
 			this._content.addChild(this._cd4Count);
+/*
 
 			this._cd4 = new LabelAndInput();
 			this._cd4.scale = this.dpiScale;
 			this._cd4.labelStructure = "leftAndRight";
 			this._content.addChild(this._cd4);
+*/
 
 			this._viralLoad = new LabelAndInput();
 			this._viralLoad.scale = this.dpiScale;
@@ -203,21 +207,24 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._sqStatement = new SQLStatement();
 
 			var cd4CountData:Number = Number(this._cd4Count._input.text);
-			var cd4Data:Number = Number(this._cd4._input.text);
+//			var cd4Data:Number = Number(this._cd4._input.text);
 			var viralLoadData:Number = Number(this._viralLoad._input.text);
 			var dateData:String = "'" + this._date._input.text + "'";
 				if(this._dataExists)
 				{
-					this._sqStatement.text = "UPDATE test_results SET cd4_count=" + cd4CountData + ", cd4=" + cd4Data + ", viral_load=" + viralLoadData + ", date_of_last_test=" + dateData;
+					this._sqStatement.text = "UPDATE test_results SET cd4_count=" + cd4CountData + ", cd4=" + 0 + ", viral_load=" + viralLoadData + ", date_of_last_test=" + dateData;
 				}
 				else
 				{
-					this._sqStatement.text = "INSERT INTO test_results (cd4_count, cd4, viral_load, date_of_last_test) VALUES (" + cd4CountData + ", " + cd4Data + ", " + viralLoadData + ", " + dateData + ")";
+					this._sqStatement.text = "INSERT INTO test_results (cd4_count, cd4, viral_load, date_of_last_test) VALUES (" + cd4CountData + ", " + 0 + ", " + viralLoadData + ", " + dateData + ")";
 				}
 				trace(this._sqStatement.text);
 				this._sqStatement.sqlConnection = this._sqConn;
 				this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 				this._sqStatement.execute();
+
+
+				showFormValidation("Your details have been saved");
 			}
 			else
 			{
@@ -230,7 +237,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var validationArray:Array = [];
 
 			if(this._cd4Count._input.text.length == 0 || isNaN(Number(this._cd4Count._input.text))) validationArray.push("Please enter valid CD4 Count data");
-			if(this._cd4._input.text.length == 0 || isNaN(Number(this._cd4._input.text))) validationArray.push("Please enter valid CD4 data");
+//			if(this._cd4._input.text.length == 0 || isNaN(Number(this._cd4._input.text))) validationArray.push("Please enter valid CD4 data");
 			if(this._viralLoad._input.text.length == 0 || isNaN(Number(this._viralLoad._input.text))) validationArray.push("Please enter valid Viral load data");
 			if(this._date._input.text.length == 0) validationArray.push("Please select a date");
 
@@ -271,6 +278,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._cd4Count._input.text = "";
 				this._dataExists = false;
 			}
+/*
 
 			try
 			{
@@ -282,6 +290,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._cd4._input.text = "";
 				this._dataExists = false;
 			}
+*/
 
 			try
 			{

@@ -30,4 +30,10 @@
         <appid>000000000</appid>
         <picture>dummy.png</picture>
     </hcp>
+    <hcp>
+        <name>Dr Richard Gould</name>
+        <email>richard.gould@domain.com</email>
+        <appid>000000001</appid>
+        <picture>dummy.png</picture>
+    </hcp>
 </hcplist>

@@ -15,11 +15,13 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPEditProfile;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHomesScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessageCompose;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessagesInbox;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessageInbox;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessageSent;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPPatientProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPSideNavigationScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessages;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaHCPHelpScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientBagesScreen;
 	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
@@ -151,8 +153,8 @@ package collaboRhythm.hiviva.view
 
 		private function initfeathersTheme():void
 		{
-//			var isDesktop:Boolean = true;
-			var isDesktop:Boolean = false;
+			var isDesktop:Boolean = true;
+//			var isDesktop:Boolean = false;
 			this._feathersTheme = new HivivaTheme(this.stage, !isDesktop);
 			this._scaleFactor = isDesktop ? 1 : this._feathersTheme.scale;
 		}
@@ -243,7 +245,7 @@ package collaboRhythm.hiviva.view
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_HOME_SCREEN, new ScreenNavigatorItem(HivivaHCPHomesScreen, {mainToSubNav:navigateToDirectProfileMenu}, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_ADHERENCE_SCREEN, new ScreenNavigatorItem(HivivaHCPAllPatientsAdherenceScreen));
 				this._mainScreenNav.addScreen(HivivaScreens.HCP_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaHCPReportsScreen, null, {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
-				this._mainScreenNav.addScreen(HivivaScreens.HCP_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaHCPMessagesInbox ,  {mainToSubNav:navigateToDirectProfileMenu} , {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
+				this._mainScreenNav.addScreen(HivivaScreens.HCP_MESSAGE_SCREEN, new ScreenNavigatorItem(HivivaHCPMessages ,  {mainToSubNav:navigateToDirectProfileMenu} , {applicationController:_applicationController , footerHeight:this._footerBtnGroup.height}));
 
 				// add listeners for homepage user signup check, to hide / show the footer and settings button
 				addEventListener(FeathersScreenEvent.HIDE_MAIN_NAV, hideMainNav);
@@ -261,7 +263,8 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.HCP_CONNECT_PATIENT, new ScreenNavigatorItem(HivivaHCPConnectToPatientScreen, null, {applicationController:_applicationController}));
 			this._settingsNav.addScreen(HivivaScreens.HCP_ADD_PATIENT, new ScreenNavigatorItem(HivivaHCPAddPatientScreen));
 			this._settingsNav.addScreen(HivivaScreens.HCP_PATIENT_PROFILE, new ScreenNavigatorItem(HivivaHCPPatientProfileScreen, {navGoHome:goBackToMainScreen},{applicationController:_applicationController , main:main}));
-			this._settingsNav.addScreen(HivivaScreens.HCP_COMPOSE_MESSAGE, new ScreenNavigatorItem(HivivaHCPMessageCompose, {navGoHome:goBackToMainScreen},{applicationController:_applicationController}));
+//			this._settingsNav.addScreen(HivivaScreens.HCP_MESSAGE_COMPOSE_SCREEN, new ScreenNavigatorItem(HivivaHCPMessageCompose, {navGoHome:goBackToMainScreen},{applicationController:_applicationController}));
+//			this._settingsNav.addScreen(HivivaScreens.HCP_MESSAGES_SENT_SCREEN, new ScreenNavigatorItem(HivivaHCPMessagesSent, {navGoHome:goBackToMainScreen},{applicationController:_applicationController}));
 
 
 		}
@@ -449,18 +452,17 @@ package collaboRhythm.hiviva.view
 						_mainScreenNav.showScreen(HivivaScreens.HCP_HOME_SCREEN);
 						break;
 					case "adherence" :
-						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_CLOCK));
+						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_ADHERENCE));
 						break;
 					case "reports" :
 						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_MEDIC));
 						break;
 					case "messages" :
-						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_VIRUS));
+						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_MESSAGE));
 						break;
 				}
-				img.width = item.width;
-				img.height = item.height;
-				button.addChild(img);
+
+				button.defaultIcon = img;
 			};
 
 			this._footerBtnGroup.direction = ButtonGroup.DIRECTION_HORIZONTAL;
@@ -489,7 +491,7 @@ package collaboRhythm.hiviva.view
 						this._mainScreenNav.showScreen(HivivaScreens.HCP_REPORTS_SCREEN);
 						break;
 					case "messages" :
-						this._mainScreenNav.showScreen(HivivaScreens.HCP_MESSAGES_SCREEN);
+						this._mainScreenNav.showScreen(HivivaScreens.HCP_MESSAGE_SCREEN);
 						break;
 				}
 				this._currFooterBtn.isSelected = false;

@@ -8,6 +8,8 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.components.SubscriptCircle;
+	import collaboRhythm.hiviva.view.components.TopNavButton;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -45,8 +47,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _applicationController:HivivaApplicationController;
 
 		private var _header:HivivaHeader;
-		private var _messagesButton:Button;
-		private var _badgesButton:Button;
+		private var _messagesButton:TopNavButton;
+		private var _badgesButton:TopNavButton;
 		private var _homeImageInstructions:Label;
 		private var _rim:Image;
 		private var _bg:Image;
@@ -140,17 +142,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._homeImageInstructions.text = "Go to <A HREF='http://www.google.com/'><FONT COLOR='#016cf9'>profile</FONT></A> then <FONT COLOR='#016cf9'>Homepage Photo</FONT> to upload or set your home page image <br/><br/>The clarity of this image will adjust to how well you stay on track with your medication.";
 			addChild(this._homeImageInstructions);
 
-			this._messagesButton = new Button();
-			this._messagesButton.name = HivivaTheme.NONE_THEMED;
-			this._messagesButton.defaultIcon = new Image(Assets.getTexture(HivivaAssets.TOPNAV_ICON_MESSAGES));
+			this._messagesButton = new TopNavButton();
+			this._messagesButton.hivivaImage = HivivaAssets.TOPNAV_ICON_MESSAGES;
 			this._messagesButton.addEventListener(Event.TRIGGERED , messagesButtonHandler);
 
-			this._badgesButton = new Button();
-			this._badgesButton.name = HivivaTheme.NONE_THEMED;
-			this._badgesButton.defaultIcon = new Image(Assets.getTexture(HivivaAssets.TOPNAV_ICON_BADGES));
+			this._badgesButton = new TopNavButton();
+			this._badgesButton.hivivaImage = HivivaAssets.TOPNAV_ICON_BADGES;
 			this._badgesButton.addEventListener(Event.TRIGGERED , rewardsButtonHandler);
 
-			this._header.rightItems =  new <DisplayObject>[this._messagesButton,this._badgesButton];
+			this._header.rightItems =  new <DisplayObject>[this._messagesButton, this._badgesButton];
 
 //			this._messagesButton.visible = false;
 //			this._badgesButton.visible = false;
@@ -192,12 +192,14 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function getMessages():void
 		{
-			
+			// dummy data
+			this._messagesButton.subScript = "1";
 		}
 
 		private function checkForNewBadges():void
 		{
-
+			// dummy data
+			this._badgesButton.subScript = "1";
 		}
 
 		private function initHomePhoto():void

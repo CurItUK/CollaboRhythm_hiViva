@@ -55,14 +55,21 @@
         </dependencies>
         <compiler-options />
         <packaging-air-desktop />
-        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
+        <packaging-android use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
+          <files-to-package>
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
+          </files-to-package>
+        </packaging-android>
+        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
           </files-to-package>
-        </packaging-android>
-        <packaging-ios package-file-name="CollaboRhythm_Hiviva" />
+          <AirSigningOptions keystore-path="$MODULE_DIR$/certificates/ios/iphone_dev.p12" provisioning-profile-path="$MODULE_DIR$/certificates/ios/iOS_Team_Development_Profile.mobileprovision" />
+        </packaging-ios>
       </configuration>
     </configurations>
     <compiler-options />

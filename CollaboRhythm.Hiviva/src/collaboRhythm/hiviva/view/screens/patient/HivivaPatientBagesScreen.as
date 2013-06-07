@@ -84,7 +84,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function drawDummyBadges():void
 		{
 			this._cellContainer = new ScrollContainer();
-
+/*
 			var badge:BadgeCell;
 			for (var i:int = 0; i < BADGE_LABELS.length; i++)
 			{
@@ -94,7 +94,14 @@ package collaboRhythm.hiviva.view.screens.patient
 				badge.dateRange = "Date Range";
 				this._cellContainer.addChild(badge);
 				badge.width = this.actualWidth;
-			}
+			}*/
+			var badge:BadgeCell = new BadgeCell();
+			badge.scale = this.dpiScale;
+			badge.badgeName = BADGE_LABELS[0];
+			badge.dateRange = "27/05/2013 - 02/06/2013";
+			this._cellContainer.addChild(badge);
+			badge.width = this.actualWidth;
+
 			this.addChild(this._cellContainer);
 			this._cellContainer.width = this.actualWidth;
 			this._cellContainer.y = this._header.height;

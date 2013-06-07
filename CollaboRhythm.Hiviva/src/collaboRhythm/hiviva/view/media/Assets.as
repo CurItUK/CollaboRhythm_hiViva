@@ -63,6 +63,12 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/footer_icon_5.png")]
 		public static const FooterIconReportPng:Class;
 
+		[Embed(source="/assets/images/temp/footer_icon_6.png")]
+		public static const FooterIconAdherencePng:Class;
+
+		[Embed(source="/assets/images/temp/footer_icon_7.png")]
+		public static const FooterIconMessagePng:Class;
+
 		[Embed(source="/assets/images/temp/side_nav_base.png")]
 		public static const SideNavBasePng:Class;
 
@@ -222,6 +228,9 @@ package collaboRhythm.hiviva.view.media
 
 		[Embed(source="/assets/images/temp/superscript_circle.png")]
 		public static const SuperscriptCirclePng:Class;
+
+		[Embed(source="/assets/images/temp/suberscript_circle.png")]
+		public static const SubscriptCirclePng:Class;
 
 
 		// TTF FONTS

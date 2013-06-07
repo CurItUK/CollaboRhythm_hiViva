@@ -54,7 +54,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._deleteMessageButton.y = this.actualHeight - this._scaledPadding - this._deleteMessageButton.height;
 			this._deleteMessageButton.x = (this.actualWidth * 0.5) - (this._deleteMessageButton.width * 0.5);
 
-			if(this._cellContainer == null) drawXMLResults();
+//			if(this._cellContainer == null) drawXMLResults();
+			if(this._cellContainer == null) drawDummyMessage();
 		}
 
 		override protected function initialize():void
@@ -160,6 +161,23 @@ package collaboRhythm.hiviva.view.screens.patient
 				}
 				this.addChild(this._cellContainer);
 			}
+			drawResults();
+		}
+
+		private function drawDummyMessage():void
+		{
+			this._cellContainer = new ScrollContainer();
+
+			var messageInboxResultCell:MessageInboxResultCell = new MessageInboxResultCell();
+			messageInboxResultCell.uniqueId = "1";
+			messageInboxResultCell.primaryText = "<font face='ExoBold'>Great job, Keep it up!</font>";
+			messageInboxResultCell.secondaryText = "Dr Richard Gould";
+			messageInboxResultCell.dateText = "31/05/2013";
+			messageInboxResultCell.scale = this.dpiScale;
+			messageInboxResultCell.addEventListener(FeathersScreenEvent.HCP_MESSAGE_SELECTED, messageSelectedHandler);
+			this._cellContainer.addChild(messageInboxResultCell);
+			this._resultCells.push(messageInboxResultCell);
+			this.addChild(this._cellContainer);
 			drawResults();
 		}
 

@@ -110,7 +110,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._resteBtn.y = this._CD4CountSlider.y + this._CD4CountSlider.height;
 
 			this._dump.y = this._resteBtn.y + this._resteBtn.height + this._scaledPadding;
-			this._dump.height = this.actualHeight - this._footerHeight - this._dump.y;
+			this._dump.maxHeight = this.actualHeight - this._footerHeight - this._dump.y;
 
 			getMedicationResults();
 		}
@@ -197,6 +197,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.addChild(this._CD4CountSlider);
 
 			this._dump = new ImageLoader();
+			this._dump.textureScale	= this.dpiScale;
 			this._dump.source = "media/virus_model_dummy.png";
 			this.addChild(this._dump);
 

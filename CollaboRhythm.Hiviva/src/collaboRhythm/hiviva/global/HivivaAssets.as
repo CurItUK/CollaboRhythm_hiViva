@@ -23,6 +23,8 @@ package collaboRhythm.hiviva.global
 		public static const FOOTER_ICON_MEDIC:String						= "FooterIconMedicPng";
 		public static const FOOTER_ICON_VIRUS:String						= "FooterIconVirusPng";
 		public static const FOOTER_ICON_REPORT:String						= "FooterIconReportPng";
+		public static const FOOTER_ICON_ADHERENCE:String						= "FooterIconAdherencePng";
+		public static const FOOTER_ICON_MESSAGE:String						= "FooterIconMessagePng";
 		public static const SIDENAV_BASE:String							= "SideNavBasePng";
 		public static const SIDENAV_ICON_PATIENTPROFILE:String				= "SideNavIconProfilePng";
 		public static const SIDENAV_ICON_HELP:String						= "SideNavIconHelpPng";
@@ -72,5 +74,6 @@ package collaboRhythm.hiviva.global
 		public static const PILL_BOX:String								= "PillboxPng";
 		public static const SNAKEY_THING:String								= "SnakeyThingPng";
 		public static const SUPERSCRIPT_CIRCLE:String								= "SuperscriptCirclePng";
+		public static const SUBSCRIPT_CIRCLE:String								= "SubscriptCirclePng";
 	}
 }

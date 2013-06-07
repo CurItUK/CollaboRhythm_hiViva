@@ -1,4 +1,4 @@
-package collaboRhythm.hiviva.view.screens.hcp
+package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.view.*;
 
@@ -7,11 +7,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import feathers.controls.Screen;
 
 
-	public class HivivaHCPMessagesSent extends Screen
+	public class HivivaPatientMessageDetail extends Screen
 	{
 		private var _header:HivivaHeader;
 
-		public function HivivaHCPMessagesSent()
+		public function HivivaPatientMessageDetail()
 		{
 
 		}
@@ -27,7 +27,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.initialize();
 			this._header = new HivivaHeader();
-			this._header.title = "Sent messages";
+			this._header.title = "Message detail";
 			this.addChild(this._header);
 
 		}

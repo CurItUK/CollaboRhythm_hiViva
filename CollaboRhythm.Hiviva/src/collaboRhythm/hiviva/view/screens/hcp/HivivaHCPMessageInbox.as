@@ -19,37 +19,43 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 
+	import starling.display.DisplayObject;
+
 	import starling.events.Event;
 
 
-	public class HivivaHCPMessagesInbox extends Screen
+	public class HivivaHCPMessageInbox extends Screen
 	{
+		private var _footerHeight:Number;
+		private var _applicationController:HivivaApplicationController;
 		private var _header:HivivaHeader;
 		private var _messagesData:XML;
 		private var _messageCellContainer:ScrollContainer;
-		private var _footerHeight:Number;
-		private var _applicationController:HivivaApplicationController;
-		private var _composeMessage:Button;
+		private var _composeBtn:Button;
+		private var _sentBtn:Button;
+		private var _deleteBtn:Button;
 
+		private var _scaledPadding:Number;
 
 		private const PADDING:Number = 20;
 
-		public function HivivaHCPMessagesInbox()
+		public function HivivaHCPMessageInbox()
 		{
 
 		}
 
 		override protected function draw():void
 		{
+			this._scaledPadding = (this.actualHeight * 0.04) * this.dpiScale;
 			super.draw();
-			var scaledPadding:Number = PADDING * this.dpiScale;
 
 			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
+			this._header.initTrueTitle();
 
-			this._composeMessage.validate();
-			this._composeMessage.x = 10;
-			this._composeMessage.y = this.actualHeight - this._composeMessage.height - scaledPadding - footerHeight;
+			this._deleteBtn.validate();
+			this._deleteBtn.x = (this.actualWidth * 0.5) - (this._deleteBtn.width * 0.5);
+			this._deleteBtn.y = this.actualHeight - _header.height - _footerHeight -
+								this._deleteBtn.height - _scaledPadding;
 
 			initHCPMessagesXMLData();
 		}
@@ -61,10 +67,22 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.title = "Messages";
 			this.addChild(this._header);
 
-			this._composeMessage = new Button();
-			this._composeMessage.label = "Compose message";
-			this._composeMessage.addEventListener(starling.events.Event.TRIGGERED , composeMessageBtnHandler);
-			this.addChild(this._composeMessage);
+			this._deleteBtn = new Button();
+			this._deleteBtn.label = "Delete";
+			this._deleteBtn.addEventListener(starling.events.Event.TRIGGERED , deleteBtnHandler);
+			this.addChild(this._header);
+
+			this._composeBtn = new Button();
+			this._composeBtn.label = "Compose";
+			this._composeBtn.addEventListener(starling.events.Event.TRIGGERED , composeBtnHandler);
+
+			this._sentBtn = new Button();
+			this._sentBtn.label = "Sent";
+			this._sentBtn.addEventListener(starling.events.Event.TRIGGERED , sentBtnHandler);
+
+			this._header.rightItems = new <DisplayObject>[this._composeBtn, this._sentBtn];
+
+			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
 		}
 
 		private function initHCPMessagesXMLData():void
@@ -112,7 +130,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var messageCell:MessageInboxResultCell;
 
 			yStartPosition = this._header.height;
-			maxHeight = this.actualHeight - yStartPosition - footerHeight - 2 * (PADDING * this.dpiScale) - this._composeMessage.height;
+			maxHeight = this.actualHeight - yStartPosition - footerHeight - 2 * (PADDING * this.dpiScale) - this._composeBtn.height;
 
 			this._messageCellContainer.width = this.actualWidth;
 			this._messageCellContainer.y = yStartPosition;
@@ -130,15 +148,31 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._messageCellContainer.validate();
 		}
 
-		private function composeMessageBtnHandler():void
+		private function composeBtnHandler(e:starling.events.Event):void
 		{
-			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_COMPOSE_MESSAGE});
+			this.owner.showScreen(HivivaScreens.HCP_MESSAGE_COMPOSE_SCREEN);
 
+		}
+
+		private function sentBtnHandler(e:starling.events.Event):void
+		{
+			this.owner.showScreen(HivivaScreens.HCP_MESSAGE_SENT_SCREEN);
+
+		}
+
+		private function deleteBtnHandler(e:starling.events.Event):void
+		{
+			// delete selected messages
 		}
 
 		private function messageSelectedHandler(e:FeathersScreenEvent):void
 		{
-
+			var messageInboxResultCell:MessageInboxResultCell = e.target as MessageInboxResultCell;
+			var evtData:Object = {};
+			evtData.primaryText = messageInboxResultCell.primaryText;
+			evtData.secondaryText = messageInboxResultCell.secondaryText;
+			evtData.dateText = messageInboxResultCell.dateText;
+			dispatchEventWith("messageNavGoDetails", false, evtData);
 		}
 
 		public function get localStoreController():HivivaLocalStoreController
