@@ -79,13 +79,13 @@ package collaboRhythm.hiviva.view
 			var viewPort:Rectangle;
 			trace("Starling Init");
 			Starling.handleLostContext = true;
-			viewPort = new Rectangle(0, 0, 640, 960);
-//			viewPort = new Rectangle(0, 0, this._sw, this._sh);
+//			viewPort = new Rectangle(0, 0, 640, 960);
+			viewPort = new Rectangle(0, 0, this._sw, this._sh);
 			_starFW = new Starling(Main, stage, viewPort);
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			_starFW.enableErrorChecking = true;
-			_starFW.showStats = true;
-			_starFW.showStatsAt(HAlign.RIGHT, VAlign.TOP);
+//			_starFW.showStats = true;
+//			_starFW.showStatsAt(HAlign.RIGHT, VAlign.TOP);
 			_starFW.start();
 			trace(_starFW.viewPort);
 		}
