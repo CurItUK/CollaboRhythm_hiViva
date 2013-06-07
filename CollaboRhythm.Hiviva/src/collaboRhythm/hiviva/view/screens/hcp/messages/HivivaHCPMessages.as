@@ -3,10 +3,10 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessageCompose;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessageDetail;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessageInbox;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessageSent;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageDetail;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageInbox;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageSent;
 
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigator;

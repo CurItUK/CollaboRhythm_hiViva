@@ -1,4 +1,4 @@
-package collaboRhythm.hiviva.view.screens.hcp
+package collaboRhythm.hiviva.view.screens.hcp.messages
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
@@ -8,21 +8,24 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	import feathers.controls.Button;
 
+
 	import feathers.controls.Screen;
 
 	import starling.display.DisplayObject;
 
 	import starling.events.Event;
 
-	public class HivivaHCPMessageSent extends Screen
+
+	public class HivivaHCPMessageDetail extends Screen
 	{
 		private var _applicationController:HivivaApplicationController;
+		private var _messageData:Object;
 		private var _header:HivivaHeader;
 		private var _backButton:Button;
 
 		private var _scaledPadding:Number;
 
-		public function HivivaHCPMessageSent()
+		public function HivivaHCPMessageDetail()
 		{
 
 		}
@@ -32,6 +35,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._scaledPadding = (this.actualHeight * 0.04) * this.dpiScale;
 			super.draw();
 
+			this._header.paddingLeft = this._scaledPadding;
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
 		}
@@ -39,11 +43,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function initialize():void
 		{
 			super.initialize();
-
 			this._header = new HivivaHeader();
-			this._header.title = "Sent messages";
-			this._header.scale = this.dpiScale;
-			addChild(this._header);
+			this._header.title = "Message detail";
+			this.addChild(this._header);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -75,5 +77,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 			_applicationController = value;
 		}
 
+		public function get messageData():Object
+		{
+			return _messageData;
+		}
+
+		public function set messageData(value:Object):void
+		{
+			_messageData = value;
+		}
 	}
 }

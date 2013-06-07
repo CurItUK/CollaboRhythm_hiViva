@@ -14,9 +14,9 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPDisplaySettings;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPEditProfile;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHomesScreen;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessageCompose;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessageInbox;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMessageSent;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageInbox;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageSent;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPPatientProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;

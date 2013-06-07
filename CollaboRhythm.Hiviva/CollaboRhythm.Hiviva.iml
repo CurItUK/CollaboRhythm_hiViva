@@ -62,7 +62,7 @@
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
           </files-to-package>
         </packaging-android>
-        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
+        <packaging-ios use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
@@ -154,7 +154,7 @@
       <library type="flex">
         <properties id="8815cf4a-e789-4558-ba5f-4c43079195b4" />
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/com.adobe.extensions.Vibration.ane!/" />
+          <root url="jar://$MODULE_DIR$/libs_new/com.adobe.extensions.Vibration.ane!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
