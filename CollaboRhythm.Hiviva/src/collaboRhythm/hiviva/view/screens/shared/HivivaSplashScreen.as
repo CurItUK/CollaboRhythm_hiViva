@@ -245,6 +245,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		override public function dispose():void
 		{
+			trace("HivivaSplashScreen dispose called");
 			this._splashBg.texture.base.dispose();
 			this._splashBg.texture.dispose();
 			this._splashBg.dispose();
