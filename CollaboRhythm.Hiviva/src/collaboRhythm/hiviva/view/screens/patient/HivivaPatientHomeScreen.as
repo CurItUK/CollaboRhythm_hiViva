@@ -298,7 +298,6 @@ package collaboRhythm.hiviva.view.screens.patient
 					trace("media/stock_images/" + chosenImageUrl);
 					doImageLoad("media/stock_images/" + chosenImageUrl);
 				}
-				// TODO: boolean to define difference between custom photo and stock photo locations in homepage photo screen
 
 			}
 		}

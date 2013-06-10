@@ -1,4 +1,4 @@
-package collaboRhythm.hiviva.view.screens.hcp
+package collaboRhythm.hiviva.view.screens.hcp.messages
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
