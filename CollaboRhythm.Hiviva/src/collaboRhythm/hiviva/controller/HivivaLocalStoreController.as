@@ -149,6 +149,33 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getTestResults():void
+		{
+			service.addEventListener(LocalDataStoreEvent.TEST_RESULTS_LOAD_COMPLETE , testResultsLoadCompleteHandler);
+			service.getTestResults();
+		}
+
+		private function testResultsLoadCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.TEST_RESULTS_LOAD_COMPLETE , testResultsLoadCompleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.TEST_RESULTS_LOAD_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function setTestResults(testResults:Object):void
+		{
+			service.addEventListener(LocalDataStoreEvent.TEST_RESULTS_SAVE_COMPLETE , testResultsSaveCompleteHandler);
+			service.setTestResults(testResults);
+		}
+
+		private function testResultsSaveCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.TEST_RESULTS_SAVE_COMPLETE , testResultsSaveCompleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.TEST_RESULTS_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function getAdherence():void
 		{
 			service.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);

@@ -19,6 +19,8 @@ package collaboRhythm.hiviva.global
 		public static const MEDICATIONS_DELETE_COMPLETE:String					= "medicationsDeleteComplete";
 		public static const ADHERENCE_LOAD_COMPLETE:String						= "adherenceLoadComplete";
 		public static const ADHERENCE_SAVE_COMPLETE:String						= "adherenceSaveComplete";
+		public static const TEST_RESULTS_LOAD_COMPLETE:String					= "testResultsLoadComplete";
+		public static const TEST_RESULTS_SAVE_COMPLETE:String					= "testResultsSaveComplete";
 		public static const MEDICATIONS_SCHEDULE_LOAD_COMPLETE:String			= "medicationsScheduleLoadComplete";
 		public static const PATIENT_PROFILE_LOAD_COMPLETE:String				= "patientProfileLoadComplete";
 		public static const PATIENT_PROFILE_SAVE_COMPLETE:String				= "patientProfileSaveComplete";

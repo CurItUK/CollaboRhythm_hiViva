@@ -4,7 +4,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.Calendar;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
-
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
@@ -24,6 +24,11 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	import flash.utils.ByteArray;
+
+	import flash.data.SQLConnection;
+	import flash.data.SQLResult;
+	import flash.data.SQLStatement;
+	import flash.events.SQLEvent;
 
 	import org.alivepdf.layout.Orientation;
 	import org.alivepdf.layout.Size;
@@ -53,8 +58,11 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _activeCalendarInput:TextInput;
 
 		private var _pdfFile:File;
-		private var _stageWebView:StageWebView
-		private var _alphaUnderlay:Sprite
+		private var _stageWebView:StageWebView;
+		private var _alphaUnderlay:Sprite;
+
+		private var _sqConn:SQLConnection;
+		private var _sqStatement:SQLStatement;
 
 		private var _pdfPopupContainer:HivivaPDFPopUp;
 
@@ -206,10 +214,45 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			//TODO move PDF creating into UTILS class
 			//TODO move fileStream - report PDF file creation to local service class
-
 			var formValidation:String = patientReportsCheck();
-			if(formValidation.length == 0)
+					if(formValidation.length == 0)
+					{
+						localStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE, adherenceLoadCompleteHandler);
+						localStoreController.getAdherence();
+					}
+					else
+					{
+						showFormValidation(formValidation);
+					}
+		}
+
+		private function adherenceLoadCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			if(this._cd4Check.isSelected || this._viralLoadCheck.isSelected)
 			{
+				getTestResults();
+			}
+			else
+			{
+				generateSpoofPDF();
+			}
+		}
+
+		private function getTestResults():void
+		{
+			localStoreController.addEventListener(LocalDataStoreEvent.TEST_RESULTS_LOAD_COMPLETE, testResultsLoadCompleteHandler);
+			localStoreController.getTestResults();
+		}
+
+		private function testResultsLoadCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			trace("MUCH SUCCESS = YES " + e)
+
+		}
+
+		private function generateSpoofPDF():void
+		{
+
 				var pdf:PDF = new PDF(Orientation.PORTRAIT, Unit.MM, Size.A4);
 
 				pdf.addPage();
@@ -227,11 +270,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				fileStream.writeBytes(bytes);
 				fileStream.close();
 				displaySavedPDF();
-			}
-			else
-			{
-				showFormValidation(formValidation);
-			}
+
+
 		}
 
 		private function patientReportsCheck():String
