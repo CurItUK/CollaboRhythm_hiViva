@@ -9,6 +9,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
+	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 
@@ -27,13 +28,16 @@ package collaboRhythm.hiviva.view.screens.shared
 	import starling.display.Image;
 
 	import starling.events.Event;
+	import starling.textures.Texture;
 
 	public class HivivaSplashScreen extends Screen
 	{
 		private var _applicationController:HivivaApplicationController;
 		private var _appType:String;
-		private var _splashBg:Image;
-		private var _logo:Image;
+		private var _splashBg:ImageLoader;
+		//private var _splashBg:Image;
+		//private var _logo:Image;
+		private var _logo:ImageLoader;
 		private var _footer:Label;
 		private var _termsButton:Button;
 		private var _privacyButton:Button;
@@ -75,10 +79,14 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function initSplashBackground():void
 		{
-			this._splashBg = new Image(Assets.getTexture(HivivaAssets.SPLASH_SCREEN_BG));
+			this._splashBg = new ImageLoader();
+			this._splashBg.source = "/assets/images/temp/splash_bg.jpg";
+			//this._splashBg = new Image(Assets.getTexture(HivivaAssets.SPLASH_SCREEN_BG));
 			addChild(this._splashBg);
 
-			this._logo = new Image(Assets.getTexture(HivivaAssets.LOGO));
+			this._logo = new ImageLoader();
+			this._logo.source = "/assets/images/temp/logo.png"
+			//this._logo = new Image(Assets.getTexture(HivivaAssets.LOGO));
 			addChild(this._logo);
 
 			this._footer = new Label();
@@ -124,6 +132,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function initButtons():void
 		{
 			this._hcpButton = new Button();
+
 			this._hcpButton.defaultSkin = new Image(Assets.getTexture(HivivaAssets.SPLASH_BUTTON_HCP));
 			applySplashButtonProperties(this._hcpButton);
 			this._hcpButton.label = "I’m a healthcare \nprofessional \nor carer";
@@ -246,15 +255,18 @@ package collaboRhythm.hiviva.view.screens.shared
 		override public function dispose():void
 		{
 			trace("HivivaSplashScreen dispose called");
-			this._splashBg.texture.base.dispose();
-			this._splashBg.texture.dispose();
 			this._splashBg.dispose();
+			//this._splashBg.texture.base.dispose();
+			//this._splashBg.texture.dispose();
+			//this._splashBg.dispose();
 			this._splashBg = null;
 
-			this._logo.texture.base.dispose();
-			this._logo.texture.dispose();
 			this._logo.dispose();
 			this._logo = null;
+			//this._logo.texture.base.dispose();
+			//this._logo.texture.dispose();
+			//this._logo.dispose();
+
 
 			super.dispose();
 		}

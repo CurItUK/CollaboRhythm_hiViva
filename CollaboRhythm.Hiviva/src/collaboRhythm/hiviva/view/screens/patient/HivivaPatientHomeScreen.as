@@ -13,6 +13,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
+	import feathers.controls.ImageLoader;
 
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
@@ -50,9 +51,12 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _messagesButton:TopNavButton;
 		private var _badgesButton:TopNavButton;
 		private var _homeImageInstructions:Label;
-		private var _rim:Image;
-		private var _bg:Image;
-		private var _shine:Image;
+		//private var _rim:Image;
+		private var _rim:ImageLoader;
+		//private var _bg:Image;
+		private var _bg:ImageLoader;
+		//private var _shine:Image;
+		private var _shine:ImageLoader;
 		private var _bgImageHolder:Sprite;
 		private var _lensImageHolder:Sprite;
 		private var _dayDiff:Number;
@@ -125,16 +129,24 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._bgImageHolder = new Sprite();
 			addChild(this._bgImageHolder);
 
-			this._rim = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_RIM));
+			//this._rim = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_RIM));
+			this._rim = new ImageLoader();
+			this._rim.source = "/assets/images/temp/home_lens_rim.png";
 			addChild(this._rim);
 
-			this._bg = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_BG));
+
+
+			//this._bg = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_BG));
+			this._bg = new ImageLoader();
+			this._bg.source = "/assets/images/temp/home_lens_bg.png";
 			addChild(this._bg);
 
 			this._lensImageHolder = new Sprite();
 			addChild(this._lensImageHolder);
 
-			this._shine = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_SHINE));
+			//this._shine = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_SHINE));
+			this._shine = new ImageLoader();
+			this._shine.source = "/assets/images/temp/home_lens_shine.png";
 			addChild(this._shine);
 
 			this._homeImageInstructions = new Label();
@@ -452,6 +464,17 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override public function dispose():void
 		{
+			trace("HivivaPatientHomeScreenScreen dispose" );
+
+			this._bg.dispose();
+			this._rim.dispose();
+			this._shine.dispose();
+
+			this._bg = null;
+			this._rim = null;
+			this._shine = null;
+
+
 			super.dispose();
 			System.gc();
 		}

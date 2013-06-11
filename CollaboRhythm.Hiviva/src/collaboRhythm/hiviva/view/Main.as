@@ -185,8 +185,8 @@ package collaboRhythm.hiviva.view
 			switch(this._profile)
 			{
 				case HivivaLocalStoreService.USER_APP_TYPE_HCP :
-					initHCPSettingsNavigator();
-					initHCPNavigator();
+					//initHCPSettingsNavigator();
+					//initHCPNavigator();
 					break;
 
 				case HivivaLocalStoreService.USER_APP_TYPE_PATIENT :
