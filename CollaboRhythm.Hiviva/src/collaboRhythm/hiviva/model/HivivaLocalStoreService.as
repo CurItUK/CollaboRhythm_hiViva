@@ -14,7 +14,7 @@ package collaboRhythm.hiviva.model
 
 	public class HivivaLocalStoreService extends EventDispatcher
 	{
-		public static const APP_FIRST_TIME_USE:String					= "appFirstTimeUse";
+		public static const APP_FIRST_TIME_USE:String	= "appFirstTimeUse";
 		public static const USER_APP_TYPE_PATIENT:String = "Patient";
 		public static const USER_APP_TYPE_HCP:String = "HCP";
 
@@ -25,6 +25,7 @@ package collaboRhythm.hiviva.model
 		private var _medicationSchedule:Array;
 		private var _galleryImageUrls:Array;
 		private var _medicationAdherenceToSet:Object;
+		private var _testResultsToSet:Object;
 		private var _medicationIdToDelete:int;
 		private var _patientProfile:Object;
 		private var _hcpProfile:Object;
@@ -523,6 +524,63 @@ package collaboRhythm.hiviva.model
 		private function setAdherenceResultHandler(e:SQLEvent):void
 		{
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.ADHERENCE_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function getTestResults():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "SELECT * FROM test_results";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getTestResultsResultHandler);
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+		}
+
+		private function getTestResultsResultHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			trace("sqlResultHandler " + e);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.TEST_RESULTS_LOAD_COMPLETE);
+			evt.data.adherence = result;
+			this.dispatchEvent(evt);
+		}
+
+		public function setTestResults(testResults:Object):void
+		{
+			_testResultsToSet = testResults;
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.text = "SELECT * FROM test_results";
+			this._sqStatement.addEventListener(SQLEvent.RESULT, checkTestResultsResultHandler);
+			this._sqStatement.execute();
+		}
+
+		private function checkTestResultsResultHandler(e:SQLEvent):void
+		{
+				this._sqStatement = new SQLStatement();
+				this._sqStatement.sqlConnection = this._sqConn;
+
+				trace(this._sqStatement.text);
+				this._sqStatement.addEventListener(SQLEvent.RESULT, setTestResultsResultHandler);
+				this._sqStatement.execute();
+		}
+
+		private function setTestResultsResultHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.TEST_RESULTS_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
 

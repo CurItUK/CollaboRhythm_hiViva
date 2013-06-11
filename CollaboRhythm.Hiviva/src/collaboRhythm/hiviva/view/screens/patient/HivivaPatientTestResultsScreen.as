@@ -278,6 +278,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._cd4Count._input.text = "";
 				this._dataExists = false;
 			}
+
+
 /*
 
 			try
