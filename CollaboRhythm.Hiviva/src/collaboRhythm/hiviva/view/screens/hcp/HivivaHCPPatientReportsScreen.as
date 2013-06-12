@@ -2,9 +2,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.view.components.Calendar;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.*;
-
+	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 
 	import feathers.controls.Button;
@@ -40,12 +44,15 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import starling.events.Event;
 
 
-	public class HivivaHCPPatientReportsScreen extends Screen
+	public class HivivaHCPPatientReportsScreen extends ValidationScreen
 	{
-		private var _header:HivivaHeader;
+	//	private var _header:HivivaHeader;
+		private var _footerHeight:Number;
 		private var _startLabel:Label;
-		private var _startDateInput:TextInput;
-		private var _finishDateInput:TextInput;
+		private var _startDateButton:Button;
+		private var _finishDateButton:Button;
+		private var _startDateInput:LabelAndInput;
+		private var _finishDateInput:LabelAndInput;
 		private var _backButton:Button;
 		private var _finishLabel:Label;
 		private var _reportDatesLabel:Label;
@@ -55,6 +62,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _cd4Check:Check;
 		private var _viralLoadCheck:Check;
 		private var _previewAndSendBtn:Button;
+		private var _calendar:Calendar;
+		private var _activeCalendarInput:TextInput;
+
 		private var _patientLabel:Label;
 		private var _selectedPatient:XML;
 
@@ -72,66 +82,55 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		override protected function draw():void
 		{
+			this._customHeight = this.actualHeight - this._footerHeight;
+			;
 			super.draw();
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
 
-			this._patientLabel.y = this._header.height;
-			this._patientLabel.x = 10;
-			this._patientLabel.width = this.actualWidth;
-			this._patientLabel.validate();
+			this._content.validate();
 
-			this._reportDatesLabel.y = this._patientLabel.y + this._patientLabel.height + 20;
-			this._reportDatesLabel.x = 10;
-			this._reportDatesLabel.width = 200;
-			this._reportDatesLabel.validate();
+		}
 
-			this._startLabel.y = this._reportDatesLabel.y + this._reportDatesLabel.height + 10;
-			this._startLabel.x = 10
-			this._startLabel.width = 200;
-			this._startLabel.validate();
+		override protected function preValidateContent():void
+		{
+			super.preValidateContent();
+			this._reportDatesLabel.width = this._innerWidth;
 
-			this._startDateInput.y = this._startLabel.y;
-			this._startDateInput.width = 200;
-			this._startDateInput.x = this._startLabel.x + this._startLabel.width + 10;
-			this._startDateInput.validate();
+			this._startDateInput._labelLeft.text = "Start";
+			this._startDateInput.width = this._innerWidth * 0.75;
+			this._startDateInput._input.width = this._innerWidth * 0.5;
 
-			this._finishLabel.y = this._startDateInput.y + this._startDateInput.height + 10;
-			this._finishLabel.x = 10;
-			this._finishLabel.width = 200;
-			this._finishLabel.validate();
+			this._finishDateInput._labelLeft.text = "Finish";
+			this._finishDateInput.width = this._innerWidth * 0.75;
+			this._finishDateInput._input.width = this._innerWidth * 0.5;
 
-			this._finishDateInput.y = this._finishLabel.y;
-			this._finishDateInput.width = 200;
-			this._finishDateInput.x = this._finishLabel.x + this._finishLabel.width + 10;
-			this._finishDateInput.validate();
+			this._includeLabel.width = this._innerWidth;
 
-			this._includeLabel.y = this._finishDateInput.y + this._finishDateInput.height + 20;
-			this._includeLabel.x = 10;
-			this._includeLabel.width = 200;
-			this._includeLabel.validate();
+			this._adherenceCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
+			this._feelingCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
+			this._cd4Check.defaultLabelProperties.width = this._innerWidth * 0.9;
+			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
+		}
 
-			this._adherenceCheck.width = this.actualWidth;
-			this._adherenceCheck.validate();
-			this._adherenceCheck.y = this._includeLabel.y + this._includeLabel.height + 10;
+		override protected function postValidateContent():void
+		{
+			super.postValidateContent();
+			this._patientLabel.width += this._componentGap;
+			this._startDateButton.x = this._startDateInput.width + this._componentGap;
+			this._startDateButton.y = this._startDateInput.y + this._startDateInput._input.y + (this._startDateInput._input.height * 0.5);
+			this._startDateButton.y -= this._startDateButton.height * 0.5;
 
-			this._feelingCheck.width = this.actualWidth;
-			this._feelingCheck.validate();
-			this._feelingCheck.y = this._adherenceCheck.y + this._adherenceCheck.height;
+			this._finishDateInput.y = this._startDateInput.y + this._startDateInput.height + this._componentGap;
 
-			this._cd4Check.width = this.actualWidth;
-			this._cd4Check.validate();
-			this._cd4Check.y = this._feelingCheck.y + this._feelingCheck.height;
+			this._finishDateButton.x = this._finishDateInput.width + this._componentGap;
+			this._finishDateButton.y = this._finishDateInput.y + this._finishDateInput._input.y + (this._finishDateInput._input.height * 0.5);
+			this._finishDateButton.y -= this._finishDateButton.height * 0.5;
 
-			this._viralLoadCheck.width = this.actualWidth;
-			this._viralLoadCheck.validate();
-			this._viralLoadCheck.y = this._cd4Check.y + this._cd4Check.height;
-
-			this._previewAndSendBtn.validate();
-			this._previewAndSendBtn.x = this.actualWidth / 2 - this._previewAndSendBtn.width / 2;
-			this._previewAndSendBtn.y = this._viralLoadCheck.y + this._viralLoadCheck.height;
-
-
+			this._includeLabel.y = this._finishDateInput.y + this._finishDateInput.height + this._componentGap;
+			this._adherenceCheck.y = this._includeLabel.y + this._includeLabel.height + this._componentGap;
+			this._feelingCheck.y = this._adherenceCheck.y + this._adherenceCheck.height + this._componentGap;
+			this._cd4Check.y = this._feelingCheck.y + this._feelingCheck.height + this._componentGap;
+			this._viralLoadCheck.y = this._cd4Check.y + this._cd4Check.height + this._componentGap;
+			this._previewAndSendBtn.y = this._viralLoadCheck.y + this._viralLoadCheck.height + this._componentGap;
 		}
 
 		override protected function initialize():void
@@ -150,55 +149,93 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._patientLabel = new Label();
 			this._patientLabel.text = "<font face='ExoBold'>Patient: </font>" + selectedPatient.name;
-			this.addChild(this._patientLabel);
+			this._content.addChild(this._patientLabel);
 
 			this._reportDatesLabel = new Label();
 			this._reportDatesLabel.text = "<font face='ExoBold'>Report dates</font>";
-			this.addChild(this._reportDatesLabel);
+			this._content.addChild(this._reportDatesLabel);
 
-			this._startLabel = new Label();
-			this._startLabel.text = "Start";
-			this.addChild(this._startLabel);
+			this._startDateInput = new LabelAndInput();
+			this._startDateInput.scale = this.dpiScale;
+			this._startDateInput.labelStructure = "left";
+			this._content.addChild(this._startDateInput);
+			this._startDateInput._input.isEnabled = false;
 
-			this._startDateInput = new TextInput();
-			this.addChild(this._startDateInput);
+			this._startDateButton = new Button();
+			this._startDateButton.addEventListener(Event.TRIGGERED, startDateCalendarHandler);
+			this._startDateButton.name = "calendar-button";
+			this._content.addChild(this._startDateButton);
 
-			this._finishLabel = new Label();
-			this._finishLabel.text = "Finish";
-			this.addChild(this._finishLabel);
+			this._finishDateInput = new LabelAndInput();
+			this._finishDateInput.scale = this.dpiScale;
+			this._finishDateInput.labelStructure = "left";
+			this._content.addChild(this._finishDateInput);
+			this._finishDateInput._input.isEnabled = false;
 
-			this._finishDateInput = new TextInput();
-			this.addChild(this._finishDateInput);
+			this._finishDateButton = new Button();
+			this._finishDateButton.addEventListener(Event.TRIGGERED, finishDateCalendarHandler);
+			this._finishDateButton.name = "calendar-button";
+			this._content.addChild(this._finishDateButton);
+
 
 			this._includeLabel = new Label();
 			this._includeLabel.text = "<font face='ExoBold'>Include</font>";
-			this.addChild(this._includeLabel);
+			this._content.addChild(this._includeLabel);
 
 			this._adherenceCheck = new Check();
 			this._adherenceCheck.isSelected = false;
 			this._adherenceCheck.label = "Adherence";
-			addChild(this._adherenceCheck);
+			this._content.addChild(this._adherenceCheck);
 
 			this._feelingCheck = new Check();
 			this._feelingCheck.isSelected = false;
 			this._feelingCheck.label = "How I am feeling";
-			addChild(this._feelingCheck);
+			this._content.addChild(this._feelingCheck);
 
 			this._cd4Check = new Check();
 			this._cd4Check.isSelected = false;
 			this._cd4Check.label = "CD4 count test results";
-			addChild(this._cd4Check);
+			this._content.addChild(this._cd4Check);
 
 			this._viralLoadCheck = new Check();
 			this._viralLoadCheck.isSelected = false;
 			this._viralLoadCheck.label = "Viral load test results";
-			addChild(this._viralLoadCheck);
+			this._content.addChild(this._viralLoadCheck);
 
 			this._previewAndSendBtn = new Button();
 			this._previewAndSendBtn.label = "Preview and send";
 			this._previewAndSendBtn.addEventListener(starling.events.Event.TRIGGERED, previewSendHandler);
-			addChild(this._previewAndSendBtn);
+			this._content.addChild(this._previewAndSendBtn);
+
+			this._calendar = new Calendar();
+			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler)
 		}
+
+
+		private function calendarButtonHandler(e:FeathersScreenEvent):void
+		{
+			PopUpManager.removePopUp(this._calendar);
+			this._activeCalendarInput.text = e.evtData.date;
+		}
+
+		private function startDateCalendarHandler(e:Event):void
+		{
+			this._activeCalendarInput = this._startDateInput._input;
+			PopUpManager.addPopUp(this._calendar,true,false);
+			this._calendar.width = this.actualWidth;
+			this._calendar.validate();
+			//PopUpManager.centerPopUp(this._calendar);
+		}
+
+		private function finishDateCalendarHandler(e:Event):void
+		{
+			this._activeCalendarInput = this._finishDateInput._input;
+			PopUpManager.addPopUp(this._calendar,true,false);
+			this._calendar.width = this.actualWidth;
+			this._calendar.validate();
+			//PopUpManager.centerPopUp(this._calendar);
+		}
+
 
 		private function backBtnHandler(e:starling.events.Event):void
 		{
@@ -210,23 +247,30 @@ package collaboRhythm.hiviva.view.screens.hcp
 			//TODO move PDF creating into UTILS class
 			//TODO move fileStream - report PDF file creation to local service class
 
-			var pdf:PDF = new PDF(Orientation.PORTRAIT, Unit.MM, Size.A4);
+			var formValidation:String = patientReportsCheck();
+			if(formValidation.length == 0)
+			{
+				displaySavedPDF();
+			}
+			else
+			{
+				showFormValidation(formValidation);
+			}
+		}
 
-			pdf.addPage();
+		private function patientReportsCheck():String
+		{
+			var validationArray:Array = [];
 
-			var msg:String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lobortis elit ut urna malesuada sed porttitor odio vestibulum. Morbi egestas metus vitae urna consectetur sagittis. Aenean aliquam tincidunt velit a lacinia. Vestibulum tincidunt ante vel sem laoreet sed tempus risus ornare. Nunc ullamcorper sapien vel neque vulputate commodo. Nam faucibus neque eu libero venenatis euismod. Pellentesque ut est vitae tellus egestas consectetur. Praesent massa lacus, ultrices ut convallis vitae, tincidunt at tortor. Sed arcu risus, convallis ac fringilla at, egestas id tortor. Nam consectetur luctus mollis. Phasellus id dolor nibh, sed ultricies diam. Aliquam erat volutpat. Nulla erat lectus, vestibulum sed molestie nec, dignissim sed tellus. Sed fermentum quam id dolor porta vel tristique orci tristique. Nunc varius molestie bibendum. Curabitur in tortor eget mauris porttitor mollis. Proin a lacus mauris. Nullam dapibus nisi vitae justo eleifend ullamcorper. Maecenas dolor augue, bibendum quis mattis ut, posuere in tortor. Donec auctor dolor eget leo posuere fermentum. Curabitur tincidunt blandit venenatis. Praesent sagittis tristique ultricies. Quisque lobortis lacus non orci aliquam facilisis. Cras ut felis massa, a posuere nisi. Maecenas eget nibh ligula. Duis urna massa, dignissim non dapibus eget, mattis consequat dolor.";
+			if(this._startDateInput._input.text.length == 0) validationArray.push("Please select a start date");
+			if(this._finishDateInput._input.text.length == 0) validationArray.push("Please select an end date");
 
-			pdf.writeText(12, msg);
+			if(!this._adherenceCheck.isSelected && !this._feelingCheck.isSelected && !this._cd4Check.isSelected && !this._viralLoadCheck.isSelected)
+			{
+				validationArray.push("Please select one or more reporting item");
+			}
 
-			var fileStream:FileStream = new FileStream();
-
-			this._pdfFile = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
-
-			fileStream.open(this._pdfFile, FileMode.WRITE);
-			var bytes:ByteArray = pdf.save(Method.LOCAL);
-			fileStream.writeBytes(bytes);
-			fileStream.close();
-			displaySavedPDF();
+			return validationArray.join("<br/>");
 		}
 
 		private function displaySavedPDF():void
@@ -285,17 +329,17 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._selectedPatient = patient;
 		}
 
-		public function get localStoreController():HivivaLocalStoreController
+		public override function get localStoreController():HivivaLocalStoreController
 		{
 			return applicationController.hivivaLocalStoreController;
 		}
 
-		public function get applicationController():HivivaApplicationController
+		public override function get applicationController():HivivaApplicationController
 		{
 			return _applicationController;
 		}
 
-		public function set applicationController(value:HivivaApplicationController):void
+		public override function set applicationController(value:HivivaApplicationController):void
 		{
 			_applicationController = value;
 		}

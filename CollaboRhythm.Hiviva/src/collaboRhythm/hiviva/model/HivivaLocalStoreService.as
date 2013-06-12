@@ -570,12 +570,14 @@ package collaboRhythm.hiviva.model
 
 		private function checkTestResultsResultHandler(e:SQLEvent):void
 		{
+			/*
 				this._sqStatement = new SQLStatement();
 				this._sqStatement.sqlConnection = this._sqConn;
 
 				trace(this._sqStatement.text);
 				this._sqStatement.addEventListener(SQLEvent.RESULT, setTestResultsResultHandler);
 				this._sqStatement.execute();
+				*/
 		}
 
 		private function setTestResultsResultHandler(e:SQLEvent):void

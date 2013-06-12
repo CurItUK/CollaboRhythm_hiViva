@@ -1,8 +1,10 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
-
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.view.components.Calendar;
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
@@ -33,7 +35,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	import starling.core.Starling;
 	import starling.events.Event;
-	import starling.events.Event;
 
 
 	public class HivivaHCPReportsScreen extends ValidationScreen
@@ -44,6 +45,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private var _startDateInput:LabelAndInput;
 		private var _finishDateInput:LabelAndInput;
+		private var _startDateButton:Button;
+		private var _finishDateButton:Button;
 		private var _reportDatesLabel:Label;
 		private var _includeLabel:Label;
 		private var _adherenceCheck:Check;
@@ -51,11 +54,15 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _cd4Check:Check;
 		private var _viralLoadCheck:Check;
 		private var _previewAndSendBtn:Button;
+		private var _calendar:Calendar;
+		private var _activeCalendarInput:TextInput;
 
 		private var _pdfFile:File;
 		private var _stageWebView:StageWebView
 
 		private var _pdfPopupContainer:HivivaPDFPopUp;
+
+		private var patients:ListCollection;
 
 		public function HivivaHCPReportsScreen()
 		{
@@ -65,6 +72,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function draw():void
 		{
 			this._customHeight = this.actualHeight - this._footerHeight;
+
+			getHcpConnections();
+
 			super.draw();
 		}
 
@@ -74,23 +84,41 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._reportDatesLabel.width = this._innerWidth;
 
 			this._startDateInput._labelLeft.text = "Start";
-			this._startDateInput.width = this._innerWidth;
-			this._startDateInput._input.width = this._innerWidth * 0.7;
+			this._startDateInput.width = this._innerWidth * 0.75;
+			this._startDateInput._input.width = this._innerWidth * 0.5;
 
 			this._finishDateInput._labelLeft.text = "Finish";
-			this._finishDateInput.width = this._innerWidth;
-			this._finishDateInput._input.width = this._innerWidth * 0.7;
+			this._finishDateInput.width = this._innerWidth * 0.75;
+			this._finishDateInput._input.width = this._innerWidth * 0.5;
 
 			this._includeLabel.width = this._innerWidth;
-			this._adherenceCheck.width = this._innerWidth;
-			this._feelingCheck.width = this._innerWidth;
-			this._cd4Check.width = this._innerWidth;
-			this._viralLoadCheck.width = this._innerWidth;
+
+			this._adherenceCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
+			this._feelingCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
+			this._cd4Check.defaultLabelProperties.width = this._innerWidth * 0.9;
+			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
 		}
 
 		override protected function postValidateContent():void
 		{
 			super.postValidateContent();
+			this._patientLabel.width += this._componentGap;
+			this._startDateButton.x = this._startDateInput.width + this._componentGap;
+			this._startDateButton.y = this._startDateInput.y + this._startDateInput._input.y + (this._startDateInput._input.height * 0.5);
+			this._startDateButton.y -= this._startDateButton.height * 0.5;
+
+			this._finishDateInput.y = this._startDateInput.y + this._startDateInput.height + this._componentGap;
+
+			this._finishDateButton.x = this._finishDateInput.width + this._componentGap;
+			this._finishDateButton.y = this._finishDateInput.y + this._finishDateInput._input.y + (this._finishDateInput._input.height * 0.5);
+			this._finishDateButton.y -= this._finishDateButton.height * 0.5;
+
+			this._includeLabel.y = this._finishDateInput.y + this._finishDateInput.height + this._componentGap;
+			this._adherenceCheck.y = this._includeLabel.y + this._includeLabel.height + this._componentGap;
+			this._feelingCheck.y = this._adherenceCheck.y + this._adherenceCheck.height + this._componentGap;
+			this._cd4Check.y = this._feelingCheck.y + this._feelingCheck.height + this._componentGap;
+			this._viralLoadCheck.y = this._cd4Check.y + this._cd4Check.height + this._componentGap;
+			this._previewAndSendBtn.y = this._viralLoadCheck.y + this._viralLoadCheck.height + this._componentGap;
 		}
 
 		override protected function initialize():void
@@ -104,23 +132,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._patientLabel);
 
 			this._patientPickerList = new PickerList();
-			var patients:ListCollection = new ListCollection(
-					[
-						{text: "Patient 1"},
-						{text: "Patient 2"},
-						{text: "Patient 3"},
-						{text: "Patient 4"},
-						{text: "Patient 5"},
-						{text: "Patient 6"}
-					]
-			);
-
-			this._patientPickerList.dataProvider = patients;
 			this._patientPickerList.listProperties.@itemRendererProperties.labelField = "text";
-			this._patientPickerList.prompt = "Select patient";
-			this._patientPickerList.selectedIndex = -1;
 			this._patientPickerList.labelField = "text";
-			this._patientPickerList.typicalItem = "Patient 6         ";
 			this._patientPickerList.addEventListener(starling.events.Event.CHANGE, patientSelectedHandler);
 			this._content.addChild(this._patientPickerList);
 
@@ -132,11 +145,23 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._startDateInput.scale = this.dpiScale;
 			this._startDateInput.labelStructure = "left";
 			this._content.addChild(this._startDateInput);
+			this._startDateInput._input.isEnabled = false;
+
+			this._startDateButton = new Button();
+			this._startDateButton.addEventListener(Event.TRIGGERED, startDateCalendarHandler);
+			this._startDateButton.name = "calendar-button";
+			this._content.addChild(this._startDateButton);
 
 			this._finishDateInput = new LabelAndInput();
 			this._finishDateInput.scale = this.dpiScale;
 			this._finishDateInput.labelStructure = "left";
 			this._content.addChild(this._finishDateInput);
+			this._finishDateInput._input.isEnabled = false;
+
+			this._finishDateButton = new Button();
+			this._finishDateButton.addEventListener(Event.TRIGGERED, finishDateCalendarHandler);
+			this._finishDateButton.name = "calendar-button";
+			this._content.addChild(this._finishDateButton);
 
 			this._includeLabel = new Label();
 			this._includeLabel.text = "<font face='ExoBold'>Include</font>";
@@ -166,6 +191,66 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._previewAndSendBtn.label = "Preview and send";
 			this._previewAndSendBtn.addEventListener(starling.events.Event.TRIGGERED, previewSendHandler);
 			this._content.addChild(this._previewAndSendBtn);
+
+			this._calendar = new Calendar();
+			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler)
+		}
+
+		private function getHcpConnections():void
+		{
+			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			applicationController.hivivaLocalStoreController.getHCPConnections();
+		}
+
+		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+
+			if(e.data.connections != null)
+			{
+				trace("connectionsLength " + e.data.connections.length);
+				var connectionsLength:uint = e.data.connections.length;
+
+
+			var patientsList:Array = new Array();
+
+				for (var listCount:int = 0; listCount < connectionsLength; listCount++)
+				{
+
+					patientsList.push(e.data.connections[listCount].name);
+
+				}
+				var patients:ListCollection = new ListCollection( patientsList );
+
+				this._patientPickerList.dataProvider = patients;
+				this._patientPickerList.prompt = "Select patient";
+				this._patientPickerList.selectedIndex = -1;
+
+			}
+		}
+
+		private function calendarButtonHandler(e:FeathersScreenEvent):void
+		{
+			PopUpManager.removePopUp(this._calendar);
+			this._activeCalendarInput.text = e.evtData.date;
+		}
+
+		private function startDateCalendarHandler(e:Event):void
+		{
+			this._activeCalendarInput = this._startDateInput._input;
+			PopUpManager.addPopUp(this._calendar,true,false);
+			this._calendar.width = this.actualWidth;
+			this._calendar.validate();
+			//PopUpManager.centerPopUp(this._calendar);
+		}
+
+		private function finishDateCalendarHandler(e:Event):void
+		{
+			this._activeCalendarInput = this._finishDateInput._input;
+			PopUpManager.addPopUp(this._calendar,true,false);
+			this._calendar.width = this.actualWidth;
+			this._calendar.validate();
+			//PopUpManager.centerPopUp(this._calendar);
 		}
 
 		private function patientSelectedHandler(e:Event):void
@@ -183,22 +268,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var formValidation:String = patientReportsCheck();
 			if(formValidation.length == 0)
 			{
-				var pdf:PDF = new PDF(Orientation.PORTRAIT, Unit.MM, Size.A4);
-
-				pdf.addPage();
-
-				var msg:String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lobortis elit ut urna malesuada sed porttitor odio vestibulum. Morbi egestas metus vitae urna consectetur sagittis. Aenean aliquam tincidunt velit a lacinia. Vestibulum tincidunt ante vel sem laoreet sed tempus risus ornare. Nunc ullamcorper sapien vel neque vulputate commodo. Nam faucibus neque eu libero venenatis euismod. Pellentesque ut est vitae tellus egestas consectetur. Praesent massa lacus, ultrices ut convallis vitae, tincidunt at tortor. Sed arcu risus, convallis ac fringilla at, egestas id tortor. Nam consectetur luctus mollis. Phasellus id dolor nibh, sed ultricies diam. Aliquam erat volutpat. Nulla erat lectus, vestibulum sed molestie nec, dignissim sed tellus. Sed fermentum quam id dolor porta vel tristique orci tristique. Nunc varius molestie bibendum. Curabitur in tortor eget mauris porttitor mollis. Proin a lacus mauris. Nullam dapibus nisi vitae justo eleifend ullamcorper. Maecenas dolor augue, bibendum quis mattis ut, posuere in tortor. Donec auctor dolor eget leo posuere fermentum. Curabitur tincidunt blandit venenatis. Praesent sagittis tristique ultricies. Quisque lobortis lacus non orci aliquam facilisis. Cras ut felis massa, a posuere nisi. Maecenas eget nibh ligula. Duis urna massa, dignissim non dapibus eget, mattis consequat dolor.";
-
-				pdf.writeText(12, msg);
-
-				var fileStream:FileStream = new FileStream();
-
-				this._pdfFile = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
-
-				fileStream.open(this._pdfFile, FileMode.WRITE);
-				var bytes:ByteArray = pdf.save(Method.LOCAL);
-				fileStream.writeBytes(bytes);
-				fileStream.close();
 				displaySavedPDF();
 			}
 			else
@@ -207,15 +276,22 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 		}
 
+
 		private function patientReportsCheck():String
 		{
 			var validationArray:Array = [];
-
+			if(this._patientPickerList.selectedIndex == -1) validationArray.push("Please select a patient");
 			if(this._startDateInput._input.text.length == 0) validationArray.push("Please select a start date");
 			if(this._finishDateInput._input.text.length == 0) validationArray.push("Please select an end date");
 
+			if(!this._adherenceCheck.isSelected && !this._feelingCheck.isSelected && !this._cd4Check.isSelected && !this._viralLoadCheck.isSelected)
+			{
+				validationArray.push("Please select one or more reporting item");
+			}
+
 			return validationArray.join("<br/>");
 		}
+
 
 		private function displaySavedPDF():void
 		{

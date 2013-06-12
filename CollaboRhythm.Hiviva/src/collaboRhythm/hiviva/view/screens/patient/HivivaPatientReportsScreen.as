@@ -246,13 +246,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function testResultsLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
-			trace("MUCH SUCCESS = YES " + e)
+			generateSpoofPDF();
 
 		}
 
 		private function generateSpoofPDF():void
 		{
-
+			/*
 				var pdf:PDF = new PDF(Orientation.PORTRAIT, Unit.MM, Size.A4);
 
 				pdf.addPage();
@@ -269,6 +269,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				var bytes:ByteArray = pdf.save(Method.LOCAL);
 				fileStream.writeBytes(bytes);
 				fileStream.close();
+				*/
 				displaySavedPDF();
 
 
@@ -303,6 +304,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._stageWebView.stage = Starling.current.nativeStage.stage;
 			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - padding);
 			var pdf:File = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
+
 			this._stageWebView.loadURL(pdf.nativePath);
 
 		}
