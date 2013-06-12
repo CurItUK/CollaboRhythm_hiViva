@@ -215,19 +215,20 @@ package collaboRhythm.hiviva.view.screens.patient
 			//TODO move PDF creating into UTILS class
 			//TODO move fileStream - report PDF file creation to local service class
 			var formValidation:String = patientReportsCheck();
-					if(formValidation.length == 0)
-					{
-						localStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE, adherenceLoadCompleteHandler);
-						localStoreController.getAdherence();
-					}
-					else
-					{
-						showFormValidation(formValidation);
-					}
+			if (formValidation.length == 0)
+			{
+				localStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE, adherenceLoadCompleteHandler);
+				localStoreController.getAdherence();
+			}
+			else
+			{
+				showFormValidation(formValidation);
+			}
 		}
 
 		private function adherenceLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE, adherenceLoadCompleteHandler);
 			if(this._cd4Check.isSelected || this._viralLoadCheck.isSelected)
 			{
 				getTestResults();
@@ -246,6 +247,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function testResultsLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.TEST_RESULTS_LOAD_COMPLETE, testResultsLoadCompleteHandler);
 			generateSpoofPDF();
 
 		}
@@ -303,7 +305,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._stageWebView = new StageWebView();
 			this._stageWebView.stage = Starling.current.nativeStage.stage;
 			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - padding);
-			var pdf:File = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
+			//TODO After market research put back to default PDF Generation
+			var pdf:File = File.applicationDirectory.resolvePath("resources/patient_report.pdf");
 
 			this._stageWebView.loadURL(pdf.nativePath);
 
@@ -311,6 +314,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function closePopup(e:Event):void
 		{
+
 			this._stageWebView.viewPort = null;
 			this._stageWebView.dispose();
 			this._stageWebView = null;
