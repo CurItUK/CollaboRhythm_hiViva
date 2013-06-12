@@ -14,9 +14,6 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPDisplaySettings;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPEditProfile;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHomesScreen;
-	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
-	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageInbox;
-	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageSent;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPPatientProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;
@@ -50,10 +47,6 @@ package collaboRhythm.hiviva.view
 	import feathers.data.ListCollection;
 	import feathers.display.TiledImage;
 	import feathers.motion.transitions.ScreenFadeTransitionManager;
-
-	import flash.desktop.NativeApplication;
-	import flash.system.Capabilities;
-
 
 	import source.themes.HivivaTheme;
 
@@ -106,8 +99,6 @@ package collaboRhythm.hiviva.view
 			this._screenHolder = new Sprite();
 			this.addChild(this._screenHolder);
 
-
-
 			drawScreenBackground();
 			initfeathersTheme();
 			initAppNavigator();
@@ -149,6 +140,7 @@ package collaboRhythm.hiviva.view
 			settingEffect.smoothing = TextureSmoothing.NONE;
 			settingEffect.blendMode = BlendMode.MULTIPLY;
 			this._screenBackground.addChild(settingEffect);
+
 		}
 
 		private function initfeathersTheme():void
@@ -166,15 +158,18 @@ package collaboRhythm.hiviva.view
 			this._screenHolder.addChild(this._mainScreenNav);
 			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete},{applicationController:_applicationController}));
 
-			this._transitionManager = new ScreenFadeTransitionManager(_mainScreenNav);
-			this._transitionManager.ease = Transitions.EASE_OUT;
-			this._transitionManager.duration = TRANSITION_DURATION;
+			//TODO add transition manager for more powerfull devices
+			//this._transitionManager = new ScreenFadeTransitionManager(_mainScreenNav);
+			//this._transitionManager.ease = Transitions.EASE_OUT;
+			//this._transitionManager.duration = TRANSITION_DURATION;
 
 			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 		}
 
 		private function splashComplete(e:Event):void
 		{
+			this._mainScreenNav.clearScreen();
+
 			this._profile = e.data.profileType;
 
 			this._settingsBtn = new Button();
@@ -188,7 +183,6 @@ package collaboRhythm.hiviva.view
 			this._settingsNav = new ScreenNavigatorWithHistory();
 			this.addChild(this._settingsNav);
 
-			// TODO: move controller logic out of this view class and into a controller class
 			switch(this._profile)
 			{
 				case HivivaLocalStoreService.USER_APP_TYPE_HCP :

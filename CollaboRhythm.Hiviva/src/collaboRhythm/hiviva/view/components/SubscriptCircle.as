@@ -3,6 +3,8 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.view.media.Assets;
 
+	import feathers.controls.ImageLoader;
+
 	import feathers.controls.Label;
 
 	import feathers.core.FeathersControl;
@@ -11,6 +13,7 @@ package collaboRhythm.hiviva.view.components
 
 	public class SubscriptCircle extends FeathersControl
 	{
+		//private var _img:Image;
 		private var _img:Image;
 		private var _text:String;
 		private var _label:Label

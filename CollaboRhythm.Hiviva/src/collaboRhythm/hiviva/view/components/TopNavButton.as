@@ -32,6 +32,7 @@ package collaboRhythm.hiviva.view.components
 
 		override protected function initialize():void
 		{
+
 			super.initialize();
 
 			this.name = HivivaTheme.NONE_THEMED;

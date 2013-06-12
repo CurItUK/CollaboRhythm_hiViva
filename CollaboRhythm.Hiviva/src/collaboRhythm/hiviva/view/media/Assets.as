@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.media
 {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.utils.Dictionary;
 
 	import starling.textures.Texture;
@@ -10,40 +11,19 @@ package collaboRhythm.hiviva.view.media
 
 		// the following assets are individual image files but need to compiled into atlases
 
-		// BACKGROUND ASSETS
 
-		[Embed(source="/assets/images/temp/splash_bg.jpg")]
-		public static const SplashScreenBgJpg:Class;
-
-		[Embed(source="/assets/images/temp/logo.png")]
-		public static const LogoPng:Class;
-
-		[Embed(source="/assets/images/temp/splash_button_01.png")]
-		public static const SplashButtonPatientPng:Class;
-
-		[Embed(source="/assets/images/temp/splash_button_02.png")]
-		public static const SplashButtonHcpPng:Class;
-
-		[Embed(source="/assets/images/temp/fixed_base.png")]
-		public static const FixedBasePng:Class;
-
-		[Embed(source="/assets/images/temp/settings_above_effect.png")]
-		public static const SettingEffectPng:Class;
-
-
+		//Background Assets : Due to mobile memory management using only navigation and screen background items will be embedded.
 		[Embed(source="/assets/images/temp/screen_base.png")]
 		public static const BasePng:Class;
-
-		[Embed(source="/assets/images/temp/bottom_gradient.png")]
-		public static const BaseBottomGradPng:Class;
 
 		[Embed(source="/assets/images/temp/top_gradient.png")]
 		public static const BaseTopGradPng:Class;
 
-		// ICONS AND BUTTONS
+		[Embed(source="/assets/images/temp/bottom_gradient.png")]
+		public static const BaseBottomGradPng:Class;
 
-		[Embed(source="/assets/images/temp/footer_icon_base.png")]
-		public static const FooterIconBasePng:Class;
+		[Embed(source="/assets/images/temp/settings_above_effect.png")]
+		public static const SettingEffectPng:Class;
 
 		[Embed(source="/assets/images/temp/footer_icon_active.png")]
 		public static const FooterIconActivePng:Class;
@@ -84,8 +64,114 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/side_nav_icon_04.png")]
 		public static const SideNavIconBadgesPng:Class;
 
+		[Embed(source="/assets/images/temp/fixed_base.png")]
+		public static const FixedBasePng:Class;
+
+		[Embed(source="/assets/images/temp/button.png")]
+		public static const ButtonPng:Class;
+
+		[Embed(source="/assets/images/temp/back-button.png")]
+		public static const BackButtonPng:Class;
+
+		[Embed(source="/assets/images/temp/button_borderless.png")]
+		public static const BorderlessButtonPng:Class;
+
+		[Embed(source="/assets/images/temp/footer_icon_base.png")]
+		public static const FooterIconBasePng:Class;
+
+		[Embed(source="/assets/images/temp/patient-profile-nav-button.png")]
+		public static const PatientProfileNavButtonPng:Class;
+
+		[Embed(source="/assets/images/temp/close_button.png")]
+		public static const CloseButtonPng:Class;
+
+		[Embed(source="/assets/images/temp/delete_icon.png")]
+		public static const DeleteCellIconPng:Class;
+
+
+		[Embed(source="/assets/images/temp/edit_icon.png")]
+		public static const EditCellIconPng:Class;
+
+		[Embed(source="/assets/images/temp/calendar-button.png")]
+		public static const calendarButtonPng:Class;
+
+		[Embed(source="/assets/images/temp/calendar_day_cell.png")]
+		public static const calendarDayCellPng:Class;
+
+		[Embed(source="/assets/images/temp/toggle_switch.png")]
+		public static const ToggleSwitchPng:Class;
+
+		[Embed(source="/assets/images/temp/toggle_track.png")]
+		public static const ToggleTrackPng:Class;
+
 		[Embed(source="/assets/images/temp/top_nav_icon_01.png")]
 		public static const SettingIconPng:Class;
+
+
+		[Embed(source="/assets/images/temp/top_nav_icon_02.png")]
+		public static const TopNavIconMessagesPng:Class;
+
+		[Embed(source="/assets/images/temp/top_nav_icon_03.png")]
+		public static const TopNavIconBadgesPng:Class;
+
+
+		[Embed(source="/assets/images/temp/patient-profile-nav-button-pattern.png")]
+		public static const PatientProfileNavButtonPatternPng:Class;
+
+
+		[Embed(source="/assets/images/temp/input_field.png")]
+		public static const InputFieldPng:Class;
+
+		[Embed(source="/assets/images/temp/tick_box.png")]
+		public static const TickBoxPng:Class;
+
+		[Embed(source="/assets/images/temp/tick_box_active.png")]
+		public static const TickBoxActivePng:Class;
+
+		[Embed(source="/assets/images/temp/popup_panel.png")]
+		public static const PopupPanelPng:Class;
+
+
+		[Embed(source="/assets/images/temp/validation_bg.png")]
+		public static const ValidationBgPng:Class;
+
+		[Embed(source="/assets/images/temp/header_line.png")]
+		public static const HeaderLinePng:Class;
+
+
+		[Embed(source="/assets/images/temp/feeling_slider_switch.png")]
+		public static const FeelingSliderSwitch:Class;
+
+		[Embed(source="/assets/images/temp/feeling_slider_cloud.png")]
+		public static const FeelingSliderCloud:Class;
+
+		[Embed(source="/assets/images/temp/feeling_slider_sun.png")]
+		public static const FeelingSliderSun:Class;
+
+		[Embed(source="/assets/images/temp/feeling_slider_track.png")]
+		public static const FeelingSliderTrack:Class;
+
+		[Embed(source="/assets/images/temp/splash_button_01.png")]
+		public static const SplashButtonPatientPng:Class;
+
+		[Embed(source="/assets/images/temp/splash_button_02.png")]
+		public static const SplashButtonHcpPng:Class;
+
+
+		// TTF FONTS
+
+		[Embed(source="/assets/fonts/exo-regular.ttf", fontName="ExoRegular", mimeType="application/x-font", embedAsCFF="false")]
+		public static const ExoRegularFont:Class;
+
+		[Embed(source="/assets/fonts/exo-bold.ttf", fontName="ExoBold", mimeType="application/x-font", embedAsCFF="false")]
+		public static const ExoBoldFont:Class;
+
+		[Embed(source="/assets/fonts/exo-light.ttf", fontName="ExoLight", mimeType="application/x-font", embedAsCFF="false")]
+		public static const ExoLightFont:Class;
+
+
+		//Screen Dependant Items
+
 
 		[Embed(source="/assets/images/temp/icon_art.png")]
 		public static const ArtIconPng:Class;
@@ -107,33 +193,6 @@ package collaboRhythm.hiviva.view.media
 
 		[Embed(source="/assets/images/temp/icon_upload.png")]
 		public static const UploadIconPng:Class;
-
-		[Embed(source="/assets/images/temp/delete_icon.png")]
-		public static const DeleteCellIconPng:Class;
-
-		[Embed(source="/assets/images/temp/edit_icon.png")]
-		public static const EditCellIconPng:Class;
-
-		[Embed(source="/assets/images/temp/top_nav_icon_02.png")]
-		public static const TopNavIconMessagesPng:Class;
-
-		[Embed(source="/assets/images/temp/top_nav_icon_03.png")]
-		public static const TopNavIconBadgesPng:Class;
-
-		[Embed(source="/assets/images/temp/patient-profile-nav-button.png")]
-		public static const PatientProfileNavButtonPng:Class;
-
-		[Embed(source="/assets/images/temp/patient-profile-nav-button-pattern.png")]
-		public static const PatientProfileNavButtonPatternPng:Class;
-
-		[Embed(source="/assets/images/temp/back-button.png")]
-		public static const BackButtonPng:Class;
-
-		[Embed(source="/assets/images/temp/toggle_switch.png")]
-		public static const ToggleSwitchPng:Class;
-
-		[Embed(source="/assets/images/temp/toggle_track.png")]
-		public static const ToggleTrackPng:Class;
 
 		[Embed(source="/assets/images/temp/pillbox_icon.png")]
 		public static const PillboxIconPng:Class;
@@ -159,63 +218,6 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/tablet4.png")]
 		public static const Tablet4Png:Class;
 
-		[Embed(source="/assets/images/temp/feeling_slider_track.png")]
-		public static const FeelingSliderTrack:Class;
-
-		[Embed(source="/assets/images/temp/feeling_slider_switch.png")]
-		public static const FeelingSliderSwitch:Class;
-
-		[Embed(source="/assets/images/temp/feeling_slider_cloud.png")]
-		public static const FeelingSliderCloud:Class;
-
-		[Embed(source="/assets/images/temp/feeling_slider_sun.png")]
-		public static const FeelingSliderSun:Class;
-
-		// forms
-
-		[Embed(source="/assets/images/temp/button.png")]
-		public static const ButtonPng:Class;
-
-		[Embed(source="/assets/images/temp/button_borderless.png")]
-		public static const BorderlessButtonPng:Class;
-
-		[Embed(source="/assets/images/temp/input_field.png")]
-		public static const InputFieldPng:Class;
-
-		[Embed(source="/assets/images/temp/tick_box.png")]
-		public static const TickBoxPng:Class;
-
-		[Embed(source="/assets/images/temp/tick_box_active.png")]
-		public static const TickBoxActivePng:Class;
-
-		[Embed(source="/assets/images/temp/popup_panel.png")]
-		public static const PopupPanelPng:Class;
-
-		[Embed(source="/assets/images/temp/close_button.png")]
-		public static const CloseButtonPng:Class;
-
-		[Embed(source="/assets/images/temp/validation_bg.png")]
-		public static const ValidationBgPng:Class;
-
-		[Embed(source="/assets/images/temp/header_line.png")]
-		public static const HeaderLinePng:Class;
-
-		[Embed(source="/assets/images/temp/calendar-button.png")]
-		public static const calendarButtonPng:Class;
-
-		[Embed(source="/assets/images/temp/calendar_day_cell.png")]
-		public static const calendarDayCellPng:Class;
-
-		//front facing screen Items
-
-		[Embed(source="/assets/images/temp/home_lens_rim.png")]
-		public static const HomeLensRimPng:Class;
-
-		[Embed(source="/assets/images/temp/home_lens_bg.png")]
-		public static const HomeLensBgPng:Class;
-
-		[Embed(source="/assets/images/temp/home_lens_shine.png")]
-		public static const HomeLensShinePng:Class;
 
 		[Embed(source="/assets/images/temp/clockFace.png")]
 		public static const ClockFacePng:Class;
@@ -229,20 +231,26 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/superscript_circle.png")]
 		public static const SuperscriptCirclePng:Class;
 
-		[Embed(source="/assets/images/temp/suberscript_circle.png")]
-		public static const SubscriptCirclePng:Class;
 
 
-		// TTF FONTS
 
-		[Embed(source="/assets/fonts/exo-regular.ttf", fontName="ExoRegular", mimeType="application/x-font", embedAsCFF="false")]
-		public static const ExoRegularFont:Class;
+		 [Embed(source="/assets/images/temp/splash_bg.jpg")]
+		 public static const SplashScreenBgJpg:Class;
 
-		[Embed(source="/assets/fonts/exo-bold.ttf", fontName="ExoBold", mimeType="application/x-font", embedAsCFF="false")]
-		public static const ExoBoldFont:Class;
+		 [Embed(source="/assets/images/temp/logo.png")]
+		 public static const LogoPng:Class;
 
-		[Embed(source="/assets/fonts/exo-light.ttf", fontName="ExoLight", mimeType="application/x-font", embedAsCFF="false")]
-		public static const ExoLightFont:Class;
+		 [Embed(source="/assets/images/temp/home_lens_rim.png")]
+		 public static const HomeLensRimPng:Class;
+
+		 [Embed(source="/assets/images/temp/home_lens_bg.png")]
+		 public static const HomeLensBgPng:Class;
+
+		 [Embed(source="/assets/images/temp/home_lens_shine.png")]
+		 public static const HomeLensShinePng:Class;
+
+		 [Embed(source="/assets/images/temp/suberscript_circle.png")]
+		 public static const SubscriptCirclePng:Class;
 
 		private static var applicationTextures:Dictionary = new Dictionary();
 
@@ -250,10 +258,26 @@ package collaboRhythm.hiviva.view.media
 		{
 			if (applicationTextures[name] == undefined)
 			{
-				var bitmap:Bitmap = new Assets[name]();
-				applicationTextures[name] = Texture.fromBitmap(bitmap);
+
+				var bmp:Bitmap = new Assets[name]();
+				var texture:Texture = Texture.fromBitmap(bmp);
+				var bmd:BitmapData = bmp.bitmapData;
+				bmd.dispose();
+				bmd = null;
+				bmp = null;
+
+				applicationTextures[name] = texture; //Texture.fromBitmap(bitmap);
 			}
 			return applicationTextures[name];
+		}
+
+		public static function clearTexture(name:String):void
+		{
+			if (applicationTextures[name] != null)
+			{
+				applicationTextures[name].dispose();
+				delete applicationTextures[name];
+			}
 		}
 	}
 }

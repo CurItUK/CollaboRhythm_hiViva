@@ -9,6 +9,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
+	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 
@@ -27,6 +28,8 @@ package collaboRhythm.hiviva.view.screens.shared
 	import starling.display.Image;
 
 	import starling.events.Event;
+	import starling.textures.Texture;
+	import starling.utils.AssetManager;
 
 	public class HivivaSplashScreen extends Screen
 	{
@@ -75,8 +78,11 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function initSplashBackground():void
 		{
+
+
 			this._splashBg = new Image(Assets.getTexture(HivivaAssets.SPLASH_SCREEN_BG));
 			addChild(this._splashBg);
+
 
 			this._logo = new Image(Assets.getTexture(HivivaAssets.LOGO));
 			addChild(this._logo);
@@ -124,6 +130,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function initButtons():void
 		{
 			this._hcpButton = new Button();
+
 			this._hcpButton.defaultSkin = new Image(Assets.getTexture(HivivaAssets.SPLASH_BUTTON_HCP));
 			applySplashButtonProperties(this._hcpButton);
 			this._hcpButton.label = "I’m a healthcare \nprofessional \nor carer";
@@ -138,6 +145,8 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this.addChild(this._hcpButton);
 			this.addChild(this._patientButton);
+
+
 		}
 
 		private function drawButtons():void
@@ -245,6 +254,8 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		override public function dispose():void
 		{
+			trace("HivivaSplashScreen dispose called");
+
 			this._splashBg.texture.base.dispose();
 			this._splashBg.texture.dispose();
 			this._splashBg.dispose();
@@ -254,6 +265,10 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._logo.texture.dispose();
 			this._logo.dispose();
 			this._logo = null;
+
+			Assets.clearTexture(HivivaAssets.SPLASH_SCREEN_BG);
+			Assets.clearTexture(HivivaAssets.LOGO);
+
 
 			super.dispose();
 		}

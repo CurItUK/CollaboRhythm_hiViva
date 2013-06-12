@@ -6,31 +6,48 @@ package collaboRhythm.hiviva.global
 
 	public class HivivaAssets
 	{
+
+		public static const SCREEN_BASE:String								= "BasePng";
+		public static const SCREEN_BASE_TOP_GRADIENT:String					= "BaseTopGradPng";
+		public static const SCREEN_BASE_BOTTOM_GRADIENT:String				= "BaseBottomGradPng";
+		public static const SETTING_EFFECT:String							= "SettingEffectPng";
+		public static const SETTINGS_ICON:String							= "SettingIconPng";
+		public static const FOOTER_ICON_BASE:String							= "FooterIconBasePng";
+
+		public static const FOOTER_ICON_ACTIVE:String 						= "FooterIconActivePng";
+		public static const FOOTER_ICON_HOME:String 						= "FooterIconHomePng";
+		public static const FOOTER_ICON_CLOCK:String						= "FooterIconClockPng";
+		public static const FOOTER_ICON_MEDIC:String						= "FooterIconMedicPng";
+		public static const FOOTER_ICON_VIRUS:String 						= "FooterIconVirusPng";
+		public static const FOOTER_ICON_REPORT:String 						= "FooterIconReportPng";
+		public static const FOOTER_ICON_ADHERENCE:String 					= "FooterIconAdherencePng";
+		public static const FOOTER_ICON_MESSAGE:String 						= "FooterIconMessagePng";
+		public static const SIDENAV_BASE:String 							= "SideNavBasePng";
+		public static const SIDENAV_ICON_PATIENTPROFILE:String 				= "SideNavIconProfilePng";
+		public static const SIDENAV_ICON_HELP:String 						= "SideNavIconHelpPng";
+		public static const SIDENAV_ICON_MESSAGES:String 					= "SideNavIconMessagesPng";
+		public static const SIDENAV_ICON_BADGES:String 						= "SideNavIconBadgesPng";
+
+
+
+
+
+
+
+
 		public static const SPLASH_SCREEN_BG:String						= "SplashScreenBgJpg";
 		public static const LOGO:String									= "LogoPng";
 		public static const SPLASH_BUTTON_PATIENT:String					= "SplashButtonPatientPng";
 		public static const SPLASH_BUTTON_HCP:String						= "SplashButtonHcpPng";
 		public static const FIXED_BASE:String								= "FixedBasePng";
-		public static const SETTING_EFFECT:String							= "SettingEffectPng";
-		public static const SCREEN_BASE:String								= "BasePng";
-		public static const SCREEN_BASE_BOTTOM_GRADIENT:String				= "BaseBottomGradPng";
-		public static const SCREEN_BASE_TOP_GRADIENT:String				= "BaseTopGradPng";
+
+
+
+
 		// ICONS AND BUTTONS
-		public static const FOOTER_ICON_BASE:String						= "FooterIconBasePng";
-		public static const FOOTER_ICON_ACTIVE:String						= "FooterIconActivePng";
-		public static const FOOTER_ICON_HOME:String						= "FooterIconHomePng";
-		public static const FOOTER_ICON_CLOCK:String						= "FooterIconClockPng";
-		public static const FOOTER_ICON_MEDIC:String						= "FooterIconMedicPng";
-		public static const FOOTER_ICON_VIRUS:String						= "FooterIconVirusPng";
-		public static const FOOTER_ICON_REPORT:String						= "FooterIconReportPng";
-		public static const FOOTER_ICON_ADHERENCE:String						= "FooterIconAdherencePng";
-		public static const FOOTER_ICON_MESSAGE:String						= "FooterIconMessagePng";
-		public static const SIDENAV_BASE:String							= "SideNavBasePng";
-		public static const SIDENAV_ICON_PATIENTPROFILE:String				= "SideNavIconProfilePng";
-		public static const SIDENAV_ICON_HELP:String						= "SideNavIconHelpPng";
-		public static const SIDENAV_ICON_MESSAGES:String					= "SideNavIconMessagesPng";
-		public static const SIDENAV_ICON_BADGES:String						= "SideNavIconBadgesPng";
-		public static const SETTINGS_ICON:String							= "SettingIconPng";
+
+
+
 		public static const ART_ICON:String								= "ArtIconPng";
 		public static const CINEMA_ICON:String								= "CinemaIconPng";
 		public static const HISTORY_ICON:String							= "HistoryIconPng";

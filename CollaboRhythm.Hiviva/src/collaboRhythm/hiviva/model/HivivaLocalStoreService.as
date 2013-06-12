@@ -196,7 +196,6 @@ package collaboRhythm.hiviva.model
 		private function getGalleryImagesHandler(e:SQLEvent):void
 		{
 			var result:Array = this._sqStatement.getResult().data;
-			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE);
 			evt.data.imageUrls = result;
 			this.dispatchEvent(evt);
@@ -252,7 +251,6 @@ package collaboRhythm.hiviva.model
 
 		private function setGalleryImagesHandler(e:SQLEvent):void
 		{
-			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_IMAGES_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
@@ -275,7 +273,6 @@ package collaboRhythm.hiviva.model
 		private function getGalleryTimeStampHandler(e:SQLEvent):void
 		{
 			var result:Array = this._sqStatement.getResult().data;
-			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE);
 			evt.data.timeStamp = result[0].gallery_submission_timestamp;
 			this.dispatchEvent(evt);
@@ -298,7 +295,6 @@ package collaboRhythm.hiviva.model
 
 		private function setGalleryTimeStampHandler(e:SQLEvent):void
 		{
-			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_TIMESTAMP_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
@@ -321,7 +317,6 @@ package collaboRhythm.hiviva.model
 		private function getMedicationsResultHandler(e:SQLEvent):void
 		{
 			var result:Array = this._sqStatement.getResult().data;
-			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE);
 			evt.data.medications = result;
 			this.dispatchEvent(evt);
@@ -440,7 +435,6 @@ package collaboRhythm.hiviva.model
 		private function getMedicationsScheduleResultHandler(e:SQLEvent):void
 		{
 			var result:Array = this._sqStatement.getResult().data;
-			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE);
 			evt.data.medicationSchedule = result;
 			this.dispatchEvent(evt);
@@ -464,7 +458,6 @@ package collaboRhythm.hiviva.model
 		private function getAdherenceResultHandler(e:SQLEvent):void
 		{
 			var result:Array = this._sqStatement.getResult().data;
-			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE);
 			evt.data.adherence = result;
 			this.dispatchEvent(evt);
@@ -516,7 +509,6 @@ package collaboRhythm.hiviva.model
 											"', '" + _medicationAdherenceToSet.data +
 											"', '" + _medicationAdherenceToSet.adherence_percentage + "'";
 			}
-			trace(this._sqStatement.text);
 			this._sqStatement.addEventListener(SQLEvent.RESULT, setAdherenceResultHandler);
 			this._sqStatement.execute();
 		}
@@ -604,7 +596,6 @@ package collaboRhythm.hiviva.model
 		private function getPatientProfileHandler(e:SQLEvent):void
 		{
 			var result:Array = this._sqStatement.getResult().data;
-			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE);
 			evt.data.patientProfile = result;
 			this.dispatchEvent(evt);
@@ -684,7 +675,6 @@ package collaboRhythm.hiviva.model
 		private function getHcpProfileHandler(e:SQLEvent):void
 		{
 			var result:Array = this._sqStatement.getResult().data;
-			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_PROFILE_LOAD_COMPLETE);
 			evt.data.hcpProfile = result;
 			this.dispatchEvent(evt);
@@ -764,7 +754,6 @@ package collaboRhythm.hiviva.model
 		private function getHcpDisplaySettingsHandler(e:SQLEvent):void
 		{
 			var result:Array = this._sqStatement.getResult().data;
-			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_LOAD_COMPLETE);
 			evt.data.settings = result;
 			this.dispatchEvent(evt);
@@ -843,7 +832,6 @@ package collaboRhythm.hiviva.model
 		private function getHcpAlertSettingsHandler(e:SQLEvent):void
 		{
 			var result:Array = this._sqStatement.getResult().data;
-			trace("sqlResultHandler " + e);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_ALERT_SETTINGS_LOAD_COMPLETE);
 			evt.data.settings = result;
 			this.dispatchEvent(evt);
