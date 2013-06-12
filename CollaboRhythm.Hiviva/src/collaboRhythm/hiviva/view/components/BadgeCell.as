@@ -25,9 +25,12 @@ package collaboRhythm.hiviva.view.components
 		protected var _seperator:Image;
 		protected var _scale:Number;
 		protected var _pillImageBg:Quad;
+		protected var _pillTrophy:Image;
 
 		protected var _badgeNameLabel:Label;
 		protected var _badgeName:String;
+		protected var _badgeIcon:String;
+		protected var _badgeDate:String;
 
 		protected var _dateRangeLabel:Label;
 		protected var _dateRange:String;
@@ -53,6 +56,9 @@ package collaboRhythm.hiviva.view.components
 			this._pillImageBg.x = this._gap;
 			this._pillImageBg.y = this._gap;
 
+			this._pillTrophy.x = this._gap +(this._pillImageBg.width - this._pillTrophy.width)/2;
+			this._pillTrophy.y = this._gap + (this._pillImageBg.height - this._pillTrophy.height)/2;
+
 			this._badgeNameLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
 			this._badgeNameLabel.y = this._pillImageBg.y;
 			this._badgeNameLabel.width = this.actualWidth - this._pillImageBg.x;
@@ -71,7 +77,11 @@ package collaboRhythm.hiviva.view.components
 			addChild(this._seperator);
 
 			this._pillImageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
+			this._pillImageBg.visible = false;
 			addChild(this._pillImageBg);
+
+			this._pillTrophy = new Image(Assets.getTexture(HivivaAssets[badgeIcon]));
+			addChild(this._pillTrophy);
 
 			this._badgeNameLabel = new Label();
 			this._badgeNameLabel.text = "<font face='ExoBold'>" + this._badgeName + "</font>";
@@ -92,6 +102,16 @@ package collaboRhythm.hiviva.view.components
 		public function get badgeName():String
 		{
 			return this._badgeName;
+		}
+
+		public function set badgeIcon(value:String):void
+		{
+			this._badgeIcon = value;
+		}
+
+		public function get badgeIcon():String
+		{
+			return this._badgeIcon;
 		}
 
 		public function set dateRange(value:String):void

@@ -37,6 +37,22 @@ package collaboRhythm.hiviva.view.screens.patient
 			"King of the Meds! 50 weeks adherence"
 		];
 
+		private const BADGE_ICONS:Array =
+		[
+			"STAR1",
+			"STAR2",
+			"STAR3",
+			"STAR4"
+		]
+
+		private const BADGE_DATES:Array =
+		[
+			"24-30 JULY 2013",
+			"24 JULY - 13 SEPTEMBER",
+			"24 JULY - 13 SEPTEMBER",
+			"24 JULY - 22 JUNE 2013"
+		]
+
 		public function HivivaPatientBagesScreen()
 		{
 
@@ -84,29 +100,33 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function drawDummyBadges():void
 		{
 			this._cellContainer = new ScrollContainer();
-/*
+
 			var badge:BadgeCell;
 			for (var i:int = 0; i < BADGE_LABELS.length; i++)
 			{
 				badge = new BadgeCell();
 				badge.scale = this.dpiScale;
 				badge.badgeName = BADGE_LABELS[i];
-				badge.dateRange = "Date Range";
+				badge.badgeIcon = BADGE_ICONS[i];
+				badge.dateRange = BADGE_DATES[i];
+
 				this._cellContainer.addChild(badge);
 				badge.width = this.actualWidth;
-			}*/
+			}
+			/*
 			var badge:BadgeCell = new BadgeCell();
 			badge.scale = this.dpiScale;
 			badge.badgeName = BADGE_LABELS[0];
+			badge.badgeIcon = BADGE_ICONS[0];
 			badge.dateRange = "27/05/2013 - 02/06/2013";
 			this._cellContainer.addChild(badge);
 			badge.width = this.actualWidth;
-
+			*/
 			this.addChild(this._cellContainer);
 			this._cellContainer.width = this.actualWidth;
 			this._cellContainer.y = this._header.height;
 			this._cellContainer.height = this.actualHeight - this._cellContainer.y -
-					this._deleteMessageButton.height - (this._scaledPadding * 2);
+			this._deleteMessageButton.height - (this._scaledPadding * 2);
 			this._cellContainer.layout = new VerticalLayout();
 			this._cellContainer.validate();
 		}
