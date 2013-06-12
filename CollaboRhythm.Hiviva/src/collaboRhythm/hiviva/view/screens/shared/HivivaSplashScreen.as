@@ -29,15 +29,14 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	import starling.events.Event;
 	import starling.textures.Texture;
+	import starling.utils.AssetManager;
 
 	public class HivivaSplashScreen extends Screen
 	{
 		private var _applicationController:HivivaApplicationController;
 		private var _appType:String;
-		private var _splashBg:ImageLoader;
-		//private var _splashBg:Image;
-		//private var _logo:Image;
-		private var _logo:ImageLoader;
+		private var _splashBg:Image;
+		private var _logo:Image;
 		private var _footer:Label;
 		private var _termsButton:Button;
 		private var _privacyButton:Button;
@@ -79,14 +78,13 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function initSplashBackground():void
 		{
-			this._splashBg = new ImageLoader();
-			this._splashBg.source = "/assets/images/temp/splash_bg.jpg";
-			//this._splashBg = new Image(Assets.getTexture(HivivaAssets.SPLASH_SCREEN_BG));
+
+
+			this._splashBg = new Image(Assets.getTexture(HivivaAssets.SPLASH_SCREEN_BG));
 			addChild(this._splashBg);
 
-			this._logo = new ImageLoader();
-			this._logo.source = "/assets/images/temp/logo.png"
-			//this._logo = new Image(Assets.getTexture(HivivaAssets.LOGO));
+
+			this._logo = new Image(Assets.getTexture(HivivaAssets.LOGO));
 			addChild(this._logo);
 
 			this._footer = new Label();
@@ -147,6 +145,8 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this.addChild(this._hcpButton);
 			this.addChild(this._patientButton);
+
+
 		}
 
 		private function drawButtons():void
@@ -255,17 +255,19 @@ package collaboRhythm.hiviva.view.screens.shared
 		override public function dispose():void
 		{
 			trace("HivivaSplashScreen dispose called");
+
+			this._splashBg.texture.base.dispose();
+			this._splashBg.texture.dispose();
 			this._splashBg.dispose();
-			//this._splashBg.texture.base.dispose();
-			//this._splashBg.texture.dispose();
-			//this._splashBg.dispose();
 			this._splashBg = null;
 
+			this._logo.texture.base.dispose();
+			this._logo.texture.dispose();
 			this._logo.dispose();
 			this._logo = null;
-			//this._logo.texture.base.dispose();
-			//this._logo.texture.dispose();
-			//this._logo.dispose();
+
+			Assets.clearTexture(HivivaAssets.SPLASH_SCREEN_BG);
+			Assets.clearTexture(HivivaAssets.LOGO);
 
 
 			super.dispose();

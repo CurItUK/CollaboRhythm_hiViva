@@ -1,6 +1,5 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
-	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
@@ -8,18 +7,12 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.view.components.SubscriptCircle;
 	import collaboRhythm.hiviva.view.components.TopNavButton;
 	import collaboRhythm.hiviva.view.media.Assets;
-
-	import feathers.controls.Button;
-	import feathers.controls.ImageLoader;
 
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 
-	import flash.data.SQLConnection;
-	import flash.data.SQLStatement;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
@@ -31,8 +24,6 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.geom.Matrix;
 	import flash.net.URLRequest;
 	import flash.system.System;
-
-	import source.themes.HivivaTheme;
 
 	import starling.display.DisplayObject;
 
@@ -51,12 +42,9 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _messagesButton:TopNavButton;
 		private var _badgesButton:TopNavButton;
 		private var _homeImageInstructions:Label;
-		//private var _rim:Image;
-		private var _rim:ImageLoader;
-		//private var _bg:Image;
-		private var _bg:ImageLoader;
-		//private var _shine:Image;
-		private var _shine:ImageLoader;
+		private var _rim:Image;
+		private var _bg:Image;
+		private var _shine:Image;
 		private var _bgImageHolder:Sprite;
 		private var _lensImageHolder:Sprite;
 		private var _dayDiff:Number;
@@ -89,6 +77,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			// 90% of stage width
 			IMAGE_SIZE = this.actualWidth * 0.9;
 
+
 			this._bg.width = IMAGE_SIZE;
 			this._bg.scaleY = this._bg.scaleX;
 			this._bg.x = (this.actualWidth * 0.5) - (this._bg.width * 0.5);
@@ -109,12 +98,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._homeImageInstructions.x =  (this.actualWidth * 0.5) - (this._homeImageInstructions.width * 0.5);
 			this._homeImageInstructions.y =  (this._usableHeight * 0.5) + this._header.height - (this._homeImageInstructions.height * 0.5);
 
+
 			if(this._today == null)
 			{
 				this._today = new Date();
-				initHomePhoto();
 				checkForNewMessages();
 				checkForNewBadges();
+				initHomePhoto();
 			}
 		}
 
@@ -123,30 +113,22 @@ package collaboRhythm.hiviva.view.screens.patient
 			super.initialize();
 
 			this._header = new HivivaHeader();
-			this._header.title = "";
+			this._header.title = ":";
 			addChild(this._header);
 
 			this._bgImageHolder = new Sprite();
 			addChild(this._bgImageHolder);
 
-			//this._rim = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_RIM));
-			this._rim = new ImageLoader();
-			this._rim.source = "/assets/images/temp/home_lens_rim.png";
+			this._rim = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_RIM));
 			addChild(this._rim);
 
-
-
-			//this._bg = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_BG));
-			this._bg = new ImageLoader();
-			this._bg.source = "/assets/images/temp/home_lens_bg.png";
+			this._bg = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_BG));
 			addChild(this._bg);
 
 			this._lensImageHolder = new Sprite();
 			addChild(this._lensImageHolder);
 
-			//this._shine = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_SHINE));
-			this._shine = new ImageLoader();
-			this._shine.source = "/assets/images/temp/home_lens_shine.png";
+			this._shine = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_SHINE));
 			addChild(this._shine);
 
 			this._homeImageInstructions = new Label();
@@ -166,6 +148,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 //			this._messagesButton.visible = false;
 //			this._badgesButton.visible = false;
+			//
 		}
 
 		private function messagesButtonHandler(e:Event):void
@@ -466,17 +449,29 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			trace("HivivaPatientHomeScreenScreen dispose" );
 
-			this._bg.dispose();
-			this._rim.dispose();
-			this._shine.dispose();
 
+			//this._bg.texture.base.dispose();
+			//this._bg.texture.dispose();
+			this._bg.dispose();
 			this._bg = null;
+
+			//this._rim.texture.base.dispose();
+			//this._rim.texture.dispose();
+			this._rim.dispose();
 			this._rim = null;
+
+			//this._shine.texture.base.dispose();
+			//this._shine.texture.dispose();
+			this._shine.dispose();
 			this._shine = null;
 
+			Assets.clearTexture(HivivaAssets.HOME_LENS_RIM);
+			Assets.clearTexture(HivivaAssets.HOME_LENS_BG);
+			Assets.clearTexture(HivivaAssets.HOME_LENS_SHINE);
 
 			super.dispose();
 			System.gc();
+
 		}
 	}
 }

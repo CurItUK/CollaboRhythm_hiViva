@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -41,14 +42,18 @@ package collaboRhythm.hiviva.view
 		private function initStarling():void
 		{
 			var viewPort:Rectangle;
-			trace("Starling Init");
-			Starling.handleLostContext = true;
+			//trace("Starling Init");
+			var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
+			Starling.multitouchEnabled = true;
+			Starling.handleLostContext = !iOS;
+			trace("handleLostContext " + Starling.handleLostContext + " iOS " + iOS);
 //			viewPort = new Rectangle(0, 0, 640, 960);
 			viewPort = new Rectangle(0, 0, this._sw, this._sh);
 			_starFW = new Starling(Main, stage, viewPort);
+
 			_starFW.showStats = true;
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
-			_starFW.enableErrorChecking = true;
+			//_starFW.enableErrorChecking = true;
 			_starFW.start();
 			trace(_starFW.viewPort);
 		}

@@ -158,9 +158,10 @@ package collaboRhythm.hiviva.view
 			this._screenHolder.addChild(this._mainScreenNav);
 			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete},{applicationController:_applicationController}));
 
-			this._transitionManager = new ScreenFadeTransitionManager(_mainScreenNav);
-			this._transitionManager.ease = Transitions.EASE_OUT;
-			this._transitionManager.duration = TRANSITION_DURATION;
+			//TODO add transition manager for more powerfull devices
+			//this._transitionManager = new ScreenFadeTransitionManager(_mainScreenNav);
+			//this._transitionManager.ease = Transitions.EASE_OUT;
+			//this._transitionManager.duration = TRANSITION_DURATION;
 
 			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 		}
@@ -185,8 +186,8 @@ package collaboRhythm.hiviva.view
 			switch(this._profile)
 			{
 				case HivivaLocalStoreService.USER_APP_TYPE_HCP :
-					//initHCPSettingsNavigator();
-					//initHCPNavigator();
+					initHCPSettingsNavigator();
+					initHCPNavigator();
 					break;
 
 				case HivivaLocalStoreService.USER_APP_TYPE_PATIENT :

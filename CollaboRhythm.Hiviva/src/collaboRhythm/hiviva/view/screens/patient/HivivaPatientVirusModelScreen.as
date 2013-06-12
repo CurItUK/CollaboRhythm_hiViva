@@ -104,12 +104,12 @@ package collaboRhythm.hiviva.view.screens.patient
 					(this._CD4CountSlider.height * 0.25);
 
 
-			this._resteBtn.validate();
-			this._resteBtn.width = this.actualWidth / 3;
-			this._resteBtn.x = this.actualWidth / 2 - this._resteBtn.width / 2;
-			this._resteBtn.y = this._CD4CountSlider.y + this._CD4CountSlider.height;
+			//this._resteBtn.validate();
+			//this._resteBtn.width = this.actualWidth / 3;
+			//this._resteBtn.x = this.actualWidth / 2 - this._resteBtn.width / 2;
+			//this._resteBtn.y = this._CD4CountSlider.y + this._CD4CountSlider.height;
 
-			this._dump.y = this._resteBtn.y + this._resteBtn.height + this._scaledPadding;
+			this._dump.y = this._CD4CountSlider.y + this._CD4CountSlider.height + this._scaledPadding;
 			this._dump.maxHeight = this.actualHeight - this._footerHeight - this._dump.y;
 
 			getMedicationResults();
@@ -123,11 +123,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._header);
 
 			//TODO Skin Button based on photoshop deisgn
-			this._helpBtn = new Button();
-			this._helpBtn.label = "Help";
-			this._helpBtn.addEventListener(Event.TRIGGERED, helpBtnHandler);
+			//this._helpBtn = new Button();
+			//this._helpBtn.label = "Help";
+			//this._helpBtn.addEventListener(Event.TRIGGERED, helpBtnHandler);
 
-			this._header.rightItems = new <DisplayObject>[_helpBtn];
+			//this._header.rightItems = new <DisplayObject>[_helpBtn];
 
 
 			this._adheranceLabel = new Label();
@@ -201,9 +201,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._dump.source = "media/virus_model_dummy.png";
 			this.addChild(this._dump);
 
-			this._resteBtn = new Button();
-			this._resteBtn.label = "RESET";
-			this.addChild(this._resteBtn);
+			//this._resteBtn = new Button();
+			//this._resteBtn.label = "RESET";
+			//this.addChild(this._resteBtn);
 		}
 
 		private function helpBtnHandler(e:Event):void

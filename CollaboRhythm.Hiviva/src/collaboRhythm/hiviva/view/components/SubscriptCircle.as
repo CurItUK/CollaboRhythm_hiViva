@@ -14,7 +14,7 @@ package collaboRhythm.hiviva.view.components
 	public class SubscriptCircle extends FeathersControl
 	{
 		//private var _img:Image;
-		private var _img:ImageLoader;
+		private var _img:Image;
 		private var _text:String;
 		private var _label:Label
 
@@ -36,9 +36,7 @@ package collaboRhythm.hiviva.view.components
 		{
 			super.initialize();
 
-			//this._img = new Image(Assets.getTexture(HivivaAssets.SUBSCRIPT_CIRCLE));
-			this._img = new ImageLoader();
-			this._img.source = "/assets/images/temp/suberscript_circle.png";
+			this._img = new Image(Assets.getTexture(HivivaAssets.SUBSCRIPT_CIRCLE));
 			this.addChild(this._img);
 
 			this._label = new Label();
