@@ -144,6 +144,18 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/header_line.png")]
 		public static const HeaderLinePng:Class;
 
+		[Embed(source="/assets/images/temp/star1.png")]
+		public static const Star1:Class;
+
+		[Embed(source="/assets/images/temp/star2.png")]
+		public static const Star2:Class;
+
+		[Embed(source="/assets/images/temp/star3.png")]
+		public static const Star3:Class;
+
+		[Embed(source="/assets/images/temp/star4.png")]
+		public static const Star4:Class;
+
 
 		[Embed(source="/assets/images/temp/feeling_slider_switch.png")]
 		public static const FeelingSliderSwitch:Class;
