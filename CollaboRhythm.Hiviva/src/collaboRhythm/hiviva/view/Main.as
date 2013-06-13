@@ -49,6 +49,8 @@ package collaboRhythm.hiviva.view
 	import feathers.display.TiledImage;
 	import feathers.motion.transitions.ScreenFadeTransitionManager;
 
+	import flash.filesystem.File;
+
 	import source.themes.HivivaTheme;
 
 	import starling.animation.Transitions;
@@ -94,22 +96,18 @@ package collaboRhythm.hiviva.view
 
 		private var _starlingMain:Main;
 
-
-		[Embed(source='/assets/images/atlas/hivivaBaseImages.png')]
-		private static var HivivaBaseSprite:Class;
-
-		[Embed(source='/assets/images/atlas/hivivaBaseImages.xml', mimeType='application/octet-stream')]
-		private static var HivivaBaseData:Class;
-
-		private var _hivivaAtlas:TextureAtlas;
+		private static var _assets:AssetManager;
 
 
 		public function Main()
 		{
 		}
 
-		public function initMain():void
+		public function initMain(assetManager:AssetManager):void
 		{
+
+			_assets = assetManager;
+
 			this._main = this;
 			this._starlingMain = this;
 
@@ -117,23 +115,34 @@ package collaboRhythm.hiviva.view
 
 			this._stageHeight = Starling.current.viewPort.height;
 			this._stageWidth = Starling.current.viewPort.width;
+
 			this._mainStageHeight = Starling.current.viewPort.height;
 			this._mainStageWidth = Starling.current.viewPort.width;
 
-			this._screenHolder = new Sprite();
-			this.addChild(this._screenHolder);
-
-			initTextureAtlas();
-			initfeathersTheme();
-			initAppNavigator();
+			initAssetManagement();
 		}
 
-		private function initTextureAtlas():void
+		private function initAssetManagement():void
 		{
-			hivivaAtlas = new TextureAtlas(Texture.fromBitmap(new HivivaBaseSprite()), new XML(new HivivaBaseData() ));
-			//var assets:AssetManager = new AssetManager();
+			var appDir:File = File.applicationDirectory;
+			_assets.enqueue(appDir.resolvePath("assets/images/atlas/hivivaBaseImages.png"),appDir.resolvePath("assets/images/atlas/hivivaBaseImages.xml"));
+			_assets.loadQueue(function onProgress(ratio:Number):void
+			{
+				trace("Loading Assets " + ratio);
 
+				if (ratio == 1)
+					Starling.juggler.delayCall(function ():void
+					{
+						startup();
+					}, 0.15);
+			});
+		}
 
+		private function startup():void
+		{
+			trace(_assets.getTextureNames());
+			initfeathersTheme();
+			initAppNavigator();
 		}
 
 		private function initfeathersTheme():void
@@ -146,6 +155,9 @@ package collaboRhythm.hiviva.view
 
 		private function initAppNavigator():void
 		{
+			this._screenHolder = new Sprite();
+			this.addChild(this._screenHolder);
+
 			this._mainScreenNav = new ScreenNavigatorWithHistory();
 
 			this._screenHolder.addChild(this._mainScreenNav);
@@ -196,7 +208,8 @@ package collaboRhythm.hiviva.view
 			this._screenBackground = new Sprite();
 
 			//var screenBase:TiledImage = new TiledImage(Assets.getTexture(HivivaAssets.SCREEN_BASE));
-			var screenBase:TiledImage = new TiledImage(hivivaAtlas.getTexture("screen_base"));
+			var screenBase:TiledImage = new TiledImage(_assets.getTexture("screen_base"));//new TiledImage(hivivaAtlas.getTexture("screen_base"));
+
 			screenBase.width = mainStageWidth;
 			screenBase.height = mainStageHeight;
 			screenBase.smoothing = TextureSmoothing.NONE;
@@ -204,7 +217,7 @@ package collaboRhythm.hiviva.view
 			this._screenBackground.addChild(screenBase);
 
 			//var topGrad:TiledImage = new TiledImage(Assets.getTexture(HivivaAssets.SCREEN_BASE_TOP_GRADIENT));
-			var topGrad:TiledImage = new TiledImage(hivivaAtlas.getTexture("top_gradient"));
+			var topGrad:TiledImage = new TiledImage(_assets.getTexture("top_gradient"));
 			//topGrad.touchable = false;
 			topGrad.width = mainStageWidth;
 			topGrad.smoothing = TextureSmoothing.NONE;
@@ -213,7 +226,7 @@ package collaboRhythm.hiviva.view
 			this._screenBackground.addChild(topGrad);
 
 			//var bottomGrad:TiledImage = new TiledImage(Assets.getTexture(HivivaAssets.SCREEN_BASE_BOTTOM_GRADIENT));
-			var bottomGrad:TiledImage = new TiledImage(hivivaAtlas.getTexture("bottom_gradient"));
+			var bottomGrad:TiledImage = new TiledImage(_assets.getTexture("bottom_gradient"));
 			//bottomGrad.touchable = false;
 			bottomGrad.width = mainStageWidth;
 			bottomGrad.y = mainStageHeight - bottomGrad.height;
@@ -223,7 +236,7 @@ package collaboRhythm.hiviva.view
 			this._screenBackground.addChild(bottomGrad);
 
 			//var settingEffect:TiledImage = new TiledImage(Assets.getTexture(HivivaAssets.SETTING_EFFECT));
-			var settingEffect:TiledImage = new TiledImage(hivivaAtlas.getTexture("settings_above_effect"));
+			var settingEffect:TiledImage = new TiledImage(_assets.getTexture("settings_above_effect"));
 			//settingEffect.touchable = false;
 			settingEffect.name = "settingEffect";
 			settingEffect.height = mainStageHeight;
@@ -579,16 +592,6 @@ package collaboRhythm.hiviva.view
 			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 		}
 
-		public function set hivivaAtlas(atlas:TextureAtlas):void
-		{
-			this._hivivaAtlas = atlas;
-		}
-
-		public function get hivivaAtlas():TextureAtlas
-		{
-			return this._hivivaAtlas;
-		}
-
 		public function get starlingMain():Main
 		{
 			return this._starlingMain;
@@ -627,6 +630,11 @@ package collaboRhythm.hiviva.view
 		public function get main():Main
 		{
 			return this._main;
+		}
+
+		public static function get assets():AssetManager
+		{
+			return _assets;
 		}
 	}
 }

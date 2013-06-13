@@ -1,10 +1,8 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
 	import collaboRhythm.hiviva.view.Main;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -77,12 +75,12 @@ package collaboRhythm.hiviva.view.screens.shared
 
 
 			//this._splashBg = new Image(Assets.getTexture(HivivaAssets.SPLASH_SCREEN_BG));
-			this._splashBg = new Image(starlingMain.hivivaAtlas.getTexture("splash_bg"));
+			this._splashBg = new Image(Main.assets.getTexture("splash_bg"));
 			addChild(this._splashBg);
 
 
 			//this._logo = new Image(Assets.getTexture(HivivaAssets.LOGO));
-			this._logo = new Image(starlingMain.hivivaAtlas.getTexture("logo"));
+			this._logo = new Image(Main.assets.getTexture("logo"));
 			addChild(this._logo);
 
 			this._footer = new Label();
@@ -129,12 +127,12 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			this._hcpButton = new Button();
 
-			this._hcpButton.defaultSkin = new Image(Assets.getTexture(HivivaAssets.SPLASH_BUTTON_HCP));
+			this._hcpButton.defaultSkin = new Image(Main.assets.getTexture("splash_button_02"));
 			applySplashButtonProperties(this._hcpButton);
 			this._hcpButton.label = "I’m a healthcare \nprofessional \nor carer";
 
 			this._patientButton = new Button();
-			this._patientButton.defaultSkin = new Image(Assets.getTexture(HivivaAssets.SPLASH_BUTTON_PATIENT));
+			this._patientButton.defaultSkin = new Image(Main.assets.getTexture("splash_button_01"));
 			this._patientButton.label = "I am a patient";
 			applySplashButtonProperties(this._patientButton);
 
@@ -253,21 +251,6 @@ package collaboRhythm.hiviva.view.screens.shared
 		override public function dispose():void
 		{
 			trace("HivivaSplashScreen dispose called");
-
-			//this._splashBg.texture.base.dispose();
-			//this._splashBg.texture.dispose();
-			//this._splashBg.dispose();
-			//this._splashBg = null;
-
-			//this._logo.texture.base.dispose();
-			//this._logo.texture.dispose();
-			//this._logo.dispose();
-			//this._logo = null;
-
-			//Assets.clearTexture(HivivaAssets.SPLASH_SCREEN_BG);
-			//Assets.clearTexture(HivivaAssets.LOGO);
-
-
 			super.dispose();
 		}
 

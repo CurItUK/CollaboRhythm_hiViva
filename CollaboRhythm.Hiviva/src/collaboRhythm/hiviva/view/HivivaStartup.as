@@ -9,6 +9,7 @@ package collaboRhythm.hiviva.view
 
 	import starling.core.Starling;
 	import starling.events.Event;
+	import starling.utils.AssetManager;
 
 	[SWF(backgroundColor="0x000000" , frameRate="60")]
 
@@ -17,6 +18,9 @@ package collaboRhythm.hiviva.view
 		private var _starFW:Starling;
 		private var _sw:Number;
 		private var _sh:Number;
+		private var _assets:AssetManager;
+
+
 
 		[Bindable]
 		protected var _hivivaApplicationController:HivivaApplicationController;
@@ -60,9 +64,10 @@ package collaboRhythm.hiviva.view
 
 		private function starlingRootCreatedHandler(e:starling.events.Event):void
 		{
+			this._assets = new AssetManager();
 			var main:Main = Starling.current.root as Main;
 			main.applicationController = _hivivaApplicationController as HivivaApplicationController;
-			main.initMain();
+			main.initMain(this._assets);
 		}
 	}
 }
