@@ -55,20 +55,20 @@
         </dependencies>
         <compiler-options />
         <packaging-air-desktop />
-        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
+        <packaging-android use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
           </files-to-package>
         </packaging-android>
-        <packaging-ios use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
+        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
           </files-to-package>
-          <AirSigningOptions keystore-path="$MODULE_DIR$/certificates/ios/iphone_dev.p12" provisioning-profile-path="$MODULE_DIR$/certificates/ios/iOS_Team_Development_Profile.mobileprovision" />
+          <AirSigningOptions keystore-path="$MODULE_DIR$/certificates/ios/iOS_dev.p12" provisioning-profile-path="$MODULE_DIR$/certificates/ios/iOS_Team_Development_Profile.mobileprovision" />
         </packaging-ios>
       </configuration>
     </configurations>
@@ -155,6 +155,7 @@
         <properties id="8815cf4a-e789-4558-ba5f-4c43079195b4" />
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs_new/com.adobe.extensions.Vibration.ane!/" />
+          <root url="jar://$MODULE_DIR$/libs/com.adobe.extensions.Vibration.ane!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
