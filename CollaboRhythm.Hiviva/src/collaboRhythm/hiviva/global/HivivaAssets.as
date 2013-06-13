@@ -7,10 +7,10 @@ package collaboRhythm.hiviva.global
 	public class HivivaAssets
 	{
 
-		public static const SCREEN_BASE:String								= "BasePng";
-		public static const SCREEN_BASE_TOP_GRADIENT:String					= "BaseTopGradPng";
-		public static const SCREEN_BASE_BOTTOM_GRADIENT:String				= "BaseBottomGradPng";
-		public static const SETTING_EFFECT:String							= "SettingEffectPng";
+		//public static const SCREEN_BASE:String								= "BasePng";
+		//public static const SCREEN_BASE_TOP_GRADIENT:String					= "BaseTopGradPng";
+		//public static const SCREEN_BASE_BOTTOM_GRADIENT:String				= "BaseBottomGradPng";
+		//public static const SETTING_EFFECT:String							= "SettingEffectPng";
 		public static const SETTINGS_ICON:String							= "SettingIconPng";
 		public static const FOOTER_ICON_BASE:String							= "FooterIconBasePng";
 
@@ -34,8 +34,8 @@ package collaboRhythm.hiviva.global
 		public static const STAR4:String									= "Star4";
 
 
-		public static const SPLASH_SCREEN_BG:String							= "SplashScreenBgJpg";
-		public static const LOGO:String										= "LogoPng";
+		//public static const SPLASH_SCREEN_BG:String							= "SplashScreenBgJpg";
+		//public static const LOGO:String										= "LogoPng";
 		public static const SPLASH_BUTTON_PATIENT:String					= "SplashButtonPatientPng";
 		public static const SPLASH_BUTTON_HCP:String						= "SplashButtonHcpPng";
 		public static const FIXED_BASE:String								= "FixedBasePng";

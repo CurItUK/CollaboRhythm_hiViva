@@ -1,15 +1,12 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
-	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 
@@ -20,7 +17,6 @@ package collaboRhythm.hiviva.view.screens.shared
 	import source.themes.HivivaTheme;
 
 	import starling.animation.Transitions;
-	import starling.animation.Tween;
 
 	import starling.animation.Tween;
 	import starling.core.Starling;
@@ -28,12 +24,10 @@ package collaboRhythm.hiviva.view.screens.shared
 	import starling.display.Image;
 
 	import starling.events.Event;
-	import starling.textures.Texture;
-	import starling.utils.AssetManager;
 
 	public class HivivaSplashScreen extends Screen
 	{
-		private var _applicationController:HivivaApplicationController;
+
 		private var _appType:String;
 		private var _splashBg:Image;
 		private var _logo:Image;
@@ -42,6 +36,8 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _privacyButton:Button;
 		private var _hcpButton:Button;
 		private var _patientButton:Button;
+
+		private var _starlingMain:Main;
 
 		private const SPLASH_TIMEOUT:uint						= 4000;
 
@@ -64,7 +60,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			initSplashBackground();
 
-			this._appType = localStoreController.service.appDataVO._userAppType;
+			this._appType = starlingMain.applicationController.hivivaLocalStoreController.service.appDataVO._userAppType;
 			if(this._appType == HivivaLocalStoreService.APP_FIRST_TIME_USE)
 			{
 				initButtons();
@@ -80,11 +76,13 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 
 
-			this._splashBg = new Image(Assets.getTexture(HivivaAssets.SPLASH_SCREEN_BG));
+			//this._splashBg = new Image(Assets.getTexture(HivivaAssets.SPLASH_SCREEN_BG));
+			this._splashBg = new Image(starlingMain.hivivaAtlas.getTexture("splash_bg"));
 			addChild(this._splashBg);
 
 
-			this._logo = new Image(Assets.getTexture(HivivaAssets.LOGO));
+			//this._logo = new Image(Assets.getTexture(HivivaAssets.LOGO));
+			this._logo = new Image(starlingMain.hivivaAtlas.getTexture("logo"));
 			addChild(this._logo);
 
 			this._footer = new Label();
@@ -206,7 +204,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PROFILE_TYPE_UPDATE);
 			evt.data.user = userValue;
-			localStoreController.dispatchEvent(evt);
+			starlingMain.applicationController.hivivaLocalStoreController.dispatchEvent(evt);
 			this._appType = userValue;
 			closeDownScreen();
 		}
@@ -256,36 +254,31 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			trace("HivivaSplashScreen dispose called");
 
-			this._splashBg.texture.base.dispose();
-			this._splashBg.texture.dispose();
-			this._splashBg.dispose();
-			this._splashBg = null;
+			//this._splashBg.texture.base.dispose();
+			//this._splashBg.texture.dispose();
+			//this._splashBg.dispose();
+			//this._splashBg = null;
 
-			this._logo.texture.base.dispose();
-			this._logo.texture.dispose();
-			this._logo.dispose();
-			this._logo = null;
+			//this._logo.texture.base.dispose();
+			//this._logo.texture.dispose();
+			//this._logo.dispose();
+			//this._logo = null;
 
-			Assets.clearTexture(HivivaAssets.SPLASH_SCREEN_BG);
-			Assets.clearTexture(HivivaAssets.LOGO);
+			//Assets.clearTexture(HivivaAssets.SPLASH_SCREEN_BG);
+			//Assets.clearTexture(HivivaAssets.LOGO);
 
 
 			super.dispose();
 		}
 
-		public function get localStoreController():HivivaLocalStoreController
+		public function set starlingMain(value:Main):void
 		{
-			return applicationController.hivivaLocalStoreController;
+			this._starlingMain = value;
 		}
 
-		public function get applicationController ():HivivaApplicationController
+		public function get starlingMain():Main
 		{
-			return _applicationController;
-		}
-
-		public function set applicationController (value:HivivaApplicationController):void
-		{
-			_applicationController = value;
+			return this._starlingMain;
 		}
 	}
 }

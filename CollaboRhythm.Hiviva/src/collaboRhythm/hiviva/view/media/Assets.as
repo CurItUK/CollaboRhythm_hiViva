@@ -13,17 +13,23 @@ package collaboRhythm.hiviva.view.media
 
 
 		//Background Assets : Due to mobile memory management using only navigation and screen background items will be embedded.
-		[Embed(source="/assets/images/temp/screen_base.png")]
-		public static const BasePng:Class;
+		//[Embed(source="/assets/images/temp/screen_base.png")]
+		//public static const BasePng:Class;
 
-		[Embed(source="/assets/images/temp/top_gradient.png")]
-		public static const BaseTopGradPng:Class;
+		//[Embed(source="/assets/images/temp/top_gradient.png")]
+		//public static const BaseTopGradPng:Class;
 
-		[Embed(source="/assets/images/temp/bottom_gradient.png")]
-		public static const BaseBottomGradPng:Class;
+		//[Embed(source="/assets/images/temp/bottom_gradient.png")]
+		//public static const BaseBottomGradPng:Class;
 
-		[Embed(source="/assets/images/temp/settings_above_effect.png")]
-		public static const SettingEffectPng:Class;
+		//[Embed(source="/assets/images/temp/settings_above_effect.png")]
+		//public static const SettingEffectPng:Class;
+
+		//[Embed(source="/assets/images/temp/splash_bg.jpg")]
+		//public static const SplashScreenBgJpg:Class;
+
+		//[Embed(source="/assets/images/temp/logo.png")]
+		//public static const LogoPng:Class;
 
 		[Embed(source="/assets/images/temp/footer_icon_active.png")]
 		public static const FooterIconActivePng:Class;
@@ -234,11 +240,9 @@ package collaboRhythm.hiviva.view.media
 
 
 
-		 [Embed(source="/assets/images/temp/splash_bg.jpg")]
-		 public static const SplashScreenBgJpg:Class;
 
-		 [Embed(source="/assets/images/temp/logo.png")]
-		 public static const LogoPng:Class;
+
+
 
 		 [Embed(source="/assets/images/temp/home_lens_rim.png")]
 		 public static const HomeLensRimPng:Class;
