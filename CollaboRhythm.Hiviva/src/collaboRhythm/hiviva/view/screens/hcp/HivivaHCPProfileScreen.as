@@ -127,7 +127,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			);
 			this._menuBtnGroup.buttonInitializer = function(button:Button, item:Object):void
 			{
-				var img:TiledImage = new TiledImage(Assets.getTexture(HivivaAssets.PATIENTPROFILENAV_BUTTON_PATTERN));
+				var img:TiledImage = new TiledImage(Main.assets.getTexture("patient-profile-nav-button-pattern"));
 				img.smoothing = TextureSmoothing.NONE;
 				img.blendMode =  BlendMode.MULTIPLY;
 				button.addChild(img);

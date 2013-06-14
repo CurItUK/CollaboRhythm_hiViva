@@ -81,7 +81,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._medicationLabel.width = this.actualWidth;
 			this._medicationLabel.validate();
 
-			this._seperator = new Image(Assets.getTexture(HivivaAssets.HEADER_LINE));
+			this._seperator = new Image(Main.assets.getTexture("header_line"));
 			this._content.addChild(this._seperator);
 			this._seperator.width = this.actualWidth;
 			this._seperator.y = this._medicationLabel.y + this._medicationLabel.height;

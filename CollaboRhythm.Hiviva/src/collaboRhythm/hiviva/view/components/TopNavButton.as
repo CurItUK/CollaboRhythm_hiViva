@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.components
 {
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -37,7 +38,7 @@ package collaboRhythm.hiviva.view.components
 
 			this.name = HivivaTheme.NONE_THEMED;
 
-			this._icon = new Image(Assets.getTexture(this._hivivaImage));
+			this._icon = new Image(Main.assets.getTexture(this._hivivaImage));
 
 			var icon:Quad = new Quad(this._icon.width,this._icon.height,0x000000);
 			icon.alpha = 0;

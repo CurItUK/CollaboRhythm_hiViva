@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -40,7 +41,7 @@ package collaboRhythm.hiviva.view.components
 		{
 			super.initialize();
 
-			var bgTexture:Scale9Textures = new Scale9Textures(Assets.getTexture(HivivaAssets.INPUT_FIELD), new Rectangle(11,11,32,32));
+			var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("input_field"), new Rectangle(11,11,32,32));
 			this._bg = new Scale9Image(bgTexture, this._scale);
 			this._bg.touchable = false;
 			addChild(this._bg);

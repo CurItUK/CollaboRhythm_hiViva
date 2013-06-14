@@ -137,11 +137,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._homeImageInstructions);
 
 			this._messagesButton = new TopNavButton();
-			this._messagesButton.hivivaImage = HivivaAssets.TOPNAV_ICON_MESSAGES;
+			this._messagesButton.hivivaImage = "top_nav_icon_02";
 			this._messagesButton.addEventListener(Event.TRIGGERED , messagesButtonHandler);
 
 			this._badgesButton = new TopNavButton();
-			this._badgesButton.hivivaImage = HivivaAssets.TOPNAV_ICON_BADGES;
+			this._badgesButton.hivivaImage = "top_nav_icon_03";
 			this._badgesButton.addEventListener(Event.TRIGGERED , rewardsButtonHandler);
 
 			this._header.rightItems =  new <DisplayObject>[this._messagesButton, this._badgesButton];

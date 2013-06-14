@@ -175,7 +175,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._editMedsCells.push(editMedicationCell);
 			}
 
-			this._seperator = new Image(Assets.getTexture(HivivaAssets.HEADER_LINE));
+			this._seperator = new Image(Main.assets.getTexture("header_line"));
 			this._content.addChild(this._seperator);
 
 			this._addMedBtnBordered = new Button();

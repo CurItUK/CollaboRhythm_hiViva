@@ -291,22 +291,22 @@ package collaboRhythm.hiviva.view.screens.patient
 				switch(category)
 				{
 					case "SPORT" :
-						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.SPORTS_ICON));
+						button.defaultIcon = new Image(Main.assets.getTexture("icon_sports"));
 						break;
 					case "MUSIC" :
-						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.MUSIC_ICON));
+						button.defaultIcon = new Image(Main.assets.getTexture("icon_music"));
 						break;
 					case "CINEMA" :
-						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.CINEMA_ICON));
+						button.defaultIcon = new Image(Main.assets.getTexture("icon_cinema"));
 						break;
 					case "HISTORY" :
-						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.HISTORY_ICON));
+						button.defaultIcon = new Image(Main.assets.getTexture("icon_history"));
 						break;
 					case "TRAVEL" :
-						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.TRAVEL_ICON));
+						button.defaultIcon = new Image(Main.assets.getTexture("icon_travel"));
 						break;
 					case "ART" :
-						button.defaultIcon = new Image(Assets.getTexture(HivivaAssets.ART_ICON));
+						button.defaultIcon = new Image(Main.assets.getTexture("icon_art"));
 						break;
 				}
 				this._galleryBtnContainer.addChild(button);

@@ -107,7 +107,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var gap:Number = scaledPadding * 0.5;
 			var fullHeight:Number;
 
-			var bgTexture:Scale9Textures = new Scale9Textures(Assets.getTexture(HivivaAssets.INPUT_FIELD), new Rectangle(11, 11, 32, 32));
+			var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("input_field"), new Rectangle(11, 11, 32, 32));
 			this._bg = new Scale9Image(bgTexture, this.dpiScale);
 			this.addChild(this._bg);
 

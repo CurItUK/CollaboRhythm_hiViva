@@ -180,7 +180,7 @@ package collaboRhythm.hiviva.view
 
 			this._settingsBtn = new Button();
 			this._settingsBtn.name = HivivaTheme.NONE_THEMED;
-			this._settingsBtn.defaultIcon = new Image(Assets.getTexture(HivivaAssets.SETTINGS_ICON));
+			this._settingsBtn.defaultIcon = new Image(_assets.getTexture("top_nav_icon_01"));
 			this._settingsBtn.addEventListener(Event.TRIGGERED , settingsBtnHandler);
 			this._screenHolder.addChild(this._settingsBtn);
 			this._settingsBtn.width = (this._stageWidth * 0.2);
@@ -376,8 +376,8 @@ package collaboRhythm.hiviva.view
 		private function initPatientFooterMenu():void
 		{
 			// needs own class
-			var footerBtnHeight:Number = Assets.getTexture(HivivaAssets.FOOTER_ICON_BASE).height * this._scaleFactor;
-			var footerBtnWidth:Number = Assets.getTexture(HivivaAssets.FOOTER_ICON_BASE).width * this._scaleFactor;
+			var footerBtnHeight:Number = _assets.getTexture("footer_icon_base").height * this._scaleFactor;
+			var footerBtnWidth:Number = _assets.getTexture("footer_icon_base").width * this._scaleFactor;
 
 			this._footerBtnGroup = new ButtonGroup();
 			this._footerBtnGroup.customButtonName = "home-footer-buttons";
@@ -404,22 +404,22 @@ package collaboRhythm.hiviva.view
 				switch(item.name)
 				{
 					case "home" :
-						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_HOME));
+						img = new Image(_assets.getTexture("footer_icon_1"));
 						button.isSelected = true;
 						_currFooterBtn = button;
 						_mainScreenNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
 						break;
 					case "clock" :
-						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_CLOCK));
+						img = new Image(_assets.getTexture("footer_icon_2"));
 						break;
 					case "takemeds" :
-						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_MEDIC));
+						img = new Image(_assets.getTexture("footer_icon_3"));
 						break;
 					case "virus" :
-						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_VIRUS));
+						img = new Image(_assets.getTexture("footer_icon_4"));
 						break;
 					case "report" :
-						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_REPORT));
+						img = new Image(_assets.getTexture("footer_icon_5"));
 						break;
 				}
 
@@ -468,8 +468,8 @@ package collaboRhythm.hiviva.view
 		private function initHcpFooterMenu():void
 		{
 			// needs own class
-			var footerBtnHeight:Number = Assets.getTexture(HivivaAssets.FOOTER_ICON_BASE).height * this._scaleFactor;
-			var footerBtnWidth:Number = Assets.getTexture(HivivaAssets.FOOTER_ICON_BASE).width * this._scaleFactor;
+			var footerBtnHeight:Number = assets.getTexture("footer_icon_base").height * this._scaleFactor;
+			var footerBtnWidth:Number = assets.getTexture("footer_icon_base").width * this._scaleFactor;
 
 			this._footerBtnGroup = new ButtonGroup();
 			this._footerBtnGroup.customButtonName = "home-footer-buttons";
@@ -495,19 +495,19 @@ package collaboRhythm.hiviva.view
 				switch(item.name)
 				{
 					case "home" :
-						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_HOME));
+						img = new Image(assets.getTexture("footer_icon_1"));
 						button.isSelected = true;
 						_currFooterBtn = button;
 						_mainScreenNav.showScreen(HivivaScreens.HCP_HOME_SCREEN);
 						break;
 					case "adherence" :
-						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_ADHERENCE));
+						img = new Image(assets.getTexture("footer_icon_6"));
 						break;
 					case "reports" :
-						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_MEDIC));
+						img = new Image(assets.getTexture("footer_icon_3"));
 						break;
 					case "messages" :
-						img = new Image(Assets.getTexture(HivivaAssets.FOOTER_ICON_MESSAGE));
+						img = new Image(assets.getTexture("footer_icon_7"));
 						break;
 				}
 
