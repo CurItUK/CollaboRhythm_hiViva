@@ -95,9 +95,9 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			var lc:ListCollection = new ListCollection(
 				[
-					{name: "help1", label: "Report an adverse event"},
+					{name: "help1", label: "labore et dolore"},
 					{name: "help2", label: "Fusce pellentesque"},
-					{name: "help3", label: "Praesent elementum convallis turpis"},
+					{name: "help3", label: "Praesent elementum"},
 					{name: "help4", label: "Duis ullamcorper"},
 					{name: "help5", label: "Privacy policy"},
 					{name: "help6", label: "Terms of use"}

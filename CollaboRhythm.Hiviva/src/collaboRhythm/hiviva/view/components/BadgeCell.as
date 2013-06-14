@@ -81,7 +81,7 @@ package collaboRhythm.hiviva.view.components
 			this._pillImageBg.visible = false;
 			addChild(this._pillImageBg);
 
-			this._pillTrophy = new Image(Assets.getTexture(HivivaAssets[badgeIcon]));
+			this._pillTrophy = new Image(Main.assets.getTexture(badgeIcon));
 			addChild(this._pillTrophy);
 
 			this._badgeNameLabel = new Label();

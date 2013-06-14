@@ -22,7 +22,7 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_GALLERY_SCREEN:String				= "patientGalleryScreen";
 		public static const PATIENT_TEST_RESULTS_SCREEN:String			= "patientTestResultsScreen";
 		public static const PATIENT_HELP_SCREEN:String					= "patientHelpScreen";
-		public static const PATIENT_HELP_DETAIL_SCREEN:String					= "patientHelpDetailScreen";
+		public static const PATIENT_HELP_DETAIL_SCREEN:String			= "patientHelpDetailScreen";
 		public static const PATIENT_ADD_MEDICATION_SCREEN:String		= "patientAddMedicationScreen";
 		public static const PATIENT_SCHEDULE_MEDICATION_SCREEN:String	= "patientScheduleMedicationScreen";
 		public static const PATIENT_MESSAGES_SCREEN:String				= "patientMessagesScreen";
@@ -43,6 +43,7 @@ package collaboRhythm.hiviva.global
 		public static const HCP_MESSAGE_COMPOSE_SCREEN:String			= "hcpMessageComposeScreen";
 		public static const HCP_MESSAGE_SENT_SCREEN:String				= "hcpMessageSentScreen";
 		public static const HCP_MESSAGE_DETAIL_SCREEN:String			= "hcpMessageDetailScreen";
+		public static const HCP_HELP_DETAIL_SCREEN:String				= "patientHelpDetailScreen";
 
 		//HCP Reporting screens
 		public static const HCP_REPORTS_SCREEN:String					= "hcpReportsScreen";

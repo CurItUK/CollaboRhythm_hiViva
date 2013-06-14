@@ -113,7 +113,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			super.initialize();
 
 			this._header = new HivivaHeader();
-			this._header.title = ":";
+			this._header.title = " ";
 			addChild(this._header);
 
 			this._bgImageHolder = new Sprite();

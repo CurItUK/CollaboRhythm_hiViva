@@ -73,7 +73,7 @@ package collaboRhythm.hiviva.view.screens
 			this._patientName.width = this._bg.width - this._patientName.x;
 
 			this._adherenceTolerabilityLabel.validate();
-			this._adherenceTolerabilityLabel.width = 120;
+			this._adherenceTolerabilityLabel.width = 200;
 			this._adherenceTolerabilityLabel.x = this._bg.x + this._bg.width - this._adherenceTolerabilityLabel.width - gap;
 			this._adherenceTolerabilityLabel.y = this._patientName.y;
 
@@ -105,7 +105,8 @@ package collaboRhythm.hiviva.view.screens
 			var avgTolerability:Number = HivivaModifier.calculateOverallTolerability(patientData.medicationHistory.history);
 			var avgAdherence:Number = HivivaModifier.calculateOverallAdherence(patientData.medicationHistory.history);
 			this._adherenceTolerabilityLabel = new Label();
-			this._adherenceTolerabilityLabel.text = String(avgAdherence) +  "% / " + String(avgTolerability) + "%";
+			this._adherenceTolerabilityLabel.text = "<font face='ExoBold'>Adherence: </font>" + String(avgAdherence) +  "% " +
+													"<font face='ExoBold'>Tolerability: </font>" + String(avgTolerability) + "%";
 
 			addChild(this._adherenceTolerabilityLabel);
 
@@ -114,7 +115,6 @@ package collaboRhythm.hiviva.view.screens
 			this._viewProfileBtn.alpha = 0;
 			this._viewProfileBtn.addEventListener(Event.TRIGGERED , patientCellSelectHandler);
 			addChild(this._viewProfileBtn);
-
 
 		}
 

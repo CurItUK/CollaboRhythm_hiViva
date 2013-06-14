@@ -71,7 +71,9 @@ package collaboRhythm.hiviva.view.components
 			this._seperator = new Image(Main.assets.getTexture("header_line"));
 			addChild(this._seperator);
 
-			this._pillImageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
+			//TODO insert correct images for beta?
+			//this._pillImageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
+			this._pillImageBg = new Quad(0 , IMAGE_SIZE * this._scale, 0x000000);
 			addChild(this._pillImageBg);
 
 			this._brandNameLabel = new Label();

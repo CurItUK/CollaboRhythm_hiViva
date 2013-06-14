@@ -1,17 +1,32 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.view.Main;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientHelpDetailScreen;
+
 	import feathers.controls.Button;
+	import feathers.controls.ButtonGroup;
 	import feathers.controls.Screen;
+	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollText;
 	import collaboRhythm.hiviva.view.HivivaHeader;
+
+	import feathers.data.ListCollection;
+
+	import feathers.display.TiledImage;
+
+	import starling.display.BlendMode;
+
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.textures.TextureSmoothing;
 
 	public class HivivaHCPHelpScreen extends Screen
 	{
 		private var _header:HivivaHeader;
-		private var _scrollText:ScrollText;
-		private const PADDING:Number = 32;
+		private var _tilesInBtns:Vector.<TiledImage>;
+		private var _menuBtnGroup:ButtonGroup;
+		private var _scaledPadding:Number;
 
 		public function HivivaHCPHelpScreen()
 		{
@@ -20,17 +35,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		override protected function draw():void
 		{
-			var scaledPadding:Number = PADDING * this.dpiScale;
-
 			super.draw();
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
 
-			this._scrollText.y = this._header.y + this._header.height;
-			this._scrollText.x = scaledPadding;
-			this._scrollText.width = this.actualWidth - (scaledPadding * 2);
-			this._scrollText.height = this.actualHeight - this._scrollText.y - scaledPadding;
-			this._scrollText.validate();
+			this._scaledPadding = (this.actualWidth * 0.04) * this.dpiScale;
+
+			this._header.width = this.actualWidth;
+			this._header.paddingLeft = this._scaledPadding;
+			this._header.initTrueTitle();
+			drawMenuBtnGroup();
 		}
 
 		override protected function initialize():void
@@ -40,9 +52,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.title = "Help";
 			addChild(this._header);
 
-			this._scrollText = new ScrollText();
-			this._scrollText.text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.\n\nNeque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\n\nAt vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.";
-			this.addChild(this._scrollText);
+			this._tilesInBtns = new <TiledImage>[];
+			this._menuBtnGroup = new ButtonGroup();
+			this._menuBtnGroup.customButtonName = "patient-profile-nav-buttons";
+			this._menuBtnGroup.customFirstButtonName = "patient-profile-nav-buttons";
+			this._menuBtnGroup.customLastButtonName = "patient-profile-nav-buttons";
+			addChild(this._menuBtnGroup);
+			initProfileMenuButtons();
 
 			var homeBtn:Button = new Button();
 			homeBtn.name = "home-button";
@@ -55,6 +71,69 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			this.dispatchEventWith("navGoHome");
 		}
+
+		private function initProfileMenuButtons():void
+		{
+			var lc:ListCollection = new ListCollection(
+					[
+						{name: "help1", label: "labore et dolore"},
+						{name: "help2", label: "Fusce pellentesque"},
+						{name: "help3", label: "Praesent elementum"},
+						{name: "help4", label: "Duis ullamcorper"},
+						{name: "help5", label: "Privacy policy"},
+						{name: "help6", label: "Terms of use"}
+					]
+			);
+
+			this._menuBtnGroup.dataProvider = lc;
+			this._menuBtnGroup.buttonInitializer = patientProfileBtnInitializer;
+			this._menuBtnGroup.direction = ButtonGroup.DIRECTION_VERTICAL;
+
+			drawMenuBtnGroup();
+		}
+
+		private function drawMenuBtnGroup():void
+		{
+			this._menuBtnGroup.width = this.actualWidth;
+			this._menuBtnGroup.y = this._header.height;
+			this._menuBtnGroup.validate();
+
+			var patternHeight:Number = Button(this._menuBtnGroup.getChildAt(0)).height;
+			for (var i:int = 0; i < _tilesInBtns.length; i++)
+			{
+				var img:TiledImage = _tilesInBtns[i];
+				img.width = this.actualWidth;
+				img.height = patternHeight;
+			}
+		}
+
+		private function patientProfileBtnInitializer(button:Button, item:Object):void
+		{
+			var img:TiledImage = new TiledImage(Main.assets.getTexture("patient-profile-nav-button-pattern"));
+			img.smoothing = TextureSmoothing.NONE;
+			img.blendMode = BlendMode.MULTIPLY;
+			button.addChild(img);
+			// add to Vector to assign width post draw
+			_tilesInBtns.push(img);
+
+			button.name = item.name;
+			button.label = item.label;
+			button.addEventListener(Event.TRIGGERED, profileBtnHandler)
+		}
+
+		private function profileBtnHandler(e:Event):void
+		{
+			var btn:Button = e.target as Button;
+			trace(btn.name.substring(0, btn.name.indexOf(" patient-profile-nav-buttons")));
+			var screenNavItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaHCPHelpDetailScreen, null, {title: btn.label});
+			if (this.owner.hasScreen(HivivaScreens.HCP_HELP_DETAIL_SCREEN))
+			{
+				this.owner.removeScreen(HivivaScreens.HCP_HELP_DETAIL_SCREEN);
+			}
+			this.owner.addScreen(HivivaScreens.HCP_HELP_DETAIL_SCREEN, screenNavItem);
+			this.owner.showScreen(HivivaScreens.HCP_HELP_DETAIL_SCREEN);
+		}
+
 
 	}
 }
