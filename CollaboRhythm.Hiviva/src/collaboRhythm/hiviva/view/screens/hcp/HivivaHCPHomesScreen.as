@@ -223,6 +223,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function initPatientSignupProcess():void
 		{
+			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV, true));
+
 			this.owner.addScreen(HivivaScreens.HCP_EDIT_PROFILE, new ScreenNavigatorItem(HivivaHCPEditProfile, null, {applicationController:_applicationController}));
 
 			this._userSignupPopupContent = new HivivaPopUp();

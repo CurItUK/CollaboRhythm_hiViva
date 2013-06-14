@@ -147,8 +147,8 @@ package collaboRhythm.hiviva.view
 
 		private function initfeathersTheme():void
 		{
-			var isDesktop:Boolean = true;
-			//var isDesktop:Boolean = false;
+			//var isDesktop:Boolean = true;
+			var isDesktop:Boolean = false;
 			this._feathersTheme = new HivivaTheme(this.stage, !isDesktop);
 			this._scaleFactor = isDesktop ? 1 : this._feathersTheme.scale;
 		}
