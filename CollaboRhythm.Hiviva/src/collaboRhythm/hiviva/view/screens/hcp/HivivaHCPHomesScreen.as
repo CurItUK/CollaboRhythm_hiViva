@@ -61,7 +61,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			super.initialize();
 
 			_connectToPatientBtn = new Button();
-			_connectToPatientBtn.visible = false;
 			_connectToPatientBtn.label = "Connect to patient";
 			_connectToPatientBtn.addEventListener(starling.events.Event.TRIGGERED, connectToPatientBtnHandler);
 			this.addChild(_connectToPatientBtn);
