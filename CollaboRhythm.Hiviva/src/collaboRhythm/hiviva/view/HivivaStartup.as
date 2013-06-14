@@ -51,8 +51,8 @@ package collaboRhythm.hiviva.view
 			Starling.multitouchEnabled = true;
 			Starling.handleLostContext = !iOS;
 			trace("handleLostContext " + Starling.handleLostContext + " iOS " + iOS );
-//			viewPort = new Rectangle(0, 0, 640, 960);
-			viewPort = new Rectangle(0, 0, this._sw, this._sh);
+			viewPort = new Rectangle(0, 0, 640, 960);
+			//viewPort = new Rectangle(0, 0, this._sw, this._sh);
 			_starFW = new Starling(Main, stage, viewPort);
 
 			//_starFW.showStats = true;

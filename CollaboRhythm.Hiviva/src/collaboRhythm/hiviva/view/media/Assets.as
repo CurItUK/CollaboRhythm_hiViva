@@ -33,6 +33,11 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/clockSegment.png")]
 		public static const ClockFaceSegmentPng:Class;
 
+		[Embed(source="/assets/images/temp/HCP_Adherance_chart.png")]
+		public static const HCPAdherenceChart:Class;
+
+
+
 		// TTF FONTS
 
 		[Embed(source="/assets/fonts/exo-regular.ttf", fontName="ExoRegular", mimeType="application/x-font", embedAsCFF="false")]
@@ -43,6 +48,9 @@ package collaboRhythm.hiviva.view.media
 
 		[Embed(source="/assets/fonts/exo-light.ttf", fontName="ExoLight", mimeType="application/x-font", embedAsCFF="false")]
 		public static const ExoLightFont:Class;
+
+
+
 
 
 

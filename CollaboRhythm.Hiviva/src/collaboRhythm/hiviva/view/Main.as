@@ -19,7 +19,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPSideNavigationScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessages;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaHCPHelpScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHelpScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientBagesScreen;
 	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -147,8 +147,8 @@ package collaboRhythm.hiviva.view
 
 		private function initfeathersTheme():void
 		{
-//			var isDesktop:Boolean = true;
-			var isDesktop:Boolean = false;
+			var isDesktop:Boolean = true;
+			//var isDesktop:Boolean = false;
 			this._feathersTheme = new HivivaTheme(this.stage, !isDesktop);
 			this._scaleFactor = isDesktop ? 1 : this._feathersTheme.scale;
 		}
