@@ -52,13 +52,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			if(this._clockIcon == null)
 			{
-				this._clockIcon = new Image(Assets.getTexture(HivivaAssets.CLOCK_ICON));
+				this._clockIcon = new Image(Main.assets.getTexture("clock_icon"));
 				this._content.addChild(this._clockIcon);
 			}
 
 			if(this._pillboxIcon == null)
 			{
-				this._pillboxIcon = new Image(Assets.getTexture(HivivaAssets.PILLBOX_ICON));
+				this._pillboxIcon = new Image(Main.assets.getTexture("pillbox_icon"));
 				this._pillboxIcon.alpha = 0.5;
 				this._content.addChild(this._pillboxIcon);
 			}

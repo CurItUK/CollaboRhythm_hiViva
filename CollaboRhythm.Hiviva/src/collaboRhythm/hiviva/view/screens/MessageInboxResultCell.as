@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -89,7 +90,7 @@ package collaboRhythm.hiviva.view.screens
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._seperator = new Image(Assets.getTexture(HivivaAssets.HEADER_LINE));
+			this._seperator = new Image(Main.assets.getTexture("header_line"));
 			addChild(this._seperator);
 
 			this._primaryLabel = new Label();

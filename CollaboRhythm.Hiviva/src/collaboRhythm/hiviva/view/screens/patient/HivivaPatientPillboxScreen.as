@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.components.SuperscriptCircle;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -110,7 +111,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					var tabletColorCount:uint = 1;
 					for (var i:uint = 0; i < loop; i++)
 					{
-						var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
+						var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
 						var tabletCount:SuperscriptCircle = new SuperscriptCircle();
 						tabletCount.text = _amMedication[i].tablet_count;
 						tabletColorCount++;
@@ -143,7 +144,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					var tabletColorCount:uint = 1;
 					for (var i:uint = 0; i < loop; i++)
 					{
-						var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
+						var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
 						var tabletCount:SuperscriptCircle = new SuperscriptCircle();
 						tabletCount.text = _pmMedication[i].tablet_count;
 						tabletColorCount++;

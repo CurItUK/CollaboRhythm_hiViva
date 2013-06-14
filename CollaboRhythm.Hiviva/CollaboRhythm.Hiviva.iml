@@ -55,14 +55,14 @@
         </dependencies>
         <compiler-options />
         <packaging-air-desktop />
-        <packaging-android use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
+        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
           </files-to-package>
         </packaging-android>
-        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
+        <packaging-ios use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />

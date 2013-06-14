@@ -94,7 +94,7 @@ package collaboRhythm.hiviva.view
 		override protected function initialize():void
 		{
 			super.initialize();
-			var bgTexture:Scale9Textures = new Scale9Textures(Assets.getTexture(HivivaAssets.INPUT_FIELD), new Rectangle(11,11,32,32));
+			var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("input_field"), new Rectangle(11,11,32,32));
 			this._bg = new Scale9Image(bgTexture, this._scale);
 			addChild(this._bg);
 
@@ -102,7 +102,7 @@ package collaboRhythm.hiviva.view
 			addChild(this._imageBg);
 
 			this._uploadButton = new Button();
-			this._uploadButton.defaultIcon = new Image(Assets.getTexture(HivivaAssets.UPLOAD_ICON));
+			this._uploadButton.defaultIcon = new Image(Main.assets.getTexture("icon_upload"));
 			this._uploadButton.iconPosition = Button.ICON_POSITION_LEFT;
 			this._uploadButton.label = "UPLOAD PHOTO";
 			this._uploadButton.addEventListener(Event.TRIGGERED, uploadButtonHandler);

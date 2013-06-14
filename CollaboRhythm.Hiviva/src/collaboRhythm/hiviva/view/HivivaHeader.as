@@ -43,7 +43,7 @@ package collaboRhythm.hiviva.view
 			this.paddingLeft = this.paddingRight = HORIZONTOL_PADDING * this._scale;
 			this.paddingBottom = this.paddingTop = VERTICAL_PADDING * this._scale;
 
-			this._headerLine = new Image(Assets.getTexture(HivivaAssets.HEADER_LINE));
+			this._headerLine = new Image(Main.assets.getTexture("header_line"));
 			addChild(this._headerLine);
 		}
 

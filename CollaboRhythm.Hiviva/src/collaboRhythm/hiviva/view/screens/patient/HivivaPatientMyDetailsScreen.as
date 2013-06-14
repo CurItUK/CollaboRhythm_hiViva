@@ -127,7 +127,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.initialize();
 
-			var seperatorTexture:Texture = Assets.getTexture(HivivaAssets.HEADER_LINE);
+			var seperatorTexture:Texture = Main.assets.getTexture("header_line");
 
 			this._header.title = "My Details";
 

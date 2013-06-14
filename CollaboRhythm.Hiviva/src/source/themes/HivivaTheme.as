@@ -51,6 +51,7 @@ package source.themes
 {
 
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -616,7 +617,7 @@ package source.themes
 
 
 			//this.primaryBackgroundTexture = this.atlas.getTexture("primary-background");
-			this.primaryBackgroundTexture = Assets.getTexture(HivivaAssets.FIXED_BASE);
+			this.primaryBackgroundTexture = Main.assets.getTexture("fixed_base");
 
 
 			const backgroundSkinTexture:Texture = this.atlas.getTexture("background-skin");
@@ -630,54 +631,54 @@ package source.themes
 
 			this.backgroundSkinTextures = new Scale9Textures(backgroundSkinTexture, DEFAULT_SCALE9_GRID);
 
-			this.backgroundDisabledSkinTextures = new Scale9Textures(backgroundDisabledSkinTexture,
-					DEFAULT_SCALE9_GRID);
+			this.backgroundDisabledSkinTextures = new Scale9Textures(backgroundDisabledSkinTexture,	DEFAULT_SCALE9_GRID);
 
 			this.backgroundFocusedSkinTextures = new Scale9Textures(backgroundFocusedSkinTexture, DEFAULT_SCALE9_GRID);
 
 
-			this.buttonUpSkinTextures = new Scale9Textures(Assets.getTexture(HivivaAssets.BUTTON), new Rectangle(22,22,158,30));
-			this.borderlessButtonUpSkinTextures = new Scale9Textures(Assets.getTexture(HivivaAssets.BORDERLESS_BUTTON), new Rectangle(25,25,242,31));
+			this.buttonUpSkinTextures = new Scale9Textures(Main.assets.getTexture("button"), new Rectangle(22,22,158,30));
+			this.borderlessButtonUpSkinTextures = new Scale9Textures(Main.assets.getTexture("button_borderless"), new Rectangle(25,25,242,31));
 			this.buttonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-down-skin"), BUTTON_SCALE9_GRID);
 			this.buttonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-disabled-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-up-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-disabled-skin"), BUTTON_SCALE9_GRID);
 
-			this.buttonFooterTexture = Assets.getTexture(HivivaAssets.FOOTER_ICON_BASE);
-			this.buttonFooterActiveTexture = Assets.getTexture(HivivaAssets.FOOTER_ICON_ACTIVE);
 
-			this.buttonSideNavTexture = Assets.getTexture(HivivaAssets.SIDENAV_BASE);
 
-			this.buttonPatientProfileNavTexture = new Scale9Textures(Assets.getTexture(HivivaAssets.PATIENTPROFILENAV_BUTTON), new Rectangle(0,0,72,72));
+			this.buttonFooterTexture = Main.assets.getTexture("footer_icon_base");
+			this.buttonFooterActiveTexture = Main.assets.getTexture("footer_icon_active");
 
-			this.buttonHomeSkinTexture = Assets.getTexture(HivivaAssets.FOOTER_ICON_HOME);
+			this.buttonSideNavTexture = Main.assets.getTexture("side_nav_base");
 
-			this.buttonBackSkinTexture = Assets.getTexture(HivivaAssets.BACK_BUTTON);
+			this.buttonPatientProfileNavTexture = new Scale9Textures(Main.assets.getTexture("patient-profile-nav-button"), new Rectangle(0,0,72,72));
 
-			this.buttonCloseSkinTexture = Assets.getTexture(HivivaAssets.CLOSE_BUTTON);
+			this.buttonHomeSkinTexture = Main.assets.getTexture("footer_icon_1");
 
-			this.buttonDeleteCellSkinTexture = Assets.getTexture(HivivaAssets.DELETE_CELL_ICON);
+			this.buttonBackSkinTexture = Main.assets.getTexture("back-button");
 
-			this.buttonEditCellSkinTexture = Assets.getTexture(HivivaAssets.EDIT_CELL_ICON);
+			this.buttonCloseSkinTexture = Main.assets.getTexture("close_button");
 
-			this.buttonCalendarSkinTexture = Assets.getTexture(HivivaAssets.CALENDAR_BUTTON);
+			this.buttonDeleteCellSkinTexture = Main.assets.getTexture("delete_icon");
 
-			this.buttonCalendarDayCellSkinTexture = Assets.getTexture(HivivaAssets.CALENDAR_DAY_CELL);
+			this.buttonEditCellSkinTexture = Main.assets.getTexture("edit_icon");
 
-			this.toggleSwitchTexture = Assets.getTexture(HivivaAssets.TOGGLE_SWITCH);
+			this.buttonCalendarSkinTexture = Main.assets.getTexture("calendar-button");
 
-			this.toggleTrackTexture = new Scale9Textures(Assets.getTexture(HivivaAssets.TOGGLE_TRACK), new Rectangle(27,27,55,3));
+			this.buttonCalendarDayCellSkinTexture = Main.assets.getTexture("calendar_day_cell");
 
-			this.inputFieldSkinTexture = new Scale9Textures(Assets.getTexture(HivivaAssets.INPUT_FIELD), new Rectangle(11,11,32,32));
+			this.toggleSwitchTexture = Main.assets.getTexture("toggle_switch");
 
-			this.feelingSliderTrackSkinTextures = new Scale9Textures(Assets.getTexture(HivivaAssets.FEELING_SLIDER_TRACK), new Rectangle(50,46,386,2));
-			this.feelingSliderSwitchSkinTextures = Assets.getTexture(HivivaAssets.FEELING_SLIDER_SWITCH);
+			this.toggleTrackTexture = new Scale9Textures(Main.assets.getTexture("toggle_track"), new Rectangle(27,27,55,3));
+
+			this.inputFieldSkinTexture = new Scale9Textures(Main.assets.getTexture("input_field"), new Rectangle(11,11,32,32));
+
+			this.feelingSliderTrackSkinTextures = new Scale9Textures(Main.assets.getTexture("feeling_slider_track"), new Rectangle(50,46,386,2));
+			this.feelingSliderSwitchSkinTextures = Main.assets.getTexture("feeling_slider_switch");
 
 
 			this.tabDownSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-down-skin"), TAB_SCALE9_GRID);
 
-			this.tabSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-selected-skin"),
-					TAB_SCALE9_GRID);
+			this.tabSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-selected-skin"),TAB_SCALE9_GRID);
 
 
 			this.pickerListButtonIconTexture = this.atlas.getTexture("picker-list-icon");
@@ -697,10 +698,10 @@ package source.themes
 
 			this.radioSelectedDisabledIconTexture = this.atlas.getTexture("radio-selected-disabled-icon");
 
-			this.seperatorLineTexture = new Scale9Textures(Assets.getTexture(HivivaAssets.HEADER_LINE), new Rectangle(0,2,10,3));
+			this.seperatorLineTexture = new Scale9Textures(Main.assets.getTexture("header_line"), new Rectangle(0,2,10,3));
 
-			this.checkUpIconTexture = Assets.getTexture(HivivaAssets.TICK_BOX);
-			this.checkDownIconTexture = Assets.getTexture(HivivaAssets.TICK_BOX_ACTIVE);
+			this.checkUpIconTexture = Main.assets.getTexture("tick_box");
+			this.checkDownIconTexture = Main.assets.getTexture("tick_box_active");
 
 //			this.checkDisabledIconTexture = backgroundDisabledSkinTexture;
 //			this.checkSelectedUpIconTexture = this.atlas.getTexture("check-selected-up-icon");

@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.ImageLoader;
@@ -36,7 +37,7 @@ package collaboRhythm.hiviva.view.components
 		{
 			super.initialize();
 
-			this._img = new Image(Assets.getTexture(HivivaAssets.SUBSCRIPT_CIRCLE));
+			this._img = new Image(Main.assets.getTexture("suberscript_circle"));
 			this.addChild(this._img);
 
 			this._label = new Label();

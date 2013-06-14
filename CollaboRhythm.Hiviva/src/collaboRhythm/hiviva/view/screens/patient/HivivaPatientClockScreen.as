@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
@@ -157,7 +158,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					//timeSegment.smoothing = TextureSmoothing.TRILINEAR;
 
 					//timeSegment.rotation = timeSegment.rotation - HivivaModifier.degreesToRadians(7.5);
-					var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
+					var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
 					//tabletCell.addChild(timeSegment);
 					tabletCell.addChild(tablet);
 					tablet.y = -tablet.width/2;
@@ -194,7 +195,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					holderCell.height = this._clockFace.height;
 
 					var tabletCell:Sprite = new Sprite();
-					var tablet:Image = new Image(Assets.getTexture("Tablet" + tabletColorCount + "Png"));
+					var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
 					tabletCell.addChild(tablet);
 					tablet.x = clockHandSpacing + (i * tablet.width) + 10;
 					tablet.y = -tablet.width/2;

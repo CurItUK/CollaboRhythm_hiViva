@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
@@ -73,7 +74,7 @@ package collaboRhythm.hiviva.view.components
 
 		override protected function initialize():void
 		{
-			this._seperator = new Image(Assets.getTexture(HivivaAssets.HEADER_LINE));
+			this._seperator = new Image(Main.assets.getTexture("header_line"));
 			addChild(this._seperator);
 
 			this._pillImageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
