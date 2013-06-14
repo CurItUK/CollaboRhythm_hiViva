@@ -39,10 +39,10 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private const BADGE_ICONS:Array =
 		[
-			"STAR1",
-			"STAR2",
-			"STAR3",
-			"STAR4"
+			"star1",
+			"star2",
+			"star3",
+			"star4"
 		]
 
 		private const BADGE_DATES:Array =

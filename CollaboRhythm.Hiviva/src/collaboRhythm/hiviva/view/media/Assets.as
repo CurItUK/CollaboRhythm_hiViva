@@ -45,6 +45,8 @@ package collaboRhythm.hiviva.view.media
 		public static const ExoLightFont:Class;
 
 
+
+
 		private static var applicationTextures:Dictionary = new Dictionary();
 
 		public static function getTexture(name:String):Texture
@@ -136,8 +138,7 @@ package collaboRhythm.hiviva.view.media
 //[Embed(source="/assets/images/temp/footer_icon_7.png")]
 //public static const FooterIconMessagePng:Class;
 
-//[Embed(source="/assets/images/temp/side_nav_base.png")]
-//public static const SideNavBasePng:Class;
+
 
 //[Embed(source="/assets/images/temp/side_nav_icon_01.png")]
 //public static const SideNavIconProfilePng:Class;

@@ -55,7 +55,7 @@ package collaboRhythm.hiviva.view
 			viewPort = new Rectangle(0, 0, this._sw, this._sh);
 			_starFW = new Starling(Main, stage, viewPort);
 
-			_starFW.showStats = true;
+			//_starFW.showStats = true;
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			//_starFW.enableErrorChecking = true;
 			_starFW.start();

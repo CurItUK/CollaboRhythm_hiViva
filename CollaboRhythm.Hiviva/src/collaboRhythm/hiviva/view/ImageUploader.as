@@ -25,6 +25,7 @@ package collaboRhythm.hiviva.view
 	import flash.media.CameraRoll;
 	import flash.media.MediaPromise;
 	import flash.net.URLRequest;
+	import flash.utils.IDataInput;
 
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -146,6 +147,23 @@ package collaboRhythm.hiviva.view
 		private function imageSelected(e:MediaEvent):void
 		{
 			trace("Image selected...");
+
+			var imagePromise:MediaPromise = e.data;
+			var dataSource:IDataInput = imagePromise.open();
+
+			if (imagePromise.isAsync)
+			{
+				trace("Asynchronous media promise.");
+
+
+			}
+			else
+			{
+				trace("Synchronous media promise.");
+
+			}
+
+
 
 			var imageSource:MediaPromise = e.data;
 			// set destination location

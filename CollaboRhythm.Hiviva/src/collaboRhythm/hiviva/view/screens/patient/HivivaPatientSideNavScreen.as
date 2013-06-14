@@ -36,8 +36,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function initialize():void
 		{
 			// needs own class
-			var btnHeight:Number = Main.assets.getTexture("side_nav_base").height * SCALE;
-			var btnWidth:Number = Main.assets.getTexture("side_nav_base").width * SCALE;
+			var btnHeight:Number = 131 * SCALE;
+			var btnWidth:Number = 177 * SCALE;
 
 			this._sideBtnGroup = new ButtonGroup();
 			this._sideBtnGroup.customButtonName = "side-nav-buttons";
