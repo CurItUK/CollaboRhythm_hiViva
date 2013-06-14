@@ -43,6 +43,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._instructionsLabel.width = this._innerWidth;
 
 			this._requestsCheck.width = this._innerWidth;
+
 		}
 
 		override protected function postValidateContent():void
@@ -51,6 +52,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._adherenceCheck.width = this._instructionsLabel.width * 0.5;
 
+
+
 			this._adherenceLabelInput.width = this._adherenceCheck.width;
 			this._adherenceLabelInput._labelLeft.text = ">";
 			this._adherenceLabelInput._labelRight.text = "%";
@@ -58,11 +61,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._adherenceLabelInput._input.x += this._adherenceLabelInput._labelLeft.width;
 			this._adherenceLabelInput._input.width = this._adherenceCheck.width * 0.3;
 			this._adherenceLabelInput.validate();
-			this._adherenceLabelInput.y = this._adherenceCheck.y +
-					(this._adherenceCheck.height * 0.5) - (this._adherenceLabelInput.height * 0.5);
+			this._adherenceLabelInput.y = this._adherenceCheck.y + (this._adherenceCheck.height * 0.5) - (this._adherenceLabelInput.height * 0.5);
 			this._adherenceLabelInput.x = this._adherenceCheck.x + this._adherenceCheck.width;
 
-			this._tolerabilityCheck.y = this._adherenceCheck.y + this._adherenceCheck.height + this._componentGap;
+			this._tolerabilityCheck.y = this._adherenceCheck.y + this._adherenceCheck.height + this._componentGap + 30;
 			this._tolerabilityCheck.width = this._instructionsLabel.width * 0.5;
 
 			this._tolerabilityLabelInput.width = this._tolerabilityCheck.width;
@@ -72,8 +74,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._tolerabilityLabelInput._input.x += this._tolerabilityLabelInput._labelLeft.width;
 			this._tolerabilityLabelInput._input.width = this._tolerabilityCheck.width * 0.3;
 			this._tolerabilityLabelInput.validate();
-			this._tolerabilityLabelInput.y = this._tolerabilityCheck.y +
-					(this._tolerabilityCheck.height * 0.5) - (this._tolerabilityLabelInput.height * 0.5);
+			this._tolerabilityLabelInput.y = this._tolerabilityCheck.y + (this._tolerabilityCheck.height * 0.5) - (this._tolerabilityLabelInput.height * 0.5);
 			this._tolerabilityLabelInput.x = this._tolerabilityCheck.x + this._tolerabilityCheck.width;
 
 			this._submitButton.y = this._cancelButton.y = this._tolerabilityCheck.y + this._tolerabilityCheck.height + this._componentGap;
@@ -97,7 +98,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._adherenceCheck = new Check();
 			this._adherenceCheck.isSelected = false;
-			this._adherenceCheck.label = "Adherence";
+			this._adherenceCheck.label = "Adherence   ";
 			this._content.addChild(this._adherenceCheck);
 
 			this._adherenceLabelInput = new LabelAndInput();
@@ -107,7 +108,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._tolerabilityCheck = new Check();
 			this._tolerabilityCheck.isSelected = false;
-			this._tolerabilityCheck.label = "Tolerability";
+			this._tolerabilityCheck.label = "Tolerability   ";
 			this._content.addChild(this._tolerabilityCheck);
 
 			this._tolerabilityLabelInput = new LabelAndInput();
