@@ -36,6 +36,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _patientsData:XML;
 		private var _patients:Array;
 		private var _filterdPatients:Array;
+		private var _patientLabel:Label;
 
 		private const PADDING:Number = 20;
 
@@ -49,6 +50,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			super.draw();
 
 			var scaledPadding:Number = PADDING * this.dpiScale;
+
+			this._patientLabel.validate();
+			this._patientLabel.x = PADDING;
+			this._patientLabel.y = 120;
+			this._patientLabel.width = this.actualWidth;
+
 			_connectToPatientBtn.validate();
 			_connectToPatientBtn.x = this.actualWidth / 2 - _connectToPatientBtn.width / 2;
 			_connectToPatientBtn.y = this.actualHeight - _connectToPatientBtn.height - scaledPadding - footerHeight;
@@ -59,6 +66,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function initialize():void
 		{
 			super.initialize();
+			this._patientLabel = new Label();
+			this._patientLabel.text = "<font face='ExoBold'>Patients</font>";
+			this..addChild(this._patientLabel);
 
 			_connectToPatientBtn = new Button();
 			_connectToPatientBtn.label = "Connect to patient";
@@ -138,7 +148,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 					if (patientsXMLList[i].appid == patients[j].appid)
 					{
 						_filterdPatients.push(patientsXMLList[i]);
-
 					}
 				}
 			}
@@ -174,8 +183,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var maxHeight:Number;
 			var patientCell:PatientResultCellHome;
 
-			yStartPosition = 120;
-			maxHeight = this.actualHeight - yStartPosition -  _connectToPatientBtn.height - footerHeight - 2 * (PADDING * this.dpiScale);
+			yStartPosition = this._patientLabel.y + scaledPadding + this._patientLabel.height;
+			maxHeight = this.actualHeight - yStartPosition -  this._patientLabel.height - _connectToPatientBtn.height - footerHeight - 2 * (PADDING * this.dpiScale);
 
 			this._patientCellContainer.width = this.actualWidth;
 			this._patientCellContainer.y = yStartPosition;
@@ -201,6 +210,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this.addChild(alertLabel);
 			alertLabel.validate();
+
+			alertLabel.width = 390;
 			alertLabel.x = this.actualWidth / 2 - alertLabel.width / 2;
 			alertLabel.y = alertLabel.height * 4;
 		}
