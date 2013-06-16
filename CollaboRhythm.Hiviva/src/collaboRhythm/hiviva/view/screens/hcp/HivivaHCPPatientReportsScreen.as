@@ -292,7 +292,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._stageWebView = new StageWebView();
 			this._stageWebView.stage = Starling.current.nativeStage.stage;
 			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - padding);
-			var pdf:File = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
+			//var pdf:File = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
+			var pdf:File = File.applicationDirectory.resolvePath("resources/patient_report.pdf");
 			this._stageWebView.loadURL(pdf.nativePath);
 
 		}

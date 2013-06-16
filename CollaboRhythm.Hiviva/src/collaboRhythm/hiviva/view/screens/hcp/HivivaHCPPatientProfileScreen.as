@@ -1,14 +1,16 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
-	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.media.Assets;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPPatientMessageCompose;
+
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientReportsScreen;
 
 	import feathers.controls.Button;
@@ -47,6 +49,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _bg:Scale9Image;
 		private var _patientImageBg:Quad;
 		private var _photoHolder:Image;
+		private var _spoofData:Image;
 		private var _patientEmail:Label;
 		private var _patientData:XML;
 		private var _adherenceLabel:Label;
@@ -159,7 +162,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.addChild(this._sendMessageBtn);
 
 			this._sendMessageBtn.validate();
-			this._sendMessageBtn.x = this._patientEmail.x;
+			this._sendMessageBtn.x = this.actualWidth/2 - this._sendMessageBtn.width - gap/2;
 			this._sendMessageBtn.y = _tolerabilityLabel.y + _tolerabilityLabel.height + 2 * gap;
 
 			this._generateReportBtn = new Button();
@@ -175,6 +178,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var bgFinalHeight:Number =  sendMessageBtnY + this._sendMessageBtn.height + gap;
 			this._bg.height = bgFinalHeight;
 
+			this._spoofData = new Image(Assets.getTexture(HivivaAssets.SPOOF_DATA));
+			this._spoofData.y = this._generateReportBtn.y + this._generateReportBtn.height + gap;
+			this.addChild(_spoofData);
+
+
 
 			doImageLoad("media/patients/" + _patientData.picture);
 
@@ -182,12 +190,28 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function backBtnHandler(e:starling.events.Event):void
 		{
+			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
 			this.dispatchEventWith("navGoHome");
 		}
 
 		private function sendMessageBtnHandler(e:starling.events.Event):void
 		{
+			//this.owner.showScreen(HivivaScreens.HCP_MESSAGE_COMPOSE_SCREEN);
 
+			var selectedPatient:XML = _patientData;
+			var screenParams:Object = {selectedPatient: selectedPatient};
+			var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaHCPPatientMessageCompose , null , screenParams);
+
+			if (this.owner.getScreenIDs().indexOf(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN) == -1)
+			{
+				this.owner.addScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN, screenNavigatorItem);
+			}
+			else
+			{
+				this.owner.removeScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN);
+				this.owner.addScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN, screenNavigatorItem);
+			}
+			this.owner.showScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN);
 		}
 
 		private function generateReportsBtnHandler(e:starling.events.Event):void
@@ -274,21 +298,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 		}
 
-		override public function dispose():void
-		{
-
-			this._patientImageBg.dispose();
-			this._photoHolder.dispose();
-
-			removeChildren(0, -1, true);
-			removeEventListeners();
-
-			this._patientImageBg = null;
-			this._photoHolder = null;
-
-			super.dispose();
-		}
-
 		public function set patientData(value:XML):void
 		{
 			this._patientData = value;
@@ -297,6 +306,25 @@ package collaboRhythm.hiviva.view.screens.hcp
 		public function get patientData():XML
 		{
 			return this._patientData;
+		}
+
+		override public function dispose():void
+		{
+
+			this._patientImageBg.dispose();
+			if(this._photoHolder != null)
+			{
+				this._photoHolder.dispose();
+			}
+
+
+			removeChildren(0, -1, true);
+			removeEventListeners();
+
+			this._patientImageBg = null;
+			this._photoHolder = null;
+
+			super.dispose();
 		}
 
 

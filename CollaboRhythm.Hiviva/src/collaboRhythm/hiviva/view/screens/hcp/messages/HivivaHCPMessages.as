@@ -21,7 +21,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 	public class HivivaHCPMessages extends Screen
 	{
 		private var _footerHeight:Number;
-		private var _applicationController:HivivaAppController;
 		private var _messageNav:ScreenNavigator;
 
 		public function HivivaHCPMessages()
@@ -43,16 +42,11 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function initMessageNav():void
 		{
-//			var screenNavProperties:Object = {applicationController:applicationController ,footerHeight:footerHeight , headerHeight:this._header.height};
-			var screenNavProperties:Object = {applicationController: applicationController};
 
 			this._messageNav = new ScreenNavigator();
-			this._messageNav.addScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN,
-					new ScreenNavigatorItem(HivivaHCPMessageInbox, {messageNavGoDetails:messageNavGoDetails}, screenNavProperties));
-			this._messageNav.addScreen(HivivaScreens.HCP_MESSAGE_SENT_SCREEN,
-					new ScreenNavigatorItem(HivivaHCPMessageSent, null, screenNavProperties));
-			this._messageNav.addScreen(HivivaScreens.HCP_MESSAGE_COMPOSE_SCREEN,
-					new ScreenNavigatorItem(HivivaHCPMessageCompose, null, screenNavProperties));
+			this._messageNav.addScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN, new ScreenNavigatorItem(HivivaHCPMessageInbox, {messageNavGoDetails:messageNavGoDetails}));
+			this._messageNav.addScreen(HivivaScreens.HCP_MESSAGE_SENT_SCREEN, new ScreenNavigatorItem(HivivaHCPMessageSent));
+			this._messageNav.addScreen(HivivaScreens.HCP_MESSAGE_COMPOSE_SCREEN, new ScreenNavigatorItem(HivivaHCPMessageCompose));
 			this.addChild(this._messageNav);
 
 			var transitionMgr:ScreenSlidingStackTransitionManager = new ScreenSlidingStackTransitionManager(this._messageNav);
@@ -64,42 +58,15 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function messageNavGoDetails(e:Event):void
 		{
+			var screenNavProperties:Object = { messageData:e.data};
 			if(this._messageNav.hasScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN))
 			{
 				this._messageNav.removeScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN);
 			}
-
-			var screenNavProperties:Object = {applicationController: applicationController, messageData:e.data};
-
-			this._messageNav.addScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN,
-								new ScreenNavigatorItem(HivivaHCPMessageDetail, null, screenNavProperties));
-
+			this._messageNav.addScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN, new ScreenNavigatorItem(HivivaHCPMessageDetail, null, screenNavProperties));
 			this._messageNav.showScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN);
 		}
 
-		public function get localStoreController():HivivaLocalStoreController
-		{
-			return applicationController.hivivaLocalStoreController;
-		}
 
-		public function get applicationController():HivivaAppController
-		{
-			return _applicationController;
-		}
-
-		public function set applicationController(value:HivivaAppController):void
-		{
-			_applicationController = value;
-		}
-
-		public function get footerHeight():Number
-		{
-			return _footerHeight;
-		}
-
-		public function set footerHeight(value:Number):void
-		{
-			_footerHeight = value;
-		}
 	}
 }

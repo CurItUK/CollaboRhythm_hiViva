@@ -44,6 +44,7 @@ package collaboRhythm.hiviva.global
 		public static const HCP_MESSAGE_SENT_SCREEN:String				= "hcpMessageSentScreen";
 		public static const HCP_MESSAGE_DETAIL_SCREEN:String			= "hcpMessageDetailScreen";
 		public static const HCP_HELP_DETAIL_SCREEN:String				= "patientHelpDetailScreen";
+		public static const HCP_PATIENT_MESSAGE_COMPOSE_SCREEN:String	= "hcpPatientMessageComposeScreen";
 
 		//HCP Reporting screens
 		public static const HCP_REPORTS_SCREEN:String					= "hcpReportsScreen";

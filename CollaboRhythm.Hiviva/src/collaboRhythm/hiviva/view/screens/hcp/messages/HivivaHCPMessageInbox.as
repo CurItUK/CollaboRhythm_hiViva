@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.*;
@@ -27,8 +28,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 	public class HivivaHCPMessageInbox extends Screen
 	{
-		private var _footerHeight:Number;
-		private var _applicationController:HivivaAppController;
+
 		private var _header:HivivaHeader;
 		private var _messagesData:XML;
 		private var _messageCellContainer:ScrollContainer;
@@ -55,8 +55,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._deleteBtn.validate();
 			this._deleteBtn.x = (this.actualWidth * 0.5) - (this._deleteBtn.width * 0.5);
-			this._deleteBtn.y = this.actualHeight - _header.height - _footerHeight -
-								this._deleteBtn.height - _scaledPadding;
+			this._deleteBtn.y = this.actualHeight - _header.height - Constants.FOOTER_BTNGROUP_HEIGHT - this._deleteBtn.height - _scaledPadding;
 
 			initHCPMessagesXMLData();
 		}
@@ -65,7 +64,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		{
 			super.initialize();
 			this._header = new HivivaHeader();
-			this._header.title = "Messages";
+			this._header.title = " Messages";
 			this.addChild(this._header);
 
 			this._deleteBtn = new Button();
@@ -131,7 +130,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			var messageCell:MessageInboxResultCell;
 
 			yStartPosition = this._header.height;
-			maxHeight = this.actualHeight - yStartPosition - footerHeight - 2 * (PADDING * this.dpiScale) - this._composeBtn.height;
+			maxHeight = this.actualHeight - yStartPosition - Constants.FOOTER_BTNGROUP_HEIGHT - 2 * (PADDING * this.dpiScale) - this._composeBtn.height;
 
 			this._messageCellContainer.width = this.actualWidth;
 			this._messageCellContainer.y = yStartPosition;
@@ -152,7 +151,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private function composeBtnHandler(e:starling.events.Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_MESSAGE_COMPOSE_SCREEN);
-
 		}
 
 		private function sentBtnHandler(e:starling.events.Event):void
@@ -176,30 +174,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			dispatchEventWith("messageNavGoDetails", false, evtData);
 		}
 
-		public function get localStoreController():HivivaLocalStoreController
-		{
-			return applicationController.hivivaLocalStoreController;
-		}
-
-		public function get applicationController():HivivaAppController
-		{
-			return _applicationController;
-		}
-
-		public function set applicationController(value:HivivaAppController):void
-		{
-			_applicationController = value;
-		}
-
-		public function get footerHeight():Number
-		{
-			return _footerHeight;
-		}
-
-		public function set footerHeight(value:Number):void
-		{
-			_footerHeight = value;
-		}
 
 
 	}
