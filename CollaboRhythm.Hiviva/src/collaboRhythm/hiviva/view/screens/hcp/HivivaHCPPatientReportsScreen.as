@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 
@@ -70,7 +71,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private var _pdfFile:File;
 		private var _stageWebView:StageWebView
-		private var _applicationController:HivivaApplicationController;
+		private var _applicationController:HivivaAppController;
 
 
 		private var _pdfPopupContainer:HivivaPDFPopUp;
@@ -329,19 +330,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._selectedPatient = patient;
 		}
 
-		public override function get localStoreController():HivivaLocalStoreController
-		{
-			return applicationController.hivivaLocalStoreController;
-		}
 
-		public override function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
-
-		public override function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
 	}
 }

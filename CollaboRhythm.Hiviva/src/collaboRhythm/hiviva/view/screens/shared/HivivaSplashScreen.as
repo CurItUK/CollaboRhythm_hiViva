@@ -2,11 +2,14 @@ package collaboRhythm.hiviva.view.screens.shared
 {
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
+
+	import flash.display.BlendMode;
 
 	import flash.events.TimerEvent;
 	import flash.text.TextFormat;
@@ -37,7 +40,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private var _starlingMain:Main;
 
-		private const SPLASH_TIMEOUT:uint						= 4000;
+		private const SPLASH_TIMEOUT:uint						= 2000;
 
 		public function HivivaSplashScreen()
 		{
@@ -58,13 +61,12 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			initSplashBackground();
 
-			this._appType = starlingMain.applicationController.hivivaLocalStoreController.service.appDataVO._userAppType;
+			this._appType = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.appDataVO._userAppType;
 			if(this._appType == HivivaLocalStoreService.APP_FIRST_TIME_USE)
 			{
 				initButtons();
-				initButtonListeners();
-
-			} else
+			}
+			else
 			{
 				initDefaultSplash();
 			}
@@ -72,21 +74,19 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function initSplashBackground():void
 		{
-
-
-			//this._splashBg = new Image(Assets.getTexture(HivivaAssets.SPLASH_SCREEN_BG));
 			this._splashBg = new Image(Main.assets.getTexture("splash_bg"));
+			this._splashBg.touchable = false;
 			addChild(this._splashBg);
 
-
-			//this._logo = new Image(Assets.getTexture(HivivaAssets.LOGO));
 			this._logo = new Image(Main.assets.getTexture("logo"));
+			this._logo.touchable = false;
 			addChild(this._logo);
 
 			this._footer = new Label();
 			this._footer.name = "splash-footer-text";
 			this._footer.text = "An extension of MIT's CollaboRhythm project";
 			this._footer.alpha = 0.56;
+			this._footer.touchable = false;
 			addChild(this._footer);
 
 			this._termsButton = new Button();
@@ -130,10 +130,12 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._hcpButton.defaultSkin = new Image(Main.assets.getTexture("splash_button_02"));
 			applySplashButtonProperties(this._hcpButton);
 			this._hcpButton.label = "I’m a healthcare \nprofessional \nor carer";
+			this._hcpButton.addEventListener(Event.TRIGGERED , hcpButtonHandler);
 
 			this._patientButton = new Button();
 			this._patientButton.defaultSkin = new Image(Main.assets.getTexture("splash_button_01"));
 			this._patientButton.label = "I am a patient";
+			this._patientButton.addEventListener(Event.TRIGGERED , patientButtonHandler);
 			applySplashButtonProperties(this._patientButton);
 
 			this._hcpButton.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
@@ -154,17 +156,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._hcpButton.y = this._patientButton.y = this._footer.y - this._hcpButton.height;
 		}
 
-		private function initButtonListeners():void
-		{
-			this._patientButton.addEventListener(Event.TRIGGERED , patientButtonHandler);
-			this._hcpButton.addEventListener(Event.TRIGGERED , hcpButtonHandler);
-		}
-
-		private function removeButtonListeners():void
-		{
-			this._patientButton.removeEventListener(Event.TRIGGERED , patientButtonHandler);
-			this._hcpButton.removeEventListener(Event.TRIGGERED , hcpButtonHandler);
-		}
 
 		private function applySplashButtonProperties(button:Button):void
 		{
@@ -184,25 +175,19 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function hcpButtonHandler(e:Event):void
 		{
-			//TODO move string values to Constants in a data file
 			notifyLocalStoreController(HivivaLocalStoreService.USER_APP_TYPE_HCP);
-			removeButtonListeners();
-			fadeOutUnselected();
 		}
 
 		private function patientButtonHandler(e:Event):void
 		{
-			//TODO move string values to Constants in a data file
 			notifyLocalStoreController(HivivaLocalStoreService.USER_APP_TYPE_PATIENT);
-			removeButtonListeners();
-			fadeOutUnselected();
 		}
 
 		private function notifyLocalStoreController(userValue:String):void
 		{
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PROFILE_TYPE_UPDATE);
 			evt.data.user = userValue;
-			starlingMain.applicationController.hivivaLocalStoreController.dispatchEvent(evt);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.dispatchEvent(evt);
 			this._appType = userValue;
 			closeDownScreen();
 		}
@@ -212,27 +197,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			var timer:Timer = new Timer(SPLASH_TIMEOUT , 1);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
 			timer.start();
-
-			//fadeOutUnselected();
-		}
-
-		private function fadeOutUnselected():void
-		{
-			var fadeOutTime:Number = 1,
-				buttonTween:Tween;
-
-			if (this._appType == HivivaLocalStoreService.USER_APP_TYPE_HCP)
-			{
-				buttonTween = new Tween(this._patientButton, fadeOutTime, Transitions.EASE_OUT);
-			}
-			else if (this._appType == HivivaLocalStoreService.USER_APP_TYPE_PATIENT)
-			{
-				buttonTween = new Tween(this._hcpButton, fadeOutTime, Transitions.EASE_OUT);
-				trace(this._appType);
-			}
-
-			buttonTween.animate("alpha", 0);
-			Starling.juggler.add(buttonTween);
 		}
 
 		private function timerCompleteHandler(e:TimerEvent):void
@@ -251,17 +215,12 @@ package collaboRhythm.hiviva.view.screens.shared
 		override public function dispose():void
 		{
 			trace("HivivaSplashScreen dispose called");
+			Main.assets.removeTexture("splash_bg");
+			Main.assets.removeTexture("logo");
+			Main.assets.removeTexture("splash_button_01");
+			Main.assets.removeTexture("splash_button_02");
 			super.dispose();
 		}
 
-		public function set starlingMain(value:Main):void
-		{
-			this._starlingMain = value;
-		}
-
-		public function get starlingMain():Main
-		{
-			return this._starlingMain;
-		}
 	}
 }

@@ -1,9 +1,12 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.view.HivivaHeader;
+	import collaboRhythm.hiviva.view.HivivaStartup;
+	import collaboRhythm.hiviva.view.Main;
 
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
@@ -18,7 +21,6 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	public class BaseScreen extends Screen
 	{
-		private var _applicationController:HivivaApplicationController;
 		protected var _header:HivivaHeader;
 		protected var _content:ScrollContainer;
 		protected var _contentLayout:VerticalLayout;
@@ -107,17 +109,9 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		public function get localStoreController():HivivaLocalStoreController
 		{
-			return applicationController.hivivaLocalStoreController;
+			return HivivaStartup.hivivaAppController.hivivaLocalStoreController;
 		}
 
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
 
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
 	}
 }

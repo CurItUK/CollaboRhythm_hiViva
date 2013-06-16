@@ -1,6 +1,8 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
@@ -32,9 +34,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _CD4CountSlider:Slider;
 		private var _resteBtn:Button;
 		private var _helpBtn:Button;
-		private var _footerHeight:Number;
-		private var _headerHeight:Number;
-		private var _applicationController:HivivaApplicationController;
+
+
 		private var _dump:ImageLoader;
 
 		private var _scaledPadding:Number;
@@ -66,8 +67,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._adheranceSlider.validate();
 			this._adheranceSlider.width = innerWidth * 0.6;
 			this._adheranceSlider.x = this._adheranceResultLabel.x + this._adheranceResultLabel.width;
-			this._adheranceSlider.y = this._adheranceResultLabel.y + (this._adheranceResultLabel.height * 0.5) -
-					(this._adheranceSlider.height * 0.5);
+			this._adheranceSlider.y = this._adheranceResultLabel.y + (this._adheranceResultLabel.height * 0.5) - (this._adheranceSlider.height * 0.5);
 
 
 			this._viralLoadLabel.validate();
@@ -83,8 +83,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._viralLoadSlider.validate();
 			this._viralLoadSlider.width = innerWidth * 0.6;
 			this._viralLoadSlider.x = this._viralLoadResultLabel.x + this._viralLoadResultLabel.width;
-			this._viralLoadSlider.y = this._viralLoadResultLabel.y + (this._viralLoadResultLabel.height * 0.5) -
-					(this._viralLoadSlider.height * 0.5);
+			this._viralLoadSlider.y = this._viralLoadResultLabel.y + (this._viralLoadResultLabel.height * 0.5) - (this._viralLoadSlider.height * 0.5);
 
 
 			this._CD4CountLabel.validate();
@@ -100,8 +99,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._CD4CountSlider.validate();
 			this._CD4CountSlider.width = innerWidth * 0.6;
 			this._CD4CountSlider.x = this._CD4CountResultLabel.x + this._CD4CountResultLabel.width;
-			this._CD4CountSlider.y = this._CD4CountResultLabel.y + (this._CD4CountResultLabel.height * 0.5) -
-					(this._CD4CountSlider.height * 0.5);
+			this._CD4CountSlider.y = this._CD4CountResultLabel.y + (this._CD4CountResultLabel.height * 0.5) - (this._CD4CountSlider.height * 0.5);
 
 
 			//this._resteBtn.validate();
@@ -110,7 +108,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			//this._resteBtn.y = this._CD4CountSlider.y + this._CD4CountSlider.height;
 
 			this._dump.y = this._CD4CountSlider.y + this._CD4CountSlider.height + this._scaledPadding;
-			this._dump.maxHeight = this.actualHeight - this._footerHeight - this._dump.y;
+			this._dump.maxHeight = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT - this._dump.y;
 
 			getMedicationResults();
 		}
@@ -232,34 +230,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			//applicationController.hivivaLocalStoreController.getAdherence();
 		}
 
-		public function get applicationController():HivivaApplicationController
+		public override function dispose():void
 		{
-			return _applicationController;
+			trace("HivivaPatientVirusModelScreen dispose");
+			super.dispose();
 		}
 
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
 
-		public function get footerHeight():Number
-		{
-			return _footerHeight;
-		}
 
-		public function set footerHeight(value:Number):void
-		{
-			_footerHeight = value;
-		}
 
-		public function get headerHeight():Number
-		{
-			return _headerHeight;
-		}
 
-		public function set headerHeight(value:Number):void
-		{
-			_headerHeight = value;
-		}
 	}
 }

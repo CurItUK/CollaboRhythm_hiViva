@@ -145,9 +145,6 @@
 		<image128x128>assets/images/icons/CollaboRhythm_icon_white_128.png</image128x128>
 	</icon>
     
-   <extensions>
-		<extensionID>com.adobe.Vibration</extensionID>
-	</extensions>
 
 
 	<!-- Whether the application handles the update when a user double-clicks an update version

@@ -1,6 +1,6 @@
 package collaboRhythm.hiviva.view
 {
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -20,10 +20,7 @@ package collaboRhythm.hiviva.view
 		private var _sh:Number;
 		private var _assets:AssetManager;
 
-
-
-		[Bindable]
-		protected var _hivivaApplicationController:HivivaApplicationController;
+		private static var _hivivaAppController:HivivaAppController;
 
 
 		public function HivivaStartup()
@@ -38,36 +35,41 @@ package collaboRhythm.hiviva.view
 			this._sw = stage.fullScreenWidth;
 			this._sh = stage.fullScreenHeight;
 
-			_hivivaApplicationController = new HivivaApplicationController();
-			_hivivaApplicationController.main();
+			_hivivaAppController = new HivivaAppController();
+			_hivivaAppController.initLocalStore();
+
 			initStarling();
 		}
 
 		private function initStarling():void
 		{
 			var viewPort:Rectangle;
-			//trace("Starling Init");
+			//viewPort = new Rectangle(0, 0, 640, 960);
+			viewPort = new Rectangle(0, 0, this._sw, this._sh);
+
 			var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
 			Starling.multitouchEnabled = true;
 			Starling.handleLostContext = !iOS;
-			trace("handleLostContext " + Starling.handleLostContext + " iOS " + iOS );
-			//viewPort = new Rectangle(0, 0, 640, 960);
-			viewPort = new Rectangle(0, 0, this._sw, this._sh);
-			_starFW = new Starling(Main, stage, viewPort);
 
-			//_starFW.showStats = true;
+			_starFW = new Starling(Main, stage, viewPort);
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
-			//_starFW.enableErrorChecking = true;
 			_starFW.start();
-			trace(_starFW.viewPort);
 		}
 
 		private function starlingRootCreatedHandler(e:starling.events.Event):void
 		{
+			trace("renderMode " +  Starling.context.driverInfo);
+			_starFW.removeEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			this._assets = new AssetManager();
 			var main:Main = Starling.current.root as Main;
-			main.applicationController = _hivivaApplicationController as HivivaApplicationController;
 			main.initMain(this._assets);
 		}
+
+		public static function get hivivaAppController():HivivaAppController
+		{
+			return _hivivaAppController;
+		}
+
+
 	}
 }

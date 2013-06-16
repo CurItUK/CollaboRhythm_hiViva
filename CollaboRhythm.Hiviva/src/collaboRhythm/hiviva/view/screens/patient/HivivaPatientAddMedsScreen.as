@@ -207,7 +207,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function continueBtnHandler(e:starling.events.Event):void
 		{
 			var selectedMedicine:XML = medicationXMLList[this._ListToggleGroup.selectedIndex - 1];
-			var screenParams:Object = {medicationResult:selectedMedicine , applicationController:applicationController};
+			var screenParams:Object = {medicationResult:selectedMedicine};
 			var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatientScheduleMedsScreen , null , screenParams);
 
 			if(this.owner.getScreenIDs().indexOf(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN) == -1)

@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
@@ -22,7 +23,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	public class HivivaPatientBagesScreen extends Screen
 	{
-		private var _applicationController:HivivaApplicationController;
+		private var _applicationController:HivivaAppController;
 		protected var _header:HivivaHeader;
 		private var _allAdherenceData:Array;
 		private var _cellContainer:ScrollContainer;
@@ -147,12 +148,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			return applicationController.hivivaLocalStoreController;
 		}
 
-		public function get applicationController():HivivaApplicationController
+		public function get applicationController():HivivaAppController
 		{
 			return _applicationController;
 		}
 
-		public function set applicationController(value:HivivaApplicationController):void
+		public function set applicationController(value:HivivaAppController):void
 		{
 			_applicationController = value;
 		}

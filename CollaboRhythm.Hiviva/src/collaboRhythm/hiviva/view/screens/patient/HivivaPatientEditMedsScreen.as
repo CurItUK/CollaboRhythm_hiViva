@@ -166,7 +166,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				editMedicationCell = new EditMedicationCell();
 				editMedicationCell.addEventListener(Event.REMOVED_FROM_STAGE, editMedicationCellRemoved);
-				editMedicationCell.applicationController = this.applicationController;
 				editMedicationCell.medicationId = int(this._medications[i].id);
 				editMedicationCell.scale = this.dpiScale;
 				editMedicationCell.brandName = HivivaModifier.getBrandName(this._medications[i].medication_name);

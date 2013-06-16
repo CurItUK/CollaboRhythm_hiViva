@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.view.*;
 
 
@@ -18,7 +19,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _usableHeight:Number;
 		private var _headerHeight:Number;
 		private var _footerHeight:Number;
-		private var _applicationController:HivivaApplicationController;
+		private var _applicationController:HivivaAppController;
 
 
 		public function HivivaHCPAllPatientsAdherenceScreen()

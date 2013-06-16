@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.Calendar;
@@ -42,7 +43,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	public class HivivaPatientReportsScreen extends ValidationScreen
 	{
-		private var _footerHeight:Number;
+
 		private var _startDateInput:LabelAndInput;
 		private var _startDateButton:Button;
 		private var _finishDateInput:LabelAndInput;
@@ -59,10 +60,9 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private var _pdfFile:File;
 		private var _stageWebView:StageWebView;
-		private var _alphaUnderlay:Sprite;
 
-		private var _sqConn:SQLConnection;
-		private var _sqStatement:SQLStatement;
+
+
 
 		private var _pdfPopupContainer:HivivaPDFPopUp;
 
@@ -73,7 +73,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function draw():void
 		{
-			this._customHeight = this.actualHeight - this._footerHeight;
+			this._customHeight = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT;
 			super.draw();
 			this._content.validate();
 		}
@@ -338,14 +338,12 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		}
 
-		public function get footerHeight():Number
+		public override function dispose():void
 		{
-			return _footerHeight;
+			trace("HivivaPatientReportsScreen dispose");
+			super.dispose();
 		}
 
-		public function set footerHeight(value:Number):void
-		{
-			_footerHeight = value;
-		}
+
 	}
 }

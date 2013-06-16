@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
@@ -22,7 +23,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	public class HivivaHCPProfileScreen extends Screen
 	{
-		private var _applicationController:HivivaApplicationController;
+
 		private var _header:HivivaHeader;
 		private var _homeBtn:Button;
 		private var _menuBtnGroup:ButtonGroup;
@@ -94,13 +95,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._appId = new Label();
 			this._appId.name = "patient-profile-appid";
 			addChild(this._appId);
-			localStoreController.addEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
-			localStoreController.getAppId();
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getAppId();
 		}
 
 		private function getAppId(e:LocalDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
 
 			var appIdData:String = e.data.app_id;
 			this._appId.text = appIdData;
@@ -170,19 +171,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.dispatchEventWith("navGoHome");
 		}
 
-		public function get localStoreController():HivivaLocalStoreController
-		{
-			return applicationController.hivivaLocalStoreController;
-		}
 
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
-
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
 	}
 }

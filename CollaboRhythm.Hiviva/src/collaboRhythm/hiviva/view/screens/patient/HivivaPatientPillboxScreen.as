@@ -1,8 +1,11 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.components.SuperscriptCircle;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -20,9 +23,9 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var IMAGE_SIZE:Number;
 
 		private var _usableHeight:Number;
-		private var _footerHeight:Number;
+
 		private var _headerHeight:Number;
-		private var _applicationController:HivivaApplicationController;
+
 		private var _amMedication:Array = [];
 		private var _pmMedication:Array = [];
 		private var _amTableXloc:Number;
@@ -41,7 +44,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			IMAGE_SIZE = this.actualWidth * 0.9;
 
-			this._usableHeight = this.actualHeight - footerHeight - headerHeight;
+			this._usableHeight = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT - headerHeight;
 			this._pillBox.width = IMAGE_SIZE;
 			this._pillBox.scaleY = this._pillBox.scaleX;
 
@@ -68,15 +71,15 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function initPillboxMedication():void
 		{
 			trace("initPillboxMedication pillbox height" + this._pillBox.height);
-			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE , medicationLoadCompleteHandler);
-			applicationController.hivivaLocalStoreController.getMedicationsSchedule()
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE , medicationLoadCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getMedicationsSchedule()
 
 		}
 
 		private function medicationLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
 			//Build list of medications into their time slots am,pm
-			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE , medicationLoadCompleteHandler)
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE , medicationLoadCompleteHandler)
 			if (e.data.medicationSchedule != null)
 			{
 				trace(e.data.medicationSchedule);
@@ -164,28 +167,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
-
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
-
-
-
-		public function get footerHeight():Number
-		{
-			return _footerHeight;
-		}
-
-		public function set footerHeight(value:Number):void
-		{
-			_footerHeight = value;
-		}
-
 		public function get headerHeight():Number
 		{
 			return _headerHeight;
@@ -194,6 +175,15 @@ package collaboRhythm.hiviva.view.screens.patient
 		public function set headerHeight(value:Number):void
 		{
 			_headerHeight = value;
+		}
+
+		override public function dispose():void
+		{
+			trace("HivivaPatientPillboxScreen dispose");
+			this._pillBox.dispose();
+			this._pillBox = null;
+
+			super.dispose();
 		}
 	}
 }

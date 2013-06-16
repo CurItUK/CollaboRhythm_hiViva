@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
@@ -22,7 +23,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _header:HivivaHeader;
 		private var _addConnectionButton:Button;
 		private var _backButton:Button;
-		private var _applicationController:HivivaApplicationController;
+
 		private var _patientCellContainer:ScrollContainer;
 		private var _patientCellRadioGroup:ToggleGroup;
 		private var _deletePopupContainer:HivivaPopUp;
@@ -40,12 +41,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			super.draw();
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
-
-			// reduce font size for large title
-			/*this._header._titleHolder1.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(36 * this.dpiScale), 0x293d54);
-			this._header._titleHolder2.textRendererProperties.textFormat = new TextFormat("ExoLight", Math.round(36 * this.dpiScale), 0x293d54);
-			this._header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
-			this._header.validate();*/
 
 			this._addConnectionButton.validate();
 			this._addConnectionButton.x = (this.actualWidth / 2) - (this._addConnectionButton.width / 2);
@@ -81,13 +76,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function getHcpConnections():void
 		{
-			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
-			applicationController.hivivaLocalStoreController.getHCPConnections();
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getHCPConnections();
 		}
 
 		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
 		{
-			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
 			trace(e.data.connections);
 			if(e.data.connections != null)
 			{
@@ -181,13 +176,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function deleteHcpCell(e:Event):void
 		{
-			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTION_DELETE_COMPLETE , deleteHCPConnectionCompleteHandler);
-			applicationController.hivivaLocalStoreController.deleteHCPConnection(selectedPatientCellForDelete.patientData.appid);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTION_DELETE_COMPLETE , deleteHCPConnectionCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.deleteHCPConnection(selectedPatientCellForDelete.patientData.appid);
 		}
 
 		private function deleteHCPConnectionCompleteHandler(e:LocalDataStoreEvent):void
 		{
-			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTION_DELETE_COMPLETE , deleteHCPConnectionCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTION_DELETE_COMPLETE , deleteHCPConnectionCompleteHandler);
 			clearDownPatientCells();
 			clearDownPopup();
 			getHcpConnections();
@@ -237,16 +232,5 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			this._selectedPatientCellForDelete = cell;
 		}
-
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
-
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
-
 	}
 }

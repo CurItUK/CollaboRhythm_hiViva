@@ -198,13 +198,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function getHcpConnections():void
 		{
-			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
-			applicationController.hivivaLocalStoreController.getHCPConnections();
+			localStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			localStoreController.getHCPConnections();
 		}
 
 		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
 		{
-			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
 
 			if(e.data.connections != null)
 			{

@@ -1,9 +1,11 @@
 package collaboRhythm.hiviva.view.components
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 
 	import feathers.controls.Button;
 
@@ -11,7 +13,7 @@ package collaboRhythm.hiviva.view.components
 
 	public class EditMedicationCell extends MedicationCell
 	{
-		private var _applicationController:HivivaApplicationController;
+
 		private var _edit:Button;
 		private var _delete:Button;
 		private var _medicationId:int;
@@ -61,13 +63,13 @@ package collaboRhythm.hiviva.view.components
 		{
 			this._delete.removeEventListener(Event.TRIGGERED, deleteData);
 
-			localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_DELETE_COMPLETE, deleteMedicationCompleteHandler);
-			localStoreController.deleteMedication(this._medicationId);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_DELETE_COMPLETE, deleteMedicationCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.deleteMedication(this._medicationId);
 		}
 
 		private function deleteMedicationCompleteHandler(e:LocalDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_DELETE_COMPLETE , deleteMedicationCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_DELETE_COMPLETE , deleteMedicationCompleteHandler);
 			trace("medication with id:" + _medicationId + " deleted.");
 			this.removeFromParent(true);
 		}
@@ -89,19 +91,6 @@ package collaboRhythm.hiviva.view.components
 			_medicationId = value;
 		}
 
-		public function get localStoreController():HivivaLocalStoreController
-		{
-			return applicationController.hivivaLocalStoreController;
-		}
 
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
-
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
 	}
 }

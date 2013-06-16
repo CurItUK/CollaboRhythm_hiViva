@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
@@ -29,7 +30,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	public class HivivaPatientProfileScreen extends Screen
 	{
-		private var _applicationController:HivivaApplicationController;
+
 		private var _header:HivivaHeader;
 		private var _homeBtn:Button;
 		private var _menuBtnGroup:ButtonGroup;
@@ -96,8 +97,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._appId = new Label();
 			this._appId.name = "patient-profile-appid";
 			addChild(this._appId);
-			localStoreController.addEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
-			localStoreController.getAppId();
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getAppId();
 
 			this._userSignupPopupContent = new HivivaPopUp();
 			this._userSignupPopupContent.scale = this.dpiScale;
@@ -111,7 +112,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function getAppId(e:LocalDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
 
 			var appIdData:String = e.data.app_id;
 			this._appId.text = appIdData;
@@ -123,13 +124,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function userSignupCheck():void
 		{
-			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
-			localStoreController.getPatientProfile();
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getPatientProfile();
 		}
 
 		private function getPatientProfileHandler(e:LocalDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
 
 			var patientProfile:Array = e.data.patientProfile;
 
@@ -253,19 +254,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			PopUpManager.removePopUp(this._userSignupPopupContent);
 		}
 
-		public function get localStoreController():HivivaLocalStoreController
+		override public function dispose():void
 		{
-			return applicationController.hivivaLocalStoreController;
+			trace("HivivaPatientProfileScreen dispose");
+
+			super.dispose();
 		}
 
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
 
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
 	}
 }

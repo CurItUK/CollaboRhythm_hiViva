@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
@@ -25,7 +26,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		[Embed("/resources/dummy_patientmessages.xml", mimeType="application/octet-stream")]
 		private static const HcpMessageData:Class;
 
-		private var _applicationController:HivivaApplicationController;
+
 		protected var _header:HivivaHeader;
 		private var _hcpMessageData:XML;
 		private var _deleteMessageButton:Button;
@@ -89,13 +90,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function getViewedIds():void
 		{
-			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE, loadPatientMessagesViewedHandler);
-			localStoreController.loadPatientMessagesViewed();
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE, loadPatientMessagesViewedHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.loadPatientMessagesViewed();
 		}
 
 		private function loadPatientMessagesViewedHandler(e:LocalDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE, loadPatientMessagesViewedHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE, loadPatientMessagesViewedHandler);
 			var viewedIdsString:String = e.data.viewedIds;
 
 			try
@@ -214,19 +215,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._cellContainer.validate();
 		}
 
-		public function get localStoreController():HivivaLocalStoreController
-		{
-			return applicationController.hivivaLocalStoreController;
-		}
 
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
-
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
 	}
 }

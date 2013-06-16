@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp.messages
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
@@ -30,7 +31,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 	public class HivivaHCPMessageCompose extends ValidationScreen
 	{
-		private var _applicationController:HivivaApplicationController;
+
 
 		private var _backButton:Button;
 		private var _patients:Array;
@@ -168,13 +169,13 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function getHcpConnections():void
 		{
-			applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
-			applicationController.hivivaLocalStoreController.getHCPConnections();
+			localStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			localStoreController.getHCPConnections();
 		}
 
 		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
 		{
-			applicationController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
 
 			if(e.data.connections != null)
 			{
@@ -233,19 +234,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this.owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN)
 		}
 
-		public override function get localStoreController():HivivaLocalStoreController
-		{
-			return applicationController.hivivaLocalStoreController;
-		}
 
-		public override function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
 
-		public override function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
+
 	}
 }

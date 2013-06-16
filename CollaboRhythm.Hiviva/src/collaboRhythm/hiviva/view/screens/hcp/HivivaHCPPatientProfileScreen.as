@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaAssets;
@@ -41,8 +42,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 	{
 		private var _header:HivivaHeader;
 		private var _backButton:Button;
-		private var _main:Main;
-		private var _applicationController:HivivaApplicationController;
+
+
 		private var _bg:Scale9Image;
 		private var _patientImageBg:Quad;
 		private var _photoHolder:Image;
@@ -75,7 +76,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.initialize();
 			this._header = new HivivaHeader();
-			this._header.title = _main.selectedHCPPatientProfile.name;
+			this._header.title = Main.selectedHCPPatientProfile.name;
 			this.addChild(this._header);
 
 			this._backButton = new Button();
@@ -88,7 +89,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function initPatientXMLData():void
 		{
-			var patientToLoadURL:String = "/resources/patient_" +  _main.selectedHCPPatientProfile.appID + ".xml";
+			var patientToLoadURL:String = "/resources/patient_" +  Main.selectedHCPPatientProfile.appID + ".xml";
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(flash.events.Event.COMPLETE , patientXMLFileLoadHandler);
 			loader.load(new URLRequest(patientToLoadURL));
@@ -193,7 +194,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 
 			var selectedPatient:XML = _patientData;
-			var screenParams:Object = {selectedPatient: selectedPatient, applicationController: applicationController};
+			var screenParams:Object = {selectedPatient: selectedPatient};
 			var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaHCPPatientReportsScreen, null, screenParams);
 
 			if (this.owner.getScreenIDs().indexOf(HivivaScreens.HCP_PATIENT_PROFILE_REPORT) == -1)
@@ -298,30 +299,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 			return this._patientData;
 		}
 
-		public function get main():Main
-		{
-			return this._main;
-		}
 
-		public function set main(main:Main):void
-		{
-			this._main = main;
-		}
 
-		public function get localStoreController():HivivaLocalStoreController
-		{
-			return applicationController.hivivaLocalStoreController;
-		}
 
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
-
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
 
 	}
 }

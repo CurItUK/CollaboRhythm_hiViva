@@ -1,5 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
@@ -35,8 +37,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	public class HivivaPatientHomeScreen extends Screen
 	{
-		private var _footerHeight:Number;
-		private var _applicationController:HivivaApplicationController;
+
+
 
 		private var _header:HivivaHeader;
 		private var _messagesButton:TopNavButton;
@@ -66,14 +68,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
 
-			this._usableHeight = this.actualHeight - this._footerHeight - this._header.height;
-/*
-			this._messagesButton.width = 130 * this.dpiScale;
-			this._messagesButton.height = 110 * this.dpiScale;
+			this._usableHeight = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT - this._header.height;
 
-			this._badgesButton.width = 130 * this.dpiScale;
-			this._badgesButton.height = 110 * this.dpiScale;
-*/
 			// 90% of stage width
 			IMAGE_SIZE = this.actualWidth * 0.9;
 
@@ -163,13 +159,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function checkForNewMessages():void
 		{
-			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
-			localStoreController.getPatientProfile();
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getPatientProfile();
 		}
 
 		private function getPatientProfileHandler(e:LocalDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
 
 			var patientProfile:Array = e.data.patientProfile,
 				userIsSignedUp:Boolean;
@@ -199,13 +195,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initHomePhoto():void
 		{
-			localStoreController.addEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE, getGalleryTimeStampHandler);
-			localStoreController.getGalleryTimeStamp();
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE, getGalleryTimeStampHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getGalleryTimeStamp();
 		}
 
 		private function getGalleryTimeStampHandler(e:LocalDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE,getGalleryTimeStampHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE,getGalleryTimeStampHandler);
 
 			var timeStamp:String = e.data.timeStamp,
 				date:Date = new Date();
@@ -218,8 +214,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 					this._dayDiff = HivivaModifier.getDaysDiff(this._today, date);
 
-					localStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE,getAdherenceHandler);
-					localStoreController.getAdherence();
+					HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE,getAdherenceHandler);
+					HivivaStartup.hivivaAppController.hivivaLocalStoreController.getAdherence();
 
 					this._homeImageInstructions.visible = false;
 				}
@@ -239,7 +235,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function getAdherenceHandler(e:LocalDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE,getAdherenceHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE,getAdherenceHandler);
 
 			var allAdherenceData:Array = e.data.adherence,
 				latestAdherenceData:Object;
@@ -255,13 +251,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 			trace("this._adherencePercent = " + this._adherencePercent);
 
-			localStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
-			localStoreController.getGalleryImages();
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getGalleryImages();
 		}
 
 		private function getGalleryImagesHandler(e:LocalDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
 
 			var imageUrls:Array = e.data.imageUrls;
 
@@ -420,30 +416,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
-		public function get localStoreController():HivivaLocalStoreController
-		{
-			return applicationController.hivivaLocalStoreController;
-		}
 
-		public function get applicationController():HivivaApplicationController
-		{
-			return _applicationController;
-		}
 
-		public function set applicationController(value:HivivaApplicationController):void
-		{
-			_applicationController = value;
-		}
-
-		public function get footerHeight():Number
-		{
-			return _footerHeight;
-		}
-
-		public function set footerHeight(value:Number):void
-		{
-			_footerHeight = value;
-		}
 
 		override public function dispose():void
 		{

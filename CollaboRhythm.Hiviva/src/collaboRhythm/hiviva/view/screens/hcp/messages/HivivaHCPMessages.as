@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp.messages
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
@@ -20,7 +21,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 	public class HivivaHCPMessages extends Screen
 	{
 		private var _footerHeight:Number;
-		private var _applicationController:HivivaApplicationController;
+		private var _applicationController:HivivaAppController;
 		private var _messageNav:ScreenNavigator;
 
 		public function HivivaHCPMessages()
@@ -81,12 +82,12 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			return applicationController.hivivaLocalStoreController;
 		}
 
-		public function get applicationController():HivivaApplicationController
+		public function get applicationController():HivivaAppController
 		{
 			return _applicationController;
 		}
 
-		public function set applicationController(value:HivivaApplicationController):void
+		public function set applicationController(value:HivivaAppController):void
 		{
 			_applicationController = value;
 		}

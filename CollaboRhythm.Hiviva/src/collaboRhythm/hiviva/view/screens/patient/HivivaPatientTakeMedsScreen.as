@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
@@ -30,7 +31,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _medicationSchedule:Array;
 		private var _latestAdherenceData:Object;
 		private var _takeMedicationCellHolder:ScrollContainer;
-		private var _footerHeight:Number;
+
 
 		private const PADDING:Number = 20;
 
@@ -41,7 +42,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function draw():void
 		{
-			this._customHeight = this.actualHeight - this._footerHeight;
+			this._customHeight = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT;
 			super.draw();
 		}
 
@@ -284,14 +285,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
-		public function get footerHeight():Number
-		{
-			return _footerHeight;
-		}
 
-		public function set footerHeight(value:Number):void
-		{
-			_footerHeight = value;
-		}
 	}
 }

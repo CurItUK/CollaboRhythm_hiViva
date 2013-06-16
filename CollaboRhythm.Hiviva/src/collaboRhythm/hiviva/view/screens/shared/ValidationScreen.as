@@ -138,8 +138,12 @@ package collaboRhythm.hiviva.view.screens.shared
 			Starling.juggler.removeTweens(this._content);
 
 			this._isValidationActive = false;
-//			this._headerLine.visible = true;
 			this._validationBg.visible = false;
+		}
+
+		public override function dispose():void
+		{
+			super.dispose();
 		}
 	}
 }

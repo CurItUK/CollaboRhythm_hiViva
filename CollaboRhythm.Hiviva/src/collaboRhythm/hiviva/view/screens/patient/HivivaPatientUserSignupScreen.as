@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.view.*;
 
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
@@ -38,7 +39,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _sqStatement:SQLStatement;
 		private var _backButton:Button;
 		private var _dataExists:Boolean;
-		private var _applicationController:HivivaApplicationController;
+		private var _applicationController:HivivaAppController;
 
 
 		public function HivivaPatientUserSignupScreen()
@@ -255,12 +256,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			trace("sqlResultHandler " + e);
 		}
 
-		public function get applicationController():HivivaApplicationController
+		public function get applicationController():HivivaAppController
 		{
 			return _applicationController;
 		}
 
-		public function set applicationController(value:HivivaApplicationController):void
+		public function set applicationController(value:HivivaAppController):void
 		{
 			_applicationController = value;
 		}
