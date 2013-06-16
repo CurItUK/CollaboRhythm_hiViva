@@ -36,6 +36,9 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/HCP_Adherance_chart.png")]
 		public static const HCPAdherenceChart:Class;
 
+		[Embed(source="/assets/images/HCP_Views_Patient.png")]
+		public static const SpoofData:Class;
+
 
 
 		// TTF FONTS

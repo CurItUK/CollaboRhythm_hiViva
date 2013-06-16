@@ -141,4 +141,43 @@
 			</history>
 		</medicationHistory>
     </patient>
+	<patient>
+        <name>Antontio Mendes</name>
+        <email>Antontio.mendes@domain.com</email>
+        <appid>111222333</appid>
+        <picture>dummy.png</picture>
+		<medicationHistory>
+			<history>
+				<date>01-01-2013</date>
+				<adherence>95</adherence>
+				<tolerability>36</tolerability>
+			</history>
+		</medicationHistory>
+    </patient>
+	<patient>
+        <name>Piet Roger</name>
+        <email>piet.roger@domain.com</email>
+        <appid>555555555</appid>
+        <picture>dummy.png</picture>
+		<medicationHistory>
+			<history>
+				<date>01-01-2013</date>
+				<adherence>90</adherence>
+				<tolerability>39</tolerability>
+			</history>
+		</medicationHistory>
+    </patient>
+	<patient>
+        <name>Samantha Nichols</name>
+        <email>samantha.nichols@domain.com</email>
+        <appid>666666666</appid>
+        <picture>dummy.png</picture>
+		<medicationHistory>
+			<history>
+				<date>01-01-2013</date>
+				<adherence>57</adherence>
+				<tolerability>33</tolerability>
+			</history>
+		</medicationHistory>
+    </patient>
 </patientlist>

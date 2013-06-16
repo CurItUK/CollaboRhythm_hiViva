@@ -1,14 +1,15 @@
 package collaboRhythm.hiviva.view.screens.hcp.messages
 {
-	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.view.HivivaPopUp;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 	import collaboRhythm.hiviva.view.components.MessageCell;
+	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.PickerList;
@@ -34,8 +35,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 
 		private var _backButton:Button;
-		private var _patients:Array;
-		private var _main:Main;
 
 		private var _hcpName:Label;
 		private var _patientName:Label;
@@ -47,6 +46,10 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private var _cellContainer:ScrollContainer;
 		private var _scaledPadding:Number;
+
+		private var _sendButton:Button;
+
+		private var _popupContainer:HivivaPopUp;
 
 		private const MESSAGE_LABELS:Array =
 		[
@@ -78,20 +81,25 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._hcpName.width = 300;
 
 			this._patientName.x = scaledPadding;
-			this._patientName.y = this._header.height + this._hcpName.height + this._patientPickerList.height/2;
+			this._patientName.y = this._header.height + this._hcpName.height + this._patientPickerList.height/2 + PADDING;
 
 			this._patientPickerList.x = this._patientName.x + this._patientName.width + scaledPadding;
 			this._patientPickerList.y = this._patientName.y - 130;
 
 			this._selectMessage.x = scaledPadding;
-			this._selectMessage.y = this._patientName.y + 2*scaledPadding;
+			this._selectMessage.y = this._patientName.y + 2*scaledPadding + PADDING;
+
+			this._sendButton.y = this._content.height - this._sendButton.height;
+			this._sendButton.x = (this.actualWidth)/2 - (this._sendButton.width)/2;
 
 			this._header.initTrueTitle();
 
-
-
-
 			getHcpConnections();
+
+			if(_cellContainer == null)
+			{
+				drawMessages();
+			}
 		}
 
 		override protected function initialize():void
@@ -125,6 +133,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._patientPickerList.listProperties.@itemRendererProperties.labelField = "text";
 			this._patientPickerList.labelField = "text";
 			this._patientPickerList.addEventListener(starling.events.Event.CHANGE, patientSelectedHandler);
+			this._patientPickerList.validate();
 			this._content.addChild(this._patientPickerList);
 
 			this._selectMessage = new Label();
@@ -132,7 +141,10 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this.addChild(this._selectMessage);
 			this._selectMessage.validate();
 
-
+			this._sendButton = new Button();//
+			this._sendButton.addEventListener(Event.TRIGGERED, sendButtonHandler);
+			this._sendButton.label = "Send";
+			this._content.addChild(this._sendButton);
 
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
 		}
@@ -144,22 +156,22 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				for (var i:int = 0; i < MESSAGE_LABELS.length; i++)
 				{
 					message = new MessageCell();
-					message.scale = this.dpiScale;
+					message.scale = this.dpiScale/2;
 					message.messageName = MESSAGE_LABELS[i];
-					message.messageIcon = MESSAGE_ICONS[i];
+				//	message.messageIcon = MESSAGE_ICONS[i];
 					message.width = this.actualWidth;
-
+					//message.checkBox.addEventListener(Event.TRIGGERED, test);
 					this._cellContainer.addChild(message);
 
-					message.checkBox.addEventListener(Event.TRIGGERED, test);
+
 				}
 
-				this.addChild(this._cellContainer);
 				this._cellContainer.width = this.actualWidth;
-				this._cellContainer.y = this._header.height;
+				this._cellContainer.y = this._header.height + this._patientPickerList.y + this._patientPickerList.height + 20;
 				this._cellContainer.height = this.actualHeight - this._cellContainer.y - (this._scaledPadding * 2);
 				this._cellContainer.layout = new VerticalLayout();
 				this._cellContainer.validate();
+				this.addChild(this._cellContainer);
 		}
 
 		private function test(e:Event):void
@@ -167,15 +179,39 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			trace("ITEM CLICKED")
 		}
 
+		private function sendButtonHandler(e:Event):void
+		{
+					this._popupContainer = new HivivaPopUp();
+					this._popupContainer.scale = this.dpiScale;
+					this._popupContainer.width = this.actualWidth;
+					this._popupContainer.height = this.actualHeight;
+					this._popupContainer.addEventListener(Event.CLOSE, closePopup);
+			//		this._popupContainer.message = _main.selectedHCPPatientProfile.name;
+					this._popupContainer.confirmLabel = 'Message Sent';
+					this._popupContainer.validate();
+
+					PopUpManager.addPopUp(this._popupContainer, true, true);
+					this._popupContainer.validate();
+
+
+		}
+
+		private function closePopup(e:Event):void
+		{
+
+			PopUpManager.removePopUp(this._popupContainer);
+
+		}
+
 		private function getHcpConnections():void
 		{
-			localStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
-			localStoreController.getHCPConnections();
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getHCPConnections();
 		}
 
 		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
 
 			if(e.data.connections != null)
 			{
@@ -197,11 +233,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				this._patientPickerList.prompt = "Select patient";
 				this._patientPickerList.selectedIndex = -1;
 
+			//	if( _main.selectedHCPPatientProfile.name != null)this._patientPickerList.prompt = _main.selectedHCPPatientProfile.name;
 
-				if(_cellContainer == null)
-				{
-					drawMessages();
-				}
 
 			}
 		}
@@ -231,10 +264,11 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function backBtnHandler(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN)
+			this._owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN);
+		//	this.owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN);
+		//	this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_PATIENT_PROFILE , patientName:e.evtData.profile.name , appID:e.evtData.profile.appid});
+
 		}
-
-
 
 
 	}

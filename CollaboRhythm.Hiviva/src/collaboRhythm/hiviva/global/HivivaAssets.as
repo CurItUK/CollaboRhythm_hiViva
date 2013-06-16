@@ -89,6 +89,7 @@ package collaboRhythm.hiviva.global
 		public static const CLOCK_FACE:String								= "ClockFacePng";
 		public static const PILL_BOX:String									= "PillboxPng";
 		public static const SNAKEY_THING:String								= "SnakeyThingPng";
+		public static const SPOOF_DATA:String								= "SpoofData";
 		public static const SUPERSCRIPT_CIRCLE:String						= "SuperscriptCirclePng";
 		public static const SUBSCRIPT_CIRCLE:String							= "SubscriptCirclePng";
 	}
