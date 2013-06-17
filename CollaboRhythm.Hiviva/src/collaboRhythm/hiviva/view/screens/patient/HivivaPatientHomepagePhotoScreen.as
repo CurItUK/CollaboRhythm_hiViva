@@ -111,6 +111,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._photoContainer.scale = this.dpiScale;
 			this._photoContainer.fileName = CUSTOM_HOME_IMAGE;
 			this._content.addChild(this._photoContainer);
+			this._photoContainer.getMainImage();
 
 			this._cancelButton = new Button();
 			this._cancelButton.label = "Cancel";
@@ -129,7 +130,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-			if(!GalleryData.comingFromGallery)
+			if(!GalleryData.galleryDataChanged)
 			{
 				trace("populate first time");
 				initImageData();
@@ -150,6 +151,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function submitButtonClick(e:Event):void
 		{
 			var saveData:Array = compileAllImageData();
+			trace(saveData.join(','));
 			if(saveData.length > 0)
 			{
 				localStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_SAVE_COMPLETE,setGalleryImagesHandler);
@@ -182,10 +184,10 @@ package collaboRhythm.hiviva.view.screens.patient
 					{
 						allImageData.unshift(categoryUrls[i]);
 					}
-					trace(categoryUrls[i]);
+//					trace(categoryUrls[i]);
 				}
 			}
-
+//			trace("customImageExists = " + customImageExists);
 			if (customImageExists) allImageData.push(CUSTOM_HOME_IMAGE);
 			// basic randomisation
 			allImageData.sort(

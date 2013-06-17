@@ -93,7 +93,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 		private function submitButtonClick(e:Event):void
 		{
-			GalleryData.comingFromGallery = true;
+			GalleryData.galleryDataChanged = true;
 			GalleryData.setUrlsByCategory(this._category,_urls);
 			this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
 		}
