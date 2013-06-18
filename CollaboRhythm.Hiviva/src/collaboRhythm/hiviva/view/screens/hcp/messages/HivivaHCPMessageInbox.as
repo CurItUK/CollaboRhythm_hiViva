@@ -20,6 +20,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.utils.Dictionary;
 
 	import starling.display.DisplayObject;
 
@@ -35,10 +36,14 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private var _composeBtn:Button;
 		private var _sentBtn:Button;
 		private var _deleteBtn:Button;
+		private var _messageCentre:Array;
+
 
 		private var _scaledPadding:Number;
 
 		private const PADDING:Number = 20;
+
+		private var messagesXMLList:XMLList;
 
 		public function HivivaHCPMessageInbox()
 		{
@@ -55,7 +60,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._deleteBtn.validate();
 			this._deleteBtn.x = (this.actualWidth * 0.5) - (this._deleteBtn.width * 0.5);
-			this._deleteBtn.y = this.actualHeight - _header.height - Constants.FOOTER_BTNGROUP_HEIGHT - this._deleteBtn.height - _scaledPadding;
+			this._deleteBtn.y = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT - this._deleteBtn.height - _scaledPadding;
 
 			initHCPMessagesXMLData();
 		}
@@ -70,7 +75,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._deleteBtn = new Button();
 			this._deleteBtn.label = "Delete";
 			this._deleteBtn.addEventListener(starling.events.Event.TRIGGERED , deleteBtnHandler);
-			this.addChild(this._header);
+			this.addChild(this._deleteBtn);
 
 			this._composeBtn = new Button();
 			this._composeBtn.label = "Compose";
@@ -101,25 +106,36 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function drawXMLResults():void
 		{
-			var messagesXMLList:XMLList = _messagesData.message;
+			messagesXMLList = _messagesData.message;
+			drawMessages();
+		}
+
+		private function drawMessages():void
+		{
+			trace("XML LIST LENGTH " + messagesXMLList.length())
+			_messageCentre = new Array();
 			if(messagesXMLList.length() > 0)
 			{
 				this._messageCellContainer = new ScrollContainer();
 
 				var listCount:uint = messagesXMLList.length();
+				trace("XML LIST LENGTH " + messagesXMLList.length())
 				for(var i:uint = 0 ; i < listCount ; i++)
 				{
 					var messageInboxResultCell:MessageInboxResultCell = new MessageInboxResultCell();
 					messageInboxResultCell.primaryText = messagesXMLList[i].body;
 					messageInboxResultCell.dateText = messagesXMLList[i].date;
+					messageInboxResultCell.uniqueId = "message_"+i;
 					messageInboxResultCell.scale = this.dpiScale;
 					messageInboxResultCell.addEventListener(FeathersScreenEvent.HCP_MESSAGE_SELECTED, messageSelectedHandler);
 					this._messageCellContainer.addChild(messageInboxResultCell);
+					_messageCentre[i] = messageInboxResultCell;
 				}
 				this.addChild(this._messageCellContainer);
 
 			}
 			drawResults();
+
 		}
 
 		private function drawResults():void
@@ -148,6 +164,11 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._messageCellContainer.validate();
 		}
 
+		private function removeMessages():void
+		{
+
+		}
+
 		private function composeBtnHandler(e:starling.events.Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_MESSAGE_COMPOSE_SCREEN);
@@ -161,7 +182,23 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function deleteBtnHandler(e:starling.events.Event):void
 		{
-			// delete selected messages
+				if(messagesXMLList.length() > 0)
+				{
+					var listCount:uint = messagesXMLList.length();
+					for(var i:uint = 0 ; i < listCount ; i++)
+					{
+						if(_messageCentre[i].isSelected == true)
+						{
+							delete messagesXMLList[i];
+						}
+						var tempMessage:MessageInboxResultCell = this._messageCellContainer.getChildAt(i) as MessageInboxResultCell;
+						tempMessage.removeEventListener(FeathersScreenEvent.HCP_MESSAGE_SELECTED, messageSelectedHandler);
+
+						removeChild(this._messageCellContainer);
+					}
+					trace("FIRST XML LIST LENGTH " +  messagesXMLList.length())
+				}
+			drawMessages();
 		}
 
 		private function messageSelectedHandler(e:FeathersScreenEvent):void
