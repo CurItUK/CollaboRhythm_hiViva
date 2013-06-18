@@ -13,17 +13,22 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.PickerList;
-	import feathers.controls.Screen;
+	import feathers.controls.Screen
+	import feathers.controls.Radio;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.TextInput;
 	import feathers.core.PopUpManager;
 	import feathers.data.ListCollection;
 	import feathers.layout.VerticalLayout;
+	import feathers.core.ToggleGroup;
+	import feathers.controls.Radio;
 	import flash.events.MouseEvent
 
 	import feathers.controls.Screen;
 
 	import flash.events.MouseEvent;
+	import starling.events.Event;
+
 
 	import starling.display.DisplayObject;
 
@@ -50,6 +55,9 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private var _sendButton:Button;
 
 		private var _popupContainer:HivivaPopUp;
+
+		private var _radioGroup:ToggleGroup;
+		private var _radioButton:Radio;
 
 		private const MESSAGE_LABELS:Array =
 		[
@@ -142,7 +150,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._selectMessage.validate();
 
 			this._sendButton = new Button();//
-			this._sendButton.addEventListener(Event.TRIGGERED, sendButtonHandler);
+			this._sendButton.addEventListener(starling.events.Event.TRIGGERED, sendButtonHandler);
 			this._sendButton.label = "Send";
 			this._content.addChild(this._sendButton);
 
@@ -153,8 +161,10 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		{
 			this._cellContainer = new ScrollContainer();
 			var message:MessageCell;
+			this._radioGroup = new ToggleGroup();
 				for (var i:int = 0; i < MESSAGE_LABELS.length; i++)
 				{
+/*
 					message = new MessageCell();
 					message.scale = this.dpiScale/2;
 					message.messageName = MESSAGE_LABELS[i];
@@ -162,16 +172,32 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					message.width = this.actualWidth;
 					//message.checkBox.addEventListener(Event.TRIGGERED, test);
 					this._cellContainer.addChild(message);
+*/
+					this._radioButton = new Radio();
+					this._radioButton.label = MESSAGE_LABELS[i];
+					this._radioGroup.addItem(this._radioButton);
 
+				//	this._radioButton.isSelected = false;
+				//	this._radioButton.toggleGroup = _radioGroup;
+					this._radioButton.y = this._selectMessage.y + (i*(this._radioButton.height*2));
+
+					this._cellContainer.addChild(this._radioButton);
 
 				}
-
+				_radioGroup.addEventListener( starling.events.Event.CHANGE, group_changeHandler );
 				this._cellContainer.width = this.actualWidth;
-				this._cellContainer.y = this._header.height + this._patientPickerList.y + this._patientPickerList.height + 20;
+				this._cellContainer.x = this._hcpName.x;;
+				this._cellContainer.y = this._header.height + this._patientPickerList.y + this._patientPickerList.height + 120;
 				this._cellContainer.height = this.actualHeight - this._cellContainer.y - (this._scaledPadding * 2);
 				this._cellContainer.layout = new VerticalLayout();
 				this._cellContainer.validate();
 				this.addChild(this._cellContainer);
+		}
+
+		private function group_changeHandler( ev:starling.events.Event ):void
+		{
+		    var group:ToggleGroup = ToggleGroup( ev.currentTarget );
+		    trace( "group.selectedIndex:", group.selectedIndex );
 		}
 
 		private function test(e:Event):void
@@ -179,7 +205,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			trace("ITEM CLICKED")
 		}
 
-		private function sendButtonHandler(e:Event):void
+		private function sendButtonHandler(e:starling.events.Event):void
 		{
 					this._popupContainer = new HivivaPopUp();
 					this._popupContainer.scale = this.dpiScale;
@@ -196,7 +222,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		}
 
-		private function closePopup(e:Event):void
+		private function closePopup(e:starling.events.Event):void
 		{
 
 			PopUpManager.removePopUp(this._popupContainer);

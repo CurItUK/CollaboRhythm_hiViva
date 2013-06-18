@@ -237,7 +237,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._userSignupPopupContent.addEventListener(starling.events.Event.CLOSE, userSignupScreen);
 			this._userSignupPopupContent.width = this.actualWidth * 0.75;
 			this._userSignupPopupContent.validate();
-			this._userSignupPopupContent.message = "You will need to create an account in order to connect to a care provider";
+			this._userSignupPopupContent.message = "You will need to create an account in order to connect to a patient";
 
 			PopUpManager.addPopUp(this._userSignupPopupContent,true,true);
 			this._userSignupPopupContent.validate();
