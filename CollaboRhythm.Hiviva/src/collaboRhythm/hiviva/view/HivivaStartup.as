@@ -48,7 +48,7 @@ package collaboRhythm.hiviva.view
 		{
 			//var viewPort:Rectangle;
 			//viewPort = new Rectangle(0, 0, 640, 960);
-			viewPort = new Rectangle(0, 0, this._sw, this._sh);
+			//viewPort = new Rectangle(0, 0, this._sw, this._sh);
 
 			var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
 			Starling.multitouchEnabled = true;
