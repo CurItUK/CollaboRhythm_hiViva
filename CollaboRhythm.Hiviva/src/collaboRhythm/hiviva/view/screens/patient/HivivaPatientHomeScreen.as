@@ -25,6 +25,8 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.filters.BlurFilter;
 	import flash.geom.Matrix;
 	import flash.net.URLRequest;
+	import flash.system.ImageDecodingPolicy;
+	import flash.system.LoaderContext;
 	import flash.system.System;
 
 	import starling.display.DisplayObject;
@@ -289,16 +291,20 @@ package collaboRhythm.hiviva.view.screens.patient
 					trace("media/stock_images/" + chosenImageUrl);
 					doImageLoad("media/stock_images/" + chosenImageUrl);
 				}
+				//
 
 			}
 		}
 
 		private function doImageLoad(url:String):void
 		{
+			var loaderContext:LoaderContext = new LoaderContext();
+			loaderContext.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
 			var imageLoader:Loader = new Loader();
+
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
-			imageLoader.load(new URLRequest(url));
+			imageLoader.load(new URLRequest(url) , loaderContext);
 		}
 
 		private function imageLoaded(e:flash.events.Event):void

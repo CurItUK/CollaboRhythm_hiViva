@@ -61,20 +61,28 @@ package collaboRhythm.hiviva.view.components
 		
 		private function createDayHolderCells():void
 		{
+
+
 			for(var i:uint = 0 ; i < 42 ; i++)
 			{
+
 				var cell:Button = new Button();
 				cell.name = "calendar-day-cell";
 				cell.isEnabled = false;
 				this.addChild(cell);
 				cell.validate();
+
 				
 				cell.x = 10 + (cell.width * (i - (Math.floor(i/7) * 7)));
 				cell.y = 150 + (cell.height * Math.floor(i/7));
-				
+
 				this._allDayCells.push(cell);
+				
+
 			}
 		}
+
+
 		
 		private function createDayNameLabels():void
 		{
