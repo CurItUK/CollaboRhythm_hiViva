@@ -121,7 +121,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
@@ -200,10 +200,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		    trace( "group.selectedIndex:", group.selectedIndex );
 		}
 
-		private function test(e:Event):void
-		{
-			trace("ITEM CLICKED")
-		}
 
 		private function sendButtonHandler(e:starling.events.Event):void
 		{
@@ -211,7 +207,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					this._popupContainer.scale = this.dpiScale;
 					this._popupContainer.width = this.actualWidth;
 					this._popupContainer.height = this.actualHeight;
-					this._popupContainer.addEventListener(Event.CLOSE, closePopup);
+					this._popupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
 			//		this._popupContainer.message = _main.selectedHCPPatientProfile.name;
 					this._popupContainer.confirmLabel = 'Message Sent';
 					this._popupContainer.validate();
@@ -270,7 +266,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		}
 
-		private function patientSelectedHandler(e:Event):void
+		private function patientSelectedHandler(e:starling.events.Event):void
 		{
 			//TODO change patient PDF report details
 		}
@@ -288,7 +284,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			alertLabel.y = alertLabel.height * 4;
 		}
 
-		private function backBtnHandler(e:Event):void
+		private function backBtnHandler(e:starling.events.Event):void
 		{
 			this._owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN);
 		//	this.owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN);
