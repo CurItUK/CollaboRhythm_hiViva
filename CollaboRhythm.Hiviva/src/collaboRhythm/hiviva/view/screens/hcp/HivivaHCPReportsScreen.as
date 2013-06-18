@@ -39,7 +39,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	public class HivivaHCPReportsScreen extends ValidationScreen
 	{
-		private var _footerHeight:Number;
 		private var _patientPickerList:PickerList;
 		private var _patientLabel:Label;
 
@@ -71,7 +70,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		override protected function draw():void
 		{
-			this._customHeight = this.actualHeight - this._footerHeight;
+			this._customHeight = this.actualHeight - Main.footerBtnGroupHeight;
 
 			getHcpConnections();
 
@@ -339,16 +338,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			navigateToURL(urlReq);
 
 
-		}
-
-		public function get footerHeight():Number
-		{
-			return _footerHeight;
-		}
-
-		public function set footerHeight(value:Number):void
-		{
-			_footerHeight = value;
 		}
 	}
 }
