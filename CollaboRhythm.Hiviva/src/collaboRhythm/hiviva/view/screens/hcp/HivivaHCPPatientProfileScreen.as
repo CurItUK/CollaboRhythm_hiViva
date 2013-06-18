@@ -8,6 +8,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.components.MedicationCell;
 	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPPatientMessageCompose;
 
@@ -17,7 +18,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.controls.ScrollContainer;
 	import feathers.display.Scale9Image;
+	import feathers.layout.VerticalLayout;
 	import feathers.textures.Scale9Textures;
 
 	import flash.display.Bitmap;
@@ -177,14 +180,56 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var sendMessageBtnY:Number = this._sendMessageBtn.y - (this._header.height + scaledPadding);
 			var bgFinalHeight:Number =  sendMessageBtnY + this._sendMessageBtn.height + gap;
 			this._bg.height = bgFinalHeight;
+/*
 
 			this._spoofData = new Image(Assets.getTexture(HivivaAssets.SPOOF_DATA));
 			this._spoofData.y = this._generateReportBtn.y + this._generateReportBtn.height + gap;
 			this.addChild(_spoofData);
+*/
 
-
+			drawPatientTable();
 
 			doImageLoad("media/patients/" + _patientData.picture);
+
+		}
+
+		private function drawPatientTable():void
+		{
+			var verticalScrollContainer:ScrollContainer = new ScrollContainer();
+			verticalScrollContainer.layout = new VerticalLayout();
+			addChild(verticalScrollContainer);
+
+			var medications:XMLList = _patientData.medications.medication as XMLList;
+			var medicationCount:uint = medications.length();
+			var medicationCell:MedicationCell;
+			for (var i:int = 0; i < medicationCount; i++)
+			{
+				medicationCell = new MedicationCell();
+				medicationCell.scale = this.dpiScale;
+				medicationCell.brandName = medications[i].brandname;
+				medicationCell.genericName = medications[i].genericname;
+
+			}
+
+/*
+			var history:XMLList = _patientData.medicationHistory.history as XMLList;
+			var historyCount:int = history.length();
+			var medications:XMLList;
+			var medicationCount:uint;
+			for (var i:int = 0; i < historyCount; i++)
+			{
+				trace(history[i].date);
+				trace(history[i].tolerability);
+				medications = history[i].medication;
+				medicationCount = medications.length();
+				for (var j:int = 0; j < medicationCount; j++)
+				{
+
+					trace(medications[j].brandname);
+					trace(medications[j].genericname);
+					trace(medications[j].adhered);
+				}
+			}*/
 
 		}
 
