@@ -71,7 +71,7 @@ package collaboRhythm.hiviva.view.components
 						img = new Image(Main.assets.getTexture("footer_icon_6"));
 						break;
 					case "reports" :
-						img = new Image(Main.assets.getTexture("footer_icon_3"));
+						img = new Image(Main.assets.getTexture("footer_icon_5"));
 						break;
 					case "messages" :
 						img = new Image(Main.assets.getTexture("footer_icon_7"));
