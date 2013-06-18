@@ -110,7 +110,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._dump.y = this._CD4CountSlider.y + this._CD4CountSlider.height + this._scaledPadding;
 			this._dump.maxHeight = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT - this._dump.y;
 
-			getMedicationResults();
+			getPatientData();
 		}
 
 		override protected function initialize():void
@@ -224,10 +224,17 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._CD4CountResultLabel.text = "<font face='ExoBold'>" + this._CD4CountSlider.value + "</font>";
 		}
 
-		private function getMedicationResults():void
+		private function getPatientData():void
 		{
-			//applicationController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.)
-			//applicationController.hivivaLocalStoreController.getAdherence();
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getAdherence();
+		}
+
+		private function adherenceLoadCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
+			trace("Virus Simulation " + e.data.adherence);
+
 		}
 
 		public override function dispose():void

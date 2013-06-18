@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.controller.HivivaAppController;
+	import collaboRhythm.hiviva.global.Constants;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -10,6 +11,8 @@ package collaboRhythm.hiviva.view
 	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.utils.AssetManager;
+	import starling.utils.RectangleUtil;
+	import starling.utils.ScaleMode;
 
 	[SWF(backgroundColor="0x000000" , frameRate="60")]
 
@@ -43,7 +46,7 @@ package collaboRhythm.hiviva.view
 
 		private function initStarling():void
 		{
-			var viewPort:Rectangle;
+			//var viewPort:Rectangle;
 			//viewPort = new Rectangle(0, 0, 640, 960);
 			viewPort = new Rectangle(0, 0, this._sw, this._sh);
 
@@ -51,7 +54,17 @@ package collaboRhythm.hiviva.view
 			Starling.multitouchEnabled = true;
 			Starling.handleLostContext = !iOS;
 
+			var stageWidth:int   = Constants.STAGE_WIDTH;
+		    var stageHeight:int  = Constants.STAGE_HEIGHT;
+
+			var viewPort:Rectangle = RectangleUtil.fit(
+			                new Rectangle(0, 0, stageWidth, stageHeight),
+			                new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight),
+			                ScaleMode.SHOW_ALL);
+
 			_starFW = new Starling(Main, stage, viewPort);
+			_starFW.stage.stageWidth  = stageWidth;
+			_starFW.stage.stageHeight = stageHeight;
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			_starFW.start();
 		}

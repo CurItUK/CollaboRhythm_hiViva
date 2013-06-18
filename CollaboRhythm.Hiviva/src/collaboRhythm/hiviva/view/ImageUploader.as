@@ -14,17 +14,23 @@ package collaboRhythm.hiviva.view
 	import flash.display.BitmapData;
 
 	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
 
 	import flash.events.MediaEvent;
 
 	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.geom.Matrix;
 
 	import flash.geom.Rectangle;
 	import flash.media.CameraRoll;
 	import flash.media.MediaPromise;
+	import flash.net.FileReference;
 	import flash.net.URLRequest;
+	import flash.utils.ByteArray;
 	import flash.utils.IDataInput;
 
 	import starling.display.Image;
@@ -59,6 +65,8 @@ package collaboRhythm.hiviva.view
 		private var _uploadButton:Button;
 		private var _imageBg:Quad;
 		private var _imageHolder:Image;
+		private var _dataSource:IDataInput;
+		private var _imagePromise:MediaPromise;
 
 		private const IMAGE_SIZE:Number = 150;
 		private const PADDING:Number = 32;
@@ -106,7 +114,7 @@ package collaboRhythm.hiviva.view
 			this._uploadButton.defaultIcon = new Image(Main.assets.getTexture("icon_upload"));
 			this._uploadButton.iconPosition = Button.ICON_POSITION_LEFT;
 			this._uploadButton.label = "UPLOAD PHOTO";
-			this._uploadButton.addEventListener(Event.TRIGGERED, uploadButtonHandler);
+			this._uploadButton.addEventListener(starling.events.Event.TRIGGERED, uploadButtonHandler);
 			addChild(this._uploadButton);
 		}
 
@@ -116,7 +124,7 @@ package collaboRhythm.hiviva.view
 			destination = destination.resolvePath(this._fileName);
 			if (destination.exists)
 			{
-				doImageLoad(destination.url);
+				loadImageFromUrl(destination.url);
 			}
 		}
 
@@ -128,7 +136,7 @@ package collaboRhythm.hiviva.view
 			return main.exists;
 		}
 
-		private function uploadButtonHandler(e:Event):void
+		private function uploadButtonHandler(e:starling.events.Event):void
 		{
 			if (CameraRoll.supportsBrowseForImage)
 			{
@@ -148,33 +156,46 @@ package collaboRhythm.hiviva.view
 		{
 			trace("Image selected...");
 
-			var imagePromise:MediaPromise = e.data;
-			var dataSource:IDataInput = imagePromise.open();
+			this._imagePromise = e.data;
+			this._dataSource = this._imagePromise.open();
 
-			if (imagePromise.isAsync)
+			if (this._imagePromise.isAsync)
 			{
-				trace("Asynchronous media promise.");
-
-
+				trace( "Asynchronous media promise." );
+				var eventSource:IEventDispatcher = this._dataSource as IEventDispatcher;
+				eventSource.addEventListener( flash.events.Event.COMPLETE, onMediaLoaded );
 			}
 			else
 			{
-				trace("Synchronous media promise.");
-
+				trace( "Synchronous media promise." );
+				readMediaData();
 			}
+		}
 
+		private function onMediaLoaded( e:flash.events.Event ):void
+		{
+			trace("Media load complete");
+			readMediaData();
+		}
 
+		private function readMediaData():void
+		{
+		    var imageBytes:ByteArray = new ByteArray();
+			this._dataSource.readBytes( imageBytes );
 
-			var imageSource:MediaPromise = e.data;
-			// set destination location
-			var destination:File = File.applicationStorageDirectory;
-			destination = destination.resolvePath("temp" + this._fileName);
-			// copy source to destination
-			imageSource.file.copyTo(destination, true);
-			var copiedFile:File = File.applicationStorageDirectory;
-			copiedFile = copiedFile.resolvePath("temp" + this._fileName);
+			var imageLoader:Loader = new Loader();
+			imageLoader.loadBytes(imageBytes);
 
-			doImageLoad(copiedFile.url);
+			loadImageFromBytes(imageBytes);
+
+			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
+			var outStream:FileStream = new FileStream();
+			// open output file stream in WRITE mode
+			outStream.open(temp, FileMode.WRITE);
+			// write out the file
+			outStream.writeBytes(imageBytes, 0, imageBytes.length);
+			// close it
+			outStream.close();
 		}
 
 		private function browseCanceled(e:flash.events.Event):void
@@ -182,18 +203,25 @@ package collaboRhythm.hiviva.view
 			trace("Image browse canceled.");
 		}
 
-		private function doImageLoad(url:String):void
+		private function loadImageFromUrl(url:String):void
 		{
 			var imageLoader:Loader = new Loader();
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
-			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url));
+		}
+
+		private function loadImageFromBytes(imageBytes:ByteArray):void
+		{
+			var imageLoader:Loader = new Loader();
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.INIT, imageLoaded);
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
+			imageLoader.loadBytes(imageBytes);
 		}
 
 		private function imageLoaded(e:flash.events.Event):void
 		{
 			trace("Image loaded.");
-
 			var suitableBm:Bitmap = getSuitableBitmap(e.target.content as Bitmap);
 			this._imageHolder = new Image(Texture.fromBitmap(suitableBm));
 			HivivaModifier.clipImage(this._imageHolder);
@@ -203,7 +231,7 @@ package collaboRhythm.hiviva.view
 			if (!contains(this._imageHolder)) addChild(this._imageHolder);
 		}
 
-		private function imageLoadFailed(e:Event):void
+		private function imageLoadFailed(e:flash.events.Event):void
 		{
 			trace("Image load failed.");
 		}
