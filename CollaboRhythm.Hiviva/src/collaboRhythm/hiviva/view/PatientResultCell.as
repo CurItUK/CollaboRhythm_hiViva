@@ -108,6 +108,7 @@ package collaboRhythm.hiviva.view
 			this._patientSelect = new Radio();
 			addChild(this._patientSelect);
 
+
 			this._patientDelete = new Button();
 			this._patientDelete.label = "x";
 			this._patientDelete.addEventListener(Event.TRIGGERED, onPatientDelete);
@@ -224,6 +225,11 @@ package collaboRhythm.hiviva.view
 		public function get patientData():XML
 		{
 			return this._patientData;
+		}
+
+		public function hideIcon():void
+		{
+			this._patientSelect.iconOffsetX = -1000
 		}
 	}
 }
