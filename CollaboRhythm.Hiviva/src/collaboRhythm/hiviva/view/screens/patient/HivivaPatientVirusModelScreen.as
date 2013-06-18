@@ -129,7 +129,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 
 			this._adheranceLabel = new Label();
-			this._adheranceLabel.text = "Adherance:";
+			this._adheranceLabel.text = "Adherence:";
 			this.addChild(this._adheranceLabel);
 
 			this._adheranceResultLabel = new Label();
