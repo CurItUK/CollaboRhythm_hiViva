@@ -150,7 +150,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._selectMessage.validate();
 
 			this._sendButton = new Button();//
-			this._sendButton.addEventListener(Event.TRIGGERED, sendButtonHandler);
+			this._sendButton.addEventListener(starling.events.Event.TRIGGERED, sendButtonHandler);
 			this._sendButton.label = "Send";
 			this._content.addChild(this._sendButton);
 
@@ -184,7 +184,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					this._cellContainer.addChild(this._radioButton);
 
 				}
-				_radioGroup.addEventListener( Event.CHANGE, group_changeHandler );
+				_radioGroup.addEventListener( starling.events.Event.CHANGE, group_changeHandler );
 				this._cellContainer.width = this.actualWidth;
 				this._cellContainer.x = this._hcpName.x;;
 				this._cellContainer.y = this._header.height + this._patientPickerList.y + this._patientPickerList.height + 120;
@@ -205,7 +205,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			trace("ITEM CLICKED")
 		}
 
-		private function sendButtonHandler(e:Event):void
+		private function sendButtonHandler(e:starling.events.Event):void
 		{
 					this._popupContainer = new HivivaPopUp();
 					this._popupContainer.scale = this.dpiScale;
@@ -222,7 +222,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		}
 
-		private function closePopup(e:Event):void
+		private function closePopup(e:starling.events.Event):void
 		{
 
 			PopUpManager.removePopUp(this._popupContainer);
