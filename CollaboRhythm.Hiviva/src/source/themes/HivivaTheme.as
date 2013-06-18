@@ -416,6 +416,7 @@ package source.themes
 		protected var pageIndicatorSelectedSkinTexture:Texture;
 
 		protected var itemRendererUpSkinTextures:Scale9Textures;
+		protected var hivivaItemRendererUpSkinTextures:Scale9Textures;
 
 		protected var itemRendererSelectedSkinTextures:Scale9Textures;
 
@@ -717,6 +718,8 @@ package source.themes
 			this.itemRendererUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-up-skin"),
 					ITEM_RENDERER_SCALE9_GRID);
 
+			this.hivivaItemRendererUpSkinTextures = new Scale9Textures(Main.assets.getTexture("screen_base"), new Rectangle(0,0,200,200));
+
 			this.itemRendererSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-selected-skin"),
 					ITEM_RENDERER_SCALE9_GRID);
 
@@ -895,7 +898,7 @@ package source.themes
 
 			this.setInitializerForClass(Scroller, scrollerInitializer);
 
-			this.setInitializerForClass(List, nothingInitializer, PickerList.DEFAULT_CHILD_NAME_LIST);
+//			this.setInitializerForClass(List, nothingInitializer, PickerList.DEFAULT_CHILD_NAME_LIST);
 
 			this.setInitializerForClass(GroupedList, insetGroupedListInitializer,
 					GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
@@ -1727,28 +1730,17 @@ package source.themes
 
 		protected function pickerListItemRendererInitializer(renderer:BaseDefaultItemRenderer):void
 		{
-
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
-
-			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
-
-			skinSelector.setValueForState(this.itemRendererSelectedSkinTextures, Button.STATE_DOWN, false);
-
+			skinSelector.defaultValue = this.seperatorLineTexture;
 			skinSelector.imageProperties =
-
 			{
-
 				width: 88 * this.scale,
-
 				height: 88 * this.scale,
-
 				textureScale: this.scale
-
 			};
-
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-
+/*
 			const defaultSelectedIcon:Image = new Image(this.pickerListItemSelectedIconTexture);
 
 			defaultSelectedIcon.scaleX = defaultSelectedIcon.scaleY = this.scale;
@@ -1756,16 +1748,21 @@ package source.themes
 			renderer.defaultSelectedIcon = defaultSelectedIcon;
 
 
+
 			const defaultIcon:Quad = new Quad(defaultSelectedIcon.width, defaultSelectedIcon.height, 0xff00ff);
 
 			defaultIcon.alpha = 0;
 
 			renderer.defaultIcon = defaultIcon;
+*/
 
 
-			renderer.defaultLabelProperties.textFormat = this.largeLightTextFormat;
+			renderer.defaultLabelProperties.textFormat = this.hivivaDefaultTextFormat;
+			renderer.defaultLabelProperties.embedFonts = true;
+			renderer.defaultLabelProperties.isHTML = true;
+			renderer.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 
-			renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
+//			renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
 
 
 			renderer.itemHasIcon = false;
@@ -2322,7 +2319,7 @@ package source.themes
 			else
 			{
 
-				const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
+				const backgroundSkin:TiledImage = new TiledImage(Main.assets.getTexture("screen_base"));
 
 				backgroundSkin.width = 20 * this.scale;
 
@@ -2330,9 +2327,9 @@ package source.themes
 
 				list.listProperties.backgroundSkin = backgroundSkin;
 
-				list.listProperties.paddingTop = list.listProperties.paddingRight =
+				/*list.listProperties.paddingTop = list.listProperties.paddingRight =
 
-						list.listProperties.paddingBottom = list.listProperties.paddingLeft = 8 * this.scale;
+						list.listProperties.paddingBottom = list.listProperties.paddingLeft = 8 * this.scale;*/
 
 			}
 
@@ -2428,6 +2425,8 @@ package source.themes
 			list.layout = layout;
 
 		}
+
+
 
 
 		protected function stage_resizeHandler(event:ResizeEvent):void
