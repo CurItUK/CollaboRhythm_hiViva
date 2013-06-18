@@ -19,6 +19,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import flash.data.SQLResult;
 	import flash.data.SQLStatement;
 	import flash.events.SQLEvent;
+	import flash.events.SQLEvent;
 
 	import flash.filesystem.File;
 
@@ -118,15 +119,15 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._requestConnectionButton = new Button();
 			this._requestConnectionButton.label = "Request Connection";
-			this._requestConnectionButton.addEventListener(Event.TRIGGERED, onRequestConnection);
+			this._requestConnectionButton.addEventListener(starling.events.Event.TRIGGERED, onRequestConnection);
 			this._requestConnectionButton.visible = false;
 			addChild(this._requestConnectionButton);
 
 			this._requestPopupContainer = new HivivaPopUp();
 			this._requestPopupContainer.scale = this.dpiScale;
 			this._requestPopupContainer.confirmLabel = "Close";
-			this._requestPopupContainer.addEventListener(Event.COMPLETE, closePopup);
-			this._requestPopupContainer.addEventListener(Event.CLOSE, closePopup);
+			this._requestPopupContainer.addEventListener(starling.events.Event.COMPLETE, closePopup);
+			this._requestPopupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -145,14 +146,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._searchButton = new Button();
 			this._searchButton.label = "Find";
-			this._searchButton.addEventListener(Event.TRIGGERED, doSearchPatient);
+			this._searchButton.addEventListener(starling.events.Event.TRIGGERED, doSearchPatient);
 			addChild(this._searchButton);
 
 			this._resultInfo = new Label();
 			addChild(this._resultInfo);
 		}
 
-		private function backBtnHandler(e:Event = null):void
+		private function backBtnHandler(e:starling.events.Event = null):void
 		{
 			if(contains(this._patientCellContainer))
 			{
@@ -169,7 +170,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientDataXml = new XML(ba.readUTFBytes(ba.length));
 		}
 
-		private function doSearchPatient(e:Event):void
+		private function doSearchPatient(e:starling.events.Event):void
 		{
 			if(this._searchInput.text != "")
 			{
@@ -266,7 +267,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._requestConnectionButton.visible = true;
 		}
 
-		private function onRequestConnection(e:Event):void
+		private function onRequestConnection(e:starling.events.Event):void
 		{
 			var selectedHcpInd:int = this._patientCellRadioGroup.selectedIndex,
 				patientCell:XMLList = XMLList(this._patientFilteredList[selectedHcpInd]);
@@ -287,7 +288,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			trace(this._sqStatement.text);
 			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+			this._sqStatement.addEventListener(flash.events.SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
 
 			this._requestPopupContainer.message = "A request to connect has been sent to " + patientCell.name;
@@ -308,7 +309,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._requestPopupContainer.drawCloseButton();
 		}
 
-		private function closePopup(e:Event):void
+		private function closePopup(e:starling.events.Event):void
 		{
 			PopUpManager.removePopUp(this._requestPopupContainer);
 			backBtnHandler();
