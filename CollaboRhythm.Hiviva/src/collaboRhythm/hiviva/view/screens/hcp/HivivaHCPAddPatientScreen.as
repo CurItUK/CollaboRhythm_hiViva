@@ -256,8 +256,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 			{
 				patientCell = this._patientCellContainer.getChildAt(i) as PatientResultCell;
 				patientCell.width = this.actualWidth;
-			}
 
+			}
+			if(this._patientCellContainer.numChildren == 1) patientCell.hideIcon();
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.gap = scaledPadding;
 			this._patientCellContainer.layout = layout;
