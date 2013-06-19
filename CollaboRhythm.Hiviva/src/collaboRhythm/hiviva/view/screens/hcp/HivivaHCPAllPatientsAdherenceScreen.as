@@ -37,7 +37,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		//	trace("usable height " + _usableHeight + " footer height " + _footerHeight)		//	this._chart.scaleX = this._bg.scaleX;
 		//	this._chart.scaleY = this._bg.scaleY;
 			this._chart.x = (this.actualWidth * 0.5) - (this._chart.width * 0.5);
-		//	this._chart.y = this._usableHeight + 20;
+			this._chart.y = this._header.height;
 		}
 
 		override protected function initialize():void
