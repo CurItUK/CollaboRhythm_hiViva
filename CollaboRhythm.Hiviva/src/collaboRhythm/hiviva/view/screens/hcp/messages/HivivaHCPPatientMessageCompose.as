@@ -107,7 +107,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 			this.addChild(this._backButton);
 
 			this._header.leftItems = new <DisplayObject>[this._backButton];
@@ -130,7 +130,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._selectMessage.validate();
 
 			this._sendButton = new Button();//
-			this._sendButton.addEventListener(Event.TRIGGERED, sendButtonHandler);
+			this._sendButton.addEventListener(starling.events.Event.TRIGGERED, sendButtonHandler);
 			this._sendButton.label = "Send";
 			this._content.addChild(this._sendButton);
 
@@ -162,18 +162,14 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				this.addChild(this._cellContainer);
 		}
 
-		private function test(e:Event):void
-		{
-			trace("ITEM CLICKED")
-		}
 
-		private function sendButtonHandler(e:Event):void
+		private function sendButtonHandler(e:starling.events.Event):void
 		{
 					this._popupContainer = new HivivaPopUp();
 					this._popupContainer.scale = this.dpiScale;
 					this._popupContainer.width = this.actualWidth;
 					this._popupContainer.height = this.actualHeight;
-					this._popupContainer.addEventListener(Event.CLOSE, closePopup);
+					this._popupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
 //					this._popupContainer.message = _main.selectedHCPPatientProfile.name;
 					this._popupContainer.confirmLabel = 'Message Sent';
 					this._popupContainer.validate();
@@ -204,7 +200,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			alertLabel.y = alertLabel.height * 4;
 		}
 
-		private function backBtnHandler(e:Event):void
+		private function backBtnHandler(e:starling.events.Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_PATIENT_PROFILE);
 		//	this.owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN);
