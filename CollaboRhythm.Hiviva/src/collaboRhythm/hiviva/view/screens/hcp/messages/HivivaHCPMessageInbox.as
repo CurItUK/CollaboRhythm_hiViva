@@ -206,7 +206,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				}
 					this._messageCellContainer.validate();
 
-			// TODO: Bug with deleting multiple messagesf
+			// TODO: Bug with deleting multiple messages
 			//drawMessages();
 		}
 
