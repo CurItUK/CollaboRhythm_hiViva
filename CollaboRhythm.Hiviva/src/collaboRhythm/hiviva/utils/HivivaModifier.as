@@ -143,12 +143,27 @@ package collaboRhythm.hiviva.utils
 		{
 			var history:XMLList = adherenceXMLList;
 			var historyCount:uint = history.length();
+			var medications:XMLList;
+			var medicationCount:uint;
+			var medTakenCount:int;
+			var currAdherence:Number;
 			var avgAdherence:Number = 0;
 			if (historyCount > 0)
 			{
 				for (var i:uint = 0; i < historyCount; i++)
 				{
-					avgAdherence += parseInt(history[i].adherence);
+					medTakenCount = 0;
+					medications = history[i].medication;
+					medicationCount = medications.length();
+					for (var j:int = 0; j < medicationCount; j++)
+					{
+						if(medications[j].adhered == "yes")
+						{
+							medTakenCount++;
+						}
+					}
+					currAdherence = (medTakenCount / medicationCount) * 100;
+					avgAdherence += currAdherence;
 				}
 				avgAdherence = (avgAdherence / historyCount);
 			}

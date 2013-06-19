@@ -13,6 +13,8 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Check;
 	import feathers.controls.Label;
 
+	import flash.filesystem.File;
+
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -150,6 +152,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._photoTitle.text = "<font face='ExoBold'>Photo</font>";
 			this._content.addChild(this._photoTitle);
 
+			dummyPatientLoad();
+
 			this._photoContainer = new ImageUploader();
 			this._photoContainer.scale = this.dpiScale;
 			this._photoContainer.fileName = "userprofileimage.jpg";
@@ -211,6 +215,17 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			populateOldData();
+		}
+
+		private function dummyPatientLoad():void
+		{
+			var destination:File = File.applicationStorageDirectory.resolvePath('userprofileimage.jpg'),
+				source:File;
+			if(!destination.exists)
+			{
+				source = File.applicationDirectory.resolvePath('media/patients/patient.png');
+				source.copyTo(destination);
+			}
 		}
 
 		private function cancelAndSaveHandler(e:Event):void

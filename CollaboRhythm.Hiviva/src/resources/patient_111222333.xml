@@ -20,12 +20,31 @@
         <name>Antontio Mendes</name>
         <email>Antontio.mendes@domain.com</email>
         <appid>111222333</appid>
-        <picture>antontio.png</picture>
+        <picture>patient.png</picture>
+		<medications>
+			<medication>
+				<id>1</id>
+				<brandname>Reyataz</brandname>
+				<genericname>atazanavir</genericname>
+			</medication>
+			<medication>
+				<id>2</id>
+				<brandname>Norvir</brandname>
+				<genericname>ritonavir</genericname>
+			</medication>
+			<medication>
+				<id>3</id>
+				<brandname>Truvada</brandname>
+				<genericname>emtricitabine + tenofovir</genericname>
+			</medication>
+		</medications>
 		<medicationHistory>
 			<history>
 				<date>01-01-2013</date>
-				<adherence>95</adherence>
 				<tolerability>36</tolerability>
+				<medication><id>1</id><adhered>yes</adhered></medication>
+				<medication><id>2</id><adhered>yes</adhered></medication>
+				<medication><id>3</id><adhered>no</adhered></medication>
 			</history>
 		</medicationHistory>
 </patient>

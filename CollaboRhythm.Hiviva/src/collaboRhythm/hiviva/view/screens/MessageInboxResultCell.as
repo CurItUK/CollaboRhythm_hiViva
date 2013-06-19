@@ -41,6 +41,7 @@ package collaboRhythm.hiviva.view.screens
 		private var _dateText:String = "";
 		private var _check:Check;
 		private var _uniqueId:String;
+		private var _selected:Boolean;
 		private const IMAGE_SIZE:Number = 100;
 		private const PADDING:Number = 32;
 
@@ -53,7 +54,8 @@ package collaboRhythm.hiviva.view.screens
 		{
 			var scaledPadding:Number = PADDING * this._scale,
 				gap:Number = scaledPadding * 0.5;
-
+				_selected = false;
+				trace("drawing")
 			super.draw();
 
 			this._primaryLabel.validate();
@@ -109,6 +111,7 @@ package collaboRhythm.hiviva.view.screens
 
 			this._check = new Check();
 			this.addChild(this._check);
+			this._check.addEventListener(Event.TRIGGERED , checkBoxSelectHandler);
 
 			this._viewMessageBtn = new Button();
 			this._viewMessageBtn.label = "";
@@ -120,7 +123,23 @@ package collaboRhythm.hiviva.view.screens
 		private function messageCellSelectHandler(e:Event):void
 		{
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.HCP_MESSAGE_SELECTED);
+
 			this.dispatchEvent(evt);
+		}
+
+		private function checkBoxSelectHandler(e:Event):void
+		{
+		//	_selected ? !_selected : _selected;
+			if(_selected)
+			{
+				_selected = false;
+			}
+			else
+			{
+
+				_selected = true;
+			}
+			trace("SELECTED VALUE " + _selected)
 		}
 
 		override public function dispose():void
@@ -183,5 +202,16 @@ package collaboRhythm.hiviva.view.screens
 		{
 			_uniqueId = value;
 		}
+
+		public function get isSelected():Boolean
+		{
+			return _selected
+		}
+
+		public function set isSelected(selected:Boolean):void
+		{
+			_selected = selected;
+		}
 	}
+
 }
