@@ -67,12 +67,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 		}
 
-		private function backBtnHandler():void
+		private function backBtnHandler(e:starling.events.Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_HELP_SCREEN);
 		}
