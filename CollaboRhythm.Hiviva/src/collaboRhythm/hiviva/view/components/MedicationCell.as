@@ -62,8 +62,7 @@ package collaboRhythm.hiviva.view.components
 			this._genericNameLabel.y = this._brandNameLabel.y + this._brandNameLabel.height;
 			this._genericNameLabel.width = this.actualWidth - this._pillImageBg.x;
 
-
-			setSizeInternal(this.actualWidth, this._pillImageBg.height + (this._gap * 2), true);
+			setSizeInternal(this.actualWidth, this._brandNameLabel.height + this._genericNameLabel.height + (this._gap * 2), true);
 		}
 
 		override protected function initialize():void
@@ -81,8 +80,7 @@ package collaboRhythm.hiviva.view.components
 			this.addChild(this._brandNameLabel);
 
 			this._genericNameLabel = new Label();
-			this._genericNameLabel.name = "lighter-color-label";
-			this._genericNameLabel.text = this.genericName;
+			this._genericNameLabel.text = this._genericName;
 			this.addChild(this._genericNameLabel);
 
 		}

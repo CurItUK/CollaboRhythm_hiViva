@@ -170,6 +170,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				editMedicationCell.scale = this.dpiScale;
 				editMedicationCell.brandName = HivivaModifier.getBrandName(this._medications[i].medication_name);
 				editMedicationCell.genericName = HivivaModifier.getGenericName(this._medications[i].medication_name);
+				editMedicationCell.width = this._content.width;
 				this._content.addChild(editMedicationCell);
 				this._editMedsCells.push(editMedicationCell);
 			}
