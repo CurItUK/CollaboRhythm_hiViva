@@ -80,7 +80,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._homeBtn = new Button();
 			this._homeBtn.name = "home-button";
-			this._homeBtn.addEventListener(Event.TRIGGERED , homeBtnHandler);
+			this._homeBtn.addEventListener(starling.events.Event.TRIGGERED , homeBtnHandler);
 
 			this._header.leftItems =  new <DisplayObject>[this._homeBtn];
 
@@ -137,14 +137,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 				button.name = item.name;
 				button.label =  item.label;
-				button.addEventListener(Event.TRIGGERED, hcpProfileBtnHandler)
+				button.addEventListener(starling.events.Event.TRIGGERED, hcpProfileBtnHandler)
 			};
 			this._menuBtnGroup.direction = ButtonGroup.DIRECTION_VERTICAL;
 
 			this.addChild(this._menuBtnGroup);
 		}
 
-		private function hcpProfileBtnHandler(e:Event):void
+		private function hcpProfileBtnHandler(e:starling.events.Event):void
 		{
 			var btn:Button = e.target as Button;
 
