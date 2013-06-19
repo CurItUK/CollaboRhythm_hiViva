@@ -18,7 +18,7 @@
   -->
 <patient>
         <name>Antonio Mendes</name>
-        <email>Antontio.mendes@domain.com</email>
+        <email>antonio.mendes@domain.com</email>
         <appid>111222333</appid>
         <picture>patient.png</picture>
 		<medications>
