@@ -77,9 +77,9 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._seperator2.width = this._innerWidth;
 
-			this._researchTitle.width = this._innerWidth;
+			//this._researchTitle.width = this._innerWidth;
 
-			this._researchCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
+			//this._researchCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
 
 			this._cancelAndSave.width = this._innerWidth;
 
@@ -113,11 +113,11 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._seperator2.y = this._emailInputIns.y + this._emailInputIns.height + this._componentGap;
 
-			this._researchTitle.y = this._seperator2.y + (this._componentGap * 0.5);
+			//this._researchTitle.y = this._seperator2.y + (this._componentGap * 0.5);
 
-			this._researchCheck.y = this._researchTitle.y + this._researchTitle.height + (this._componentGap * 0.5);
+			//this._researchCheck.y = this._researchTitle.y + this._researchTitle.height + (this._componentGap * 0.5);
 
-			this._cancelAndSave.y = this._researchCheck.y + this._researchCheck.height + this._componentGap;
+			this._cancelAndSave.y = this._emailInputIns.y + this._emailInputIns.height + this._componentGap;
 
 			this._agreeLabel.y = this._cancelAndSave.y + this._cancelAndSave.height + this._componentGap;
 
@@ -185,15 +185,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._seperator2 = new Image(seperatorTexture);
 			this._content.addChild(this._seperator2);
 
-			this._researchTitle = new Label();
-			this._researchTitle.name = "input-label";
-			this._researchTitle.text = "<font face='ExoBold'>Help us improve the app</font>";
-			this._content.addChild(this._researchTitle);
+			//this._researchTitle = new Label();
+			//this._researchTitle.name = "input-label";
+			//this._researchTitle.text = "<font face='ExoBold'>Help us improve the app</font>";
+			//this._content.addChild(this._researchTitle);
 
-			this._researchCheck = new Check();
-			this._researchCheck.isSelected = false;
-			this._researchCheck.label = "Allow anonymised data for research purposes <font color='#016cf9'>What’s this?</font>";
-			this._content.addChild(this._researchCheck);
+			//this._researchCheck = new Check();
+			//this._researchCheck.isSelected = false;
+			//this._researchCheck.label = "Allow anonymised data for research purposes <font color='#016cf9'>What’s this?</font>";
+			//this._content.addChild(this._researchCheck);
 
 			this._cancelAndSave = new BoxedButtons();
 			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
@@ -273,7 +273,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			patientProfile.name = "'" + this._nameInput._input.text + "'";
 			patientProfile.updates = int(this._updatesCheck.isSelected);
 			patientProfile.email = this._updatesCheck.isSelected ? "'" + this._emailInput._input.text + "'" : "''";
-			patientProfile.research = int(this._researchCheck.isSelected);
+			patientProfile.research = int(false); //TODO REMOVE Cleaning as not used anymore.
 
 			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_SAVE_COMPLETE, setPatientProfileHandler);
 			localStoreController.setPatientProfile(patientProfile);
@@ -307,7 +307,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					this._nameInput._input.text = patientProfile[0].name;
 					this._emailInput._input.text = patientProfile[0].email;
 					this._updatesCheck.isSelected = patientProfile[0].updates as Boolean;
-					this._researchCheck.isSelected = patientProfile[0].research as Boolean;
+					//this._researchCheck.isSelected = patientProfile[0].research as Boolean;
 				}
 			}
 			catch(e:Error)
