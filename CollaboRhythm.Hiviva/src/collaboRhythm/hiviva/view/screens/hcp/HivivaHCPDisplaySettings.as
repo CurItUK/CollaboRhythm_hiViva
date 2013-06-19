@@ -142,7 +142,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		}
 
 
-		private function cancelButtonClick(e:Event):void
+		private function cancelButtonClick(e:starling.events.Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
