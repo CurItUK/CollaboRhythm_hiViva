@@ -143,6 +143,25 @@ package collaboRhythm.hiviva.utils
 		{
 			var history:XMLList = adherenceXMLList;
 			var historyCount:uint = history.length();
+			var avgAdherence:Number = 0;
+			if (historyCount > 0)
+			{
+				for (var i:uint = 0; i < historyCount; i++)
+				{
+					avgAdherence += parseInt(history[i].adherence);
+				}
+				avgAdherence = (avgAdherence / historyCount);
+			}
+
+			return  Math.round(avgAdherence);
+		}
+
+
+
+/*		public static function calculateOverallAdherence(adherenceXMLList:XMLList):Number
+		{
+			var history:XMLList = adherenceXMLList;
+			var historyCount:uint = history.length();
 			var medications:XMLList;
 			var medicationCount:uint;
 			var medTakenCount:int;
@@ -169,7 +188,7 @@ package collaboRhythm.hiviva.utils
 			}
 
 			return Math.round(avgAdherence);
-		}
+		}*/
 
 
 
