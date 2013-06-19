@@ -142,8 +142,8 @@
 		</medicationHistory>
     </patient>
 	<patient>
-		<name>Antontio Mendes</name>
-		<email>Antontio.mendes@domain.com</email>
+		<name>Antonio Mendes</name>
+		<email>antonio.mendes@domain.com</email>
 		<appid>111222333</appid>
 		<picture>patient.png</picture>
 		<medications>

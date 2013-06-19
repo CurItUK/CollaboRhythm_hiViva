@@ -10,6 +10,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.MedicationCell;
 	import collaboRhythm.hiviva.view.media.Assets;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPPatientMessageCompose;
 
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientReportsScreen;
@@ -180,14 +181,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var sendMessageBtnY:Number = this._sendMessageBtn.y - (this._header.height + scaledPadding);
 			var bgFinalHeight:Number =  sendMessageBtnY + this._sendMessageBtn.height + gap;
 			this._bg.height = bgFinalHeight;
-/*
 
 			this._spoofData = new Image(Assets.getTexture(HivivaAssets.SPOOF_DATA));
 			this._spoofData.y = this._generateReportBtn.y + this._generateReportBtn.height + gap;
 			this.addChild(_spoofData);
-*/
 
-			drawPatientTable();
+			//drawPatientTable();
 
 			doImageLoad("media/patients/" + _patientData.picture);
 
@@ -198,6 +197,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var verticalScrollContainer:ScrollContainer = new ScrollContainer();
 			verticalScrollContainer.layout = new VerticalLayout();
 			addChild(verticalScrollContainer);
+			verticalScrollContainer.y = this._bg.y + this._bg.height;
 
 			var medications:XMLList = _patientData.medications.medication as XMLList;
 			var medicationCount:uint = medications.length();
@@ -208,8 +208,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 				medicationCell.scale = this.dpiScale;
 				medicationCell.brandName = medications[i].brandname;
 				medicationCell.genericName = medications[i].genericname;
-
+				verticalScrollContainer.addChild(medicationCell);
+				medicationCell.width = this.actualWidth * 0.3;
 			}
+			verticalScrollContainer.validate();
 
 /*
 			var history:XMLList = _patientData.medicationHistory.history as XMLList;
@@ -235,46 +237,44 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function backBtnHandler(e:starling.events.Event):void
 		{
+
+			if (this.owner.hasScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN))
+			{
+				this.owner.removeScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN);
+			}
+
+			if (this.owner.hasScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT))
+			{
+				this.owner.removeScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT);
+			}
+
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
 			this.dispatchEventWith("navGoHome");
 		}
 
 		private function sendMessageBtnHandler(e:starling.events.Event):void
 		{
-			//this.owner.showScreen(HivivaScreens.HCP_MESSAGE_COMPOSE_SCREEN);
-
-			var selectedPatient:XML = _patientData;
-			var screenParams:Object = {selectedPatient: selectedPatient};
-			var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaHCPPatientMessageCompose , null , screenParams);
-
-			if (this.owner.getScreenIDs().indexOf(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN) == -1)
+			if (!this.owner.hasScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN))
 			{
+				var selectedPatient:XML = _patientData;
+				var screenParams:Object = {selectedPatient: selectedPatient};
+				var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaHCPPatientMessageCompose , null , screenParams);
 				this.owner.addScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN, screenNavigatorItem);
 			}
-			else
-			{
-				this.owner.removeScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN);
-				this.owner.addScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN, screenNavigatorItem);
-			}
+
 			this.owner.showScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN);
 		}
 
 		private function generateReportsBtnHandler(e:starling.events.Event):void
 		{
-
-			var selectedPatient:XML = _patientData;
-			var screenParams:Object = {selectedPatient: selectedPatient};
-			var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaHCPPatientReportsScreen, null, screenParams);
-
-			if (this.owner.getScreenIDs().indexOf(HivivaScreens.HCP_PATIENT_PROFILE_REPORT) == -1)
+			if (!this.owner.hasScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT))
 			{
+				var selectedPatient:XML = _patientData;
+				var screenParams:Object = {selectedPatient: selectedPatient};
+				var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaHCPPatientReportsScreen, null, screenParams);
 				this.owner.addScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT, screenNavigatorItem);
 			}
-			else
-			{
-				this.owner.removeScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT);
-				this.owner.addScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT, screenNavigatorItem);
-			}
+
 			this.owner.showScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT);
 		}
 

@@ -75,9 +75,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		{
 
 			super.draw();
+
 			this._scaledPadding = (this.actualHeight * 0.04) * this.dpiScale;
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
 
 			this._hcpName.x = scaledPadding;
 			this._hcpName.y = this._header.height + scaledPadding;
@@ -92,7 +91,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._sendButton.y = this._content.height - this._sendButton.height;
 			this._sendButton.x = (this.actualWidth)/2 - (this._sendButton.width)/2;
 
-			this._header.initTrueTitle();
 
 			if(_cellContainer == null)
 			{
@@ -104,16 +102,15 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		{
 			super.initialize();
 
-			this._header = new HivivaHeader();
 			this._header.title = "Compose message";
-			this.addChild(this._header);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
+			this.addChild(this._backButton);
 
-			this._header.leftItems = new <DisplayObject>[_backButton];
+			this._header.leftItems = new <DisplayObject>[this._backButton];
 
 			scaledPadding = PADDING * this.dpiScale;
 
@@ -209,7 +206,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function backBtnHandler(e:Event):void
 		{
-			this._owner.showScreen(HivivaScreens.HCP_PATIENT_PROFILE);
+			this.owner.showScreen(HivivaScreens.HCP_PATIENT_PROFILE);
 		//	this.owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN);
 		//	this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_PATIENT_PROFILE , patientName:e.evtData.profile.name , appID:e.evtData.profile.appid});
 
