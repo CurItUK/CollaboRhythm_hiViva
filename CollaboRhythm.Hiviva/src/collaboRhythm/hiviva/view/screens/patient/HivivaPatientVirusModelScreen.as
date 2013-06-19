@@ -129,12 +129,12 @@ package collaboRhythm.hiviva.view.screens.patient
 
 
 			this._adheranceLabel = new Label();
-			this._adheranceLabel.text = "Adherance:";
+			this._adheranceLabel.text = "Adherence:";
 			this.addChild(this._adheranceLabel);
 
 			this._adheranceResultLabel = new Label();
 			this._adheranceResultLabel.name = "centered-label";
-			this._adheranceResultLabel.text = "0";
+			this._adheranceResultLabel.text = "95";//TODO dynamic population //forced for MKT Access
 			this.addChild(this._adheranceResultLabel);
 
 			this._adheranceSlider = new Slider();
@@ -142,7 +142,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._adheranceSlider.customThumbName = "feeling-slider";
 			this._adheranceSlider.minimum = 0;
 			this._adheranceSlider.maximum = 100;
-			this._adheranceSlider.value = 50;
+			this._adheranceSlider.value = 95; //TODO dynamic population //forced for MKT Access
 			this._adheranceSlider.step = 1;
 			this._adheranceSlider.page = 10;
 			this._adheranceSlider.direction = Slider.DIRECTION_HORIZONTAL;
