@@ -81,8 +81,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			super.draw();
 			this._scaledPadding = (this.actualHeight * 0.04) * this.dpiScale;
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
 
 			this._hcpName.x = scaledPadding;
 			this._hcpName.y = this._header.height + scaledPadding;
@@ -114,9 +112,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		{
 			super.initialize();
 
-			this._header = new HivivaHeader();
 			this._header.title = "Compose message";
-			this.addChild(this._header);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
