@@ -112,14 +112,14 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function drawMessages():void
 		{
-			trace("XML LIST LENGTH " + messagesXMLList.length())
 			_messageCentre = new Array();
+			trace("messagesXMLList.length() " + messagesXMLList.length())
 			if(messagesXMLList.length() > 0)
 			{
 				this._messageCellContainer = new ScrollContainer();
 
 				var listCount:uint = messagesXMLList.length();
-				trace("XML LIST LENGTH " + messagesXMLList.length())
+
 				for(var i:uint = 0 ; i < listCount ; i++)
 				{
 					var messageInboxResultCell:MessageInboxResultCell = new MessageInboxResultCell();
@@ -185,19 +185,24 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				if(messagesXMLList.length() > 0)
 				{
 					var listCount:uint = messagesXMLList.length();
+					var deletedCount:uint = 1;
+
 					for(var i:uint = 0 ; i < listCount ; i++)
 					{
-						if(_messageCentre[i].isSelected == true)
+						trace("DELETE COUNT " + deletedCount)
+						if(_messageCentre[i-deletedCount].isSelected == true)
 						{
-							delete messagesXMLList[i];
+							delete messagesXMLList[i-deletedCount];
+							deletedCount++;
 						}
+						trace("XML LIST " + messagesXMLList)
 						var tempMessage:MessageInboxResultCell = this._messageCellContainer.getChildAt(i) as MessageInboxResultCell;
 						tempMessage.removeEventListener(FeathersScreenEvent.HCP_MESSAGE_SELECTED, messageSelectedHandler);
 
 						removeChild(this._messageCellContainer);
 					}
-					trace("FIRST XML LIST LENGTH " +  messagesXMLList.length())
 				}
+			// TODO: Bug with deleting multiple messages
 			drawMessages();
 		}
 
