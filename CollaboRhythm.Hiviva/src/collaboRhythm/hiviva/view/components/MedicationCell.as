@@ -81,6 +81,7 @@ package collaboRhythm.hiviva.view.components
 			this.addChild(this._brandNameLabel);
 
 			this._genericNameLabel = new Label();
+			this._genericNameLabel.name = "lighter-color-label";
 			this._genericNameLabel.text = this.genericName;
 			this.addChild(this._genericNameLabel);
 
