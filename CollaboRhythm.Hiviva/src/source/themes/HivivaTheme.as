@@ -1151,7 +1151,7 @@ package source.themes
 		protected function lighterLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = this.hivivaLighterTextFormat;
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x293d54);
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 			label.textRendererProperties.isHTML = true;
 		}

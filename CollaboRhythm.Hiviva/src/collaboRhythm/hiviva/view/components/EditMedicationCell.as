@@ -28,11 +28,11 @@ package collaboRhythm.hiviva.view.components
 			super.draw();
 
 			this._delete.validate();
-			this._delete.x = this.actualWidth - this._gap - this._delete.width;
+			this._delete.x = this.actualWidth - (this._gap * 2) - this._delete.width;
 			this._delete.y = (this.actualHeight * 0.5) - (this._delete.height * 0.5);
 
 
-			this._genericNameLabel.width = this.actualWidth - this._pillImageBg.x - this._delete.width *2 - this._gap;
+			this._genericNameLabel.width = this.actualWidth - this._pillImageBg.x - this._delete.width * 2 - this._gap;
 /*
 
 			this._edit.validate();
