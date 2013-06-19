@@ -62,7 +62,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			var homeBtn:Button = new Button();
 			homeBtn.name = "home-button";
-			homeBtn.addEventListener(Event.TRIGGERED, homeBtnHandler);
+			homeBtn.addEventListener(starling.events.Event.TRIGGERED, homeBtnHandler);
 			this._header.leftItems = new <DisplayObject>[homeBtn];
 
 		}
@@ -118,10 +118,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			button.name = item.name;
 			button.label = item.label;
-			button.addEventListener(Event.TRIGGERED, profileBtnHandler)
+			button.addEventListener(starling.events.Event.TRIGGERED, profileBtnHandler)
 		}
 
-		private function profileBtnHandler(e:Event):void
+		private function profileBtnHandler(e:starling.events.Event):void
 		{
 			var btn:Button = e.target as Button;
 			trace(btn.name.substring(0, btn.name.indexOf(" patient-profile-nav-buttons")));
