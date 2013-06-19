@@ -163,7 +163,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._startDateInput._input.isEnabled = false;
 
 			this._startDateButton = new Button();
-			this._startDateButton.addEventListener(Event.TRIGGERED, startDateCalendarHandler);
+			this._startDateButton.addEventListener(starling.events.Event.TRIGGERED, startDateCalendarHandler);
 			this._startDateButton.name = "calendar-button";
 			this._content.addChild(this._startDateButton);
 
@@ -174,7 +174,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._finishDateInput._input.isEnabled = false;
 
 			this._finishDateButton = new Button();
-			this._finishDateButton.addEventListener(Event.TRIGGERED, finishDateCalendarHandler);
+			this._finishDateButton.addEventListener(starling.events.Event.TRIGGERED, finishDateCalendarHandler);
 			this._finishDateButton.name = "calendar-button";
 			this._content.addChild(this._finishDateButton);
 
@@ -219,7 +219,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._activeCalendarInput.text = e.evtData.date;
 		}
 
-		private function startDateCalendarHandler(e:Event):void
+		private function startDateCalendarHandler(e:starling.events.Event):void
 		{
 			this._activeCalendarInput = this._startDateInput._input;
 			PopUpManager.addPopUp(this._calendar,true,false);
@@ -228,7 +228,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 
-		private function finishDateCalendarHandler(e:Event):void
+		private function finishDateCalendarHandler(e:starling.events.Event):void
 		{
 			this._activeCalendarInput = this._finishDateInput._input;
 			PopUpManager.addPopUp(this._calendar,true,false);
@@ -281,7 +281,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._pdfPopupContainer.width = this.actualWidth;
 			this._pdfPopupContainer.height = this.actualHeight;
 			this._pdfPopupContainer.addEventListener("sendMail", mailBtnHandler);
-			this._pdfPopupContainer.addEventListener(Event.CLOSE, closePopup);
+			this._pdfPopupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
 			this._pdfPopupContainer.validate();
 
 			PopUpManager.addPopUp(this._pdfPopupContainer, true, true);
@@ -298,7 +298,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		}
 
-		private function closePopup(e:Event):void
+		private function closePopup(e:starling.events.Event):void
 		{
 			this._stageWebView.viewPort = null;
 			this._stageWebView.dispose();

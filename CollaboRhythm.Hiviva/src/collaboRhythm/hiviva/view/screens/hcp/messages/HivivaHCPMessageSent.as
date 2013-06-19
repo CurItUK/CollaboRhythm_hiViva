@@ -49,14 +49,14 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
 		}
 
-		private function backBtnHandler(e:Event):void
+		private function backBtnHandler(e:starling.events.Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN)
 		}

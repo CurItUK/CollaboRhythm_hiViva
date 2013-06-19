@@ -13,6 +13,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import feathers.core.ToggleGroup;
 	import feathers.layout.VerticalLayout;
 
+	import flash.events.DataEvent;
+
 	import flash.text.TextFormat;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -61,13 +63,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._addConnectionButton = new Button();
 			this._addConnectionButton.label = "Add a connection";
-			this._addConnectionButton.addEventListener(Event.TRIGGERED, onAddConnection);
+			this._addConnectionButton.addEventListener(starling.events.Event.TRIGGERED, onAddConnection);
 			addChild(this._addConnectionButton);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
@@ -101,7 +103,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 					patientCell.patientData = generateXMLNode(e.data.connections[listCount]);
 					patientCell.isResult = false;
 					patientCell.scale = this.dpiScale;
-					patientCell.addEventListener(Event.CLOSE, deleteHcpRecord);
+					patientCell.addEventListener(starling.events.Event.CLOSE, deleteHcpRecord);
 					//patientCell.addEventListener(Event.REMOVED_FROM_STAGE, deleteHcpCell);
 					this._patientCellContainer.addChild(patientCell);
 					this._patientCellRadioGroup.addItem(patientCell._patientSelect);
@@ -147,7 +149,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			return xmlRecord;
 		}
 
-		private function deleteHcpRecord(e:Event):void
+		private function deleteHcpRecord(e:starling.events.Event):void
 		{
 			trace("deleteHcpRecord confirmation");
 			selectedPatientCellForDelete = e.target as PatientResultCell;
@@ -156,8 +158,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._deletePopupContainer = new HivivaPopUp();
 			this._deletePopupContainer.scale = this.dpiScale;
 			this._deletePopupContainer.confirmLabel = "Delete";
-			this._deletePopupContainer.addEventListener(Event.COMPLETE, deleteHcpCell);
-			this._deletePopupContainer.addEventListener(Event.CLOSE, closePopup);
+			this._deletePopupContainer.addEventListener(starling.events.Event.COMPLETE, deleteHcpCell);
+			this._deletePopupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
 			this._deletePopupContainer.width = 500 * dpiScale;
 			this._deletePopupContainer.validate();
 
@@ -174,7 +176,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._deletePopupContainer.drawCloseButton();
 		}
 
-		private function deleteHcpCell(e:Event):void
+		private function deleteHcpCell(e:starling.events.Event):void
 		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTION_DELETE_COMPLETE , deleteHCPConnectionCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.deleteHCPConnection(selectedPatientCellForDelete.patientData.appid);
@@ -191,24 +193,24 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function clearDownPopup():void
 		{
 			PopUpManager.removePopUp(this._deletePopupContainer);
-			this._deletePopupContainer.removeEventListener(Event.COMPLETE, deleteHcpCell);
-			this._deletePopupContainer.removeEventListener(Event.CLOSE, closePopup);
+			this._deletePopupContainer.removeEventListener(starling.events.Event.COMPLETE, deleteHcpCell);
+			this._deletePopupContainer.removeEventListener(starling.events.Event.CLOSE, closePopup);
 			this._deletePopupContainer.dispose();
 			this._deletePopupContainer = null;
 		}
 
-		private function closePopup(e:Event):void
+		private function closePopup(e:starling.events.Event):void
 		{
 			PopUpManager.removePopUp(this._deletePopupContainer);
 		}
 
-		private function backBtnHandler(e:Event = null):void
+		private function backBtnHandler(e:starling.events.Event = null):void
 		{
 			clearDownPatientCells();
 			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
 
-		private function onAddConnection(e:Event):void
+		private function onAddConnection(e:starling.events.Event):void
 		{
 			clearDownPatientCells();
 			this.owner.showScreen(HivivaScreens.HCP_ADD_PATIENT);
