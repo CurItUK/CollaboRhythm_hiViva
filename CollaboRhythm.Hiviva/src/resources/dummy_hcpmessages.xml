@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <messages>
+    
+	 <message>
+		<date>06/16/2013</date>
+		<body><![CDATA[Samantha Nichols has adherence &lt;95% this week]]></body>
+	</message>
+     <message>
+		<date>06/16/2013</date>
+		<body><![CDATA[Piet Roger has adherence &lt;95% this week]]></body>
+	</message>
     <message>
-		<date>01022013</date>
-		<body>Patient Barry Gearing adherence levels below 95%</body>
+		<date>06/09/2013</date>
+		<body><![CDATA[Piet Roger has adherence &lt;95% this week]]></body>
 	</message>
-	 <message>
-		<date>01022013</date>
-		<body>Patient James adherence levels below 92%</body>
+    <message>
+		<date>06/09/2013</date>
+		<body><![CDATA[Antonio Mendes has adherence &lt;95% this week]]></body>
 	</message>
-	 <message>
-		<date>02022013</date>
-		<body>New Patient Barry Gearing has not logged in for 10 days</body>
+     <message>
+		<date>06/02/2013</date>
+		<body><![CDATA[Piet Roger has adherence &lt;95% this week]]></body>
 	</message>
-	 <message>
-		<date>03202013</date>
-		<body>New Patient Barry Gearing has not logged in for 20 days</body>
+     <message>
+		<date>06/02/2013</date>
+		<body><![CDATA[Piet Roger has adherence &lt;95% this week]]></body>
 	</message>
+     <message>
+		<date>06/02/2013</date>
+		<body><![CDATA[Piet Roger has tolerability &lt;40% this week]]></body>
+	</message>
+ 	
 </messages>
+
+
