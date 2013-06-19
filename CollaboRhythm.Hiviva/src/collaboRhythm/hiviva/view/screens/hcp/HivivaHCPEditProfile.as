@@ -106,18 +106,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._cancelButton = new Button();
 			this._cancelButton.label = "Cancel";
-			this._cancelButton.addEventListener(Event.TRIGGERED, cancelButtonClick);
+			this._cancelButton.addEventListener(starling.events.Event.TRIGGERED, cancelButtonClick);
 			this._content.addChild(this._cancelButton);
 
 			this._submitButton = new Button();
 			this._submitButton.label = "Save";
-			this._submitButton.addEventListener(Event.TRIGGERED, submitButtonClick);
+			this._submitButton.addEventListener(starling.events.Event.TRIGGERED, submitButtonClick);
 			this._content.addChild(this._submitButton);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
@@ -126,17 +126,17 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._isThisFromHome = this.owner.hasScreen(HivivaScreens.HCP_HOME_SCREEN);
 		}
 
-		private function cancelButtonClick(e:Event):void
+		private function cancelButtonClick(e:starling.events.Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
 
-		private function backBtnHandler(e:Event):void
+		private function backBtnHandler(e:starling.events.Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
 
-		private function submitButtonClick(e:Event):void
+		private function submitButtonClick(e:starling.events.Event):void
 		{
 			var formValidation:String = hcpMyDetailsCheck();
 			if(formValidation.length == 0)
