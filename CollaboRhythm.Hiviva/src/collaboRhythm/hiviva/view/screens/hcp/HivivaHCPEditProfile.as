@@ -48,7 +48,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function preValidateContent():void
 		{
 			super.preValidateContent();
-			this._instructionsText.width = this._innerWidth;
 
 			this._nameInput._labelLeft.text = "Name";
 			this._nameInput.width = this._innerWidth;
@@ -62,7 +61,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._updatesCheck.width = this._innerWidth;
 
-			this._researchCheck.width = this._innerWidth;
+			//this._researchCheck.width = this._innerWidth;
 
 			this._submitButton.width = this._cancelButton.width = this._innerWidth * 0.25;
 		}
@@ -79,10 +78,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			super.initialize();
 
 			this._header.title = "My Details";
-
-			this._instructionsText = new Label();
-			this._instructionsText.text = "All fields are optional except to connect to a care provider <a>What's this?</a>";
-			this._content.addChild(this._instructionsText);
 
 			this._nameInput = new LabelAndInput();
 			this._nameInput.scale = this.dpiScale;
@@ -104,10 +99,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._updatesCheck.label = "Send me updates";
 			this._content.addChild(this._updatesCheck);
 
-			this._researchCheck = new Check();
-			this._researchCheck.isSelected = false;
-			this._researchCheck.label = "Allow anonymised data for research purposes";
-			this._content.addChild(this._researchCheck);
+			//this._researchCheck = new Check();
+			//this._researchCheck.isSelected = false;
+			//this._researchCheck.label = "Allow anonymised data for research purposes";
+			//this._content.addChild(this._researchCheck);
 
 			this._cancelButton = new Button();
 			this._cancelButton.label = "Cancel";
@@ -171,7 +166,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			hcpProfile.name = "'" + this._nameInput._input.text + "'";
 			hcpProfile.email = "'" + this._emailInput._input.text + "'";
 			hcpProfile.updates = int(this._updatesCheck.isSelected);
-			hcpProfile.research = int(this._researchCheck.isSelected);
+			hcpProfile.research = int(false); //TODO Remove Cleanly as no longer required for beta.
 
 			localStoreController.addEventListener(LocalDataStoreEvent.HCP_PROFILE_SAVE_COMPLETE, setHcpProfileHandler);
 			localStoreController.setHcpProfile(hcpProfile);
@@ -211,7 +206,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 					this._nameInput._input.text = hcpProfile[0].name;
 					this._emailInput._input.text = hcpProfile[0].email;
 					this._updatesCheck.isSelected = hcpProfile[0].updates as Boolean;
-					this._researchCheck.isSelected = hcpProfile[0].research as Boolean;
+					//this._researchCheck.isSelected = hcpProfile[0].research as Boolean; //TODO Remove Cleanly as no longer required for beta.
 				}
 			}
 			catch(e:Error)
