@@ -138,6 +138,7 @@ package collaboRhythm.hiviva.utils
 
 			return  Math.round(avgTolerability);
 		}
+/*
 
 		public static function calculateOverallAdherence(adherenceXMLList:XMLList):Number
 		{
@@ -155,10 +156,11 @@ package collaboRhythm.hiviva.utils
 
 			return  Math.round(avgAdherence);
 		}
+*/
 
 
 
-/*		public static function calculateOverallAdherence(adherenceXMLList:XMLList):Number
+		public static function calculateOverallAdherence(adherenceXMLList:XMLList):Number
 		{
 			var history:XMLList = adherenceXMLList;
 			var historyCount:uint = history.length();
@@ -188,7 +190,7 @@ package collaboRhythm.hiviva.utils
 			}
 
 			return Math.round(avgAdherence);
-		}*/
+		}
 
 
 
