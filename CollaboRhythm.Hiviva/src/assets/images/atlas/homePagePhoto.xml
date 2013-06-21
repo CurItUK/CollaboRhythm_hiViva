@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:e7c6dbba17d407911998bec1507e29f5$ -->
+<TextureAtlas imagePath="homePagePhoto.atf">
+    <SubTexture name="home_lens_bg" x="2" y="677" width="569" height="569"/>
+    <SubTexture name="home_lens_rim" x="2" y="2" width="633" height="673" frameX="-40" frameY="-40" frameWidth="713" frameHeight="713"/>
+    <SubTexture name="home_lens_shine" x="2" y="1248" width="477" height="373" frameX="0" frameY="0" frameWidth="569" frameHeight="569"/>
+</TextureAtlas>

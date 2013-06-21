@@ -117,16 +117,19 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._bgImageHolder = new Sprite();
 			addChild(this._bgImageHolder);
 
-			this._rim = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_RIM));
+			//this._rim = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_RIM));
+			this._rim = new Image(Main.assets.getTexture("home_lens_rim"));
 			addChild(this._rim);
 
-			this._bg = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_BG));
+			//this._bg = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_BG));
+			this._bg = new Image(Main.assets.getTexture("home_lens_bg"));
 			addChild(this._bg);
 
 			this._lensImageHolder = new Sprite();
 			addChild(this._lensImageHolder);
 
-			this._shine = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_SHINE));
+			//this._shine = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_SHINE));
+			this._shine = new Image(Main.assets.getTexture("home_lens_shine"));
 			addChild(this._shine);
 
 			this._homeImageInstructions = new Label();
@@ -298,6 +301,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function doImageLoad(url:String):void
 		{
+
+			trace("Image load start");
 			var loaderContext:LoaderContext = new LoaderContext();
 			loaderContext.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
 			var imageLoader:Loader = new Loader();
@@ -305,11 +310,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url) , loaderContext);
+
 		}
 
 		private function imageLoaded(e:flash.events.Event):void
 		{
-			trace("Image loaded.");
+			trace("Image load finish");
+
+
 			var sourceBm:Bitmap = e.target.content as Bitmap;
 
 			drawBgHomeImage(sourceBm);
@@ -363,7 +371,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			bgImage.y = (this._usableHeight * 0.5) + this._header.height - (bgImage.height * 0.5);
 			this._bgImageHolder.addChild(bgImage);
 
+
+			bgHolder.removeChild(bgBm);
+			bgHolder.removeChild(bgMask);
+
+			bgMask = null;
+			bgHolder = null;
+
+
 			bmd.dispose();
+			bmd = null;
 		}
 
 		private function drawLensHomeImage(sourceBm:Bitmap):void

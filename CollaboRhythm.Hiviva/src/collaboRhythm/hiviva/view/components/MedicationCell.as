@@ -15,6 +15,7 @@ package collaboRhythm.hiviva.view.components
 	import starling.display.Image;
 
 	import starling.display.Quad;
+	import starling.textures.Texture;
 
 	public class MedicationCell extends FeathersControl
 	{
@@ -67,6 +68,8 @@ package collaboRhythm.hiviva.view.components
 
 		override protected function initialize():void
 		{
+			super.initialize();
+
 			this._seperator = new Image(Main.assets.getTexture("header_line"));
 			addChild(this._seperator);
 

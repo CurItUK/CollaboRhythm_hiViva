@@ -18,14 +18,14 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/snakey_thing.png")]
 		public static const SnakeyThingPng:Class;
 
-		[Embed(source="/assets/images/temp/home_lens_rim.png")]
-		public static const HomeLensRimPng:Class;
+		//[Embed(source="/assets/images/temp/home_lens_rim.png")]
+		//public static const HomeLensRimPng:Class;
 
-		[Embed(source="/assets/images/temp/home_lens_bg.png")]
-		public static const HomeLensBgPng:Class;
+		//[Embed(source="/assets/images/temp/home_lens_bg.png")]
+		//public static const HomeLensBgPng:Class;
 
-		[Embed(source="/assets/images/temp/home_lens_shine.png")]
-		public static const HomeLensShinePng:Class;
+		//[Embed(source="/assets/images/temp/home_lens_shine.png")]
+		//public static const HomeLensShinePng:Class;
 
 		[Embed(source="/assets/images/temp/clockface_hand.png")]
 		public static const ClockFaceHandPng:Class;

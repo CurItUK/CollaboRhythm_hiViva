@@ -90,6 +90,7 @@ package collaboRhythm.hiviva.view
 		private function initAssetManagement():void
 		{
 			var appDir:File = File.applicationDirectory;
+			_assets.enqueue(appDir.resolvePath("assets/images/atlas/homePagePhoto.atf"),appDir.resolvePath("assets/images/atlas/homePagePhoto.xml"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/hivivaBaseImages.png"),appDir.resolvePath("assets/images/atlas/hivivaBaseImages.xml"));
 			_assets.loadQueue(function onProgress(ratio:Number):void
 			{

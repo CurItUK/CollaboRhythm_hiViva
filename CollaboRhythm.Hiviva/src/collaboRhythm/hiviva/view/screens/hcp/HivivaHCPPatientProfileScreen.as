@@ -21,6 +21,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
 	import feathers.display.Scale9Image;
+	import feathers.layout.TiledColumnsLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.textures.Scale9Textures;
 
@@ -36,9 +37,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 
+	import starling.display.BlendMode;
+
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
+	import starling.display.Sprite;
 	import starling.events.Event;
 
 	import starling.textures.Texture;
@@ -74,7 +78,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.draw();
 			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
+			this._header.initTrueTitle();
 
 			initPatientXMLData();
 		}
@@ -181,12 +185,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var sendMessageBtnY:Number = this._sendMessageBtn.y - (this._header.height + scaledPadding);
 			var bgFinalHeight:Number =  sendMessageBtnY + this._sendMessageBtn.height + gap;
 			this._bg.height = bgFinalHeight;
+/*
 
 			this._spoofData = new Image(Assets.getTexture(HivivaAssets.SPOOF_DATA));
 			this._spoofData.y = this._generateReportBtn.y + this._generateReportBtn.height + gap;
 			this.addChild(_spoofData);
+*/
 
-			//drawPatientTable();
+			drawPatientTable();
 
 			doImageLoad("media/patients/" + _patientData.picture);
 
@@ -194,44 +200,197 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function drawPatientTable():void
 		{
-			var verticalScrollContainer:ScrollContainer = new ScrollContainer();
-			verticalScrollContainer.layout = new VerticalLayout();
-			addChild(verticalScrollContainer);
-			verticalScrollContainer.y = this._bg.y + this._bg.height;
-
 			var medications:XMLList = _patientData.medications.medication as XMLList;
 			var medicationCount:uint = medications.length();
+			var history:XMLList = _patientData.medicationHistory.history as XMLList;
+			var historyLength:int = history.length();
+			var weekDays:Array = new Array("M", "T", "W", "T", "F", "S", "S");
+			var daysPerWeek:Array = new Array(6,0,1,2,3,4,5);
+			var weekDaysCount:uint = weekDays.length;
+
+			var firstColumnWidth:Number = this.actualWidth * 0.3;
+			var firstRowHeight:Number;
+			var dataColumnsWidth:Number = (this.actualWidth * 0.7) / (weekDaysCount + 1);
+			var startY:Number = this._bg.y + this._bg.height + (this.actualHeight * 0.02);
+
+
+			// day names row
+			var firstRowPadding:Number = this.actualHeight * 0.01;
+			var dayRow:Sprite = new Sprite();
+			dayRow.x = firstColumnWidth;
+			dayRow.y = startY + firstRowPadding;
+			addChild(dayRow);
+
+			var dayLabel:Label;
+			for (var dayCount:int = 0; dayCount < weekDaysCount; dayCount++)
+			{
+				dayLabel = new Label();
+				dayLabel.width = dataColumnsWidth;
+				dayLabel.x = dataColumnsWidth * dayCount;
+				dayLabel.text = weekDays[dayCount];
+				dayRow.addChild(dayLabel);
+			}
+			// need to validate for row height
+			dayLabel.validate();
+			firstRowHeight = dayRow.height + (firstRowPadding * 2);
+
+			// data vertical scroll container
+			var tableStartY:Number = startY + firstRowHeight;
+			var maxHeight:Number = this.actualHeight - tableStartY;
+
+			var mainScrollContainer:ScrollContainer = new ScrollContainer();
+			addChild(mainScrollContainer);
+			mainScrollContainer.y = tableStartY;
+
+			var vLayout:VerticalLayout = new VerticalLayout();
+			vLayout.hasVariableItemDimensions = true;
+			mainScrollContainer.layout = vLayout;
+
+
+			// names column
+			var rows:Array = [];
+			var rowData:Object;
 			var medicationCell:MedicationCell;
-			for (var i:int = 0; i < medicationCount; i++)
+			var cellY:Number = 0;
+			for (var cellCount:int = 0; cellCount < medicationCount; cellCount++)
 			{
 				medicationCell = new MedicationCell();
 				medicationCell.scale = this.dpiScale;
-				medicationCell.brandName = medications[i].brandname;
-				medicationCell.genericName = medications[i].genericname;
-				verticalScrollContainer.addChild(medicationCell);
-				medicationCell.width = this.actualWidth * 0.3;
+				medicationCell.brandName = medications[cellCount].brandname;
+				medicationCell.genericName = medications[cellCount].genericname;
+				mainScrollContainer.addChild(medicationCell);
+				medicationCell.width = firstColumnWidth;
+				medicationCell.validate();
+
+				trace(medicationCell.height);
+
+				rowData = {};
+				rowData.id = medications[cellCount].id;
+				rowData.cellHeight = medicationCell.height;
+				rowData.y = cellY;
+				rows.push(rowData);
+				cellY += medicationCell.height;
 			}
-			verticalScrollContainer.validate();
+			// tolerability row name
+			medicationCell = new MedicationCell();
+			medicationCell.scale = this.dpiScale;
+			medicationCell.brandName = "Tolerability";
+			mainScrollContainer.addChild(medicationCell);
+			medicationCell.width = firstColumnWidth;
+			medicationCell.validate();
 
-/*
-			var history:XMLList = _patientData.medicationHistory.history as XMLList;
-			var historyCount:int = history.length();
-			var medications:XMLList;
-			var medicationCount:uint;
-			for (var i:int = 0; i < historyCount; i++)
+			rowData = {};
+			rowData.id = "tolerability";
+			rowData.cellHeight = medicationCell.height;
+			rowData.y = cellY;
+			rows.push(rowData);
+
+			mainScrollContainer.validate();
+			if(maxHeight < mainScrollContainer.height) mainScrollContainer.height = maxHeight;
+			mainScrollContainer.layout = null;
+
+			// data horizontal
+			const hLayout:TiledColumnsLayout = new TiledColumnsLayout();
+			hLayout.paging = TiledColumnsLayout.PAGING_HORIZONTAL;
+			hLayout.useSquareTiles = false;
+			hLayout.horizontalAlign = TiledColumnsLayout.HORIZONTAL_ALIGN_LEFT;
+			hLayout.verticalAlign = TiledColumnsLayout.VERTICAL_ALIGN_TOP;
+
+			var dataContainer:ScrollContainer = new ScrollContainer();
+			//dataContainer.layout = hLayout;
+			dataContainer.scrollerProperties.snapToPages = TiledColumnsLayout.PAGING_HORIZONTAL;
+			dataContainer.scrollerProperties.snapScrollPositionsToPixels = true;
+			mainScrollContainer.addChild(dataContainer);
+			dataContainer.x = firstColumnWidth;
+			//dataContainer.y = firstRowHeight;
+			dataContainer.width = dataColumnsWidth * (weekDaysCount + 1);
+			dataContainer.height = mainScrollContainer.height;
+
+			var historicalMedication:XMLList;
+			var dateData:Array;
+			var date:Date = new Date();
+			var day:Number;
+			var cellX:Number;
+			var cell:Sprite;
+			var cellBg:Image;
+			var cellLabel:Label;
+			var cellBgTexture:Texture = Main.assets.getTexture("calendar_day_cell");
+
+			for (var historyCount:int = 0; historyCount < historyLength; historyCount++)
 			{
-				trace(history[i].date);
-				trace(history[i].tolerability);
-				medications = history[i].medication;
-				medicationCount = medications.length();
-				for (var j:int = 0; j < medicationCount; j++)
-				{
+//				trace("date = " + history[historyCount].date);
+				dateData = String(history[historyCount].date).split("/");
+				date.setMonth(int(dateData[0]) - 1);
+				date.setDate(int(dateData[1]));
+				date.setFullYear(int(dateData[2]));
+				day = date.getDay();
+				cellX = dataColumnsWidth * (day - 1);
 
-					trace(medications[j].brandname);
-					trace(medications[j].genericname);
-					trace(medications[j].adhered);
+				for (var rowCount:int = 0; rowCount < rows.length; rowCount++)
+				{
+					rowData = rows[rowCount];
+
+					cell = new Sprite();
+					cell.x = cellX;
+					cell.y = rowData.y;
+					dataContainer.addChild(cell);
+
+					cellBg = new Image(cellBgTexture);
+					cellBg.width = dataColumnsWidth;
+					cellBg.height = rowData.cellHeight;
+					cell.addChild(cellBg);
+
+					cellLabel = new Label();
+					cellLabel.width = dataColumnsWidth;
+					cell.addChild(cellLabel);
+
+					if(rowData.id == "tolerability")
+					{
+						// write tolerability data cell
+						// history[historyCount].tolerability
+						cellLabel.text = history[historyCount].tolerability;
+					}
+					else
+					{
+						historicalMedication = history[historyCount].medication.(@id == rowData.id);
+						cellLabel.text = historicalMedication.adhered;
+						if(historicalMedication.adhered == "yes")
+						{
+							// tick
+						}
+						else
+						{
+							// cross
+						}
+					}
+
+					cellLabel.validate();
+					cellLabel.y = (cellBg.height * 0.5) - (cellLabel.height * 0.5);
 				}
-			}*/
+			}
+
+
+			// whole table background
+			var wholeTableBg:Sprite = new Sprite();
+			wholeTableBg.y = startY;
+			addChild(wholeTableBg);
+			swapChildren(wholeTableBg,mainScrollContainer);
+
+			var dayRowGrad:Quad =  new Quad(this.actualWidth, firstRowHeight);
+			dayRowGrad.setVertexColor(0, 0xFFFFFF);
+			dayRowGrad.setVertexColor(1, 0xFFFFFF);
+			dayRowGrad.setVertexColor(2, 0x293d54);
+			dayRowGrad.setVertexColor(3, 0x293d54);
+			dayRowGrad.alpha = 0.2;
+			wholeTableBg.addChild(dayRowGrad);
+
+			var tableBgColour:Quad = new Quad(this.actualWidth, mainScrollContainer.height, 0x4c5f76);
+			tableBgColour.alpha = 0.1;
+			tableBgColour.y = dayRowGrad.height;
+			tableBgColour.blendMode = BlendMode.MULTIPLY;
+			wholeTableBg.addChild(tableBgColour);
+
+			// TODO : draw table grid
 
 		}
 
