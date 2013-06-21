@@ -11,12 +11,15 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.Slider;
+	import feathers.display.TiledImage;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.display.Sprite;
 
 
 	import starling.events.Event;
+	import starling.textures.TextureSmoothing;
 
 
 	public class HivivaPatientVirusModelScreen extends Screen
@@ -35,7 +38,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _resteBtn:Button;
 		private var _helpBtn:Button;
 
-		private var _virusBg:Image;
+		private var _virusHolder:Sprite;
+		private var _virusBg:TiledImage;
 
 
 
@@ -58,9 +62,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
 
-			this._virusBg.y = this._header.y + this._header.height;
-			this._virusBg.width = this._header.width;
-			this._virusBg.height = 560;
+
 
 			this._adheranceLabel.validate();
 			this._adheranceLabel.width = innerWidth * 0.25;
@@ -126,6 +128,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.title = "Virus Model";
 			addChild(this._header);
 
+			this._virusHolder = new Sprite();
+			this.addChild(this._virusHolder);
+
+
+
 			//TODO Skin Button based on photoshop deisgn
 			//this._helpBtn = new Button();
 			//this._helpBtn.label = "Help";
@@ -133,8 +140,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			//this._header.rightItems = new <DisplayObject>[_helpBtn];
 
-			this._virusBg = new Image(Main.assets.getTexture("validation_bg"));
-			this.addChild(this._virusBg);
 
 
 			this._adheranceLabel = new Label();
