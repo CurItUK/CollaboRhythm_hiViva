@@ -287,7 +287,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function virusBgLoadComplete(e:Event):void
 		{
 
-			_hivSimulation = new VirusSimulation(95 , 350 , 50000);
+			_hivSimulation = new VirusSimulation(95 , 700 , 50000);
 			_hivSimulation.updateSimulationData();
 
 			placeTCells();
