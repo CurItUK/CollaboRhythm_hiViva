@@ -37,10 +37,15 @@ package collaboRhythm.hiviva.view.components
 		private var _yearList:PickerList;
 		private var _arrowLeft:Button;
 		private var _arrowRight:Button;
+		private var _closeBtn:Button;
 		private var _scale:Number;
 		private var _monthSelect:Quad;
+		private var _dayValue:uint;
 		private var _monthValue:uint;
 		private var _yearValue:uint;
+		private var _cYear:uint;
+		private var _cMonth:uint;
+		private var _cDay:uint;
 		private var stageWidth:int;
 		private var stageHeight:int;
 		private var monthsList:Array;
@@ -48,6 +53,7 @@ package collaboRhythm.hiviva.view.components
 		private var _month:Label;
 		private var currentDate:Date;
 		private var _calendarType:String;
+		private var _currentDateNum:Number;
 
 
 
@@ -66,7 +72,6 @@ package collaboRhythm.hiviva.view.components
 			stageWidth   = Constants.STAGE_WIDTH;
 		    stageHeight  = Constants.STAGE_HEIGHT;
 
-
 			currentDate = new Date();
 			arrowGap = 130;
 
@@ -78,8 +83,8 @@ package collaboRhythm.hiviva.view.components
 			createDayHolderCells();
 			createDayNameLabels();
 			populateDayCellsWithData();
-			createMonthChooser();
-			createYearChooser();
+		//	createMonthChooser();
+		//	createYearChooser();
 			createNavigationBar();
 		}
 		
@@ -87,6 +92,13 @@ package collaboRhythm.hiviva.view.components
 		{
 			var now:Date = new Date();
 			this._firstDayOfMonth = new Date(now.fullYear, now.month, 1);
+			this._cYear = now.fullYear;
+			this._yearValue = now.fullYear;
+			this._cMonth = now.getMonth();
+			this._monthValue = now.getMonth();
+			this._cDay = now.date;
+
+		//	trace("CYEAR " + _cYear + " CMONTH " + _cMonth + " CDAY " + _cDay)
 		}
 		
 		private function createDayHolderCells():void
@@ -137,6 +149,14 @@ package collaboRhythm.hiviva.view.components
 			this._arrowLeft.addEventListener(Event.TRIGGERED, leftArrowPressed);
 			this._arrowRight.addEventListener(Event.TRIGGERED, rightArrowPressed);
 
+			this._closeBtn = new Button();
+			this._closeBtn.name = "close_button";
+			this._closeBtn.x = stageWidth - this._closeBtn.width - arrowGap;
+			this._closeBtn.y = this._closeBtn.height;
+
+			this.addChild(this._closeBtn);
+			this._closeBtn.addEventListener(Event.TRIGGERED, closeBtnPressed);
+
 			createCurrentMonthNameLabel();
 
 		}
@@ -152,7 +172,7 @@ package collaboRhythm.hiviva.view.components
 			_monthValue--;
 
 			this._firstDayOfMonth.month = _monthValue;
-			trace("TYPE "  + cType)
+
 			populateDayCellsWithData();
 			updateMonthNameLabel();
 		}
@@ -171,6 +191,14 @@ package collaboRhythm.hiviva.view.components
 
 			populateDayCellsWithData();
 			updateMonthNameLabel();
+		}
+
+		private function closeBtnPressed(e:Event):void
+		{
+			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED);
+						//evt.evtData.date = fillWithZero(cell.label) + fillWithZero(String(this._firstDayOfMonth.month + 1)) + String(this._firstDayOfMonth.fullYear);
+						evt.evtData.date = "";
+						dispatchEvent(evt);
 		}
 
 		private function createCurrentMonthNameLabel():void
@@ -232,17 +260,53 @@ package collaboRhythm.hiviva.view.components
 			this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]].label=1;
 			this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]].isEnabled = true;
 			this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]].addEventListener(starling.events.Event.TRIGGERED , daySelectedHandler);
+
+			validityCheck(0);
 		}
 		
 		private function populatePresentDayCells():void
 		{
 			for (var i:uint = 1; i < this._maxDaysMonth; i++)
 			{
+			//	trace("this._daysPerWeek[this._firstDayOfMonth.day]+i " + (this._daysPerWeek[this._firstDayOfMonth.day]+i))
 				this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].label = i+1;
 				this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = true;
 				this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].addEventListener(starling.events.Event.TRIGGERED , daySelectedHandler);
-				
+
+				validityCheck(i);
+
 			}
+		}
+
+		private function validityCheck(i:Number):void
+		{
+			var dateAdd:Number = i + (100*this._monthValue) + (1300*this._yearValue);
+			var currentAdd:Number = _cDay + (100*this._cMonth) + (1300*this._cYear);
+
+			if(cType == "start")
+			{
+				if(dateAdd >= currentAdd)
+				{
+					this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = false;
+				}
+				else
+				{
+					this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = true;
+				}
+			}
+
+			if(cType == "finish")
+			{
+				if(dateAdd <= currentAdd)
+				{
+					this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = false;
+				}
+				else
+				{
+					this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = true;
+				}
+			}
+
 		}
 		
 		private function calculateLeapYear():void
@@ -276,7 +340,6 @@ package collaboRhythm.hiviva.view.components
 		
 		private function populateFutureMonthDays():void
 		{
-			
 			for (var i:Number = 1; i < (42 - this._maxDaysMonth - this._daysPerWeek[this._firstDayOfMonth.day] + 1); i++)
 			{
 				this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day] + i + this._maxDaysMonth - 1].label = i;
@@ -286,7 +349,6 @@ package collaboRhythm.hiviva.view.components
 		
 		private function populatePastMonthDays():void
 		{
-			
 			var prefirst:Date = new Date(this._firstDayOfMonth.fullYear,this._firstDayOfMonth.month,this._firstDayOfMonth.date - 1);
 			for (var i:Number = this._daysPerWeek[this._firstDayOfMonth.day]; i > 0; i--)
 			{
@@ -408,6 +470,11 @@ package collaboRhythm.hiviva.view.components
 				}
 			}
 			
+		}
+
+		public function resetCalendar():void
+		{
+			populateDayCellsWithData()
 		}
 
 		public function get scale():Number

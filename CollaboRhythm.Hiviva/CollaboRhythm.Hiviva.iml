@@ -17,6 +17,9 @@
             <entry library-id="90f4fa36-af6b-422b-afbe-daad00f7ec06">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-id="940ef901-debb-49dc-b1cd-6db6e6977d1b">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
@@ -84,6 +87,16 @@
         <properties id="90f4fa36-af6b-422b-afbe-daad00f7ec06" />
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/AlivePDF.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="940ef901-debb-49dc-b1cd-6db6e6977d1b" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/greensock.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

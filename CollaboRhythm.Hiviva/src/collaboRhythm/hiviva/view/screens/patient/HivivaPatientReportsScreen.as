@@ -60,6 +60,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private var _pdfFile:File;
 		private var _stageWebView:StageWebView;
+		private var _calendarActive:Boolean;
 
 
 
@@ -124,7 +125,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function initialize():void
 		{
 			super.initialize();
-
+			this._calendarActive = false;
 			this._header.title = "Generate Reports";
 
 			this._reportDatesLabel = new Label();
@@ -194,12 +195,17 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function startDateCalendarHandler(e:Event):void
 		{
+
 			this._activeCalendarInput = this._startDateInput._input;
 			this._calendar.cType = "start";
 
 			PopUpManager.addPopUp(this._calendar,true,false);
 			this._calendar.width = this.actualWidth;
 			this._calendar.validate();
+
+			if(this._calendarActive) this._calendar.resetCalendar();
+
+			this._calendarActive = true;
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 
@@ -207,9 +213,14 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			this._activeCalendarInput = this._finishDateInput._input;
 			this._calendar.cType = "finish";
+
 			PopUpManager.addPopUp(this._calendar,true,false);
 			this._calendar.width = this.actualWidth;
 			this._calendar.validate();
+
+			if(this._calendarActive) this._calendar.resetCalendar();
+
+			this._calendarActive = true;
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 
