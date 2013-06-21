@@ -195,6 +195,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function startDateCalendarHandler(e:Event):void
 		{
 			this._activeCalendarInput = this._startDateInput._input;
+			this._calendar.cType = "start";
+
 			PopUpManager.addPopUp(this._calendar,true,false);
 			this._calendar.width = this.actualWidth;
 			this._calendar.validate();
@@ -204,6 +206,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function finishDateCalendarHandler(e:Event):void
 		{
 			this._activeCalendarInput = this._finishDateInput._input;
+			this._calendar.cType = "finish";
 			PopUpManager.addPopUp(this._calendar,true,false);
 			this._calendar.width = this.actualWidth;
 			this._calendar.validate();

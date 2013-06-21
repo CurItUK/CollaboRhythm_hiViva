@@ -39,7 +39,8 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/HCP_Views_Patient.png")]
 		public static const SpoofData:Class;
 
-
+		[Embed(source="/assets/images/temp/calendar_arrow.png")]
+		public static const ArrowPng:Class;
 
 		// TTF FONTS
 
@@ -87,6 +88,7 @@ package collaboRhythm.hiviva.view.media
 		}
 	}
 }
+
 
 //[Embed(source="/assets/images/temp/screen_base.png")]
 //public static const BasePng:Class;

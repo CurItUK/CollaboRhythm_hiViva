@@ -792,6 +792,7 @@ package source.themes
 			this.setInitializerForClass(Label, lighterLabelInitializer, "lighter-color-label");
 			this.setInitializerForClass(Label, homeLabelInitializer, "home-label");
 			this.setInitializerForClass(Label, splashFooterTextInitializer, "splash-footer-text");
+			this.setInitializerForClass(Label, calenderSelectTextInitializer, "calender-select-text");
 			this.setInitializerForClass(Label, labelInitializer);
 			this.setInitializerForClass(Label, centeredLabelInitializer, "centered-label");
 			this.setInitializerForClass(Label, feelingSliderLabelInitializer, "feeling-slider-label");
@@ -1158,8 +1159,8 @@ package source.themes
 		protected function messageDateLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 20 * this.scale, 0x293d54);
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x293d54);
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,3.5,0xFFFFFF,0.5,0);
 		}
 
 		protected function homeLabelInitializer(label:Label):void
@@ -1179,6 +1180,16 @@ package source.themes
 			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 			label.textRendererProperties.isHTML = true;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0x1a498a,1,0);
+		}
+
+		protected  function calenderSelectTextInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 34 * this.scale, 0xFFFFFF);
+			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
+			label.textRendererProperties.isHTML = true;
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0x1a498a,1,0);
+
 		}
 
 
