@@ -287,11 +287,11 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function virusBgLoadComplete(e:Event):void
 		{
 
-			_hivSimulation = new VirusSimulation();
+			_hivSimulation = new VirusSimulation(95 , 350 , 50000);
 			_hivSimulation.updateSimulationData();
 
-			//placeTCells();
-			//placeViruses();
+			placeTCells();
+			placeViruses();
 
 
 
@@ -333,14 +333,14 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function placeTCells():void
 		{
 			var tCellTexture:Texture = Main.assets.getTexture("vs_cd4");
-			for (var tcellnum:int = 1; tcellnum <= _hivSimulation.numTCells; tcellnum++)
+			for (var tcellnum:int = 1; tcellnum <= this._hivSimulation.numTCells; tcellnum++)
 			{
 
 				var tCellView:TCellView = new TCellView(tCellTexture);
-				tCellView.x = _hivSimulation.usedtcellPos[tcellnum - 1][0] * 3;
-				tCellView.y = _hivSimulation.usedtcellPos[tcellnum - 1][1] * 3;
+				tCellView.x = this._hivSimulation.usedtcellPos[tcellnum - 1][0] * 3;
+				tCellView.y = this._hivSimulation.usedtcellPos[tcellnum - 1][1] * 3;
 				this._virusHolder.addChild(tCellView);
-				tCellView.init(_hivSimulation , this);
+				tCellView.init(this._hivSimulation , this);
 
 				this._tcells.push(tCellView);
 				this._freeTcells.push(tCellView);
@@ -349,45 +349,48 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function placeViruses():void
 		{
-			for (var virusnum:int = 1; virusnum <= _hivSimulation.numViruses; virusnum++)
+			var virusTexture:Texture = Main.assets.getTexture("vs_virus");
+			for (var virusnum:int = 1; virusnum <= this._hivSimulation.numViruses; virusnum++)
 			{
 				if (this._freeTcells.length != 0)
 				{
 					var tcellNumber:Number = Math.floor(Math.random() * this._freeTcells.length);
 					var tcellView:TCellView = this._freeTcells[tcellNumber];
-					var virusView:VirusView = tcellView.addVirus(virusnum, tcellNumber);
+					var virusView:VirusView = tcellView.addVirus(virusnum, tcellNumber , virusTexture);
 					this._viruses.push(virusView);
 					this._attachedViruses.push(virusView);
 				}
 				else
 				{
-					addLooseVirus();
+					addLooseVirus(virusTexture);
 				}
 			}
 		}
 
 
-		public function addLooseVirus()
+		public function addLooseVirus(virusTexture:Texture):void
 		{
-			/*
-			if (this._openLooseVirusPos.length != 0)
+
+			if (this._hivSimulation.openLooseVirusPos.length != 0)
 			{
 				var looseVirusesLength:Number = this._looseViruses.length;
-				var virusView:VirusView = new VirusView();
+				var virusView:VirusView = new VirusView(virusTexture);
 				virusView.init(false);
 				this._virusHolder.addChild(virusView);
+
 				virusView.alpha = 0.6;
-				var virusPosNumber:Number = Math.floor(Math.random() * this._openLooseVirusPos.length);
-				var virusPos:Array = this._openLooseVirusPos[virusPosNumber];
+				var virusPosNumber:Number = Math.floor(Math.random() * this._hivSimulation.openLooseVirusPos.length);
+				var virusPos:Array = this._hivSimulation.openLooseVirusPos[virusPosNumber];
 				var xwiggle:Number = Math.floor(Math.random() * 5) - 2;
 				var ywiggle:Number = Math.floor(Math.random() * 5) - 2;
 				virusView.x = (virusPos[0] + xwiggle) * 3;
 				virusView.y = (virusPos[1] + ywiggle) * 3;
-				this._openLooseVirusPos.splice(virusPosNumber, 1);
+				this._hivSimulation.openLooseVirusPos.splice(virusPosNumber, 1);
 				this._viruses.push(virusView);
 				this._looseViruses.push(virusView);
+
 			}
-			*/
+
 		}
 
 		public function get freeTcells():Array

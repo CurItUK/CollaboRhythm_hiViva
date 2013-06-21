@@ -2,29 +2,33 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 {
 	public class VirusSimulation
 	{
+		private var _adherence:Number;
 		private var _tcells:Array;
 		private var _freeTcells:Array;
 		private var _viruses:Array;
 		private var _attachedViruses:Array;
 		private var _looseViruses:Array;
-		private var _cd4Count:Number = 350; //TODO dynamic change by sliders.
-		private var _viralLoad:Number = 50000; //TODO dynamic change by sliders.
+
+		private var _cd4Count:Number;
+		private var _viralLoad:Number;
+
 		private var _numTCells:Number;
 		private var _numViruses:Number;
+
 		private var _openLooseVirusPos:Array = [];
 		private var _opentcellPos:Array;
 		private var _usedtcellPos:Array;
 
 
-		public function VirusSimulation()
+		public function VirusSimulation(adherence:Number , cd4Count:Number , viralLoad:Number)
 		{
-
+			this._adherence = adherence;
+			this._cd4Count = cd4Count;
+			this._viralLoad = viralLoad;
 		}
 
 		public function updateSimulationData():void
 		{
-			trace("Viral Load " + _viralLoad);
-			trace("Cd4 Count " + _cd4Count);
 
 			this._tcells = [];
 			this._freeTcells = [];
@@ -49,26 +53,28 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			//calculate amount of tCells based on cd4 count by limit max to 8
 			if (this._cd4Count == 0)
 			{
-				_numTCells = 0;
+				this._numTCells = 0;
 			}
 			else if (_cd4Count > 800)
 			{
-				_numTCells = 8;
+				this._numTCells = 8;
 			}
 			else
 			{
-				_numTCells = Math.floor(_cd4Count / 100);
+				this._numTCells = Math.floor(this._cd4Count / 100);
 			}
+			trace("_numTCells " + this._numTCells);
 
 			//calculate amount of virus based on viral load
-			if (_viralLoad < 100)
+			if (this._viralLoad < 100)
 			{
-				_numViruses = 1;
+				this._numViruses = 1;
 			}
 			else
 			{
-				_numViruses = Math.floor(_viralLoad / 100);
+				this._numViruses = Math.floor(this._viralLoad / 100);
 			}
+			trace("_numViruses " + this._numViruses);
 
 			//working under the basis we have 176 positons for virus on a grid of 16 columns
 			for (var looseposition:int = 0; looseposition < 176; looseposition++)
@@ -132,6 +138,14 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 					this._tcells.push(tcellPos);
 					this._freeTcells.push(tcellPos);
+				}
+			}
+
+			for (looseposition = 175; looseposition >= 0; looseposition--)
+			{
+				if (this._openLooseVirusPos[looseposition] == 0)
+				{
+					this._openLooseVirusPos.splice(looseposition, 1)
 				}
 			}
 

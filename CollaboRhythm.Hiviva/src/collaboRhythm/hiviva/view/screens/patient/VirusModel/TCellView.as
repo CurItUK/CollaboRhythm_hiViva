@@ -15,7 +15,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 		private var _tCellImage:Image;
 		private var _virusSimulation:VirusSimulation;
-		private var _virusScreen:Screen;
+		private var _virusScreen:HivivaPatientVirusModelScreen;
 		private var _openvirusPos:Array = [
 			[-24, 0],
 			[24, 0],
@@ -65,24 +65,23 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 				];
 
 		private var _currentposition:Number = Math.floor(Math.random() * _positions.length);
-
 		private var alive:Boolean = true;
-
 		private var _animationTimer:Timer;
-
-
-
-
-
 
 		public function TCellView(cd4Texture:Texture)
 		{
+			var holder:Sprite = new Sprite();
+
 			this._tCellImage = new Image(cd4Texture);
-			this.addChild(this._tCellImage);
+			holder.addChild(this._tCellImage);
+			this._tCellImage.x = -this._tCellImage.width >> 2;
+			this._tCellImage.y = -this._tCellImage.height >> 2;
+			this.addChild(holder);
+			//this.addChild(this._tCellImage);
 
 		}
 
-		public function init(virusSimulation:VirusSimulation , virusScreen:Screen):void
+		public function init(virusSimulation:VirusSimulation , virusScreen:HivivaPatientVirusModelScreen):void
 		{
 			this._virusSimulation = virusSimulation;
 			this._virusScreen = virusScreen;
@@ -90,14 +89,14 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 		}
 
-		public function addVirus(virusNumber, tcellNumber):VirusView
+		public function addVirus(virusNumber:int, tcellNumber:Number , virusTexture:Texture):VirusView
 		{
 			var placenum:Number = Math.floor(Math.random() * this._openvirusPos.length);
 			var virusPos:Array = this._openvirusPos[placenum];
 			this._openvirusPos.splice(placenum, 1);
 			this._usedvirusPos.push(virusPos);
 
-			var virusView:VirusView = new VirusView();
+			var virusView:VirusView = new VirusView(virusTexture);
 			virusView.init(true);
 			this.addChild(virusView);
 			this._attachedViruses.push(virusView);
@@ -108,7 +107,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this._tCellImage.alpha = 0.4;
 			if (this._openvirusPos.length == 0)
 			{
-				//this._virusScreen.freeTcells.splice(tcellNumber, 1);
+				this._virusScreen.freeTcells.splice(tcellNumber, 1);
 			}
 			return virusView;
 		}

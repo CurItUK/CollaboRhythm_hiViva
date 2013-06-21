@@ -15,8 +15,9 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 		private var _animationTimer:Timer;
 		private var _virusImage:Image;
 
-		public function VirusView()
+		public function VirusView(texture:Texture)
 		{
+			this._virusImage= new Image(texture);
 			this._virusImage= new Image(Main.assets.getTexture("vs_virus"));
 			this.addChild(this._virusImage);
 		}
