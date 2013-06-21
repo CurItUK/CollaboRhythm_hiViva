@@ -35,8 +35,10 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _resteBtn:Button;
 		private var _helpBtn:Button;
 
+		private var _virusBg:Image;
 
-		private var _dump:ImageLoader;
+
+
 
 		private var _scaledPadding:Number;
 
@@ -51,8 +53,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._scaledPadding = (this.actualWidth * 0.02) * this.dpiScale;
 			var innerWidth:Number = this.actualWidth - (this._scaledPadding * 2);
 
+
+
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
+
+			this._virusBg.y = this._header.y + this._header.height;
+			this._virusBg.width = this._header.width;
+			this._virusBg.height = 560;
 
 			this._adheranceLabel.validate();
 			this._adheranceLabel.width = innerWidth * 0.25;
@@ -107,8 +115,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			//this._resteBtn.x = this.actualWidth / 2 - this._resteBtn.width / 2;
 			//this._resteBtn.y = this._CD4CountSlider.y + this._CD4CountSlider.height;
 
-			this._dump.y = this._CD4CountSlider.y + this._CD4CountSlider.height + this._scaledPadding;
-			this._dump.maxHeight = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT - this._dump.y;
 
 			getPatientData();
 		}
@@ -126,6 +132,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			//this._helpBtn.addEventListener(Event.TRIGGERED, helpBtnHandler);
 
 			//this._header.rightItems = new <DisplayObject>[_helpBtn];
+
+			this._virusBg = new Image(Main.assets.getTexture("validation_bg"));
+			this.addChild(this._virusBg);
 
 
 			this._adheranceLabel = new Label();
@@ -194,10 +203,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._CD4CountSlider.addEventListener(Event.CHANGE, CD4CountSliderChangeHandler );
 			this.addChild(this._CD4CountSlider);
 
-			this._dump = new ImageLoader();
-			this._dump.textureScale	= this.dpiScale;
-			this._dump.source = "media/virus_model_dummy.png";
-			this.addChild(this._dump);
 
 			//this._resteBtn = new Button();
 			//this._resteBtn.label = "RESET";
