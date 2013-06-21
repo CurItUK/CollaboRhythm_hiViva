@@ -5,6 +5,10 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.screens.patient.VirusModel.TCellView;
+	import collaboRhythm.hiviva.view.screens.patient.VirusModel.TCellView;
+	import collaboRhythm.hiviva.view.screens.patient.VirusModel.VirusSimulation;
+	import collaboRhythm.hiviva.view.screens.patient.VirusModel.VirusView;
 
 	import feathers.controls.Button;
 	import feathers.controls.ImageLoader;
@@ -12,6 +16,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Screen;
 	import feathers.controls.Slider;
 	import feathers.display.TiledImage;
+	import feathers.events.FeathersEventType;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -19,6 +24,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 
 	import starling.events.Event;
+	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 
 
@@ -39,7 +45,16 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _helpBtn:Button;
 
 		private var _virusHolder:Sprite;
-		private var _virusBg:TiledImage;
+		private var _virusBg:ImageLoader;
+
+		private var _hivSimulation:VirusSimulation;
+		private var _tcells:Array = [];
+		private var _freeTcells:Array = [];
+		private var _viruses:Array = [];
+		private var _attachedViruses:Array = [];
+		private var _looseViruses:Array = [];
+
+
 
 
 
@@ -62,8 +77,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
 
+			this._virusHolder.y = this._header.y + this._header.height;
 
 
+
+			/*
 			this._adheranceLabel.validate();
 			this._adheranceLabel.width = innerWidth * 0.25;
 			this._adheranceLabel.x = this._scaledPadding * 2;
@@ -117,6 +135,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			//this._resteBtn.x = this.actualWidth / 2 - this._resteBtn.width / 2;
 			//this._resteBtn.y = this._CD4CountSlider.y + this._CD4CountSlider.height;
 
+			*/
+
 
 			getPatientData();
 		}
@@ -142,6 +162,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 
 
+			/*
 			this._adheranceLabel = new Label();
 			this._adheranceLabel.text = "Adherence:";
 			this.addChild(this._adheranceLabel);
@@ -212,6 +233,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			//this._resteBtn = new Button();
 			//this._resteBtn.label = "RESET";
 			//this.addChild(this._resteBtn);
+			*/
 		}
 
 		private function helpBtnHandler(e:Event):void
@@ -245,7 +267,135 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
 			trace("Virus Simulation " + e.data.adherence);
 
+			initVirusModel();
+
 		}
+
+		private function initVirusModel():void
+		{
+			drawVirusModelBg();
+		}
+
+		private function drawVirusModelBg():void
+		{
+			this._virusBg = new ImageLoader();
+			this._virusBg.addEventListener( Event.COMPLETE, virusBgLoadComplete );
+			this._virusBg.source = "/assets/images/temp/vs_background.png";
+			this._virusHolder.addChild(this._virusBg);
+		}
+
+		private function virusBgLoadComplete(e:Event):void
+		{
+
+			_hivSimulation = new VirusSimulation();
+			_hivSimulation.updateSimulationData();
+
+			//placeTCells();
+			//placeViruses();
+
+
+
+
+
+
+
+
+
+
+
+
+			/*
+			var topPadding:uint = 15;
+			var columns:uint = 16;
+			var horSpacer:uint = 5;
+			var vertSpacer:uint = 20;
+
+
+			var virusTexture:Texture = Main.assets.getTexture("vs_virus");
+			for(var i:uint = 0 ; i < 176 ; i++)
+			{
+				var virusImg:Image = new Image(virusTexture);
+				virusImg.width = 35;
+				virusImg.height = 35;
+				virusImg.x = (i % columns) * (virusImg.width + horSpacer);
+				virusImg.y = Math.floor(i / columns) * (virusImg.height + vertSpacer) + topPadding;
+				this._virusHolder.addChild(virusImg);
+
+
+			}
+
+			*/
+
+		}
+
+
+
+		private function placeTCells():void
+		{
+			var tCellTexture:Texture = Main.assets.getTexture("vs_cd4");
+			for (var tcellnum:int = 1; tcellnum <= _hivSimulation.numTCells; tcellnum++)
+			{
+
+				var tCellView:TCellView = new TCellView(tCellTexture);
+				tCellView.x = _hivSimulation.usedtcellPos[tcellnum - 1][0] * 3;
+				tCellView.y = _hivSimulation.usedtcellPos[tcellnum - 1][1] * 3;
+				this._virusHolder.addChild(tCellView);
+				tCellView.init(_hivSimulation , this);
+
+				this._tcells.push(tCellView);
+				this._freeTcells.push(tCellView);
+			}
+		}
+
+		private function placeViruses():void
+		{
+			for (var virusnum:int = 1; virusnum <= _hivSimulation.numViruses; virusnum++)
+			{
+				if (this._freeTcells.length != 0)
+				{
+					var tcellNumber:Number = Math.floor(Math.random() * this._freeTcells.length);
+					var tcellView:TCellView = this._freeTcells[tcellNumber];
+					var virusView:VirusView = tcellView.addVirus(virusnum, tcellNumber);
+					this._viruses.push(virusView);
+					this._attachedViruses.push(virusView);
+				}
+				else
+				{
+					addLooseVirus();
+				}
+			}
+		}
+
+
+		public function addLooseVirus()
+		{
+			/*
+			if (this._openLooseVirusPos.length != 0)
+			{
+				var looseVirusesLength:Number = this._looseViruses.length;
+				var virusView:VirusView = new VirusView();
+				virusView.init(false);
+				this._virusHolder.addChild(virusView);
+				virusView.alpha = 0.6;
+				var virusPosNumber:Number = Math.floor(Math.random() * this._openLooseVirusPos.length);
+				var virusPos:Array = this._openLooseVirusPos[virusPosNumber];
+				var xwiggle:Number = Math.floor(Math.random() * 5) - 2;
+				var ywiggle:Number = Math.floor(Math.random() * 5) - 2;
+				virusView.x = (virusPos[0] + xwiggle) * 3;
+				virusView.y = (virusPos[1] + ywiggle) * 3;
+				this._openLooseVirusPos.splice(virusPosNumber, 1);
+				this._viruses.push(virusView);
+				this._looseViruses.push(virusView);
+			}
+			*/
+		}
+
+		public function get freeTcells():Array
+		{
+			return _freeTcells;
+		}
+
+
 
 		public override function dispose():void
 		{
