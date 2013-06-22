@@ -26,9 +26,12 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 			this._virusImage = new Image(texture);
 			this._holder.addChild(this._virusImage);
-			//this._virusImage.x = this._virusImage.width >> 2;
-			//this._virusImage.y = this._virusImage.height >> 2;
+			this._virusImage.x = this._virusImage.width >> 2;
+			this._virusImage.y = this._virusImage.height >> 2;
 			this.addChild(this._holder);
+			this._holder.x = -this._holder.width / 2;
+			this._holder.y = -this._holder.height / 2;
+
 		}
 
 		public function init(alive:Boolean):void
@@ -51,6 +54,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 		private function aliveVirusAnimation(e:Event):void
 		{
 			TweenLite.to(this._holder, 0.2, {x: -this._holder.width / 2 + (Math.random() * 3) - 1 , y:-this._holder.height / 2 + (Math.random() * 3) - 1});
+
 
 		}
 	}
