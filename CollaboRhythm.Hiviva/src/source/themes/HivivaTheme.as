@@ -370,6 +370,8 @@ package source.themes
 
 		protected var buttonCalendarDayCellSkinTexture:Texture;
 
+		protected var buttonCalendarArrowsTexture:Texture;
+
 		protected var toggleSwitchTexture:Texture;
 
 		protected var toggleTrackTexture:Scale9Textures;
@@ -667,6 +669,8 @@ package source.themes
 
 			this.buttonCalendarDayCellSkinTexture = Main.assets.getTexture("calendar_day_cell");
 
+			this.buttonCalendarArrowsTexture = Assets.getTexture('ArrowPng');
+
 			this.toggleSwitchTexture = Main.assets.getTexture("toggle_switch");
 
 			this.toggleTrackTexture = new Scale9Textures(Main.assets.getTexture("toggle_track"), new Rectangle(27,27,55,3));
@@ -820,6 +824,7 @@ package source.themes
 			this.setInitializerForClass(Button, editCellButtonInitializer, "edit-cell-button");
 			this.setInitializerForClass(Button, calendarButtonInitializer, "calendar-button");
 			this.setInitializerForClass(Button, calendarDayCellButtonInitializer, "calendar-day-cell");
+			this.setInitializerForClass(Button, calendarArrowsButtonInitializer, "calendar-arrows");
 
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
@@ -1446,6 +1451,27 @@ package source.themes
 			button.disabledLabelProperties.embedFonts = true;
 			button.disabledLabelProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0xaeaeae);
 			button.disabledLabelProperties.filter = BlurFilter.createDropShadow(1,-1.5,0xFFFFFF,0.5,0);
+
+			button.minWidth = skinWidth * this.scale;
+			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function calendarArrowsButtonInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.buttonCalendarArrowsTexture.width
+			var skinHeight:Number = this.buttonCalendarArrowsTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonCalendarArrowsTexture;
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
 
 			button.minWidth = skinWidth * this.scale;
 			button.minHeight = skinHeight * this.scale;
