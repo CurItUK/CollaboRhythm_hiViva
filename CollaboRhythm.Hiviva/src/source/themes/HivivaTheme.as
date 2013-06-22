@@ -789,6 +789,7 @@ package source.themes
 			//this.setInitializerForClass(Label, HeaderBoldInitializer, "header-bold");
 			this.setInitializerForClass(Label, validationLabelInitializer, "validation-label");
 			this.setInitializerForClass(Label, inputLabelInitializer, "input-label");
+			this.setInitializerForClass(Label, medBrandLabelInitializer, "medicine-brandname");
 			this.setInitializerForClass(Label, lighterLabelInitializer, "lighter-color-label");
 			this.setInitializerForClass(Label, homeLabelInitializer, "home-label");
 			this.setInitializerForClass(Label, splashFooterTextInitializer, "splash-footer-text");
@@ -801,6 +802,7 @@ package source.themes
 			this.setInitializerForClass(Label, calendarDaysLabelInitializer, "calendar-days");
 			this.setInitializerForClass(Label, superscriptLabelInitializer, "superscript-label");
 			this.setInitializerForClass(Label, messageDateLabelInitializer, "message-date-label");
+			this.setInitializerForClass(Label, patientDataLightLabelInitializer, "patient-data-lighter");
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
 					BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
@@ -1075,7 +1077,8 @@ package source.themes
 		protected function labelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x293d54);
+//			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x293d54);
+			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x495c72);
 			label.textRendererProperties.wordWrap = true;
 			label.textRendererProperties.isHTML = true;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
@@ -1149,6 +1152,13 @@ package source.themes
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 			label.textRendererProperties.isHTML = true;
 		}
+		protected function medBrandLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0x495c72);
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			label.textRendererProperties.isHTML = true;
+		}
 		protected function lighterLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.embedFonts = true;
@@ -1160,6 +1170,13 @@ package source.themes
 		{
 			label.textRendererProperties.embedFonts = true;
 			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x293d54);
+			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,3.5,0xFFFFFF,0.5,0);
+		}
+		protected function patientDataLightLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 24 * this.scale, 0x66778b);
+			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,3.5,0xFFFFFF,0.5,0);
 		}
 

@@ -8,7 +8,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.components.MedicationCell;
+	import collaboRhythm.hiviva.view.components.PatientAdherenceTable;
 	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPPatientMessageCompose;
@@ -53,8 +55,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _header:HivivaHeader;
 		private var _backButton:Button;
 
-
-		private var _bg:Scale9Image;
 		private var _patientImageBg:Quad;
 		private var _photoHolder:Image;
 		private var _spoofData:Image;
@@ -64,9 +64,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _tolerabilityLabel:Label;
 		private var _generateReportBtn:Button;
 		private var _sendMessageBtn:Button;
+		private var _reportAndMessage:BoxedButtons;
 
 
-		private const IMAGE_SIZE:Number = 100;
+		private const IMAGE_SIZE:Number = 125;
 		private const PADDING:Number = 32;
 
 		public function HivivaHCPPatientProfileScreen()
@@ -117,80 +118,55 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			var scaledPadding:Number = PADDING * this.dpiScale;
 			var gap:Number = scaledPadding * 0.5;
-			var fullHeight:Number;
-
-			var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("input_field"), new Rectangle(11, 11, 32, 32));
-			this._bg = new Scale9Image(bgTexture, this.dpiScale);
-			this.addChild(this._bg);
 
 			this._patientImageBg = new Quad(IMAGE_SIZE * this.dpiScale, IMAGE_SIZE * this.dpiScale, 0x000000);
 			this._patientImageBg.touchable = false;
 			this.addChild(this._patientImageBg);
 
-			this._bg.x = scaledPadding;
-			this._bg.y = this._header.height + scaledPadding;
-			this._bg.width = this.actualWidth - (scaledPadding * 2);
+			var innerWidth:Number = this.actualWidth - (scaledPadding * 2);
 
 
-			this._patientImageBg.x = this._bg.x + gap;
-			this._patientImageBg.y = this._bg.y + gap;
+			this._patientImageBg.x = scaledPadding;
+			this._patientImageBg.y = this._header.height + gap;
 
 			this._patientEmail = new Label();
 			this._patientEmail.text = _patientData.email;
 			this.addChild(this._patientEmail);
-			this._patientEmail.validate();
 
+			this._patientEmail.width = innerWidth - this._patientEmail.x;
+			this._patientEmail.validate();
 			this._patientEmail.x = this._patientImageBg.x + this._patientImageBg.width + gap;
 			this._patientEmail.y = this._patientImageBg.y;
-			this._patientEmail.width = this._bg.width - this._patientEmail.x;
 
 			var avgAdherence:Number = HivivaModifier.calculateOverallAdherence(_patientData.medicationHistory.history);
 			this._adherenceLabel = new Label();
 			this._adherenceLabel.text = "<font face='ExoBold'>Overall adherence:</font>  " + String(avgAdherence) + "%";
 			this.addChild(this._adherenceLabel);
-			this._adherenceLabel.validate();
 
+			this._adherenceLabel.width = innerWidth - this._adherenceLabel.x;
+			this._adherenceLabel.validate();
 			this._adherenceLabel.x = this._patientEmail.x;
-			this._adherenceLabel.y = this._patientEmail.y + this._adherenceLabel.height + gap;
-			this._adherenceLabel.width = this._bg.width - this._adherenceLabel.x;
+			this._adherenceLabel.y = this._patientImageBg.y + (this._patientImageBg.height * 0.5) - (this._adherenceLabel.height * 0.5);
 
 			var avgTolerability:Number = HivivaModifier.calculateOverallTolerability(_patientData.medicationHistory.history);
 			this._tolerabilityLabel = new Label();
 			this._tolerabilityLabel.text = "<font face='ExoBold'>Overall tolerability:</font>  " + String(avgTolerability) + "%";
 			this.addChild(this._tolerabilityLabel);
+
+			this._tolerabilityLabel.width = innerWidth - this._tolerabilityLabel.x;
 			this._tolerabilityLabel.validate();
-
 			this._tolerabilityLabel.x = this._patientEmail.x;
-			this._tolerabilityLabel.y = this._adherenceLabel.y + this._adherenceLabel.height + gap;
-			this._tolerabilityLabel.width = this._bg.width - this._tolerabilityLabel.x;
+			this._tolerabilityLabel.y = this._patientImageBg.y + this._patientImageBg.height - this._tolerabilityLabel.height;
 
-			this._sendMessageBtn = new Button();
-			this._sendMessageBtn.label = "Send message";
-			this._sendMessageBtn.addEventListener(starling.events.Event.TRIGGERED, sendMessageBtnHandler);
-			this.addChild(this._sendMessageBtn);
-
-			this._sendMessageBtn.validate();
-			this._sendMessageBtn.x = this.actualWidth/2 - this._sendMessageBtn.width - gap/2;
-			this._sendMessageBtn.y = _tolerabilityLabel.y + _tolerabilityLabel.height + 2 * gap;
-
-			this._generateReportBtn = new Button();
-			this._generateReportBtn.label = "Generate report";
-			this._generateReportBtn.addEventListener(starling.events.Event.TRIGGERED, generateReportsBtnHandler);
-			this.addChild(this._generateReportBtn);
-
-			this._generateReportBtn.validate();
-			this._generateReportBtn.x = this._sendMessageBtn.x + this._sendMessageBtn.width + gap;
-			this._generateReportBtn.y = this._sendMessageBtn.y;
-
-			var sendMessageBtnY:Number = this._sendMessageBtn.y - (this._header.height + scaledPadding);
-			var bgFinalHeight:Number =  sendMessageBtnY + this._sendMessageBtn.height + gap;
-			this._bg.height = bgFinalHeight;
-/*
-
-			this._spoofData = new Image(Assets.getTexture(HivivaAssets.SPOOF_DATA));
-			this._spoofData.y = this._generateReportBtn.y + this._generateReportBtn.height + gap;
-			this.addChild(_spoofData);
-*/
+			this._reportAndMessage = new BoxedButtons();
+			this._reportAndMessage.addEventListener(starling.events.Event.TRIGGERED, reportAndMessageHandler);
+			this._reportAndMessage.scale = this.dpiScale;
+			this._reportAndMessage.labels = ["Generate report", "Send message"];
+			this.addChild(this._reportAndMessage);
+			this._reportAndMessage.width = innerWidth;
+			this._reportAndMessage.validate();
+			this._reportAndMessage.x = scaledPadding;
+			this._reportAndMessage.y = this._patientImageBg.y + this._patientImageBg.height + gap;
 
 			drawPatientTable();
 
@@ -200,198 +176,15 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function drawPatientTable():void
 		{
-			var medications:XMLList = _patientData.medications.medication as XMLList;
-			var medicationCount:uint = medications.length();
-			var history:XMLList = _patientData.medicationHistory.history as XMLList;
-			var historyLength:int = history.length();
-			var weekDays:Array = new Array("M", "T", "W", "T", "F", "S", "S");
-			var daysPerWeek:Array = new Array(6,0,1,2,3,4,5);
-			var weekDaysCount:uint = weekDays.length;
-
-			var firstColumnWidth:Number = this.actualWidth * 0.3;
-			var firstRowHeight:Number;
-			var dataColumnsWidth:Number = (this.actualWidth * 0.7) / (weekDaysCount + 1);
-			var startY:Number = this._bg.y + this._bg.height + (this.actualHeight * 0.02);
-
-
-			// day names row
-			var firstRowPadding:Number = this.actualHeight * 0.01;
-			var dayRow:Sprite = new Sprite();
-			dayRow.x = firstColumnWidth;
-			dayRow.y = startY + firstRowPadding;
-			addChild(dayRow);
-
-			var dayLabel:Label;
-			for (var dayCount:int = 0; dayCount < weekDaysCount; dayCount++)
-			{
-				dayLabel = new Label();
-				dayLabel.width = dataColumnsWidth;
-				dayLabel.x = dataColumnsWidth * dayCount;
-				dayLabel.text = weekDays[dayCount];
-				dayRow.addChild(dayLabel);
-			}
-			// need to validate for row height
-			dayLabel.validate();
-			firstRowHeight = dayRow.height + (firstRowPadding * 2);
-
-			// data vertical scroll container
-			var tableStartY:Number = startY + firstRowHeight;
-			var maxHeight:Number = this.actualHeight - tableStartY;
-
-			var mainScrollContainer:ScrollContainer = new ScrollContainer();
-			addChild(mainScrollContainer);
-			mainScrollContainer.y = tableStartY;
-
-			var vLayout:VerticalLayout = new VerticalLayout();
-			vLayout.hasVariableItemDimensions = true;
-			mainScrollContainer.layout = vLayout;
-
-
-			// names column
-			var rows:Array = [];
-			var rowData:Object;
-			var medicationCell:MedicationCell;
-			var cellY:Number = 0;
-			for (var cellCount:int = 0; cellCount < medicationCount; cellCount++)
-			{
-				medicationCell = new MedicationCell();
-				medicationCell.scale = this.dpiScale;
-				medicationCell.brandName = medications[cellCount].brandname;
-				medicationCell.genericName = medications[cellCount].genericname;
-				mainScrollContainer.addChild(medicationCell);
-				medicationCell.width = firstColumnWidth;
-				medicationCell.validate();
-
-				trace(medicationCell.height);
-
-				rowData = {};
-				rowData.id = medications[cellCount].id;
-				rowData.cellHeight = medicationCell.height;
-				rowData.y = cellY;
-				rows.push(rowData);
-				cellY += medicationCell.height;
-			}
-			// tolerability row name
-			medicationCell = new MedicationCell();
-			medicationCell.scale = this.dpiScale;
-			medicationCell.brandName = "Tolerability";
-			mainScrollContainer.addChild(medicationCell);
-			medicationCell.width = firstColumnWidth;
-			medicationCell.validate();
-
-			rowData = {};
-			rowData.id = "tolerability";
-			rowData.cellHeight = medicationCell.height;
-			rowData.y = cellY;
-			rows.push(rowData);
-
-			mainScrollContainer.validate();
-			if(maxHeight < mainScrollContainer.height) mainScrollContainer.height = maxHeight;
-			mainScrollContainer.layout = null;
-
-			// data horizontal
-			const hLayout:TiledColumnsLayout = new TiledColumnsLayout();
-			hLayout.paging = TiledColumnsLayout.PAGING_HORIZONTAL;
-			hLayout.useSquareTiles = false;
-			hLayout.horizontalAlign = TiledColumnsLayout.HORIZONTAL_ALIGN_LEFT;
-			hLayout.verticalAlign = TiledColumnsLayout.VERTICAL_ALIGN_TOP;
-
-			var dataContainer:ScrollContainer = new ScrollContainer();
-			//dataContainer.layout = hLayout;
-			dataContainer.scrollerProperties.snapToPages = TiledColumnsLayout.PAGING_HORIZONTAL;
-			dataContainer.scrollerProperties.snapScrollPositionsToPixels = true;
-			mainScrollContainer.addChild(dataContainer);
-			dataContainer.x = firstColumnWidth;
-			//dataContainer.y = firstRowHeight;
-			dataContainer.width = dataColumnsWidth * (weekDaysCount + 1);
-			dataContainer.height = mainScrollContainer.height;
-
-			var historicalMedication:XMLList;
-			var dateData:Array;
-			var date:Date = new Date();
-			var day:Number;
-			var cellX:Number;
-			var cell:Sprite;
-			var cellBg:Image;
-			var cellLabel:Label;
-			var cellBgTexture:Texture = Main.assets.getTexture("calendar_day_cell");
-
-			for (var historyCount:int = 0; historyCount < historyLength; historyCount++)
-			{
-//				trace("date = " + history[historyCount].date);
-				dateData = String(history[historyCount].date).split("/");
-				date.setMonth(int(dateData[0]) - 1);
-				date.setDate(int(dateData[1]));
-				date.setFullYear(int(dateData[2]));
-				day = date.getDay();
-				cellX = dataColumnsWidth * (day - 1);
-
-				for (var rowCount:int = 0; rowCount < rows.length; rowCount++)
-				{
-					rowData = rows[rowCount];
-
-					cell = new Sprite();
-					cell.x = cellX;
-					cell.y = rowData.y;
-					dataContainer.addChild(cell);
-
-					cellBg = new Image(cellBgTexture);
-					cellBg.width = dataColumnsWidth;
-					cellBg.height = rowData.cellHeight;
-					cell.addChild(cellBg);
-
-					cellLabel = new Label();
-					cellLabel.width = dataColumnsWidth;
-					cell.addChild(cellLabel);
-
-					if(rowData.id == "tolerability")
-					{
-						// write tolerability data cell
-						// history[historyCount].tolerability
-						cellLabel.text = history[historyCount].tolerability;
-					}
-					else
-					{
-						historicalMedication = history[historyCount].medication.(@id == rowData.id);
-						cellLabel.text = historicalMedication.adhered;
-						if(historicalMedication.adhered == "yes")
-						{
-							// tick
-						}
-						else
-						{
-							// cross
-						}
-					}
-
-					cellLabel.validate();
-					cellLabel.y = (cellBg.height * 0.5) - (cellLabel.height * 0.5);
-				}
-			}
-
-
-			// whole table background
-			var wholeTableBg:Sprite = new Sprite();
-			wholeTableBg.y = startY;
-			addChild(wholeTableBg);
-			swapChildren(wholeTableBg,mainScrollContainer);
-
-			var dayRowGrad:Quad =  new Quad(this.actualWidth, firstRowHeight);
-			dayRowGrad.setVertexColor(0, 0xFFFFFF);
-			dayRowGrad.setVertexColor(1, 0xFFFFFF);
-			dayRowGrad.setVertexColor(2, 0x293d54);
-			dayRowGrad.setVertexColor(3, 0x293d54);
-			dayRowGrad.alpha = 0.2;
-			wholeTableBg.addChild(dayRowGrad);
-
-			var tableBgColour:Quad = new Quad(this.actualWidth, mainScrollContainer.height, 0x4c5f76);
-			tableBgColour.alpha = 0.1;
-			tableBgColour.y = dayRowGrad.height;
-			tableBgColour.blendMode = BlendMode.MULTIPLY;
-			wholeTableBg.addChild(tableBgColour);
-
-			// TODO : draw table grid
-
+			var patientAdherenceTable:PatientAdherenceTable = new PatientAdherenceTable();
+			patientAdherenceTable.scale = this.dpiScale;
+			patientAdherenceTable.patientData = _patientData;
+			addChild(patientAdherenceTable);
+			patientAdherenceTable.y = this._reportAndMessage.y + this._reportAndMessage.height + (this.actualHeight * 0.02);
+			patientAdherenceTable.width = this.actualWidth;
+			patientAdherenceTable.height = this.actualHeight - patientAdherenceTable.y;
+			patientAdherenceTable.validate();
+			patientAdherenceTable.drawTable();
 		}
 
 		private function backBtnHandler(e:starling.events.Event):void
@@ -411,30 +204,29 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.dispatchEventWith("navGoHome");
 		}
 
-		private function sendMessageBtnHandler(e:starling.events.Event):void
+		private function reportAndMessageHandler(e:starling.events.Event):void
 		{
-			if (!this.owner.hasScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN))
+			var button:String = e.data.button;
+			var screenParams:Object = {selectedPatient: _patientData};
+			var targetScreen:String;
+			var screenNavigatorItem:ScreenNavigatorItem;
+			switch(button)
 			{
-				var selectedPatient:XML = _patientData;
-				var screenParams:Object = {selectedPatient: selectedPatient};
-				var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaHCPPatientMessageCompose , null , screenParams);
-				this.owner.addScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN, screenNavigatorItem);
+				case "Generate report" :
+					targetScreen = HivivaScreens.HCP_PATIENT_PROFILE_REPORT;
+					screenNavigatorItem = new ScreenNavigatorItem(HivivaHCPPatientReportsScreen, null, screenParams);
+					break;
+				case "Send message" :
+					targetScreen = HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN;
+					screenNavigatorItem = new ScreenNavigatorItem(HivivaHCPPatientMessageCompose , null , screenParams);
+					break;
 			}
 
-			this.owner.showScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN);
-		}
-
-		private function generateReportsBtnHandler(e:starling.events.Event):void
-		{
-			if (!this.owner.hasScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT))
+			if (!this.owner.hasScreen(targetScreen))
 			{
-				var selectedPatient:XML = _patientData;
-				var screenParams:Object = {selectedPatient: selectedPatient};
-				var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaHCPPatientReportsScreen, null, screenParams);
-				this.owner.addScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT, screenNavigatorItem);
+				this.owner.addScreen(targetScreen, screenNavigatorItem);
 			}
-
-			this.owner.showScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT);
+			this.owner.showScreen(targetScreen);
 		}
 
 		private function doImageLoad(url:String):void

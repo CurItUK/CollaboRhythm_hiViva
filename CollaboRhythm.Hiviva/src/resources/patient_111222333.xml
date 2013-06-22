@@ -27,6 +27,15 @@
 		<medication><id>3</id><brandname>Truvada</brandname><genericname>emtricitabine + tenofovir</genericname></medication>
 	</medications>
 	<medicationHistory>
+		<!--latest first-->
+		<history>
+			<date>01/09/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>yes</adhered></medication>
+			<medication id="2"><adhered>no</adhered></medication>
+			<medication id="3"><adhered>yes</adhered></medication>
+		</history>
 		<history>
 			<date>01/01/2013</date>
 			<!--<adherence>95</adherence>-->

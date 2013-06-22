@@ -60,10 +60,10 @@ package collaboRhythm.hiviva.view.components
 			this._brandNameLabel.width = this.actualWidth - this._pillImageBg.x;
 
 			this._genericNameLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
-			this._genericNameLabel.y = this._brandNameLabel.y + this._brandNameLabel.height;
+			this._genericNameLabel.y = this._brandNameLabel.y + (this._brandNameLabel.height * 0.75);
 			this._genericNameLabel.width = this.actualWidth - this._pillImageBg.x;
 
-			setSizeInternal(this.actualWidth, this._brandNameLabel.height + this._genericNameLabel.height + (this._gap * 2), true);
+			setSizeInternal(this.actualWidth, this._genericNameLabel.y + this._genericNameLabel.height + this._gap, true);
 		}
 
 		override protected function initialize():void
@@ -79,7 +79,8 @@ package collaboRhythm.hiviva.view.components
 			addChild(this._pillImageBg);
 
 			this._brandNameLabel = new Label();
-			this._brandNameLabel.text = "<font face='ExoBold'>" + this._brandName + "</font>";
+			this._brandNameLabel.name = "medicine-brandname";
+			this._brandNameLabel.text = this._brandName;
 			this.addChild(this._brandNameLabel);
 
 			this._genericNameLabel = new Label();

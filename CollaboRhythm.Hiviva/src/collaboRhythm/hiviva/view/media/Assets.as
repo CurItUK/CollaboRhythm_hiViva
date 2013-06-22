@@ -42,6 +42,15 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/calendar_arrow.png")]
 		public static const ArrowPng:Class;
 
+		[Embed(source="/assets/images/temp/tick.png")]
+		public static const TickPng:Class;
+
+		[Embed(source="/assets/images/temp/cross.png")]
+		public static const CrossPng:Class;
+
+		[Embed(source="/assets/images/temp/verticle_line.png")]
+		public static const VerticleLinePng:Class;
+
 		// TTF FONTS
 
 		[Embed(source="/assets/fonts/exo-regular.ttf", fontName="ExoRegular", mimeType="application/x-font", embedAsCFF="false")]
