@@ -44,9 +44,10 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _resteBtn:Button;
 		private var _helpBtn:Button;
 
+		private var _virusSettingsBtn:Button;
+
 		private var _virusHolder:Sprite;
 		private var _virusBg:ImageLoader;
-
 		private var _hivSimulation:VirusSimulation;
 		private var _tcells:Array = [];
 		private var _freeTcells:Array = [];
@@ -77,7 +78,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
 
-			this._virusHolder.y = this._header.y + this._header.height;
+
+
+			this._virusSettingsBtn.validate();
+			this._virusSettingsBtn.x = this.actualWidth/2 - this._virusSettingsBtn.width/2;
+			this._virusSettingsBtn.y = this._header.height + this._scaledPadding;
+
+			this._virusHolder.y = this._virusSettingsBtn.y + this._virusSettingsBtn.height + this._scaledPadding;
+
+
+
 
 
 
@@ -150,6 +160,12 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._virusHolder = new Sprite();
 			this.addChild(this._virusHolder);
+
+			this._virusSettingsBtn = new Button();
+			this._virusSettingsBtn.defaultIcon = new Image(Main.assets.getTexture("vs_slider_icon"));
+			this._virusSettingsBtn.addEventListener(Event.TRIGGERED , virusSettingsBtnHandler);
+			this.addChild(this._virusSettingsBtn);
+
 
 
 
@@ -271,6 +287,20 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		}
 
+		private function virusSettingsBtnHandler(e:Event):void
+		{
+			if(_hivSimulation != null)
+			{
+				trace("Adjust Simulation");
+				initSettingsPopup();
+			}
+		}
+
+		private function initSettingsPopup():void
+		{
+
+		}
+
 		private function initVirusModel():void
 		{
 			drawVirusModelBg();
@@ -282,53 +312,21 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._virusBg.addEventListener( Event.COMPLETE, virusBgLoadComplete );
 			this._virusBg.source = "/assets/images/temp/vs_background.png";
 			this._virusHolder.addChild(this._virusBg);
+
 		}
 
 		private function virusBgLoadComplete(e:Event):void
 		{
+
+
+
 
 			_hivSimulation = new VirusSimulation(95 , 700 , 50000);
 			_hivSimulation.updateSimulationData();
 
 			placeTCells();
 			placeViruses();
-
-
-
-
-
-
-
-
-
-
-
-
-			/*
-			var topPadding:uint = 15;
-			var columns:uint = 16;
-			var horSpacer:uint = 5;
-			var vertSpacer:uint = 20;
-
-
-			var virusTexture:Texture = Main.assets.getTexture("vs_virus");
-			for(var i:uint = 0 ; i < 176 ; i++)
-			{
-				var virusImg:Image = new Image(virusTexture);
-				virusImg.width = 35;
-				virusImg.height = 35;
-				virusImg.x = (i % columns) * (virusImg.width + horSpacer);
-				virusImg.y = Math.floor(i / columns) * (virusImg.height + vertSpacer) + topPadding;
-				this._virusHolder.addChild(virusImg);
-
-
-			}
-
-			*/
-
 		}
-
-
 
 		private function placeTCells():void
 		{
