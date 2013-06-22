@@ -127,14 +127,14 @@ package collaboRhythm.hiviva.view.components
 			_monthSelect.y = 100;
 			this.addChild(_monthSelect);
 
-			var arrowTexture:Texture = Assets.getTexture('ArrowPng');
+//			var arrowTexture:Texture = Assets.getTexture('ArrowPng');
 
 			_arrowLeft = new Button();
-			_arrowLeft.name = HivivaTheme.NONE_THEMED;
-			_arrowLeft.defaultSkin = new Image(arrowTexture);
+			_arrowLeft.name = "calendar-arrows";
+//			_arrowLeft.defaultSkin = new Image(arrowTexture);
 			_arrowRight = new Button();
-			_arrowRight.defaultSkin = new Image(arrowTexture);
-			_arrowRight.name = HivivaTheme.NONE_THEMED;
+//			_arrowRight.defaultSkin = new Image(arrowTexture);
+			_arrowRight.name = "calendar-arrows";
 
 			this.addChild(_arrowLeft);
 			this.addChild(_arrowRight);

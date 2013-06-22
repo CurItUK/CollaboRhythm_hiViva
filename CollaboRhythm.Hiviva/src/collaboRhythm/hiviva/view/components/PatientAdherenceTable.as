@@ -53,8 +53,8 @@ package collaboRhythm.hiviva.view.components
 		{
 			super.draw();
 
-			this._firstColumnWidth = this.actualWidth * 0.3;
-			this._dataColumnsWidth = (this.actualWidth * 0.7) / 8;
+			this._firstColumnWidth = this.actualWidth * 0.35;
+			this._dataColumnsWidth = (this.actualWidth * 0.65) / 8;
 		}
 
 		override protected function initialize():void
@@ -75,7 +75,7 @@ package collaboRhythm.hiviva.view.components
 
 		private function initWeekNav():void
 		{
-			var arrowTexture:Texture = Assets.getTexture('ArrowPng');
+//			var arrowTexture:Texture = Assets.getTexture('ArrowPng');
 			this._weekNavHolder = new Sprite();
 			addChild(this._weekNavHolder);
 			this._weekNavHolder.x = this._firstColumnWidth;
@@ -88,16 +88,16 @@ package collaboRhythm.hiviva.view.components
 			viewLabel.validate();
 
 			var leftArrow:Button = new Button();
-			leftArrow.name = HivivaTheme.NONE_THEMED;
-			leftArrow.defaultSkin = new Image(arrowTexture);
+			leftArrow.name = "calendar-arrows";
+//			leftArrow.defaultSkin = new Image(arrowTexture);
 			leftArrow.addEventListener(starling.events.Event.TRIGGERED, leftArrowHandler);
 			this._weekNavHolder.addChild(leftArrow);
 			leftArrow.validate();
 			leftArrow.x = viewLabel.x + viewLabel.width;
 
 			var rightArrow:Button = new Button();
-			rightArrow.name = HivivaTheme.NONE_THEMED;
-			rightArrow.defaultSkin = new Image(arrowTexture);
+			rightArrow.name = "calendar-arrows";
+//			rightArrow.defaultSkin = new Image(arrowTexture);
 			rightArrow.addEventListener(starling.events.Event.TRIGGERED, rightArrowHandler);
 			this._weekNavHolder.addChild(rightArrow);
 			rightArrow.scaleX = -1;
@@ -367,6 +367,25 @@ package collaboRhythm.hiviva.view.components
 			tableBgColour.y = dayRowGrad.height;
 			tableBgColour.blendMode = BlendMode.MULTIPLY;
 			wholeTableBg.addChild(tableBgColour);
+
+			var firstColumnGrad:Quad = new Quad(this._firstColumnWidth, this._mainScrollContainer.height, 0x233448);
+			firstColumnGrad.setVertexAlpha(0, 0);
+			firstColumnGrad.setVertexAlpha(1, 1);
+			firstColumnGrad.setVertexAlpha(2, 0);
+			firstColumnGrad.setVertexAlpha(3, 1);
+			firstColumnGrad.y = this._firstRowHeight;
+			firstColumnGrad.alpha = 0.1;
+			wholeTableBg.addChild(firstColumnGrad);
+
+			var lastColumnGrad:Quad = new Quad(this._firstColumnWidth, this._mainScrollContainer.height, 0x233448);
+			lastColumnGrad.setVertexAlpha(0, 1);
+			lastColumnGrad.setVertexAlpha(1, 0);
+			lastColumnGrad.setVertexAlpha(2, 1);
+			lastColumnGrad.setVertexAlpha(3, 0);
+			lastColumnGrad.x = this._firstColumnWidth + (this._dataColumnsWidth * 7);
+			lastColumnGrad.y = this._firstRowHeight;
+			lastColumnGrad.alpha = 0.1;
+			wholeTableBg.addChild(lastColumnGrad);
 
 			var vertLineTexture:Texture = Assets.getTexture("VerticleLinePng");
 			var verticalLine:Image;
