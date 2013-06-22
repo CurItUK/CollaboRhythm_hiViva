@@ -20,15 +20,18 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 		private var _usedtcellPos:Array;
 
 
-		public function VirusSimulation(adherence:Number , cd4Count:Number , viralLoad:Number)
+		public function VirusSimulation()
 		{
+
+		}
+
+		public function updateSimulationData(adherence:Number , cd4Count:Number , viralLoad:Number):void
+		{
+
 			this._adherence = adherence;
 			this._cd4Count = cd4Count;
 			this._viralLoad = viralLoad;
-		}
 
-		public function updateSimulationData():void
-		{
 
 			this._tcells = [];
 			this._freeTcells = [];
