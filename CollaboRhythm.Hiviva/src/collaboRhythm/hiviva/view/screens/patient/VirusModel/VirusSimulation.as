@@ -41,14 +41,14 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this._openLooseVirusPos = [];
 
 			this._opentcellPos = [
-				[54, 74],
-				[125, 34],
-				[195, 100],
-				[266, 54],
-				[54, 146],
-				[125, 187],
-				[195, 184],
-				[266, 174]
+				[35, 51],
+				[106, 23],
+				[176, 77],
+				[247, 31],
+				[35, 123],
+				[106, 164],
+				[176, 161],
+				[247, 151]
 			];
 
 			this._usedtcellPos = [];
@@ -80,9 +80,12 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			trace("_numViruses " + this._numViruses);
 
 			//working under the basis we have 176 positons for virus on a grid of 16 columns
+			var topHolderPadding:Number = 15;
+			var leftHolderPadding:Number = 5;
 			for (var looseposition:int = 0; looseposition < 176; looseposition++)
 			{
-				this._openLooseVirusPos[looseposition] = [(looseposition % 16) * 20 + 10, (Math.floor(looseposition / 16)) * 20 + 10];
+				//this._openLooseVirusPos[looseposition] = [(looseposition % 16) * 20 + 10, (Math.floor(looseposition / 16)) * 20 + 10];
+				this._openLooseVirusPos[looseposition] = [(looseposition % 16) * 14 + leftHolderPadding, (Math.floor(looseposition / 16)) * 18 + topHolderPadding];
 			}
 
 			trace("looseposition " + this._openLooseVirusPos);
@@ -92,48 +95,51 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 				if (this._opentcellPos.length != 0)
 				{
 					var placenum:Number = Math.floor(Math.random() * this._opentcellPos.length);
+
 					var tcellPos:Array = this._opentcellPos[placenum];
 					var removepositions:Array = [];
 
 					this._opentcellPos.splice(placenum, 1);
 					this._usedtcellPos.push(tcellPos);
 
-					if (tcellPos[0] == 54 && tcellPos[1] == 74)
+					trace(tcellPos[0] , tcellPos[1]);
+
+					if (tcellPos[0] == 35 && tcellPos[1] == 51)
 					{
 						removepositions = [33, 34, 35, 36, 49, 50, 51, 52, 65, 66, 67, 68, 81, 82, 83, 84];
 						removeLooseVirusPositions(removepositions);
 					}
-					else if (tcellPos[0] == 125 && tcellPos[1] == 34)
+					else if (tcellPos[0] == 106 && tcellPos[1] == 23)
 					{
 						removepositions = [4, 5, 6, 7, 20, 21, 22, 23, 36, 37, 38, 39, 52, 53, 54, 55];
 						removeLooseVirusPositions(removepositions);
 					}
-					else if (tcellPos[0] == 195 && tcellPos[1] == 100)
+					else if (tcellPos[0] == 176 && tcellPos[1] == 77)
 					{
 						removepositions = [56, 57, 58, 59, 72, 73, 74, 75, 88, 89, 90, 91, 104, 105, 106, 107];
 						removeLooseVirusPositions(removepositions);
 					}
-					else if (tcellPos[0] == 266 && tcellPos[1] == 54)
+					else if (tcellPos[0] == 247 && tcellPos[1] == 31)
 					{
 						removepositions = [27, 28, 29, 30, 43, 44, 45, 46, 59, 60, 61, 62, 75, 76, 77, 78];
 						removeLooseVirusPositions(removepositions);
 					}
-					else if (tcellPos[0] == 54 && tcellPos[1] == 146)
+					else if (tcellPos[0] == 35 && tcellPos[1] == 123)
 					{
 						removepositions = [81, 82, 83, 84, 97, 98, 99, 100, 113, 114, 115, 116, 129, 130, 131, 132];
 						removeLooseVirusPositions(removepositions);
 					}
-					else if (tcellPos[0] == 125 && tcellPos[1] == 187)
+					else if (tcellPos[0] == 106 && tcellPos[1] == 164)
 					{
 						removepositions = [116, 117, 118, 119, 132, 133, 134, 135, 148, 149, 150, 151, 164, 165, 166, 167];
 						removeLooseVirusPositions(removepositions);
 					}
-					else if (tcellPos[0] == 195 && tcellPos[1] == 184)
+					else if (tcellPos[0] == 176 && tcellPos[1] == 161)
 					{
 						removepositions = [120, 121, 122, 123, 136, 137, 138, 139, 152, 153, 154, 155, 168, 169, 170, 171];
 						removeLooseVirusPositions(removepositions);
 					}
-					else if (tcellPos[0] == 266 && tcellPos[1] == 174)
+					else if (tcellPos[0] == 247 && tcellPos[1] == 151)
 					{
 						removepositions = [123, 124, 125, 126, 139, 140, 141, 142, 155, 156, 157, 158, 171, 172, 173, 174];
 						removeLooseVirusPositions(removepositions);

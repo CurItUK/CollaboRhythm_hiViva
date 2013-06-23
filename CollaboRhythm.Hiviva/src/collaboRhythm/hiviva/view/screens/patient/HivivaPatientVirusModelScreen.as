@@ -48,6 +48,10 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private var _scaledPadding:Number;
 
+		private var _adherence:Number;
+		private var _cd4Count:Number;
+		private var _viralLoad:Number;
+
 		public function HivivaPatientVirusModelScreen()
 		{
 
@@ -68,7 +72,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._virusHolder.y = this._virusSettingsBtn.y + this._virusSettingsBtn.height + this._scaledPadding;
 
-			getPatientData();
+			getPatientAdherence();
 		}
 
 		override protected function initialize():void
@@ -88,7 +92,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		}
 
-		private function getPatientData():void
+		private function getPatientAdherence():void
 		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getAdherence();
@@ -99,7 +103,20 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
 			trace("Virus Simulation " + e.data.adherence);
 
+			getPatientTestResults();
+
+
+
+		}
+
+		private function getPatientTestResults():void
+		{
+			this._adherence = 95;
+			this._cd4Count = 350;
+			this._viralLoad = 50000;
+
 			initVirusModel();
+
 
 		}
 
@@ -114,10 +131,9 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initSettingsControl():void
 		{
-			_virusSettingsControl = new VirusSettingsControl(95 , 350 , 50000);
+			_virusSettingsControl = new VirusSettingsControl(this._adherence , this._cd4Count , this._viralLoad);
 			_virusSettingsControl.addEventListener("VirusControllClose" , virusSettingsCloseHandler);
 			this.addChild(_virusSettingsControl);
-
 
 			_virusSettingsControl.width = this.actualWidth;
 			_virusSettingsControl.height = this.actualHeight;
@@ -129,13 +145,15 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function virusSettingsCloseHandler(e:Event):void
 		{
 			this.removeChild(_virusSettingsControl);
-			this._virusHolder.removeChildren(1,-1,true);
-			_hivSimulation = new VirusSimulation();
-			_hivSimulation.updateSimulationData(e.data.adherence , e.data.cd4Count ,  e.data.viralLoad);
-
-			placeTCells();
-			placeViruses();
-
+			if(this._adherence != e.data.adherence || this._cd4Count !=  e.data.cd4Count || this._viralLoad != e.data.viralLoad)
+			{
+				this._adherence = e.data.adherence;
+				this._cd4Count =  e.data.cd4Count;
+				this._viralLoad = e.data.viralLoad;
+				this._virusHolder.removeChildren(1,-1,true);
+				_hivSimulation = null;
+				initVirusSimulation()
+			}
 		}
 
 		private function initVirusModel():void
@@ -149,14 +167,17 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._virusBg.addEventListener( Event.COMPLETE, virusBgLoadComplete );
 			this._virusBg.source = "/assets/images/temp/vs_background.png";
 			this._virusHolder.addChild(this._virusBg);
-
 		}
 
 		private function virusBgLoadComplete(e:Event):void
 		{
+			initVirusSimulation()
+		}
 
+		private function initVirusSimulation():void
+		{
 			_hivSimulation = new VirusSimulation();
-			_hivSimulation.updateSimulationData(95 , 700 , 50000);
+			_hivSimulation.updateSimulationData(this._adherence , this._cd4Count ,  this._viralLoad);
 
 			placeTCells();
 			placeViruses();
@@ -169,8 +190,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 
 				var tCellView:TCellView = new TCellView(tCellTexture);
-				tCellView.x = this._hivSimulation.usedtcellPos[tcellnum - 1][0] * 3;
+				tCellView.x = this._hivSimulation.usedtcellPos[tcellnum - 1][0] * 2;
 				tCellView.y = this._hivSimulation.usedtcellPos[tcellnum - 1][1] * 3;
+				trace("Tcell posiiton " + tCellView.x + "," + tCellView.y);
 				this._virusHolder.addChild(tCellView);
 				tCellView.init(this._hivSimulation , this);
 
@@ -210,7 +232,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				virusView.init(false);
 				this._virusHolder.addChild(virusView);
 
-				virusView.alpha = 0.6;
+				virusView.alpha = 0.4;
 				var virusPosNumber:Number = Math.floor(Math.random() * this._hivSimulation.openLooseVirusPos.length);
 				var virusPos:Array = this._hivSimulation.openLooseVirusPos[virusPosNumber];
 				var xwiggle:Number = Math.floor(Math.random() * 5) - 2;
@@ -221,6 +243,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._viruses.push(virusView);
 				this._looseViruses.push(virusView);
 			}
+
 		}
 
 		public function get freeTcells():Array

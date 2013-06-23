@@ -17,12 +17,12 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 		private var _virusSimulation:VirusSimulation;
 		private var _virusScreen:HivivaPatientVirusModelScreen;
 		private var _openvirusPos:Array = [
-			[-24, 0],
+			[-14, 0],
 			[24, 0],
-			[-10, 24],
-			[10, 24],
-			[-10, -24],
-			[10, -24]
+			[-10, 12],
+			[10, 12],
+			[-10, -12],
+			[10, -12]
 		];
 		private var _usedvirusPos:Array = [];
 		private var _attachedViruses:Array = [];
@@ -73,6 +73,8 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			var holder:Sprite = new Sprite();
 
 			this._tCellImage = new Image(cd4Texture);
+			this._tCellImage.width = 84;
+			this._tCellImage.height = 84;
 			holder.addChild(this._tCellImage);
 			this._tCellImage.x = -this._tCellImage.width >> 2;
 			this._tCellImage.y = -this._tCellImage.height >> 2;
@@ -101,7 +103,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this.addChild(virusView);
 			this._attachedViruses.push(virusView);
 			this._attachedVirusesCopy.push(virusView);
-			virusView.x = virusPos[0] * 3;
+			virusView.x = virusPos[0] * 2;
 			virusView.y = virusPos[1] * 3;
 			this.alive = false;
 			this._tCellImage.alpha = 0.4;

@@ -25,6 +25,10 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this._holder = new Sprite();
 
 			this._virusImage = new Image(texture);
+			this._virusImage.width = 46;
+			this._virusImage.height = 46;
+
+
 			this._holder.addChild(this._virusImage);
 			this._virusImage.x = this._virusImage.width >> 2;
 			this._virusImage.y = this._virusImage.height >> 2;
@@ -44,10 +48,9 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			}
 			else
 			{
-				this._holder.width = 46;
-				this._holder.height = 46;
-				this._holder.x = -23;
-				this._holder.y = -23;
+
+				this._holder.x = -40;
+				this._holder.y = -40;
 			}
 		}
 
