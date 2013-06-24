@@ -24,12 +24,29 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.media.StageWebView;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.system.Capabilities;
 	import flash.utils.ByteArray;
 
 	import flash.data.SQLConnection;
 	import flash.data.SQLResult;
 	import flash.data.SQLStatement;
 	import flash.events.SQLEvent;
+
+	import mx.collections.ArrayCollection;
+
+	import org.alivepdf.colors.RGBColor;
+
+	import org.alivepdf.data.Grid;
+
+	import org.alivepdf.data.GridColumn;
+	import org.alivepdf.drawing.Joint;
+
+	import org.alivepdf.fonts.CoreFont;
+
+	import org.alivepdf.fonts.FontFamily;
+
+	import org.alivepdf.fonts.IFont;
+	import org.alivepdf.layout.Align;
 
 	import org.alivepdf.layout.Orientation;
 	import org.alivepdf.layout.Size;
@@ -226,8 +243,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function previewSendHandler(e:starling.events.Event):void
 		{
-			//TODO move PDF creating into UTILS class
-			//TODO move fileStream - report PDF file creation to local service class
 			var formValidation:String = patientReportsCheck();
 			if (formValidation.length == 0)
 			{
@@ -240,6 +255,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
+		private function patientReportsCheck():String
+		{
+			var validationArray:Array = [];
+
+			if(this._startDateInput._input.text.length == 0) validationArray.push("Please select a start date");
+			if(this._finishDateInput._input.text.length == 0) validationArray.push("Please select an end date");
+
+			return validationArray.join("<br/>");
+		}
+
 		private function adherenceLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
 			localStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE, adherenceLoadCompleteHandler);
@@ -249,7 +274,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 			else
 			{
-				generateSpoofPDF();
+				generatePDFReport();
 			}
 		}
 
@@ -262,43 +287,76 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function testResultsLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
 			localStoreController.removeEventListener(LocalDataStoreEvent.TEST_RESULTS_LOAD_COMPLETE, testResultsLoadCompleteHandler);
-			generateSpoofPDF();
+			generatePDFReport();
 
 		}
 
-		private function generateSpoofPDF():void
+		private function generatePDFReport():void
 		{
-			/*
-				var pdf:PDF = new PDF(Orientation.PORTRAIT, Unit.MM, Size.A4);
+			var pdf:PDF = new PDF(Orientation.PORTRAIT, Unit.MM, Size.A4);
+			var helveticaNomal:IFont = new CoreFont ( FontFamily.HELVETICA );
+			var helveticaBold:IFont = new CoreFont ( FontFamily.HELVETICA_BOLD );
 
-				pdf.addPage();
+			var date:Date = new Date();
 
-				var msg:String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lobortis elit ut urna malesuada sed porttitor odio vestibulum. Morbi egestas metus vitae urna consectetur sagittis. Aenean aliquam tincidunt velit a lacinia. Vestibulum tincidunt ante vel sem laoreet sed tempus risus ornare. Nunc ullamcorper sapien vel neque vulputate commodo. Nam faucibus neque eu libero venenatis euismod. Pellentesque ut est vitae tellus egestas consectetur. Praesent massa lacus, ultrices ut convallis vitae, tincidunt at tortor. Sed arcu risus, convallis ac fringilla at, egestas id tortor. Nam consectetur luctus mollis. Phasellus id dolor nibh, sed ultricies diam. Aliquam erat volutpat. Nulla erat lectus, vestibulum sed molestie nec, dignissim sed tellus. Sed fermentum quam id dolor porta vel tristique orci tristique. Nunc varius molestie bibendum. Curabitur in tortor eget mauris porttitor mollis. Proin a lacus mauris. Nullam dapibus nisi vitae justo eleifend ullamcorper. Maecenas dolor augue, bibendum quis mattis ut, posuere in tortor. Donec auctor dolor eget leo posuere fermentum. Curabitur tincidunt blandit venenatis. Praesent sagittis tristique ultricies. Quisque lobortis lacus non orci aliquam facilisis. Cras ut felis massa, a posuere nisi. Maecenas eget nibh ligula. Duis urna massa, dignissim non dapibus eget, mattis consequat dolor.";
+			pdf.addPage();
 
-				pdf.writeText(12, msg);
-
-				var fileStream:FileStream = new FileStream();
-
-				this._pdfFile = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
-
-				fileStream.open(this._pdfFile, FileMode.WRITE);
-				var bytes:ByteArray = pdf.save(Method.LOCAL);
-				fileStream.writeBytes(bytes);
-				fileStream.close();
-				*/
-				displaySavedPDF();
+			//Title
+			pdf.setFont(helveticaBold , 14);
+			pdf.writeText(12, "Patient: ");
+			pdf.setFont(helveticaNomal , 12);
+			pdf.writeText(12, "Patient Name / AppID\n");
 
 
-		}
+			//Date
+			pdf.setFont(helveticaBold , 14);
+			pdf.writeText(12, "Date: ");
+			pdf.setFont(helveticaNomal , 12);
+			pdf.writeText(12, date.getMonth() + "/" + date.getDay() + "/" + date.getFullYear() + "\n");
 
-		private function patientReportsCheck():String
-		{
-			var validationArray:Array = [];
+			//Subject
+			pdf.setFont(helveticaBold , 14);
+			pdf.writeText(12, "Subject: ");
+			pdf.setFont(helveticaNomal , 12);
+			pdf.writeText(12, "Please find below details of ... record of their HIV tracking via the HiVIVA application. This covers the time period between: "
+					+ this._startDateInput._input.text + " - "
+					+ this._finishDateInput._input.text + "\n");
 
-			if(this._startDateInput._input.text.length == 0) validationArray.push("Please select a start date");
-			if(this._finishDateInput._input.text.length == 0) validationArray.push("Please select an end date");
 
-			return validationArray.join("<br/>");
+			//Test Results
+
+			var dp:ArrayCollection = new ArrayCollection ();
+			dp.addItem( { date : "15/06/2013", cd4 : "350", viralLoad : "<50,000" } );
+
+
+
+			var gridColumnDate:GridColumn = new GridColumn("Date", "date", 20, Align.LEFT, Align.LEFT);
+			var gridColumnCd4:GridColumn = new GridColumn("CD4 count (cells/mm3)", "cd4", 20, Align.LEFT, Align.LEFT);
+			var gridColumnViralLoad:GridColumn = new GridColumn("Viral Load (copies/ml)", "viralLoad", 20, Align.LEFT, Align.LEFT);
+
+
+			var columns:Array = new Array ( gridColumnDate , gridColumnCd4 , gridColumnViralLoad);
+
+			var grid:Grid = new Grid ( dp.toArray(), 200, 100, new RGBColor (0x00CCFF), new RGBColor (0xFFFFFF), new RGBColor ( 0x0 ) , new RGBColor ( 0x0 ) , 1);
+
+			grid.columns = columns;
+
+			pdf.setFont(helveticaNomal , 12);
+			pdf.textStyle(new RGBColor ( 0x0 ),1);
+
+			pdf.addGrid(grid);
+
+
+			var fileStream:FileStream = new FileStream();
+
+			this._pdfFile = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
+
+			fileStream.open(this._pdfFile, FileMode.WRITE);
+			var bytes:ByteArray = pdf.save(Method.LOCAL);
+			fileStream.writeBytes(bytes);
+			fileStream.close();
+			displaySavedPDF();
+
 		}
 
 		private function displaySavedPDF():void
@@ -319,8 +377,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._stageWebView = new StageWebView();
 			this._stageWebView.stage = Starling.current.nativeStage.stage;
 			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - padding);
-			//TODO After market research put back to default PDF Generation
-			var pdf:File = File.applicationDirectory.resolvePath("resources/patient_report.pdf");
+			var pdf:File = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
 
 			this._stageWebView.loadURL(pdf.nativePath);
 
@@ -345,9 +402,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			//TODO add mail native extentions for IOS and Android
 			//http://diadraw.com/projects/adobe-air-native-e-mail-extension/
 
-			var mailURL:String = "mailto:?subject='My Patient Report'&body='My Patient Report'";
-			var urlReq:URLRequest = new URLRequest(mailURL);
-			navigateToURL(urlReq);
+			var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
+
+			trace(iOS);
+
+
+
+			//var mailURL:String = "mailto:?subject='My Patient Report'&body='My Patient Report'";
+			//var urlReq:URLRequest = new URLRequest(mailURL);
+			//navigateToURL(urlReq);
 
 
 		}
