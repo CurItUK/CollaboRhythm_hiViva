@@ -14,8 +14,11 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 	{
 
 		private var _tCellImage:Image;
+		private var _medShield:Image;
 		private var _virusSimulation:VirusSimulation;
 		private var _virusScreen:HivivaPatientVirusModelScreen;
+		private var _holder:Sprite;
+
 		private var _openvirusPos:Array = [
 			[-14, 0],
 			[24, 0],
@@ -70,16 +73,16 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 		public function TCellView(cd4Texture:Texture)
 		{
-			var holder:Sprite = new Sprite();
+			this._holder = new Sprite();
 
 			this._tCellImage = new Image(cd4Texture);
 			this._tCellImage.width = 84;
 			this._tCellImage.height = 84;
-			holder.addChild(this._tCellImage);
+			this._holder.addChild(this._tCellImage);
 			this._tCellImage.x = -this._tCellImage.width >> 2;
 			this._tCellImage.y = -this._tCellImage.height >> 2;
-			this.addChild(holder);
-			//this.addChild(this._tCellImage);
+			this.addChild(this._holder);
+
 
 		}
 
@@ -113,5 +116,65 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			}
 			return virusView;
 		}
+
+		private function removeVirusatPosition(virusPos:Array):void
+		{
+
+			for (var virusnum:int = 0; virusnum < this._attachedViruses.length; virusnum++)
+			{
+				if (this._usedvirusPos[virusnum][0] == virusPos[0] && this._usedvirusPos[virusnum][1] == virusPos[1])
+				{
+
+					var attachedVirus:VirusView = this._attachedViruses[virusnum];
+					this._attachedViruses.splice(virusnum, 1);
+					this._usedvirusPos.splice(virusnum, 1);
+					this.removeChild(attachedVirus);
+					this._virusScreen.addLooseVirus();
+				}
+			}
+		}
+
+		public function addMedication(adherence:Number , medTexture:Texture):void
+		{
+			trace("Adding Medication " + adherence);
+			this._medShield = new Image(medTexture);
+			this._medShield.width = 90;
+			this._medShield.height = 90;
+
+			this._medShield.x = -this._medShield.width >>2;
+			this._medShield.y = -this._medShield.height >>2;
+
+			this._holder.addChild(this._medShield);
+
+			if(adherence > 90)
+			{
+				removeVirusatPosition([-14, 0]);
+				removeVirusatPosition([24, 0]);
+				removeVirusatPosition([-10, 12]);
+				removeVirusatPosition([10, 12]);
+				removeVirusatPosition([-10, -12]);
+				removeVirusatPosition([10, -12]);
+			}
+			else if (adherence <= 90 && adherence >= 85)
+			{
+				removeVirusatPosition([-14, 0]);
+				removeVirusatPosition([24, 0]);
+				removeVirusatPosition([-10, 12]);
+				removeVirusatPosition([10, 12]);
+				this._medShield.alpha = 0.8;
+			}
+			else
+			{
+				this._medShield.alpha = 0.3;
+			}
+
+
+			if (this._attachedViruses.length == 0)
+			{
+				this.alive = true;
+				this._tCellImage..alpha = 1;
+			}
+		}
 	}
 }
+
