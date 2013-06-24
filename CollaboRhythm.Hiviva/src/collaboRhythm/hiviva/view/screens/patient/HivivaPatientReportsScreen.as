@@ -7,6 +7,10 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 
+	import com.diadraw.extensions.mail.MailExtensionEvent;
+
+	import com.diadraw.extensions.mail.NativeMailWrapper;
+
 	import feathers.controls.Button;
 	import feathers.controls.Check;
 	import feathers.controls.Label;
@@ -17,6 +21,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.events.FeathersEventType;
 
 	import flash.display.Sprite;
+	import flash.events.StageOrientationEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -33,6 +38,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.events.SQLEvent;
 
 	import mx.collections.ArrayCollection;
+	import mx.events.ResizeEvent;
 
 	import org.alivepdf.colors.RGBColor;
 
@@ -78,6 +84,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _pdfFile:File;
 		private var _stageWebView:StageWebView;
 		private var _calendarActive:Boolean;
+		private var m_mailExtension : NativeMailWrapper;
+		private const ATTACHMENT_FILE : String = "patient_report.pdf";
 
 
 
@@ -404,21 +412,110 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
 
-			trace(iOS);
+			if(iOS)
+			{
+				ensureExtension();
+				if ( m_mailExtension.isMailComposerAvailable() )
+				{
+					var pathToFile : String = getPathToAttachment();
+					sendEmail( pathToFile, ATTACHMENT_FILE, "image/png" );
+				}
+				else // Try and launch the default mail client on the device outside our app - maybe e-mail hasn't been configured yet
+				{
+					var request : URLRequest = new URLRequest( "mailto:" );
+					navigateToURL( request );
+				}
+			}
+		}
 
+		private function sendEmail( _attachmentPath : String, _fileName : String, _mimeType : String ) : void
+		{
+			//stage.removeEventListener( StageOrientationEvent.ORIENTATION_CHANGE, orientationChanged );
+			//stage.addEventListener( StageOrientationEvent.ORIENTATION_CHANGE, orientationChanged );
 
+			//stage.removeEventListener( StageOrientationEvent.ORIENTATION_CHANGING, orientationChangingCapture, true );
+			//stage.addEventListener( StageOrientationEvent.ORIENTATION_CHANGING, orientationChangingCapture, true, 99 );
 
-			//var mailURL:String = "mailto:?subject='My Patient Report'&body='My Patient Report'";
-			//var urlReq:URLRequest = new URLRequest(mailURL);
-			//navigateToURL(urlReq);
+			//this.removeEventListener( ResizeEvent.RESIZE, onViewResize );
+			//this.addEventListener( ResizeEvent.RESIZE, onViewResize );
 
+			var subject : String = "Hey, there is a workaround for the orientation issue!";
+			var body : String = "Details in this blog post: <a href=http://blog.diadraw.com/native-extensions-for-mobile-air-apps-getting-round-the-orientation-issue>http://blog.diadraw.com/native-extensions-for-mobile-air-apps-getting-round-the-orientation-issue</a>";
 
+			var attachmentStr : String = _attachmentPath + "|" + _mimeType + "|" + _fileName;
+
+			m_mailExtension.sendMail
+					(
+							subject,
+							body,
+							"",
+							"",
+							"",
+							[attachmentStr],
+							true );
+		}
+
+		private function ensureExtension():void
+		{
+			m_mailExtension = new NativeMailWrapper();
+
+			m_mailExtension.removeEventListener( MailExtensionEvent.MAIL_COMPOSER_EVENT, handleMailComposerEvent );
+			m_mailExtension.addEventListener( MailExtensionEvent.MAIL_COMPOSER_EVENT, handleMailComposerEvent );
+		}
+
+		private function handleMailComposerEvent( _event : MailExtensionEvent ) : void
+		{
+			if ( -1 != _event.composeResult.indexOf( MailExtensionEvent.MAIL_COMPOSER_DISMISSED ) )
+			{
+
+				//stage.removeEventListener( StageOrientationEvent.ORIENTATION_CHANGING, orientationChangingCapture, true );
+				//stage.removeEventListener( StageOrientationEvent.ORIENTATION_CHANGE, orientationChanged );
+			}
+		}
+
+		private function orientationChanged( _event : StageOrientationEvent ) : void
+		{
+			trace("orientationChanged");
+		}
+
+		private function orientationChangingCapture( _event : StageOrientationEvent ) : void
+		{
+			_event.stopImmediatePropagation();
+			_event.stopPropagation();
+
+			if ( _event.cancelable )
+			{
+				trace( "    Cancelling change" );
+				_event.preventDefault();
+			}
+			else
+			{
+				trace( "    Can't cancel change" );
+			}
+		}
+
+		private function onViewResize( _event : ResizeEvent ) : void
+		{
+			trace("onViewResize")
 		}
 
 		public override function dispose():void
 		{
 			trace("HivivaPatientReportsScreen dispose");
 			super.dispose();
+		}
+
+		private function getPathToAttachment() : String
+		{
+			var sourceFile : File = File.applicationStorageDirectory;
+			sourceFile = sourceFile.resolvePath("patient_report.pdf");
+
+			if ( !sourceFile.exists )
+			{
+				trace( "Couldn't find attachment file: " + sourceFile.nativePath );
+				return "";
+			}
+			return sourceFile.nativePath;
 		}
 
 

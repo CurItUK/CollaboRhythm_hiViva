@@ -230,4 +230,7 @@
 	<!-- End of the schema for adding the android specific tags in AndroidManifest.xml file -->
 
 
+<extensions>
+        <extensionID>com.diadraw.extensions.email.NativeEmailLauncher</extensionID>
+    </extensions>
 </application>
