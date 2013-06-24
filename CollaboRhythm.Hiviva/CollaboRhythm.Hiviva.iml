@@ -20,6 +20,12 @@
             <entry library-id="940ef901-debb-49dc-b1cd-6db6e6977d1b">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-id="5e58a730-29aa-491a-a894-d9698859f8e0">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="7bfb2307-aefe-4eba-b5be-069985cb5bc2">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
@@ -97,6 +103,26 @@
         <properties id="940ef901-debb-49dc-b1cd-6db6e6977d1b" />
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/greensock.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="5e58a730-29aa-491a-a894-d9698859f8e0" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/NativeMailExtensionLib.ane!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="7bfb2307-aefe-4eba-b5be-069985cb5bc2" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/src/source/mailer" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -148,8 +148,8 @@ package collaboRhythm.hiviva.view.components
 			this._arrowRight.y = arrowGap;
 			this._arrowRight.scaleX = -1;
 
-			this._arrowLeft.addEventListener(Event.TRIGGERED, leftArrowPressed);
-			this._arrowRight.addEventListener(Event.TRIGGERED, rightArrowPressed);
+			this._arrowLeft.addEventListener(starling.events.Event.TRIGGERED, leftArrowPressed);
+			this._arrowRight.addEventListener(starling.events.Event.TRIGGERED, rightArrowPressed);
 
 			this._closeBtn = new Button();
 			this._closeBtn.name = "close_button";
@@ -157,13 +157,13 @@ package collaboRhythm.hiviva.view.components
 			this._closeBtn.y = this._closeBtn.height;
 
 			this.addChild(this._closeBtn);
-			this._closeBtn.addEventListener(Event.TRIGGERED, closeBtnPressed);
+			this._closeBtn.addEventListener(starling.events.Event.TRIGGERED, closeBtnPressed);
 
 			createCurrentMonthNameLabel();
 
 		}
 
-		private function leftArrowPressed(e:Event):void
+		private function leftArrowPressed(e:starling.events.Event):void
 		{
 			if(_monthValue == 0)
 			{
@@ -179,7 +179,7 @@ package collaboRhythm.hiviva.view.components
 			updateMonthNameLabel();
 		}
 
-		private function rightArrowPressed(e:Event):void
+		private function rightArrowPressed(e:starling.events.Event):void
 		{
 			_monthValue++;
 			if(_monthValue > _months.length-1)
@@ -195,7 +195,7 @@ package collaboRhythm.hiviva.view.components
 			updateMonthNameLabel();
 		}
 
-		private function closeBtnPressed(e:Event):void
+		private function closeBtnPressed(e:starling.events.Event):void
 		{
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED);
 						//evt.evtData.date = fillWithZero(cell.label) + fillWithZero(String(this._firstDayOfMonth.month + 1)) + String(this._firstDayOfMonth.fullYear);
@@ -286,14 +286,12 @@ package collaboRhythm.hiviva.view.components
 			var currentAdd:Number = _cDay + (100*this._cMonth) + (1300*this._cYear);
 
 
-				if(dateAdd >= currentAdd)
-				{
-					this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = false;
-				}
-				else
-				{
-					this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = true;
-				}
+			if(dateAdd >= currentAdd){
+				this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = false;
+			}
+			else{
+				this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = true;
+			}
 
 /*
 			if(cType == "finish")

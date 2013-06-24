@@ -266,7 +266,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 
-		private function patientSelectedHandler(e:Event):void
+		private function patientSelectedHandler(e:starling.events.Event):void
 		{
 			//TODO change patient PDF report details
 		}
