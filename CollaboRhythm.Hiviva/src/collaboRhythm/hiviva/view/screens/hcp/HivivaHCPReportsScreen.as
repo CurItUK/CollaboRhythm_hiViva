@@ -302,9 +302,33 @@ package collaboRhythm.hiviva.view.screens.hcp
 				validationArray.push("Please select one or more reporting item");
 			}
 
+			if(this._startDateInput._input.text.length != 0 && this._finishDateInput._input.text.length != 0)
+			{
+				var isValidDate:Boolean = validateDates();
+				if(!isValidDate)validationArray.push("Invalid date selection - start and end dates");
+			}
+
 			return validationArray.join("<br/>");
 		}
 
+		private function validateDates():Boolean
+		{
+			var tempStart:Array = new Array();
+			var tempFinish:Array = new Array();
+
+			tempStart = this._startDateInput._input.text.split('/');
+			tempFinish = this._finishDateInput._input.text.split('/');
+
+			var startAdd:Number = tempStart[2]*1300 + tempStart[0]*100 + tempStart[1];
+			var endAdd:Number = tempFinish[2]*1300 + tempFinish[0]*100 + tempFinish[1];
+
+			if(startAdd > endAdd){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
 
 		private function displaySavedPDF():void
 		{
@@ -324,6 +348,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._stageWebView = new StageWebView();
 			this._stageWebView.stage = Starling.current.nativeStage.stage;
 			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - padding);
+
 			var pdf:File = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
 			this._stageWebView.loadURL(pdf.nativePath);
 

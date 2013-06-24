@@ -268,12 +268,32 @@ package collaboRhythm.hiviva.view.screens.hcp
 			if(this._startDateInput._input.text.length == 0) validationArray.push("Please select a start date");
 			if(this._finishDateInput._input.text.length == 0) validationArray.push("Please select an end date");
 
-			if(!this._adherenceCheck.isSelected && !this._feelingCheck.isSelected && !this._cd4Check.isSelected && !this._viralLoadCheck.isSelected)
+			if(this._startDateInput._input.text.length != 0 && this._finishDateInput._input.text.length != 0)
 			{
-				validationArray.push("Please select one or more reporting item");
+				var isValidDate:Boolean = validateDates();
+				if(!isValidDate)validationArray.push("Invalid date selection - start and end dates");
 			}
 
 			return validationArray.join("<br/>");
+		}
+
+		private function validateDates():Boolean
+		{
+			var tempStart:Array = new Array();
+			var tempFinish:Array = new Array();
+
+			tempStart = this._startDateInput._input.text.split('/');
+			tempFinish = this._finishDateInput._input.text.split('/');
+
+			var startAdd:Number = tempStart[2]*1300 + tempStart[0]*100 + tempStart[1];
+			var endAdd:Number = tempFinish[2]*1300 + tempFinish[0]*100 + tempFinish[1];
+
+			if(startAdd > endAdd){
+				return false;
+			}
+			else{
+				return true;
+			}
 		}
 
 		private function displaySavedPDF():void
