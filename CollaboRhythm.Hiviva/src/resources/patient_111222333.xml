@@ -29,11 +29,99 @@
 	<medicationHistory>
 		<!--latest first-->
 		<history>
-			<date>01/09/2013</date>
+			<date>01/13/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>yes</adhered></medication>
+			<medication id="2"><adhered>yes</adhered></medication>
+			<medication id="3"><adhered>yes</adhered></medication>
+		</history>
+		<history>
+			<date>01/12/2013</date>
 			<!--<adherence>95</adherence>-->
 			<tolerability>72</tolerability>
 			<medication id="1"><adhered>yes</adhered></medication>
 			<medication id="2"><adhered>no</adhered></medication>
+			<medication id="3"><adhered>yes</adhered></medication>
+		</history>
+		<history>
+			<date>01/11/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>yes</adhered></medication>
+			<medication id="2"><adhered>no</adhered></medication>
+			<medication id="3"><adhered>no</adhered></medication>
+		</history>
+		<history>
+			<date>01/10/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>yes</adhered></medication>
+			<medication id="2"><adhered>yes</adhered></medication>
+			<medication id="3"><adhered>yes</adhered></medication>
+		</history>
+		<history>
+			<date>01/09/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>yes</adhered></medication>
+			<medication id="2"><adhered>yes</adhered></medication>
+			<medication id="3"><adhered>yes</adhered></medication>
+		</history>
+		<history>
+			<date>01/08/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>yes</adhered></medication>
+			<medication id="2"><adhered>no</adhered></medication>
+			<medication id="3"><adhered>no</adhered></medication>
+		</history>
+		<history>
+			<date>01/07/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>no</adhered></medication>
+			<medication id="2"><adhered>no</adhered></medication>
+			<medication id="3"><adhered>no</adhered></medication>
+		</history>
+		<history>
+			<date>01/06/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>yes</adhered></medication>
+			<medication id="2"><adhered>no</adhered></medication>
+			<medication id="3"><adhered>no</adhered></medication>
+		</history>
+		<history>
+			<date>01/05/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>yes</adhered></medication>
+			<medication id="2"><adhered>yes</adhered></medication>
+			<medication id="3"><adhered>no</adhered></medication>
+		</history>
+		<history>
+			<date>01/04/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>yes</adhered></medication>
+			<medication id="2"><adhered>yes</adhered></medication>
+			<medication id="3"><adhered>yes</adhered></medication>
+		</history>
+		<history>
+			<date>01/03/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>yes</adhered></medication>
+			<medication id="2"><adhered>yes</adhered></medication>
+			<medication id="3"><adhered>yes</adhered></medication>
+		</history>
+		<history>
+			<date>01/02/2013</date>
+			<!--<adherence>95</adherence>-->
+			<tolerability>72</tolerability>
+			<medication id="1"><adhered>yes</adhered></medication>
+			<medication id="2"><adhered>yes</adhered></medication>
 			<medication id="3"><adhered>yes</adhered></medication>
 		</history>
 		<history>
