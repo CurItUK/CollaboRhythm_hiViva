@@ -9,10 +9,10 @@ package collaboRhythm.hiviva.view.screens.patient
 
 //	import com.diadraw.extensions.mail.MailExtensionEvent;
 //	import com.diadraw.extensions.mail.NativeMailWrapper;
-	import org.bytearray.smtp.mailer.SMTPMailer;
-	import org.bytearray.smtp.encoding.JPEGEncoder;
-	import org.bytearray.smtp.encoding.PNGEnc;
-	import org.bytearray.smtp.events.SMTPEvent;
+	//import org.bytearray.smtp.mailer.SMTPMailer;
+	//import org.bytearray.smtp.encoding.JPEGEncoder;
+	//import org.bytearray.smtp.encoding.PNGEnc;
+	//import org.bytearray.smtp.events.SMTPEvent;
 	import flash.utils.ByteArray;
 	import flash.display.BitmapData;
 	import flash.display.Bitmap;
@@ -97,7 +97,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		//private var m_mailExtension : NativeMailWrapper;
 		private const ATTACHMENT_FILE : String = "patient_report.pdf";
 
-		private var myMailer:SMTPMailer;
+		//private var myMailer:SMTPMailer;
 		private var messageAttachment:ByteArray;
 
 		private var _pdfPopupContainer:HivivaPDFPopUp;
