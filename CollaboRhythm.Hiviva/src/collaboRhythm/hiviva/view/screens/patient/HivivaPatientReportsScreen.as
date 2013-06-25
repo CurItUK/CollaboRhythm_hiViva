@@ -9,10 +9,10 @@ package collaboRhythm.hiviva.view.screens.patient
 
 //	import com.diadraw.extensions.mail.MailExtensionEvent;
 //	import com.diadraw.extensions.mail.NativeMailWrapper;
-	import org.bytearray.smtp.mailer.SMTPMailer;
-	import org.bytearray.smtp.encoding.JPEGEncoder;
-	import org.bytearray.smtp.encoding.PNGEnc;
-	import org.bytearray.smtp.events.SMTPEvent;
+	//import org.bytearray.smtp.mailer.SMTPMailer;
+	//import org.bytearray.smtp.encoding.JPEGEncoder;
+	//import org.bytearray.smtp.encoding.PNGEnc;
+	//import org.bytearray.smtp.events.SMTPEvent;
 	import flash.utils.ByteArray;
 	import flash.display.BitmapData;
 	import flash.display.Bitmap;
@@ -97,7 +97,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		//private var m_mailExtension : NativeMailWrapper;
 		private const ATTACHMENT_FILE : String = "patient_report.pdf";
 
-		private var myMailer:SMTPMailer;
+		//private var myMailer:SMTPMailer;
 		private var messageAttachment:ByteArray;
 
 		private var _pdfPopupContainer:HivivaPDFPopUp;
@@ -391,6 +391,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var columns:Array = new Array ( gridColumnDate , gridColumnCd4 , gridColumnViralLoad);
 
+			//data:Array,width:Number,height:Number,headerColor:org.alivepdf.colors.IColor,cellColor:org.alivepdf.colors.IColor,
 			var grid:Grid = new Grid ( dp.toArray(), 200, 100, new RGBColor (0x00CCFF), new RGBColor (0xFFFFFF), new RGBColor ( 0x0 ) , new RGBColor ( 0x0 ) , 1);
 
 			grid.columns = columns;
