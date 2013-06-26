@@ -66,10 +66,6 @@ package collaboRhythm.hiviva.view.media
 
 
 
-
-
-
-
 		private static var applicationTextures:Dictionary = new Dictionary();
 
 		public static function getTexture(name:String):Texture
