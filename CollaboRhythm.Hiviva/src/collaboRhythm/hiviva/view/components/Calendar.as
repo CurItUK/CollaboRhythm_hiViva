@@ -53,7 +53,8 @@ package collaboRhythm.hiviva.view.components
 		private var _month:Label;
 		private var currentDate:Date;
 		private var _calendarType:String;
-		private var _currentDateNum:Number;
+
+		private var now:Date;
 
 
 
@@ -90,13 +91,14 @@ package collaboRhythm.hiviva.view.components
 		
 		private function getCurrentDate():void
 		{
-			var now:Date = new Date();
+			now = new Date();
 			this._firstDayOfMonth = new Date(now.fullYear, now.month, 1);
 			this._cYear = now.fullYear;
 			this._yearValue = now.fullYear;
 			this._cMonth = now.getMonth();
 			this._monthValue = now.getMonth();
 			this._cDay = now.date;
+
 
 		//	trace("CYEAR " + _cYear + " CMONTH " + _cMonth + " CDAY " + _cDay)
 		}
@@ -146,8 +148,8 @@ package collaboRhythm.hiviva.view.components
 			this._arrowRight.y = arrowGap;
 			this._arrowRight.scaleX = -1;
 
-			this._arrowLeft.addEventListener(Event.TRIGGERED, leftArrowPressed);
-			this._arrowRight.addEventListener(Event.TRIGGERED, rightArrowPressed);
+			this._arrowLeft.addEventListener(starling.events.Event.TRIGGERED, leftArrowPressed);
+			this._arrowRight.addEventListener(starling.events.Event.TRIGGERED, rightArrowPressed);
 
 			this._closeBtn = new Button();
 			this._closeBtn.name = "close_button";
@@ -155,13 +157,13 @@ package collaboRhythm.hiviva.view.components
 			this._closeBtn.y = this._closeBtn.height;
 
 			this.addChild(this._closeBtn);
-			this._closeBtn.addEventListener(Event.TRIGGERED, closeBtnPressed);
+			this._closeBtn.addEventListener(starling.events.Event.TRIGGERED, closeBtnPressed);
 
 			createCurrentMonthNameLabel();
 
 		}
 
-		private function leftArrowPressed(e:Event):void
+		private function leftArrowPressed(e:starling.events.Event):void
 		{
 			if(_monthValue == 0)
 			{
@@ -177,7 +179,7 @@ package collaboRhythm.hiviva.view.components
 			updateMonthNameLabel();
 		}
 
-		private function rightArrowPressed(e:Event):void
+		private function rightArrowPressed(e:starling.events.Event):void
 		{
 			_monthValue++;
 			if(_monthValue > _months.length-1)
@@ -193,7 +195,7 @@ package collaboRhythm.hiviva.view.components
 			updateMonthNameLabel();
 		}
 
-		private function closeBtnPressed(e:Event):void
+		private function closeBtnPressed(e:starling.events.Event):void
 		{
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED);
 						//evt.evtData.date = fillWithZero(cell.label) + fillWithZero(String(this._firstDayOfMonth.month + 1)) + String(this._firstDayOfMonth.fullYear);
@@ -283,18 +285,15 @@ package collaboRhythm.hiviva.view.components
 			var dateAdd:Number = i + (100*this._monthValue) + (1300*this._yearValue);
 			var currentAdd:Number = _cDay + (100*this._cMonth) + (1300*this._cYear);
 
-			if(cType == "start")
-			{
-				if(dateAdd >= currentAdd)
-				{
-					this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = false;
-				}
-				else
-				{
-					this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = true;
-				}
+
+			if(dateAdd >= currentAdd){
+				this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = false;
+			}
+			else{
+				this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = true;
 			}
 
+/*
 			if(cType == "finish")
 			{
 				if(dateAdd <= currentAdd)
@@ -306,8 +305,9 @@ package collaboRhythm.hiviva.view.components
 					this._allDayCells[this._daysPerWeek[this._firstDayOfMonth.day]+i].isEnabled = true;
 				}
 			}
-
+*/
 		}
+
 		
 		private function calculateLeapYear():void
 		{
@@ -390,7 +390,6 @@ package collaboRhythm.hiviva.view.components
 		
 		private function monthChangeHandler(e:starling.events.Event):void
 		{
-			
 			this._firstDayOfMonth.month = this._monthList.selectedItem.data;
 			populateDayCellsWithData();
 		}
@@ -437,10 +436,12 @@ package collaboRhythm.hiviva.view.components
 		private function daySelectedHandler(e:starling.events.Event):void
 		{
 			var cell:Button = Button(e.currentTarget);
+
 //			trace("Date Selected is " + fillWithZero(cell.label) + fillWithZero(String(this._firstDayOfMonth.month + 1)) + this._firstDayOfMonth.fullYear);
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED);
 			//evt.evtData.date = fillWithZero(cell.label) + fillWithZero(String(this._firstDayOfMonth.month + 1)) + String(this._firstDayOfMonth.fullYear);
 			evt.evtData.date = fillWithZero(String(this._firstDayOfMonth.month + 1)) + "/" + fillWithZero(cell.label) + "/" + String(this._firstDayOfMonth.fullYear);
+
 			dispatchEvent(evt);
 		}
 		

@@ -7,11 +7,15 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 
-/*
-	import com.diadraw.extensions.mail.MailExtensionEvent;
-
-	import com.diadraw.extensions.mail.NativeMailWrapper;
-*/
+//	import com.diadraw.extensions.mail.MailExtensionEvent;
+//	import com.diadraw.extensions.mail.NativeMailWrapper;
+	//import org.bytearray.smtp.mailer.SMTPMailer;
+	//import org.bytearray.smtp.encoding.JPEGEncoder;
+	//import org.bytearray.smtp.encoding.PNGEnc;
+	//import org.bytearray.smtp.events.SMTPEvent;
+	import flash.utils.ByteArray;
+	import flash.display.BitmapData;
+	import flash.display.Bitmap;
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
@@ -65,6 +69,10 @@ package collaboRhythm.hiviva.view.screens.patient
 	import starling.core.Starling;
 	import starling.events.Event;
 
+	import flash.net.URLRequest;
+ 	import flash.net.URLRequestMethod;
+ 	import flash.net.URLVariables;
+
 
 	public class HivivaPatientReportsScreen extends ValidationScreen
 	{
@@ -86,13 +94,21 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _pdfFile:File;
 		private var _stageWebView:StageWebView;
 		private var _calendarActive:Boolean;
-//		private var m_mailExtension : NativeMailWrapper;
+		//private var m_mailExtension : NativeMailWrapper;
 		private const ATTACHMENT_FILE : String = "patient_report.pdf";
 
-
-
+		//private var myMailer:SMTPMailer;
+		private var messageAttachment:ByteArray;
 
 		private var _pdfPopupContainer:HivivaPDFPopUp;
+
+		private var mSubject:String;
+		private var mBody:String;
+		private var mAttachment:String;
+
+		private var request:URLRequest;
+
+		private var pdf:File;
 
 		public function HivivaPatientReportsScreen()
 		{
@@ -166,7 +182,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._startDateInput._input.isEnabled = false;
 
 			this._startDateButton = new Button();
-			this._startDateButton.addEventListener(Event.TRIGGERED, startDateCalendarHandler);
+			this._startDateButton.addEventListener(starling.events.Event.TRIGGERED, startDateCalendarHandler);
 			this._startDateButton.name = "calendar-button";
 			this._content.addChild(this._startDateButton);
 
@@ -177,7 +193,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._finishDateInput._input.isEnabled = false;
 
 			this._finishDateButton = new Button();
-			this._finishDateButton.addEventListener(Event.TRIGGERED, finishDateCalendarHandler);
+			this._finishDateButton.addEventListener(starling.events.Event.TRIGGERED, finishDateCalendarHandler);
 			this._finishDateButton.name = "calendar-button";
 			this._content.addChild(this._finishDateButton);
 
@@ -211,8 +227,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._previewAndSendBtn);
 
 			this._calendar = new Calendar();
-			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler)
+			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler);
+
 		}
+
+
 
 		private function calendarButtonHandler(e:FeathersScreenEvent):void
 		{
@@ -220,7 +239,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._activeCalendarInput.text = e.evtData.date;
 		}
 
-		private function startDateCalendarHandler(e:Event):void
+		private function startDateCalendarHandler(e:starling.events.Event):void
 		{
 
 			this._activeCalendarInput = this._startDateInput._input;
@@ -236,7 +255,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 
-		private function finishDateCalendarHandler(e:Event):void
+		private function finishDateCalendarHandler(e:starling.events.Event):void
 		{
 			this._activeCalendarInput = this._finishDateInput._input;
 			this._calendar.cType = "finish";
@@ -272,7 +291,32 @@ package collaboRhythm.hiviva.view.screens.patient
 			if(this._startDateInput._input.text.length == 0) validationArray.push("Please select a start date");
 			if(this._finishDateInput._input.text.length == 0) validationArray.push("Please select an end date");
 
+			if(this._startDateInput._input.text.length != 0 && this._finishDateInput._input.text.length != 0)
+			{
+				var isValidDate:Boolean = validateDates();
+				if(!isValidDate)validationArray.push("Invalid date selection - start and end dates");
+			}
+
 			return validationArray.join("<br/>");
+		}
+
+		private function validateDates():Boolean
+		{
+			var tempStart:Array = new Array();
+			var tempFinish:Array = new Array();
+
+			tempStart = this._startDateInput._input.text.split('/');
+			tempFinish = this._finishDateInput._input.text.split('/');
+
+			var startAdd:Number = tempStart[2]*1300 + tempStart[0]*100 + tempStart[1];
+			var endAdd:Number = tempFinish[2]*1300 + tempFinish[0]*100 + tempFinish[1];
+
+			if(startAdd > endAdd){
+				return false;
+			}
+			else{
+				return true;
+			}
 		}
 
 		private function adherenceLoadCompleteHandler(e:LocalDataStoreEvent):void
@@ -346,7 +390,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 
 			var columns:Array = new Array ( gridColumnDate , gridColumnCd4 , gridColumnViralLoad);
-/*
 
 			var grid:Grid = new Grid ( dp.toArray(), 200, 100, new RGBColor (0x00CCFF), new RGBColor (0xFFFFFF), new RGBColor ( 0x0 ) , new RGBColor ( 0x0 ) , 1);
 
@@ -356,7 +399,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			pdf.textStyle(new RGBColor ( 0x0 ),1);
 
 			pdf.addGrid(grid);
-*/
 
 
 			var fileStream:FileStream = new FileStream();
@@ -365,6 +407,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			fileStream.open(this._pdfFile, FileMode.WRITE);
 			var bytes:ByteArray = pdf.save(Method.LOCAL);
+			messageAttachment = bytes;
 			fileStream.writeBytes(bytes);
 			fileStream.close();
 			displaySavedPDF();
@@ -378,7 +421,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._pdfPopupContainer.width = this.actualWidth;
 			this._pdfPopupContainer.height = this.actualHeight;
 			this._pdfPopupContainer.addEventListener("sendMail", mailBtnHandler);
-			this._pdfPopupContainer.addEventListener(Event.CLOSE, closePopup);
+			this._pdfPopupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
 			this._pdfPopupContainer.validate();
 
 			PopUpManager.addPopUp(this._pdfPopupContainer, true, true);
@@ -389,13 +432,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._stageWebView = new StageWebView();
 			this._stageWebView.stage = Starling.current.nativeStage.stage;
 			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - padding);
-			var pdf:File = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
+			pdf = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
 
 			this._stageWebView.loadURL(pdf.nativePath);
 
 		}
 
-		private function closePopup(e:Event):void
+		private function closePopup(e:starling.events.Event):void
 		{
 
 			this._stageWebView.viewPort = null;
@@ -406,10 +449,29 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		}
 
-
-
 		private function mailBtnHandler(e:starling.events.Event):void
 		{
+			mSubject = "Test";
+			mBody= "Test body";
+			mAttachment = pdf.nativePath;
+
+			var url:String = "mailto:youllforget@googlemail.com?subject="+ mSubject + "Configurador&body="+ mBody + "&attachment="+ mAttachment;
+
+			request = new URLRequest(url);
+
+			navigateToURL(request, '_self');
+
+
+		//	myMailer.sendAttachedMail ( "This is a test message", "youllforget@googlemail.com", "Test subject", "Test body", messageAttachment, "image.jpg");
+
+		//	getURL("mailto:you@yourdomain.com?subject=Whatever&body=First Name: %0D%0A Last Name: %0D%0A Telephone: %0D%0A Email Address: %0D%0A Questions or Comments:");
+		}
+
+
+	/*
+		private function mailBtnHandler(e:starling.events.Event):void
+		{
+
 			closePopup(e);
 			//TODO add mail native extentions for IOS and Android
 			//http://diadraw.com/projects/adobe-air-native-e-mail-extension/
@@ -419,7 +481,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			if(iOS)
 			{
 				ensureExtension();
-/*				if ( m_mailExtension.isMailComposerAvailable() )
+				if ( m_mailExtension.isMailComposerAvailable() )
 				{
 					var pathToFile : String = getPathToAttachment();
 					sendEmail( pathToFile, ATTACHMENT_FILE, "image/png" );
@@ -428,10 +490,11 @@ package collaboRhythm.hiviva.view.screens.patient
 				{
 					var request : URLRequest = new URLRequest( "mailto:" );
 					navigateToURL( request );
-				}*/
+				}
 			}
-		}
 
+		}
+	*/
 		private function sendEmail( _attachmentPath : String, _fileName : String, _mimeType : String ) : void
 		{
 			//stage.removeEventListener( StageOrientationEvent.ORIENTATION_CHANGE, orientationChanged );
@@ -442,13 +505,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			//this.removeEventListener( ResizeEvent.RESIZE, onViewResize );
 			//this.addEventListener( ResizeEvent.RESIZE, onViewResize );
-
+/*
 			var subject : String = "Hey, there is a workaround for the orientation issue!";
 			var body : String = "Details in this blog post: <a href=http://blog.diadraw.com/native-extensions-for-mobile-air-apps-getting-round-the-orientation-issue>http://blog.diadraw.com/native-extensions-for-mobile-air-apps-getting-round-the-orientation-issue</a>";
 
 			var attachmentStr : String = _attachmentPath + "|" + _mimeType + "|" + _fileName;
 
-			/*m_mailExtension.sendMail
+			m_mailExtension.sendMail
 					(
 							subject,
 							body,
@@ -456,18 +519,21 @@ package collaboRhythm.hiviva.view.screens.patient
 							"",
 							"",
 							[attachmentStr],
-							true );*/
+							true );
+*/
 		}
 
 		private function ensureExtension():void
 		{
-			/*m_mailExtension = new NativeMailWrapper();
+			/*
+			m_mailExtension = new NativeMailWrapper();
 
 			m_mailExtension.removeEventListener( MailExtensionEvent.MAIL_COMPOSER_EVENT, handleMailComposerEvent );
-			m_mailExtension.addEventListener( MailExtensionEvent.MAIL_COMPOSER_EVENT, handleMailComposerEvent );*/
+			m_mailExtension.addEventListener( MailExtensionEvent.MAIL_COMPOSER_EVENT, handleMailComposerEvent );
+			*/
 		}
-
-/*		private function handleMailComposerEvent( _event : MailExtensionEvent ) : void
+/*
+		private function handleMailComposerEvent( _event : MailExtensionEvent ) : void
 		{
 			if ( -1 != _event.composeResult.indexOf( MailExtensionEvent.MAIL_COMPOSER_DISMISSED ) )
 			{
@@ -475,7 +541,12 @@ package collaboRhythm.hiviva.view.screens.patient
 				//stage.removeEventListener( StageOrientationEvent.ORIENTATION_CHANGING, orientationChangingCapture, true );
 				//stage.removeEventListener( StageOrientationEvent.ORIENTATION_CHANGE, orientationChanged );
 			}
-		}*/
+		}
+*/
+		private function handleMailComposerEvent( _event :* ) : void
+		{
+
+		}
 
 		private function orientationChanged( _event : StageOrientationEvent ) : void
 		{

@@ -1,10 +1,12 @@
 package collaboRhythm.hiviva.controller
 {
+	import collaboRhythm.hiviva.controller.HivivaRemoteStoreController;
 
 
 	public class HivivaAppController
 	{
 		private var _hivivaLocalStoreController:HivivaLocalStoreController;
+		private var _hivivaRemoteStoreController:HivivaRemoteStoreController;
 
 
 		public function HivivaAppController()
@@ -18,10 +20,20 @@ package collaboRhythm.hiviva.controller
 			_hivivaLocalStoreController.initStoreService();
 		}
 
-		public function get hivivaLocalStoreController():HivivaLocalStoreController
+		public function initRemoteStore():void
 		{
-			return _hivivaLocalStoreController;
+			this._hivivaRemoteStoreController = new HivivaRemoteStoreController();
+			this._hivivaRemoteStoreController.initStoreService();
 		}
 
+		public function get hivivaLocalStoreController():HivivaLocalStoreController
+		{
+			return this._hivivaLocalStoreController;
+		}
+
+		public function get hivivaRemoteStoreController():HivivaRemoteStoreController
+		{
+			return this._hivivaRemoteStoreController;
+		}
 	}
 }

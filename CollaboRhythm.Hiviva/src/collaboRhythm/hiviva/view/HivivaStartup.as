@@ -27,13 +27,14 @@ package collaboRhythm.hiviva.view
 	public class HivivaStartup extends Sprite
 	{
 		private var _starFW:Starling;
-		protected var _sw:Number;
-		protected var _sh:Number;
+
 		private var _assets:AssetManager;
 		private var _passwordBox:PasswordBox;
 		private var _passwordActive:Boolean;
 
-		private var mStarling:Starling;
+
+		protected var _sw:Number;
+		protected var _sh:Number;
 
 		private var bmp:Bitmap;
 
@@ -57,6 +58,7 @@ package collaboRhythm.hiviva.view
 
 			_hivivaAppController = new HivivaAppController();
 			_hivivaAppController.initLocalStore();
+			_hivivaAppController.initRemoteStore();
 
 			drawBackground();
 			initStarling();
