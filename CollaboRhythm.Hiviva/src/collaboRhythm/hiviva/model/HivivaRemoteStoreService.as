@@ -28,12 +28,24 @@ package collaboRhythm.hiviva.model
 
 		private function createUserCompleteHandler(e:Event):void
 		{
-			trace("createUserCompleteHandler " + e);
+			trace("createUserCompleteHandler " + e.target.data);
+			var xmlResponse:XML = new XML(e.target.data);
+			trace(xmlResponse);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.CREATE_USER_COMPLETE);
+
+
+			trace("Appid " + xmlResponse.AppId);
+
+
+			evt.data.appid = xmlResponse.DCHealthUser.AppId;
+			evt.data.guid = xmlResponse.DCHealthUser.AppGuid;
+
 			this.dispatchEvent(evt)
 
 		}
-
-
 	}
 }
+
+
+
+

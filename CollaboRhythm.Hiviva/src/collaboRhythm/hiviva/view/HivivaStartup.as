@@ -60,9 +60,17 @@ package collaboRhythm.hiviva.view
 			_hivivaAppController.initLocalStore();
 			_hivivaAppController.initRemoteStore();
 
+			checkNetworkStatus();
 			drawBackground();
 			initStarling();
 		}
+
+		private function checkNetworkStatus():void
+		{
+			//TODO determine if user has network access
+		}
+
+
 
 		private function initStarling():void
 		{
@@ -75,12 +83,12 @@ package collaboRhythm.hiviva.view
 			Starling.handleLostContext = !iOS;
 
 			var stageWidth:int   = Constants.STAGE_WIDTH;
-		    var stageHeight:int  = Constants.STAGE_HEIGHT;
+			var stageHeight:int  = Constants.STAGE_HEIGHT;
 
 			var viewPort:Rectangle = RectangleUtil.fit(
-			                new Rectangle(0, 0, stageWidth, stageHeight),
-			                new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight),
-			                ScaleMode.SHOW_ALL);
+					new Rectangle(0, 0, stageWidth, stageHeight),
+					new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight),
+					ScaleMode.SHOW_ALL);
 
 			_starFW = new Starling(Main, stage, viewPort);
 			_starFW.stage.stageWidth  = stageWidth;
@@ -89,10 +97,10 @@ package collaboRhythm.hiviva.view
 			_starFW.start();
 
 			NativeApplication.nativeApplication.addEventListener(
-       		flash.events.Event.ACTIVATE, function (e:*):void { startApp(); });
+					flash.events.Event.ACTIVATE, function (e:*):void { startApp(); });
 
-  			NativeApplication.nativeApplication.addEventListener(
-      		flash.events.Event.DEACTIVATE, function (e:*):void { stopApp(); });
+			NativeApplication.nativeApplication.addEventListener(
+					flash.events.Event.DEACTIVATE, function (e:*):void { stopApp(); });
 
 		}
 
@@ -128,7 +136,7 @@ package collaboRhythm.hiviva.view
 
 		private function stopApp():void
 		{
-		//	if(!_passwordActive) drawPasswordBox();
+			//	if(!_passwordActive) drawPasswordBox();
 		}
 
 		private function doSubmit(e:flash.events.Event):void
@@ -148,7 +156,7 @@ package collaboRhythm.hiviva.view
 			main.initMain(this._assets);
 
 			disposeBg();
-			drawPasswordBox();
+			//drawPasswordBox();
 		}
 
 		public static function get hivivaAppController():HivivaAppController
