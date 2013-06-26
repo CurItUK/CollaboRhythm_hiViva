@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.components
 {
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -206,16 +207,12 @@ package collaboRhythm.hiviva.view.components
 		private function leftArrowHandler(e:Event):void
 		{
 			this._currWeekBeginning.setDate(this._currWeekBeginning.getDate() - 7);
-
-			var weekBeginning:String = (this._currWeekBeginning.getMonth() + 1) + "/" + this._currWeekBeginning.getDate() + "/" + this._currWeekBeginning.getFullYear();
 			changeTableData();
 		}
 
 		private function rightArrowHandler(e:Event):void
 		{
 			this._currWeekBeginning.setDate(this._currWeekBeginning.getDate() + 7);
-
-			var weekBeginning:String = (this._currWeekBeginning.getMonth() + 1) + "/" + this._currWeekBeginning.getDate() + "/" + this._currWeekBeginning.getFullYear();
 			changeTableData();
 		}
 
@@ -239,8 +236,8 @@ package collaboRhythm.hiviva.view.components
 
 		private function setCurrentWeek():void
 		{
-			if(this._currWeekBeginning.getDay() > 0) this._currWeekBeginning.setDate(this._currWeekBeginning.getDate() - this._currWeekBeginning.getDay() + 1);
-			this._weekText.text = "wb: " + (this._currWeekBeginning.getMonth() + 1) + "/" + this._currWeekBeginning.getDate() + "/" + this._currWeekBeginning.getFullYear();
+			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
+			this._weekText.text = "wc: " + (this._currWeekBeginning.getMonth() + 1) + "/" + this._currWeekBeginning.getDate() + "/" + this._currWeekBeginning.getFullYear();
 			this._weekText.validate();
 		}
 
@@ -271,7 +268,7 @@ package collaboRhythm.hiviva.view.components
 			var currWeekDay:Date = new Date(this._currWeekBeginning.getFullYear(),this._currWeekBeginning.getMonth(),this._currWeekBeginning.getDate(),0,0,0,0);
 			var dateData:Array;
 //			var historyDay:Date = new Date(null,null,null,0,0,0,0);
-			var historyDay:Date;
+			var historyDate:Date;
 			var historicalMedication:XMLList;
 			var rowData:Object;
 			var cell:Sprite;
@@ -283,19 +280,14 @@ package collaboRhythm.hiviva.view.components
 			var tickCrossImage:Image;
 			for (var dayCount:int = 0; dayCount < 7; dayCount++)
 			{
-				currWeekDay.setDate(this._currWeekBeginning.getDate() + (dayCount + 1));
 				for (var historyCount:int = 0; historyCount < _historyLength; historyCount++)
 				{
-//					trace("date = " + history[historyCount].date);
 					dateData = String(history[historyCount].date).split("/");
-					historyDay = new Date(int(dateData[2]),int(dateData[0]) - 1,int(dateData[1]),0,0,0,0);
-//					historyDay.setMonth(int(dateData[0]) - 1);
-//					historyDay.setDate(int(dateData[1]));
-//					historyDay.setFullYear(int(dateData[2]));
+					historyDate = new Date(int(dateData[2]),int(dateData[0]) - 1,int(dateData[1]),0,0,0,0);
 
-					if(historyDay.getTime() == currWeekDay.getTime())
+					if(historyDate.getTime() == currWeekDay.getTime())
 					{
-						cellX = this._dataColumnsWidth * (historyDay.getDay() - 1);
+						cellX = this._dataColumnsWidth * dayCount;
 						for (var rowCount:int = 0; rowCount < this._rowsData.length; rowCount++)
 						{
 							rowData = this._rowsData[rowCount];
@@ -324,7 +316,6 @@ package collaboRhythm.hiviva.view.components
 							else
 							{
 								historicalMedication = history[historyCount].medication.(@id == rowData.id);
-//								cellLabel.text = historicalMedication.adhered;
 								if (historicalMedication.adhered == "yes")
 								{
 									// tick
@@ -342,6 +333,7 @@ package collaboRhythm.hiviva.view.components
 						}
 					}
 				}
+				currWeekDay.date++;
 			}
 		}
 
