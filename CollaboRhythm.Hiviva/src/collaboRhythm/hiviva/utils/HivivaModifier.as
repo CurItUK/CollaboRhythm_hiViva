@@ -192,6 +192,19 @@ package collaboRhythm.hiviva.utils
 			return Math.round(avgAdherence);
 		}
 
+		public static function floorToClosestMonday(date:Date):void
+		{
+			var dayOfWeek:Number = date.getDay();
+			if(dayOfWeek < 1)
+			{
+				date.date -= 6;
+			}
+			else if(dayOfWeek > 1)
+			{
+				date.date -= (dayOfWeek + 1);
+			}
+		}
+
 
 
 		public static function clipImage(img:Image):void
