@@ -33,11 +33,13 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/clockSegment.png")]
 		public static const ClockFaceSegmentPng:Class;
 
+		/*
 		[Embed(source="/assets/images/temp/HCP_Adherance_chart.png")]
 		public static const HCPAdherenceChart:Class;
 
 		[Embed(source="/assets/images/HCP_Views_Patient.png")]
 		public static const SpoofData:Class;
+		*/
 
 		[Embed(source="/assets/images/temp/calendar_arrow.png")]
 		public static const ArrowPng:Class;
