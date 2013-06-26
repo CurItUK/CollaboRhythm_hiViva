@@ -7,9 +7,11 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 
+/*
 	import com.diadraw.extensions.mail.MailExtensionEvent;
 
 	import com.diadraw.extensions.mail.NativeMailWrapper;
+*/
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
@@ -84,7 +86,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _pdfFile:File;
 		private var _stageWebView:StageWebView;
 		private var _calendarActive:Boolean;
-		private var m_mailExtension : NativeMailWrapper;
+//		private var m_mailExtension : NativeMailWrapper;
 		private const ATTACHMENT_FILE : String = "patient_report.pdf";
 
 
@@ -344,6 +346,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 
 			var columns:Array = new Array ( gridColumnDate , gridColumnCd4 , gridColumnViralLoad);
+/*
 
 			var grid:Grid = new Grid ( dp.toArray(), 200, 100, new RGBColor (0x00CCFF), new RGBColor (0xFFFFFF), new RGBColor ( 0x0 ) , new RGBColor ( 0x0 ) , 1);
 
@@ -353,6 +356,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			pdf.textStyle(new RGBColor ( 0x0 ),1);
 
 			pdf.addGrid(grid);
+*/
 
 
 			var fileStream:FileStream = new FileStream();
@@ -415,7 +419,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			if(iOS)
 			{
 				ensureExtension();
-				if ( m_mailExtension.isMailComposerAvailable() )
+/*				if ( m_mailExtension.isMailComposerAvailable() )
 				{
 					var pathToFile : String = getPathToAttachment();
 					sendEmail( pathToFile, ATTACHMENT_FILE, "image/png" );
@@ -424,7 +428,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				{
 					var request : URLRequest = new URLRequest( "mailto:" );
 					navigateToURL( request );
-				}
+				}*/
 			}
 		}
 
@@ -444,7 +448,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var attachmentStr : String = _attachmentPath + "|" + _mimeType + "|" + _fileName;
 
-			m_mailExtension.sendMail
+			/*m_mailExtension.sendMail
 					(
 							subject,
 							body,
@@ -452,18 +456,18 @@ package collaboRhythm.hiviva.view.screens.patient
 							"",
 							"",
 							[attachmentStr],
-							true );
+							true );*/
 		}
 
 		private function ensureExtension():void
 		{
-			m_mailExtension = new NativeMailWrapper();
+			/*m_mailExtension = new NativeMailWrapper();
 
 			m_mailExtension.removeEventListener( MailExtensionEvent.MAIL_COMPOSER_EVENT, handleMailComposerEvent );
-			m_mailExtension.addEventListener( MailExtensionEvent.MAIL_COMPOSER_EVENT, handleMailComposerEvent );
+			m_mailExtension.addEventListener( MailExtensionEvent.MAIL_COMPOSER_EVENT, handleMailComposerEvent );*/
 		}
 
-		private function handleMailComposerEvent( _event : MailExtensionEvent ) : void
+/*		private function handleMailComposerEvent( _event : MailExtensionEvent ) : void
 		{
 			if ( -1 != _event.composeResult.indexOf( MailExtensionEvent.MAIL_COMPOSER_DISMISSED ) )
 			{
@@ -471,7 +475,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				//stage.removeEventListener( StageOrientationEvent.ORIENTATION_CHANGING, orientationChangingCapture, true );
 				//stage.removeEventListener( StageOrientationEvent.ORIENTATION_CHANGE, orientationChanged );
 			}
-		}
+		}*/
 
 		private function orientationChanged( _event : StageOrientationEvent ) : void
 		{
