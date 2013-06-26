@@ -23,6 +23,9 @@
             <entry library-id="7bfb2307-aefe-4eba-b5be-069985cb5bc2">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-id="e3c14341-461c-430b-ac2f-fbfb09fce56d">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
@@ -100,6 +103,16 @@
         <properties id="940ef901-debb-49dc-b1cd-6db6e6977d1b" />
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/greensock.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="e3c14341-461c-430b-ac2f-fbfb09fce56d" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/Starling-Extension-Graphics.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
