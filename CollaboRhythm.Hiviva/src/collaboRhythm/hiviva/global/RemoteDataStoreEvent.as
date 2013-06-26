@@ -5,7 +5,8 @@ package collaboRhythm.hiviva.global
 	public class RemoteDataStoreEvent extends Event
 	{
 
-		public static const DATA_LOAD_COMPLETE:String							= "dataLoadComplete";
+
+		public static const CREATE_USER_COMPLETE:String							= "createUserComplete";
 
 
 		public var message:String;
@@ -20,3 +21,5 @@ package collaboRhythm.hiviva.global
 		}
 	}
 }
+
+

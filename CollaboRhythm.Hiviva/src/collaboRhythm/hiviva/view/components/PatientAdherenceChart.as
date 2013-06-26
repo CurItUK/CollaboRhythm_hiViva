@@ -36,6 +36,7 @@ package collaboRhythm.hiviva.view.components
 		private var _horizontalSegmentWidth:Number;
 		private var _lowestAdherence:Number;
 		private var _adherenceRange:Number;
+		private var _bottomAxisValueHeight:Number;
 
 		public function PatientAdherenceChart()
 		{
@@ -68,16 +69,125 @@ package collaboRhythm.hiviva.view.components
 			populateDates();
 			populatePatientAdherence();
 
+			initPatientNumberLabel();
+			initBackground();
+			initLeftAxisLabels();
+			initLeftAxisLines();
+			initBottomAxisValuesAndLines();
+			initBottomAxisLabels();
+			drawPlotPoints();
+		}
+
+		private function initBottomAxisLabels():void
+		{
+			var bottomAxisLabel:Label = new Label();
+			bottomAxisLabel.name = "centered-label";
+			bottomAxisLabel.text = "<font face='ExoBold'>Week commencing (2013)</font>";
+			addChild(bottomAxisLabel);
+			bottomAxisLabel.x = this._chartStartX;
+			bottomAxisLabel.y = this._chartStartY + this._chartHeight + this._bottomAxisValueHeight;
+			bottomAxisLabel.width = this._chartWidth;
+			bottomAxisLabel.validate();
+
+			var bottomAxisGrad:Quad = new Quad(this._chartWidth, this._bottomAxisValueHeight + bottomAxisLabel.height);
+			bottomAxisGrad.setVertexColor(0, 0xFFFFFF);
+			bottomAxisGrad.setVertexColor(1, 0xFFFFFF);
+			bottomAxisGrad.setVertexColor(2, 0x293d54);
+			bottomAxisGrad.setVertexColor(3, 0x293d54);
+			bottomAxisGrad.alpha = 0.2;
+			addChild(bottomAxisGrad);
+			bottomAxisGrad.x = this._chartStartX;
+			bottomAxisGrad.y = this._chartStartY + this._chartHeight;
+		}
+
+		private function initLeftAxisLines():void
+		{
+			var horizLineTexture:Texture = Main.assets.getTexture("header_line");
+			var horizontalLine:Image;
+			var verticalSegmentLength:Number = this._adherenceRange / 10;
+			var verticalSegmentHeight:Number = this._chartHeight / verticalSegmentLength;
+			for (var verticalSegmentCount:int = 0; verticalSegmentCount < verticalSegmentLength; verticalSegmentCount++)
+			{
+				horizontalLine = new Image(horizLineTexture);
+				addChild(horizontalLine);
+				horizontalLine.x = this._chartStartX;
+				horizontalLine.y = this._chartStartY + (verticalSegmentHeight * verticalSegmentCount);
+				horizontalLine.width = this._chartWidth;
+			}
+		}
+
+		private function initBottomAxisValuesAndLines():void
+		{
+			var vertLineTexture:Texture = Assets.getTexture("VerticleLinePng");
+			var verticalLine:Image;
+			var bottomAxisValue:Label;
+			var evenLighter:Quad;
+			var xAxisPosition:Number;
+			for (var weekCount:int = 0; weekCount < TOTAL_WEEKS; weekCount++)
+			{
+				xAxisPosition = this._horizontalSegmentWidth * weekCount;
+
+				bottomAxisValue = new Label();
+				bottomAxisValue.name = "patient-data-lighter";
+				bottomAxisValue.text = addPrecedingZero((_weeks[weekCount].getMonth() + 1).toString()) + "/" +
+						addPrecedingZero(_weeks[weekCount].getDate().toString());
+				addChild(bottomAxisValue);
+				bottomAxisValue.validate();
+				bottomAxisValue.x = this._chartStartX + xAxisPosition;
+				if (weekCount == (TOTAL_WEEKS - 1))
+				{
+					bottomAxisValue.x -= bottomAxisValue.width;
+				}
+				else if (weekCount > 0)
+				{
+					bottomAxisValue.x -= bottomAxisValue.width * 0.5;
+				}
+				bottomAxisValue.y = this._chartStartY + this._chartHeight;
+
+				verticalLine = new Image(vertLineTexture);
+				addChild(verticalLine);
+				verticalLine.x = this._chartStartX + xAxisPosition;
+				verticalLine.y = this._chartStartY;
+				verticalLine.height = this._chartHeight;
+				// ever even segment
+				if ((weekCount / 2).toString().indexOf('.') > -1 && weekCount < (TOTAL_WEEKS - 1))
+				{
+					evenLighter = new Quad(this._horizontalSegmentWidth, this._chartHeight, 0xffffff);
+					evenLighter.alpha = 0.2;
+					addChild(evenLighter);
+					evenLighter.x = this._chartStartX + xAxisPosition;
+					evenLighter.y = this._chartStartY;
+				}
+			}
+			this._bottomAxisValueHeight = bottomAxisValue.height;
+		}
+
+		private function initPatientNumberLabel():void
+		{
 			var patientNumberLabel:Label = new Label();
 			patientNumberLabel.name = "centered-label";
-			patientNumberLabel.text = "<font face='ExoBold'>" + _filterdPatients.length + " patient" + ((_filterdPatients.length > 1) ? "s" : "") + "</font>";
+			patientNumberLabel.text = "<font face='ExoBold'>" + _filterdPatients.length + " patient" +
+					((_filterdPatients.length > 1) ? "s" : "") + "</font>";
 			addChild(patientNumberLabel);
 			patientNumberLabel.x = this._chartStartX;
 			patientNumberLabel.y = this._chartStartY;
 			patientNumberLabel.width = this._chartWidth;
 			patientNumberLabel.validate();
 			this._chartStartY += patientNumberLabel.height;
+		}
 
+		private function initBackground():void
+		{
+			var chartBg:Quad = new Quad(this._chartWidth, this._chartHeight, 0x4c5f76);
+			chartBg.alpha = 0.25;
+			chartBg.blendMode = BlendMode.MULTIPLY;
+			addChild(chartBg);
+			chartBg.x = this._chartStartX;
+			chartBg.y = this._chartStartY;
+		}
+
+		private function initLeftAxisLabels():void
+		{
 			var leftAxisTop:Label = new Label();
 			leftAxisTop.name = "centered-label";
 			leftAxisTop.text = "<font face='ExoBold'>100%</font>";
@@ -89,7 +199,7 @@ package collaboRhythm.hiviva.view.components
 
 			var leftAxisBottom:Label = new Label();
 			leftAxisBottom.name = "centered-label";
-			leftAxisBottom.text = "<font face='ExoBold'>"+ this._lowestAdherence + "%</font>";
+			leftAxisBottom.text = "<font face='ExoBold'>" + this._lowestAdherence + "%</font>";
 			addChild(leftAxisBottom);
 			leftAxisBottom.width = this._leftAxisSpace;
 			leftAxisBottom.validate();
@@ -105,88 +215,6 @@ package collaboRhythm.hiviva.view.components
 			leftAxisLabel.rotation = deg2rad(-90);
 			leftAxisLabel.x = leftAxisTop.x + (leftAxisTop.width * 0.5) - (leftAxisLabel.height * 0.5);
 			leftAxisLabel.y = this._chartStartY + (this._chartHeight * 0.5) + (leftAxisLabel.width * 0.5);
-
-			var chartBg:Quad = new Quad(this._chartWidth,this._chartHeight,0x4c5f76);
-			chartBg.alpha = 0.25;
-			chartBg.blendMode = BlendMode.MULTIPLY;
-			addChild(chartBg);
-			chartBg.x = this._chartStartX;
-			chartBg.y = this._chartStartY;
-
-			var vertLineTexture:Texture = Assets.getTexture("VerticleLinePng");
-			var verticalLine:Image;
-			var bottomAxisValue:Label;
-			var evenLighter:Quad;
-			var xAxisPosition:Number;
-			for (var weekCount:int = 0; weekCount < TOTAL_WEEKS; weekCount++)
-			{
-				xAxisPosition = this._horizontalSegmentWidth * weekCount;
-
-				bottomAxisValue = new Label();
-				bottomAxisValue.name = "patient-data-lighter";
-				bottomAxisValue.text = addPrecedingZero((_weeks[weekCount].getMonth() + 1).toString()) + "/" + addPrecedingZero(_weeks[weekCount].getDate().toString());
-				addChild(bottomAxisValue);
-				bottomAxisValue.validate();
-				bottomAxisValue.x = this._chartStartX + xAxisPosition;
-				if(weekCount == (TOTAL_WEEKS - 1))
-				{
-					bottomAxisValue.x -= bottomAxisValue.width;
-				}
-				else if(weekCount > 0)
-				{
-					bottomAxisValue.x -= bottomAxisValue.width * 0.5;
-				}
-				bottomAxisValue.y = this._chartStartY + this._chartHeight;
-
-				verticalLine = new Image(vertLineTexture);
-				addChild(verticalLine);
-				verticalLine.x = this._chartStartX + xAxisPosition;
-				verticalLine.y = this._chartStartY;
-				verticalLine.height = this._chartHeight;
-
-				if((weekCount / 2).toString().indexOf('.') > -1 && weekCount < (TOTAL_WEEKS - 1))
-				{
-					evenLighter = new Quad(this._horizontalSegmentWidth, this._chartHeight, 0xffffff);
-					evenLighter.alpha = 0.2;
-					addChild(evenLighter);
-					evenLighter.x = this._chartStartX + xAxisPosition;
-					evenLighter.y = this._chartStartY;
-				}
-			}
-
-			var horizLineTexture:Texture = Main.assets.getTexture("header_line");
-			var horizontalLine:Image;
-			var verticalSegmentLength:Number = this._adherenceRange / 10;
-			var verticalSegmentHeight:Number = this._chartHeight / verticalSegmentLength;
-			for (var verticalSegmentCount:int = 0; verticalSegmentCount < verticalSegmentLength; verticalSegmentCount++)
-			{
-				horizontalLine = new Image(horizLineTexture);
-				addChild(horizontalLine);
-				horizontalLine.x = this._chartStartX;
-				horizontalLine.y = this._chartStartY + (verticalSegmentHeight * verticalSegmentCount);
-				horizontalLine.width = this._chartWidth;
-			}
-
-			var bottomAxisLabel:Label = new Label();
-			bottomAxisLabel.name = "centered-label";
-			bottomAxisLabel.text = "<font face='ExoBold'>Week commencing (2013)</font>";
-			addChild(bottomAxisLabel);
-			bottomAxisLabel.x = this._chartStartX;
-			bottomAxisLabel.y = bottomAxisValue.y + bottomAxisValue.height;
-			bottomAxisLabel.width = this._chartWidth;
-			bottomAxisLabel.validate();
-
-			var bottomAxisGrad:Quad = new Quad(this._chartWidth, bottomAxisValue.height + bottomAxisLabel.height);
-			bottomAxisGrad.setVertexColor(0, 0xFFFFFF);
-			bottomAxisGrad.setVertexColor(1, 0xFFFFFF);
-			bottomAxisGrad.setVertexColor(2, 0x293d54);
-			bottomAxisGrad.setVertexColor(3, 0x293d54);
-			bottomAxisGrad.alpha = 0.2;
-			addChild(bottomAxisGrad);
-			bottomAxisGrad.x = this._chartStartX;
-			bottomAxisGrad.y = this._chartStartY + this._chartHeight;
-
-			drawPlotPoints();
 		}
 
 		private function populateDates():void

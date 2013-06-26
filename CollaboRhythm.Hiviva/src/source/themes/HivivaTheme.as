@@ -107,6 +107,7 @@ package source.themes
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.text.BitmapFontTextRenderer;
 
 	import feathers.controls.text.StageTextTextEditor;
 
@@ -135,6 +136,7 @@ package source.themes
 	import feathers.skins.StandardIcons;
 
 	import feathers.system.DeviceCapabilities;
+	import feathers.text.BitmapFontTextFormat;
 
 	import feathers.textures.Scale3Textures;
 
@@ -164,10 +166,15 @@ package source.themes
 
 	import starling.events.ResizeEvent;
 	import starling.filters.BlurFilter;
+	import starling.text.BitmapFont;
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
 
 	import starling.textures.Texture;
 
 	import starling.textures.TextureAtlas;
+	import starling.textures.TextureSmoothing;
+	import starling.utils.Color;
 
 
 	public class HivivaTheme extends DisplayListWatcher
@@ -290,6 +297,13 @@ package source.themes
 
 
 		protected var primaryBackground:TiledImage;
+
+// hiviva bitmap fonts
+		protected var engravedBoldBitmapFont:BitmapFont;
+		protected var defaultBitmapFont:BitmapFont;
+
+
+
 
 
 		protected var headerTextFormat:TextFormat;
@@ -554,7 +568,9 @@ package source.themes
 			const fontNames:String = "Helvetica Neue,Helvetica,Roboto,Arial,_sans";
 
 
-			//this.headerTextFormat = new TextFormat(fontNames, 36 * this.scale, LIGHT_TEXT_COLOR, true);
+			this.engravedBoldBitmapFont = TextField.getBitmapFont("hivivafont_engraved_bold");
+			this.defaultBitmapFont = TextField.getBitmapFont("hivivafont_default");
+
 			this.headerTextFormat = new TextFormat(fontNames, 36 * this.scale, 0x000000, true);
 
 			this.hivivaDefaultTextFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x4c5f76);
@@ -1152,10 +1168,16 @@ package source.themes
 		}
 		protected function inputLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0x495c72);
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-			label.textRendererProperties.isHTML = true;
+//			label.textRendererProperties.embedFonts = true;
+//			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0x495c72);
+//			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+//			label.textRendererProperties.isHTML = true;
+			label.textRendererFactory = function():ITextRenderer
+			{
+				return new BitmapFontTextRenderer();
+			};
+
+			label.textRendererProperties.textFormat = new BitmapFontTextFormat(this.engravedBoldBitmapFont,30,Color.WHITE);
 		}
 		protected function medBrandLabelInitializer(label:Label):void
 		{
@@ -1443,6 +1465,7 @@ package source.themes
 			};
 
 			button.stateToSkinFunction = skinSelector.updateValue;
+/*
 
 			button.defaultLabelProperties.embedFonts = true;
 			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0x454545);
@@ -1451,6 +1474,14 @@ package source.themes
 			button.disabledLabelProperties.embedFonts = true;
 			button.disabledLabelProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0xaeaeae);
 			button.disabledLabelProperties.filter = BlurFilter.createDropShadow(1,-1.5,0xFFFFFF,0.5,0);
+*/
+			button.labelFactory = function():ITextRenderer
+			{
+				return new BitmapFontTextRenderer();
+			};
+
+			button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(this.defaultBitmapFont,30, 0x454545);
+			button.disabledLabelProperties.textFormat = new BitmapFontTextFormat(this.defaultBitmapFont,30, 0xaeaeae);
 
 			button.minWidth = skinWidth * this.scale;
 			button.minHeight = skinHeight * this.scale;

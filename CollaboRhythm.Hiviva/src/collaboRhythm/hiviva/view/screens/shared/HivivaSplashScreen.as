@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
@@ -52,7 +53,10 @@ package collaboRhythm.hiviva.view.screens.shared
 			super.draw();
 
 			drawSplashBackground();
-			if(this._appType == HivivaLocalStoreService.APP_FIRST_TIME_USE) drawButtons();
+			if(this._appType == HivivaLocalStoreService.APP_FIRST_TIME_USE)
+			{
+				drawButtons();
+			}
 		}
 
 		override protected function initialize():void
@@ -60,6 +64,8 @@ package collaboRhythm.hiviva.view.screens.shared
 			super.initialize();
 
 			initSplashBackground();
+
+
 
 			this._appType = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.appDataVO._userAppType;
 			if(this._appType == HivivaLocalStoreService.APP_FIRST_TIME_USE)
@@ -157,6 +163,8 @@ package collaboRhythm.hiviva.view.screens.shared
 		}
 
 
+
+
 		private function applySplashButtonProperties(button:Button):void
 		{
 			// TODO: create class in HivivaTheme
@@ -189,6 +197,25 @@ package collaboRhythm.hiviva.view.screens.shared
 			evt.data.user = userValue;
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.dispatchEvent(evt);
 			this._appType = userValue;
+			if(userValue == HivivaLocalStoreService.USER_APP_TYPE_HCP)
+			{
+				createUser("1");
+			} else
+			{
+				createUser("0");
+			}
+		}
+
+		private function createUser(type:String):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CREATE_USER_COMPLETE , createUserCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.createUser(type);
+		}
+
+		private function createUserCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.CREATE_USER_COMPLETE , createUserCompleteHandler);
+			trace("initSplashBackground user created " + e.data.appid);
 			closeDownScreen();
 		}
 

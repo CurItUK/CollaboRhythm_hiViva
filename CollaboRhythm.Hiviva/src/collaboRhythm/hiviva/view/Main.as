@@ -92,6 +92,8 @@ package collaboRhythm.hiviva.view
 			var appDir:File = File.applicationDirectory;
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/homePagePhoto.atf"),appDir.resolvePath("assets/images/atlas/homePagePhoto.xml"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/hivivaBaseImages.png"),appDir.resolvePath("assets/images/atlas/hivivaBaseImages.xml"));
+			_assets.enqueue(appDir.resolvePath("assets/fonts/hivivafont_engraved_bold.png"),appDir.resolvePath("assets/fonts/hivivafont_engraved_bold.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fonts/hivivafont_default.png"),appDir.resolvePath("assets/fonts/hivivafont_default.fnt"));
 			_assets.loadQueue(function onProgress(ratio:Number):void
 			{
 				trace("Loading Assets " + ratio);
