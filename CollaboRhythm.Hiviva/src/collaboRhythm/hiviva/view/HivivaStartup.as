@@ -116,6 +116,7 @@ package collaboRhythm.hiviva.view
 		{
 			_passwordBox = new PasswordBox(_sw, _sh);
 			_passwordBox.addEventListener("SUBMIT_CLICKED", doSubmit);
+
 			addChild(_passwordBox);
 			_passwordActive = true;
 		}
@@ -133,6 +134,11 @@ package collaboRhythm.hiviva.view
 
 		private function doSubmit(e:flash.events.Event):void
 		{
+			if(_passwordBox.getPass() !== "123456") {
+				_passwordBox.wrongPass()
+				trace("wrong password pleae try aghain!")
+			return;
+			}
 			_passwordBox.removeEventListener("SUBMIT_CLICKED", doSubmit)
 			removeChild(_passwordBox);
 			_passwordActive = false;

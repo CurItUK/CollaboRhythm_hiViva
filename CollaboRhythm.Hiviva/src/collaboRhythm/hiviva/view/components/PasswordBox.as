@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
 	import flash.display.Sprite;
+	import flash.geom.ColorTransform;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
@@ -8,7 +9,7 @@ package collaboRhythm.hiviva.view.components
 	import flash.events.TouchEvent;
 	import flash.events.MouseEvent;
 	import flash.events.Event;
-
+	import flash.events.FocusEvent;
 
 	public class PasswordBox extends Sprite
 	{
@@ -19,6 +20,9 @@ package collaboRhythm.hiviva.view.components
 		private var textLabel:TextField;
 		private var _sw:Number;
 		private var _sh:Number;
+		public var _pass : String ;
+		private var _colorTransform : ColorTransform = new ColorTransform();
+
 
 		public function PasswordBox(sw:Number, sh:Number)
 		{
@@ -85,6 +89,8 @@ package collaboRhythm.hiviva.view.components
 			_submit.useHandCursor = true;
 			_submit.addEventListener(TouchEvent.TOUCH_TAP, tapHandler);
 			_submit.addEventListener(MouseEvent.CLICK, clickHandler);
+
+
 		}
 
 		private function addSubmitBtn():void
@@ -92,6 +98,22 @@ package collaboRhythm.hiviva.view.components
 
 
 		}
+
+		public function getPass():String{
+
+			this._pass =  this.passwordField.text;
+			return this._pass;
+		};
+
+		public function wrongPass(){
+			_colorTransform.color=0xFF0000;
+
+			passwordField.backgroundColor = _colorTransform.color;
+
+
+		};
+
+
 
 		private function tapHandler(e:TouchEvent):void
 		{
