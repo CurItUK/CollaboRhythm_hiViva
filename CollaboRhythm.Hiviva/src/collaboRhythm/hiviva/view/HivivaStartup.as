@@ -142,7 +142,7 @@ package collaboRhythm.hiviva.view
 
 		private function doSubmit(e:flash.events.Event):void
 		{
-			if(_passwordBox.getPass() !== "123456") {
+			if(_passwordBox.Pass !== "123456") {
 				_passwordBox.wrongPass()
 				trace("wrong password pleae try aghain!")
 			return;
@@ -162,7 +162,7 @@ package collaboRhythm.hiviva.view
 			main.initMain(this._assets);
 
 			disposeBg();
-			//drawPasswordBox();
+		    drawPasswordBox();
 		}
 
 		public static function get hivivaAppController():HivivaAppController

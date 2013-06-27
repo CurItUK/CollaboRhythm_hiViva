@@ -77,6 +77,8 @@ package collaboRhythm.hiviva.view.components
 			_submit.y = passwordText.y + passwordField.height;
 			_submit.mouseEnabled = true;
 
+
+
 			textLabel = new TextField();
 			textLabel.text = "SUBMIT";
 			textLabel.x = 12;
@@ -89,7 +91,7 @@ package collaboRhythm.hiviva.view.components
 			_submit.useHandCursor = true;
 			_submit.addEventListener(TouchEvent.TOUCH_TAP, tapHandler);
 			_submit.addEventListener(MouseEvent.CLICK, clickHandler);
-
+			passwordField.addEventListener(FocusEvent.FOCUS_IN,showSelected );
 
 		}
 
@@ -99,7 +101,18 @@ package collaboRhythm.hiviva.view.components
 
 		}
 
-		public function getPass():String{
+		private function showSelected(e:FocusEvent){
+            trace("FOCUS IN NOW")
+			_colorTransform.color = 0xFFFFFF
+			passwordField.backgroundColor = _colorTransform.color;
+		}
+
+		public function set Pass(s:String){
+
+
+
+		}
+		public function get Pass():String{
 
 			this._pass =  this.passwordField.text;
 			return this._pass;
