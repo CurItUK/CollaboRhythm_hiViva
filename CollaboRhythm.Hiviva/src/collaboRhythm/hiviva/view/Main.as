@@ -165,6 +165,7 @@ package collaboRhythm.hiviva.view
 		{
 			this._screenBackground = new MainBackground();
 			this._screenBackground.draw(Constants.STAGE_WIDTH , Constants.STAGE_HEIGHT);
+//			this._screenBackground.touchable = false;
 			this._mainScreenNav.addChildAt(this._screenBackground , 0);
 		}
 
