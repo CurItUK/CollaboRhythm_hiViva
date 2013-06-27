@@ -30,7 +30,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			holder.addChild(screenBase);
 
 			var topGrad:TiledImage = new TiledImage(Main.assets.getTexture("top_gradient"));
-			//topGrad.touchable = false;
+			topGrad.touchable = false;
 			topGrad.width = width;
 			topGrad.smoothing = TextureSmoothing.NONE;
 			topGrad.blendMode = BlendMode.MULTIPLY;
@@ -38,7 +38,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			holder.addChild(topGrad);
 
 			var bottomGrad:TiledImage = new TiledImage(Main.assets.getTexture("bottom_gradient"));
-			//bottomGrad.touchable = false;
+			bottomGrad.touchable = false;
 			bottomGrad.width = width;
 			bottomGrad.y = height - bottomGrad.height;
 			bottomGrad.smoothing = TextureSmoothing.NONE;
