@@ -5,6 +5,8 @@ package collaboRhythm.hiviva.controller
 
 	import flash.events.EventDispatcher;
 
+	import spark.effects.interpolation.MultiValueInterpolator;
+
 	public class HivivaLocalStoreController extends EventDispatcher
 	{
 		private var _hivivaLocalStoreService:HivivaLocalStoreService;
@@ -18,6 +20,18 @@ package collaboRhythm.hiviva.controller
 		private function initEventListeners():void
 		{
 			this.addEventListener(LocalDataStoreEvent.PROFILE_TYPE_UPDATE , profileTypeUpdateHandler);
+		}
+
+		public function setAppIdGuid(appId:String , guid:String):void
+		{
+			service.addEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE, setAppIdHandler);
+			service.setAppId(appId , guid);
+		}
+
+		private function setAppIdHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE, setAppIdHandler);
+			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE));
 		}
 
 		public function getAppId():void
