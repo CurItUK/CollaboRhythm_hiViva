@@ -216,6 +216,14 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.CREATE_USER_COMPLETE , createUserCompleteHandler);
 			trace("initSplashBackground user created " + e.data.appid);
+
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE , appIdGuidSaveHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.setAppIdGuid(e.data.appid , e.data.guid);
+		}
+
+		private function appIdGuidSaveHandler(e:LocalDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE , appIdGuidSaveHandler);
 			closeDownScreen();
 		}
 

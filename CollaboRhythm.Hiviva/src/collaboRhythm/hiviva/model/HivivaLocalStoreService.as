@@ -98,9 +98,8 @@ package collaboRhythm.hiviva.model
 			trace("sqlResultHandler " + e);
 		}
 
-		public function setAppId(appId:String):void
+		public function setAppId(appId:String , guid:String):void
 		{
-			trace("appId generated " + appId);
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
 
@@ -108,10 +107,14 @@ package collaboRhythm.hiviva.model
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "UPDATE app_settings SET app_id='" + appId + "'";
+
+			this._sqStatement.text = "UPDATE app_settings SET app_id='" + appId + "', guid='" + guid + "'";
+
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
+
+			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE));
 		}
 
 		public function getAppId():void
@@ -153,7 +156,9 @@ package collaboRhythm.hiviva.model
 			_appDataVO = new AppDataVO();
 			_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
 
-			setAppId(HivivaModifier.generateAppId());
+			//TODO remove appid Creation functionality.
+			//AppID now set through webservices
+			//setAppId(HivivaModifier.generateAppId());
 
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.DATA_LOAD_COMPLETE);
 			evt.message = HivivaLocalStoreService.APP_FIRST_TIME_USE;
