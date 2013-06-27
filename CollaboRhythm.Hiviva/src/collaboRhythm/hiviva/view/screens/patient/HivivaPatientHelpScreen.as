@@ -18,6 +18,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import collaboRhythm.hiviva.view.HivivaHeader;
 
+	import spark.components.supportClasses.ViewReturnObject;
+
 	import starling.display.BlendMode;
 
 	import starling.display.DisplayObject;
@@ -139,34 +141,60 @@ package collaboRhythm.hiviva.view.screens.patient
 			button.label =  item.label;
 			button.addEventListener(Event.TRIGGERED, patientProfileBtnHandler)
 		}
-
+        var temp : String
 		private function patientProfileBtnHandler(e:Event):void
 		{
 			var btn:Button = e.target as Button;
 			trace(btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons")));
 			// when refactoring to own class we can use a local instance instead of storing the identifier in btn.name
-			/*switch(btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons")))
+			trace("THIS IS THE CASE   ::::: " + btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons")))
+			if(this.owner.hasScreen(String(temp)))
+											{
+												this.owner.removeScreen(String(temp));
+											}
+			switch(btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons")))
 			{
-				case "details" :
-					this.owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
+
+				case "help1" :
+
+                    temp = String(HivivaScreens.PATIENT_HELP_HELP1_SCREEN);
+					var screenNavItem1:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help1_Screen);
+
+					this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP1_SCREEN, screenNavItem1);
+					this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP1_SCREEN);
 					break;
-				case "photo" :
-					this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
+				case "help2" :
+					var screenNavItem2:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help2_Screen);
+					temp = String(HivivaScreens.PATIENT_HELP_HELP2_SCREEN);
+					this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP2_SCREEN, screenNavItem2);
+					this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP2_SCREEN);
 					break;
-				case "medicines" :
-					this.owner.showScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
+				case "help3" :
+					var screenNavItem3:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help3_Screen);
+					temp = String(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
+					this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN, screenNavItem3);
+					this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
 					break;
-				case "results" :
-					this.owner.showScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN);
+				case "help4" :
+					var screenNavItem4:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help4_Screen);
+					temp = String(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
+					this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN, screenNavItem4);
+					this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
 					break;
-			}*/
-			var screenNavItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatientHelpDetailScreen, null, {title:btn.label});
-			if(this.owner.hasScreen(HivivaScreens.PATIENT_HELP_DETAIL_SCREEN))
-			{
-				this.owner.removeScreen(HivivaScreens.PATIENT_HELP_DETAIL_SCREEN);
 			}
-			this.owner.addScreen(HivivaScreens.PATIENT_HELP_DETAIL_SCREEN, screenNavItem);
-			this.owner.showScreen(HivivaScreens.PATIENT_HELP_DETAIL_SCREEN);
+
+
+				//	temp = HivivaScreens.PATIENT_HELP_HELP3_SCREEN;
+	 	  	//	  this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN, HivivaPatient_help_help3_Screen);
+				//	this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
+
+			//if(this.owner.hasScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN))
+									//	{			var screenNavItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatientHelpDetailScreen, null, {title:btn.label});
+
+							//				this.owner.removeScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
+							//			}
+							//	this.owner.addScreen(HivivaScreens.PATIENT_HELP_DETAIL_SCREEN, screenNavItem);
+						//		this.owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
 		}
 
 	}

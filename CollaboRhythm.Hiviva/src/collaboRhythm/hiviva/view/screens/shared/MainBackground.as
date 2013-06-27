@@ -25,11 +25,12 @@ package collaboRhythm.hiviva.view.screens.shared
 			screenBase.width = width;
 			screenBase.height = height;
 			screenBase.smoothing = TextureSmoothing.NONE;
+			screenBase.touchable = false;
 			//screenBase.flatten();
 			holder.addChild(screenBase);
 
 			var topGrad:TiledImage = new TiledImage(Main.assets.getTexture("top_gradient"));
-			//topGrad.touchable = false;
+			topGrad.touchable = false;
 			topGrad.width = width;
 			topGrad.smoothing = TextureSmoothing.NONE;
 			topGrad.blendMode = BlendMode.MULTIPLY;
@@ -37,7 +38,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			holder.addChild(topGrad);
 
 			var bottomGrad:TiledImage = new TiledImage(Main.assets.getTexture("bottom_gradient"));
-			//bottomGrad.touchable = false;
+			bottomGrad.touchable = false;
 			bottomGrad.width = width;
 			bottomGrad.y = height - bottomGrad.height;
 			bottomGrad.smoothing = TextureSmoothing.NONE;
@@ -46,7 +47,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			holder.addChild(bottomGrad);
 
 			var settingEffect:TiledImage = new TiledImage(Main.assets.getTexture("settings_above_effect"));
-			//settingEffect.touchable = false;
+			settingEffect.touchable = false;
 			settingEffect.name = "settingEffect";
 			settingEffect.height = height;
 			settingEffect.x = 1 - settingEffect.width;
@@ -55,7 +56,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			holder.addChild(settingEffect);
 
 			holder.flatten();
-			holder.touchable = false;
+//			holder.touchable = false; causes the touch event to propagate to the settings menu underneath!
 			this.addChild(holder);
 		}
 	}

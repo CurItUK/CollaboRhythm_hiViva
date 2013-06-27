@@ -391,6 +391,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var columns:Array = new Array ( gridColumnDate , gridColumnCd4 , gridColumnViralLoad);
 
+			//data:Array,width:Number,height:Number,headerColor:org.alivepdf.colors.IColor,cellColor:org.alivepdf.colors.IColor,
 			var grid:Grid = new Grid ( dp.toArray(), 200, 100, new RGBColor (0x00CCFF), new RGBColor (0xFFFFFF), new RGBColor ( 0x0 ) , new RGBColor ( 0x0 ) , 1);
 
 			grid.columns = columns;
