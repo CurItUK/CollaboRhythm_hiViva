@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 
@@ -38,8 +39,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	public class HivivaPatientConnectToHcpScreen extends Screen
 	{
-		[Embed("/resources/dummy_hcplist.xml", mimeType="application/octet-stream")]
-		private static const HcpData:Class;
 
 		private var _header:HivivaHeader;
 		private var _hcpDataXml:XML;
@@ -101,7 +100,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.initialize();
 
-			getXMLHcpData();
+
 
 			this._header = new HivivaHeader();
 			this._header.title = "Connect to a care provider";
@@ -153,12 +152,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 		}
 
-		private function getXMLHcpData():void
-		{
-			var ba:ByteArrayAsset = ByteArrayAsset(new HcpData());
-			this._hcpDataXml = new XML(ba.readUTFBytes(ba.length));
-			//trace(this._hcpDataXml.hcplist.hcp);
-		}
+
 
 		private function initHcpSearch():void
 		{
@@ -215,6 +209,15 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function doSearchHcp(e:Event):void
 		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getHCP(this._searchInput.text);
+
+			/*
+
+
+
+
+
 			var hcpList:XMLList = this._hcpDataXml.hcp,
 				searchList:XMLList = hcpList[Boolean(this._radioGroup.selectedIndex) ? "appid" : "email"],
 				searchListLength:int = searchList.length(),
@@ -238,6 +241,28 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				this._resultInfo.text = "0 registered doctors found";
 			}
+
+			*/
+		}
+
+		private function getHCPCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
+			trace("getHCPCompleteHandler " + e.data.AppId);
+			//TODO web service to provide null value back if no HCP's Found.
+
+
+			var hcpList:XMLList = new XMLList
+			(
+					<hcp>
+						<name>HCP Display name</name>
+						<email>hcp@domain.com</email>
+						<appid>e.data.xmlResponse.AppId</appid>
+						<picture>dummy.png</picture>
+					</hcp>
+			);
+			this._hcpFilteredList.push(hcpList);
+			initResults(true);
 		}
 
 		private function initResults(isResult:Boolean):void
@@ -248,7 +273,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			if (isResult)
 			{
-				this._resultInfo.text = resultsLength + " registered doctor" + (resultsLength > 1 ? "s" : "") + " found";
+				this._resultInfo.text = "Registered doctor " + this._hcpFilteredList[0].@appid + " found.";
 				this._resultInfo.validate();
 			}
 			if(resultsLength > 0)
