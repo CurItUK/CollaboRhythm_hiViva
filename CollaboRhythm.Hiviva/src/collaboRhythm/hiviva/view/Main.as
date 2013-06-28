@@ -148,13 +148,13 @@ package collaboRhythm.hiviva.view
 
 			switch(HivivaStartup.userVO.type)
 			{
-				case HivivaLocalStoreService.USER_APP_TYPE_HCP :
+				case Constants.APP_TYPE_HCP :
 					initHCPSettingsNavigator();
 					initFooterMenu(HCPFooterBtnGroup);
 					initHCPNavigator();
 					break;
 
-				case HivivaLocalStoreService.USER_APP_TYPE_PATIENT :
+				case Constants.APP_TYPE_PATIENT :
 					initPatientSettingsNavigator();
 					initFooterMenu(PatientFooterBtnGroup);
 					initPatientNavigator();
@@ -277,7 +277,7 @@ package collaboRhythm.hiviva.view
 
 			if(!this._settingsNav.contains(this._screenBackground)) this._settingsNav.addChild(this._screenBackground);
 			this._settingsNav.showScreen(e.message);
-			this._currMainScreenId = HivivaStartup.userVO.type == HivivaLocalStoreService.USER_APP_TYPE_HCP ? HivivaScreens.HCP_HOME_SCREEN : HivivaScreens.PATIENT_HOME_SCREEN;
+			this._currMainScreenId = HivivaStartup.userVO.type == Constants.APP_TYPE_HCP ? HivivaScreens.HCP_HOME_SCREEN : HivivaScreens.PATIENT_HOME_SCREEN;
 			this._mainScreenNav.clearScreen();
 		}
 

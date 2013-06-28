@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.model
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.vo.UserVO;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
@@ -15,9 +16,7 @@ package collaboRhythm.hiviva.model
 
 	public class HivivaLocalStoreService extends EventDispatcher
 	{
-		public static const APP_FIRST_TIME_USE:String	= "appFirstTimeUse";
-		public static const USER_APP_TYPE_PATIENT:String = "Patient";
-		public static const USER_APP_TYPE_HCP:String = "HCP";
+
 
 		private var _sqStatement:SQLStatement;
 		private var _sqConn:SQLConnection;
@@ -93,7 +92,7 @@ package collaboRhythm.hiviva.model
 
 			if(result[0].profile_type == "appFirstTimeUse")
 			{
-				this._userVO.type = HivivaLocalStoreService.APP_FIRST_TIME_USE;
+				this._userVO.type = Constants.APP_FIRST_TIME_USE;
 			} else
 			{
 				this._userVO.type = result[0].profile_type;
@@ -158,7 +157,7 @@ package collaboRhythm.hiviva.model
 
 			sourceFile.copyTo(destination);
 
-			this._userVO.type = HivivaLocalStoreService.APP_FIRST_TIME_USE;
+			this._userVO.type = Constants.APP_FIRST_TIME_USE;
 
 			//_appDataVO = new AppDataVO();
 			//_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
@@ -1124,7 +1123,7 @@ package collaboRhythm.hiviva.model
 
 			_appDataVO = null;
 			_appDataVO = new AppDataVO();
-			_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
+			_appDataVO._userAppType = Constants.APP_FIRST_TIME_USE;
 		}
 
 

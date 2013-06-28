@@ -7,5 +7,9 @@ package collaboRhythm.hiviva.global
 		public static const FOOTER_BTNGROUP_HEIGHT:int 				= 135;
 		public static const SETTING_MENU_WIDTH:int					= 177;
 
+		public static const APP_FIRST_TIME_USE:String				= "appFirstTimeUse";
+		public static const APP_TYPE_PATIENT:String					= "Patient";
+		public static const APP_TYPE_HCP:String 					= "HCP";
+
 	}
 }

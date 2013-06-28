@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
@@ -66,7 +67,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			initSplashBackground();
 			//this._appType = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.appDataVO._userAppType;
-			if(HivivaStartup.userVO.type == HivivaLocalStoreService.APP_FIRST_TIME_USE)
+			if(HivivaStartup.userVO.type == Constants.APP_FIRST_TIME_USE)
 			{
 				initButtons();
 			}
@@ -180,18 +181,18 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function hcpButtonHandler(e:Event):void
 		{
-			createUser(HivivaLocalStoreService.USER_APP_TYPE_HCP);
+			createUser(Constants.APP_TYPE_HCP);
 		}
 
 		private function patientButtonHandler(e:Event):void
 		{
-			createUser(HivivaLocalStoreService.USER_APP_TYPE_PATIENT);
+			createUser(Constants.APP_TYPE_PATIENT);
 		}
 
 		private function createUser(type:String):void
 		{
 			this._userType = type;
-			var userTypeInt:int = type == HivivaLocalStoreService.USER_APP_TYPE_HCP ? 1 : 0;
+			var userTypeInt:int = type == Constants.APP_TYPE_HCP ? 1 : 0;
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CREATE_USER_COMPLETE , createUserCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.createUser(String(userTypeInt));
