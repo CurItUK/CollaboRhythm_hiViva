@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.global
 
 
 		public static const CREATE_USER_COMPLETE:String							= "createUserComplete";
+		public static const GET_HCP_COMPLETE:String								= "getHCPComplete";
 
 
 		public var message:String;
