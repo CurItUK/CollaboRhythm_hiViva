@@ -219,8 +219,7 @@ package collaboRhythm.hiviva.view.components
 		private function initTableData():void
 		{
 			var history:XMLList = _patientData.medicationHistory.history as XMLList;
-			var dateArr:Array = String(history[0].date).split("/");
-			this._currWeekBeginning = new Date(int(dateArr[2]),int(dateArr[0]) - 1,int(dateArr[1]),0,0,0,0);
+			this._currWeekBeginning = HivivaModifier.getDateFromString(history[0].date);
 
 			setCurrentWeek();
 			initTableDataContainer();
@@ -266,8 +265,6 @@ package collaboRhythm.hiviva.view.components
 			var history:XMLList = _patientData.medicationHistory.history as XMLList;
 			this._historyLength = history.length();
 			var currWeekDay:Date = new Date(this._currWeekBeginning.getFullYear(),this._currWeekBeginning.getMonth(),this._currWeekBeginning.getDate(),0,0,0,0);
-			var dateData:Array;
-//			var historyDay:Date = new Date(null,null,null,0,0,0,0);
 			var historyDate:Date;
 			var historicalMedication:XMLList;
 			var rowData:Object;
@@ -282,8 +279,7 @@ package collaboRhythm.hiviva.view.components
 			{
 				for (var historyCount:int = 0; historyCount < _historyLength; historyCount++)
 				{
-					dateData = String(history[historyCount].date).split("/");
-					historyDate = new Date(int(dateData[2]),int(dateData[0]) - 1,int(dateData[1]),0,0,0,0);
+					historyDate = HivivaModifier.getDateFromString(history[historyCount].date);
 
 					if(historyDate.getTime() == currWeekDay.getTime())
 					{

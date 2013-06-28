@@ -84,7 +84,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function draw():void
 		{
 			this._customHeight = this.actualHeight - this._footerHeight;
-			;
 			super.draw();
 
 			this._content.validate();

@@ -158,38 +158,106 @@ package collaboRhythm.hiviva.utils
 		}
 */
 
+		public static function getAllMedicationAdherence(patientMedicationHistory:XML):Number
+		{
+			var adherencePercent:Number;
+			var medicationHistory:XMLList = patientMedicationHistory.medication as XMLList;
+			var medicationHistoryLength:int = medicationHistory.length();
+			var adheredCount:int = 0;
+			for (var i:int = 0; i < medicationHistoryLength; i++)
+			{
+				if(medicationHistory[i].adhered == "yes")
+				{
+					adheredCount++;
+				}
+			}
+			adherencePercent = (adheredCount / medicationHistoryLength) * 100;
 
+			return adherencePercent;
+		}
+
+		public static function getPatientAdherenceByDate(patientMedicationHistory:XML, compareDate:Date):Number
+		{
+			var adherencePercent:Number;
+			var dateCompareStr:String = getStringFromDate(compareDate);
+//			trace(patientMedicationHistory.date + " == " + dateCompareStr);
+			adherencePercent = patientMedicationHistory.date == dateCompareStr ? getAllMedicationAdherence(patientMedicationHistory) : 0;
+			return adherencePercent;
+		}
+
+		public static function getPatientAdherenceByMedication(adherenceXMLList:XMLList, medicationId:int, startDate:Date, endDate:Date):Number
+		{
+			var adherencePercent:Number;
+			var history:XMLList = adherenceXMLList;
+			var historyCount:uint = history.length();
+			var historyRangeCount:uint = 0;
+			var historicalDate:Date;
+			var medication:XMLList;
+			var adherenceCount:int = 0;
+			if (historyCount > 0)
+			{
+				for (var i:uint = 0; i < historyCount; i++)
+				{
+					historicalDate = getDateFromString(history[i].date);
+					// start from end date as the xml data is structured from latest first
+					if(historicalDate.getTime() > startDate.getTime() && historicalDate.getTime() < endDate.getTime())
+					{
+						historyRangeCount++;
+						medication = history[i].medication.(@id == medicationId);
+						if (medication.adhered == "yes")
+						{
+							adherenceCount++;
+						}
+					}
+				}
+				adherencePercent = (adherenceCount / historyRangeCount) * 100;
+			}
+
+			return Math.round(adherencePercent);
+		}
 
 		public static function calculateOverallAdherence(adherenceXMLList:XMLList):Number
 		{
 			var history:XMLList = adherenceXMLList;
 			var historyCount:uint = history.length();
-			var medications:XMLList;
-			var medicationCount:uint;
-			var medTakenCount:int;
 			var currAdherence:Number;
 			var avgAdherence:Number = 0;
 			if (historyCount > 0)
 			{
 				for (var i:uint = 0; i < historyCount; i++)
 				{
-					medTakenCount = 0;
-					medications = history[i].medication;
-					medicationCount = medications.length();
-					for (var j:int = 0; j < medicationCount; j++)
-					{
-						if(medications[j].adhered == "yes")
-						{
-							medTakenCount++;
-						}
-					}
-					currAdherence = (medTakenCount / medicationCount) * 100;
+					currAdherence = getAllMedicationAdherence(history[i] as XML);
 					avgAdherence += currAdherence;
 				}
 				avgAdherence = (avgAdherence / historyCount);
 			}
 
 			return Math.round(avgAdherence);
+		}
+
+		public static function getDateFromString(dateStr:String):Date
+		{
+			var dateData:Array = dateStr.split('/');
+			return new Date(int(dateData[2]),int(dateData[0]) - 1,int(dateData[1]),0,0,0,0);
+		}
+
+		public static function getStringFromDate(date:Date):String
+		{
+			return addPrecedingZero((date.getMonth() + 1).toString()) + "/" + addPrecedingZero(date.getDate().toString()) + "/" + date.getFullYear();
+		}
+
+		public static function addPrecedingZero(val:String):String
+		{
+			var zeroFilledVal:String;
+			if(val.length < 2)
+			{
+				zeroFilledVal = "0" + val;
+			}
+			else
+			{
+				zeroFilledVal = val;
+			}
+			return zeroFilledVal;
 		}
 
 		public static function floorToClosestMonday(date:Date):void

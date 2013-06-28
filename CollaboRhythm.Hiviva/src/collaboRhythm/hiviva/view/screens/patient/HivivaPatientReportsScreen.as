@@ -2,10 +2,13 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.Calendar;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+
+	import flash.net.URLLoader;
 
 //	import com.diadraw.extensions.mail.MailExtensionEvent;
 //	import com.diadraw.extensions.mail.NativeMailWrapper;
@@ -109,6 +112,9 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var request:URLRequest;
 
 		private var pdf:File;
+		private var _patientData:XML;
+		private var _patientProfile:Array;
+		private var _medications:Array;
 
 		public function HivivaPatientReportsScreen()
 		{
@@ -229,6 +235,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._calendar = new Calendar();
 			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler);
 
+			// TODO : to be removed when we have remote data
+			initPatientXMLData();
+
 		}
 
 
@@ -272,6 +281,10 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function previewSendHandler(e:starling.events.Event):void
 		{
+			// TODO : validate medications and schedule when we have data from remote database
+//			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+//			localStoreController.getPatientProfile();
+
 			var formValidation:String = patientReportsCheck();
 			if (formValidation.length == 0)
 			{
@@ -281,6 +294,59 @@ package collaboRhythm.hiviva.view.screens.patient
 			else
 			{
 				showFormValidation(formValidation);
+			}
+		}
+
+		private function initPatientXMLData():void
+		{
+			var patientToLoadURL:String = "/resources/patient_111222333.xml";
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(flash.events.Event.COMPLETE , patientXMLFileLoadHandler);
+			loader.load(new URLRequest(patientToLoadURL));
+		}
+
+		private function patientXMLFileLoadHandler(e:flash.events.Event):void
+		{
+			_patientData = XML(e.target.data);
+		}
+
+		private function getPatientProfileHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+			_patientProfile = e.data.patientProfile;
+
+			if(_patientProfile == null)
+			{
+				showFormValidation("You must be signed up to generate a report");
+			}
+			else
+			{
+				localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE, medicationsLoadCompleteHandler);
+				localStoreController.getMedicationList();
+			}
+		}
+
+		private function medicationsLoadCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			localStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE, medicationsLoadCompleteHandler);
+			_medications = e.data.medications;
+
+			if(_medications == null)
+			{
+				showFormValidation("You must have added at least 1 medicine to generate a report");
+			}
+			else
+			{
+				var formValidation:String = patientReportsCheck();
+				if (formValidation.length == 0)
+				{
+					localStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE, adherenceLoadCompleteHandler);
+					localStoreController.getAdherence();
+				}
+				else
+				{
+					showFormValidation(formValidation);
+				}
 			}
 		}
 
@@ -342,7 +408,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			localStoreController.removeEventListener(LocalDataStoreEvent.TEST_RESULTS_LOAD_COMPLETE, testResultsLoadCompleteHandler);
 			generatePDFReport();
-
 		}
 
 		private function generatePDFReport():void
@@ -433,7 +498,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._stageWebView = new StageWebView();
 			this._stageWebView.stage = Starling.current.nativeStage.stage;
 			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - padding);
-			pdf = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
+			/*pdf = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
 
 			var htmlString:String = "<!DOCTYPE HTML>" +
 			            "<html>" +
@@ -442,7 +507,40 @@ package collaboRhythm.hiviva.view.screens.patient
 			            "</body></html>";
 
 			//this._stageWebView.loadURL(pdf.nativePath);
-			this._stageWebView.loadString(htmlString);
+			this._stageWebView.loadString(htmlString);*/
+
+			var reportPreview:File = File.applicationDirectory.resolvePath("resources/report_template/index.html");
+
+			this._stageWebView.addEventListener(flash.events.Event.COMPLETE, stageWebCompleteHandler);
+			this._stageWebView.loadURL(reportPreview.nativePath);
+		}
+
+		private function stageWebCompleteHandler(e:flash.events.Event):void
+		{
+			this._stageWebView.removeEventListener(flash.events.Event.COMPLETE, stageWebCompleteHandler);
+			var startDate:String = this._startDateInput._input.text;
+			var endDate:String = this._finishDateInput._input.text;
+			/*
+			var hashStr:String = "#";
+
+			hashStr += "patient-name=" + _patientData.name;
+			hashStr += "&" + "result-date-range=" + startDate + " - " + endDate;
+
+			this._stageWebView.loadURL(this._stageWebView.location + hashStr);
+			*/
+
+			var medications:XMLList = _patientData.medications.medication;
+			var medicationHistory:XMLList = _patientData.medicationHistory.history;
+			var hashStr:String = "#";
+			for (var i:int = 0; i < medications.length(); i++)
+			{
+				hashStr += "<strong>" + medications[i].brandname + "</strong><br />" + medications[i].genericname + "=" +
+						HivivaModifier.getPatientAdherenceByMedication(medicationHistory,int(medications[i].id),HivivaModifier.getDateFromString(startDate),HivivaModifier.getDateFromString(endDate));
+				if(i < medications.length() - 1) hashStr += "&";
+			}
+			trace(hashStr);
+			this._stageWebView.loadURL(this._stageWebView.location + hashStr);
+
 
 		}
 

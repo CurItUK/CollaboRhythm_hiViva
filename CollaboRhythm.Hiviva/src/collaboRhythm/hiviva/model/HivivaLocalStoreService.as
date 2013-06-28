@@ -159,6 +159,8 @@ package collaboRhythm.hiviva.model
 
 			this._userVO.type = Constants.APP_FIRST_TIME_USE;
 
+
+
 			//_appDataVO = new AppDataVO();
 			//_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
 

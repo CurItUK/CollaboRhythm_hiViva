@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -18,7 +19,7 @@ package collaboRhythm.hiviva.view.components
 
 	public class PatientAdherenceChart extends FeathersControl
 	{
-		private const TOTAL_WEEKS:int = 5;
+		private var TOTAL_WEEKS:int = 5;
 		private const LINE_COLOURS:Array = [0x2e445e,0x0b88ec,0xc20315,0x697a8f,0xffffff,0x000000];
 
 		private var _filterdPatients:Array;
@@ -129,8 +130,8 @@ package collaboRhythm.hiviva.view.components
 
 				bottomAxisValue = new Label();
 				bottomAxisValue.name = "patient-data-lighter";
-				bottomAxisValue.text = addPrecedingZero((_weeks[weekCount].getMonth() + 1).toString()) + "/" +
-						addPrecedingZero(_weeks[weekCount].getDate().toString());
+				bottomAxisValue.text = HivivaModifier.addPrecedingZero((_weeks[weekCount].getMonth() + 1).toString()) + "/" +
+						HivivaModifier.addPrecedingZero(_weeks[weekCount].getDate().toString());
 				addChild(bottomAxisValue);
 				bottomAxisValue.validate();
 				bottomAxisValue.x = this._chartStartX + xAxisPosition;
@@ -230,14 +231,12 @@ package collaboRhythm.hiviva.view.components
 
 		private function setFirstWeekCommencing():void
 		{
-			var dateArr:Array;
 			// compareDate will never be larger than currDate on the first loop iteration
 			var tempDate:Date = new Date(0,0,0,0,0,0,0);
 			var currDate:Date = new Date();
 			for (var i:int = 0; i < _filterdPatients.length; i++)
 			{
-				dateArr = String(_filterdPatients[i].medicationHistory.history[0].date).split("/");
-				currDate = new Date(int(dateArr[2]),int(dateArr[0]) - 1,int(dateArr[1]),0,0,0,0);
+				currDate = HivivaModifier.getDateFromString(_filterdPatients[i].medicationHistory.history[0].date);
 				if(currDate.getTime() > tempDate.getTime())
 				{
 					tempDate = currDate;
@@ -278,7 +277,7 @@ package collaboRhythm.hiviva.view.components
 				{
 					for (var k:int = 0; k < historyLength; k++)
 					{
-						adherence = getPatientAdherenceByDate(history[k], daysItar);
+						adherence = HivivaModifier.getPatientAdherenceByDate(history[k] as XML, daysItar);
 						if(adherence > 0) break;
 					}
 					averageAdherence += adherence;
@@ -305,49 +304,6 @@ package collaboRhythm.hiviva.view.components
 			// round down to the closest 10
 			this._lowestAdherence = Math.floor(this._lowestAdherence / 10) * 10;
 			this._adherenceRange = 100 - this._lowestAdherence;
-		}
-
-		private function getPatientAdherenceByDate(patientMedicationHistory:XML, compareDate:Date):Number
-		{
-			var adherencePercent:Number;
-			var medicationHistory:XMLList;
-			var medicationHistoryLength:int;
-			var adheredCount:int;
-			var dateCompareStr:String = addPrecedingZero((compareDate.getMonth() + 1).toString()) + "/" + addPrecedingZero(compareDate.getDate().toString()) + "/" + compareDate.getFullYear();
-//			trace(patientMedicationHistory.date + " == " + dateCompareStr);
-			if(patientMedicationHistory.date == dateCompareStr)
-			{
-				medicationHistory = patientMedicationHistory.medication as XMLList;
-				medicationHistoryLength = medicationHistory.length();
-				adheredCount = 0;
-				for (var i:int = 0; i < medicationHistoryLength; i++)
-				{
-					if(medicationHistory[i].adhered == "yes")
-					{
-						adheredCount++;
-					}
-				}
-				adherencePercent = (adheredCount / medicationHistoryLength) * 100;
-			}
-			else
-			{
-				adherencePercent = 0;
-			}
-			return adherencePercent;
-		}
-
-		private function addPrecedingZero(val:String):String
-		{
-			var zeroFilledVal:String;
-			if(val.length < 2)
-			{
-				zeroFilledVal = "0" + val;
-			}
-			else
-			{
-				zeroFilledVal = val;
-			}
-			return zeroFilledVal;
 		}
 
 		private function drawPlotPoints():void
