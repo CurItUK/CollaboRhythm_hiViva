@@ -161,28 +161,53 @@ package collaboRhythm.hiviva.utils
 		public static function getAllMedicationAdherence(patientMedicationHistory:XML):Number
 		{
 			var adherencePercent:Number;
-			var medicationHistory:XMLList = patientMedicationHistory.medication as XMLList;
-			var medicationHistoryLength:int = medicationHistory.length();
+			var medications:XMLList = patientMedicationHistory.medication as XMLList;
+			var medicationsLength:int = medications.length();
 			var adheredCount:int = 0;
-			for (var i:int = 0; i < medicationHistoryLength; i++)
+			for (var i:int = 0; i < medicationsLength; i++)
 			{
-				if(medicationHistory[i].adhered == "yes")
+				if(medications[i].adhered == "yes")
 				{
 					adheredCount++;
 				}
 			}
-			adherencePercent = (adheredCount / medicationHistoryLength) * 100;
+			adherencePercent = (adheredCount / medicationsLength) * 100;
 
 			return adherencePercent;
 		}
 
-		public static function getPatientAdherenceByDate(patientMedicationHistory:XML, compareDate:Date):Number
+		public static function getPatientAdherenceByDate(patientData:XML, compareDate:Date):Number
 		{
 			var adherencePercent:Number;
 			var dateCompareStr:String = getStringFromDate(compareDate);
-//			trace(patientMedicationHistory.date + " == " + dateCompareStr);
-			adherencePercent = patientMedicationHistory.date == dateCompareStr ? getAllMedicationAdherence(patientMedicationHistory) : 0;
+			var history:XMLList = patientData.medicationHistory.history as XMLList;
+			var historyLength:int = history.length();
+			var patientMedicationHistory:XML;
+			for (var k:int = 0; k < historyLength; k++)
+			{
+				patientMedicationHistory = history[k] as XML;
+	//			trace(patientMedicationHistory.date + " == " + dateCompareStr);
+				adherencePercent = patientMedicationHistory.date == dateCompareStr ? getAllMedicationAdherence(patientMedicationHistory) : 0;
+				if(adherencePercent > 0) break;
+			}
 			return adherencePercent;
+		}
+
+		public static function getPatientTolerabilityByDate(patientData:XML, compareDate:Date):Number
+		{
+			var tolerability:Number;
+			var dateCompareStr:String = getStringFromDate(compareDate);
+			var history:XMLList = patientData.medicationHistory.history as XMLList;
+			var historyLength:int = history.length();
+			var patientMedicationHistory:XML;
+			for (var k:int = 0; k < historyLength; k++)
+			{
+				patientMedicationHistory = history[k] as XML;
+	//			trace(patientMedicationHistory.date + " == " + dateCompareStr);
+				tolerability = patientMedicationHistory.date == dateCompareStr ? Number(patientMedicationHistory.tolerability) : 0;
+				if(tolerability > 0) break;
+			}
+			return tolerability;
 		}
 
 		public static function getPatientAdherenceByMedication(adherenceXMLList:XMLList, medicationId:int, startDate:Date, endDate:Date):Number
@@ -199,7 +224,6 @@ package collaboRhythm.hiviva.utils
 				for (var i:uint = 0; i < historyCount; i++)
 				{
 					historicalDate = getDateFromString(history[i].date);
-					// start from end date as the xml data is structured from latest first
 					if(historicalDate.getTime() > startDate.getTime() && historicalDate.getTime() < endDate.getTime())
 					{
 						historyRangeCount++;

@@ -1,7 +1,6 @@
 package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -255,8 +254,6 @@ package collaboRhythm.hiviva.view.components
 			var daysItar:Date;
 			var daysCount:int = 0;
 			var patientData:XML;
-			var history:XMLList;
-			var historyLength:int;
 			var adherenceData:Object;
 			var adherence:Number;
 			var averageAdherence:Number = 0;
@@ -269,17 +266,10 @@ package collaboRhythm.hiviva.view.components
 				adherenceData.patient = _filterdPatients[j].name;
 				adherenceData.adherence = [];
 
-				history = patientData.medicationHistory.history as XMLList;
-				historyLength = history.length();
-
 				daysItar = new Date(this._firstWeek.getFullYear(),this._firstWeek.getMonth(),this._firstWeek.getDate(),0,0,0,0);
 				for (var i:int = 0; i < dayLength; i++)
 				{
-					for (var k:int = 0; k < historyLength; k++)
-					{
-						adherence = HivivaModifier.getPatientAdherenceByDate(history[k] as XML, daysItar);
-						if(adherence > 0) break;
-					}
+					adherence = HivivaModifier.getPatientAdherenceByDate(patientData, daysItar);
 					averageAdherence += adherence;
 					daysItar.date++;
 					daysCount++;
