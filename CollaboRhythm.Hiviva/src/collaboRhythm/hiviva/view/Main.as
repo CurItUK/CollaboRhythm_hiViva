@@ -70,7 +70,7 @@ package collaboRhythm.hiviva.view
 		private var _settingsOpen:Boolean = false;
 		private var _currMainScreenId:String;
 		private var _scaleFactor:Number;
-		private var _profile:String;
+		//private var _profile:String;
 
 		private static var _selectedHCPPatientProfile:Object = {};
 		private static var _assets:AssetManager;
@@ -135,7 +135,8 @@ package collaboRhythm.hiviva.view
 
 		private function splashComplete(e:Event):void
 		{
-			this._profile = e.data.profileType;
+			//this._profile = e.data.profileType;
+
 			this._mainScreenNav.clearScreen();
 			this._mainScreenNav.removeScreen(HivivaScreens.SPLASH_SCREEN);
 
@@ -145,7 +146,7 @@ package collaboRhythm.hiviva.view
 			this._settingsNav = new ScreenNavigator();
 			this.addChild(this._settingsNav);
 
-			switch(this._profile)
+			switch(HivivaStartup.userVO.type)
 			{
 				case HivivaLocalStoreService.USER_APP_TYPE_HCP :
 					initHCPSettingsNavigator();
@@ -276,7 +277,7 @@ package collaboRhythm.hiviva.view
 
 			if(!this._settingsNav.contains(this._screenBackground)) this._settingsNav.addChild(this._screenBackground);
 			this._settingsNav.showScreen(e.message);
-			this._currMainScreenId = this._profile == HivivaLocalStoreService.USER_APP_TYPE_HCP ? HivivaScreens.HCP_HOME_SCREEN : HivivaScreens.PATIENT_HOME_SCREEN;
+			this._currMainScreenId = HivivaStartup.userVO.type == HivivaLocalStoreService.USER_APP_TYPE_HCP ? HivivaScreens.HCP_HOME_SCREEN : HivivaScreens.PATIENT_HOME_SCREEN;
 			this._mainScreenNav.clearScreen();
 		}
 

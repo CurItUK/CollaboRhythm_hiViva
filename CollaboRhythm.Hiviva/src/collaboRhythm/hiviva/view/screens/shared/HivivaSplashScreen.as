@@ -30,7 +30,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	public class HivivaSplashScreen extends Screen
 	{
 
-		private var _appType:String;
+		//private var _appType:String;
 		private var _splashBg:Image;
 		private var _logo:Image;
 		private var _footer:Label;
@@ -38,6 +38,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _privacyButton:Button;
 		private var _hcpButton:Button;
 		private var _patientButton:Button;
+		private var _userType:String;
 
 		private var _starlingMain:Main;
 
@@ -53,7 +54,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			super.draw();
 
 			drawSplashBackground();
-			if(this._appType == HivivaLocalStoreService.APP_FIRST_TIME_USE)
+			if(this._hcpButton != null)
 			{
 				drawButtons();
 			}
@@ -64,11 +65,8 @@ package collaboRhythm.hiviva.view.screens.shared
 			super.initialize();
 
 			initSplashBackground();
-
-
-
-			this._appType = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.appDataVO._userAppType;
-			if(this._appType == HivivaLocalStoreService.APP_FIRST_TIME_USE)
+			//this._appType = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.appDataVO._userAppType;
+			if(HivivaStartup.userVO.type == HivivaLocalStoreService.APP_FIRST_TIME_USE)
 			{
 				initButtons();
 			}
@@ -132,7 +130,6 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function initButtons():void
 		{
 			this._hcpButton = new Button();
-
 			this._hcpButton.defaultSkin = new Image(Main.assets.getTexture("splash_button_02"));
 			applySplashButtonProperties(this._hcpButton);
 			this._hcpButton.label = "I’m a healthcare \nprofessional \nor carer";
@@ -183,33 +180,21 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function hcpButtonHandler(e:Event):void
 		{
-			notifyLocalStoreController(HivivaLocalStoreService.USER_APP_TYPE_HCP);
+			createUser(HivivaLocalStoreService.USER_APP_TYPE_HCP);
 		}
 
 		private function patientButtonHandler(e:Event):void
 		{
-			notifyLocalStoreController(HivivaLocalStoreService.USER_APP_TYPE_PATIENT);
-		}
-
-		private function notifyLocalStoreController(userValue:String):void
-		{
-			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PROFILE_TYPE_UPDATE);
-			evt.data.user = userValue;
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.dispatchEvent(evt);
-			this._appType = userValue;
-			if(userValue == HivivaLocalStoreService.USER_APP_TYPE_HCP)
-			{
-				createUser("1");
-			} else
-			{
-				createUser("0");
-			}
+			createUser(HivivaLocalStoreService.USER_APP_TYPE_PATIENT);
 		}
 
 		private function createUser(type:String):void
 		{
+			this._userType = type;
+			var userTypeInt:int = type == HivivaLocalStoreService.USER_APP_TYPE_HCP ? 1 : 0;
+
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CREATE_USER_COMPLETE , createUserCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.createUser(type);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.createUser(String(userTypeInt));
 		}
 
 		private function createUserCompleteHandler(e:RemoteDataStoreEvent):void
@@ -218,12 +203,13 @@ package collaboRhythm.hiviva.view.screens.shared
 			trace("initSplashBackground user created " + e.data.appid);
 
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE , appIdGuidSaveHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.setAppIdGuid(e.data.appid , e.data.guid);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.setTypeAppIdGuid(e.data.appid , e.data.guid , this._userType);
 		}
 
 		private function appIdGuidSaveHandler(e:LocalDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE , appIdGuidSaveHandler);
+			HivivaStartup.userVO.type = this._userType;
 			closeDownScreen();
 		}
 
@@ -244,7 +230,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function closeDownScreen():void
 		{
-			this.dispatchEventWith("complete" , false , {profileType:this._appType});
+			this.dispatchEventWith("complete");
 		}
 
 		override public function dispose():void

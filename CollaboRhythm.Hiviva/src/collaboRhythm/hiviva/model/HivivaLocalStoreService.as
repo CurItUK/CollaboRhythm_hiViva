@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.model
 {
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.model.vo.UserVO;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.vo.AppDataVO;
 
@@ -32,10 +33,11 @@ package collaboRhythm.hiviva.model
 		private var _displaySettings:Object;
 		private var _alertSettings:Object;
 		private var _viewedMessagesIds:Array;
+		private var _userVO:UserVO;
 
 		public function HivivaLocalStoreService()
 		{
-
+			this._userVO = new UserVO();
 		}
 
 		public function initDataLoad():void
@@ -53,15 +55,12 @@ package collaboRhythm.hiviva.model
 
 		private function loadAppData():void
 		{
-			trace("Load User Data");
-
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
 
 			this._sqConn = new SQLConnection();
 			this._sqConn.addEventListener(SQLEvent.OPEN, dataFileOpenHandler);
 			this._sqConn.open(dbFile);
-
 		}
 
 		private function dataFileOpenHandler(e:SQLEvent):void
@@ -69,8 +68,12 @@ package collaboRhythm.hiviva.model
 			this._sqStatement = new SQLStatement();
 			this._sqStatement.text = "SELECT * FROM app_settings";
 			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getAppSettingsHandler);
 			this._sqStatement.execute();
 
+
+
+			/*
 			_appDataVO = new AppDataVO();
 
 			try
@@ -81,16 +84,20 @@ package collaboRhythm.hiviva.model
 			{
 				_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
 			}
+			*/
+		}
 
-			// TODO: remove this check when HCP is working; HCP is not supported yet
-//			if (_appDataVO._userAppType == USER_APP_TYPE_HCP)
-//				_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
+		private function getAppSettingsHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
 
-
-
-			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.DATA_LOAD_COMPLETE);
-			evt.message = "dataLoaded";
-			dispatchEvent(evt);
+			if(result[0].profile_type == "appFirstTimeUse")
+			{
+				this._userVO.type = HivivaLocalStoreService.APP_FIRST_TIME_USE;
+			} else
+			{
+				this._userVO.type = result[0].profile_type;
+			}
 		}
 
 		private function sqlResultHandler(e:SQLEvent):void
@@ -98,7 +105,7 @@ package collaboRhythm.hiviva.model
 			trace("sqlResultHandler " + e);
 		}
 
-		public function setAppId(appId:String , guid:String):void
+		public function setTypeAppIdGuidId(appId:String , guid:String , type:String):void
 		{
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
@@ -107,9 +114,7 @@ package collaboRhythm.hiviva.model
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
-
-			this._sqStatement.text = "UPDATE app_settings SET app_id='" + appId + "', guid='" + guid + "'";
-
+			this._sqStatement.text = "UPDATE app_settings SET profile_type='" + type + "' , app_id='" + appId + "' , guid='" + guid + "'";
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
@@ -153,21 +158,18 @@ package collaboRhythm.hiviva.model
 
 			sourceFile.copyTo(destination);
 
-			_appDataVO = new AppDataVO();
-			_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
+			this._userVO.type = HivivaLocalStoreService.APP_FIRST_TIME_USE;
 
-			//TODO remove appid Creation functionality.
-			//AppID now set through webservices
-			//setAppId(HivivaModifier.generateAppId());
+			//_appDataVO = new AppDataVO();
+			//_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
 
-			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.DATA_LOAD_COMPLETE);
-			evt.message = HivivaLocalStoreService.APP_FIRST_TIME_USE;
-			dispatchEvent(evt);
 		}
 
+		/* TODO remove as no longer needed
 		public function updateAppProfileType(data:String):void
 		{
-			appDataVO._userAppType = data;
+			this._userVO.type = data;
+			//appDataVO._userAppType = data;
 
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
@@ -182,6 +184,7 @@ package collaboRhythm.hiviva.model
 			this._sqStatement.execute();
 
 		}
+		*/
 
 		public function getGalleryImages():void
 		{
@@ -1128,6 +1131,11 @@ package collaboRhythm.hiviva.model
 		public function get appDataVO ():AppDataVO
 		{
 			return _appDataVO;
+		}
+
+		public function get userVO():UserVO
+		{
+			return this._userVO;
 		}
 
 	}

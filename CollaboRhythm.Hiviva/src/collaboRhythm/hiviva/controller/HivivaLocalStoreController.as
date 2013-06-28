@@ -14,23 +14,20 @@ package collaboRhythm.hiviva.controller
 		public function HivivaLocalStoreController()
 		{
 			trace("HivivaLocalStoreController construct");
-			initEventListeners();
+
 		}
 
-		private function initEventListeners():void
+
+
+		public function setTypeAppIdGuid(appId:String , guid:String , type:String):void
 		{
-			this.addEventListener(LocalDataStoreEvent.PROFILE_TYPE_UPDATE , profileTypeUpdateHandler);
+			service.addEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE, setTypeAppIdGuidHandler);
+			service.setTypeAppIdGuidId(appId , guid , type);
 		}
 
-		public function setAppIdGuid(appId:String , guid:String):void
+		private function setTypeAppIdGuidHandler(e:LocalDataStoreEvent):void
 		{
-			service.addEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE, setAppIdHandler);
-			service.setAppId(appId , guid);
-		}
-
-		private function setAppIdHandler(e:LocalDataStoreEvent):void
-		{
-			service.removeEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE, setAppIdHandler);
+			service.removeEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE, setTypeAppIdGuidHandler);
 			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE));
 		}
 
@@ -78,7 +75,6 @@ package collaboRhythm.hiviva.controller
 		public function initStoreService():void
 		{
 			_hivivaLocalStoreService = new HivivaLocalStoreService();
-			_hivivaLocalStoreService.addEventListener(LocalDataStoreEvent.DATA_LOAD_COMPLETE , dataLoadCompleteHandler);
 			_hivivaLocalStoreService.initDataLoad();
 		}
 
@@ -438,15 +434,6 @@ package collaboRhythm.hiviva.controller
 			service.resetApplication();
 		}
 
-		private function profileTypeUpdateHandler(e:LocalDataStoreEvent):void
-		{
-			_hivivaLocalStoreService.updateAppProfileType(e.data.user);
-		}
-
-		private function dataLoadCompleteHandler(e:LocalDataStoreEvent):void
-		{
-			trace("data loaded ok " + e.message)
-		}
 
 		public function get service():HivivaLocalStoreService
 		{

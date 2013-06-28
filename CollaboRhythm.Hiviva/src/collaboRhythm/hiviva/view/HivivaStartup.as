@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.model.vo.UserVO;
 
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -42,6 +43,7 @@ package collaboRhythm.hiviva.view
 		public static const LogoPng:Class;
 
 		private static var _hivivaAppController:HivivaAppController;
+
 
 
 		public function HivivaStartup()
@@ -168,6 +170,11 @@ package collaboRhythm.hiviva.view
 		public static function get hivivaAppController():HivivaAppController
 		{
 			return _hivivaAppController;
+		}
+
+		public static function get userVO():UserVO
+		{
+			return hivivaAppController.hivivaLocalStoreController.service.userVO;
 		}
 
 		public function get thisStageW():Number
