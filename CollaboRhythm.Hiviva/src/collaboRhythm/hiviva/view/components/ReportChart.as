@@ -7,12 +7,15 @@ package collaboRhythm.hiviva.view.components
 	import feathers.controls.Label;
 
 	import feathers.core.FeathersControl;
+	import feathers.display.TiledImage;
 
 	import starling.display.BlendMode;
 	import starling.display.Image;
 
 	import starling.display.Quad;
+	import starling.display.Shape;
 	import starling.textures.Texture;
+	import starling.textures.TextureSmoothing;
 	import starling.utils.deg2rad;
 
 	public class ReportChart extends FeathersControl
@@ -24,11 +27,10 @@ package collaboRhythm.hiviva.view.components
 		private var _endDate:Date;
 		private var _dayTotal:Number;
 		private var _lowestValue:Number;
-		private var _valueData:Array;
+		private var _valueData:Array = [];
 		private var _valueRange:Number;
 
 		private const LINE_COLOURS:Array = [0x2e445e,0x0b88ec,0xc20315,0x697a8f,0xffffff,0x000000];
-		private var _patientAdherence:Array = [];
 
 		private var _leftAxisSpace:Number;
 		private var _rightPadding:Number;
@@ -57,7 +59,6 @@ package collaboRhythm.hiviva.view.components
 			this._chartHeight = this.actualHeight * 0.75;
 			this._chartStartX = this._leftAxisSpace;
 			this._chartStartY = this._vPadding;
-			this._horizontalSegmentWidth = this._chartWidth / (_dayTotal - 1);
 		}
 
 		override protected function initialize():void
@@ -67,13 +68,32 @@ package collaboRhythm.hiviva.view.components
 
 		public function drawChart():void
 		{
-			this._dayTotal = HivivaModifier.getDaysDiff(this._endDate,this._startDate);
+			this._dayTotal = HivivaModifier.getDaysDiff(this._endDate,this._startDate) + 1;
+			this._horizontalSegmentWidth = this._chartWidth / (_dayTotal - 1);
+
+			// tiled background here to compensate for no transparency on the draw
+			initTiledBackground();
 
 			populatePatientData();
 			initChartTitleLabel();
 			initBackground();
 			initLeftAxisLabels();
 			initLeftAxisLines();
+			initBottomAxisValuesAndLines();
+//			initBottomAxisLabels();
+			drawPlotPoints();
+		}
+
+		private function initTiledBackground():void
+		{
+			var screenBase:TiledImage = new TiledImage(Main.assets.getTexture("screen_base"));
+
+			screenBase.width = this.actualWidth;
+			screenBase.height = this.actualHeight;
+			screenBase.smoothing = TextureSmoothing.NONE;
+			screenBase.touchable = false;
+			//screenBase.flatten();
+			addChild(screenBase);
 		}
 
 		private function populatePatientData():void
@@ -86,6 +106,10 @@ package collaboRhythm.hiviva.view.components
 			for (var i:int = 0; i < _dayTotal; i++)
 			{
 				valueData = this._dataCategory == "adherence" ? HivivaModifier.getPatientAdherenceByDate(_patientData, daysItar) : HivivaModifier.getPatientTolerabilityByDate(_patientData, daysItar);
+				if(this._lowestValue > valueData && valueData > 0)
+				{
+					this._lowestValue = valueData;
+				}
 				daysItar.date++;
 				this._valueData.push(valueData);
 			}
@@ -106,7 +130,8 @@ package collaboRhythm.hiviva.view.components
 			chartTitleLabel.y = this._chartStartY;
 			chartTitleLabel.width = this._chartWidth;
 			chartTitleLabel.validate();
-			this._chartStartY += chartTitleLabel.height;
+			// * 1.5 for padding
+			this._chartStartY += (chartTitleLabel.height * 1.5);
 		}
 
 		private function initBackground():void
@@ -141,7 +166,7 @@ package collaboRhythm.hiviva.view.components
 
 			var leftAxisLabel:Label = new Label();
 			leftAxisLabel.name = "centered-label";
-			leftAxisLabel.text = "<font face='ExoBold'>Adherence</font>";
+			leftAxisLabel.text = "<font face='ExoBold'>" + (this._dataCategory == "adherence" ? "Adherence" : "Tolerability") + "</font>";
 			addChild(leftAxisLabel);
 			leftAxisLabel.width = 400;
 			leftAxisLabel.validate();
@@ -183,16 +208,10 @@ package collaboRhythm.hiviva.view.components
 						HivivaModifier.addPrecedingZero(daysItar.getDate().toString());
 				addChild(bottomAxisValue);
 				bottomAxisValue.validate();
-				bottomAxisValue.x = this._chartStartX + xAxisPosition;
-				if (dayCount == (_dayTotal - 1))
-				{
-					bottomAxisValue.x -= bottomAxisValue.width;
-				}
-				else if (dayCount > 0)
-				{
-					bottomAxisValue.x -= bottomAxisValue.width * 0.5;
-				}
-				bottomAxisValue.y = this._chartStartY + this._chartHeight;
+				bottomAxisValue.rotation = deg2rad(-90);
+				bottomAxisValue.x = this._chartStartX + (xAxisPosition - (bottomAxisValue.height * 0.5));
+				// + 4 for padding
+				bottomAxisValue.y = this._chartStartY + this._chartHeight + bottomAxisValue.width + 10;
 
 				daysItar.date++;
 
@@ -201,7 +220,7 @@ package collaboRhythm.hiviva.view.components
 				verticalLine.x = this._chartStartX + xAxisPosition;
 				verticalLine.y = this._chartStartY;
 				verticalLine.height = this._chartHeight;
-				// ever even segment
+				// every even segment
 				if ((dayCount / 2).toString().indexOf('.') > -1 && dayCount < (_dayTotal - 1))
 				{
 					evenLighter = new Quad(this._horizontalSegmentWidth, this._chartHeight, 0xffffff);
@@ -212,6 +231,56 @@ package collaboRhythm.hiviva.view.components
 				}
 			}
 			this._bottomAxisValueHeight = bottomAxisValue.height;
+		}
+
+		private function initBottomAxisLabels():void
+		{
+			var bottomAxisLabel:Label = new Label();
+			bottomAxisLabel.name = "centered-label";
+			bottomAxisLabel.text = "<font face='ExoBold'>Week commencing (2013)</font>";
+			addChild(bottomAxisLabel);
+			bottomAxisLabel.x = this._chartStartX;
+			bottomAxisLabel.y = this._chartStartY + this._chartHeight + this._bottomAxisValueHeight;
+			bottomAxisLabel.width = this._chartWidth;
+			bottomAxisLabel.validate();
+
+			var bottomAxisGrad:Quad = new Quad(this._chartWidth, this._bottomAxisValueHeight + bottomAxisLabel.height);
+			bottomAxisGrad.setVertexColor(0, 0xFFFFFF);
+			bottomAxisGrad.setVertexColor(1, 0xFFFFFF);
+			bottomAxisGrad.setVertexColor(2, 0x293d54);
+			bottomAxisGrad.setVertexColor(3, 0x293d54);
+			bottomAxisGrad.alpha = 0.2;
+			addChild(bottomAxisGrad);
+			bottomAxisGrad.x = this._chartStartX;
+			bottomAxisGrad.y = this._chartStartY + this._chartHeight;
+		}
+
+		private function drawPlotPoints():void
+		{
+			var fullValueHeight:Number = this._chartHeight * (100 / this._valueRange);
+			var plotStartY:Number = this._chartStartY + fullValueHeight;
+			var value:Number;
+			var plotLine:Shape = new Shape();
+			var plotCircles:Shape = new Shape();
+			var plotGirth:Number = 4;
+			var currColour:uint = LINE_COLOURS[Math.round((Math.random()*LINE_COLOURS.length))];
+			var valueY:Number;
+
+			plotLine.graphics.lineStyle(plotGirth,currColour);
+			for (var valueCount:int = 0; valueCount < _dayTotal; valueCount++)
+			{
+				value = this._valueData[valueCount];
+				if(value > 0)
+				{
+					valueY = (fullValueHeight / 100) * value;
+					plotLine.graphics.lineTo(this._chartStartX + (this._horizontalSegmentWidth * valueCount),plotStartY - valueY);
+					plotCircles.graphics.beginFill(currColour);
+					plotCircles.graphics.drawCircle(this._chartStartX + (this._horizontalSegmentWidth * valueCount),plotStartY - valueY,plotGirth * 2);
+					plotCircles.graphics.endFill();
+				}
+			}
+			addChild(plotLine);
+			addChild(plotCircles);
 		}
 
 		public function get dataCategory():String

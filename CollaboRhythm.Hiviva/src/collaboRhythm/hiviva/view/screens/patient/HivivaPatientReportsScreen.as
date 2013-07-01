@@ -5,10 +5,29 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.Calendar;
+	import collaboRhythm.hiviva.view.components.ReportChart;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 
+	import flash.events.TimerEvent;
+
 	import flash.net.URLLoader;
+	import flash.system.System;
+	import flash.utils.Timer;
+
+	import mx.graphics.codec.JPEGEncoder;
+
+	import mx.graphics.codec.PNGEncoder;
+
+	import org.alivepdf.images.ColorSpace;
+	import org.alivepdf.layout.Mode;
+	import org.alivepdf.layout.Position;
+	import org.alivepdf.layout.Resize;
+
+	import starling.core.RenderSupport;
+
+	import starling.display.DisplayObject;
+	import starling.display.Stage;
 
 //	import com.diadraw.extensions.mail.MailExtensionEvent;
 //	import com.diadraw.extensions.mail.NativeMailWrapper;
@@ -115,6 +134,10 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _patientData:XML;
 		private var _patientProfile:Array;
 		private var _medications:Array;
+		private var _reportChartTimer:Timer;
+		private var _reportChart:ReportChart;
+		private var _adherenceChartBd:BitmapData;
+		private var _tolerabilityChartBd:BitmapData;
 
 		public function HivivaPatientReportsScreen()
 		{
@@ -284,7 +307,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			// TODO : validate medications and schedule when we have data from remote database
 //			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
 //			localStoreController.getPatientProfile();
-
 			var formValidation:String = patientReportsCheck();
 			if (formValidation.length == 0)
 			{
@@ -394,7 +416,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 			else
 			{
-				generatePDFReport();
+	//			generatePDFReport();
+				displayHtmlReport();
 			}
 		}
 
@@ -407,80 +430,11 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function testResultsLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
 			localStoreController.removeEventListener(LocalDataStoreEvent.TEST_RESULTS_LOAD_COMPLETE, testResultsLoadCompleteHandler);
-			generatePDFReport();
+//			generatePDFReport();
+			displayHtmlReport();
 		}
 
-		private function generatePDFReport():void
-		{
-			var pdf:PDF = new PDF(Orientation.PORTRAIT, Unit.MM, Size.A4);
-			var helveticaNomal:IFont = new CoreFont ( FontFamily.HELVETICA );
-			var helveticaBold:IFont = new CoreFont ( FontFamily.HELVETICA_BOLD );
-
-			var date:Date = new Date();
-
-			pdf.addPage();
-
-			//Title
-			pdf.setFont(helveticaBold , 14);
-			pdf.writeText(12, "Patient: ");
-			pdf.setFont(helveticaNomal , 12);
-			pdf.writeText(12, "Patient Name / AppID\n");
-
-
-			//Date
-			pdf.setFont(helveticaBold , 14);
-			pdf.writeText(12, "Date: ");
-			pdf.setFont(helveticaNomal , 12);
-			pdf.writeText(12, date.getMonth() + "/" + date.getDay() + "/" + date.getFullYear() + "\n");
-
-			//Subject
-			pdf.setFont(helveticaBold , 14);
-			pdf.writeText(12, "Subject: ");
-			pdf.setFont(helveticaNomal , 12);
-			pdf.writeText(12, "Please find below details of ... record of their HIV tracking via the HiVIVA application. This covers the time period between: "
-					+ this._startDateInput._input.text + " - "
-					+ this._finishDateInput._input.text + "\n");
-
-
-			//Test Results
-
-			var dp:ArrayCollection = new ArrayCollection ();
-			dp.addItem( { date : "15/06/2013", cd4 : "350", viralLoad : "<50,000" } );
-
-
-
-			var gridColumnDate:GridColumn = new GridColumn("Date", "date", 20, Align.LEFT, Align.LEFT);
-			var gridColumnCd4:GridColumn = new GridColumn("CD4 count (cells/mm3)", "cd4", 20, Align.LEFT, Align.LEFT);
-			var gridColumnViralLoad:GridColumn = new GridColumn("Viral Load (copies/ml)", "viralLoad", 20, Align.LEFT, Align.LEFT);
-
-
-			var columns:Array = new Array ( gridColumnDate , gridColumnCd4 , gridColumnViralLoad);
-
-			//data:Array,width:Number,height:Number,headerColor:org.alivepdf.colors.IColor,cellColor:org.alivepdf.colors.IColor,
-			var grid:Grid = new Grid ( dp.toArray(), 200, 100, new RGBColor (0x00CCFF), new RGBColor (0xFFFFFF), new RGBColor ( 0x0 ) , new RGBColor ( 0x0 ) , 1);
-
-			grid.columns = columns;
-
-			pdf.setFont(helveticaNomal , 12);
-			pdf.textStyle(new RGBColor ( 0x0 ),1);
-
-			pdf.addGrid(grid);
-
-
-			var fileStream:FileStream = new FileStream();
-
-			this._pdfFile = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
-
-			fileStream.open(this._pdfFile, FileMode.WRITE);
-			var bytes:ByteArray = pdf.save(Method.LOCAL);
-			messageAttachment = bytes;
-			fileStream.writeBytes(bytes);
-			fileStream.close();
-			displaySavedPDF();
-
-		}
-
-		private function displaySavedPDF():void
+		private function displayHtmlReport():void
 		{
 			this._pdfPopupContainer = new HivivaPDFPopUp();
 			this._pdfPopupContainer.scale = this.dpiScale;
@@ -509,10 +463,150 @@ package collaboRhythm.hiviva.view.screens.patient
 			//this._stageWebView.loadURL(pdf.nativePath);
 			this._stageWebView.loadString(htmlString);*/
 
-			var reportPreview:File = File.applicationDirectory.resolvePath("resources/report_template/index.html");
+			drawAndSaveReportCharts();
+		}
 
+		private function drawAndSaveReportCharts():void
+		{
+			this._reportChart = new ReportChart();
+			this._reportChart.dataCategory = "adherence";
+			this._reportChart.startDate = HivivaModifier.getDateFromString(this._startDateInput._input.text);
+			this._reportChart.endDate = HivivaModifier.getDateFromString(this._finishDateInput._input.text);
+			this._reportChart.patientData = _patientData;
+			// must be added to stage or snapshot will be blank
+			addChild(this._reportChart);
+			this._reportChart.width = this._reportChart.height = this.actualWidth;
+			this._reportChart.x = this._reportChart.y = -this.actualWidth;
+			this._reportChart.validate();
+			this._reportChart.drawChart();
+
+			// timer needed as labels inside the chart don't get drawn in time
+			this._reportChartTimer = new Timer(10);
+//			this._reportChartTimer.addEventListener(TimerEvent.TIMER, reportChartTimerHandler);
+			this._reportChartTimer.addEventListener(TimerEvent.TIMER, drawAndSaveAdherenceChart);
+			this._reportChartTimer.start();
+		}
+
+		private function drawAndSaveAdherenceChart(e:TimerEvent):void
+		{
+			this._reportChartTimer.removeEventListener(TimerEvent.TIMER, drawAndSaveAdherenceChart);
+			this._reportChartTimer.stop();
+
+			this._adherenceChartBd = copyToBitmap(this._reportChart);
+			var pngenc:PNGEncoder = new PNGEncoder();
+			var byteArray:ByteArray = pngenc.encode(this._adherenceChartBd);
+
+			var reportDir:File = File.applicationStorageDirectory.resolvePath("report_template/adherence-chart.png");
+			var fs:FileStream = new FileStream();
+			fs.addEventListener(flash.events.Event.CLOSE, initTolerabilityChart);
+
+			try
+			{
+				//open file in write mode
+				fs.openAsync(reportDir,FileMode.WRITE);
+				//write bytes from the byte array
+				fs.writeBytes(byteArray);
+				//close the file
+				fs.close();
+			}
+			catch(e:Error)
+			{
+				trace(e.message);
+			}
+		}
+
+		private function initTolerabilityChart(e:flash.events.Event):void
+		{
+			var fs:FileStream = e.target as FileStream;
+			fs.removeEventListener(flash.events.Event.CLOSE, initTolerabilityChart);
+			fs = null;
+
+			removeChild(this._reportChart);
+			this._reportChart.dispose();
+
+			this._reportChart = new ReportChart();
+			this._reportChart.dataCategory = "tolerability";
+			this._reportChart.startDate = HivivaModifier.getDateFromString(this._startDateInput._input.text);
+			this._reportChart.endDate = HivivaModifier.getDateFromString(this._finishDateInput._input.text);
+			this._reportChart.patientData = _patientData;
+			// must be added to stage or snapshot will be blank
+			addChild(this._reportChart);
+			this._reportChart.width = this._reportChart.height = this.actualWidth;
+			this._reportChart.x = this._reportChart.y = -this.actualWidth;
+			this._reportChart.validate();
+			this._reportChart.drawChart();
+
+			this._reportChartTimer.addEventListener(TimerEvent.TIMER, drawAndSaveTolerabilityChart);
+			this._reportChartTimer.start();
+		}
+
+		private function drawAndSaveTolerabilityChart(e:TimerEvent):void
+		{
+			this._reportChartTimer.removeEventListener(TimerEvent.TIMER, drawAndSaveTolerabilityChart);
+			this._reportChartTimer.stop();
+
+			this._tolerabilityChartBd = copyToBitmap(this._reportChart);
+
+			var pngenc:PNGEncoder = new PNGEncoder();
+			var byteArray:ByteArray = pngenc.encode(this._tolerabilityChartBd);
+
+			var reportDir:File = File.applicationStorageDirectory.resolvePath("report_template/tolerability-chart.png");
+
+			var fs:FileStream = new FileStream();
+			fs.addEventListener(flash.events.Event.CLOSE, cleanUpStream);
+
+			try
+			{
+				//open file in write mode
+				fs.openAsync(reportDir,FileMode.WRITE);
+				//write bytes from the byte array
+				fs.writeBytes(byteArray);
+				//close the file
+				fs.close();
+			}
+			catch(e:Error)
+			{
+				trace(e.message);
+			}
+		}
+
+		private function cleanUpStream(e:flash.events.Event):void
+		{
+			var fs:FileStream = e.target as FileStream;
+			fs.removeEventListener(flash.events.Event.CLOSE, cleanUpStream);
+			fs = null;
+
+			removeChild(this._reportChart);
+			this._reportChart.dispose();
+			this._reportChart = null;
+
+			this._reportChartTimer = null;
+
+			System.gc();
+
+			var reportPreview:File = File.applicationStorageDirectory.resolvePath("report_template/index.html");
 			this._stageWebView.addEventListener(flash.events.Event.COMPLETE, stageWebCompleteHandler);
 			this._stageWebView.loadURL(reportPreview.nativePath);
+		}
+
+		private function copyToBitmap(disp:DisplayObject, scl:Number=1.0):BitmapData
+		{
+			var rc:Rectangle = new Rectangle();
+			disp.getBounds(disp, rc);
+
+			var stage:Stage = Starling.current.stage;
+			var rs:RenderSupport = new RenderSupport();
+
+			rs.clear();
+			rs.scaleMatrix(scl, scl);
+			rs.setOrthographicProjection(0, 0, stage.stageWidth, stage.stageHeight);
+			rs.translateMatrix(-rc.x, -rc.y); // move to 0,0
+			disp.render(rs, 1.0);
+			rs.finishQuadBatch();
+			var outBmp:BitmapData = new BitmapData(rc.width*scl, rc.height*scl, false);
+			Starling.context.drawToBitmapData(outBmp);
+
+			return outBmp;
 		}
 
 		private function stageWebCompleteHandler(e:flash.events.Event):void
@@ -539,9 +633,114 @@ package collaboRhythm.hiviva.view.screens.patient
 				if(i < medications.length() - 1) hashStr += "&";
 			}
 			trace(hashStr);
-			this._stageWebView.loadURL(this._stageWebView.location + hashStr);
+			this._stageWebView.loadURL(this._stageWebView.location/* + hashStr*/);
+			generatePDFReport();
+		}
+
+		private function generatePDFReport():void
+		{
+			var size:Size = Size.A4;
+			var pdf:PDF = new PDF(Orientation.PORTRAIT, Unit.MM, Size.A4);
+			var helveticaNomal:IFont = new CoreFont ( FontFamily.HELVETICA );
+			var helveticaBold:IFont = new CoreFont ( FontFamily.HELVETICA_BOLD );
+
+//			var date:Date = new Date();
+
+			pdf.addPage();
+
+			//Title
+			pdf.setFont(helveticaBold , 14);
+			pdf.writeText(12, "Patient Report\n");
+
+			pdf.addImage(new Bitmap(this._adherenceChartBd), new Resize ( Mode.FIT_TO_PAGE, Position.LEFT ),0,12);
+//			pdf.setFont(helveticaNomal , 12);
+//			pdf.writeText(12, "Patient Name / AppID\n");
+
+/*
+
+			//Date
+			pdf.setFont(helveticaBold , 14);
+			pdf.writeText(12, "Date: ");
+			pdf.setFont(helveticaNomal , 12);
+			pdf.writeText(12, date.getMonth() + "/" + date.getDay() + "/" + date.getFullYear() + "\n");
+
+			//Subject
+			pdf.setFont(helveticaBold , 14);
+			pdf.writeText(12, "Subject: ");
+			pdf.setFont(helveticaNomal , 12);
+			pdf.writeText(12, "Please find below details of ... record of their HIV tracking via the HiVIVA application. This covers the time period between: "
+					+ this._startDateInput._input.text + " - "
+					+ this._finishDateInput._input.text + "\n");
+*/
 
 
+			//Test Results
+/*
+			var dp:ArrayCollection = new ArrayCollection ();
+			dp.addItem( { date : "15/06/2013", cd4 : "350", viralLoad : "<50,000" } );
+
+
+
+			var gridColumnDate:GridColumn = new GridColumn("Date", "date", 20, Align.LEFT, Align.LEFT);
+			var gridColumnCd4:GridColumn = new GridColumn("CD4 count (cells/mm3)", "cd4", 20, Align.LEFT, Align.LEFT);
+			var gridColumnViralLoad:GridColumn = new GridColumn("Viral Load (copies/ml)", "viralLoad", 20, Align.LEFT, Align.LEFT);
+
+
+			var columns:Array = new Array ( gridColumnDate , gridColumnCd4 , gridColumnViralLoad);
+
+			//data:Array,width:Number,height:Number,headerColor:org.alivepdf.colors.IColor,cellColor:org.alivepdf.colors.IColor,
+			var grid:Grid = new Grid ( dp.toArray(), 200, 100, new RGBColor (0x00CCFF), new RGBColor (0xFFFFFF), new RGBColor ( 0x0 ) , new RGBColor ( 0x0 ) , 1);
+
+			grid.columns = columns;
+
+			pdf.setFont(helveticaNomal , 12);
+			pdf.textStyle(new RGBColor ( 0x0 ),1);
+
+			pdf.addGrid(grid);
+			*/
+			var startDate:String = this._startDateInput._input.text;
+			var endDate:String = this._finishDateInput._input.text;
+			var medications:XMLList = _patientData.medications.medication;
+			var medicationHistory:XMLList = _patientData.medicationHistory.history;
+			var adherenceValue:Number;
+			var adherenceTotal:Number = 0;
+			var adherenceCollection:ArrayCollection = new ArrayCollection();
+			for (var i:int = 0; i < medications.length(); i++)
+			{
+				adherenceValue =  HivivaModifier.getPatientAdherenceByMedication(medicationHistory,int(medications[i].id),HivivaModifier.getDateFromString(startDate),HivivaModifier.getDateFromString(endDate));
+				adherenceTotal += adherenceValue;
+				adherenceCollection.addItem({adherenceName : medications[i].brandname + "\n" + medications[i].genericname,
+											adherenceValue : adherenceValue});
+			}
+			adherenceCollection.addItem({adherenceName : "Average", adherenceValue : Math.round(adherenceTotal /= medications.length())});
+
+			var gridColumnNames:GridColumn = new GridColumn("", "adherenceName", 95, Align.LEFT, Align.LEFT);
+			var gridColumnValues:GridColumn = new GridColumn("Adherence for this period (%)", "adherenceValue", 95, Align.LEFT, Align.LEFT);
+			var columns:Array = new Array ( gridColumnNames , gridColumnValues);
+
+			//data:Array,width:Number,height:Number,headerColor:org.alivepdf.colors.IColor,cellColor:org.alivepdf.colors.IColor,
+			var grid:Grid = new Grid ( adherenceCollection.toArray(), 190, 100, new RGBColor (0xFFFFFF), new RGBColor (0xFFFFFF), false , new RGBColor ( 0x0 ) , 1);
+//			grid.y = 100;
+			grid.columns = columns;
+
+			pdf.setFont(helveticaNomal , 12);
+			pdf.textStyle(new RGBColor ( 0x0 ),1);
+
+			pdf.addGrid(grid,0,200);
+
+			pdf.addPage();
+
+			pdf.addImage(new Bitmap(this._tolerabilityChartBd), new Resize ( Mode.FIT_TO_PAGE, Position.LEFT ));
+
+			var fileStream:FileStream = new FileStream();
+
+			this._pdfFile = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
+
+			fileStream.open(this._pdfFile, FileMode.WRITE);
+			var bytes:ByteArray = pdf.save(Method.LOCAL);
+			messageAttachment = bytes;
+			fileStream.writeBytes(bytes);
+			fileStream.close();
 		}
 
 		private function closePopup(e:starling.events.Event):void
