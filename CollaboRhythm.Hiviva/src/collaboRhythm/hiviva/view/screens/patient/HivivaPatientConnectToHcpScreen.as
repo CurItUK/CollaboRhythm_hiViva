@@ -156,6 +156,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initHcpSearch():void
 		{
+
+			//TODO Remove EMAIL radio option
 			this._radioGroup = new ToggleGroup();
 
 			this._emailRadio = new Radio();
