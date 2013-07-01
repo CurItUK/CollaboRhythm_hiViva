@@ -232,15 +232,27 @@ package collaboRhythm.hiviva.view.screens.patient
 			//medicationTimes time as medication should be taken
 			//medicationTablets amount of tablets to be taken at medication time
 			var medicationScheduleData:Array = [];
+			var rsMedicationSchedule:Array = [];
 			var loop:uint = _timeListItems.length;
+			var schedule:String = "";
 			for(var i:uint = 0 ; i < loop ; i++)
 			{
+				schedule += "count=" + (i+1) + "|time=" + _timeListItems[i].selectedItem.time + ";";
+
 				var medicationObject:Object = {time:_timeListItems[i].selectedItem.time , count:_tabletListItems[i].selectedItem.count};
 				medicationScheduleData.push(medicationObject);
+
 			}
 			medicationScheduleData.sortOn("time" , Array.NUMERIC);
-			localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SAVE_COMPLETE , medicationSaveCompleteHandler);
-			localStoreController.setMedicationList(medicationScheduleData , medicationResult.name);
+
+
+				//schedule:count=1|time=18;count=2|time=12
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addUserMedication(medicationResult.name , schedule);
+
+			//trace(schedule);
+			//trace(rsMedicationSchedule.splice(","));
+			//localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SAVE_COMPLETE , medicationSaveCompleteHandler);
+			//localStoreController.setMedicationList(medicationScheduleData , medicationResult.name);
 		}
 
 		private function medicationSaveCompleteHandler(e:LocalDataStoreEvent):void

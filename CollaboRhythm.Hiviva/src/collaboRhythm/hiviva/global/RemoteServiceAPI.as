@@ -5,6 +5,8 @@ package collaboRhythm.hiviva.global
 		public static const RS_CREATE_USER:String = 				"WSHealthUser.svc/createuser?type=";
 		public static const RS_GET_PATIENT:String = 				"WSHealthUser.svc/WSHealthUser.svc/GetPatient?AppId=";
 		public static const RS_GET_HCP:String = 					"WSHealthUser.svc/GetHcp?AppId=";
+		public static const RS_ADD_MEDICATION:String = 				"WSUserMedication.svc/AddUserMedication?";
+
 
 
 		//Connections
