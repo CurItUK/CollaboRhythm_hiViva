@@ -33,7 +33,12 @@ package collaboRhythm.hiviva.controller
 			service.removeEventListener(RemoteDataStoreEvent.CREATE_USER_COMPLETE , userCreateCompleteHandler);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.CREATE_USER_COMPLETE);
 			evt.data = e.data;
-			this.dispatchEvent(evt)
+			this.dispatchEvent(evt);
+		}
+
+		public function addUserMedication(medicationName:String , medicationSchedule:String):void
+		{
+			service.addUserMedication(medicationName, medicationSchedule);
 		}
 
 		public function getHCP(appGuid):void
