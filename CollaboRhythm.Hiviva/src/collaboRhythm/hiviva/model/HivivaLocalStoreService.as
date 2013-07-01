@@ -159,7 +159,11 @@ package collaboRhythm.hiviva.model
 
 			this._userVO.type = Constants.APP_FIRST_TIME_USE;
 
+			// move reports template to application storage directory for future writable access
 
+			var reportSource:File = File.applicationDirectory.resolvePath("resources/report_template");
+			var reportDestination:File = File.applicationStorageDirectory.resolvePath("report_template");
+			reportSource.copyTo(reportDestination);
 
 			//_appDataVO = new AppDataVO();
 			//_appDataVO._userAppType = HivivaLocalStoreService.APP_FIRST_TIME_USE;
