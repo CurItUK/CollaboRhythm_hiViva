@@ -130,6 +130,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private var request:URLRequest;
 
+		private var _reportTemplateLocation:String;
 		private var pdf:File;
 		private var _patientData:XML;
 		private var _patientProfile:Array;
@@ -584,9 +585,9 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			System.gc();
 
-			var reportPreview:File = File.applicationStorageDirectory.resolvePath("report_template/index.html");
+			this._reportTemplateLocation = "file://" + File.applicationStorageDirectory.resolvePath("report_template/index.html").nativePath;
 			this._stageWebView.addEventListener(flash.events.Event.COMPLETE, stageWebCompleteHandler);
-			this._stageWebView.loadURL(reportPreview.nativePath);
+			this._stageWebView.loadURL(this._reportTemplateLocation);
 		}
 
 		private function copyToBitmap(disp:DisplayObject, scl:Number=1.0):BitmapData
@@ -633,7 +634,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				if(i < medications.length() - 1) hashStr += "&";
 			}
 			trace(hashStr);
-			this._stageWebView.loadURL(this._stageWebView.location/* + hashStr*/);
+			this._stageWebView.loadURL(this._reportTemplateLocation + hashStr);
 			generatePDFReport();
 		}
 
