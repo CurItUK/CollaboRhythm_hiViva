@@ -429,12 +429,6 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
-		public function resetApplication():void
-		{
-			service.resetApplication();
-		}
-
-
 		public function get service():HivivaLocalStoreService
 		{
 			return _hivivaLocalStoreService;

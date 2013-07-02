@@ -419,6 +419,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._requestPopupContainer.drawCloseButton();
 		}
 
+
 		private function closePopup(e:Event):void
 		{
 			PopUpManager.removePopUp(this._requestPopupContainer);

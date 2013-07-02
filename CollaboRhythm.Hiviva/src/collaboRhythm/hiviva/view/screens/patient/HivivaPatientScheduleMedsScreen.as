@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 
@@ -88,7 +89,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._scheduleDoseList = new PickerList();
 			this._scheduleDoseList.customButtonName = "border-button";
-			var schduleDoseAmounts:ListCollection = new ListCollection(
+			var schduleDoseAmounts:ListCollection = new ListCollection
+			(
 					[
 						{text: "Once daily" , count:1},
 						{text: "Twice daily" , count:2},
@@ -149,7 +151,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				if(i == 0 )
 				{
 					timeList.y = this._takeLabel.y + this._takeLabel.height + this._componentGap;
-				} else
+				}
+				else
 				{
 					var prevListItem:PickerList = this._content.getChildByName("tileList" + (i-1)) as PickerList;
 					var andLabel:Label = new Label();
@@ -182,11 +185,6 @@ package collaboRhythm.hiviva.view.screens.patient
 				_tabletListItems.push(tabletList);
 			}
 		}
-/*
-		private function getListObjectByName(listName:String, styleName:String):PickerList
-		{
-			var actualName:String = listName.substring(0, listName.indexOf(" " + styleName))
-		}*/
 
 		private function timeListTabletListChangeHandler(e:starling.events.Event = null):void
 		{
@@ -219,10 +217,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._saveToProfileBtn.x = this._horizontalPadding;
 				this._saveToProfileBtn.width = this._innerWidth;
 				this._saveToProfileBtn.validate();
-				this._saveToProfileBtn.y = this._content.y + this._content.height -
-											this._saveToProfileBtn.height - this._verticalPadding;
-				this._content.height = this._contentHeight - this._verticalPadding -
-										this._saveToProfileBtn.height - this._componentGap;
+				this._saveToProfileBtn.y = this._content.y + this._content.height - this._saveToProfileBtn.height - this._verticalPadding;
+				this._content.height = this._contentHeight - this._verticalPadding - this._saveToProfileBtn.height - this._componentGap;
 				this._content.validate();
 			}
 		}
@@ -232,34 +228,32 @@ package collaboRhythm.hiviva.view.screens.patient
 			//medicationTimes time as medication should be taken
 			//medicationTablets amount of tablets to be taken at medication time
 			var medicationScheduleData:Array = [];
-			var rsMedicationSchedule:Array = [];
-			var loop:uint = _timeListItems.length;
-			var schedule:String = "";
+			var loop:int = _timeListItems.length;
 			for(var i:uint = 0 ; i < loop ; i++)
 			{
-				schedule += "count=" + (i+1) + "|time=" + _timeListItems[i].selectedItem.time + ";";
-
 				var medicationObject:Object = {time:_timeListItems[i].selectedItem.time , count:_tabletListItems[i].selectedItem.count};
 				medicationScheduleData.push(medicationObject);
 
 			}
 			medicationScheduleData.sortOn("time" , Array.NUMERIC);
 
+			var schedule:String = "";
+			for(var j:int = 0 ; j<loop ; j++)
+			{
+				schedule +=  "count=" + medicationScheduleData[j].count + "|time=" + medicationScheduleData[j].time + ";";
+			}
+			schedule = schedule.slice(0,-1);
 
-				//schedule:count=1|time=18;count=2|time=12
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE , addMedicationCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addUserMedication(medicationResult.name , schedule);
-
-			//trace(schedule);
-			//trace(rsMedicationSchedule.splice(","));
-			//localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SAVE_COMPLETE , medicationSaveCompleteHandler);
-			//localStoreController.setMedicationList(medicationScheduleData , medicationResult.name);
 		}
 
-		private function medicationSaveCompleteHandler(e:LocalDataStoreEvent):void
+		private function addMedicationCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SAVE_COMPLETE , medicationSaveCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE , addMedicationCompleteHandler);
 			clearDownListArrayObect();
 			this._owner.showScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
+
 		}
 
 		private function clearDownListArrayObect():void

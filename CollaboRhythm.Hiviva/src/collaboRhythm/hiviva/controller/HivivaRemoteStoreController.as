@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.controller
 {
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaRemoteStoreService;
 
 	import flash.events.Event;
@@ -38,10 +39,31 @@ package collaboRhythm.hiviva.controller
 
 		public function addUserMedication(medicationName:String , medicationSchedule:String):void
 		{
+			service.addEventListener(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE , addMedicationCompleteHandler);
 			service.addUserMedication(medicationName, medicationSchedule);
 		}
 
-		public function getHCP(appGuid):void
+		private function addMedicationCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE , addMedicationCompleteHandler);
+			this.dispatchEvent(new RemoteDataStoreEvent(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE));
+		}
+
+		public function getPatientMedicationList():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			service.getPatientMedicationList();
+		}
+
+		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function getHCP(appGuid:String):void
 		{
 			service.addEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
 			service.getHCP(appGuid);

@@ -1,13 +1,9 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
-	import collaboRhythm.hiviva.controller.HivivaAppController;
+
 	import collaboRhythm.hiviva.view.*;
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
@@ -17,10 +13,6 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.data.ListCollection;
 	import feathers.display.TiledImage;
 
-	import flash.data.SQLConnection;
-	import flash.data.SQLResult;
-	import flash.data.SQLStatement;
-	import flash.filesystem.File;
 
 	import starling.display.BlendMode;
 	import starling.display.DisplayObject;
@@ -65,6 +57,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._appId.x = this.actualWidth - this._scaledPadding - this._appId.width;
 			this._appId.y = this._appIdLabel.y;
 
+
 			this._userSignupPopupContent.width = this.actualWidth * 0.75;
 			this._userSignupPopupContent.validate();
 		}
@@ -96,9 +89,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._appId = new Label();
 			this._appId.name = "patient-profile-appid";
+			this._appId.text = HivivaStartup.userVO.appId;
 			addChild(this._appId);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getAppId();
 
 			this._userSignupPopupContent = new HivivaPopUp();
 			this._userSignupPopupContent.scale = this.dpiScale;
@@ -108,18 +100,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._userSignupPopupContent.addEventListener(Event.CLOSE, closePopup);
 
 			userSignupCheck();
-		}
-
-		private function getAppId(e:LocalDataStoreEvent):void
-		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
-
-			var appIdData:String = e.data.app_id;
-			this._appId.text = appIdData;
-
-			this._appId.validate();
-			this._appId.x = this.actualWidth - this._scaledPadding - this._appId.width;
-			this._appId.y = this._appIdLabel.y;
 		}
 
 		private function userSignupCheck():void

@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
@@ -45,15 +46,18 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		public function HivivaPatientEditMedsScreen()
 		{
+
 		}
 
 		override protected function draw():void
 		{
 			super.draw();
+			checkMedicationsExist();
 		}
 
 		override protected function preValidateContent():void
 		{
+			/*
 			if(this._medsExist)
 			{
 				this._saveAndContinueBoxed.width = this.actualWidth - (this._horizontalPadding * 2);
@@ -78,10 +82,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._contentLayout.paddingLeft = this._contentLayout.paddingRight = 0;
 			this._contentLayout.paddingTop = this._contentLayout.paddingBottom = 0;
 			this._contentLayout.gap = 0;
+			*/
 		}
 
 		override protected function postValidateContent():void
 		{
+			/*
 			if(this._medsExist)
 			{
 				this._seperator.width = this.actualWidth;
@@ -96,13 +102,13 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._addMedBtnBoxed.y = this._snakeyThing.y + this._snakeyThing.height + this._componentGap;
 				this._addMedBtnBoxed.x = this._horizontalPadding;
 			}
+			*/
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
-
-			checkMedicationsExist();
+			//checkMedicationsExist();
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -119,10 +125,53 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function checkMedicationsExist():void
 		{
-			localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE, medicationsLoadCompleteHandler);
-			localStoreController.getMedicationList();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
+			//localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE, medicationsLoadCompleteHandler);
+			//localStoreController.getMedicationList();
 		}
 
+		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			trace("medicationsLoadCompleteHandler " + e.data.xmlResponse);
+
+			var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication;
+
+			trace(medicationsXML.length());
+
+			if(medicationsXML.length() >0)
+			{
+				this._medications = [];
+				var medLoop:int = medicationsXML.length();
+				for(var i:int = 0 ; i < medLoop ; i++)
+				{
+					var medObj:Object = {medication_name:medicationsXML.MedicationName , id: medicationsXML.MedicationID};
+					this._medications.push(medObj);
+				}
+				initializeShowMedications();
+			}
+			else
+			{
+				initializeEnterRegimen();
+			}
+
+			//this._medications = e.data.xmlResponse;
+			//localStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_LOAD_COMPLETE,	medicationsLoadCompleteHandler);
+			/*
+			this._medsExist = this._medications != null;
+			if (this._medsExist)
+			{
+				initializeShowMedications();
+			}
+			else
+			{
+				initializeEnterRegimen()
+			}
+			*/
+
+		}
+		/*
 		private function medicationsLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
 			trace("medicationsLoadCompleteHandler " + e.data.medications);
@@ -138,6 +187,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				initializeEnterRegimen()
 			}
 		}
+		*/
 
 		private function initializeEnterRegimen():void
 		{
@@ -152,7 +202,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._addMedBtnBoxed.labels = ["ADD A MEDICINE"];
 			this._content.addChild(this._addMedBtnBoxed);
 
-			draw();
+			//draw();
 		}
 
 		private function initializeShowMedications():void
@@ -190,7 +240,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._saveAndContinueBoxed.labels = ["Save and continue"];
 			this.addChild(this._saveAndContinueBoxed);
 
-			draw();
+			//draw();
 		}
 
 		private function drawMedications():void
