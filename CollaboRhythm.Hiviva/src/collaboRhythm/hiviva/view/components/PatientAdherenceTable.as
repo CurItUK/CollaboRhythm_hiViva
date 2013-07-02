@@ -353,7 +353,9 @@ package collaboRhythm.hiviva.view.components
 			var tableBgColour:Quad = new Quad(this.actualWidth, this._mainScrollContainer.height, 0x4c5f76);
 			tableBgColour.alpha = 0.1;
 			tableBgColour.y = dayRowGrad.height;
-			tableBgColour.blendMode = BlendMode.MULTIPLY;
+			 tableBgColour.blendMode = BlendMode.MULTIPLY;
+
+
 			wholeTableBg.addChild(tableBgColour);
 
 			var firstColumnGrad:Quad = new Quad(this._firstColumnWidth, this._mainScrollContainer.height, 0x233448);

@@ -84,6 +84,7 @@ package collaboRhythm.hiviva.view
 			Starling.multitouchEnabled = true;
 			Starling.handleLostContext = !iOS;
 
+
 			var stageWidth:int   = Constants.STAGE_WIDTH;
 			var stageHeight:int  = Constants.STAGE_HEIGHT;
 
@@ -94,17 +95,30 @@ package collaboRhythm.hiviva.view
 
 			_starFW = new Starling(Main, stage, viewPort);
 			_starFW.stage.stageWidth  = stageWidth;
+			_starFW.showStats = true ;
+
 			_starFW.stage.stageHeight = stageHeight;
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			_starFW.start();
 
 			NativeApplication.nativeApplication.addEventListener(
-					flash.events.Event.ACTIVATE, function (e:*):void { startApp(); });
+					flash.events.Event.ACTIVATE, function (e:*):void {
+						//startApp();
+
+					});
 
 			NativeApplication.nativeApplication.addEventListener(
-					flash.events.Event.DEACTIVATE, function (e:*):void { stopApp(); });
+					flash.events.Event.DEACTIVATE, function (e:*):void {
+						//stopApp();
+					});
 
 		}
+
+		    //NativeApplication.nativeApplication.addEventListener(flash.events.Event.EXITING, onAppExit);
+	 //NativeApplication.nativeApplication.addEventListener(flash.events.Event.ACTIVATE, startApp);
+	 //NativeApplication.nativeApplication.addEventListener(flash.events.Event.DEACTIVATE, stopApp);
+
+
 
 		private function drawBackground():void
 		{
@@ -124,23 +138,11 @@ package collaboRhythm.hiviva.view
 
 		private function drawPasswordBox():void
 		{
-			_passwordBox = new PasswordBox(_sw, _sh);
-			_passwordBox.addEventListener("SUBMIT_CLICKED", doSubmit);
-
-			addChild(_passwordBox);
-			_passwordActive = true;
-		}
-
-		private function startApp():void
-		{
 
 
 		}
 
-		private function stopApp():void
-		{
-			//	if(!_passwordActive) drawPasswordBox();
-		}
+
 
 		private function doSubmit(e:flash.events.Event):void
 		{
@@ -150,7 +152,7 @@ package collaboRhythm.hiviva.view
 			return;
 			}
 			_passwordBox.removeEventListener("SUBMIT_CLICKED", doSubmit)
-			removeChild(_passwordBox);
+		//	removeChild(_passwordBox);
 			_passwordActive = false;
 		}
 
@@ -164,7 +166,7 @@ package collaboRhythm.hiviva.view
 			main.initMain(this._assets);
 
 			disposeBg();
-		    drawPasswordBox();
+		   // drawPasswordBox();
 		}
 
 		public static function get hivivaAppController():HivivaAppController
