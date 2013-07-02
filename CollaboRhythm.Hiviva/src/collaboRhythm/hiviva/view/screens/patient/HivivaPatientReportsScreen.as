@@ -9,6 +9,8 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 
+	import flash.display3D.Context3D;
+
 	import flash.events.TimerEvent;
 
 	import flash.net.URLLoader;
@@ -493,7 +495,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._reportChartTimer.removeEventListener(TimerEvent.TIMER, drawAndSaveAdherenceChart);
 			this._reportChartTimer.stop();
 
-			this._adherenceChartBd = copyToBitmap(this._reportChart);
+			this._adherenceChartBd = copyToBitmap(this._reportChart, this.dpiScale);
 			var pngenc:PNGEncoder = new PNGEncoder();
 			var byteArray:ByteArray = pngenc.encode(this._adherenceChartBd);
 
@@ -546,7 +548,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._reportChartTimer.removeEventListener(TimerEvent.TIMER, drawAndSaveTolerabilityChart);
 			this._reportChartTimer.stop();
 
-			this._tolerabilityChartBd = copyToBitmap(this._reportChart);
+			this._tolerabilityChartBd = copyToBitmap(this._reportChart, this.dpiScale);
 
 			var pngenc:PNGEncoder = new PNGEncoder();
 			var byteArray:ByteArray = pngenc.encode(this._tolerabilityChartBd);
@@ -594,6 +596,10 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			var rc:Rectangle = new Rectangle();
 			disp.getBounds(disp, rc);
+//			rc.x = disp.x;
+//			rc.y = disp.y;
+//			rc.width = disp.width;
+//			rc.height = disp.height;
 
 			var stage:Stage = Starling.current.stage;
 			var rs:RenderSupport = new RenderSupport();
@@ -608,6 +614,25 @@ package collaboRhythm.hiviva.view.screens.patient
 			Starling.context.drawToBitmapData(outBmp);
 
 			return outBmp;
+			/*
+			if (sprite == null) return null;
+			var resultRect:Rectangle = new Rectangle();
+			sprite.getBounds(sprite, resultRect);
+			var context:Context3D = Starling.context;
+			var support:RenderSupport = new RenderSupport();
+			RenderSupport.clear();
+			support.setOrthographicProjection(0,0,Starling.current.stage.stageWidth, Starling.current.stage.stageHeight);
+			support.transformMatrix(sprite.root);
+			support.translateMatrix( -resultRect.x, -resultRect.y);
+			var result:BitmapData = new BitmapData(resultRect.width, resultRect.height, true, 0x00000000);
+			support.pushMatrix();
+			support.transformMatrix(sprite);
+			sprite.render(support, 1.0);
+			support.popMatrix();
+			support.finishQuadBatch();
+			context.drawToBitmapData(result);
+			return result;
+			*/
 		}
 
 		private function stageWebCompleteHandler(e:flash.events.Event):void
