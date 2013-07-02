@@ -1,5 +1,7 @@
 package collaboRhythm.hiviva.view
 {
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+
 	import feathers.controls.Label;
 	import feathers.controls.TextInput;
 	import feathers.core.FeathersControl;
@@ -166,20 +168,20 @@ package collaboRhythm.hiviva.view
 			{
 				case "left" :
 					this._labelLeft = new Label();
-					this._labelLeft.name = "input-label";
+					this._labelLeft.name = HivivaThemeConstants.INPUT_LABEL_LEFT;
 					addChild(this._labelLeft);
 					break;
 				case "right" :
 					this._labelRight = new Label();
-					this._labelRight.name = "input-label";
+					this._labelRight.name = HivivaThemeConstants.INPUT_LABEL_RIGHT;
 					addChild(this._labelRight);
 					break;
 				default :
 					//case "leftAndRight" :
 					this._labelLeft = new Label();
 					this._labelRight = new Label();
-					this._labelLeft.name = "input-label";
-					this._labelRight.name = "input-label";
+					this._labelLeft.name = HivivaThemeConstants.INPUT_LABEL_LEFT;
+					this._labelRight.name = HivivaThemeConstants.INPUT_LABEL_RIGHT;
 					addChild(this._labelLeft);
 					addChild(this._labelRight);
 					break;

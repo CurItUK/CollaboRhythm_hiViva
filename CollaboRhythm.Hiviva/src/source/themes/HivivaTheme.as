@@ -51,6 +51,7 @@ package source.themes
 {
 
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -298,51 +299,43 @@ package source.themes
 
 		protected var primaryBackground:TiledImage;
 
-// hiviva bitmap fonts
-		protected var engravedBoldBitmapFont:BitmapFont;
+		// bitmap fonts
+		protected var engravedDarkBoldBitmapFont:BitmapFont;
+		protected var engravedMediumBoldBitmapFont:BitmapFont;
+		protected var engravedLightBoldBitmapFont:BitmapFont;
 		protected var defaultBitmapFont:BitmapFont;
 
+		// bitmap font text formats
+
+		protected var headerBoldBftf:BitmapFontTextFormat;
+		protected var subHeaderBftf:BitmapFontTextFormat;
+		protected var bodyBftf:BitmapFontTextFormat;
+		protected var inputLabelLeftBftf:BitmapFontTextFormat;
 
 
 
-
-		protected var headerTextFormat:TextFormat;
 
 
 		protected var hivivaDefaultTextFormat:TextFormat;
 		protected var hivivaLighterTextFormat:TextFormat;
+/*
 
+		protected var headerTextFormat:TextFormat;
 		protected var smallUIDarkTextFormat:TextFormat;
-
 		protected var smallUILightTextFormat:TextFormat;
-
 		protected var smallUISelectedTextFormat:TextFormat;
-
 		protected var smallUIDisabledTextFormat:TextFormat;
-
-
 		protected var largeUIDarkTextFormat:TextFormat;
-
 		protected var largeUILightTextFormat:TextFormat;
-
 		protected var largeUISelectedTextFormat:TextFormat;
-
 		protected var largeUIDisabledTextFormat:TextFormat;
-
-
 		protected var largeDarkTextFormat:TextFormat;
-
 		protected var largeLightTextFormat:TextFormat;
-
 		protected var largeDisabledTextFormat:TextFormat;
-
-
 		protected var smallDarkTextFormat:TextFormat;
-
 		protected var smallLightTextFormat:TextFormat;
-
 		protected var smallDisabledTextFormat:TextFormat;
-
+*/
 
 		protected var atlas:TextureAtlas;
 
@@ -565,11 +558,22 @@ package source.themes
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
 
 
-			const fontNames:String = "Helvetica Neue,Helvetica,Roboto,Arial,_sans";
-
-
-			this.engravedBoldBitmapFont = TextField.getBitmapFont("hivivafont_engraved_bold");
+			// Bitmap Fonts
 			this.defaultBitmapFont = TextField.getBitmapFont("hivivafont_default");
+			this.engravedDarkBoldBitmapFont = TextField.getBitmapFont("engraved-dark-bold");
+			this.engravedMediumBoldBitmapFont = TextField.getBitmapFont("engraved-medium-bold");
+			this.engravedLightBoldBitmapFont = TextField.getBitmapFont("engraved-light-bold");
+
+			// Bitmap Font TextFormats
+			this.headerBoldBftf = new BitmapFontTextFormat(this.engravedDarkBoldBitmapFont,44 * this.scale,Color.WHITE);
+			this.subHeaderBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE);
+			this.bodyBftf = new BitmapFontTextFormat(this.defaultBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
+			this.inputLabelLeftBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE);
+
+
+/*
+
+			const fontNames:String = "Helvetica Neue,Helvetica,Roboto,Arial,_sans";
 
 			this.headerTextFormat = new TextFormat(fontNames, 36 * this.scale, 0x000000, true);
 
@@ -607,6 +611,7 @@ package source.themes
 			this.largeLightTextFormat = new TextFormat(fontNames, 30 * this.scale, LIGHT_TEXT_COLOR);
 
 			this.largeDisabledTextFormat = new TextFormat(fontNames, 30 * this.scale, DISABLED_TEXT_COLOR);
+*/
 
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
@@ -814,7 +819,6 @@ package source.themes
 			this.setInitializerForClass(Label, homeLabelInitializer, "home-label");
 			this.setInitializerForClass(Label, splashFooterTextInitializer, "splash-footer-text");
 			this.setInitializerForClass(Label, calenderSelectTextInitializer, "calender-select-text");
-			this.setInitializerForClass(Label, labelInitializer);
 			this.setInitializerForClass(Label, centeredLabelInitializer, "centered-label");
 			this.setInitializerForClass(Label, feelingSliderLabelInitializer, "feeling-slider-label");
 			this.setInitializerForClass(Label, patientProfileAppidLabelInitializer, "patient-profile-appid");
@@ -823,6 +827,11 @@ package source.themes
 			this.setInitializerForClass(Label, superscriptLabelInitializer, "superscript-label");
 			this.setInitializerForClass(Label, messageDateLabelInitializer, "message-date-label");
 			this.setInitializerForClass(Label, patientDataLightLabelInitializer, "patient-data-lighter");
+
+
+			this.setInitializerForClass(Label, labelInitializer);
+			this.setInitializerForClass(Label, inputLabelLeftInitializer, HivivaThemeConstants.INPUT_LABEL_LEFT);
+			this.setInitializerForClass(Label, inputLabelRightInitializer, HivivaThemeConstants.INPUT_LABEL_RIGHT);
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
 					BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
@@ -1097,13 +1106,41 @@ package source.themes
 
 		protected function labelInitializer(label:Label):void
 		{
-			label.textRendererProperties.embedFonts = true;
-//			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x293d54);
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x495c72);
-			label.textRendererProperties.wordWrap = true;
-			label.textRendererProperties.isHTML = true;
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			label.textRendererFactory = function():ITextRenderer
+			{
+				return new BitmapFontTextRenderer();
+			};
+
+			label.textRendererProperties.textFormat = this.bodyBftf;
 		}
+
+		protected function inputLabelLeftInitializer(label:Label):void
+		{
+			label.textRendererFactory = function():ITextRenderer
+			{
+				return new BitmapFontTextRenderer();
+			};
+
+			label.textRendererProperties.textFormat = this.inputLabelLeftBftf;
+			label.textRendererProperties.wordWrap = true;
+		}
+
+		protected function inputLabelRightInitializer(label:Label):void
+		{
+			label.textRendererFactory = function():ITextRenderer
+			{
+				return new BitmapFontTextRenderer();
+			};
+
+			label.textRendererProperties.textFormat = this.bodyBftf;
+		}
+
+
+
+
+
+
+
 
 		protected function centeredLabelInitializer(label:Label):void
 		{
@@ -1177,7 +1214,7 @@ package source.themes
 				return new BitmapFontTextRenderer();
 			};
 
-			label.textRendererProperties.textFormat = new BitmapFontTextFormat(this.engravedBoldBitmapFont,30,Color.WHITE);
+			label.textRendererProperties.textFormat = this.subHeaderBftf;
 		}
 		protected function medBrandLabelInitializer(label:Label):void
 		{
@@ -1240,7 +1277,7 @@ package source.themes
 		protected function itemRendererAccessoryLabelInitializer(renderer:TextFieldTextRenderer):void
 		{
 
-			renderer.textFormat = this.smallLightTextFormat;
+//			renderer.textFormat = this.smallLightTextFormat;
 
 		}
 
@@ -1661,6 +1698,7 @@ package source.themes
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
+/*
 
 			button.defaultLabelProperties.textFormat = this.largeUIDarkTextFormat;
 
@@ -1668,6 +1706,7 @@ package source.themes
 
 			button.selectedDisabledLabelProperties.textFormat = this.largeUIDisabledTextFormat;
 
+*/
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 
@@ -1739,6 +1778,7 @@ package source.themes
 
 			tab.defaultSelectedSkin = defaultSelectedSkin;
 
+/*
 
 			tab.defaultLabelProperties.textFormat = this.smallUILightTextFormat;
 
@@ -1747,6 +1787,7 @@ package source.themes
 			tab.disabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
 
 			tab.selectedDisabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
+*/
 
 
 			tab.paddingTop = tab.paddingBottom = 8 * this.scale;
@@ -1902,12 +1943,14 @@ package source.themes
 
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
+/*
 
 			renderer.defaultLabelProperties.textFormat = this.largeLightTextFormat;
 
 			renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
 
 			renderer.defaultSelectedLabelProperties.textFormat = this.largeDarkTextFormat;
+*/
 
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
@@ -1979,7 +2022,7 @@ package source.themes
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
 
-			renderer.contentLabelProperties.textFormat = this.smallUILightTextFormat;
+//			renderer.contentLabelProperties.textFormat = this.smallUILightTextFormat;
 
 			renderer.paddingTop = renderer.paddingBottom = 4 * this.scale;
 
@@ -2005,7 +2048,7 @@ package source.themes
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
 
-			renderer.contentLabelProperties.textFormat = this.smallLightTextFormat;
+//			renderer.contentLabelProperties.textFormat = this.smallLightTextFormat;
 
 			renderer.paddingTop = renderer.paddingBottom = 4 * this.scale;
 
@@ -2033,7 +2076,7 @@ package source.themes
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
 
-			renderer.contentLabelProperties.textFormat = this.smallUILightTextFormat;
+//			renderer.contentLabelProperties.textFormat = this.smallUILightTextFormat;
 
 			renderer.paddingTop = renderer.paddingBottom = 4 * this.scale;
 
@@ -2061,7 +2104,7 @@ package source.themes
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
 
-			renderer.contentLabelProperties.textFormat = this.smallLightTextFormat;
+//			renderer.contentLabelProperties.textFormat = this.smallLightTextFormat;
 
 			renderer.paddingTop = renderer.paddingBottom = 4 * this.scale;
 

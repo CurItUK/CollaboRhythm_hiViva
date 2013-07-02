@@ -95,8 +95,12 @@ package collaboRhythm.hiviva.view
 			var appDir:File = File.applicationDirectory;
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/homePagePhoto.atf"),appDir.resolvePath("assets/images/atlas/homePagePhoto.xml"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/hivivaBaseImages.png"),appDir.resolvePath("assets/images/atlas/hivivaBaseImages.xml"));
-			_assets.enqueue(appDir.resolvePath("assets/fonts/hivivafont_engraved_bold.png"),appDir.resolvePath("assets/fonts/hivivafont_engraved_bold.fnt"));
+			// fonts
 			_assets.enqueue(appDir.resolvePath("assets/fonts/hivivafont_default.png"),appDir.resolvePath("assets/fonts/hivivafont_default.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-dark-bold.png"),appDir.resolvePath("assets/fonts/engraved-dark-bold.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-medium-bold.png"),appDir.resolvePath("assets/fonts/engraved-medium-bold.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-light-bold.png"),appDir.resolvePath("assets/fonts/engraved-light-bold.fnt"));
+
 			_assets.loadQueue(function onProgress(ratio:Number):void
 			{
 				trace("Loading Assets " + ratio);

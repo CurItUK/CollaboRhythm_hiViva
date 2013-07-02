@@ -159,8 +159,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function labelAndInputDrawProperties(landi:LabelAndInput):void
 		{
 			landi.width = this.actualWidth;
-//			landi._labelRight.textRendererProperties.textFormat = this._rightLabelFormat;
-			landi._labelRight.textRendererProperties.textFormat.size = 20;
 			landi._input.width = this.actualWidth * 0.3;
 			landi._input.validate();
 			landi._input.x = (this.actualWidth * 0.5) - (landi._input.width / 2);
