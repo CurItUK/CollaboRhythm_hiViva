@@ -35,7 +35,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			super();
 		}
-
+        [Inline]
 		override protected function draw():void
 		{
 			super.draw();

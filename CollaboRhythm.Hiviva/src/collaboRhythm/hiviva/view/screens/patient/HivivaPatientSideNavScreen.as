@@ -49,7 +49,10 @@ package collaboRhythm.hiviva.view.screens.patient
 					{ width: btnWidth, height: btnHeight, name: "profile", label: "PROFILE" },
 					{ width: btnWidth, height: btnHeight, name: "help", label: "HELP"},
 					{ width: btnWidth, height: btnHeight, name: "messages", label: "MESSAGES"},
-					{ width: btnWidth, height: btnHeight, name: "badges", label: "BADGES"}
+					{ width: btnWidth, height: btnHeight, name: "badges", label: "BADGES"},
+					//TODO: Alerts screen should be added here
+					{ width: btnWidth, height: btnHeight, name: "alerts", label: "ALERTS"}
+
 				]
 			);
 			this._sideBtnGroup.buttonInitializer = function(button:Button, item:Object):void
@@ -73,6 +76,10 @@ package collaboRhythm.hiviva.view.screens.patient
 						break;
 					case "badges" :
 						img = new Image(Main.assets.getTexture("side_nav_icon_04"));
+						break;
+					//TODO: Alerts screen should be added here
+					case "alerts" :
+						img = new Image(Main.assets.getTexture("side_nav_icon_01"));
 						break;
 
 				}
@@ -106,6 +113,10 @@ package collaboRhythm.hiviva.view.screens.patient
 				case "badges" :
 					navAwayEvent.message = HivivaScreens.PATIENT_BADGES_SCREEN;
 					break;
+				//TODO:Alerts screen should be added here.
+				case "alerts" :
+				navAwayEvent.message = HivivaScreens.PATIENT_ALERTS_SCREEN;
+				break;
 
 			}
 

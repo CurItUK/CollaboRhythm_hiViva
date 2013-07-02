@@ -127,14 +127,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			initProfileMenuButtons();
 		}
 
-		private function initProfileMenuButtons():void
+			private function initProfileMenuButtons():void
 		{
 			var lc:ListCollection = new ListCollection(
 				[
 					{name: "photo", label: "Home page photo"},
 					{name: "medicines", label: "Daily medicines"},
 					{name: "results", label: "Test results"},
-					{name: "connect", label: "Connect to care provider"}
+					{name: "connect", label: "Connect to care provider"},
+					{name: "settings", label: "Settings"}
+
 				]
 			);
 
@@ -191,6 +193,9 @@ package collaboRhythm.hiviva.view.screens.patient
 					break;
 				case "medicines" :
 					this.owner.showScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
+					break;
+				case "settings" :
+					this.owner.showScreen(HivivaScreens.PATIENT_EDIT_SETTINGS_SCREEN);
 					break;
 				case "results" :
 					this.owner.showScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN);

@@ -58,7 +58,10 @@ package collaboRhythm.hiviva.view
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.utils.AssetManager;
-
+	import feathers.core.PopUpManager;
+	import collaboRhythm.hiviva.view.components.Calendar;
+	import flash.desktop.NativeApplication;
+	import collaboRhythm.hiviva.view.PasswordPopUp;
 	public class Main extends Sprite
 	{
 		private var _screenHolder:Sprite;
@@ -71,11 +74,11 @@ package collaboRhythm.hiviva.view
 		private var _currMainScreenId:String;
 		private var _scaleFactor:Number;
 		//private var _profile:String;
-
+		private var _calendar:Calendar;
 		private static var _selectedHCPPatientProfile:Object = {};
 		private static var _assets:AssetManager;
 		private static var _footerBtnGroupHeight:Number;
-
+		private var _popupContainer:PasswordPopUp;
 		public function Main()
 		{
 		}
@@ -131,7 +134,27 @@ package collaboRhythm.hiviva.view
 
 			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete}));
 			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
+
+			this._popupContainer = new PasswordPopUp();
+						//	this._popupContainer.scale = this.dpiScale;
+					//	 this._popupContainer.width = this.actualWidth;
+						//	this._popupContainer.height = this.actualHeight;
+						//	this._popupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
+					//		this._popupContainer.message = _main.selectedHCPPatientProfile.name;
+						//	this._popupContainer.confirmLabel = 'Message Sent';
+						//	this._popupContainer.validate();
+
+						 PopUpManager.addPopUp(this._popupContainer, true, true);
+						 this._popupContainer.validate();
+
+
+
+
 		}
+
+
+
+
 
 		private function splashComplete(e:Event):void
 		{
@@ -247,7 +270,7 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
-		//	this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
+		    this._settingsNav.addScreen(HivivaScreens.PATIENT_ALERTS_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
 
 		}
 

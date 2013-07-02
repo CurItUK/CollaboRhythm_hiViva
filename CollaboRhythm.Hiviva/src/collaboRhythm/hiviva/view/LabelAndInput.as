@@ -4,9 +4,13 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.TextInput;
 	import feathers.core.FeathersControl;
 
-	public class LabelAndInput extends FeathersControl
+	public class LabelAndInput extends  FeathersControl
 	{
+		private static const CLASS_NAME : String  = "LabelAndInput ::: - extends FeathersControl";
 		private var _scale:Number;
+		private var _isPassword: Boolean  = false;
+		private var __color : String
+
 		public function set scale(value:Number):void
 		{
 			this._scale = value;
@@ -27,6 +31,9 @@ package collaboRhythm.hiviva.view
 			return this._labelStructure;
 		}
 
+
+
+
 		public var _labelLeft:Label;
 		public var _labelRight:Label;
 		public var _input:TextInput;
@@ -36,7 +43,62 @@ package collaboRhythm.hiviva.view
 		public function LabelAndInput()
 		{
 			super();
+
 		}
+
+		//TODO: this part needs to be modified if new feathers is used
+        /**
+	     * Display as password added to be able to access properties directly.
+		 * use accesors and modifiers to update the label field
+		 * @see http://wiki.starling-framework.org/feathers/text-input
+		 * @see feathers.core.ITextEditor
+		**/
+		public function set displayAsPassword( b: Boolean )
+		{
+
+			this._isPassword = b ;
+		};
+
+        //TODO: this part needs to be modified if new feathers is used
+		/**
+        * Display as password added to be able to access properties directly.
+		 * use accesors and modifiers to update the label field
+		 * @see http://wiki.starling-framework.org/feathers/text-input
+         * @see feathers.core.ITextEditor
+         **/
+         public function get displayAsPassword():Boolean
+         {
+         return this._isPassword;
+         };
+
+
+
+		//TODO: this part needs to be modified if new feathers is used
+		        /**
+			     * Display as password added to be able to access properties directly.
+				 * use accesors and modifiers to update the label field
+				 * @see http://wiki.starling-framework.org/feathers/text-input
+				 * @see feathers.core.ITextEditor
+				**/
+				public function set _color( b: String )
+				{
+
+					this.__color = b ;
+				};
+
+    //TODO: this part needs to be modified if new feathers is used
+		/**
+        * Display as password added to be able to access properties directly.
+		 * use accesors and modifiers to update the label field
+		 * @see http://wiki.starling-framework.org/feathers/text-input
+         * @see feathers.core.ITextEditor
+         **/
+         public function get _color():String
+         {
+         return this.__color;
+         };
+
+
 
 		override protected function draw():void
 		{
@@ -45,7 +107,16 @@ package collaboRhythm.hiviva.view
 
 			super.draw();
 
+			this._input.textEditorProperties.displayAsPassword =  this._isPassword;
+			if(this.__color != null )
+			this._input.textEditorProperties.color =  this.__color
+
 			this._input.validate();
+
+
+
+
+
 
 			switch(this._labelStructure)
 			{
@@ -83,6 +154,7 @@ package collaboRhythm.hiviva.view
 			super.initialize();
 
 			this._input = new TextInput();
+
 			addChild(this._input);
 
 			createLabels();
