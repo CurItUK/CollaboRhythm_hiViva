@@ -47,7 +47,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _dataExists:Boolean;
 		private var _calendar:Calendar;
 
-		private var _rightLabelFormat:TextFormat;
+//		private var _rightLabelFormat:TextFormat;
 
 		public function HivivaPatientTestResultsScreen()
 		{
@@ -56,7 +56,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function draw():void
 		{
-			this._rightLabelFormat = new TextFormat("ExoRegular", Math.round(24 * this.dpiScale), 0x495c72);
+//			this._rightLabelFormat = new TextFormat("ExoRegular", Math.round(24 * this.dpiScale), 0x495c72);
 			super.draw();
 
 			this._dateButton.x = this._date.x + this._date._labelRight.x;
@@ -84,7 +84,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			labelAndInputDrawProperties(this._viralLoad);
 
 			this._date._labelLeft.textRendererProperties.multiline = true;
-			this._date._labelLeft.text = "Date of <br/>last test:";
+			this._date._labelLeft.text = "Date of \nlast test:";
 			this._date._labelRight.text = "";
 			labelAndInputDrawProperties(this._date);
 
@@ -159,7 +159,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function labelAndInputDrawProperties(landi:LabelAndInput):void
 		{
 			landi.width = this.actualWidth;
-			landi._labelRight.textRendererProperties.textFormat = this._rightLabelFormat;
+//			landi._labelRight.textRendererProperties.textFormat = this._rightLabelFormat;
+			landi._labelRight.textRendererProperties.textFormat.size = 20;
 			landi._input.width = this.actualWidth * 0.3;
 			landi._input.validate();
 			landi._input.x = (this.actualWidth * 0.5) - (landi._input.width / 2);
