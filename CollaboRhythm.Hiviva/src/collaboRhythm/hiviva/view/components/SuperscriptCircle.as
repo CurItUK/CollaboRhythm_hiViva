@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -39,7 +40,7 @@ package collaboRhythm.hiviva.view.components
 			this.addChild(this._img);
 
 			this._label = new Label();
-			this._label.name = "superscript-label";
+			this._label.name = HivivaThemeConstants.SUPERSCRIPT_LABEL;
 			this._label.text = this._text;
 			this.addChild(this._label);
 		}

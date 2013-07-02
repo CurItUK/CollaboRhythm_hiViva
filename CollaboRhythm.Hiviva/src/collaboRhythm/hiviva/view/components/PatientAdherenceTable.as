@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.components
 {
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -130,7 +131,7 @@ package collaboRhythm.hiviva.view.components
 			for (var dayCount:int = 0; dayCount < 8; dayCount++)
 			{
 				dayLabel = new Label();
-				dayLabel.name = "patient-data-lighter";
+				dayLabel.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
 				dayLabel.width = this._dataColumnsWidth;
 				dayLabel.x = this._dataColumnsWidth * dayCount;
 				dayLabel.text = this._weekDays[dayCount];
@@ -303,7 +304,7 @@ package collaboRhythm.hiviva.view.components
 								// history[historyCount].tolerability
 								cellLabel = new Label();
 								cellLabel.width = this._dataColumnsWidth;
-								cellLabel.name = "patient-data-lighter";
+								cellLabel.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
 								cellLabel.text = history[historyCount].tolerability;
 								cell.addChild(cellLabel);
 								cellLabel.validate();

@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
@@ -83,12 +84,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._menuBtnGroup);
 
 			this._appIdLabel = new Label();
-			this._appIdLabel.name = "patient-profile-appid";
+			this._appIdLabel.name = HivivaThemeConstants.APPID_LABEL;
 			this._appIdLabel.text = "Your app ID";
 			addChild(this._appIdLabel);
 
 			this._appId = new Label();
-			this._appId.name = "patient-profile-appid";
+			this._appId.name = HivivaThemeConstants.APPID_LABEL;
 			this._appId.text = HivivaStartup.userVO.appId;
 			addChild(this._appId);
 

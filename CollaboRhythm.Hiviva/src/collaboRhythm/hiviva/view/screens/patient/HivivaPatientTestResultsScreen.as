@@ -240,7 +240,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			if(this._viralLoad._input.text.length == 0 || isNaN(Number(this._viralLoad._input.text))) validationArray.push("Please enter valid Viral load data");
 			if(this._date._input.text.length == 0) validationArray.push("Please select a date");
 
-			return validationArray.join("<br/>");
+			return validationArray.join("\n");
 		}
 
 		private function sqlResultHandler(e:SQLEvent):void

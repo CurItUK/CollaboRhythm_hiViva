@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.Main;
@@ -117,17 +118,17 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._feelingSliderRightImage);
 
 			this._feelingSliderLeftLabel = new Label();
-			this._feelingSliderLeftLabel.name = "feeling-slider-label";
+			this._feelingSliderLeftLabel.name = HivivaThemeConstants.FEELING_SLIDER_LABEL;
 			this._feelingSliderLeftLabel.text = "AWFUL";
 			this._content.addChild(this._feelingSliderLeftLabel);
 
 			this._feelingSliderCenterLabel = new Label();
-			this._feelingSliderCenterLabel.name = "feeling-slider-label";
+			this._feelingSliderCenterLabel.name = HivivaThemeConstants.FEELING_SLIDER_LABEL;
 			this._feelingSliderCenterLabel.text = "OK";
 			this._content.addChild(this._feelingSliderCenterLabel);
 
 			this._feelingSliderRightLabel = new Label();
-			this._feelingSliderRightLabel.name = "feeling-slider-label";
+			this._feelingSliderRightLabel.name = HivivaThemeConstants.FEELING_SLIDER_LABEL;
 			this._feelingSliderRightLabel.text = "AWESOME";
 			this._content.addChild(this._feelingSliderRightLabel);
 

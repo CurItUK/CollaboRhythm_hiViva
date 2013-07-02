@@ -7,25 +7,25 @@ package collaboRhythm.hiviva.global
 		public static const DARK_FONT_COLOUR:uint					= 0x293d54;
 		public static const MEDIUM_FONT_COLOUR:uint					= 0x495c72;
 		public static const LIGHT_FONT_COLOUR:uint					= 0x607895;
+		public static const LIGHTER_FONT_COLOUR:uint				= 0xb9c4cd;
+		public static const LIGHTEST_FONT_COLOUR:uint				= 0xdee4e9;
 
 		// labels style names
-		// EFFECT_SHADE_VARIANT_SIZE = effect-shade-variant-size (default = "normal-medium-regular-24")
-		
-		public static const ENGRAVED_DARK_BOLD_44:String					= "engraved-dark-bold-44";
-		public static const ENGRAVED_DARK_BOLD_30:String					= "engraved-dark-bold-30";
-		public static const ENGRAVED_MEDIUM_BOLD_30:String					= "engraved-medium-bold-30";
-		public static const ENGRAVED_LIGHT_BOLD_24:String					= "engraved-light-bold-24";
 
-		public static const ENGRAVED_DARK_LIGHT_44:String					= "engraved-dark-light-44";
-		public static const ENGRAVED_DARK_LIGHT_30:String					= "engraved-dark-light-30";
-		public static const ENGRAVED_DARK_LIGHT_20:String					= "engraved-dark-light-20";
-
-		public static const ENGRAVED_MEDIUM_REGULAR_30:String				= "engraved-medium-regular-30";
-		public static const NORMAL_MEDIUM_REGULAR_30:String					= "normal-medium-regular-30";
-		public static const NORMAL_LIGHT_REGULAR_20:String					= "normal-light-regular-20";
-
-		public static const INPUT_LABEL_LEFT:String							= "inputLabelLeft";
-		public static const INPUT_LABEL_RIGHT:String						= "inputLabelRight";
+		public static const INPUT_LABEL_LEFT:String							= "input-label-left";
+		public static const INPUT_LABEL_RIGHT:String						= "input-label-right";
+		public static const HOME_LENS_LABEL:String							= "home-lens-label";
+		public static const VALIDATION_LABEL:String							= "validation-label";
+		public static const MEDICINE_BRANDNAME_LABEL:String					= "medicine-brandname-label";
+		public static const SPLASH_FOOTER_LABEL:String						= "splash-footer-label";
+		public static const CALENDAR_MONTH_LABEL:String						= "calender-month-label";
+		public static const CALENDAR_DAYS_LABEL:String						= "calendar-days-label";
+		public static const FEELING_SLIDER_LABEL:String						= "feeling-slider-label";
+		public static const APPID_LABEL:String								= "appid-label";
+		public static const INSTRUCTIONS_LABEL:String						= "instructions-label";
+		public static const SUPERSCRIPT_LABEL:String						= "superscript-label";
+		public static const MESSAGE_DATE_LABEL:String						= "message-date-label";
+		public static const PATIENT_DATA_LIGHTER_LABEL:String				= "patient-data-lighter-label";
 
 		// buttons style names
 	}

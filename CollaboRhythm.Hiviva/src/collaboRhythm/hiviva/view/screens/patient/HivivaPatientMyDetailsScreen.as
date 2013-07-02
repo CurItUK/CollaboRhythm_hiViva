@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
@@ -143,7 +144,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._nameInput);
 
 			this._nameInputIns = new Label();
-			this._nameInputIns.name = "instructions-label";
+			this._nameInputIns.name = HivivaThemeConstants.INSTRUCTIONS_LABEL;
 			this._nameInputIns.text = "This will be your display name";
 			this._content.addChild(this._nameInputIns);
 
@@ -178,7 +179,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._emailInput);
 
 			this._emailInputIns = new Label();
-			this._emailInputIns.name = "instructions-label";
+			this._emailInputIns.name = HivivaThemeConstants.INSTRUCTIONS_LABEL;
 			this._emailInputIns.text = "Only required if you would like to receive app notifications by email";
 			this._content.addChild(this._emailInputIns);
 
@@ -202,7 +203,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._cancelAndSave);
 
 			this._agreeLabel = new Label();
-			this._agreeLabel.name = "instructions-label";
+			this._agreeLabel.name = HivivaThemeConstants.INSTRUCTIONS_LABEL;
 			this._agreeLabel.text = "By clicking the button above, you agree to the <font color='#016cf9'>Terms of Use</font><br />" +
 									"View our <font color='#016cf9'>Privacy Policy</font>";
 			this._content.addChild(this._agreeLabel);

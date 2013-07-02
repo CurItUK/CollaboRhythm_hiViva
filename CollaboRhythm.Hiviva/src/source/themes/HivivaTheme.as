@@ -232,10 +232,12 @@ package source.themes
 		public static const NONE_THEMED:String = "non-themed";
 
 
-		protected static function textRendererFactory():TextFieldTextRenderer
+//		protected static function textRendererFactory():TextFieldTextRenderer
+		protected static function textRendererFactory():BitmapFontTextRenderer
 		{
 
-			return new TextFieldTextRenderer();
+//			return new TextFieldTextRenderer();
+			return new BitmapFontTextRenderer();
 
 		}
 
@@ -300,10 +302,14 @@ package source.themes
 		protected var primaryBackground:TiledImage;
 
 		// bitmap fonts
+		protected var normalWhiteRegularBitmapFont:BitmapFont;
+		protected var normalWhiteBoldBitmapFont:BitmapFont;
 		protected var engravedDarkBoldBitmapFont:BitmapFont;
 		protected var engravedMediumBoldBitmapFont:BitmapFont;
 		protected var engravedLightBoldBitmapFont:BitmapFont;
-		protected var defaultBitmapFont:BitmapFont;
+		protected var engravedLighterRegularBitmapFont:BitmapFont;
+		protected var engravedLighterBoldBitmapFont:BitmapFont;
+		protected var raisedLighterBoldBitmapFont:BitmapFont;
 
 		// bitmap font text formats
 
@@ -311,13 +317,27 @@ package source.themes
 		protected var subHeaderBftf:BitmapFontTextFormat;
 		protected var bodyBftf:BitmapFontTextFormat;
 		protected var inputLabelLeftBftf:BitmapFontTextFormat;
+		protected var homeLensLabelBftf:BitmapFontTextFormat;
+		protected var validationLabelBftf:BitmapFontTextFormat;
+		protected var medicineBrandnameLabelBftf:BitmapFontTextFormat;
+		protected var splashFooterLabelBftf:BitmapFontTextFormat;
+		protected var calendarMonthLabelBftf:BitmapFontTextFormat;
+		protected var feelingSliderLabelBftf:BitmapFontTextFormat;
+		protected var appIdLabelBftf:BitmapFontTextFormat;
+		protected var instructionsLabelBftf:BitmapFontTextFormat;
+		protected var calendarDaysLabelBftf:BitmapFontTextFormat;
+		protected var superscriptLabelBftf:BitmapFontTextFormat;
+
+		protected var defaultButtonLabelBftf:BitmapFontTextFormat;
+		protected var sideNavGroupLabelBftf:BitmapFontTextFormat;
+		protected var profileGroupLabelBftf:BitmapFontTextFormat;
+		protected var galleryButtonLabelBftf:BitmapFontTextFormat;
 
 
 
 
 
 		protected var hivivaDefaultTextFormat:TextFormat;
-		protected var hivivaLighterTextFormat:TextFormat;
 /*
 
 		protected var headerTextFormat:TextFormat;
@@ -559,27 +579,43 @@ package source.themes
 
 
 			// Bitmap Fonts
-			this.defaultBitmapFont = TextField.getBitmapFont("hivivafont_default");
+			this.normalWhiteRegularBitmapFont = TextField.getBitmapFont("normal-white-regular");
+			this.normalWhiteBoldBitmapFont = TextField.getBitmapFont("normal-white-bold");
 			this.engravedDarkBoldBitmapFont = TextField.getBitmapFont("engraved-dark-bold");
 			this.engravedMediumBoldBitmapFont = TextField.getBitmapFont("engraved-medium-bold");
 			this.engravedLightBoldBitmapFont = TextField.getBitmapFont("engraved-light-bold");
+			this.engravedLighterRegularBitmapFont = TextField.getBitmapFont("engraved-lighter-regular");
+			this.engravedLighterBoldBitmapFont = TextField.getBitmapFont("engraved-lighter-bold");
+			this.raisedLighterBoldBitmapFont = TextField.getBitmapFont("raised-lighter-bold");
 
 			// Bitmap Font TextFormats
 			this.headerBoldBftf = new BitmapFontTextFormat(this.engravedDarkBoldBitmapFont,44 * this.scale,Color.WHITE);
 			this.subHeaderBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE);
-			this.bodyBftf = new BitmapFontTextFormat(this.defaultBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
+			this.bodyBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
 			this.inputLabelLeftBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE);
+			this.homeLensLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR,TextFormatAlign.CENTER);
+			this.validationLabelBftf = new BitmapFontTextFormat(this.engravedLighterRegularBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			this.medicineBrandnameLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 30 * this.scale, Color.WHITE);
+			this.splashFooterLabelBftf = new BitmapFontTextFormat(this.raisedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			this.calendarMonthLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 40 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR,TextFormatAlign.CENTER);
+			this.feelingSliderLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 20 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			this.appIdLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.LIGHT_FONT_COLOUR,TextFormatAlign.CENTER);
+			this.instructionsLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 20 * this.scale, HivivaThemeConstants.LIGHT_FONT_COLOUR);
+			this.calendarDaysLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 30 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			this.superscriptLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 14 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			// buttons label formats
+			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			this.sideNavGroupLabelBftf = new BitmapFontTextFormat(this.normalWhiteBoldBitmapFont, 18 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR);
+			this.profileGroupLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
+			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 
-
+			this.hivivaDefaultTextFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x4c5f76);
 /*
 
 			const fontNames:String = "Helvetica Neue,Helvetica,Roboto,Arial,_sans";
 
 			this.headerTextFormat = new TextFormat(fontNames, 36 * this.scale, 0x000000, true);
 
-			this.hivivaDefaultTextFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x4c5f76);
-
-			this.hivivaLighterTextFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x293d54);
 
 			this.smallUIDarkTextFormat = new TextFormat(fontNames, 24 * this.scale, DARK_TEXT_COLOR, true);
 
@@ -810,28 +846,21 @@ package source.themes
 
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 
-			//this.setInitializerForClass(Label, headerLabelInitializer, "header");
-			//this.setInitializerForClass(Label, HeaderBoldInitializer, "header-bold");
-			this.setInitializerForClass(Label, validationLabelInitializer, "validation-label");
-			this.setInitializerForClass(Label, inputLabelInitializer, "input-label");
-			this.setInitializerForClass(Label, medBrandLabelInitializer, "medicine-brandname");
-			this.setInitializerForClass(Label, lighterLabelInitializer, "lighter-color-label");
-			this.setInitializerForClass(Label, homeLabelInitializer, "home-label");
-			this.setInitializerForClass(Label, splashFooterTextInitializer, "splash-footer-text");
-			this.setInitializerForClass(Label, calenderSelectTextInitializer, "calender-select-text");
-			this.setInitializerForClass(Label, centeredLabelInitializer, "centered-label");
-			this.setInitializerForClass(Label, feelingSliderLabelInitializer, "feeling-slider-label");
-			this.setInitializerForClass(Label, patientProfileAppidLabelInitializer, "patient-profile-appid");
-			this.setInitializerForClass(Label, instructionsLabelInitializer, "instructions-label");
-			this.setInitializerForClass(Label, calendarDaysLabelInitializer, "calendar-days");
-			this.setInitializerForClass(Label, superscriptLabelInitializer, "superscript-label");
-			this.setInitializerForClass(Label, messageDateLabelInitializer, "message-date-label");
-			this.setInitializerForClass(Label, patientDataLightLabelInitializer, "patient-data-lighter");
-
-
 			this.setInitializerForClass(Label, labelInitializer);
 			this.setInitializerForClass(Label, inputLabelLeftInitializer, HivivaThemeConstants.INPUT_LABEL_LEFT);
 			this.setInitializerForClass(Label, inputLabelRightInitializer, HivivaThemeConstants.INPUT_LABEL_RIGHT);
+			this.setInitializerForClass(Label, homeLensLabelInitializer, HivivaThemeConstants.HOME_LENS_LABEL);
+			this.setInitializerForClass(Label, validationLabelInitializer, HivivaThemeConstants.VALIDATION_LABEL);
+			this.setInitializerForClass(Label, medicineBrandnameLabelInitializer, HivivaThemeConstants.MEDICINE_BRANDNAME_LABEL);
+			this.setInitializerForClass(Label, splashFooterLabelInitializer, HivivaThemeConstants.SPLASH_FOOTER_LABEL);
+			this.setInitializerForClass(Label, calenderMonthLabelInitializer, HivivaThemeConstants.CALENDAR_MONTH_LABEL);
+			this.setInitializerForClass(Label, feelingSliderLabelInitializer, HivivaThemeConstants.FEELING_SLIDER_LABEL);
+			this.setInitializerForClass(Label, appIdLabelInitializer, HivivaThemeConstants.APPID_LABEL);
+			this.setInitializerForClass(Label, instructionsLabelInitializer, HivivaThemeConstants.INSTRUCTIONS_LABEL);
+			this.setInitializerForClass(Label, calendarDaysLabelInitializer, HivivaThemeConstants.CALENDAR_DAYS_LABEL);
+			this.setInitializerForClass(Label, superscriptLabelInitializer, HivivaThemeConstants.SUPERSCRIPT_LABEL);
+			this.setInitializerForClass(Label, messageDateLabelInitializer, HivivaThemeConstants.MESSAGE_DATE_LABEL);
+			this.setInitializerForClass(Label, patientDataLightLabelInitializer, HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL);
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
 					BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
@@ -855,7 +884,6 @@ package source.themes
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
 			this.setInitializerForClass(Button, sideNavGroupInitializer, "side-nav-buttons");
 			this.setInitializerForClass(Button, patientProfileNavGroupInitializer, "patient-profile-nav-buttons");
-			this.setInitializerForClass(Button, galleryButtonGroupInitializer, "gallery-category-buttons");
 //			this.setInitializerForClass(Button, galleryThumbInitializer, "gallery-thumb-buttons");
 
 			//this.setInitializerForClass(Button, simpleButtonInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
@@ -1106,172 +1134,98 @@ package source.themes
 
 		protected function labelInitializer(label:Label):void
 		{
-			label.textRendererFactory = function():ITextRenderer
-			{
-				return new BitmapFontTextRenderer();
-			};
-
 			label.textRendererProperties.textFormat = this.bodyBftf;
+			label.textRendererProperties.wordWrap = true;
 		}
 
 		protected function inputLabelLeftInitializer(label:Label):void
 		{
-			label.textRendererFactory = function():ITextRenderer
-			{
-				return new BitmapFontTextRenderer();
-			};
-
 			label.textRendererProperties.textFormat = this.inputLabelLeftBftf;
 			label.textRendererProperties.wordWrap = true;
 		}
 
 		protected function inputLabelRightInitializer(label:Label):void
 		{
-			label.textRendererFactory = function():ITextRenderer
-			{
-				return new BitmapFontTextRenderer();
-			};
-
 			label.textRendererProperties.textFormat = this.bodyBftf;
 		}
 
-
-
-
-
-
-
-
-		protected function centeredLabelInitializer(label:Label):void
+		protected function homeLensLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x293d54);
-			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
+			label.textRendererProperties.textFormat = this.homeLensLabelBftf;
 			label.textRendererProperties.wordWrap = true;
-			label.textRendererProperties.isHTML = true;
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-		}
-
-		protected function feelingSliderLabelInitializer(label:Label):void
-		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 16 * this.scale, 0x293d54);
-			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
-			label.textRendererProperties.wordWrap = true;
-			label.textRendererProperties.isHTML = true;
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-		}
-
-		protected function patientProfileAppidLabelInitializer(label:Label):void
-		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x708295);
-			label.textRendererProperties.wordWrap = false;
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-		}
-
-		protected function instructionsLabelInitializer(label:Label):void
-		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 20 * this.scale, 0x4c5f76);
-			label.textRendererProperties.wordWrap = true;
-			label.textRendererProperties.isHTML = true;
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-		}
-
-		protected function calendarDaysLabelInitializer(label:Label):void
-		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 30 * this.scale, 0xFFFFFF);
-			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
-			label.textRendererProperties.isHTML = true;
-		}
-
-		protected function superscriptLabelInitializer(label:Label):void
-		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 14 * this.scale, 0xFFFFFF);
-			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 		}
 
 		protected function validationLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0xb9c4cd);
-			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
+			label.textRendererProperties.textFormat = this.validationLabelBftf;
 			label.textRendererProperties.wordWrap = true;
-			label.textRendererProperties.isHTML = true;
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(-1,1.5,0x000000,0.5,0);
 		}
-		protected function inputLabelInitializer(label:Label):void
-		{
-//			label.textRendererProperties.embedFonts = true;
-//			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0x495c72);
-//			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-//			label.textRendererProperties.isHTML = true;
-			label.textRendererFactory = function():ITextRenderer
-			{
-				return new BitmapFontTextRenderer();
-			};
 
-			label.textRendererProperties.textFormat = this.subHeaderBftf;
-		}
-		protected function medBrandLabelInitializer(label:Label):void
+		protected function medicineBrandnameLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0x495c72);
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-			label.textRendererProperties.isHTML = true;
+			label.textRendererProperties.textFormat = this.medicineBrandnameLabelBftf;
 		}
-		protected function lighterLabelInitializer(label:Label):void
+
+		protected function splashFooterLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x293d54);
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-			label.textRendererProperties.isHTML = true;
+			label.textRendererProperties.textFormat = this.splashFooterLabelBftf;
+			label.textRendererProperties.wordWrap = true;
+		}
+
+		protected  function calenderMonthLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.calendarMonthLabelBftf;
+		}
+
+		protected function feelingSliderLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.feelingSliderLabelBftf;
+		}
+
+		protected function appIdLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.appIdLabelBftf
+		}
+
+		protected function instructionsLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.instructionsLabelBftf;
+			label.textRendererProperties.wordWrap = true;
+		}
+
+		protected function calendarDaysLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.calendarDaysLabelBftf;
+		}
+
+		protected function superscriptLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.superscriptLabelBftf;
 		}
 		protected function messageDateLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x293d54);
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,3.5,0xFFFFFF,0.5,0);
+			label.textRendererProperties.textFormat = this.bodyBftf
 		}
+
 		protected function patientDataLightLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 24 * this.scale, 0x66778b);
-			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,3.5,0xFFFFFF,0.5,0);
+			label.textRendererProperties.textFormat = this.defaultButtonLabelBftf;
 		}
 
-		protected function homeLabelInitializer(label:Label):void
-		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x495c72);
-			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
-			label.textRendererProperties.wordWrap = true;
-			label.textRendererProperties.isHTML = true;
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
-		}
 
-		protected function splashFooterTextInitializer(label:Label):void
-		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 24 * this.scale, 0xFFFFFF);
-			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
-			label.textRendererProperties.isHTML = true;
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0x1a498a,1,0);
-		}
 
-		protected  function calenderSelectTextInitializer(label:Label):void
-		{
-			label.textRendererProperties.embedFonts = true;
-			label.textRendererProperties.textFormat = new TextFormat("ExoBold", 34 * this.scale, 0xFFFFFF);
-			label.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
-			label.textRendererProperties.isHTML = true;
-			label.textRendererProperties.filter = BlurFilter.createDropShadow(1,1.5,0x1a498a,1,0);
 
-		}
+
+
+
+
+
+
+
+
+
+
+
 
 
 		protected function itemRendererAccessoryLabelInitializer(renderer:TextFieldTextRenderer):void
@@ -1308,13 +1262,9 @@ package source.themes
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			var format:TextFormat = new TextFormat("ExoBold", 24 * this.scale, 0x6d7e91);
-			button.defaultLabelProperties.embedFonts = true;
-			button.defaultLabelProperties.textFormat = format;
-//			button.disabledLabelProperties.embedFonts = true;
-//			button.disabledLabelProperties.textFormat = format;
-//			button.selectedDisabledLabelProperties.embedFonts = true;
-//			button.selectedDisabledLabelProperties.textFormat = format;
+			
+
+			button.defaultLabelProperties.textFormat = this.defaultButtonLabelBftf;
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
@@ -1340,13 +1290,9 @@ package source.themes
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			var format:TextFormat = new TextFormat("ExoBold", 24 * this.scale, 0x6d7e91);
-			button.defaultLabelProperties.embedFonts = true;
-			button.defaultLabelProperties.textFormat = format;
-//			button.disabledLabelProperties.embedFonts = true;
-//			button.disabledLabelProperties.textFormat = format;
-//			button.selectedDisabledLabelProperties.embedFonts = true;
-//			button.selectedDisabledLabelProperties.textFormat = format;
+			
+
+			button.defaultLabelProperties.textFormat = this.defaultButtonLabelBftf;
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 30 * this.scale;
@@ -1391,9 +1337,7 @@ package source.themes
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.defaultLabelProperties.embedFonts = true;
-			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", 24 * this.scale, 0xb9c4cd);
-			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,-1.5,0x000000,0.5,0);
+			button.defaultLabelProperties.textFormat = this.defaultButtonLabelBftf
 
 			button.labelOffsetX = 8 * this.scale;
 			button.labelOffsetY = -5 * this.scale;
@@ -1512,13 +1456,10 @@ package source.themes
 			button.disabledLabelProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0xaeaeae);
 			button.disabledLabelProperties.filter = BlurFilter.createDropShadow(1,-1.5,0xFFFFFF,0.5,0);
 */
-			button.labelFactory = function():ITextRenderer
-			{
-				return new BitmapFontTextRenderer();
-			};
+			
 
-			button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(this.defaultBitmapFont,30, 0x454545);
-			button.disabledLabelProperties.textFormat = new BitmapFontTextFormat(this.defaultBitmapFont,30, 0xaeaeae);
+			button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont,30, 0x454545);
+			button.disabledLabelProperties.textFormat = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont,30, 0xaeaeae);
 
 			button.minWidth = skinWidth * this.scale;
 			button.minHeight = skinHeight * this.scale;
@@ -1528,7 +1469,7 @@ package source.themes
 
 		protected function calendarArrowsButtonInitializer(button:Button):void
 		{
-			var skinWidth:Number = this.buttonCalendarArrowsTexture.width
+			var skinWidth:Number = this.buttonCalendarArrowsTexture.width;
 			var skinHeight:Number = this.buttonCalendarArrowsTexture.height;
 			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
 			skinSelector.defaultValue = this.buttonCalendarArrowsTexture;
@@ -1569,31 +1510,6 @@ package source.themes
 			button.minTouchWidth = 128 * this.scale;
 			button.minTouchHeight = 135 * this.scale;
 		}
-
-		protected function galleryButtonGroupInitializer(button:Button):void
-		{
-			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
-			skinSelector.defaultValue = this.borderlessButtonUpSkinTextures;
-			//skinSelector.defaultSelectedValue = this.buttonFooterActiveTexture;
-			//skinSelector.setValueForState(this.buttonFooterActiveTexture, Button.STATE_DOWN, false);
-			skinSelector.imageProperties =
-			{
-				width: 292 * this.scale,
-				height: 88 * this.scale,
-				textureScale: this.scale
-			};
-
-			button.stateToSkinFunction = skinSelector.updateValue;
-
-			var format:TextFormat = new TextFormat("ExoBold", 24 * this.scale, 0x6d7e91);
-			button.defaultLabelProperties.embedFonts = true;
-			button.defaultLabelProperties.textFormat = format;
-
-			button.minWidth = 292 * this.scale;
-			button.minHeight = 88 * this.scale;
-			button.minTouchWidth = 292 * this.scale;
-			button.minTouchHeight = 88 * this.scale;
-		}
 /*
 
 		protected function galleryThumbInitializer(button:Button):void
@@ -1630,9 +1546,9 @@ package source.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.defaultLabelProperties.embedFonts = true;
-			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", 18 * this.scale, 0xc1ccd3);
-			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0x143068,0.5,0);
+			
+
+			button.defaultLabelProperties.textFormat = this.sideNavGroupLabelBftf;
 
 			button.verticalAlign = Button.VERTICAL_ALIGN_BOTTOM;
 			button.paddingBottom = 33 * this.scale;
@@ -1655,9 +1571,9 @@ package source.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.defaultLabelProperties.embedFonts = true;
-			button.defaultLabelProperties.textFormat = this.hivivaDefaultTextFormat;
-			button.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			
+
+			button.defaultLabelProperties.textFormat = this.profileGroupLabelBftf;
 
 			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 
@@ -1829,11 +1745,7 @@ package source.themes
 
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-			renderer.defaultLabelProperties.embedFonts = true;
-			renderer.defaultLabelProperties.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x293d54);
-			renderer.defaultLabelProperties.wordWrap = true;
-			renderer.defaultLabelProperties.isHTML = true;
-			renderer.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			renderer.defaultLabelProperties.textFormat = this.bodyBftf;
 			//renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
 			//renderer.defaultSelectedLabelProperties.textFormat = this.largeDarkTextFormat;
 
@@ -2136,13 +2048,8 @@ package source.themes
 			};
 
 			radio.stateToIconFunction = iconSelector.updateValue;
-			var format:TextFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x4c5f76);
-			radio.defaultLabelProperties.embedFonts = true;
-			radio.defaultLabelProperties.textFormat = format;
-			radio.disabledLabelProperties.embedFonts = true;
-			radio.disabledLabelProperties.textFormat = format;
-			radio.selectedDisabledLabelProperties.embedFonts = true;
-			radio.selectedDisabledLabelProperties.textFormat = format;
+
+			radio.defaultLabelProperties.textFormat = this.bodyBftf;
 			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			radio.gap = 12 * this.scale;
 			/*radio.padding = 32 * this.scale;
@@ -2190,11 +2097,7 @@ package source.themes
 			};
 
 			check.stateToIconFunction = iconSelector.updateValue;
-			var format:TextFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x4c5f76);
-			check.defaultLabelProperties.embedFonts = true;
-			check.defaultLabelProperties.textFormat = format;
-			check.defaultLabelProperties.wordWrap = true;
-			check.defaultLabelProperties.isHTML = true;
+			check.defaultLabelProperties.textFormat = this.bodyBftf;
 
 			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			check.gap = 12 * this.scale;

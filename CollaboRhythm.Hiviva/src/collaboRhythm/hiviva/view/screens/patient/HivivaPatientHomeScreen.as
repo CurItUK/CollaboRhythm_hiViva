@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
@@ -133,8 +134,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._shine);
 
 			this._homeImageInstructions = new Label();
-			this._homeImageInstructions.name = "home-label";
-			this._homeImageInstructions.text = "Go to <A HREF='http://www.google.com/'><FONT COLOR='#016cf9'>profile</FONT></A> then <FONT COLOR='#016cf9'>Homepage Photo</FONT> to upload or set your home page image <br/><br/>The clarity of this image will adjust to how well you stay on track with your medication.";
+			this._homeImageInstructions.name = HivivaThemeConstants.HOME_LENS_LABEL;
+			this._homeImageInstructions.text = "Go to profile then Homepage Photo to upload or set your home page image \n\nThe clarity of this image will adjust to how well you stay on track with your medication.";
 			addChild(this._homeImageInstructions);
 
 			this._messagesButton = new TopNavButton();

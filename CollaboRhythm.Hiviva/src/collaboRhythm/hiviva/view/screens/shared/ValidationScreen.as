@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -58,7 +59,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			addChild(this._validationBg);
 
 			this._validationLabel = new Label();
-			this._validationLabel.name = "validation-label";
+			this._validationLabel.name = HivivaThemeConstants.VALIDATION_LABEL;
 			this._validationLabel.visible = false;
 			addChild(this._validationLabel);
 

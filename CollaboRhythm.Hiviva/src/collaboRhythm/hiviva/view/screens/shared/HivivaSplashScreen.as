@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
@@ -88,7 +89,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			addChild(this._logo);
 
 			this._footer = new Label();
-			this._footer.name = "splash-footer-text";
+			this._footer.name = HivivaThemeConstants.SPLASH_FOOTER_LABEL;
 			this._footer.text = "An extension of MIT's CollaboRhythm project";
 			this._footer.alpha = 0.56;
 			this._footer.touchable = false;

@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens
 {
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -100,12 +101,12 @@ package collaboRhythm.hiviva.view.screens
 			this.addChild(this._primaryLabel);
 
 			this._secondaryLabel = new Label();
-			this._secondaryLabel.name = "message-date-label";
+			this._secondaryLabel.name = HivivaThemeConstants.MESSAGE_DATE_LABEL;
 			this._secondaryLabel.text = _secondaryText;
 			this.addChild(this._secondaryLabel);
 
 			this._dateLabel = new Label();
-			this._dateLabel.name = "message-date-label";
+			this._dateLabel.name = HivivaThemeConstants.MESSAGE_DATE_LABEL;
 			this._dateLabel.text = _dateText;
 			this.addChild(this._dateLabel);
 

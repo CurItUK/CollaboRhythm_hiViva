@@ -96,10 +96,14 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/homePagePhoto.atf"),appDir.resolvePath("assets/images/atlas/homePagePhoto.xml"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/hivivaBaseImages.png"),appDir.resolvePath("assets/images/atlas/hivivaBaseImages.xml"));
 			// fonts
-			_assets.enqueue(appDir.resolvePath("assets/fonts/hivivafont_default.png"),appDir.resolvePath("assets/fonts/hivivafont_default.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fonts/normal-white-regular.png"),appDir.resolvePath("assets/fonts/normal-white-regular.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fonts/normal-white-bold.png"),appDir.resolvePath("assets/fonts/normal-white-bold.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-dark-bold.png"),appDir.resolvePath("assets/fonts/engraved-dark-bold.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-medium-bold.png"),appDir.resolvePath("assets/fonts/engraved-medium-bold.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-light-bold.png"),appDir.resolvePath("assets/fonts/engraved-light-bold.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lighter-bold.png"),appDir.resolvePath("assets/fonts/engraved-lighter-bold.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lighter-regular.png"),appDir.resolvePath("assets/fonts/engraved-lighter-regular.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-lighter-bold.png"),appDir.resolvePath("assets/fonts/raised-lighter-bold.fnt"));
 
 			_assets.loadQueue(function onProgress(ratio:Number):void
 			{

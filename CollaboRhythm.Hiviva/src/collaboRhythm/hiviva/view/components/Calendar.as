@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.components
 
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import source.themes.HivivaTheme;
@@ -210,7 +211,7 @@ package collaboRhythm.hiviva.view.components
 			_yearValue = currentDate.getFullYear();
 
 				_month = new Label();
-				_month.name = "calender-select-text"; // splash-footer-text
+				_month.name = HivivaThemeConstants.CALENDAR_MONTH_LABEL;
 				_month.text = _months[_monthValue] + " " + _yearValue;
 				_month.width = stageWidth - 2*arrowGap;
 			 	_month.x = stageWidth/2 - _month.width/2;
@@ -232,7 +233,7 @@ package collaboRhythm.hiviva.view.components
 			for (var i:uint = 0 ; i < 7; i++)
 			{
 				var days:Label = new Label();
-				days.name = "calendar-days";
+				days.name = HivivaThemeConstants.CALENDAR_DAYS_LABEL;
 				days.text = this._weekDays[i];
 				this.addChild(days);
 				

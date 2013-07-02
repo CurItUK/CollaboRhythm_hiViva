@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.components
 {
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -128,7 +129,7 @@ package collaboRhythm.hiviva.view.components
 				xAxisPosition = this._horizontalSegmentWidth * weekCount;
 
 				bottomAxisValue = new Label();
-				bottomAxisValue.name = "patient-data-lighter";
+				bottomAxisValue.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
 				bottomAxisValue.text = HivivaModifier.addPrecedingZero((_weeks[weekCount].getMonth() + 1).toString()) + "/" +
 						HivivaModifier.addPrecedingZero(_weeks[weekCount].getDate().toString());
 				addChild(bottomAxisValue);
