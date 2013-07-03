@@ -40,6 +40,14 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_HELP_HELP6_SCREEN:String			= "patient_help_help6_Screen";
 
 
+	     public static const HCP_HELP_HELP1_SCREEN:String			= "hcp_help_help1_Screen";
+	     public static const HCP_HELP_HELP2_SCREEN:String			= "hcp_help_help2_Screen";
+		 public static const HCP_HELP_HELP3_SCREEN:String			= "hcp_help_help3_Screen";
+		 public static const HCP_HELP_HELP4_SCREEN:String			= "hcp_help_help4_Screen";
+		 public static const HCP_HELP_HELP5_SCREEN:String			= "hcp_help_help5_Screen";
+		 public static const HCP_HELP_HELP6_SCREEN:String			= "hcp_help_help6_Screen";
+
+
 		public static const HCP_HOME_SCREEN:String						= "hcpHomeScreen";
 		public static const HCP_ADHERENCE_SCREEN:String					= "hcpAdherenceScreen";
 		public static const HCP_PROFILE_SCREEN:String					= "hcpProfileScreen";
@@ -57,6 +65,8 @@ package collaboRhythm.hiviva.global
 		public static const HCP_MESSAGE_DETAIL_SCREEN:String			= "hcpMessageDetailScreen";
 		public static const HCP_HELP_DETAIL_SCREEN:String				= "patientHelpDetailScreen";
 		public static const HCP_PATIENT_MESSAGE_COMPOSE_SCREEN:String	= "hcpPatientMessageComposeScreen";
+		public static const HCP_RESET_SETTINGS:String					= "hcpResetSettings";
+
 
 
 		//HCP Reporting screens

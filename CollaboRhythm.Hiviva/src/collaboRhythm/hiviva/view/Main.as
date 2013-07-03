@@ -19,6 +19,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPPatientProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPResetSettingsScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPSideNavigationScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessages;
@@ -28,6 +29,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientAddMedsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientConnectToHcpScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientEditMedsScreen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientEditSettingsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientHelpScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientHomeScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientHomepagePhotoScreen;
@@ -60,6 +62,7 @@ package collaboRhythm.hiviva.view
 	import starling.utils.AssetManager;
 	import feathers.core.PopUpManager;
 	import collaboRhythm.hiviva.view.components.Calendar;
+	import starling.display.Quad;
 	import flash.desktop.NativeApplication;
 	import collaboRhythm.hiviva.view.PasswordPopUp;
 	public class Main extends Sprite
@@ -79,6 +82,12 @@ package collaboRhythm.hiviva.view
 		private static var _assets:AssetManager;
 		private static var _footerBtnGroupHeight:Number;
 		private var _popupContainer:PasswordPopUp;
+
+		   // Startup image for SD screens
+        [Embed(source="/assets/images/temp/Landing-page.png")]
+        private static var Preloader_Background:Class;
+
+
 		public function Main()
 		{
 		}
@@ -105,14 +114,23 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lightest-bold.png"),appDir.resolvePath("assets/fonts/engraved-lightest-bold.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lighter-regular.png"),appDir.resolvePath("assets/fonts/engraved-lighter-regular.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-lighter-bold.png"),appDir.resolvePath("assets/fonts/raised-lighter-bold.fnt"));
-
+            var __home =  this
 			_assets.loadQueue(function onProgress(ratio:Number):void
 			{
 				trace("Loading Assets " + ratio);
+				const quad:Quad = new Quad(100, 5, 0xff00ff);
+				 quad.x =  0 // ( Constants.STAGE_WIDTH - quad.width) / 2;
+				 quad.y = ( Constants.STAGE_HEIGHT - quad.height) / 2;
+				 __home.addChild(quad);
+				quad.width = ratio * Constants.STAGE_WIDTH;
 
 				if (ratio == 1)
+
 					Starling.juggler.delayCall(function ():void
 					{
+						__home.removeChild(quad)
+						quad.dispose()
+
 						startup();
 					}, 0.15);
 			});
@@ -234,6 +252,7 @@ package collaboRhythm.hiviva.view
 			this._mainScreenNav.addScreen(HivivaScreens.PATIENT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientTakeMedsScreen ));
 			this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatientVirusModelScreen));
 			this._mainScreenNav.addScreen(HivivaScreens.PATIENT_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatientReportsScreen));
+
 		}
 
 		private function initHCPNavigator():void
@@ -263,6 +282,8 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.HCP_ADD_PATIENT, new ScreenNavigatorItem(HivivaHCPAddPatientScreen));
 			this._settingsNav.addScreen(HivivaScreens.HCP_PATIENT_PROFILE, new ScreenNavigatorItem(HivivaHCPPatientProfileScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.HCP_MESSAGE_COMPOSE_SCREEN, new ScreenNavigatorItem(HivivaHCPMessageCompose, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.HCP_RESET_SETTINGS, new ScreenNavigatorItem(HivivaHCPResetSettingsScreen, {navGoHome:goBackToMainScreen, navFromReset:resetApplication}));
+
 		}
 
 		private function initPatientSettingsNavigator():void
@@ -279,7 +300,8 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
-		    this._settingsNav.addScreen(HivivaScreens.PATIENT_ALERTS_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_ALERTS_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_EDIT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientEditSettingsScreen, {navGoHome:goBackToMainScreen}));
 
 		}
 
@@ -327,6 +349,20 @@ package collaboRhythm.hiviva.view
 			this._mainScreenNav.addChild(this._screenBackground);
 			this._mainScreenNav.showScreen(this._currMainScreenId);
 			this._footerBtnGroup.resetToHomeState();
+		}
+
+		private function resetApplication():void
+		{
+			trace("Reset from profile...");
+
+			///this._settingsNav.clearScreen();
+			//this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashResetComplete}));
+			//this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
+		}
+
+		private function splashResetComplete(e:Event):void
+		{
+			trace("Reset splashResetCompletee...");
 		}
 
 		private function hideMainNav(e:FeathersScreenEvent):void

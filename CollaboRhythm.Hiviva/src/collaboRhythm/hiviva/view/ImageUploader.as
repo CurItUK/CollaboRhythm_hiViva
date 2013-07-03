@@ -98,6 +98,7 @@ package collaboRhythm.hiviva.view
 			this._uploadButton.y = (this._bg.height / 2) - (this._uploadButton.height / 2);
 
 			setSizeInternal(this._bg.width, this._bg.height, true);
+
 		}
 
 		override protected function initialize():void

@@ -45,6 +45,16 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+
+
+		private function resetPatientSettingsHandler(e:LocalDataStoreEvent):void
+				{
+					service.removeEventListener(LocalDataStoreEvent.PATIENT_SETTINGS_RESTORE_SAVE_COMPLETE,resetPatientSettingsHandler);
+					var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_SETTINGS_RESTORE_SAVE_COMPLETE);
+					evt.data = e.data;
+					this.dispatchEvent(evt);
+				}
+
 		public function getGalleryImages():void
 		{
 			service.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
@@ -76,6 +86,43 @@ package collaboRhythm.hiviva.controller
 		{
 			_hivivaLocalStoreService = new HivivaLocalStoreService();
 			_hivivaLocalStoreService.initDataLoad();
+		}
+
+		public function resetStoreService():void{
+
+			//    _hivivaLocalStoreService = new HivivaLocalStoreService();
+			//	_hivivaLocalStoreService.resetPatientSettings()
+			service.addEventListener(LocalDataStoreEvent.PATIENT_SETTINGS_RESTORE_SAVE_COMPLETE ,resetPatientSettings);
+			service.resetPatientSettings()
+
+		}
+
+		/**
+		 *Resets HCP settings and calls resetHCPSettings function back
+		 **/
+		public function resetHCPStoreService():void{
+
+			//    _hivivaLocalStoreService = new HivivaLocalStoreService();
+			//	_hivivaLocalStoreService.resetPatientSettings()
+			service.addEventListener(LocalDataStoreEvent.HCP_SETTINGS_RESTORE_SAVE_COMPLETE ,resetHCPSettings);
+			service.resetPatientSettings()
+
+		}
+
+		private function resetHCPSettings(e:LocalDataStoreEvent):void
+			{
+				service.removeEventListener(LocalDataStoreEvent.PATIENT_SETTINGS_RESTORE_SAVE_COMPLETE ,resetHCPSettings);
+				var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_SETTINGS_RESTORE_SAVE_COMPLETE);
+				this.dispatchEvent(evt);
+
+			}
+
+		private function resetPatientSettings(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PATIENT_SETTINGS_RESTORE_SAVE_COMPLETE ,resetPatientSettings);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.HCP_SETTINGS_RESTORE_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+
 		}
 
 		public function getGalleryTimeStamp():void

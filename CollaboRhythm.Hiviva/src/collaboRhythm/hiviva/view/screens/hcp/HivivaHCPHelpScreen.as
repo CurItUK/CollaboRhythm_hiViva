@@ -126,14 +126,85 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var btn:Button = e.target as Button;
 			trace(btn.name.substring(0, btn.name.indexOf(" patient-profile-nav-buttons")));
 			var screenNavItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaHCPHelpDetailScreen, null, {title: btn.label});
-			if (this.owner.hasScreen(HivivaScreens.HCP_HELP_DETAIL_SCREEN))
+	/*		if (this.owner.hasScreen(HivivaScreens.HCP_HELP_DETAIL_SCREEN))
 			{
 				this.owner.removeScreen(HivivaScreens.HCP_HELP_DETAIL_SCREEN);
 			}
 			this.owner.addScreen(HivivaScreens.HCP_HELP_DETAIL_SCREEN, screenNavItem);
 			this.owner.showScreen(HivivaScreens.HCP_HELP_DETAIL_SCREEN);
-		}
+		}*/
+			var _searchString : String = btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons"))
+			            var scrManager : HCPScreenManager =  new HCPScreenManager(e);
+			            scrManager._sNav = this.owner;
+						var __exists : Boolean  = scrManager.setStatus(_searchString) ;
 
+						if(__exists)return;
+
+						switch(_searchString)
+						{
+
+							case "help1" :
+								scrManager.init( HivivaHCP_help_help1_Screen)
+								scrManager.__addScreen(HivivaScreens.HCP_HELP_HELP1_SCREEN)
+								break;
+							case "help2" :
+									/*
+								temp = String(HivivaScreens.PATIENT_HELP_HELP2_SCREEN);
+								var screenNavItem2:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help2_Screen);
+								//temp = String(HivivaScreens.PATIENT_HELP_HELP2_SCREEN);
+								//temp = String(HivivaScreens.PATIENT_HELP_HELP2_SCREEN);
+								this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP2_SCREEN, screenNavItem2);
+								this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP2_SCREEN);
+								new HelpScreen2(this.owner , HivivaPatient_help_help2_Screen).__addScreen();
+								// __arr.push(temp);
+								*/
+								scrManager.init(  HivivaHCP_help_help2_Screen)
+								scrManager.__addScreen(HivivaScreens.HCP_HELP_HELP2_SCREEN)
+								break;
+							case "help3" :
+									/*
+								var screenNavItem3:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help3_Screen);
+								// temp = String(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
+								this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN, screenNavItem3);
+								this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
+								// __arr.push(temp);
+								*/
+								scrManager.init( HivivaHCP_help_help3_Screen)
+								scrManager.__addScreen(HivivaScreens.HCP_HELP_HELP3_SCREEN)
+								break;
+							case "help4" :
+							/*	var screenNavItem4:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help4_Screen);
+								// temp = String(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
+								this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN, screenNavItem4);
+								this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
+								// __arr.push(temp);*/
+								scrManager.init( HivivaHCP_help_help4_Screen)
+								scrManager.__addScreen(HivivaScreens.HCP_HELP_HELP4_SCREEN)
+									break;
+							case "help5" :
+									/*
+								var screenNavItem5:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help5_Screen);
+							// 	temp = String(HivivaScreens.PATIENT_HELP_HELP5_SCREEN);
+								this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP5_SCREEN, screenNavItem5);
+								this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP5_SCREEN);
+							// 	__arr.push(temp);
+									*/
+								scrManager.init(  HivivaHCP_help_help5_Screen)
+								scrManager.__addScreen(HivivaScreens.HCP_HELP_HELP5_SCREEN)
+								break;
+							case "help6" :
+									/*
+								 var screenNavItem6:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help6_Screen);
+								//   temp = String(HivivaScreens.PATIENT_HELP_HELP6_SCREEN);
+								  this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP6_SCREEN, screenNavItem6);
+								  this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP6_SCREEN);
+								// __arr.push(temp);
+								*/
+								scrManager.init(  HivivaHCP_help_help6_Screen)
+								scrManager.__addScreen(HivivaScreens.HCP_HELP_HELP6_SCREEN)
+								    break;
+						}
 
 	}
+}
 }

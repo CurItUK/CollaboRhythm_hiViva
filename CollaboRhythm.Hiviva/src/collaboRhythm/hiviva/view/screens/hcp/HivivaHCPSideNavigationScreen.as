@@ -48,6 +48,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 				[
 					{ width: btnWidth, height: btnHeight, name: "profile", label: "PROFILE" },
 					{ width: btnWidth, height: btnHeight, name: "help", label: "HELP"}
+
+
 				]
 			);
 			this._sideBtnGroup.buttonInitializer = function(button:Button, item:Object):void

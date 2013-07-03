@@ -33,11 +33,13 @@ package collaboRhythm.hiviva.global
 		public static const HCP_CONNECTIONS_LOAD_COMPLETE:String				= "hcpConnectionsLoadComplete";
 		public static const HCP_CONNECTION_SAVE_COMPLETE:String					= "hcpConnectionsSaveComplete";
 		public static const HCP_CONNECTION_DELETE_COMPLETE :String				= "hcpConnectionDeleteComplete";
+		public static const HCP_SETTINGS_RESTORE_SAVE_COMPLETE :String		    = "hcpSettingsRestoreSaveComplete";
 		public static const PATIENT_CONNECTIONS_LOAD_COMPLETE:String			= "patientConnectionsLoadComplete";
 		public static const PATIENT_CONNECTION_SAVE_COMPLETE:String				= "patientConnectionsSaveComplete";
 		public static const PATIENT_CONNECTION_DELETE_COMPLETE :String			= "patientConnectionDeleteComplete";
 		public static const PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE :String		= "patientMessagesViewedLoadComplete";
 		public static const PATIENT_MESSAGES_VIEWED_SAVE_COMPLETE :String		= "patientMessagesViewedSaveComplete";
+		public static const PATIENT_SETTINGS_RESTORE_SAVE_COMPLETE :String		= "patientSettingsRestoreSaveComplete";
 
 
 		public var message:String;

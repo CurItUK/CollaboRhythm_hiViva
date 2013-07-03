@@ -13,6 +13,9 @@ package collaboRhythm.hiviva.model
 	import flash.events.EventDispatcher;
 	import flash.events.SQLEvent;
 	import flash.filesystem.File;
+	import flash.utils.Timer;
+	import flash.events.TimerEvent;
+	import flash.system.System;
 
 	public class HivivaLocalStoreService extends EventDispatcher
 	{
@@ -56,11 +59,122 @@ package collaboRhythm.hiviva.model
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
 
+
 			this._sqConn = new SQLConnection();
 			this._sqConn.addEventListener(SQLEvent.OPEN, dataFileOpenHandler);
 			this._sqConn.open(dbFile);
 		}
 
+		private function getDBExits(): Boolean {
+
+			var localSettingsFile:File = File.applicationStorageDirectory;
+			localSettingsFile = localSettingsFile.resolvePath("settings.sqlite");
+			if(localSettingsFile.exists){
+
+                return true
+				}else{
+
+				return false
+			}
+
+		}
+
+		public function resetPatientSettings(){
+
+
+			if( !this.getDBExits()){
+
+				trace("Database doesnt  exist ")
+				return
+
+			};
+			if(this._sqConn != null ){
+			this._sqConn.close()
+			//this._sqConn.cancel()
+		}
+           var folder =  File.applicationStorageDirectory;
+           var dbFile = folder.resolvePath("settings.sqlite");
+
+			 //this._sqConn = new SQLConnection();
+			  //this._sqConn.addEventListener(SQLEvent.OPEN, doNothing);
+		     // this._sqConn.open(dbFile );
+			//this._sqConn.close();
+
+		 	var timer:Timer = new Timer(500, 1);
+		 	timer.addEventListener(TimerEvent.TIMER_COMPLETE,  deleteFile);
+		 	timer.start();
+            System.gc();
+			 if(this._sqConn != null )
+			 this._sqConn.close()
+
+
+
+
+            var __home  : HivivaLocalStoreService  = this
+			function deleteFile(){
+                 trace("Deleting File :::::::::::::"  )
+				if(dbFile.exists){
+			    //  dbFile.deleteFile();
+
+
+					var sourceFile:File = File.applicationDirectory;
+					sourceFile = sourceFile.resolvePath("resources/settings.sqlite");
+
+					var destination:File = File.applicationStorageDirectory;
+					destination = destination.resolvePath("settings.sqlite");
+
+					sourceFile.copyTo(destination , true);
+
+
+				  	var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_SETTINGS_RESTORE_SAVE_COMPLETE);
+
+					// this.dispatchEvent(evt);
+					__home.dispatchEvent(evt);
+
+				}
+
+
+				//var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_SETTINGS_RESTORE_SAVE_COMPLETE);
+
+				//	 this.dispatchEvent(evt);
+
+			}
+
+
+			  //make sure DB is reset with each session
+		     //this._sqConn.begin();
+              //var dropStmt = new  SQLStatement();
+              //dropStmt.sqlConnection = this._sqConn;
+              //dropStmt.text = "DROP TABLE IF EXISTS test_results";
+              //dropStmt.execute();
+		      //this._sqConn.commit();
+
+             //recreate the sql table
+			/*
+			this._sqConn.begin();
+            var createStmt = new SQLStatement();
+             createStmt.sqlConnection = this._sqConn;
+             createStmt.text = "CREATE TABLE IF NOT EXISTS myTable (myTableID INTEGER PRIMARY KEY AUTOINCREMENT, myColumn TEXT)";
+          createStmt.execute();
+			this._sqConn.commit();
+			*/
+
+			//var dbFile:File = File.applicationStorageDirectory;
+		//	dbFile = dbFile.resolvePath("settings.sqlite");
+
+
+		//	dbFile.deleteFile();
+
+
+
+		}
+
+
+		private function doNothing(e:SQLEvent){
+
+			trace("I do nothing ")
+
+		}
 		private function dataFileOpenHandler(e:SQLEvent):void
 		{
 			this._sqStatement = new SQLStatement();

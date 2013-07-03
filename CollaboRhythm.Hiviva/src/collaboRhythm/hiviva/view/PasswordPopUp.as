@@ -9,6 +9,7 @@ package collaboRhythm.hiviva.view
 	import flash.geom.Rectangle;
 	import starling.events.Event;
 	import feathers.controls.Check;
+    import flash.events.FocusEvent ;
 	public class PasswordPopUp extends FeathersControl
 	{
 
@@ -118,6 +119,7 @@ package collaboRhythm.hiviva.view
 
                 this._passwordInputField.displayAsPassword = true;
 			    this._passwordInputField._color = "0xFFFFFF"
+			//    this._passwordInputField.addEventListener(FocusEvent.FOCUS_IN  , focusIn )
 
 
 		}
@@ -128,6 +130,13 @@ package collaboRhythm.hiviva.view
 
 		}
 
+		private  function focusIn(e:FocusEvent){
+          trace("now in Focus ")
+			this._passwordInputField._color = "0xFFFFFF"
+			this._passwordInputField.validate();
+
+		};
+
 
 		private function confirmButtonHandler(e:Event):void
 		{
@@ -137,7 +146,9 @@ package collaboRhythm.hiviva.view
          //ToDo :  A singleton class needs to be created for password connection and db connection
          if(  this._passwordInputField._input.text  !=="123456"){
 
-            trace("incorrect password")
+            // trace("incorrect password")
+			 this._passwordInputField._color = "0x000000"
+			 this._passwordInputField.validate()
 			 return
 		 }
 

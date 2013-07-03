@@ -6,9 +6,10 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.TextInput;
 	import feathers.core.FeathersControl;
 
+
 	public class LabelAndInput extends  FeathersControl
 	{
-		private static const CLASS_NAME : String  = "LabelAndInput ::: - extends FeathersControl";
+
 		private var _scale:Number;
 		private var _isPassword: Boolean  = false;
 		private var __color : String
@@ -102,6 +103,10 @@ package collaboRhythm.hiviva.view
 
 
 
+
+
+
+
 		override protected function draw():void
 		{
 			var scaledPadding:Number = PADDING * this._scale;
@@ -114,6 +119,9 @@ package collaboRhythm.hiviva.view
 			this._input.textEditorProperties.color =  this.__color
 
 			this._input.validate();
+
+
+
 
 
 
