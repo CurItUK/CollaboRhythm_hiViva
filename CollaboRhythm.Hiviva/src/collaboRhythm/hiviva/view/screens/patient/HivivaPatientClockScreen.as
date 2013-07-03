@@ -112,9 +112,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initClockMedication():void
 		{
-			//HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE, medicationLoadCompleteHandler);
-			//HivivaStartup.hivivaAppController.hivivaLocalStoreController.getMedicationsSchedule()
-
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
 		}
@@ -142,33 +139,8 @@ package collaboRhythm.hiviva.view.screens.patient
 						_pmMedication.push(medicationsXML[i]);
 					}
 				}
-				buildTabletAMCells();
-				buildTabletPMCells();
-			}
-		}
-
-		private function medicationLoadCompleteHandler(e:LocalDataStoreEvent):void
-		{
-			//Build list of medications into their time slots am,pm
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE, medicationLoadCompleteHandler);
-			if (e.data.medicationSchedule != null)
-			{
-				trace(e.data.medicationSchedule);
-				var loop:uint = e.data.medicationSchedule.length;
-
-				for (var i:uint = 0; i < loop; i++)
-				{
-					if (e.data.medicationSchedule[i].time >= 0 && e.data.medicationSchedule[i].time <= 11)
-					{
-						_amMedication.push(e.data.medicationSchedule[i]);
-					}
-					else if (e.data.medicationSchedule[i].time >= 12 && e.data.medicationSchedule[i].time <= 23)
-					{
-						_pmMedication.push(e.data.medicationSchedule[i]);
-					}
-				}
-				buildTabletAMCells();
-				buildTabletPMCells();
+				if(_amMedication.length > 0) buildTabletAMCells();
+				if(_pmMedication.length > 0) buildTabletPMCells();
 			}
 		}
 

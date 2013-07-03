@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.components.SuperscriptCircle;
@@ -71,29 +72,33 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function initPillboxMedication():void
 		{
 			trace("initPillboxMedication pillbox height" + this._pillBox.height);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE , medicationLoadCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getMedicationsSchedule()
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
+
 
 		}
 
-		private function medicationLoadCompleteHandler(e:LocalDataStoreEvent):void
+		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
 		{
-			//Build list of medications into their time slots am,pm
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE , medicationLoadCompleteHandler)
-			if (e.data.medicationSchedule != null)
-			{
-				trace(e.data.medicationSchedule);
-				var loop:uint = e.data.medicationSchedule.length;
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			trace("medicationsLoadCompleteHandler " + e.data.xmlResponse);
 
-				for (var i:uint = 0; i < loop; i++)
+			var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication.Schedule.DCMedicationSchedule;
+
+			if(medicationsXML.length() >0)
+			{
+
+				var loop:uint = medicationsXML.length();
+				for(var i:uint = 0 ; i < loop ; i++)
 				{
-					if (e.data.medicationSchedule[i].time >= 0 && e.data.medicationSchedule[i].time <= 11)
+					if (medicationsXML[i].Time >= 0 && medicationsXML[i].Time <= 11)
 					{
-						_amMedication.push(e.data.medicationSchedule[i]);
+						_amMedication.push(medicationsXML[i]);
 					}
-					else if (e.data.medicationSchedule[i].time >= 12 && e.data.medicationSchedule[i].time <= 23)
+					else if (medicationsXML[i].Time >= 12 && medicationsXML[i].Time <= 23)
 					{
-						_pmMedication.push(e.data.medicationSchedule[i]);
+						_pmMedication.push(medicationsXML[i]);
 					}
 				}
 				if(_amMedication.length > 0) buildTabletAMCells();
@@ -116,7 +121,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					{
 						var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
 						var tabletCount:SuperscriptCircle = new SuperscriptCircle();
-						tabletCount.text = _amMedication[i].tablet_count;
+						tabletCount.text = _amMedication[i].Count;
 						tabletColorCount++;
 						if (tabletColorCount > 4)
 						{
@@ -149,7 +154,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					{
 						var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
 						var tabletCount:SuperscriptCircle = new SuperscriptCircle();
-						tabletCount.text = _pmMedication[i].tablet_count;
+						tabletCount.text = _pmMedication[i].Count;
 						tabletColorCount++;
 						if (tabletColorCount > 4)
 						{
