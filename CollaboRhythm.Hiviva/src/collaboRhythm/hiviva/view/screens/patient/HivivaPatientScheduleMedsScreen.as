@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
@@ -11,6 +12,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.MedicationScheduleTimeList;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
+	import collaboRhythm.hiviva.view.components.MedicationCell;
 	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.shared.BaseScreen;
 
@@ -20,9 +22,14 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.PickerList;
 	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
+	import feathers.text.BitmapFontTextFormat;
+
+	import flash.text.TextFormatAlign;
+
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.text.TextField;
 
 	public class HivivaPatientScheduleMedsScreen extends BaseScreen
 	{
@@ -30,7 +37,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _saveToProfileBtn:BoxedButtons;
 		private var _medicationResult:XML;
 		private var _seperator:Image;
-		private var _medicationLabel:List;
+		private var _medicationLabel:MedicationCell;
+//		private var _medicationLabel:List;
 		private var _takeLabel:Label;
 
 
@@ -48,7 +56,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.draw();
 
-			this._componentGap = (this.actualHeight * 0.02) * this.dpiScale;
+			this._componentGap = (this.actualHeight * 0.01) * this.dpiScale;
 			this._content.width = this.actualWidth;
 			this._content.validate();
 
@@ -74,6 +82,15 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initChosenMedicationInfo():void
 		{
+			this._medicationLabel = new MedicationCell();
+			this._medicationLabel.scale = this.dpiScale;
+			this._medicationLabel.brandName = HivivaModifier.getBrandName(this._medicationResult.name);
+			this._medicationLabel.genericName = HivivaModifier.getGenericName(this._medicationResult.name);
+			this._medicationLabel.width = this._content.width;
+			this._content.addChild(this._medicationLabel);
+			this._medicationLabel.validate();
+
+		/*
 			this._medicationLabel = new List();
 			this._medicationLabel.dataProvider = new ListCollection(medicationResult.name);
 			this._medicationLabel.itemRendererProperties.labelFunction = labelFunction;
@@ -81,7 +98,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._medicationLabel);
 			this._medicationLabel.width = this.actualWidth;
 			this._medicationLabel.validate();
-
+*/
 			this._seperator = new Image(Main.assets.getTexture("header_line"));
 			this._content.addChild(this._seperator);
 			this._seperator.width = this.actualWidth;
@@ -104,25 +121,18 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._scheduleDoseList);
 			this._scheduleDoseList.validate();
 			this._scheduleDoseList.x = this._horizontalPadding;
-			this._scheduleDoseList.y = this._seperator.y + this._componentGap;
+			this._scheduleDoseList.y = this._seperator.y + (this._componentGap * 3);
 
 			this._takeLabel = new Label();
-			this._takeLabel.name = "centered-label";
-			this._takeLabel.text = "<font face='ExoBold'>Take</font>";
+			this._takeLabel.name = HivivaThemeConstants.INPUT_LABEL_LEFT;
+			this._takeLabel.text = "Take";
 			this._content.addChild(this._takeLabel);
+			this._takeLabel.textRendererProperties.textFormat.size = 24 * this.dpiScale;
+			this._takeLabel.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 			this._takeLabel.validate();
 			this._takeLabel.y = this._scheduleDoseList.y + this._scheduleDoseList.height + this._componentGap;
 			this._takeLabel.x = this._horizontalPadding;
 			this._takeLabel.width = this._scheduleDoseList.width;
-		}
-
-		private function labelFunction( item:Object ):String
-		{
-			var itemXML:XML = item as XML;
-			var str:String = "<font face='ExoBold'>" + HivivaModifier.getBrandName(itemXML.toString()) + "</font> <br/>" +
-								HivivaModifier.getGenericName(itemXML.toString());
-
-			return str;
 		}
 
 		private function initAvailableSchedules():void
@@ -156,14 +166,15 @@ package collaboRhythm.hiviva.view.screens.patient
 				{
 					var prevListItem:PickerList = this._content.getChildByName("tileList" + (i-1)) as PickerList;
 					var andLabel:Label = new Label();
-					andLabel.text = "and  ";
-					andLabel.name = "centered-label";
+					andLabel.text = "and";
 					this._content.addChild(andLabel);
+					andLabel.textRendererProperties.textFormat =
+							new BitmapFontTextFormat(TextField.getBitmapFont("normal-white-regular"), 24 * this.dpiScale, HivivaThemeConstants.MEDIUM_FONT_COLOUR,TextFormatAlign.CENTER);
 					andLabel.validate();
 					andLabel.width = prevListItem.width;
 					andLabel.x = this._horizontalPadding;
 					andLabel.y = prevListItem.y + prevListItem.height + this._componentGap;
-					timeList.y = andLabel.y + andLabel.height;
+					timeList.y = andLabel.y + andLabel.height + this._componentGap;
 				}
 				_timeListItems.push(timeList);
 
