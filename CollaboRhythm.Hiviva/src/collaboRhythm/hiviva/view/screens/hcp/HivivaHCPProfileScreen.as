@@ -80,7 +80,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.title = "HCP Profile";
 
 			this._homeBtn = new Button();
-			this._homeBtn.name = "home-button";
+			this._homeBtn.name = HivivaThemeConstants.HOME_BUTTON;
 			this._homeBtn.addEventListener(starling.events.Event.TRIGGERED , homeBtnHandler);
 
 			this._header.leftItems =  new <DisplayObject>[this._homeBtn];

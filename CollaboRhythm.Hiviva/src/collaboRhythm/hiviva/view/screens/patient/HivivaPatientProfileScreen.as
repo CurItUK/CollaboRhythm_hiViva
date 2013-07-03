@@ -71,7 +71,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._header);
 
 			this._homeBtn = new Button();
-			this._homeBtn.name = "home-button";
+			this._homeBtn.name = HivivaThemeConstants.HOME_BUTTON;
 			this._homeBtn.addEventListener(Event.TRIGGERED , homeBtnHandler);
 
 			this._header.leftItems =  new <DisplayObject>[this._homeBtn];

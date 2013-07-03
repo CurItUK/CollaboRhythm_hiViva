@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
@@ -93,7 +94,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.addChild(this._deleteMessageButton);
 
 			var homeBtn:Button = new Button();
-			homeBtn.name = "home-button";
+			homeBtn.name = HivivaThemeConstants.HOME_BUTTON;
 			homeBtn.addEventListener(Event.TRIGGERED, homeBtnHandler);
 			this._header.leftItems = new <DisplayObject>[homeBtn];
 		}

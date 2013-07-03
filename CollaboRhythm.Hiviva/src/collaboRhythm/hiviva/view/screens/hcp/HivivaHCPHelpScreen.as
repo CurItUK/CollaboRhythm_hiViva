@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientHelpDetailScreen;
 
@@ -61,7 +62,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			initProfileMenuButtons();
 
 			var homeBtn:Button = new Button();
-			homeBtn.name = "home-button";
+			homeBtn.name = HivivaThemeConstants.HOME_BUTTON;
 			homeBtn.addEventListener(starling.events.Event.TRIGGERED, homeBtnHandler);
 			this._header.leftItems = new <DisplayObject>[homeBtn];
 

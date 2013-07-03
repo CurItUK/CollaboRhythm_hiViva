@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.media.Assets;
     import collaboRhythm.hiviva.view.screens.patient.HelpScreens.ScreenManager;
@@ -85,7 +86,7 @@ package collaboRhythm.hiviva.view.screens.patient
 */
 
 			var homeBtn:Button = new Button();
-			homeBtn.name = "home-button";
+			homeBtn.name = HivivaThemeConstants.HOME_BUTTON;
 			homeBtn.addEventListener(Event.TRIGGERED , homeBtnHandler);
 			this._header.leftItems =  new <DisplayObject>[homeBtn];
 

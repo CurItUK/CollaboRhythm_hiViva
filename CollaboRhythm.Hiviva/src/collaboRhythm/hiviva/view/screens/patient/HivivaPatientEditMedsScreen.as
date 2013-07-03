@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
@@ -167,7 +168,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._seperator);
 
 			this._addMedBtnBordered = new Button();
-			this._addMedBtnBordered.name = "border-button";
+			this._addMedBtnBordered.name = HivivaThemeConstants.BORDER_BUTTON;
 			this._addMedBtnBordered.label = "Add a medicine";
 			this._addMedBtnBordered.addEventListener(Event.TRIGGERED, addMedBtnHandler);
 			this._content.addChild(this._addMedBtnBordered);

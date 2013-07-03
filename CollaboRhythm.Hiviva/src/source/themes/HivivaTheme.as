@@ -819,11 +819,11 @@ package source.themes
 
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 
-			this.setInitializerForClass(Button, buttonInitializer);
-			this.setInitializerForClass(Button, borderButtonInitializer, "border-button");
-
 			this.setInitializerForClass(Button, nothingInitializer, NONE_THEMED);
-			this.setInitializerForClass(Button, homeButtonInitializer, "home-button");
+			this.setInitializerForClass(Button, buttonInitializer);
+			this.setInitializerForClass(Button, borderButtonInitializer, HivivaThemeConstants.BORDER_BUTTON);
+			this.setInitializerForClass(Button, homeButtonInitializer, HivivaThemeConstants.HOME_BUTTON);
+
 			this.setInitializerForClass(Button, backButtonInitializer, "back-button");
 			this.setInitializerForClass(Button, closeButtonInitializer, "close-button");
 			this.setInitializerForClass(Button, deleteCellButtonInitializer, "delete-cell-button");

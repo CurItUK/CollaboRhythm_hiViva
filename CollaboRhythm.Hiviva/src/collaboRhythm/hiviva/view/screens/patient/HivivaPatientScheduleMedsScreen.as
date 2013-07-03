@@ -105,7 +105,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._seperator.y = this._medicationLabel.y + this._medicationLabel.height;
 
 			this._scheduleDoseList = new PickerList();
-			this._scheduleDoseList.customButtonName = "border-button";
+			this._scheduleDoseList.customButtonName = HivivaThemeConstants.BORDER_BUTTON;
 			var schduleDoseAmounts:ListCollection = new ListCollection
 			(
 					[
@@ -144,7 +144,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				//timeList drop down to select time medication should be taken
 				var timeList:PickerList = new PickerList();
-				timeList.customButtonName = "border-button";
+				timeList.customButtonName = HivivaThemeConstants.BORDER_BUTTON;
 				timeList.dataProvider = times;
 				timeList.listProperties.@itemRendererProperties.labelField = "text";
 				timeList.labelField = "text";
@@ -177,7 +177,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 				//tabletList drop down to select the amount of tablets to be taken on that time slot
 				var tabletList:PickerList = new PickerList();
-				tabletList.customButtonName = "border-button";
+				tabletList.customButtonName = HivivaThemeConstants.BORDER_BUTTON;
 				tabletList.dataProvider = tablets;
 				tabletList.listProperties.@itemRendererProperties.labelField = "text";
 				tabletList.labelField = "text";
