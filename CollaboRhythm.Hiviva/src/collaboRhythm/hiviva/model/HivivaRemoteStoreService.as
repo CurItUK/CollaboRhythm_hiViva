@@ -103,9 +103,10 @@ package collaboRhythm.hiviva.model
 			trace(xmlResponse);
 		}
 
-		public function establishConnection(from:String , to:String):void
+		public function establishConnection(fromGuid:String , toGuid:String):void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_CONNECTION_ESTABLISH + "From=" + from + "&To=" + to);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_CONNECTION_ESTABLISH + "From=" + fromGuid + "&To=" + toGuid);
+			trace("establishConnection " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, establishConnectionCompleteHandler);
 			urlLoader.load(urlRequest);
@@ -114,10 +115,10 @@ package collaboRhythm.hiviva.model
 		private function establishConnectionCompleteHandler(e:Event):void
 		{
 			var xmlResponse:XML = new XML(e.target.data);
-			trace(xmlResponse);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
 		}
-
-
 	}
 }
 

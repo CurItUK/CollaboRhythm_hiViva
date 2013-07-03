@@ -74,7 +74,21 @@ package collaboRhythm.hiviva.controller
 			service.removeEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_HCP_COMPLETE);
 			evt.data = e.data;
-			this.dispatchEvent(evt)
+			this.dispatchEvent(evt);
+		}
+
+		public function establishConnection(fromGuid:String , toGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionCompleteHandler);
+			service.establishConnection(fromGuid , toGuid);
+		}
+
+		private function establishConnectionCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
 		}
 
 		public function get service():HivivaRemoteStoreService
