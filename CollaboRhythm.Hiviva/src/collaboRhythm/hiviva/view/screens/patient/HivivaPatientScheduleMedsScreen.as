@@ -31,7 +31,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _medicationResult:XML;
 		private var _seperator:Image;
 		private var _medicationLabel:List;
-		private var _medicationLabel:List;
 		private var _takeLabel:Label;
 
 
@@ -115,6 +114,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._takeLabel.y = this._scheduleDoseList.y + this._scheduleDoseList.height + this._componentGap;
 			this._takeLabel.x = this._horizontalPadding;
 			this._takeLabel.width = this._scheduleDoseList.width;
+		}
+
+		private function labelFunction( item:Object ):String
+		{
+			var itemXML:XML = item as XML;
+			var str:String = "<font face='ExoBold'>" + HivivaModifier.getBrandName(itemXML.toString()) + "</font> <br/>" +
+								HivivaModifier.getGenericName(itemXML.toString());
+
+			return str;
 		}
 
 		private function initAvailableSchedules():void
