@@ -583,7 +583,7 @@ package source.themes
 			this.calendarDaysLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 30 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.superscriptLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 14 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			// buttons label formats
-			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.sideNavGroupLabelBftf = new BitmapFontTextFormat(this.normalWhiteBoldBitmapFont, 18 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR);
 			this.profileGroupLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
 			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
@@ -1239,8 +1239,6 @@ package source.themes
 			};
 
 			button.stateToSkinFunction = skinSelector.updateValue;
-
-			
 
 			button.defaultLabelProperties.textFormat = this.defaultButtonLabelBftf;
 
