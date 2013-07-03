@@ -94,9 +94,8 @@ package collaboRhythm.hiviva.view
 					ScaleMode.SHOW_ALL);
 
 			_starFW = new Starling(Main, stage, viewPort);
+			//_starFW.showStats = true ;
 			_starFW.stage.stageWidth  = stageWidth;
-			_starFW.showStats = true ;
-
 			_starFW.stage.stageHeight = stageHeight;
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			_starFW.start();
@@ -115,8 +114,8 @@ package collaboRhythm.hiviva.view
 		}
 
 		    //NativeApplication.nativeApplication.addEventListener(flash.events.Event.EXITING, onAppExit);
-	 //NativeApplication.nativeApplication.addEventListener(flash.events.Event.ACTIVATE, startApp);
-	 //NativeApplication.nativeApplication.addEventListener(flash.events.Event.DEACTIVATE, stopApp);
+	 		//NativeApplication.nativeApplication.addEventListener(flash.events.Event.ACTIVATE, startApp);
+	 		//NativeApplication.nativeApplication.addEventListener(flash.events.Event.DEACTIVATE, stopApp);
 
 
 
@@ -134,6 +133,7 @@ package collaboRhythm.hiviva.view
 		private function disposeBg():void
 		{
 			removeChild(bmp);
+			bmp = null;
 		}
 
 		private function drawPasswordBox():void
