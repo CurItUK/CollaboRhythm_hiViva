@@ -11,6 +11,8 @@ package collaboRhythm.hiviva.view.screens.shared
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
+	import feathers.controls.text.TextFieldTextRenderer;
+	import feathers.core.ITextRenderer;
 
 	import flash.display.BlendMode;
 
@@ -168,6 +170,11 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			// TODO: create class in HivivaTheme
 			button.name = HivivaTheme.NONE_THEMED;
+
+			button.labelFactory = function():ITextRenderer
+			{
+				return new TextFieldTextRenderer();
+			};
 
 			button.defaultLabelProperties.embedFonts = true;
 			button.defaultLabelProperties.multiline = true;

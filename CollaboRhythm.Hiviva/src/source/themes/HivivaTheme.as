@@ -309,6 +309,7 @@ package source.themes
 		protected var engravedLightBoldBitmapFont:BitmapFont;
 		protected var engravedLighterRegularBitmapFont:BitmapFont;
 		protected var engravedLighterBoldBitmapFont:BitmapFont;
+		protected var engravedLightestBoldBitmapFont:BitmapFont;
 		protected var raisedLighterBoldBitmapFont:BitmapFont;
 
 		// bitmap font text formats
@@ -332,30 +333,7 @@ package source.themes
 		protected var sideNavGroupLabelBftf:BitmapFontTextFormat;
 		protected var profileGroupLabelBftf:BitmapFontTextFormat;
 		protected var galleryButtonLabelBftf:BitmapFontTextFormat;
-
-
-
-
-
-		protected var hivivaDefaultTextFormat:TextFormat;
-/*
-
-		protected var headerTextFormat:TextFormat;
-		protected var smallUIDarkTextFormat:TextFormat;
-		protected var smallUILightTextFormat:TextFormat;
-		protected var smallUISelectedTextFormat:TextFormat;
-		protected var smallUIDisabledTextFormat:TextFormat;
-		protected var largeUIDarkTextFormat:TextFormat;
-		protected var largeUILightTextFormat:TextFormat;
-		protected var largeUISelectedTextFormat:TextFormat;
-		protected var largeUIDisabledTextFormat:TextFormat;
-		protected var largeDarkTextFormat:TextFormat;
-		protected var largeLightTextFormat:TextFormat;
-		protected var largeDisabledTextFormat:TextFormat;
-		protected var smallDarkTextFormat:TextFormat;
-		protected var smallLightTextFormat:TextFormat;
-		protected var smallDisabledTextFormat:TextFormat;
-*/
+		protected var backButtonLabelBftf:BitmapFontTextFormat;
 
 		protected var atlas:TextureAtlas;
 
@@ -586,6 +564,7 @@ package source.themes
 			this.engravedLightBoldBitmapFont = TextField.getBitmapFont("engraved-light-bold");
 			this.engravedLighterRegularBitmapFont = TextField.getBitmapFont("engraved-lighter-regular");
 			this.engravedLighterBoldBitmapFont = TextField.getBitmapFont("engraved-lighter-bold");
+			this.engravedLightestBoldBitmapFont = TextField.getBitmapFont("engraved-lightest-bold");
 			this.raisedLighterBoldBitmapFont = TextField.getBitmapFont("raised-lighter-bold");
 
 			// Bitmap Font TextFormats
@@ -608,8 +587,7 @@ package source.themes
 			this.sideNavGroupLabelBftf = new BitmapFontTextFormat(this.normalWhiteBoldBitmapFont, 18 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR);
 			this.profileGroupLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
 			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
-
-			this.hivivaDefaultTextFormat = new TextFormat("ExoRegular", 30 * this.scale, 0x4c5f76);
+			this.backButtonLabelBftf = new BitmapFontTextFormat(this.engravedLightestBoldBitmapFont, 24 * this.scale, Color.WHITE);
 /*
 
 			const fontNames:String = "Helvetica Neue,Helvetica,Roboto,Arial,_sans";
@@ -1337,7 +1315,7 @@ package source.themes
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.defaultLabelProperties.textFormat = this.defaultButtonLabelBftf
+			button.defaultLabelProperties.textFormat = this.backButtonLabelBftf;
 
 			button.labelOffsetX = 8 * this.scale;
 			button.labelOffsetY = -5 * this.scale;
@@ -1795,10 +1773,7 @@ package source.themes
 */
 
 
-			renderer.defaultLabelProperties.textFormat = this.hivivaDefaultTextFormat;
-			renderer.defaultLabelProperties.embedFonts = true;
-			renderer.defaultLabelProperties.isHTML = true;
-			renderer.defaultLabelProperties.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			renderer.defaultLabelProperties.textFormat = this.bodyBftf;
 
 //			renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
 
