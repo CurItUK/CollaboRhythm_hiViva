@@ -119,6 +119,24 @@ package collaboRhythm.hiviva.model
 			evt.data.xmlResponse = xmlResponse;
 			this.dispatchEvent(evt)
 		}
+
+		public function getApprovedConnections():void
+		{
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_APPROVED_CONNECTIONS + "UserGuid=" + HivivaStartup.userVO.guid);
+			trace("getApprovedConections " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getApprovedConectionsHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getApprovedConectionsHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+
+		}
 	}
 }
 

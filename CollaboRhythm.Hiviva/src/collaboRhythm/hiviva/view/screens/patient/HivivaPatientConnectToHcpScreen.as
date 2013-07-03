@@ -321,13 +321,31 @@ package collaboRhythm.hiviva.view.screens.patient
 			showRequestPopup();
 		}
 
-		private function sqlResultHandler(e:SQLEvent):void
+		private function getAprrovedConnections():void
 		{
-			trace("sqlResultHandler " + e);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConnections);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnections();
+
+		}
+
+		private function getApprovedConnections(e:RemoteDataStoreEvent):void
+		{
+			var xml:XML = e.data.xmlResponse;
+			trace("xml " + xml);
+			trace("xml " + xml.children().length());
+
+			trace("getApprovedConnections " + e.data.xmlResponse);
 		}
 
 		private function hcpConnectionCheck():Boolean
 		{
+			getAprrovedConnections();
+
+			return false;
+
+			/*
+
+
 			var returnBool:Boolean;
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
@@ -354,6 +372,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				returnBool = false;
 			}
 			return returnBool;
+
+			*/
 		}
 
 		private function showRequestPopup():void
