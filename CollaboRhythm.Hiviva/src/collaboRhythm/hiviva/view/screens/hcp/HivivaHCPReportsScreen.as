@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
@@ -129,7 +130,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.title = "Generate Reports";
 
 			this._patientLabel = new Label();
-			this._patientLabel.text = "<font face='ExoBold'>Patients</font>";
+			this._patientLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._patientLabel.text = "Patients";
 			this._content.addChild(this._patientLabel);
 
 			this._patientPickerList = new PickerList();
@@ -139,7 +141,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._patientPickerList);
 
 			this._reportDatesLabel = new Label();
-			this._reportDatesLabel.text = "<font face='ExoBold'>Report dates</font>";
+			this._reportDatesLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._reportDatesLabel.text = "Report dates";
 			this._content.addChild(this._reportDatesLabel);
 
 			this._startDateInput = new LabelAndInput();
@@ -165,7 +168,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._finishDateButton);
 
 			this._includeLabel = new Label();
-			this._includeLabel.text = "<font face='ExoBold'>Include</font>";
+			this._includeLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._includeLabel.text = "Include";
 			this._content.addChild(this._includeLabel);
 
 			this._adherenceCheck = new Check();

@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.HivivaScreens;
@@ -97,14 +98,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._instructions);
 
 			this._categoryMenuLabel = new Label();
-			this._categoryMenuLabel.text = "<font face='ExoBold'>App image categories</font>";
+			this._categoryMenuLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._categoryMenuLabel.text = "App image categories";
 			this._content.addChild(this._categoryMenuLabel);
 
 			this._galleryBtnContainer = new Sprite();
 			this._content.addChild(this._galleryBtnContainer);
 
 			this._uploadLabel = new Label();
-			this._uploadLabel.text = "<font face='ExoBold'>Select your own image</font>";
+			this._uploadLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._uploadLabel.text = "Select your own image";
 			this._content.addChild(this._uploadLabel);
 
 			this._photoContainer = new ImageUploader();

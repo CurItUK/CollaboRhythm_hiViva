@@ -61,7 +61,7 @@ package collaboRhythm.hiviva.view.components
 			this._brandNameLabel.width = this.actualWidth - this._pillImageBg.x;
 
 			this._genericNameLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
-			this._genericNameLabel.y = this._brandNameLabel.y + (this._brandNameLabel.height * 0.75);
+			this._genericNameLabel.y = this._brandNameLabel.y + this._brandNameLabel.height;
 			this._genericNameLabel.width = this.actualWidth - this._pillImageBg.x;
 
 			setSizeInternal(this.actualWidth, this._genericNameLabel.y + this._genericNameLabel.height + this._gap, true);

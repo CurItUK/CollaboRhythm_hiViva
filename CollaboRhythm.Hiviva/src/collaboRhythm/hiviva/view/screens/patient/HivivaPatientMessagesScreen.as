@@ -152,6 +152,7 @@ package collaboRhythm.hiviva.view.screens.patient
 						hcp = messagesXMLList[i].hcp;
 					}
 					messageInboxResultCell.uniqueId = messagesXMLList[i].uniqueId;
+					// TODO : add ability to set the 'name' for primary and secondary textfields so we can make them bold if the message is new
 					messageInboxResultCell.primaryText = body;
 					messageInboxResultCell.secondaryText = hcp;
 					messageInboxResultCell.dateText = messagesXMLList[i].date;
@@ -171,7 +172,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var messageInboxResultCell:MessageInboxResultCell = new MessageInboxResultCell();
 			messageInboxResultCell.uniqueId = "1";
-			messageInboxResultCell.primaryText = "<font face='ExoBold'>Great job, Keep it up!</font>";
+			//messageInboxResultCell.primaryText = "<font face='ExoBold'>Great job, Keep it up!</font>";
+			messageInboxResultCell.primaryText = "Great job, Keep it up!";
 			messageInboxResultCell.secondaryText = "Dr Richard Gould";
 			messageInboxResultCell.dateText = "31/05/2013";
 			messageInboxResultCell.scale = this.dpiScale;

@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient.VirusModel
 {
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.screens.shared.MainBackground;
 
@@ -125,7 +126,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this.addChild(this._adheranceLabel);
 
 			this._adheranceResultLabel = new Label();
-			this._adheranceResultLabel.name = "centered-label";
+			this._adheranceResultLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
 			this._adheranceResultLabel.text = "0";
 
 			this.addChild(this._adheranceResultLabel);
@@ -148,7 +149,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this.addChild(this._viralLoadLabel);
 
 			this._viralLoadResultLabel = new Label();
-			this._viralLoadResultLabel.name = "centered-label";
+			this._viralLoadResultLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
 			this._viralLoadResultLabel.text = "0";
 
 			this.addChild(this._viralLoadResultLabel);
@@ -171,7 +172,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this.addChild(this._CD4CountLabel);
 
 			this._CD4CountResultLabel = new Label();
-			this._CD4CountResultLabel.name = "centered-label";
+			this._CD4CountResultLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
 			this._CD4CountResultLabel.text = "0";
 
 			this.addChild(this._CD4CountResultLabel);
@@ -217,17 +218,17 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 		private function adheranceSliderChangeHandler(e:Event):void
 		{
-			this._adheranceResultLabel.text = "<font face='ExoBold'>" + this._adheranceSlider.value + "</font>";
+			this._adheranceResultLabel.text = this._adheranceSlider.value.toString();
 		}
 
 		private function viralLoadSliderChangeHandler(e:Event):void
 		{
-			this._viralLoadResultLabel.text = "<font face='ExoBold'>" + this._viralLoadSlider.value + "</font>";
+			this._viralLoadResultLabel.text = this._viralLoadSlider.value.toString();
 		}
 
 		private function CD4CountSliderChangeHandler(e:Event):void
 		{
-			this._CD4CountResultLabel.text = "<font face='ExoBold'>" + this._CD4CountSlider.value + "</font>";
+			this._CD4CountResultLabel.text = this._CD4CountSlider.value.toString();
 		}
 
 		private function resetBtnHandler(e:Event):void
@@ -242,14 +243,14 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 		private function setDefaultSliderValues():void
 		{
-			this._adheranceResultLabel.text = "<font face='ExoBold'>" + String(this._adherence) + "</font>";
+			this._adheranceResultLabel.text = String(this._adherence);
 			this._adheranceSlider.value = this._adherence;
 
 
-			this._viralLoadResultLabel.text = "<font face='ExoBold'>" + String(this._viralLoad) + "</font>";
+			this._viralLoadResultLabel.text = String(this._viralLoad);
 			this._viralLoadSlider.value = this._viralLoad;
 
-			this._CD4CountResultLabel.text = "<font face='ExoBold'>" + String(this._cd4Count) + "</font>";;
+			this._CD4CountResultLabel.text = String(this._cd4Count);
 			this._CD4CountSlider.value = this._cd4Count
 		}
 	}

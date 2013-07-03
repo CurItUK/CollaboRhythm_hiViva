@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -85,7 +86,8 @@ package collaboRhythm.hiviva.view.components
 			addChild(this._pillTrophy);
 
 			this._badgeNameLabel = new Label();
-			this._badgeNameLabel.text = "<font face='ExoBold'>" + this._badgeName + "</font>";
+			this._badgeNameLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._badgeNameLabel.text = this._badgeName;
 			this.addChild(this._badgeNameLabel);
 
 			this._dateRangeLabel = new Label();

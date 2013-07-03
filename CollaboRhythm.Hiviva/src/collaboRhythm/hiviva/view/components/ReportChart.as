@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.components
 {
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -123,8 +124,8 @@ package collaboRhythm.hiviva.view.components
 		private function initChartTitleLabel():void
 		{
 			var chartTitleLabel:Label = new Label();
-			chartTitleLabel.name = "centered-label";
-			chartTitleLabel.text = "<font face='ExoBold'>Overall " + (this._dataCategory == "adherence" ? "Adherence" : "Tolerability") + "</font>";
+			chartTitleLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			chartTitleLabel.text = "Overall " + (this._dataCategory == "adherence" ? "Adherence" : "Tolerability");
 			addChild(chartTitleLabel);
 			chartTitleLabel.x = this._chartStartX;
 			chartTitleLabel.y = this._chartStartY;
@@ -147,8 +148,8 @@ package collaboRhythm.hiviva.view.components
 		private function initLeftAxisLabels():void
 		{
 			var leftAxisTop:Label = new Label();
-			leftAxisTop.name = "centered-label";
-			leftAxisTop.text = "<font face='ExoBold'>100%</font>";
+			leftAxisTop.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			leftAxisTop.text = "100%";
 			addChild(leftAxisTop);
 			leftAxisTop.width = this._leftAxisSpace;
 			leftAxisTop.validate();
@@ -156,8 +157,8 @@ package collaboRhythm.hiviva.view.components
 			leftAxisTop.y = this._chartStartY - (leftAxisTop.height * 0.5);
 
 			var leftAxisBottom:Label = new Label();
-			leftAxisBottom.name = "centered-label";
-			leftAxisBottom.text = "<font face='ExoBold'>" + this._lowestValue + "%</font>";
+			leftAxisBottom.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			leftAxisBottom.text = this._lowestValue + "%";
 			addChild(leftAxisBottom);
 			leftAxisBottom.width = this._leftAxisSpace;
 			leftAxisBottom.validate();
@@ -165,8 +166,8 @@ package collaboRhythm.hiviva.view.components
 			leftAxisBottom.y = this._chartStartY + this._chartHeight - (leftAxisBottom.height * 0.5);
 
 			var leftAxisLabel:Label = new Label();
-			leftAxisLabel.name = "centered-label";
-			leftAxisLabel.text = "<font face='ExoBold'>" + (this._dataCategory == "adherence" ? "Adherence" : "Tolerability") + "</font>";
+			leftAxisLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			leftAxisLabel.text = this._dataCategory == "adherence" ? "Adherence" : "Tolerability";
 			addChild(leftAxisLabel);
 			leftAxisLabel.width = 400;
 			leftAxisLabel.validate();
@@ -236,8 +237,8 @@ package collaboRhythm.hiviva.view.components
 		private function initBottomAxisLabels():void
 		{
 			var bottomAxisLabel:Label = new Label();
-			bottomAxisLabel.name = "centered-label";
-			bottomAxisLabel.text = "<font face='ExoBold'>Week commencing (2013)</font>";
+			bottomAxisLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			bottomAxisLabel.text = "Week commencing (2013)";
 			addChild(bottomAxisLabel);
 			bottomAxisLabel.x = this._chartStartX;
 			bottomAxisLabel.y = this._chartStartY + this._chartHeight + this._bottomAxisValueHeight;

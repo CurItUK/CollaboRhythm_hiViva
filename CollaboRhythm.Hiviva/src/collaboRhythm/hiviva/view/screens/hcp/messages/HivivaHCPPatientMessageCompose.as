@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaPopUp;
 	import collaboRhythm.hiviva.view.*;
@@ -115,17 +116,20 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			scaledPadding = PADDING * this.dpiScale;
 
 			this._hcpName = new Label();
-			this._hcpName.text = "<font face='ExoBold'>From : Dr Richard Gould</font>  "// + _main.selectedHCPPatientProfile.name;
+			this._hcpName.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._hcpName.text = "From : Dr Richard Gould"// + _main.selectedHCPPatientProfile.name;
 			this.addChild(this._hcpName);
 			this._hcpName.validate();
 
 			this._patientName = new Label();
-			this._patientName.text = "<font face='ExoBold'>To : " + selectedPatient.name + "</font> ";
+			this._patientName.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._patientName.text = "To : " + selectedPatient.name;
 			this.addChild(this._patientName);
 			this._patientName.validate();
 
 			this._selectMessage = new Label();
-			this._selectMessage.text = "<font face='ExoBold'>Select Message </font>  "// + _main.selectedHCPPatientProfile.name;
+			this._selectMessage.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._selectMessage.text = "Select Message "// + _main.selectedHCPPatientProfile.name;
 			this.addChild(this._selectMessage);
 			this._selectMessage.validate();
 

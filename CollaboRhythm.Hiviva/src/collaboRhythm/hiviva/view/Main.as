@@ -84,7 +84,7 @@ package collaboRhythm.hiviva.view
 		private var _popupContainer:PasswordPopUp;
 
 		   // Startup image for SD screens
-        [Embed(source="/assets/images/temp/Landing-page.png")]
+//        [Embed(source="/assets/images/temp/Landing-page.png")]
         private static var Preloader_Background:Class;
 
 

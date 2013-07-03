@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaPopUp;
 	import collaboRhythm.hiviva.view.HivivaStartup;
@@ -70,7 +71,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.initialize();
 			this._patientLabel = new Label();
-			this._patientLabel.text = "<font face='ExoBold'>Patients</font>";
+			this._patientLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._patientLabel.text = "Patients";
 			this..addChild(this._patientLabel);
 
 			_connectToPatientBtn = new Button();

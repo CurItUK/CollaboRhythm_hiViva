@@ -124,11 +124,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._scheduleDoseList.y = this._seperator.y + (this._componentGap * 3);
 
 			this._takeLabel = new Label();
-			this._takeLabel.name = HivivaThemeConstants.INPUT_LABEL_LEFT;
+			this._takeLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
 			this._takeLabel.text = "Take";
 			this._content.addChild(this._takeLabel);
-			this._takeLabel.textRendererProperties.textFormat.size = 24 * this.dpiScale;
-			this._takeLabel.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
 			this._takeLabel.validate();
 			this._takeLabel.y = this._scheduleDoseList.y + this._scheduleDoseList.height + this._componentGap;
 			this._takeLabel.x = this._horizontalPadding;
@@ -166,10 +164,9 @@ package collaboRhythm.hiviva.view.screens.patient
 				{
 					var prevListItem:PickerList = this._content.getChildByName("tileList" + (i-1)) as PickerList;
 					var andLabel:Label = new Label();
+					andLabel.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
 					andLabel.text = "and";
 					this._content.addChild(andLabel);
-					andLabel.textRendererProperties.textFormat =
-							new BitmapFontTextFormat(TextField.getBitmapFont("normal-white-regular"), 24 * this.dpiScale, HivivaThemeConstants.MEDIUM_FONT_COLOUR,TextFormatAlign.CENTER);
 					andLabel.validate();
 					andLabel.width = prevListItem.width;
 					andLabel.x = this._horizontalPadding;

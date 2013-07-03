@@ -12,6 +12,7 @@ package collaboRhythm.hiviva.view.components
 	import feathers.core.FeathersControl;
 	import feathers.layout.TiledColumnsLayout;
 	import feathers.layout.VerticalLayout;
+	import feathers.text.BitmapFontTextFormat;
 
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
@@ -19,13 +20,16 @@ package collaboRhythm.hiviva.view.components
 	import source.themes.HivivaTheme;
 
 	import starling.display.BlendMode;
+	import starling.display.DisplayObject;
 
 	import starling.display.Image;
 	import starling.display.Quad;
 
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.text.TextField;
 	import starling.textures.Texture;
+	import starling.utils.Color;
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
 
@@ -83,8 +87,8 @@ package collaboRhythm.hiviva.view.components
 			this._weekNavHolder.x = this._firstColumnWidth;
 
 			var viewLabel:Label = new Label();
-			viewLabel.text = "<font face='ExoBold'>View:</font>";
-			viewLabel.name = "medicine-brandname";
+			viewLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			viewLabel.text = "View:";
 			this._weekNavHolder.addChild(viewLabel);
 			viewLabel.width = this._dataColumnsWidth * 2;
 			viewLabel.validate();
@@ -106,7 +110,7 @@ package collaboRhythm.hiviva.view.components
 			rightArrow.validate();
 
 			this._weekText = new Label();
-			this._weekText.name = "centered-label";
+			this._weekText.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
 			this._weekNavHolder.addChild(this._weekText);
 			this._weekText.width = (this._dataColumnsWidth * 7) -
 					rightArrow.width - leftArrow.width - viewLabel.width;
@@ -174,15 +178,19 @@ package collaboRhythm.hiviva.view.components
 				this._rowsData.push({id: medications[cellCount].id});
 			}
 			// tolerability row name
-			medicationCell = new MedicationCell();
-			medicationCell.scale = this._scale;
-			medicationCell.brandName = "Tolerability";
-			this._mainScrollContainer.addChild(medicationCell);
-			medicationCell.width = this._firstColumnWidth;
+			var tolerabilityRowLabel = new Label();
+			tolerabilityRowLabel.text = "Tolerability";
+			this._mainScrollContainer.addChild(tolerabilityRowLabel);
+			tolerabilityRowLabel.textRendererProperties.textFormat = new BitmapFontTextFormat(TextField.getBitmapFont("engraved-lighter-bold"), 24 * this.scale, Color.WHITE);
+			tolerabilityRowLabel.width = this._firstColumnWidth - (30 * this.scale);
 
 			this._rowsData.push({id: "tolerability"});
 
 			this._mainScrollContainer.validate();
+			tolerabilityRowLabel.x += 30 * this.scale; // MedicationCell gap * 2
+			tolerabilityRowLabel.y += 15 * this.scale; // MedicationCell gap
+			this._mainScrollContainer.height += 30 * this.scale; // MedicationCell gap * 2
+
 			var maxHeight:Number = this.actualHeight - this._tableStartY;
 			if (maxHeight < this._mainScrollContainer.height) this._mainScrollContainer.height = maxHeight;
 			this._mainScrollContainer.layout = null;
@@ -193,16 +201,17 @@ package collaboRhythm.hiviva.view.components
 			var rowsDataLength:int = this._rowsData.length;
 			var rowData:Object;
 			var cellY:Number = 0;
-			var medicationCell:MedicationCell;
+			var rowLabel:DisplayObject;
 			for (var rowCount:int = 0; rowCount < rowsDataLength; rowCount++)
 			{
-				medicationCell = this._mainScrollContainer.getChildAt(rowCount) as MedicationCell;
+				rowLabel = this._mainScrollContainer.getChildAt(rowCount) as DisplayObject;
 				rowData = this._rowsData[rowCount];
 
 				rowData.y = cellY;
-				rowData.cellHeight = medicationCell.height;
-				cellY += medicationCell.height;
+				rowData.cellHeight = rowLabel.height;
+				cellY += rowLabel.height;
 			}
+			rowData.cellHeight += 30 * this.scale; // MedicationCell gap * 2
 		}
 
 		private function leftArrowHandler(e:Event):void

@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.Calendar;
@@ -204,7 +205,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.title = "Generate Reports";
 
 			this._reportDatesLabel = new Label();
-			this._reportDatesLabel.text = "<font face='ExoBold'>Report dates</font>";
+			this._reportDatesLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._reportDatesLabel.text = "Report dates";
 			this._content.addChild(this._reportDatesLabel);
 
 			this._startDateInput = new LabelAndInput();
@@ -230,7 +232,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._finishDateButton);
 
 			this._includeLabel = new Label();
-			this._includeLabel.text = "<font face='ExoBold'>Include</font>";
+			this._includeLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._includeLabel.text = "Include";
 			this._content.addChild(this._includeLabel);
 
 			this._adherenceCheck = new Check();

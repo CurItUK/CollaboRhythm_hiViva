@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.Main;
 	import feathers.controls.Label;
@@ -85,7 +86,8 @@ package collaboRhythm.hiviva.view.components
 		//	addChild(this._messageImage);
 
 			this._messageNameLabel = new Label();
-			this._messageNameLabel.text = "<font face='ExoBold'>" + this._messageName + "</font>";
+			this._messageNameLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._messageNameLabel.text = this._messageName;
 			this.addChild(this._messageNameLabel);
 
 		}

@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
@@ -140,7 +141,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			var avgAdherence:Number = HivivaModifier.calculateOverallAdherence(_patientData.medicationHistory.history);
 			this._adherenceLabel = new Label();
-			this._adherenceLabel.text = "<font face='ExoBold'>Overall adherence:</font>  " + String(avgAdherence) + "%";
+			this._adherenceLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._adherenceLabel.text = "Overall adherence:  " + String(avgAdherence) + "%";
 			this.addChild(this._adherenceLabel);
 
 			this._adherenceLabel.width = innerWidth - this._adherenceLabel.x;
@@ -150,7 +152,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			var avgTolerability:Number = HivivaModifier.calculateOverallTolerability(_patientData.medicationHistory.history);
 			this._tolerabilityLabel = new Label();
-			this._tolerabilityLabel.text = "<font face='ExoBold'>Overall tolerability:</font>  " + String(avgTolerability) + "%";
+			this._tolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._tolerabilityLabel.text = "Overall tolerability:  " + String(avgTolerability) + "%";
 			this.addChild(this._tolerabilityLabel);
 
 			this._tolerabilityLabel.width = innerWidth - this._tolerabilityLabel.x;

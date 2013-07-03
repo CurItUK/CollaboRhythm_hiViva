@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
@@ -76,7 +77,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.title = "Display settings";
 
 			this._orderInstructionsLabel = new Label();
-			this._orderInstructionsLabel.text = "<FONT FACE='ExoBold'>Home page</FONT><br />Order my patients by:";
+			this._orderInstructionsLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._orderInstructionsLabel.text = "Home page\nOrder my patients by:";
 			this._content.addChild(this._orderInstructionsLabel);
 
 			this._orderTypeGroup = new ToggleGroup();

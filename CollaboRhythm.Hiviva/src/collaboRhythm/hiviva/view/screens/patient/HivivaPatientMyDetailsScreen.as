@@ -149,8 +149,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._nameInputIns);
 
 			this._photoTitle = new Label();
-			this._photoTitle.name = "input-label";
-			this._photoTitle.text = "<font face='ExoBold'>Photo</font>";
+			this._photoTitle.name = HivivaThemeConstants.SUBHEADER_LABEL;
+			this._photoTitle.text = "Photo";
 			this._content.addChild(this._photoTitle);
 
 			dummyPatientLoad();
@@ -164,8 +164,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._seperator1);
 
 			this._emailTitle = new Label();
-			this._emailTitle.name = "input-label";
-			this._emailTitle.text = "<font face='ExoBold'>Get email updates</font>";
+			this._emailTitle.name = HivivaThemeConstants.SUBHEADER_LABEL;
+			this._emailTitle.text = "Get email updates";
 			this._content.addChild(this._emailTitle);
 
 			this._updatesCheck = new Check();
@@ -187,13 +187,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._seperator2);
 
 			//this._researchTitle = new Label();
-			//this._researchTitle.name = "input-label";
-			//this._researchTitle.text = "<font face='ExoBold'>Help us improve the app</font>";
+			//this._researchTitle.name = HivivaThemeConstants.SUBHEADER_LABEL;
+			//this._researchTitle.text = "Help us improve the app";
 			//this._content.addChild(this._researchTitle);
 
 			//this._researchCheck = new Check();
 			//this._researchCheck.isSelected = false;
-			//this._researchCheck.label = "Allow anonymised data for research purposes <font color='#016cf9'>What’s this?</font>";
+			//this._researchCheck.label = "Allow anonymised data for research purposes";
 			//this._content.addChild(this._researchCheck);
 
 			this._cancelAndSave = new BoxedButtons();
@@ -204,8 +204,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._agreeLabel = new Label();
 			this._agreeLabel.name = HivivaThemeConstants.INSTRUCTIONS_LABEL;
-			this._agreeLabel.text = "By clicking the button above, you agree to the <font color='#016cf9'>Terms of Use</font><br />" +
-									"View our <font color='#016cf9'>Privacy Policy</font>";
+			this._agreeLabel.text = "By clicking the button above, you agree to the Terms of Use\nView our Privacy Policy";
 			this._content.addChild(this._agreeLabel);
 
 			this._backButton = new Button();

@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
@@ -70,7 +71,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.title = "Alerts";
 
 			this._instructionsLabel = new Label();
-			this._instructionsLabel.text = "<FONT FACE='ExoBold'>Alert me for:</FONT>";
+			this._instructionsLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._instructionsLabel.text = "Alert me for:";
 			this._content.addChild(this._instructionsLabel);
 
 			this._requestsCheck = new Check();

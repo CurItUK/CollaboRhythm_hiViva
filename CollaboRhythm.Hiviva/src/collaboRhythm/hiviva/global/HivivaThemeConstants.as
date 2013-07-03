@@ -12,6 +12,10 @@ package collaboRhythm.hiviva.global
 
 		// labels style names
 
+		public static const BODY_CENTERED_LABEL:String						= "body-centered-label";
+		public static const BODY_BOLD_LABEL:String							= "body-bold-label";
+		public static const BODY_BOLD_CENTERED_LABEL:String					= "body-bold-centered-label";
+		public static const SUBHEADER_LABEL:String							= "subheader-label";
 		public static const INPUT_LABEL_LEFT:String							= "input-label-left";
 		public static const INPUT_LABEL_RIGHT:String						= "input-label-right";
 		public static const HOME_LENS_LABEL:String							= "home-lens-label";

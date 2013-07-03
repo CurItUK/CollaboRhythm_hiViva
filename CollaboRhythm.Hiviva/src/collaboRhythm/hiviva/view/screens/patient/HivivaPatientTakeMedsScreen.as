@@ -95,8 +95,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.title = "Take Medication";
 
 			this._feelingQuestion = new Label();
-			this._feelingQuestion.name = "centered-label";
-			this._feelingQuestion.text = "<font face='ExoBold'>How am I feeling on my meds today?</font>";
+			this._feelingQuestion.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
+			this._feelingQuestion.text = "How am I feeling on my meds today?";
 			this._content.addChild(this._feelingQuestion);
 
 			this._feelingSlider = new Slider();
