@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
@@ -111,8 +112,39 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initClockMedication():void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE, medicationLoadCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getMedicationsSchedule()
+			//HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE, medicationLoadCompleteHandler);
+			//HivivaStartup.hivivaAppController.hivivaLocalStoreController.getMedicationsSchedule()
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
+		}
+
+
+		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			trace("medicationsLoadCompleteHandler " + e.data.xmlResponse);
+
+			var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication.Schedule.DCMedicationSchedule;
+
+			if(medicationsXML.length() >0)
+			{
+
+				var loop:uint = medicationsXML.length();
+				for(var i:uint = 0 ; i < loop ; i++)
+				{
+					if (medicationsXML[i].Time >= 0 && medicationsXML[i].Time <= 11)
+					{
+						_amMedication.push(medicationsXML[i]);
+					}
+					else if (medicationsXML[i].Time >= 12 && medicationsXML[i].Time <= 23)
+					{
+						_pmMedication.push(medicationsXML[i]);
+					}
+				}
+				buildTabletAMCells();
+				buildTabletPMCells();
+			}
 		}
 
 		private function medicationLoadCompleteHandler(e:LocalDataStoreEvent):void
@@ -173,8 +205,8 @@ package collaboRhythm.hiviva.view.screens.patient
 					this.addChild(holderCell);
 					holderCell.x = this._clockCenterX;
 					holderCell.y = this._clockCenterY;
-					trace(Number(_amMedication[i].time));
-					holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * Number(_amMedication[i].time)) - HivivaModifier.degreesToRadians(90);
+					trace(Number(_amMedication[i].Time));
+					holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * Number(_amMedication[i].Time)) - HivivaModifier.degreesToRadians(90);
 
 				}
 			}
@@ -209,8 +241,8 @@ package collaboRhythm.hiviva.view.screens.patient
 					this.addChild(holderCell);
 					holderCell.x = this._clockCenterX;
 					holderCell.y = this._clockCenterY;
-					trace(Number(_pmMedication[i].time));
-					holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES *	Number(_pmMedication[i].time)) - HivivaModifier.degreesToRadians(90);
+					trace(Number(_pmMedication[i].Time));
+					holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES *	Number(_pmMedication[i].Time)) - HivivaModifier.degreesToRadians(90);
 
 				}
 			}
