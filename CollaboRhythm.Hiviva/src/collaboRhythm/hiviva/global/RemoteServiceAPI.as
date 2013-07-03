@@ -10,6 +10,7 @@ package collaboRhythm.hiviva.global
 
 		//Connections
 		public static const RS_CONNECTION_ESTABLISH:String = 			"WSConnection.svc/Establish?";
+		public static const RS_GET_APPROVED_CONNECTIONS:String = 		"WSConnection.svc/GetApprovedConnections?";
 		public static const RS_CONNECTION_APPROVE:String = 				"WSConnection.svc/Approve?";
 		public static const RS_CONNECTION_IGNORE:String = 				"WSConnection.svc/Ignore?";
 

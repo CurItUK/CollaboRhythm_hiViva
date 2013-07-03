@@ -91,6 +91,21 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getApprovedConnections():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConectionsHandler);
+			service.getApprovedConnections();
+		}
+
+		private function getApprovedConectionsHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConectionsHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+
+		}
+
 		public function get service():HivivaRemoteStoreService
 		{
 			return _hivivaRemoteStoreService;

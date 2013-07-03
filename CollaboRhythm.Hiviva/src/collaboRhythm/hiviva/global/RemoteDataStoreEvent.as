@@ -12,6 +12,9 @@ package collaboRhythm.hiviva.global
 		public static const GET_PATIENT_MEDICATION_COMPLETE:String				= "getPatientMedicationComplete";
 		public static const ESTABLISH_CONNECTION_COMPLETE:String				= "establishConnectionComplete";
 
+		public static const GET_APPROVED_CONNECTIONS_COMPLETE:String			= "getApprovedConnectionsComplete";
+
+
 
 
 		public var message:String;
