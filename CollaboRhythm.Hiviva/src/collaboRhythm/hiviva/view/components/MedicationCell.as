@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -79,7 +80,7 @@ package collaboRhythm.hiviva.view.components
 			addChild(this._pillImageBg);
 
 			this._brandNameLabel = new Label();
-			this._brandNameLabel.name = "medicine-brandname";
+			this._brandNameLabel.name = HivivaThemeConstants.MEDICINE_BRANDNAME_LABEL;
 			this._brandNameLabel.text = this._brandName;
 			this.addChild(this._brandNameLabel);
 

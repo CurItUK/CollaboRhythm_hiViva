@@ -1,10 +1,13 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.RXNORMEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.RXNORM_DrugSearch;
+	import collaboRhythm.hiviva.view.components.SelectMedicationCell;
+	import collaboRhythm.hiviva.view.components.ToggleMedicationCell;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
@@ -13,11 +16,13 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Radio;
 
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.controls.ScrollContainer;
 	import feathers.controls.TextInput;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
+	import feathers.layout.VerticalLayout;
 
 	import flash.text.TextFormat;
 
@@ -34,10 +39,9 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _medicationSearchInput:TextInput;
 		private var _searchButton:Button;
 		private var _continueBtn:Button;
-		private var _medicationList:List;
-		private var _medications:ListCollection;
+		private var _medicationContainer:ScrollContainer;
 		private var _medicationXMLList:XMLList;
-		private var _ListToggleGroup:ToggleGroup;
+		private var _selectedMedicationId:int;
 
 		public function HivivaPatientAddMedsScreen()
 		{
@@ -129,84 +133,65 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				hideFormValidation();
 
-				if(this._medicationList != null)
+				if(this._medicationContainer != null)
 				{
-					this._medicationList.dataProvider = null;
-					this.removeChild(this._medicationList);
-					this._medicationList.dispose();
-					this._medicationList = null;
+					this._medicationContainer.removeChildren(0,-1,true);
+					this.removeChild(this._medicationContainer);
+					this._medicationContainer = null;
 				}
 
-				this._medications = new ListCollection(medicationXMLList.name);
+				this._medicationContainer = new ScrollContainer();
+				this._medicationContainer.width = this.actualWidth;
+				this._medicationContainer.y = this._content.y + this._medicationSearchInput.y + this._medicationSearchInput.height + this._componentGap;
+				this._medicationContainer.layout = new VerticalLayout();
+				this.addChild(this._medicationContainer);
 
-				this._ListToggleGroup = new ToggleGroup();
-
-				this._medicationList = new List();
-				this._medicationList.width = this.actualWidth;
-				this._medicationList.y = this._content.y + this._medicationSearchInput.y + this._medicationSearchInput.height + this._componentGap;
-				this._medicationList.dataProvider = this._medications;
-				this._medicationList.itemRendererProperties.labelName = "lighter-color-label";
-				this._medicationList.itemRendererProperties.labelFunction = labelFunction;
-				this._medicationList.itemRendererProperties.accessoryFunction = accessoryFunction;
-				this._medicationList.isSelectable = false;
-				//this._medicationList.addEventListener(starling.events.Event.CHANGE , listSelectedHandler);
-
-				this.addChild(this._medicationList);
-				this._medicationList.validate();
-
-				var usableScrollHeight:Number = this.actualHeight - this._medicationList.y - this._verticalPadding;
-
-				if(this._medicationList.height > usableScrollHeight)
-				{
-					this._medicationList.height = usableScrollHeight;
-					this._medicationList.validate();
-				}
+				populateMedications();
 			}
 		}
 
-		private function labelFunction( item:Object ):String
+		private function populateMedications():void
 		{
-			var itemXML:XML = item as XML;
-			var str:String = "<font face='ExoBold'>" + HivivaModifier.getBrandName(itemXML.toString()) + "</font> <br/>" +
-								HivivaModifier.getGenericName(itemXML.toString());
-
-			return str;
-		}
-
-		private function accessoryFunction( item:Object ):DisplayObject
-		{
-			var radio:Radio = new Radio();
-			radio.addEventListener(Event.TRIGGERED, listSelectedHandler);
-			this._ListToggleGroup.addItem(radio);
-
-			return radio;
-		}
-
-		private function listSelectedHandler(e:starling.events.Event):void
-		{
-			if(this._continueBtn == null)
+			var medicationsLoop:uint = this._medicationXMLList.length();
+			for (var i:uint = 0; i < medicationsLoop; i++)
 			{
-				this._continueBtn = new Button();
-				this._continueBtn.label = "Continue";
-				this._continueBtn.addEventListener(Event.TRIGGERED, continueBtnHandler);
-				this.addChild(this._continueBtn);
-				this._continueBtn.validate();
-				this._continueBtn.y = this.actualHeight - this._continueBtn.height - this._verticalPadding;
-				this._continueBtn.x = this._horizontalPadding;
-
-				var usableScrollHeight:Number = this._continueBtn.y - this._componentGap - this._medicationList.y;
-
-				if(this._medicationList.height > usableScrollHeight)
-				{
-					this._medicationList.height = usableScrollHeight;
-					this._medicationList.validate();
-				}
+				var foundMedication:ToggleMedicationCell = new ToggleMedicationCell();
+				foundMedication.addEventListener(FeathersScreenEvent.MEDICATION_RADIO_TRIGGERED, medicationRadioTriggerHandler);
+				foundMedication.scale = this.dpiScale;
+				foundMedication.medicationId = i;
+				foundMedication.brandName = HivivaModifier.getBrandName(this._medicationXMLList[i].name);
+				foundMedication.genericName = HivivaModifier.getGenericName(this._medicationXMLList[i].name);
+				foundMedication.width = this._medicationContainer.width;
+				this._medicationContainer.addChild(foundMedication);
 			}
+			this._medicationContainer.validate();
+
+			this._continueBtn = new Button();
+			this._continueBtn.label = "Continue";
+			this._continueBtn.addEventListener(Event.TRIGGERED, continueBtnHandler);
+			this.addChild(this._continueBtn);
+			this._continueBtn.validate();
+			this._continueBtn.y = this.actualHeight - this._continueBtn.height - this._verticalPadding;
+			this._continueBtn.x = this._horizontalPadding;
+
+			var usableScrollHeight:Number = this.actualHeight - this._medicationContainer.y -
+										this._verticalPadding - this._continueBtn.height - this._componentGap;
+
+			if(this._medicationContainer.height > usableScrollHeight)
+			{
+				this._medicationContainer.height = usableScrollHeight;
+			}
+			this._medicationContainer.validate();
+		}
+
+		private function medicationRadioTriggerHandler(e:FeathersScreenEvent):void
+		{
+			this._selectedMedicationId = e.evtData.activeId;
 		}
 
 		private function continueBtnHandler(e:starling.events.Event):void
 		{
-			var selectedMedicine:XML = medicationXMLList[this._ListToggleGroup.selectedIndex - 1];
+			var selectedMedicine:XML = medicationXMLList[this._selectedMedicationId];
 			var screenParams:Object = {medicationResult:selectedMedicine};
 			var screenNavigatorItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatientScheduleMedsScreen , null , screenParams);
 

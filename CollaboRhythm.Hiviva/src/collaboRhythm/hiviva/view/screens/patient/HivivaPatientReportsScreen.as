@@ -679,6 +679,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			pdf.writeText(12, "Patient Report\n");
 
 			pdf.addImage(new Bitmap(this._adherenceChartBd), new Resize ( Mode.FIT_TO_PAGE, Position.LEFT ),0,12);
+			this._adherenceChartBd.dispose();
+			this._adherenceChartBd = null;
 //			pdf.setFont(helveticaNomal , 12);
 //			pdf.writeText(12, "Patient Name / AppID\n");
 
@@ -757,6 +759,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			pdf.addPage();
 
 			pdf.addImage(new Bitmap(this._tolerabilityChartBd), new Resize ( Mode.FIT_TO_PAGE, Position.LEFT ));
+			this._tolerabilityChartBd.dispose();
+			this._tolerabilityChartBd = null;
 
 			var fileStream:FileStream = new FileStream();
 
@@ -923,7 +927,5 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 			return sourceFile.nativePath;
 		}
-
-
 	}
 }
