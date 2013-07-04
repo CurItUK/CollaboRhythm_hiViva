@@ -41,7 +41,7 @@ package collaboRhythm.hiviva.view.screens
 		private var _dateLabel:Label;
 		private var _dateText:String = "";
 		private var _check:Check;
-		private var _uniqueId:String;
+		private var _guid:String;
 		private var _selected:Boolean;
 		private const IMAGE_SIZE:Number = 100;
 		private const PADDING:Number = 32;
@@ -124,7 +124,7 @@ package collaboRhythm.hiviva.view.screens
 		private function messageCellSelectHandler(e:Event):void
 		{
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.HCP_MESSAGE_SELECTED);
-
+			evt.evtData.guid = this._guid;
 			this.dispatchEvent(evt);
 		}
 
@@ -194,14 +194,14 @@ package collaboRhythm.hiviva.view.screens
 			return _check;
 		}
 
-		public function get uniqueId():String
+		public function get guid():String
 		{
-			return _uniqueId;
+			return _guid;
 		}
 
-		public function set uniqueId(value:String):void
+		public function set guid(value:String):void
 		{
-			_uniqueId = value;
+			_guid = value;
 		}
 
 		public function get isSelected():Boolean

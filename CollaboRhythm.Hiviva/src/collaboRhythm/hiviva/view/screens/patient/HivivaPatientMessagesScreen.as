@@ -4,14 +4,17 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
 	import collaboRhythm.hiviva.view.screens.MessageInboxResultCell;
 
 	import feathers.controls.Button;
 	import feathers.controls.Screen;
+	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
 	import feathers.layout.VerticalLayout;
 
@@ -24,16 +27,12 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	public class HivivaPatientMessagesScreen extends Screen
 	{
-		[Embed("/resources/dummy_patientmessages.xml", mimeType="application/octet-stream")]
-		private static const HcpMessageData:Class;
-
-
 		protected var _header:HivivaHeader;
-		private var _hcpMessageData:XML;
+		private var _remoteCallMade:Boolean = false;
+		private var _allRecievedMessages:XMLList;
 		private var _deleteMessageButton:Button;
 		private var _resultCells:Vector.<MessageInboxResultCell> = new <MessageInboxResultCell>[];
 		private var _cellContainer:ScrollContainer;
-		private var _viewedIds:Array = [];
 
 		private var _scaledPadding:Number;
 
@@ -56,8 +55,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._deleteMessageButton.y = this.actualHeight - this._scaledPadding - this._deleteMessageButton.height;
 			this._deleteMessageButton.x = (this.actualWidth * 0.5) - (this._deleteMessageButton.width * 0.5);
 
-//			if(this._cellContainer == null) drawXMLResults();
-			if(this._cellContainer == null) drawDummyMessage();
+			if(!this._remoteCallMade) getReceivedMessagesFromRemoteService();
 		}
 
 		override protected function initialize():void
@@ -69,8 +67,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.scale = this.dpiScale;
 			addChild(this._header);
 
-			getXMLHcpMessageData();
-
 			this._deleteMessageButton = new Button();
 			this._deleteMessageButton.label = "Delete";
 			this._deleteMessageButton.addEventListener(Event.TRIGGERED, deleteHandler);
@@ -80,83 +76,61 @@ package collaboRhythm.hiviva.view.screens.patient
 			homeBtn.name = HivivaThemeConstants.HOME_BUTTON;
 			homeBtn.addEventListener(Event.TRIGGERED, homeBtnHandler);
 			this._header.leftItems = new <DisplayObject>[homeBtn];
-
-			getViewedIds();
 		}
 
 		private function homeBtnHandler(e:Event):void
 		{
+			if(this.owner.hasScreen(HivivaScreens.PATIENT_MESSAGE_DETAIL_SCREEN))
+			{
+				this.owner.removeScreen(HivivaScreens.PATIENT_MESSAGE_DETAIL_SCREEN);
+			}
+
 			this.dispatchEventWith("navGoHome");
 		}
 
-		private function getViewedIds():void
+		private function getReceivedMessagesFromRemoteService():void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE, loadPatientMessagesViewedHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.loadPatientMessagesViewed();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE, getUserReceivedMessagesHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserReceivedMessages();
+			this._remoteCallMade = true;
 		}
 
-		private function loadPatientMessagesViewedHandler(e:LocalDataStoreEvent):void
+		private function getUserReceivedMessagesHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE, loadPatientMessagesViewedHandler);
-			var viewedIdsString:String = e.data.viewedIds;
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE, getUserReceivedMessagesHandler);
 
-			try
-			{
-				this._viewedIds = viewedIdsString.split(",");
-			}
-			catch(e:Error)
-			{
-				this._viewedIds = [];
-			}
+			this._allRecievedMessages = e.data.xmlResponse.DCMessageRecord;
+
+			/*
+			<DCMessageRecord>
+				<MessageGuid>d656a765-5c34-404f-a582-9c51bdd4c1e3</MessageGuid>
+				<SentDate>2013-07-04T16:00:50.587</SentDate>
+				<UserGuid>b5f2d31c-7c4a-4266-87b7-2527c4811dfb</UserGuid>
+				<Name>no email</Name>
+				<Message>Let's schedule an office visit</Message>
+				<read>false</read>
+			</DCMessageRecord>
+			*/
+
+			populateMessages();
 		}
 
-		private function getXMLHcpMessageData():void
-		{
-			var ba:ByteArrayAsset = ByteArrayAsset(new HcpMessageData());
-			this._hcpMessageData = new XML(ba.readUTFBytes(ba.length));
-		}
-
-
-		private function drawXMLResults():void
+		private function populateMessages():void
 		{
 			this._cellContainer = new ScrollContainer();
-			var messagesXMLList:XMLList = this._hcpMessageData.message;
-			var viewedIdsLength:int = this._viewedIds.length;
-			var body:String;
-			var hcp:String;
-			if(messagesXMLList.length() > 0)
+
+			var listCount:uint = this._allRecievedMessages.length();
+			var messageInboxResultCell:MessageInboxResultCell;
+			if(listCount > 0)
 			{
-				var listCount:uint = messagesXMLList.length();
 				for(var i:uint = 0 ; i < listCount ; i++)
 				{
-					var messageInboxResultCell:MessageInboxResultCell = new MessageInboxResultCell();
-					if (viewedIdsLength > 0)
-					{
-						for (var j:int = 0; j < viewedIdsLength; j++)
-						{
-							if(this._viewedIds[0] == messagesXMLList[i].uniqueId)
-							{
-								body = messagesXMLList[i].body;
-								hcp = messagesXMLList[i].hcp;
-								break;
-							}
-							else
-							{
-								body = "<font face='ExoBold'>" + messagesXMLList[i].body + "</font>";
-								hcp = "<font face='ExoBold'>" + messagesXMLList[i].hcp + "</font>";
-							}
-						}
-					}
-					else
-					{
-						body = messagesXMLList[i].body;
-						hcp = messagesXMLList[i].hcp;
-					}
-					messageInboxResultCell.uniqueId = messagesXMLList[i].uniqueId;
-					// TODO : add ability to set the 'name' for primary and secondary textfields so we can make them bold if the message is new
-					messageInboxResultCell.primaryText = body;
-					messageInboxResultCell.secondaryText = hcp;
-					messageInboxResultCell.dateText = messagesXMLList[i].date;
+					messageInboxResultCell = new MessageInboxResultCell();
+
+					messageInboxResultCell.guid = this._allRecievedMessages[i].MessageGuid;
+					messageInboxResultCell.primaryText = this._allRecievedMessages[i].Message;
+					messageInboxResultCell.secondaryText = this._allRecievedMessages[i].Name;
+					messageInboxResultCell.dateText = this._allRecievedMessages[i].SentDate;
 					messageInboxResultCell.scale = this.dpiScale;
 					messageInboxResultCell.addEventListener(FeathersScreenEvent.HCP_MESSAGE_SELECTED, messageSelectedHandler);
 					this._cellContainer.addChild(messageInboxResultCell);
@@ -164,25 +138,26 @@ package collaboRhythm.hiviva.view.screens.patient
 				}
 				this.addChild(this._cellContainer);
 			}
+
 			drawResults();
 		}
 
-		private function drawDummyMessage():void
+		private function getMessageXMLByGuid(guid:String):XML
 		{
-			this._cellContainer = new ScrollContainer();
-
-			var messageInboxResultCell:MessageInboxResultCell = new MessageInboxResultCell();
-			messageInboxResultCell.uniqueId = "1";
-			//messageInboxResultCell.primaryText = "<font face='ExoBold'>Great job, Keep it up!</font>";
-			messageInboxResultCell.primaryText = "Great job, Keep it up!";
-			messageInboxResultCell.secondaryText = "Dr Richard Gould";
-			messageInboxResultCell.dateText = "31/05/2013";
-			messageInboxResultCell.scale = this.dpiScale;
-			messageInboxResultCell.addEventListener(FeathersScreenEvent.HCP_MESSAGE_SELECTED, messageSelectedHandler);
-			this._cellContainer.addChild(messageInboxResultCell);
-			this._resultCells.push(messageInboxResultCell);
-			this.addChild(this._cellContainer);
-			drawResults();
+			var messageData:XML;
+			var listCount:uint = this._allRecievedMessages.length();
+			if(listCount > 0)
+			{
+				for(var i:uint = 0 ; i < listCount ; i++)
+				{
+					if(this._allRecievedMessages[i].MessageGuid == guid)
+					{
+						messageData = this._allRecievedMessages[i];
+						break;
+					}
+				}
+			}
+			return messageData;
 		}
 
 		private function drawResults():void
@@ -202,8 +177,14 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function messageSelectedHandler(e:FeathersScreenEvent):void
 		{
-			trace("launch message detail screen");
-			trace("add to viewedids");
+			var guid:String = String(e.evtData.guid);
+			var screenNavProperties:Object = {messageData:getMessageXMLByGuid(guid)};
+			if(this.owner.hasScreen(HivivaScreens.PATIENT_MESSAGE_DETAIL_SCREEN))
+			{
+				this.owner.removeScreen(HivivaScreens.PATIENT_MESSAGE_DETAIL_SCREEN);
+			}
+			this.owner.addScreen(HivivaScreens.PATIENT_MESSAGE_DETAIL_SCREEN, new ScreenNavigatorItem(HivivaPatientMessageDetail, null, screenNavProperties));
+			this.owner.showScreen(HivivaScreens.PATIENT_MESSAGE_DETAIL_SCREEN);
 		}
 
 		private function deleteHandler(e:Event):void
@@ -213,11 +194,18 @@ package collaboRhythm.hiviva.view.screens.patient
 				if(this._resultCells[i].check.isSelected)
 				{
 					this._cellContainer.removeChild(this._resultCells[i], true);
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.deleteUserMessage(this._resultCells[i].guid);
 				}
 			}
 			this._cellContainer.validate();
 		}
 
+		private function deleteUserMessageHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
+			trace('message deleted');
+		}
 
 	}
 }

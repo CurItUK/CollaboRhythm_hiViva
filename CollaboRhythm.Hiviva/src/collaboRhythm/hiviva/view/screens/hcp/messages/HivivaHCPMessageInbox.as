@@ -127,7 +127,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 						var messageInboxResultCell:MessageInboxResultCell = new MessageInboxResultCell();
 						messageInboxResultCell.primaryText = messagesXMLList[i].body;
 						messageInboxResultCell.dateText = messagesXMLList[i].date;
-						messageInboxResultCell.uniqueId = "message_"+i;
+						messageInboxResultCell.guid = "message_"+i;
 						messageInboxResultCell.scale = this.dpiScale;
 						messageInboxResultCell.addEventListener(FeathersScreenEvent.HCP_MESSAGE_SELECTED, messageSelectedHandler);
 						this._messageCellContainer.addChild(messageInboxResultCell);

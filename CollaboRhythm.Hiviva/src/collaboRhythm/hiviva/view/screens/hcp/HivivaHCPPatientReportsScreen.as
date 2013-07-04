@@ -137,9 +137,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._header = new HivivaHeader();
+
 			this._header.title = "Generate Reports";
-			this.addChild(this._header);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";

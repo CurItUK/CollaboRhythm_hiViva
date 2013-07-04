@@ -26,6 +26,7 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_ADD_MEDICATION_SCREEN:String		= "patientAddMedicationScreen";
 		public static const PATIENT_SCHEDULE_MEDICATION_SCREEN:String	= "patientScheduleMedicationScreen";
 		public static const PATIENT_MESSAGES_SCREEN:String				= "patientMessagesScreen";
+		public static const PATIENT_MESSAGE_DETAIL_SCREEN:String		= "patientMessageDetailScreen";
 		public static const PATIENT_BADGES_SCREEN:String				= "patientBadgesScreen";
 		public static const PATIENT_ALERTS_SCREEN:String				= "patientAlertsScreen";
 		public static const PATIENT_EDIT_SETTINGS_SCREEN:String         = "patientEditSettingsScreen";
