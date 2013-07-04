@@ -188,6 +188,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
 		{
+			/*
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 			trace("medicationsLoadCompleteHandler " + e.data.xmlResponse);
 
@@ -210,6 +211,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				initializeEnterRegimen();
 			}
+			*/
 		}
 
 		private function medicationsScheduleLoadCompleteHandler(e:LocalDataStoreEvent):void
