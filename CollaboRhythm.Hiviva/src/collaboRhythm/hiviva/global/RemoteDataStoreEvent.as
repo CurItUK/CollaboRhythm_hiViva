@@ -10,6 +10,9 @@ package collaboRhythm.hiviva.global
 		public static const GET_HCP_COMPLETE:String								= "getHCPComplete";
 		public static const ADD_MEDICATION_COMPLETE:String						= "addMedicationComplete";
 		public static const GET_PATIENT_MEDICATION_COMPLETE:String				= "getPatientMedicationComplete";
+		public static const GET_HCP_SENT_MESSAGES_COMPLETE:String				= "getHCPSentMessagesComplete";
+		public static const GET_USER_RECEIVED_MESSAGES_COMPLETE:String			= "getUserReceivedMessagesComplete";
+		public static const DELETE_USER_MESSAGE_COMPLETE:String					= "deleteUserMessageComplete";
 		public static const ESTABLISH_CONNECTION_COMPLETE:String				= "establishConnectionComplete";
 
 		public static const GET_APPROVED_CONNECTIONS_COMPLETE:String			= "getApprovedConnectionsComplete";
