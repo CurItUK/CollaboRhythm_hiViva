@@ -135,7 +135,60 @@ package collaboRhythm.hiviva.model
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE);
 			evt.data.xmlResponse = xmlResponse;
 			this.dispatchEvent(evt)
+		}
 
+		public function getHCPSentMessages():void
+		{
+			var query:String = "From=" + HivivaStartup.userVO.guid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_HCP_SENT_MESSAGES + query);
+			trace("getHCPSentMessages " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getHCPSentMessagesComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getHCPSentMessagesComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_HCP_SENT_MESSAGES_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
+		public function getUserReceivedMessages():void
+		{
+			var query:String = "To=" + HivivaStartup.userVO.guid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_USER_RECIEVED_MESSAGES + query);
+			trace("getUserReceivedMessages " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getUserReceivedMessagesComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getUserReceivedMessagesComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
+		public function deleteUserMessage(messageGuid:String):void
+		{
+			var query:String = "MessageGuid=" + messageGuid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_DELETE_USER_MESSAGE + query);
+			trace("deleteUserMessage " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, deleteUserMessageComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function deleteUserMessageComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
 		}
 	}
 }

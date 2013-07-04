@@ -103,7 +103,48 @@ package collaboRhythm.hiviva.controller
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE);
 			evt.data = e.data;
 			this.dispatchEvent(evt);
+		}
 
+		public function getHCPSentMessages():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_HCP_SENT_MESSAGES_COMPLETE , getHCPSentMessagesHandler);
+			service.getHCPSentMessages();
+		}
+
+		private function getHCPSentMessagesHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_HCP_SENT_MESSAGES_COMPLETE , getApprovedConectionsHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_HCP_SENT_MESSAGES_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function getUserReceivedMessages():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE , getUserReceivedMessagesHandler);
+			service.getUserReceivedMessages();
+		}
+
+		private function getUserReceivedMessagesHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE , getApprovedConectionsHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function deleteUserMessage(messageGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE , deleteUserMessageHandler);
+			service.deleteUserMessage(messageGuid);
+		}
+
+		private function deleteUserMessageHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE , getApprovedConectionsHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
 		}
 
 		public function get service():HivivaRemoteStoreService

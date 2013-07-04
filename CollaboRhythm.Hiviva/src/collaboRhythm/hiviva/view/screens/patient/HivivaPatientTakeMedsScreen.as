@@ -188,8 +188,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
 		{
-			/*
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			/*HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 			trace("medicationsLoadCompleteHandler " + e.data.xmlResponse);
 
 			var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication;
@@ -210,8 +209,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			else
 			{
 				initializeEnterRegimen();
-			}
-			*/
+			}*/
 		}
 
 		private function medicationsScheduleLoadCompleteHandler(e:LocalDataStoreEvent):void
