@@ -51,7 +51,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _hcpCellContainer:ScrollContainer;
 		private var _hcpCellRadioGroup:ToggleGroup;
 		private var _requestConnectionButton:Button;
-		private var _hcpFilteredList:Array;
+		private var _hcpFilteredList:Array = [];
 		private var _hcpConnected:Boolean;
 		private var _sqConn:SQLConnection;
 		private var _sqStatement:SQLStatement;
@@ -71,24 +71,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			super.draw();
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
-
-			this._requestConnectionButton.validate();
-			this._requestConnectionButton.x = (this.actualWidth / 2) - (this._requestConnectionButton.width / 2);
-			this._requestConnectionButton.y = this.actualHeight - this._requestConnectionButton.height - (PADDING * this.dpiScale);
-
-			if(this._hcpConnected)
-			{
-				drawResults();
-			}
-			else
-			{
-				drawHcpSearch();
-
-				this._requestPopupContainer.width = 500 * dpiScale;
-				this._requestPopupContainer.validate();
-			}
-
 			this._backButton.validate();
+
+			getApprovedConnections();
 		}
 
 		override protected function initialize():void
@@ -99,40 +84,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.title = "Connect to a care provider";
 			addChild(this._header);
 
-			this._hcpCellContainer = new ScrollContainer();
-
-			this._requestConnectionButton = new Button();
-			this._requestConnectionButton.label = "Request Connection";
-			this._requestConnectionButton.visible = false;
-			this._requestConnectionButton.addEventListener(Event.TRIGGERED, onRequestConnection);
-			addChild(this._requestConnectionButton);
-
-
-			this._hcpConnected = hcpConnectionCheck();
-			if(this._hcpConnected)
-			{
-				trace("hcp is connected");
-				initResults();
-			}
-			else
-			{
-				trace("hcp is not connected");
-				initHcpSearch();
-
-				this._requestPopupContainer = new HivivaPopUp();
-				this._requestPopupContainer.scale = this.dpiScale;
-				this._requestPopupContainer.confirmLabel = "Close";
-				this._requestPopupContainer.addEventListener(Event.COMPLETE, closePopup);
-				this._requestPopupContainer.addEventListener(Event.CLOSE, closePopup);
-			}
-
-
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
+
+			this._hcpCellContainer = new ScrollContainer();
+
 		}
 
 		private function backBtnHandler(e:Event = null):void
@@ -146,10 +106,37 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 		}
 
-
-
-		private function initHcpSearch():void
+		private function getApprovedConnections():void
 		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConnectionsHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnections();
+		}
+
+		private function getApprovedConnectionsHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConnectionsHandler);
+			trace("getApprovedConnections " + e.data.xmlResponse);
+			var xml:XML = e.data.xmlResponse;
+
+			if(xml.children().length() > 0)
+			{
+
+				initApprovedConnections();
+
+			}
+			drawHcpSearch();
+		}
+
+		private function initApprovedConnections():void
+		{
+
+		}
+
+		private function drawHcpSearch():void
+		{
+			var scaledPadding:Number = PADDING * this.dpiScale;
+			var horizontalAlign:Number = 32 * this.dpiScale;
+
 			this._appIDLabel = new Label();
 			this._appIDLabel.text = "AppID";
 			this.addChild(this._appIDLabel);
@@ -164,12 +151,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._resultInfo = new Label();
 			addChild(this._resultInfo);
-		}
-
-		private function drawHcpSearch():void
-		{
-			var scaledPadding:Number = PADDING * this.dpiScale;
-			var horizontalAlign:Number = 32 * this.dpiScale;
 
 			this._appIDLabel.validate();
 			this._searchInput.validate();
@@ -207,10 +188,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			var appGuid:String = e.data.xmlResponse.AppGuid;
 			var appId:String = e.data.xmlResponse.AppId;
 
-			clearDownHCPList();
+
 
 			if(e.data.xmlResponse.AppGuid != "00000000-0000-0000-0000-000000000000")
 			{
+				clearDownHCPList();
 				var hcpList:XMLList = new XMLList
 				(
 						<hcp>
@@ -222,8 +204,12 @@ package collaboRhythm.hiviva.view.screens.patient
 						</hcp>
 				);
 				this._hcpFilteredList.push(hcpList);
+				this._resultInfo.text = "Registered doctor " + this._hcpFilteredList[0].appid + " found.";
+				this._resultInfo.validate();
+
 				initResults();
-			} else
+			}
+			else
 			{
 				this._resultInfo.text = "0 registered doctors found";
 				this._resultInfo.validate();
@@ -235,9 +221,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			var resultsLength:int = this._hcpFilteredList.length;
 			var currItem:XMLList;
 			var hcpCell:HcpResultCell;
-
-			this._resultInfo.text = "Registered doctor " + this._hcpFilteredList[0].@appid + " found.";
-			this._resultInfo.validate();
 
 			for(var listCount:int = 0; listCount < resultsLength; listCount++)
 			{
@@ -252,9 +235,18 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._hcpCellContainer.addChild(hcpCell);
 				this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
 			}
-			drawResults();
 
-			this._requestConnectionButton.visible = true;
+
+			this._requestConnectionButton = new Button();
+			this._requestConnectionButton.label = "Request Connection";
+			this._requestConnectionButton.addEventListener(Event.TRIGGERED, onRequestConnection);
+			addChild(this._requestConnectionButton);
+
+			this._requestConnectionButton.validate();
+			this._requestConnectionButton.x = (this.actualWidth / 2) - (this._requestConnectionButton.width / 2);
+			this._requestConnectionButton.y = this.actualHeight - this._requestConnectionButton.height - (PADDING * this.dpiScale);
+
+			drawResults();
 		}
 
 		private function  clearDownHCPList():void
@@ -317,67 +309,15 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
 
+			this._requestPopupContainer = new HivivaPopUp();
+			this._requestPopupContainer.scale = this.dpiScale;
+			this._requestPopupContainer.confirmLabel = "Close";
+			this._requestPopupContainer.addEventListener(Event.COMPLETE, closePopup);
+			this._requestPopupContainer.addEventListener(Event.CLOSE, closePopup);
+			this._requestPopupContainer.width = 500 * dpiScale;
+			this._requestPopupContainer.validate();
 			this._requestPopupContainer.message = "A request to connect has been sent.";
-			showRequestPopup();
-		}
 
-		private function getAprrovedConnections():void
-		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConnections);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnections();
-
-		}
-
-		private function getApprovedConnections(e:RemoteDataStoreEvent):void
-		{
-			var xml:XML = e.data.xmlResponse;
-			trace("xml " + xml);
-			trace("xml " + xml.children().length());
-
-			trace("getApprovedConnections " + e.data.xmlResponse);
-		}
-
-		private function hcpConnectionCheck():Boolean
-		{
-			getAprrovedConnections();
-
-			return false;
-
-			/*
-
-
-			var returnBool:Boolean;
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
-
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
-
-			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "SELECT * FROM hcp_connection";
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.execute();
-
-			var sqlRes:SQLResult = this._sqStatement.getResult();
-			//trace(sqlRes.data[0].name);
-			returnBool = true;
-			try
-			{
-				this._hcpFilteredList = [XML("<hcp><name>" + sqlRes.data[0].name + "</name><email>" + sqlRes.data[0].email + "</email><appid>" + sqlRes.data[0].appid + "</appid><picture>" + sqlRes.data[0].picture + "</picture></hcp>")];
-			}
-			catch(e:Error)
-			{
-				//trace("fail");
-				this._hcpFilteredList = [];
-				returnBool = false;
-			}
-			return returnBool;
-
-			*/
-		}
-
-		private function showRequestPopup():void
-		{
 			PopUpManager.addPopUp(this._requestPopupContainer,true,true);
 			this._requestPopupContainer.validate();
 			PopUpManager.centerPopUp(this._requestPopupContainer);
@@ -385,12 +325,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._requestPopupContainer.drawCloseButton();
 		}
 
-
 		private function closePopup(e:Event):void
 		{
 			PopUpManager.removePopUp(this._requestPopupContainer);
 			backBtnHandler();
 		}
+
+
+
 
 		private function deleteHcpRecord(e:Event):void
 		{
@@ -420,3 +362,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		}
 	}
 }
+
+//			this._hcpFilteredList = [XML("<hcp><name>" + sqlRes.data[0].name + "</name><email>" + sqlRes.data[0].email + "</email><appid>" + sqlRes.data[0].appid + "</appid><picture>" + sqlRes.data[0].picture + "</picture></hcp>")];
+
