@@ -78,10 +78,12 @@ package collaboRhythm.hiviva.view
 		private var _scaleFactor:Number;
 		//private var _profile:String;
 		private var _calendar:Calendar;
+
+		private var _popupContainer:PasswordPopUp;
+
 		private static var _selectedHCPPatientProfile:Object = {};
 		private static var _assets:AssetManager;
 		private static var _footerBtnGroupHeight:Number;
-		private var _popupContainer:PasswordPopUp;
 
 		   // Startup image for SD screens
 		// TODO : asset needs to be pushed to GIT, commented out to prevent error
@@ -129,8 +131,8 @@ package collaboRhythm.hiviva.view
 
 					Starling.juggler.delayCall(function ():void
 					{
-						__home.removeChild(quad)
-						quad.dispose()
+						__home.removeChild(quad);
+						quad.dispose();
 
 						startup();
 					}, 0.15);
