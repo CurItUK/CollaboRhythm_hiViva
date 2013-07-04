@@ -4,7 +4,9 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.components.SelectMedicationCell;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -176,8 +178,38 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function checkMedicationScheduleExist():void
 		{
-			localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE, medicationsScheduleLoadCompleteHandler);
-			localStoreController.getMedicationsSchedule();
+			//localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE, medicationsScheduleLoadCompleteHandler);
+			//localStoreController.getMedicationsSchedule();
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
+
+		}
+
+		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			trace("medicationsLoadCompleteHandler " + e.data.xmlResponse);
+
+			var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication;
+
+			trace(medicationsXML.length());
+
+			if(medicationsXML.length() >0)
+			{
+				this._medications = [];
+				var medLoop:int = medicationsXML.length();
+				for(var i:int = 0 ; i < medLoop ; i++)
+				{
+					var medObj:Object = {medication_name:medicationsXML[i].MedicationName , id: medicationsXML[i].MedicationID};
+					this._medications.push(medObj);
+				}
+				initializeShowMedications();
+			}
+			else
+			{
+				initializeEnterRegimen();
+			}
 		}
 
 		private function medicationsScheduleLoadCompleteHandler(e:LocalDataStoreEvent):void
