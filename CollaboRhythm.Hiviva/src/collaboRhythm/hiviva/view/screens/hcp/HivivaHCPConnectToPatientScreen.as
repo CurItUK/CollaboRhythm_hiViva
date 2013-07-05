@@ -103,25 +103,25 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			if(xml.children().length() > 0)
 			{
+				clearDownHCPList();
 				var loop:uint = xml.children().length();
-				var approvedHCPList:XMLList  = xml.DCHeal
+				var approvedHCPList:XMLList  = xml.DCConnection;
 				for(var i:uint = 0 ; i <loop ; i++)
 				{
-					var appGuid:String = approvedHCPList[i].AppGuid;
-					var appId:String = approvedHCPList[i].AppId;
+					var appGuid:String = approvedHCPList[i].FromUserGuid;
+					var appId:String = approvedHCPList[i].FromAppId;
 
 					var hcpList:XMLList = new XMLList
 					(
 							<hcp>
-								<name>HCP Display name</name>
-								<email>hcp@domain.com</email>
+								<name>{appId}</name>
+								<email>{appId}@domain.com</email>
 								<appid>{appId}</appid>
 								<guid>{appGuid}</guid>
 								<picture>dummy.png</picture>
 							</hcp>
 					);
 					this._patientFilteredList.push(hcpList);
-
 				}
 				initResults();
 			}
@@ -145,8 +145,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 				hcpCell.hcpData = currItem;
 				hcpCell.isResult = true;
 				hcpCell.scale = this.dpiScale;
-				this._patientFilteredList.addChild(hcpCell);
-				this._patientFilteredList.addItem(hcpCell._hcpSelect);
+				this._patientCellContainer.addChild(hcpCell);
+				this._patientCellRadioGroup.addItem(hcpCell._hcpSelect);
 			}
 
 			drawResults();

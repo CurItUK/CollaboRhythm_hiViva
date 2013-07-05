@@ -90,15 +90,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._medicationLabel);
 			this._medicationLabel.validate();
 
-		/*
-			this._medicationLabel = new List();
-			this._medicationLabel.dataProvider = new ListCollection(medicationResult.name);
-			this._medicationLabel.itemRendererProperties.labelFunction = labelFunction;
-			this._medicationLabel.isSelectable = false;
-			this._content.addChild(this._medicationLabel);
-			this._medicationLabel.width = this.actualWidth;
-			this._medicationLabel.validate();
-*/
 			this._seperator = new Image(Main.assets.getTexture("header_line"));
 			this._content.addChild(this._seperator);
 			this._seperator.width = this.actualWidth;
@@ -200,7 +191,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			if(this._saveToProfileBtn != null)
 			{
-				this._content.removeChild(this._saveToProfileBtn);
+				this.removeChild(this._saveToProfileBtn);
 				this._saveToProfileBtn = null;
 			}
 
@@ -222,10 +213,11 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._saveToProfileBtn.labels = ["Add to my profile"];
 				this._saveToProfileBtn.addEventListener(starling.events.Event.TRIGGERED, saveProfileBtnHandler);
 				this.addChild(this._saveToProfileBtn);
+
 				this._saveToProfileBtn.x = this._horizontalPadding;
 				this._saveToProfileBtn.width = this._innerWidth;
 				this._saveToProfileBtn.validate();
-				this._saveToProfileBtn.y = this._content.y + this._content.height - this._saveToProfileBtn.height - this._verticalPadding;
+				this._saveToProfileBtn.y = this.actualHeight - this._saveToProfileBtn.height - (this._componentGap);
 				this._content.height = this._contentHeight - this._verticalPadding - this._saveToProfileBtn.height - this._componentGap;
 				this._content.validate();
 			}
@@ -268,7 +260,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			if (this._saveToProfileBtn != null)
 			{
-				this._content.removeChild(this._saveToProfileBtn);
+				this._saveToProfileBtn.removeEventListener(starling.events.Event.TRIGGERED, saveProfileBtnHandler);
+				this.removeChild(this._saveToProfileBtn);
 				this._saveToProfileBtn = null;
 			}
 
