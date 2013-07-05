@@ -65,8 +65,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function draw():void
 		{
 			super.draw();
-
-
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
 

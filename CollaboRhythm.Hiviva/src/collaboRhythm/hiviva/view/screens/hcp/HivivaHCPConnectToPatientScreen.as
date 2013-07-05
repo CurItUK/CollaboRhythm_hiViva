@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import feathers.controls.Button;
 	import feathers.controls.Header;
@@ -25,6 +26,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _header:HivivaHeader;
 		private var _addConnectionButton:Button;
 		private var _backButton:Button;
+		private var _patientFilteredList:Array = [];
 
 		private var _patientCellContainer:ScrollContainer;
 		private var _patientCellRadioGroup:ToggleGroup;
@@ -43,14 +45,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 			super.draw();
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
+			this._backButton.validate();
 
 			this._addConnectionButton.validate();
 			this._addConnectionButton.x = (this.actualWidth / 2) - (this._addConnectionButton.width / 2);
 			this._addConnectionButton.y = this.actualHeight - this._addConnectionButton.height - (PADDING * this.dpiScale);
 
-			this._backButton.validate();
-
-			getHcpConnections();
+			getApprovedConnections();
 		}
 
 		override protected function initialize():void
@@ -76,40 +77,79 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientCellContainer = new ScrollContainer();
 		}
 
-		private function getHcpConnections():void
+		private function backBtnHandler(e:starling.events.Event = null):void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getHCPConnections();
+			clearDownHCPList();
+			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
 
-		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
+		private function onAddConnection(e:starling.events.Event):void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
-			trace(e.data.connections);
-			if(e.data.connections != null)
+			clearDownHCPList();
+			this.owner.showScreen(HivivaScreens.HCP_ADD_PATIENT);
+		}
+
+		private function getApprovedConnections():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE, getApprovedConnectionsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnections();
+		}
+
+		private function getApprovedConnectionsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE, getApprovedConnectionsCompleteHandler);
+
+			var xml:XML = e.data.xmlResponse;
+
+			if(xml.children().length() > 0)
 			{
-				trace("connectionsLength " + e.data.connections.length);
-				var connectionsLength:uint = e.data.connections.length;
-
-				clearDownPatientCells();
-
-				this._patientCellRadioGroup = new ToggleGroup();
-				addChild(this._patientCellContainer);
-
-
-				for (var listCount:int = 0; listCount < connectionsLength; listCount++)
+				var loop:uint = xml.children().length();
+				var approvedHCPList:XMLList  = xml.DCHeal
+				for(var i:uint = 0 ; i <loop ; i++)
 				{
-					var patientCell:PatientResultCell = new PatientResultCell();
-					patientCell.patientData = generateXMLNode(e.data.connections[listCount]);
-					patientCell.isResult = false;
-					patientCell.scale = this.dpiScale;
-					patientCell.addEventListener(starling.events.Event.CLOSE, deleteHcpRecord);
-					//patientCell.addEventListener(Event.REMOVED_FROM_STAGE, deleteHcpCell);
-					this._patientCellContainer.addChild(patientCell);
-					this._patientCellRadioGroup.addItem(patientCell._patientSelect);
+					var appGuid:String = approvedHCPList[i].AppGuid;
+					var appId:String = approvedHCPList[i].AppId;
+
+					var hcpList:XMLList = new XMLList
+					(
+							<hcp>
+								<name>HCP Display name</name>
+								<email>hcp@domain.com</email>
+								<appid>{appId}</appid>
+								<guid>{appGuid}</guid>
+								<picture>dummy.png</picture>
+							</hcp>
+					);
+					this._patientFilteredList.push(hcpList);
+
 				}
-				drawResults();
+				initResults();
 			}
+			else
+			{
+				trace("No Approved Connections");
+			}
+		}
+
+		private function initResults():void
+		{
+			var resultsLength:int = this._patientFilteredList.length;
+			var currItem:XMLList;
+			var hcpCell:HcpResultCell;
+
+			for(var listCount:int = 0; listCount < resultsLength; listCount++)
+			{
+				currItem = XMLList(this._patientFilteredList[listCount]);
+
+				hcpCell = new HcpResultCell();
+				hcpCell.hcpData = currItem;
+				hcpCell.isResult = true;
+				hcpCell.scale = this.dpiScale;
+				this._patientFilteredList.addChild(hcpCell);
+				this._patientFilteredList.addItem(hcpCell._hcpSelect);
+			}
+
+			drawResults();
 		}
 
 		private function drawResults():void
@@ -117,10 +157,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var scaledPadding:Number = PADDING * this.dpiScale;
 			var yStartPosition:Number;
 			var maxHeight:Number;
-			var patientCell:PatientResultCell;
+			var hcpCell:HcpResultCell;
 
-			yStartPosition = this._header.height;
-			maxHeight = this.actualHeight - yStartPosition - this._addConnectionButton.height - (PADDING * this.dpiScale);
+			yStartPosition = this._header.y + this._header.height + scaledPadding;
+			maxHeight = this.actualHeight - yStartPosition;
+			maxHeight -= (this.actualHeight - this._addConnectionButton.y) + scaledPadding;
 
 			this._patientCellContainer.width = this.actualWidth;
 			this._patientCellContainer.y = yStartPosition;
@@ -128,8 +169,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			for (var i:int = 0; i < this._patientCellContainer.numChildren; i++)
 			{
-				patientCell = this._patientCellContainer.getChildAt(i) as PatientResultCell;
-				patientCell.width = this.actualWidth;
+				hcpCell = this._patientCellContainer.getChildAt(i) as HcpResultCell;
+				hcpCell.width = this.actualWidth;
 			}
 
 			var layout:VerticalLayout = new VerticalLayout();
@@ -139,100 +180,19 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientCellContainer.validate();
 		}
 
-		private function generateXMLNode(record:Object):XML
+		private function clearDownHCPList():void
 		{
-			var xmlRecord:XML = XML("<patient><name>" + record.name + "</name><email>"
-					+  record.email + "</email><appid>"
-					+  record.appid + "</appid><picture>"
-					+ record.picture + "</picture></patient>");
-
-			return xmlRecord;
-		}
-
-		private function deleteHcpRecord(e:starling.events.Event):void
-		{
-			trace("deleteHcpRecord confirmation");
-			selectedPatientCellForDelete = e.target as PatientResultCell;
-
-
-			this._deletePopupContainer = new HivivaPopUp();
-			this._deletePopupContainer.scale = this.dpiScale;
-			this._deletePopupContainer.confirmLabel = "Delete";
-			this._deletePopupContainer.addEventListener(starling.events.Event.COMPLETE, deleteHcpCell);
-			this._deletePopupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
-			this._deletePopupContainer.width = 500 * dpiScale;
-			this._deletePopupContainer.validate();
-
-			this._deletePopupContainer.message = "This will delete your connection with " + selectedPatientCellForDelete.patientData.name;
-
-			showRequestPopup();
-		}
-
-		private function showRequestPopup():void
-		{
-			PopUpManager.addPopUp(this._deletePopupContainer, true, true);
-			this._deletePopupContainer.validate();
-			PopUpManager.centerPopUp(this._deletePopupContainer);
-			this._deletePopupContainer.drawCloseButton();
-		}
-
-		private function deleteHcpCell(e:starling.events.Event):void
-		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTION_DELETE_COMPLETE , deleteHCPConnectionCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.deleteHCPConnection(selectedPatientCellForDelete.patientData.appid);
-		}
-
-		private function deleteHCPConnectionCompleteHandler(e:LocalDataStoreEvent):void
-		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTION_DELETE_COMPLETE , deleteHCPConnectionCompleteHandler);
-			clearDownPatientCells();
-			clearDownPopup();
-			getHcpConnections();
-		}
-
-		private function clearDownPopup():void
-		{
-			PopUpManager.removePopUp(this._deletePopupContainer);
-			this._deletePopupContainer.removeEventListener(starling.events.Event.COMPLETE, deleteHcpCell);
-			this._deletePopupContainer.removeEventListener(starling.events.Event.CLOSE, closePopup);
-			this._deletePopupContainer.dispose();
-			this._deletePopupContainer = null;
-		}
-
-		private function closePopup(e:starling.events.Event):void
-		{
-			PopUpManager.removePopUp(this._deletePopupContainer);
-		}
-
-		private function backBtnHandler(e:starling.events.Event = null):void
-		{
-			clearDownPatientCells();
-			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
-		}
-
-		private function onAddConnection(e:starling.events.Event):void
-		{
-			clearDownPatientCells();
-			this.owner.showScreen(HivivaScreens.HCP_ADD_PATIENT);
-		}
-
-		private function clearDownPatientCells():void
-		{
-			if (contains(this._patientCellContainer))
+			this._patientFilteredList = [];
+			if(!contains(this._patientCellContainer))
+			{
+				this._patientCellRadioGroup = new ToggleGroup();
+				addChild(this._patientCellContainer);
+			}
+			else
 			{
 				this._patientCellRadioGroup.removeAllItems();
 				this._patientCellContainer.removeChildren();
 			}
-		}
-
-		public function get selectedPatientCellForDelete():PatientResultCell
-		{
-			return this._selectedPatientCellForDelete;
-		}
-
-		public function set selectedPatientCellForDelete(cell:PatientResultCell):void
-		{
-			this._selectedPatientCellForDelete = cell;
 		}
 	}
 }
