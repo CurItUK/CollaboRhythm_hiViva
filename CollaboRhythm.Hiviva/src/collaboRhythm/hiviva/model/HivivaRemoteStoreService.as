@@ -175,6 +175,41 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt)
 		}
 
+		public function getMessages():void
+		{
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_MESSAGES);
+			trace("getMessages " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getMessagesComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getMessagesComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_MESSAGES_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
+		public function sendUserMessage(toGuid:String,messageGuid:String):void
+		{
+			var query:String = "From=" + HivivaStartup.userVO.guid + "&To=" + toGuid + "&MessageGuid=" + messageGuid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_SEND_USER_MESSAGE + query);
+			trace("sendUserMessage " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, sendUserMessageComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function sendUserMessageComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.SEND_USER_MESSAGE_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
 		public function deleteUserMessage(messageGuid:String):void
 		{
 			var query:String = "MessageGuid=" + messageGuid;

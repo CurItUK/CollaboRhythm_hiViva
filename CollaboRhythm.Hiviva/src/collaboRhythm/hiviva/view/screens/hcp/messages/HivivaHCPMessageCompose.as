@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaPopUp;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
@@ -58,7 +59,10 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private var _popupContainer:HivivaPopUp;
 
 		private var _radioGroup:ToggleGroup;
-		private var _radioButton:Radio;
+//		private var _radioButton:Radio;
+
+		private var _remoteCallMade:Boolean;
+		private var _allSendableMessages:XMLList;
 
 		private const MESSAGE_LABELS:Array =
 		[
@@ -102,11 +106,15 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._header.initTrueTitle();
 
 			getHcpConnections();
+/*
 
 			if(_cellContainer == null)
 			{
 				drawMessages();
 			}
+*/
+
+			if(!this._remoteCallMade) getSendableMessagesFromRemoteService();
 		}
 
 		override protected function initialize():void
@@ -157,22 +165,64 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
 		}
 
+		private function getSendableMessagesFromRemoteService():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_MESSAGES_COMPLETE, getMessagesHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getMessages();
+			this._remoteCallMade = true;
+		}
+
+		private function getMessagesHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_MESSAGES_COMPLETE, getMessagesHandler);
+
+			this._allSendableMessages = e.data.xmlResponse.DCMessage;
+			/*<MessageGuid>649c68bb-e87c-4eb7-bd74-52fa271cea53</MessageGuid>
+			<Message>Great job, keep it up!</Message>*/
+			populateMessages();
+		}
+
+		private function populateMessages():void
+		{
+			var sendableMessageLength:int = this._allSendableMessages.length();
+			var sendableMessage:Radio;
+
+			this._cellContainer = new ScrollContainer();
+			this._radioGroup = new ToggleGroup();
+			for (var i:int = 0; i < sendableMessageLength; i++)
+			{
+//				this._allSendableMessages[i].Message
+
+				sendableMessage = new Radio();
+				sendableMessage.label = this._allSendableMessages[i].Message;
+				this._radioGroup.addItem(sendableMessage);
+				this._cellContainer.addChild(sendableMessage);
+			}
+//			this._radioGroup.addEventListener( starling.events.Event.CHANGE, group_changeHandler );
+			this._cellContainer.width = this.actualWidth;
+			this._cellContainer.x = this._hcpName.x;
+			this._cellContainer.y = this._header.height + this._patientPickerList.y + this._patientPickerList.height + 120;
+			this._cellContainer.height = this.actualHeight - this._cellContainer.y - (this._scaledPadding * 2);
+			this._cellContainer.layout = new VerticalLayout();
+			this._cellContainer.validate();
+			this.addChild(this._cellContainer);
+		}
+/*
+
 		private function drawMessages():void
 		{
 			this._cellContainer = new ScrollContainer();
-			var message:MessageCell;
+//			var message:MessageCell;
 			this._radioGroup = new ToggleGroup();
 				for (var i:int = 0; i < MESSAGE_LABELS.length; i++)
 				{
-/*
-					message = new MessageCell();
-					message.scale = this.dpiScale/2;
-					message.messageName = MESSAGE_LABELS[i];
-				//	message.messageIcon = MESSAGE_ICONS[i];
-					message.width = this.actualWidth;
-					//message.checkBox.addEventListener(Event.TRIGGERED, test);
+//					message = new MessageCell();
+//					message.scale = this.dpiScale/2;
+//					message.messageName = MESSAGE_LABELS[i];
+//					message.messageIcon = MESSAGE_ICONS[i];
+//					message.width = this.actualWidth;
+//					message.checkBox.addEventListener(Event.TRIGGERED, test);
 					this._cellContainer.addChild(message);
-*/
 					this._radioButton = new Radio();
 					this._radioButton.label = MESSAGE_LABELS[i];
 					this._radioGroup.addItem(this._radioButton);
@@ -199,30 +249,30 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		    var group:ToggleGroup = ToggleGroup( ev.currentTarget );
 		    trace( "group.selectedIndex:", group.selectedIndex );
 		}
+*/
 
 
 		private function sendButtonHandler(e:starling.events.Event):void
 		{
-					this._popupContainer = new HivivaPopUp();
-					this._popupContainer.scale = this.dpiScale;
-					this._popupContainer.width = this.actualWidth;
-					this._popupContainer.height = this.actualHeight;
-					this._popupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
-			//		this._popupContainer.message = _main.selectedHCPPatientProfile.name;
-					this._popupContainer.confirmLabel = 'Message Sent';
-					this._popupContainer.validate();
+			var messageGuid:String = this._allSendableMessages[this._radioGroup.selectedIndex].MessageGuid;
 
-					PopUpManager.addPopUp(this._popupContainer, true, true);
-					this._popupContainer.validate();
-
-
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.SEND_USER_MESSAGE_COMPLETE, sendUserMessageHandler);
+			// TODO : when we have valid connections, replace hardcoded toGuid below with variable
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.sendUserMessage('1616aad3-359d-4e40-89bb-e399e1961dcd',messageGuid);
 		}
 
-		private function closePopup(e:starling.events.Event):void
+		private function sendUserMessageHandler(e:RemoteDataStoreEvent):void
 		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.SEND_USER_MESSAGE_COMPLETE, sendUserMessageHandler);
 
-			PopUpManager.removePopUp(this._popupContainer);
-
+			if(e.data.xmlResponse.Message == "Success")
+			{
+				showFormValidation("Success! Your message has been sent");
+			}
+			else
+			{
+				showFormValidation("There was a problem sending the message, your message has not been sent");
+			}
 		}
 
 		private function getHcpConnections():void
