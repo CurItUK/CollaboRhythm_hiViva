@@ -114,8 +114,9 @@ package collaboRhythm.hiviva.view.screens.patient
 				var approvedHCPList:XMLList  = xml.DCConnection;
 				for(var i:uint = 0 ; i <loop ; i++)
 				{
-					var appGuid:String = approvedHCPList[i].ToUserGuid;
-					var appId:String = approvedHCPList[i].ToAppId;
+					var establishedUser:Object = establishToFromId(approvedHCPList[i]);
+					var appGuid:String = establishedUser.appGuid;
+					var appId:String = establishedUser.appId;
 
 					var hcpList:XMLList = new XMLList
 					(
@@ -135,6 +136,23 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				trace("No Approved Connections");
 			}
+		}
+
+		private function establishToFromId(idsToCompare:XML):Object
+		{
+			var whoEstablishConnection:Object = [];
+			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
+			{
+				whoEstablishConnection.appGuid = idsToCompare.ToUserGuid;
+				whoEstablishConnection.appId = idsToCompare.ToAppId;
+			} else
+			{
+				whoEstablishConnection.appGuid = idsToCompare.FromUserGuid;
+				whoEstablishConnection.appId = idsToCompare.FromAppId;
+			}
+
+			return whoEstablishConnection;
+
 		}
 
 		private function initResults():void
