@@ -7,9 +7,11 @@ package collaboRhythm.hiviva.global
 		public static const RS_GET_HCP:String = 						"WSHealthUser.svc/GetHcp?";
 		public static const RS_ADD_MEDICATION:String = 					"WSUserMedication.svc/AddUserMedication?";
 		public static const RS_GET_PATIENT_MEDICATION:String = 			"WSUserMedication.svc/GetUserMedicaton?";
-		public static const RS_GET_HCP_SENT_MESSAGES:String = 			"WSMessage.svc//GetAllSentMessages?";
-		public static const RS_GET_USER_RECIEVED_MESSAGES:String = 		"WSMessage.svc//GetAllReceivedMessages?";
-		public static const RS_DELETE_USER_MESSAGE:String = 			"WSMessage.svc//DeleteMessage?";
+		public static const RS_GET_MESSAGES:String = 					"WSMessage.svc/GetMessages";
+		public static const RS_GET_HCP_SENT_MESSAGES:String = 			"WSMessage.svc/GetAllSentMessages?";
+		public static const RS_GET_USER_RECIEVED_MESSAGES:String = 		"WSMessage.svc/GetAllReceivedMessages?";
+		public static const RS_SEND_USER_MESSAGE:String = 				"WSMessage.svc/SendMessage?";
+		public static const RS_DELETE_USER_MESSAGE:String = 			"WSMessage.svc/DeleteMessage?";
 
 		//Connections
 		public static const RS_CONNECTION_ESTABLISH:String = 			"WSConnection.svc/Establish?";

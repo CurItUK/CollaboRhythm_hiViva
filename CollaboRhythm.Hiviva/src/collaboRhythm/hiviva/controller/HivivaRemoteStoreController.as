@@ -127,7 +127,7 @@ package collaboRhythm.hiviva.controller
 
 		private function getHCPSentMessagesHandler(e:RemoteDataStoreEvent):void
 		{
-			service.removeEventListener(RemoteDataStoreEvent.GET_HCP_SENT_MESSAGES_COMPLETE , getApprovedConectionsHandler);
+			service.removeEventListener(RemoteDataStoreEvent.GET_HCP_SENT_MESSAGES_COMPLETE , getHCPSentMessagesHandler);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_HCP_SENT_MESSAGES_COMPLETE);
 			evt.data = e.data;
 			this.dispatchEvent(evt);
@@ -141,8 +141,36 @@ package collaboRhythm.hiviva.controller
 
 		private function getUserReceivedMessagesHandler(e:RemoteDataStoreEvent):void
 		{
-			service.removeEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE , getApprovedConectionsHandler);
+			service.removeEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE , getUserReceivedMessagesHandler);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function getMessages():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_MESSAGES_COMPLETE , getMessagesHandler);
+			service.getMessages();
+		}
+
+		private function getMessagesHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_MESSAGES_COMPLETE , getMessagesHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_MESSAGES_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function sendUserMessage(toGuid:String,messageGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.SEND_USER_MESSAGE_COMPLETE , sendUserMessageHandler);
+			service.sendUserMessage(toGuid,messageGuid);
+		}
+
+		private function sendUserMessageHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.SEND_USER_MESSAGE_COMPLETE , sendUserMessageHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.SEND_USER_MESSAGE_COMPLETE);
 			evt.data = e.data;
 			this.dispatchEvent(evt);
 		}
@@ -155,7 +183,7 @@ package collaboRhythm.hiviva.controller
 
 		private function deleteUserMessageHandler(e:RemoteDataStoreEvent):void
 		{
-			service.removeEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE , getApprovedConectionsHandler);
+			service.removeEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE , deleteUserMessageHandler);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE);
 			evt.data = e.data;
 			this.dispatchEvent(evt);
