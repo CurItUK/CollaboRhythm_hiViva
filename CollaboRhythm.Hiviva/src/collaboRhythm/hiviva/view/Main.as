@@ -60,12 +60,16 @@ package collaboRhythm.hiviva.view
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 	import feathers.core.PopUpManager;
 	import collaboRhythm.hiviva.view.components.Calendar;
 	import starling.display.Quad;
 	import flash.desktop.NativeApplication;
 	import collaboRhythm.hiviva.view.PasswordPopUp;
+	import flash.net.NetworkInfo;
+	import flash.net.NetworkInterface;
+    import collaboRhythm.hiviva.view.HivivaPreloaderWithBackground ;
 	public class Main extends Sprite
 	{
 		private var _screenHolder:Sprite;
@@ -79,9 +83,10 @@ package collaboRhythm.hiviva.view
 		private var _scaleFactor:Number;
 		//private var _profile:String;
 		private var _calendar:Calendar;
+		private var bgTexture : Texture ;
 
 		private var _popupContainer:PasswordPopUp;
-
+        private var preloader : HivivaPreloaderWithBackground ;
 		private static var _selectedHCPPatientProfile:Object = {};
 		private static var _assets:AssetManager;
 		private static var _footerBtnGroupHeight:Number;
@@ -94,8 +99,21 @@ package collaboRhythm.hiviva.view
 
 		public function Main()
 		{
-		}
 
+
+							var network:NetworkInfo = NetworkInfo.networkInfo;
+							for each (var object:NetworkInterface in network.findInterfaces())
+							{
+							    trace(this ,  "NETWORK DETAILS ARE  :::::  " , object.name, object.active);
+
+				                trace("WE HAVE CONNECTION ")
+			}
+		}
+        public function  initTexture(t:Texture){
+
+
+			this.bgTexture = t
+		}
 		public function initMain(assetManager:AssetManager):void
 		{
 			_assets = assetManager;
@@ -118,22 +136,36 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lightest-bold.png"),appDir.resolvePath("assets/fonts/engraved-lightest-bold.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lighter-regular.png"),appDir.resolvePath("assets/fonts/engraved-lighter-regular.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-lighter-bold.png"),appDir.resolvePath("assets/fonts/raised-lighter-bold.fnt"));
-            var __home =  this
+
+
+             this.preloader = new HivivaPreloaderWithBackground( 0xFFFFFF , 100 , 5 , this.bgTexture) ;
+			 this.preloader.init();
+
+			 this.preloader.y = 0;
+			 this.preloader.x = 0;
+
+		   	this.preloader.validate()
+
+             var __home:Main  =  this ;
+			this.addChild(this.preloader);
+
 			_assets.loadQueue(function onProgress(ratio:Number):void
 			{
 				trace("Loading Assets " + ratio);
-				const quad:Quad = new Quad(100, 5, 0xff00ff);
-				 quad.x =  0 // ( Constants.STAGE_WIDTH - quad.width) / 2;
-				 quad.y = ( Constants.STAGE_HEIGHT - quad.height) / 2;
-				 __home.addChild(quad);
-				quad.width = ratio * Constants.STAGE_WIDTH;
+//				quad.width = ratio * Constants.STAGE_WIDTH;
 
-				if (ratio == 1)
+				__home.preloader._width = ratio * Constants.STAGE_WIDTH;
+				__home.preloader.dispatchEventWith(FeathersScreenEvent.PRELOADER_ONPOGRESS)
+					if (ratio == 1)
 
 					Starling.juggler.delayCall(function ():void
 					{
-						__home.removeChild(quad);
-						quad.dispose();
+
+						__home.preloader._dispose();
+						//__home.removeChild(quad);
+		            	// quad.removeFromParent(true)
+						__home.removeChild(this.preloader)
+						__home.preloader = null;
 
 						startup();
 					}, 0.15);
