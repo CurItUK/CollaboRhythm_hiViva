@@ -71,9 +71,9 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt)
 		}
 
-		public function getHCP(appGuid:String):void
+		public function getHCP(appID:String):void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_HCP + appGuid);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_HCP + "AppId=" + appID);
 			trace("getHCP " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getHCPCompleteHandler);
@@ -90,7 +90,7 @@ package collaboRhythm.hiviva.model
 
 		public function getPatient(appID:String):void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_PATIENT + appID);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_PATIENT + "AppId=" + appID);
 			trace("getPatient " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getPatientCompleteHandler);
@@ -100,7 +100,9 @@ package collaboRhythm.hiviva.model
 		private function getPatientCompleteHandler(e:Event):void
 		{
 			var xmlResponse:XML = new XML(e.target.data);
-			trace(xmlResponse);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
 		}
 
 		public function establishConnection(fromGuid:String , toGuid:String):void

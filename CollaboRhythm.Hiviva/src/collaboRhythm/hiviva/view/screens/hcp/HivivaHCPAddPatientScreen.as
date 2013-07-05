@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
 	import feathers.controls.Button;
@@ -34,23 +35,25 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	public class HivivaHCPAddPatientScreen extends Screen
 	{
-		[Embed("/resources/dummy_patientlist.xml", mimeType="application/octet-stream")]
-		private static const PatientData:Class;
 
 		private var _header:HivivaHeader;
-		private var _patientDataXml:XML;
+
+		private var _patientConnected:Boolean;
 		private var _patientCellContainer:ScrollContainer;
 		private var _requestConnectionButton:Button;
 		private var _requestPopupContainer:HivivaPopUp;
 		private var _backButton:Button;
 		private var _patientCellRadioGroup:ToggleGroup;
-		private var _appIdLabel:Label;
+		private var _hcpCellContainer:ScrollContainer;
+		private var _hcpCellRadioGroup:ToggleGroup;
+
 		private var _searchInput:TextInput;
 		private var _searchButton:Button;
 		private var _resultInfo:Label;
 		private var _patientFilteredList:Array;
-		private var _sqConn:SQLConnection;
-		private var _sqStatement:SQLStatement;
+
+
+		private var _appIDLabel:Label;
 
 		private const PADDING:Number = 20;
 
@@ -64,70 +67,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 			super.draw();
 
 
-			var scaledPadding:Number = PADDING * this.dpiScale;
-			var horizontalAlign:Number = 32 * this.dpiScale;
-
-
 			this._header.width = this.actualWidth;
 			this._header.height = 110 * this.dpiScale;
 
-			// reduce font size for large title
-			/*this._header._titleHolder1.textRendererProperties.textFormat = new TextFormat("ExoBold", Math.round(36 * this.dpiScale), 0x293d54);
-			this._header._titleHolder2.textRendererProperties.textFormat = new TextFormat("ExoLight", Math.round(36 * this.dpiScale), 0x293d54);
-			this._header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
-			this._header.validate();*/
-
-			this._appIdLabel.validate();
-			this._searchButton.validate();
-			this._searchInput.validate();
-			this._resultInfo.validate();
-
-			this._appIdLabel.y = this._header.y + this._header.height + scaledPadding;
-			this._appIdLabel.x = 10;
-			this._appIdLabel.width = 200;
-
-			this._searchInput.y = this._appIdLabel.y + this._appIdLabel.height;
-			this._searchInput.x = horizontalAlign;
-			this._searchInput.width = this.actualWidth - this._searchButton.width - (scaledPadding * 2) - horizontalAlign;
-
-			this._searchButton.y = this._searchInput.y + (this._searchInput.height * 0.5) - (this._searchButton.height * 0.5);
-			this._searchButton.x = this._searchInput.x + this._searchInput.width + scaledPadding;
-
-			this._resultInfo.y = this._searchInput.y + this._searchInput.height + (scaledPadding * 0.5);
-			this._resultInfo.x = horizontalAlign;
-			this._resultInfo.width = this.actualWidth - scaledPadding - horizontalAlign;
-
-			this._requestConnectionButton.validate();
-			this._requestConnectionButton.x = (this.actualWidth / 2) - (this._requestConnectionButton.width / 2);
-			this._requestConnectionButton.y = this.actualHeight - this._requestConnectionButton.height - (PADDING * this.dpiScale);
-
-			this._requestPopupContainer.validate();
-			this._requestPopupContainer.width = 500 * dpiScale;
-
-			getXMLPatientData();
+			drawHcpSearch();
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
-
 			this._header = new HivivaHeader();
 			this._header.title = "Add a patient";
 			addChild(this._header);
-
-			this._patientCellContainer = new ScrollContainer();
-
-			this._requestConnectionButton = new Button();
-			this._requestConnectionButton.label = "Request Connection";
-			this._requestConnectionButton.addEventListener(starling.events.Event.TRIGGERED, onRequestConnection);
-			this._requestConnectionButton.visible = false;
-			addChild(this._requestConnectionButton);
-
-			this._requestPopupContainer = new HivivaPopUp();
-			this._requestPopupContainer.scale = this.dpiScale;
-			this._requestPopupContainer.confirmLabel = "Close";
-			this._requestPopupContainer.addEventListener(starling.events.Event.COMPLETE, closePopup);
-			this._requestPopupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -136,21 +87,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-
-			this._appIdLabel = new Label();
-			this._appIdLabel.text = "Patient app ID";
-			addChild(this._appIdLabel);
-
-			this._searchInput = new TextInput();
-			addChild(this._searchInput);
-
-			this._searchButton = new Button();
-			this._searchButton.label = "Find";
-			this._searchButton.addEventListener(starling.events.Event.TRIGGERED, doSearchPatient);
-			addChild(this._searchButton);
-
-			this._resultInfo = new Label();
-			addChild(this._resultInfo);
+			this._hcpCellContainer = new ScrollContainer();
 		}
 
 		private function backBtnHandler(e:starling.events.Event = null):void
@@ -164,144 +101,187 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.owner.showScreen(HivivaScreens.HCP_CONNECT_PATIENT);
 		}
 
-		private function getXMLPatientData():void
+		private function drawHcpSearch():void
 		{
-			var ba:ByteArrayAsset = ByteArrayAsset(new PatientData());
-			this._patientDataXml = new XML(ba.readUTFBytes(ba.length));
+			var scaledPadding:Number = PADDING * this.dpiScale;
+			var horizontalAlign:Number = 32 * this.dpiScale;
+
+			this._appIDLabel = new Label();
+			this._appIDLabel.text = "AppID";
+			this.addChild(this._appIDLabel);
+
+			this._searchInput = new TextInput();
+			addChild(this._searchInput);
+
+			this._searchButton = new Button();
+			this._searchButton.label = "Connect";
+			this._searchButton.addEventListener(Event.TRIGGERED, doSearchHcp);
+			addChild(this._searchButton);
+
+			this._resultInfo = new Label();
+			addChild(this._resultInfo);
+
+			this._appIDLabel.validate();
+			this._searchInput.validate();
+			this._searchButton.validate();
+			this._resultInfo.validate();
+
+			this._appIDLabel.y = this._header.y + this._header.height + scaledPadding;
+			this._appIDLabel.x = horizontalAlign;
+
+			this._searchInput.y =this._appIDLabel.y + this._appIDLabel.height + + scaledPadding;
+			this._searchInput.x = horizontalAlign;
+			this._searchInput.width = this.actualWidth - this._searchButton.width - (scaledPadding * 2) - horizontalAlign;
+
+			this._searchButton.y = this._searchInput.y + (this._searchInput.height * 0.5) - (this._searchButton.height * 0.5);
+			this._searchButton.x = this._searchInput.x + this._searchInput.width + scaledPadding;
+
+			this._resultInfo.y = this._searchInput.y + this._searchInput.height + (scaledPadding * 0.5);
+			this._resultInfo.x = horizontalAlign;
+			this._resultInfo.width = this.actualWidth - scaledPadding - horizontalAlign;
 		}
 
-		private function doSearchPatient(e:starling.events.Event):void
+		private function doSearchHcp(e:Event):void
 		{
-			if(this._searchInput.text != "")
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE , getPatientCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatient(this._searchInput.text);
+		}
+
+		private function getPatientCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE , getPatientCompleteHandler);
+
+			trace("e.data.xmlResponse.AppId " + e.data.xmlResponse.AppId);
+			trace("e.data.xmlResponse.AppGuid " + e.data.xmlResponse.AppGuid);
+
+			var appGuid:String = e.data.xmlResponse.AppGuid;
+			var appId:String = e.data.xmlResponse.AppId;
+
+			if(e.data.xmlResponse.AppGuid != "00000000-0000-0000-0000-000000000000")
 			{
-				var patientList:XMLList = this._patientDataXml.patient;
-				var patientListLength:int = patientList.length();
-				var foundItem:XML;
+				clearDownHCPList();
+				var hcpList:XMLList = new XMLList
+				(
+						<hcp>
+							<name>HCP Display name</name>
+							<email>hcp@domain.com</email>
+							<appid>{appId}</appid>
+							<guid>{appGuid}</guid>
+							<picture>dummy.png</picture>
+						</hcp>
+				);
+				this._patientFilteredList.push(hcpList);
+				this._resultInfo.text = "Registered doctor " + this._patientFilteredList[0].appid + " found.";
+				this._resultInfo.validate();
 
-				if (patientListLength > 0)
-				{
-					this._patientFilteredList = [];
-					for (var listCount:Number = 0; listCount < patientListLength; listCount++)
-					{
-
-						if (patientList[listCount].appid == this._searchInput.text)
-						{
-							foundItem = patientList[listCount];
-							this._patientFilteredList.push(foundItem);
-							break;
-						}
-					}
-				}
-				if(this._patientFilteredList.length > 0)
-				{
-					initResults();
-				}
-				else
-				{
-					this._resultInfo.text = "0 registered patients found";
-				}
-
-			} else
+				initResults();
+			}
+			else
 			{
-				this._resultInfo.text = "Please enter a patient appID";
+				this._resultInfo.text = "0 registered doctors found";
+				this._resultInfo.validate();
 			}
 		}
 
 		private function initResults():void
 		{
+			var resultsLength:int = this._patientFilteredList.length;
+			var currItem:XMLList;
+			var hcpCell:HcpResultCell;
 
-			var patientCell:PatientResultCell;
-
-			this._resultInfo.text = "registered patient found";
-			this._resultInfo.validate();
-
-
-			if (!contains(this._patientCellContainer))
+			for(var listCount:int = 0; listCount < resultsLength; listCount++)
 			{
-				this._patientCellRadioGroup = new ToggleGroup();
-				addChild(this._patientCellContainer);
-			}
-			else
-			{
-				this._patientCellRadioGroup.removeAllItems();
-				this._patientCellContainer.removeChildren();
+				currItem = XMLList(this._patientFilteredList[listCount]);
+
+				hcpCell = new HcpResultCell();
+				hcpCell.hcpData = currItem;
+				hcpCell.isResult = true;
+				hcpCell.scale = this.dpiScale;
+				this._hcpCellContainer.addChild(hcpCell);
+				this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
 			}
 
-			patientCell = new PatientResultCell();
-			patientCell.patientData = this._patientFilteredList[0];
-			patientCell.isResult = true;
-			patientCell.scale = this.dpiScale;
-			this._patientCellContainer.addChild(patientCell);
-			this._patientCellRadioGroup.addItem(patientCell._patientSelect);
+			this._requestConnectionButton = new Button();
+			this._requestConnectionButton.label = "Request Connection";
+			this._requestConnectionButton.addEventListener(Event.TRIGGERED, onRequestConnection);
+			addChild(this._requestConnectionButton);
+
+			this._requestConnectionButton.validate();
+			this._requestConnectionButton.x = (this.actualWidth / 2) - (this._requestConnectionButton.width / 2);
+			this._requestConnectionButton.y = this.actualHeight - this._requestConnectionButton.height - (PADDING * this.dpiScale);
 
 			drawResults();
 		}
 
+		private function  clearDownHCPList():void
+		{
+			this._patientFilteredList = [];
+			if(!contains(this._hcpCellContainer))
+			{
+				this._hcpCellRadioGroup = new ToggleGroup();
+				addChild(this._hcpCellContainer);
+			}
+			else
+			{
+				this._hcpCellRadioGroup.removeAllItems();
+				this._hcpCellContainer.removeChildren();
+			}
+		}
+
 		private function drawResults():void
 		{
-			var scaledPadding:Number = PADDING * this.dpiScale,
-				yStartPosition:Number,
-				maxHeight:Number,
-				patientCell:PatientResultCell;
+			var scaledPadding:Number = PADDING * this.dpiScale;
+			var yStartPosition:Number;
+			var maxHeight:Number;
+			var hcpCell:HcpResultCell;
 
-			yStartPosition = (this._resultInfo.y + this._resultInfo.height) + scaledPadding;
+			yStartPosition = (this._patientConnected ? this._header.y + this._header.height : this._resultInfo.y + this._resultInfo.height) + scaledPadding;
 			maxHeight = this.actualHeight - yStartPosition;
 
-			maxHeight -= (this.actualHeight - this._requestConnectionButton.y) + scaledPadding;
-
-			this._patientCellContainer.width = this.actualWidth;
-			this._patientCellContainer.y = yStartPosition;
-			this._patientCellContainer.height = maxHeight;
-
-			for (var i:int = 0; i < this._patientCellContainer.numChildren; i++)
+			if(!this._patientConnected)
 			{
-				patientCell = this._patientCellContainer.getChildAt(i) as PatientResultCell;
-				patientCell.width = this.actualWidth;
-
+				maxHeight -= (this.actualHeight - this._requestConnectionButton.y) + scaledPadding;
 			}
-			if(this._patientCellContainer.numChildren == 1) patientCell.hideIcon();
+
+			this._hcpCellContainer.width = this.actualWidth;
+			this._hcpCellContainer.y = yStartPosition;
+			this._hcpCellContainer.height = maxHeight;
+
+			for (var i:int = 0; i < this._hcpCellContainer.numChildren; i++)
+			{
+				hcpCell = this._hcpCellContainer.getChildAt(i) as HcpResultCell;
+				hcpCell.width = this.actualWidth;
+			}
+
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.gap = scaledPadding;
-			this._patientCellContainer.layout = layout;
-			this._patientCellContainer.validate();
-			this._requestConnectionButton.visible = true;
+			this._hcpCellContainer.layout = layout;
+
+			this._hcpCellContainer.validate();
 		}
 
-		private function onRequestConnection(e:starling.events.Event):void
+		private function onRequestConnection(e:Event):void
 		{
-			var selectedHcpInd:int = this._patientCellRadioGroup.selectedIndex,
-				patientCell:XMLList = XMLList(this._patientFilteredList[selectedHcpInd]);
+			var selectedHcpInd:int = this._hcpCellRadioGroup.selectedIndex;
+			var hcpCell:XMLList = XMLList(this._patientFilteredList[selectedHcpInd]);
 
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
-
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
-
-			this._sqStatement = new SQLStatement();
-
-			var name:String = "'" + patientCell.name + "'";
-			var email:String = "'" + patientCell.email + "'";
-			var appid:String = "'" + patientCell.appid + "'";
-			var picture:String = "'" + patientCell.picture + "'";
-			this._sqStatement.text = "INSERT INTO patient_connection (name, email, appid, picture) VALUES (" + name + ", " + email + ", " + appid + ", " + picture + ")";
-
-			trace(this._sqStatement.text);
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.addEventListener(flash.events.SQLEvent.RESULT, sqlResultHandler);
-			this._sqStatement.execute();
-
-			this._requestPopupContainer.message = "A request to connect has been sent to " + patientCell.name;
-			showRequestPopup();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.establishConnection(HivivaStartup.userVO.guid , hcpCell.guid);
 		}
 
-		private function sqlResultHandler(e:SQLEvent):void
+		private function establishConnectionHandler(e:RemoteDataStoreEvent):void
 		{
-			trace("sqlResultHandler " + e);
-		}
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
 
-		private function showRequestPopup():void
-		{
+			this._requestPopupContainer = new HivivaPopUp();
+			this._requestPopupContainer.scale = this.dpiScale;
+			this._requestPopupContainer.confirmLabel = "Close";
+			this._requestPopupContainer.addEventListener(Event.COMPLETE, closePopup);
+			this._requestPopupContainer.addEventListener(Event.CLOSE, closePopup);
+			this._requestPopupContainer.width = 500 * dpiScale;
+			this._requestPopupContainer.validate();
+			this._requestPopupContainer.message = "A request to connect has been sent.";
+
 			PopUpManager.addPopUp(this._requestPopupContainer,true,true);
 			this._requestPopupContainer.validate();
 			PopUpManager.centerPopUp(this._requestPopupContainer);
@@ -309,7 +289,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._requestPopupContainer.drawCloseButton();
 		}
 
-		private function closePopup(e:starling.events.Event):void
+		private function closePopup(e:Event):void
 		{
 			PopUpManager.removePopUp(this._requestPopupContainer);
 			backBtnHandler();
