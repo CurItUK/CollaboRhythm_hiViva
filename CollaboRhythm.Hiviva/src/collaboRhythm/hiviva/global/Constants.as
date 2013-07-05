@@ -10,6 +10,9 @@ package collaboRhythm.hiviva.global
 		public static const APP_FIRST_TIME_USE:String				= "appFirstTimeUse";
 		public static const APP_TYPE_PATIENT:String					= "Patient";
 		public static const APP_TYPE_HCP:String 					= "HCP";
+		public static const DEFAULT_PASSWORD_FOR_DEBUGGING:String 	= "123456";
+
+
 
 	}
 }

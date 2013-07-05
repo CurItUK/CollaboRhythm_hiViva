@@ -11,6 +11,7 @@ package collaboRhythm.hiviva.view
 	import flash.display.Bitmap;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	import flash.net.URLLoaderDataFormat;
 	import flash.system.Capabilities;
 	import flash.text.TextField;
 
@@ -23,6 +24,9 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.components.PasswordBox;
 	import flash.desktop.NativeApplication;
 	import starling.textures.Texture;
+	import flash.desktop.NativeApplication;
+	import flash.desktop.SystemIdleMode;
+	import collaboRhythm.hiviva.global.CheckNetworkStatus;
 
 	[SWF(backgroundColor="0x000000" , frameRate="60")]
 
@@ -47,8 +51,17 @@ package collaboRhythm.hiviva.view
 		public static const __Background:Class;
 
 
+
+		public namespace online = "use server";
+		public namespace offline = "use local" ;
+		public namespace IOS    = "IOS Data";
+		public namespace Android = "Android Data";
+		public var mode: Namespace = online;
+
+
 		private static var _hivivaAppController:HivivaAppController;
 
+        private var ns :  Boolean
 
 
 		public function HivivaStartup()
@@ -67,14 +80,49 @@ package collaboRhythm.hiviva.view
 			_hivivaAppController.initLocalStore();
 			_hivivaAppController.initRemoteStore();
 
-			checkNetworkStatus();
-			drawBackground();
-			initStarling();
+ 			checkNetworkStatus();
+
 		}
 
 		private function checkNetworkStatus():void
 		{
-			//TODO determine if user has network access
+
+			ns = new CheckNetworkStatus().status as Boolean;
+			(ns== true )? mode = online: mode = offline;
+			mode::loadData();
+
+
+
+
+		}
+
+		online function loadData(){
+
+           trace("there you go on line data 	")
+
+
+			drawBackground();
+			initStarling();
+	        }
+
+	     	offline function loadData(){
+             trace("you are offline")
+
+			/* drawBackground();
+			 initStarling();*/
+			}
+
+		     IOS function setData()
+		{
+
+
+		}
+
+		Android function  setData()
+		{
+
+
+
 		}
 
 
@@ -105,7 +153,10 @@ package collaboRhythm.hiviva.view
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			_starFW.start();
 
-			NativeApplication.nativeApplication.addEventListener(
+			this.stage.addEventListener(flash.events.Event.ACTIVATE, onIdle, false, 0, true);
+			this.stage.addEventListener(flash.events.Event.DEACTIVATE, onBack, false, 0, true);
+
+/*			NativeApplication.nativeApplication.addEventListener(
 					flash.events.Event.ACTIVATE, function (e:*):void {
 						//startApp();
 
@@ -114,7 +165,7 @@ package collaboRhythm.hiviva.view
 			NativeApplication.nativeApplication.addEventListener(
 					flash.events.Event.DEACTIVATE, function (e:*):void {
 						//stopApp();
-					});
+					});*/
 
 		}
 
@@ -122,7 +173,15 @@ package collaboRhythm.hiviva.view
 	 		//NativeApplication.nativeApplication.addEventListener(flash.events.Event.ACTIVATE, startApp);
 	 		//NativeApplication.nativeApplication.addEventListener(flash.events.Event.DEACTIVATE, stopApp);
 
+        private function onIdle(e:flash.events.Event){
 
+			//TODO: We need to decide how to create these functions
+
+		};
+		private function onBack(e:flash.events.Event){
+
+			//TODO: We need to decide how to create these functions
+		};
 
 		private function drawBackground():void
 		{

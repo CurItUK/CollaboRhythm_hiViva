@@ -67,8 +67,7 @@ package collaboRhythm.hiviva.view
 	import starling.display.Quad;
 	import flash.desktop.NativeApplication;
 	import collaboRhythm.hiviva.view.PasswordPopUp;
-	import flash.net.NetworkInfo;
-	import flash.net.NetworkInterface;
+
     import collaboRhythm.hiviva.view.HivivaPreloaderWithBackground ;
 	public class Main extends Sprite
 	{
@@ -101,13 +100,7 @@ package collaboRhythm.hiviva.view
 		{
 
 
-							var network:NetworkInfo = NetworkInfo.networkInfo;
-							for each (var object:NetworkInterface in network.findInterfaces())
-							{
-							    trace(this ,  "NETWORK DETAILS ARE  :::::  " , object.name, object.active);
 
-				                trace("WE HAVE CONNECTION ")
-			}
 		}
         public function  initTexture(t:Texture){
 
@@ -144,7 +137,7 @@ package collaboRhythm.hiviva.view
 			 this.preloader.y = 0;
 			 this.preloader.x = 0;
 
-		   	this.preloader.validate()
+		    	this.preloader.validate()
 
              var __home:Main  =  this ;
 			this.addChild(this.preloader);
@@ -155,7 +148,9 @@ package collaboRhythm.hiviva.view
 //				quad.width = ratio * Constants.STAGE_WIDTH;
 
 				__home.preloader._width = ratio * Constants.STAGE_WIDTH;
-				__home.preloader.dispatchEventWith(FeathersScreenEvent.PRELOADER_ONPOGRESS)
+				__home.preloader._ratio = ratio;
+				__home.preloader.dispatchEventWith(FeathersScreenEvent.PRELOADER_ONPOGRESS);
+
 					if (ratio == 1)
 
 					Starling.juggler.delayCall(function ():void
@@ -200,10 +195,10 @@ package collaboRhythm.hiviva.view
 
 			this._popupContainer = new PasswordPopUp();
 						//	this._popupContainer.scale = this.dpiScale;
-					//	 this._popupContainer.width = this.actualWidth;
+					    //this._popupContainer.width = this.actualWidth;
 						//	this._popupContainer.height = this.actualHeight;
 						//	this._popupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
-					//		this._popupContainer.message = _main.selectedHCPPatientProfile.name;
+					    //  this._popupContainer.message = _main.selectedHCPPatientProfile.name;
 						//	this._popupContainer.confirmLabel = 'Message Sent';
 						//	this._popupContainer.validate();
 
