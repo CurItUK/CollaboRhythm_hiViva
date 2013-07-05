@@ -19,6 +19,7 @@ package collaboRhythm.hiviva.global
 		public static const ESTABLISH_CONNECTION_COMPLETE:String				= "establishConnectionComplete";
 
 		public static const GET_APPROVED_CONNECTIONS_COMPLETE:String			= "getApprovedConnectionsComplete";
+		public static const GET_PENDING_CONNECTIONS_COMPLETE:String				= "getPendingConnectionsComplete";
 
 
 

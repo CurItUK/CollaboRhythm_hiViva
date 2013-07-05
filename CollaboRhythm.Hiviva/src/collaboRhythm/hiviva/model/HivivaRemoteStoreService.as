@@ -139,6 +139,23 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt)
 		}
 
+		public function getPendingConnections():void
+		{
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_PENDING_CONNECTIONS + "UserGuid=" + HivivaStartup.userVO.guid);
+			trace("getPendingConnections " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getPendingConnectionsHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getPendingConnectionsHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
 		public function getHCPSentMessages():void
 		{
 			var query:String = "From=" + HivivaStartup.userVO.guid;
@@ -160,7 +177,7 @@ package collaboRhythm.hiviva.model
 		public function getUserReceivedMessages():void
 		{
 			var query:String = "To=" + HivivaStartup.userVO.guid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_USER_RECIEVED_MESSAGES + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_USER_RECEIVED_MESSAGES + query);
 			trace("getUserReceivedMessages " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getUserReceivedMessagesComplete);

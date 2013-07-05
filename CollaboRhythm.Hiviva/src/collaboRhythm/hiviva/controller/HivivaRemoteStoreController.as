@@ -119,6 +119,20 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getPendingConnections():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE , getPendingConnectionsHandler);
+			service.getPendingConnections();
+		}
+
+		private function getPendingConnectionsHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE , getPendingConnectionsHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function getHCPSentMessages():void
 		{
 			service.addEventListener(RemoteDataStoreEvent.GET_HCP_SENT_MESSAGES_COMPLETE , getHCPSentMessagesHandler);
