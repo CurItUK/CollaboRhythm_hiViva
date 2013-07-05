@@ -1,6 +1,8 @@
 package collaboRhythm.hiviva.view
 {
 
+
+
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.core.FeathersControl;
@@ -10,6 +12,7 @@ package collaboRhythm.hiviva.view
 	import starling.events.Event;
 	import feathers.controls.Check;
     import flash.events.FocusEvent ;
+    import collaboRhythm.hiviva.view.screens.shared.HivivaPasswordManager;
 	public class PasswordPopUp extends FeathersControl
 	{
 
@@ -23,6 +26,9 @@ package collaboRhythm.hiviva.view
 		private var _enterbutton:Button;
 		private var _resetButton:Button;
 		private var _saveSettings:Check;
+		private var passController: HivivaPasswordManager;
+
+
 		private const PADDING:Number = 40;
 		private const GAP:Number = 20;
 
@@ -71,8 +77,10 @@ package collaboRhythm.hiviva.view
 		{
 			super.initialize();
             trace(this  + "INITIALIZED ")
-			var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("popup_panel"), new Rectangle(60,60,344,229));
-			this._bg = new Scale9Image(bgTexture, this._scale);
+//			var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("popup_panel"), new Rectangle(60,60,344,229));
+			var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("button_borderless"), new Rectangle(60,60,344,229));
+
+		    this._bg = new Scale9Image(bgTexture, this._scale);
 			addChild(this._bg);
 
 		 	this._label = new Label();
@@ -94,6 +102,7 @@ package collaboRhythm.hiviva.view
 			this._saveSettings = new Check();
 			this._saveSettings.padding = 0;
 			this.addChild(this._saveSettings);
+			this._saveSettings.visible = false
 			this._saveSettings.validate();
 
 			    this._enterbutton = new Button();
@@ -104,9 +113,10 @@ package collaboRhythm.hiviva.view
 				trace("this is Enter Button ::: " + this._enterbutton)
 
 				this._resetButton = new Button();
-				this._resetButton.label = "Forgot Password?";
+				 this._resetButton.label = "Forgot Password?";
 
-				addChild(this._resetButton);
+			    addChild(this._resetButton);
+			    this._resetButton.visible = false;
 				var padding:Number =  15    //  * this.dpiScale;
 				this._enterbutton.validate();
 				this._resetButton.validate();
@@ -138,13 +148,16 @@ package collaboRhythm.hiviva.view
 		};
 
 
+
 		private function confirmButtonHandler(e:Event):void
 		{
 			 dispatchEvent(new Event(Event.COMPLETE));
 			 e.stopImmediatePropagation();
+			this.passController= HivivaPasswordManager.getInstance();
 
+		//	trace("THE PASSWORD IS :::::" + sample.)
          //ToDo :  A singleton class needs to be created for password connection and db connection
-         if(  this._passwordInputField._input.text  !=="123456"){
+         if(  this._passwordInputField._input.text  !== passController.Pass){
 
             // trace("incorrect password")
 			 this._passwordInputField._color = "0x000000"
