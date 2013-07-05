@@ -108,8 +108,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 				var approvedHCPList:XMLList  = xml.DCConnection;
 				for(var i:uint = 0 ; i <loop ; i++)
 				{
-					var appGuid:String = approvedHCPList[i].FromUserGuid;
-					var appId:String = approvedHCPList[i].FromAppId;
+					var appGuid:String = approvedHCPList[i].ToUserGuid;
+					var appId:String = approvedHCPList[i].ToAppId;
 
 					var hcpList:XMLList = new XMLList
 					(
