@@ -22,6 +22,7 @@ package collaboRhythm.hiviva.view
 	import flash.display.Shape;
 	import collaboRhythm.hiviva.view.components.PasswordBox;
 	import flash.desktop.NativeApplication;
+	import starling.textures.Texture;
 
 	[SWF(backgroundColor="0x000000" , frameRate="60")]
 
@@ -41,6 +42,10 @@ package collaboRhythm.hiviva.view
 
 		[Embed(source="/assets/images/temp/logo_bg.png")]
 		public static const LogoPng:Class;
+
+		[Embed(source="/assets/images/Preloader_Bg.png")]
+		public static const __Background:Class;
+
 
 		private static var _hivivaAppController:HivivaAppController;
 
@@ -128,6 +133,11 @@ package collaboRhythm.hiviva.view
 
 			addChild(bmp);
 
+
+
+           //  addChild(background);
+
+
 		}
 
 		private function disposeBg():void
@@ -163,7 +173,14 @@ package collaboRhythm.hiviva.view
 			_starFW.removeEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			this._assets = new AssetManager();
 			var main:Main = Starling.current.root as Main;
-			main.initMain(this._assets);
+			var background:Bitmap =  new __Background()
+		//	__Background  = null; // no longer needed!
+			background.smoothing = true;
+			var bgTexture:Texture = Texture.fromBitmap(background,  false, false, 1);
+			main.initTexture(bgTexture)
+			main.initMain(this._assets );
+
+
 
 			disposeBg();
 		   // drawPasswordBox();
