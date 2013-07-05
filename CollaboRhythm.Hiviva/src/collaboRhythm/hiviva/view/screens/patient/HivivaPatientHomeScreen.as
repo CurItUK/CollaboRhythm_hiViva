@@ -214,7 +214,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			try
 			{
-				if(timeStamp != null)
+				if(timeStamp != null && timeStamp.length > 0)
 				{
 					date = HivivaModifier.getAS3DatefromString(timeStamp);
 

@@ -277,13 +277,13 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function getHcpConnections():void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getHCPConnections();
 		}
 
 		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler);
 
 			if(e.data.connections != null)
 			{

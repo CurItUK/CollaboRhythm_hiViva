@@ -105,6 +105,20 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function approveConnection(fromGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE , approveConnectionHandler);
+			service.approveConnection(fromGuid);
+		}
+
+		private function approveConnectionHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE , approveConnectionHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function getApprovedConnections():void
 		{
 			service.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConectionsHandler);
