@@ -5,7 +5,6 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
-	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
 	import collaboRhythm.hiviva.view.components.HCPFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.IFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.PatientFooterBtnGroup;
@@ -50,6 +49,7 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Button;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.core.FeathersControl;
 
 	import flash.filesystem.File;
 	import source.themes.HivivaTheme;
@@ -63,12 +63,7 @@ package collaboRhythm.hiviva.view
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 	import feathers.core.PopUpManager;
-	import collaboRhythm.hiviva.view.components.Calendar;
-	import starling.display.Quad;
-	import flash.desktop.NativeApplication;
-	import collaboRhythm.hiviva.view.PasswordPopUp;
 
-    import collaboRhythm.hiviva.view.HivivaPreloaderWithBackground ;
 	public class Main extends Sprite
 	{
 		private var _screenHolder:Sprite;
@@ -80,43 +75,30 @@ package collaboRhythm.hiviva.view
 		private var _settingsOpen:Boolean = false;
 		private var _currMainScreenId:String;
 		private var _scaleFactor:Number;
-		//private var _profile:String;
-		private var _calendar:Calendar;
-		private var bgTexture : Texture ;
+		private var _bgTexture:Texture ;
+		private var _passwordPopUp:PasswordPopUp;
+        private var _preloader:HivivaPreloaderWithBackground;
 
-		private var _popupContainer:PasswordPopUp;
-        private var preloader : HivivaPreloaderWithBackground ;
 		private static var _selectedHCPPatientProfile:Object = {};
 		private static var _assets:AssetManager;
 		private static var _footerBtnGroupHeight:Number;
 
-		   // Startup image for SD screens
-		// TODO : asset needs to be pushed to GIT, commented out to prevent error
-//        [Embed(source="/assets/images/temp/Landing-page.png")]
-        private static var Preloader_Background:Class;
-
-
 		public function Main()
 		{
-
-
-
 		}
-        public function  initTexture(t:Texture){
 
-
-			this.bgTexture = t
-		}
-		public function initMain(assetManager:AssetManager):void
+		public function initMain(assetManager:AssetManager , bgTexture:Texture):void
 		{
 			_assets = assetManager;
-
+			this._bgTexture = bgTexture;
 			initAssetManagement();
 		}
 
 		private function initAssetManagement():void
 		{
 			var appDir:File = File.applicationDirectory;
+
+			// texture Atlas
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/homePagePhoto.atf"),appDir.resolvePath("assets/images/atlas/homePagePhoto.xml"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/hivivaBaseImages.png"),appDir.resolvePath("assets/images/atlas/hivivaBaseImages.xml"));
 			// fonts
@@ -130,46 +112,33 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lighter-regular.png"),appDir.resolvePath("assets/fonts/engraved-lighter-regular.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-lighter-bold.png"),appDir.resolvePath("assets/fonts/raised-lighter-bold.fnt"));
 
+			this._preloader = new HivivaPreloaderWithBackground(0xF4E32C , 100 , 5 , this._bgTexture) ;
+			this._preloader.init();
+			this._preloader.y = 0;
+			this._preloader.x = 0;
+			this._preloader.validate();
+			this.addChild(this._preloader);
 
-             this.preloader = new HivivaPreloaderWithBackground( 0xFFFFFF , 100 , 5 , this.bgTexture) ;
-			 this.preloader.init();
+			_assets.loadQueue(preloaderOnProgress);
+		}
 
-			 this.preloader.y = 0;
-			 this.preloader.x = 0;
+		private function preloaderOnProgress(ratio:Number):void
+		{
+			this._preloader._width = ratio * Constants.STAGE_WIDTH;
+			this._preloader._ratio = ratio;
+			this._preloader.dispatchEventWith(FeathersScreenEvent.PRELOADER_ONPOGRESS);
 
-		    	this.preloader.validate()
-
-             var __home:Main  =  this ;
-			this.addChild(this.preloader);
-
-			_assets.loadQueue(function onProgress(ratio:Number):void
+			if (ratio == 1)
 			{
-				trace("Loading Assets " + ratio);
-//				quad.width = ratio * Constants.STAGE_WIDTH;
-
-				__home.preloader._width = ratio * Constants.STAGE_WIDTH;
-				__home.preloader._ratio = ratio;
-				__home.preloader.dispatchEventWith(FeathersScreenEvent.PRELOADER_ONPOGRESS);
-
-					if (ratio == 1)
-
-					Starling.juggler.delayCall(function ():void
-					{
-
-						__home.preloader._dispose();
-						//__home.removeChild(quad);
-		            	// quad.removeFromParent(true)
-						__home.removeChild(this.preloader)
-						__home.preloader = null;
-
-						startup();
-					}, 0.15);
-			});
+				this._preloader.dispose();
+				removeChild(this._preloader);
+				this._preloader = null;
+				startup();
+			}
 		}
 
 		private function startup():void
 		{
-			trace(_assets.getTextureNames());
 			initfeathersTheme();
 			initAppNavigator();
 		}
@@ -193,31 +162,13 @@ package collaboRhythm.hiviva.view
 			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete}));
 			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 
-			this._popupContainer = new PasswordPopUp();
-						//	this._popupContainer.scale = this.dpiScale;
-					    //this._popupContainer.width = this.actualWidth;
-						//	this._popupContainer.height = this.actualHeight;
-						//	this._popupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
-					    //  this._popupContainer.message = _main.selectedHCPPatientProfile.name;
-						//	this._popupContainer.confirmLabel = 'Message Sent';
-						//	this._popupContainer.validate();
-
-						 PopUpManager.addPopUp(this._popupContainer, true, true);
-						 this._popupContainer.validate();
-
-
-
-
+			this._passwordPopUp = new PasswordPopUp();
+			PopUpManager.addPopUp(this._passwordPopUp, true, true);
+			this._passwordPopUp.validate();
 		}
-
-
-
-
 
 		private function splashComplete(e:Event):void
 		{
-			//this._profile = e.data.profileType;
-
 			this._mainScreenNav.clearScreen();
 			this._mainScreenNav.removeScreen(HivivaScreens.SPLASH_SCREEN);
 
@@ -247,7 +198,6 @@ package collaboRhythm.hiviva.view
 		{
 			this._screenBackground = new MainBackground();
 			this._screenBackground.draw(Constants.STAGE_WIDTH , Constants.STAGE_HEIGHT);
-//			this._screenBackground.touchable = false;
 			this._mainScreenNav.addChildAt(this._screenBackground , 0);
 		}
 
@@ -332,9 +282,7 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
-			this._settingsNav.addScreen(HivivaScreens.PATIENT_ALERTS_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_EDIT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientEditSettingsScreen, {navGoHome:goBackToMainScreen}));
-
 		}
 
 		private function navigateToDirectProfileMenu(e:Event):void
@@ -344,17 +292,17 @@ package collaboRhythm.hiviva.view
 				_selectedHCPPatientProfile.name = e.data.patientName;
 				_selectedHCPPatientProfile.appID = e.data.appID;
 			}
-			var navAwayEvent:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
-			navAwayEvent.message = e.data.profileMenu;
+			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
+			evt.message = e.data.profileMenu;
 
-			settingsNavHandler(navAwayEvent);
+			settingsNavHandler(evt);
 		}
 
 		private function navGoSettings(e:Event):void
 		{
-			var feathEvent:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
-			feathEvent.message = e.data.screen;
-			settingsNavHandler(feathEvent);
+			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
+			evt.message = e.data.screen;
+			settingsNavHandler(evt);
 		}
 
 		private function settingsNavHandler(e:FeathersScreenEvent):void
@@ -386,10 +334,6 @@ package collaboRhythm.hiviva.view
 		private function resetApplication():void
 		{
 			trace("Reset from profile...");
-
-			///this._settingsNav.clearScreen();
-			//this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashResetComplete}));
-			//this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 		}
 
 		private function splashResetComplete(e:Event):void
@@ -414,8 +358,6 @@ package collaboRhythm.hiviva.view
 			this._footerBtnGroup.asButtonGroup().touchable = true;
 			this._footerBtnGroup.asButtonGroup().visible = true;
 		}
-
-
 
 		public static function get selectedHCPPatientProfile():Object
 		{

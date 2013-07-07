@@ -19,8 +19,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 			btn  =  e.target as Button;
 		}
 
-		public function init ( __HivivaPatient_help_help_Screen:Object =null ){
-		    this.__HivivaPatient_help_help_Screen = __HivivaPatient_help_help_Screen;
+		public function init(__HivivaPatient_help_help_Screen:Object = null):void
+		{
+			this.__HivivaPatient_help_help_Screen = __HivivaPatient_help_help_Screen;
 		}
 
 		public function set _sNav(s:ScreenNavigator){

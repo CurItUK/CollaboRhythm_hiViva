@@ -49,6 +49,19 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(new RemoteDataStoreEvent(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE));
 		}
 
+		public function deleteMedication(medicationId:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.DELETE_PATIENT_MEDICATION_COMPLETE , deleteMedicationCompleteHandler);
+			service.deleteMedication(medicationId);
+		}
+
+		private function deleteMedicationCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.DELETE_PATIENT_MEDICATION_COMPLETE , deleteMedicationCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.DELETE_PATIENT_MEDICATION_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function getPatientMedicationList():void
 		{
 			service.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
@@ -121,13 +134,13 @@ package collaboRhythm.hiviva.controller
 
 		public function getApprovedConnections():void
 		{
-			service.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConectionsHandler);
+			service.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConnectionsHandler);
 			service.getApprovedConnections();
 		}
 
-		private function getApprovedConectionsHandler(e:RemoteDataStoreEvent):void
+		private function getApprovedConnectionsHandler(e:RemoteDataStoreEvent):void
 		{
-			service.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConectionsHandler);
+			service.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConnectionsHandler);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE);
 			evt.data = e.data;
 			this.dispatchEvent(evt);
@@ -216,6 +229,9 @@ package collaboRhythm.hiviva.controller
 			evt.data = e.data;
 			this.dispatchEvent(evt);
 		}
+
+
+
 
 		public function get service():HivivaRemoteStoreService
 		{

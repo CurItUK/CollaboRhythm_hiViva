@@ -31,8 +31,6 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 		private var _resteBtn:Button;
 		private var _minimiseBtn:Button;
 
-		private var stageWidth:int;
-		private var stageHeight:int;
 		private var _screenBackground:MainBackground;
 
 		private var _scaledPadding:Number;
@@ -120,7 +118,6 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 		override protected function initialize():void
 		{
 
-			trace("initialize from virus control");
 			this._adheranceLabel = new Label();
 			this._adheranceLabel.text = "Adherence:";
 			this.addChild(this._adheranceLabel);

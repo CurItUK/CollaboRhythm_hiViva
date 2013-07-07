@@ -40,10 +40,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _snakeyThing:Image;
 		private var _addMedBtnBordered:Button;
 		private var _addMedBtnBoxed:BoxedButtons;
-		private var _saveAndContinueBoxed:BoxedButtons;
 		private var _seperator:Image;
 		private var _medications:Array;
-		private var _medsExist:Boolean;
 		private var _editMedsCells:Vector.<EditMedicationCell>;
 
 		protected var _header:HivivaHeader;
@@ -94,8 +92,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
 			addChild(this._content);
 
-
-
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
@@ -130,7 +126,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				var medLoop:int = medicationsXML.length();
 				for(var i:int = 0 ; i < medLoop ; i++)
 				{
-					var medObj:Object = {medication_name:medicationsXML[i].MedicationName , id: medicationsXML[i].MedicationID};
+					var medObj:Object = {medication_name:medicationsXML[i].MedicationName , medication_guid: medicationsXML[i].UserMedicationGuid};
 					this._medications.push(medObj);
 				}
 				initializeShowMedications();
@@ -155,7 +151,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				editMedicationCell = new EditMedicationCell();
 				editMedicationCell.addEventListener(Event.REMOVED_FROM_STAGE, editMedicationCellRemoved);
-				editMedicationCell.medicationId = int(this._medications[i].id);
+				editMedicationCell.medicationId = this._medications[i].medication_guid;
 				editMedicationCell.scale = this.dpiScale;
 				editMedicationCell.brandName = HivivaModifier.getBrandName(this._medications[i].medication_name);
 				editMedicationCell.genericName = HivivaModifier.getGenericName(this._medications[i].medication_name);
@@ -173,11 +169,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._addMedBtnBordered.addEventListener(Event.TRIGGERED, addMedBtnHandler);
 			this._content.addChild(this._addMedBtnBordered);
 
-			this._saveAndContinueBoxed = new BoxedButtons();
-			this._saveAndContinueBoxed.addEventListener(Event.TRIGGERED, backBtnHandler);
-			this._saveAndContinueBoxed.scale = this.dpiScale;
-			this._saveAndContinueBoxed.labels = ["Save and continue"];
-			this.addChild(this._saveAndContinueBoxed);
 
 			//previous draw
 
@@ -200,11 +191,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._contentLayout.gap = this._componentGap;
 
 			//previous pre-validate
-
-			this._saveAndContinueBoxed.width = this.actualWidth - (this._horizontalPadding * 2);
-			this._saveAndContinueBoxed.x = this._horizontalPadding;
-			this._saveAndContinueBoxed.validate();
-			this._saveAndContinueBoxed.y = this.actualHeight - this._saveAndContinueBoxed.height - this._verticalPadding;
 
 			drawMedications();
 
@@ -302,11 +288,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._contentLayout.gap = this._componentGap;
 
 			//previous pre-validate
-
-			this._saveAndContinueBoxed.width = this.actualWidth - (this._horizontalPadding * 2);
-			this._saveAndContinueBoxed.x = this._horizontalPadding;
-			this._saveAndContinueBoxed.validate();
-			this._saveAndContinueBoxed.y = this.actualHeight - this._saveAndContinueBoxed.height - this._verticalPadding;
 
 			drawMedications();
 

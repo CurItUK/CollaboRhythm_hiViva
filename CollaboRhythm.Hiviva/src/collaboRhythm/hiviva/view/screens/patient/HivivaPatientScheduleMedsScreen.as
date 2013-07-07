@@ -1,35 +1,25 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
+
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.model.MedicationScheduleTimeList;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
-
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.HivivaScreens;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.model.MedicationScheduleTimeList;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.components.MedicationCell;
-	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.shared.BaseScreen;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
-	import feathers.controls.List;
 	import feathers.controls.PickerList;
-	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
-	import feathers.text.BitmapFontTextFormat;
-
-	import flash.text.TextFormatAlign;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
-	import starling.text.TextField;
+
 
 	public class HivivaPatientScheduleMedsScreen extends BaseScreen
 	{
@@ -38,15 +28,10 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _medicationResult:XML;
 		private var _seperator:Image;
 		private var _medicationLabel:MedicationCell;
-//		private var _medicationLabel:List;
 		private var _takeLabel:Label;
-
-
 		private var _scheduleDoseList:PickerList;
 		private var _timeListItems:Array = [];
 		private var _tabletListItems:Array = [];
-
-
 
 		public function HivivaPatientScheduleMedsScreen()
 		{
@@ -77,7 +62,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
-
 		}
 
 		private function initChosenMedicationInfo():void
@@ -164,7 +148,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					andLabel.y = prevListItem.y + prevListItem.height + this._componentGap;
 					timeList.y = andLabel.y + andLabel.height + this._componentGap;
 				}
-				_timeListItems.push(timeList);
+				_timeListItems.push({tl:timeList , addInfo:andLabel});
 
 				//tabletList drop down to select the amount of tablets to be taken on that time slot
 				var tabletList:PickerList = new PickerList();
@@ -231,7 +215,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var loop:int = _timeListItems.length;
 			for(var i:uint = 0 ; i < loop ; i++)
 			{
-				var medicationObject:Object = {time:_timeListItems[i].selectedItem.time , count:_tabletListItems[i].selectedItem.count};
+				var medicationObject:Object = {time:_timeListItems[i].tl.selectedItem.time , count:_tabletListItems[i].selectedItem.count};
 				medicationScheduleData.push(medicationObject);
 
 			}
@@ -267,11 +251,14 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			while (_timeListItems.length > 0)
 			{
-				this._content.removeChild(_timeListItems[0]);
-				_timeListItems[0].removeEventListener(starling.events.Event.CHANGE, timeListTabletListChangeHandler);
-				_timeListItems[0].dataProvider = null;
-				_timeListItems[0].dispose();
-				_timeListItems[0] = null;
+				//_timeListItems.push({tl:timeList , addInfo:andLabel});
+
+				this._content.removeChild(_timeListItems[0].tl);
+				this._content.removeChild(_timeListItems[0].addInfo);
+				_timeListItems[0].tl.removeEventListener(starling.events.Event.CHANGE, timeListTabletListChangeHandler);
+				_timeListItems[0].tl.dataProvider = null;
+				_timeListItems[0].tl.dispose();
+				_timeListItems[0].tl = null;
 				_timeListItems.shift();
 
 				this._content.removeChild(_tabletListItems[0]);

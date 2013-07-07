@@ -35,7 +35,6 @@ package collaboRhythm.hiviva.model
 			evt.data.appid = xmlResponse.AppId;
 			evt.data.guid = xmlResponse.AppGuid;
 			this.dispatchEvent(evt)
-
 		}
 
 		public function addUserMedication(medicationName:String , medicationSchedule:String):void
@@ -51,6 +50,21 @@ package collaboRhythm.hiviva.model
 		private function addUserMedicationCompleteHandler(e:Event):void
 		{
 			this.dispatchEvent(new RemoteDataStoreEvent(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE));
+		}
+
+		public function deleteMedication(medicationId:String):void
+		{
+			var query:String = "userMedicationGuid=" + medicationId;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_DELETE_MEDICATION + query);
+			trace("deleteMedication " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, deleteUserMedicationCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function deleteUserMedicationCompleteHandler(e:Event):void
+		{
+			this.dispatchEvent(new RemoteDataStoreEvent(RemoteDataStoreEvent.DELETE_PATIENT_MEDICATION_COMPLETE));
 		}
 
 		public function getPatientMedicationList():void

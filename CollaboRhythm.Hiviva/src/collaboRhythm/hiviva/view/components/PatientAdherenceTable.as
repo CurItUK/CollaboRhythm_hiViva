@@ -178,7 +178,7 @@ package collaboRhythm.hiviva.view.components
 				this._rowsData.push({id: medications[cellCount].id});
 			}
 			// tolerability row name
-			var tolerabilityRowLabel = new Label();
+			var tolerabilityRowLabel:Label = new Label();
 			tolerabilityRowLabel.text = "Tolerability";
 			this._mainScrollContainer.addChild(tolerabilityRowLabel);
 			tolerabilityRowLabel.textRendererProperties.textFormat = new BitmapFontTextFormat(TextField.getBitmapFont("engraved-lighter-bold"), 24 * this.scale, Color.WHITE);

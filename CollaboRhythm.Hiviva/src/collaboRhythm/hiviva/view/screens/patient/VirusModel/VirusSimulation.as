@@ -66,7 +66,6 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			{
 				this._numTCells = Math.floor(this._cd4Count / 100);
 			}
-			trace("_numTCells " + this._numTCells);
 
 			//calculate amount of virus based on viral load
 			if (this._viralLoad < 100)
@@ -77,7 +76,6 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			{
 				this._numViruses = Math.floor(this._viralLoad / 100);
 			}
-			trace("_numViruses " + this._numViruses);
 
 			//working under the basis we have 176 positons for virus on a grid of 16 columns
 			var topHolderPadding:Number = 15;
@@ -88,7 +86,6 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 				this._openLooseVirusPos[looseposition] = [(looseposition % 16) * 14 + leftHolderPadding, (Math.floor(looseposition / 16)) * 18 + topHolderPadding];
 			}
 
-			trace("looseposition " + this._openLooseVirusPos);
 
 			for (var tcellnum:int = 1; tcellnum <= _numTCells; tcellnum++)
 			{
@@ -157,10 +154,6 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 					this._openLooseVirusPos.splice(looseposition, 1)
 				}
 			}
-
-			trace("_tcells " + this._tcells);
-			trace("_freeTcells " + this._freeTcells);
-
 
 		}
 

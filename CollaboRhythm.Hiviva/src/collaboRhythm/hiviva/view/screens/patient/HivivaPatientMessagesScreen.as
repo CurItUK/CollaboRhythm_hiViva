@@ -279,7 +279,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			for (var i:int = 0; i < this._alertCells.length; i++)
 			{
-				if(this._alertCells[i].guid = this._alertGuidToAccept)
+				if(this._alertCells[i].guid == this._alertGuidToAccept)
 				{
 					this._cellContainer.removeChild(this._alertCells[i], true);
 				}

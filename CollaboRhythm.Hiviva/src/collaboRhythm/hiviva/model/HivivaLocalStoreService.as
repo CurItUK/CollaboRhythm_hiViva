@@ -43,12 +43,11 @@ package collaboRhythm.hiviva.model
 
 		public function initDataLoad():void
 		{
-			var localSettingsFile:File = File.applicationStorageDirectory;
-			localSettingsFile = localSettingsFile.resolvePath("settings.sqlite");
-			if(localSettingsFile.exists)
+			if(getDBExits())
 			{
 				loadAppData();
-			} else
+			}
+			else
 			{
 				createUserSettingsDatabase();
 			}
@@ -59,27 +58,21 @@ package collaboRhythm.hiviva.model
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
 
-
 			this._sqConn = new SQLConnection();
 			this._sqConn.addEventListener(SQLEvent.OPEN, dataFileOpenHandler);
 			this._sqConn.open(dbFile);
 		}
 
-		private function getDBExits(): Boolean {
-
+		private function getDBExits():Boolean
+		{
 			var localSettingsFile:File = File.applicationStorageDirectory;
 			localSettingsFile = localSettingsFile.resolvePath("settings.sqlite");
-			if(localSettingsFile.exists){
 
-                return true
-				}else{
-
-				return false
-			}
-
+			return localSettingsFile.exists;
 		}
 
-		public function resetPatientSettings(){
+		public function resetPatientSettings():void
+		{
 
 
 			if( !this.getDBExits()){
@@ -92,8 +85,8 @@ package collaboRhythm.hiviva.model
 			this._sqConn.close()
 			//this._sqConn.cancel()
 		}
-           var folder =  File.applicationStorageDirectory;
-           var dbFile = folder.resolvePath("settings.sqlite");
+           var folder:File =  File.applicationStorageDirectory;
+           var dbFile:File = folder.resolvePath("settings.sqlite");
 
 			 //this._sqConn = new SQLConnection();
 			  //this._sqConn.addEventListener(SQLEvent.OPEN, doNothing);
@@ -111,7 +104,8 @@ package collaboRhythm.hiviva.model
 
 
             var __home  : HivivaLocalStoreService  = this
-			function deleteFile(){
+			function deleteFile():void
+			{
                  trace("Deleting File :::::::::::::"  )
 				if(dbFile.exists){
 			    //  dbFile.deleteFile();
@@ -170,11 +164,13 @@ package collaboRhythm.hiviva.model
 		}
 
 
-		private function doNothing(e:SQLEvent){
+		private function doNothing(e:SQLEvent):void
+		{
 
 			trace("I do nothing ")
 
 		}
+
 		private function dataFileOpenHandler(e:SQLEvent):void
 		{
 			this._sqStatement = new SQLStatement();

@@ -11,8 +11,9 @@ package collaboRhythm.hiviva.view
 	import flash.geom.Rectangle;
 	import starling.events.Event;
 	import feathers.controls.Check;
-    import flash.events.FocusEvent ;
-    import collaboRhythm.hiviva.view.screens.shared.HivivaPasswordManager;
+	import flash.events.FocusEvent ;
+	import collaboRhythm.hiviva.view.screens.shared.HivivaPasswordManager;
+
 	public class PasswordPopUp extends FeathersControl
 	{
 
@@ -35,9 +36,8 @@ package collaboRhythm.hiviva.view
 		public function PasswordPopUp()
 		{
 			super();
+		}
 
- 		}
-        [Inline]
 		override protected function draw():void
 		{
 			var scaledPadding:Number = PADDING * this._scale;
@@ -76,125 +76,114 @@ package collaboRhythm.hiviva.view
 		override protected function initialize():void
 		{
 			super.initialize();
-            trace(this  + "INITIALIZED ")
+			trace(this  + "INITIALIZED ")
 //			var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("popup_panel"), new Rectangle(60,60,344,229));
 			var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("button_borderless"), new Rectangle(60,60,344,229));
 
-		    this._bg = new Scale9Image(bgTexture, this._scale);
+			this._bg = new Scale9Image(bgTexture, this._scale);
 			addChild(this._bg);
 
-		 	this._label = new Label();
-	        this._label.name = "centered-label";
-	     	this._label.text = this._message;
-        	addChild(this._label);
+			this._label = new Label();
+			this._label.name = "centered-label";
+			this._label.text = this._message;
+			addChild(this._label);
 
 			this._confirmButton = new Button();
 			this._confirmButton.label = this._confirmLabel;
-        	this._passwordInputField = new LabelAndInput();
-	       //  this._passwordInputField.scale = this.dpiScale;
-		 	this._passwordInputField.labelStructure = "left";
-		    addChild(this._passwordInputField);
-	 	    this._passwordInputField._input.isEnabled = true ;
+			this._passwordInputField = new LabelAndInput();
+			//  this._passwordInputField.scale = this.dpiScale;
+			this._passwordInputField.labelStructure = "left";
+			addChild(this._passwordInputField);
+			this._passwordInputField._input.isEnabled = true ;
 			this._passwordInputField._input.setFocus()
 			this._passwordInputField.isFocusEnabled = true ;
 			this._passwordInputField.y -= 200
-		    this._passwordInputField.x += 120
+			this._passwordInputField.x += 120
 			this._saveSettings = new Check();
 			this._saveSettings.padding = 0;
 			this.addChild(this._saveSettings);
 			this._saveSettings.visible = false
 			this._saveSettings.validate();
 
-			    this._enterbutton = new Button();
+			this._enterbutton = new Button();
 
-				this._enterbutton.label = "          Sign in          ";
-				this._enterbutton.addEventListener(Event.TRIGGERED, confirmButtonHandler);
-			    addChild(this._enterbutton);
-				trace("this is Enter Button ::: " + this._enterbutton)
+			this._enterbutton.label = "          Sign in          ";
+			this._enterbutton.addEventListener(Event.TRIGGERED, confirmButtonHandler);
+			addChild(this._enterbutton);
+			trace("this is Enter Button ::: " + this._enterbutton)
 
-				this._resetButton = new Button();
-				 this._resetButton.label = "Forgot Password?";
+			this._resetButton = new Button();
+			this._resetButton.label = "Forgot Password?";
 
-			    addChild(this._resetButton);
-			    this._resetButton.visible = false;
-				var padding:Number =  15    //  * this.dpiScale;
-				this._enterbutton.validate();
-				this._resetButton.validate();
-				this._enterbutton.x = this.actualWidth * 0.5;
-				this._enterbutton.x -= (this._enterbutton.width + this._resetButton.width + padding) * 0.5;
-				this._resetButton.x = this._enterbutton.x + this._enterbutton.width + padding;
+			addChild(this._resetButton);
+			this._resetButton.visible = false;
+			var padding:Number =  15    //  * this.dpiScale;
+			this._enterbutton.validate();
+			this._resetButton.validate();
+			this._enterbutton.x = this.actualWidth * 0.5;
+			this._enterbutton.x -= (this._enterbutton.width + this._resetButton.width + padding) * 0.5;
+			this._resetButton.x = this._enterbutton.x + this._enterbutton.width + padding;
 
-			    this._enterbutton.y  = this.actualHeight - padding - this._enterbutton.height + 200 ;
-				this._resetButton.y  = this.actualHeight - padding + 200;
+			this._enterbutton.y  = this.actualHeight - padding - this._enterbutton.height + 200 ;
+			this._resetButton.y  = this.actualHeight - padding + 200;
 
-                this._passwordInputField.displayAsPassword = true;
-			    this._passwordInputField._color = "0xFFFFFF"
+			this._passwordInputField.displayAsPassword = true;
+			this._passwordInputField._color = "0xFFFFFF"
 			//    this._passwordInputField.addEventListener(FocusEvent.FOCUS_IN  , focusIn )
 
 
 		}
 
-        public function rememberMe( q : Boolean = false){
-
+		public function rememberMe(q:Boolean = false):void
+		{
 
 
 		}
 
-		private  function focusIn(e:FocusEvent){
-          trace("now in Focus ")
+		private function focusIn(e:FocusEvent):void
+		{
+			trace("now in Focus ")
 			this._passwordInputField._color = "0xFFFFFF"
 			this._passwordInputField.validate();
-
-		};
-
-
+		}
 
 		private function confirmButtonHandler(e:Event):void
 		{
-			 dispatchEvent(new Event(Event.COMPLETE));
-			 e.stopImmediatePropagation();
+			dispatchEvent(new Event(Event.COMPLETE));
+			e.stopImmediatePropagation();
 			this.passController= HivivaPasswordManager.getInstance();
 
-		//	trace("THE PASSWORD IS :::::" + sample.)
-         //ToDo :  A singleton class needs to be created for password connection and db connection
-         if(  this._passwordInputField._input.text  !== passController.Pass){
+			//	trace("THE PASSWORD IS :::::" + sample.)
+			//ToDo :  A singleton class needs to be created for password connection and db connection
+			if(  this._passwordInputField._input.text  !== passController.Pass){
 
-            // trace("incorrect password")
-			 this._passwordInputField._color = "0x000000"
-			 this._passwordInputField.validate()
-			 return
-		 }
+				// trace("incorrect password")
+				this._passwordInputField._color = "0x000000"
+				this._passwordInputField.validate()
+				return
+			}
 
 
-			 this._saveSettings.isSelected ? this.rememberSettings() : this.forgetSettings() ;
+			this._saveSettings.isSelected ? this.rememberSettings() : this.forgetSettings() ;
 
 			this._saveSettings.invalidate();
 			this.removeFromParent(true)
 			this.dispose();
-
-
-
 		}
 
-
-	   private function rememberSettings(){
-
-       trace("I CAN REMEMBER EVERYTHING")
-
+		private function rememberSettings():void
+		{
+			trace("I CAN REMEMBER EVERYTHING")
 		}
 
-		private function forgetSettings(){
-
-        trace("I FORGOT IT ALREADY ")
-
+		private function forgetSettings():void
+		{
+			trace("I FORGOT IT ALREADY ")
 		}
 
-
-
-		private function passwordReminder(){
-
+		private function passwordReminder():void
+		{
 			trace("this is remond password ")
-
 		}
 
 		public function set scale(value:Number):void

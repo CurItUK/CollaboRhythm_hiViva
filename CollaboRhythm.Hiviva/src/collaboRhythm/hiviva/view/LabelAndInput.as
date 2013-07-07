@@ -56,7 +56,7 @@ package collaboRhythm.hiviva.view
 		 * @see http://wiki.starling-framework.org/feathers/text-input
 		 * @see feathers.core.ITextEditor
 		**/
-		public function set displayAsPassword( b: Boolean )
+		public function set displayAsPassword( b: Boolean ):void
 		{
 
 			this._isPassword = b ;
@@ -83,7 +83,7 @@ package collaboRhythm.hiviva.view
 				 * @see http://wiki.starling-framework.org/feathers/text-input
 				 * @see feathers.core.ITextEditor
 				**/
-				public function set _color( b: String )
+				public function set _color( b: String ):void
 				{
 
 					this.__color = b ;

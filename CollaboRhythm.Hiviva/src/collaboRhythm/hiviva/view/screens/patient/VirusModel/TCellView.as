@@ -90,8 +90,6 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 		{
 			this._virusSimulation = virusSimulation;
 			this._virusScreen = virusScreen;
-			trace("tCell Init");
-
 		}
 
 		public function addVirus(virusNumber:int, tcellNumber:Number , virusTexture:Texture):VirusView
@@ -136,7 +134,6 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 		public function addMedication(adherence:Number , medTexture:Texture):void
 		{
-			trace("Adding Medication " + adherence);
 			this._medShield = new Image(medTexture);
 			this._medShield.width = 90;
 			this._medShield.height = 90;
