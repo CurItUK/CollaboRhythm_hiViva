@@ -1,4 +1,4 @@
-package collaboRhythm.hiviva.view.screens.patient
+package collaboRhythm.hiviva.view.screens.hcp
 {
 
 	import collaboRhythm.hiviva.global.HivivaScreens;
@@ -13,7 +13,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
-	public class HivivaPatientSettingsScreen extends Screen
+	public class HivivaHCPSettingsScreen extends Screen
 	{
 		private var _instructions:Label;
 		private var _submitButton:Button;
@@ -22,7 +22,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _scaledPadding:Number;
 
 
-		public function HivivaPatientSettingsScreen()
+		public function HivivaHCPSettingsScreen()
 		{
 
 		}
@@ -37,9 +37,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.paddingLeft = this._scaledPadding;
 			this._header.initTrueTitle();
 
+
+
 			this._instructions.validate();
 			this._instructions.y = this._header.height + this._scaledPadding;
 			this._instructions.x = this.actualWidth/2 - this._instructions.width/2;
+
 
 			this._submitButton.validate();
 			this._submitButton.x = this.actualWidth/2 - this._submitButton.width/2;
@@ -78,15 +81,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.resetApplication();
 		}
 
-		private function resetApplicationHandler(e:LocalDataStoreEvent):void
-		{
+		private function resetApplicationHandler(e:LocalDataStoreEvent):void{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APPLICATION_RESET_COMPLETE , resetApplicationHandler);
 			this.dispatchEventWith("navFromReset");
 		}
 
 		private function backBtnHandler(event:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
 	}
 }

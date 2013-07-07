@@ -4,10 +4,6 @@ package collaboRhythm.hiviva.global
 
 	public class LocalDataStoreEvent extends Event
 	{
-		public static const DATA_LOAD_COMPLETE:String							= "dataLoadComplete";
-		public static const DATA_LOAD_UPDATE:String								= "dataLoadUpdate";
-
-		public static const PROFILE_TYPE_UPDATE:String							= "profileTypeUpdate";
 		public static const APP_ID_SAVE_COMPLETE:String							= "appIdSaveComplete";
 		public static const APP_ID_LOAD_COMPLETE:String							= "appIdLoadComplete";
 		public static const GALLERY_TIMESTAMP_LOAD_COMPLETE:String				= "galleryTimeStampLoadComplete";
@@ -24,6 +20,7 @@ package collaboRhythm.hiviva.global
 		public static const MEDICATIONS_SCHEDULE_LOAD_COMPLETE:String			= "medicationsScheduleLoadComplete";
 		public static const PATIENT_PROFILE_LOAD_COMPLETE:String				= "patientProfileLoadComplete";
 		public static const PATIENT_PROFILE_SAVE_COMPLETE:String				= "patientProfileSaveComplete";
+
 		public static const HCP_PROFILE_LOAD_COMPLETE:String					= "hcpProfileLoadComplete";
 		public static const HCP_PROFILE_SAVE_COMPLETE:String					= "hcpProfileSaveComplete";
 		public static const HCP_DISPLAY_SETTINGS_SAVE_COMPLETE:String			= "hcpDisplaySettingsSaveComplete";
@@ -33,13 +30,15 @@ package collaboRhythm.hiviva.global
 		public static const HCP_CONNECTIONS_LOAD_COMPLETE:String				= "hcpConnectionsLoadComplete";
 		public static const HCP_CONNECTION_SAVE_COMPLETE:String					= "hcpConnectionsSaveComplete";
 		public static const HCP_CONNECTION_DELETE_COMPLETE :String				= "hcpConnectionDeleteComplete";
-		public static const HCP_SETTINGS_RESTORE_SAVE_COMPLETE :String		    = "hcpSettingsRestoreSaveComplete";
+
 		public static const PATIENT_CONNECTIONS_LOAD_COMPLETE:String			= "patientConnectionsLoadComplete";
 		public static const PATIENT_CONNECTION_SAVE_COMPLETE:String				= "patientConnectionsSaveComplete";
 		public static const PATIENT_CONNECTION_DELETE_COMPLETE :String			= "patientConnectionDeleteComplete";
 		public static const PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE :String		= "patientMessagesViewedLoadComplete";
 		public static const PATIENT_MESSAGES_VIEWED_SAVE_COMPLETE :String		= "patientMessagesViewedSaveComplete";
-		public static const PATIENT_SETTINGS_RESTORE_SAVE_COMPLETE :String		= "patientSettingsRestoreSaveComplete";
+
+
+		public static const APPLICATION_RESET_COMPLETE :String					= "applicationResetComplete";
 
 
 		public var message:String;

@@ -98,5 +98,15 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.dispatchEvent(navAwayEvent);
 		}
 
+		override public function dispose():void
+		{
+			super.dispose();
+			this.removeChild(this._sideBtnGroup);
+			this._sideBtnGroup.dispose();
+			this._sideBtnGroup = null;
+			trace("Dispose called from HivivaHCPSideNavScreen");
+
+		}
+
 	}
 }

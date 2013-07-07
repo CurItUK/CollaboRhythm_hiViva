@@ -136,7 +136,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					{name: "medicines", label: "Daily medicines"},
 					{name: "results", label: "Test results"},
 					{name: "connect", label: "Connect to care provider"},
-					{name: "settings", label: "Settings"}
+					{name: "settings", label: "Application settings"}
 
 				]
 			);
