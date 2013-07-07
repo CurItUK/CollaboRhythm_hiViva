@@ -18,6 +18,10 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Slider;
 	import feathers.layout.VerticalLayout;
 
+	import starling.display.DisplayObject;
+
+	import starling.display.DisplayObject;
+
 	import starling.display.Image;
 	import starling.events.Event;
 
@@ -34,6 +38,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _medicationSchedule:Array;
 		private var _latestAdherenceData:Object;
 		private var _takeMedicationCellHolder:ScrollContainer;
+
+		private var _medicationData:XML;
 
 
 		private const PADDING:Number = 20;
@@ -54,9 +60,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			super.preValidateContent();
 
 			this._feelingQuestion.width = this._innerWidth;
-
 			this._feelingSlider.width = this._innerWidth * 0.8;
-
 			this._submitButton.width = this._innerWidth * 0.25;
 		}
 
@@ -68,7 +72,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._feelingSlider.y -= this._componentGap;
 
 			this._feelingSliderLeftImage.y = this._feelingSliderRightImage.y = this._feelingSlider.y + (this._feelingSlider.height * 0.5)
-
 			this._feelingSliderLeftImage.x = this._feelingSlider.x - this._feelingSliderLeftImage.width;
 			this._feelingSliderLeftImage.y -= this._feelingSliderLeftImage.height * 0.5;
 
@@ -144,89 +147,43 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._submitButton);
 		}
 
-		private function submitButtonHandler(e:Event):void
-		{
-			// submit changed data only
-			var medicationsLoop:uint = this._medicationSchedule.length,
-				takeMedicationCell:SelectMedicationCell,
-				data:Array = [],
-				today:String = HivivaModifier.getSQLStringFromDate(new Date());
-			for (var i:uint = 0; i < medicationsLoop; i++)
-			{
-				takeMedicationCell = this._takeMedicationCellHolder.getChildAt(i) as SelectMedicationCell;
-				if(takeMedicationCell.checkBox.isSelected)
-				{
-					data.push("id:" + takeMedicationCell.medicationScheduleId + ";" + "feeling:" + this._feelingSlider.value)
-				}
-			}
-
-			var adherencePer:Number = (data.length / medicationsLoop) * 100;
-
-			if (data.length > 0)
-			{
-				localStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_SAVE_COMPLETE, adherenceSaveCompleteHandler);
-				localStoreController.setAdherence({date:today, data:data, adherence_percentage:adherencePer});
-			}
-		}
-
-		private function adherenceSaveCompleteHandler(e:LocalDataStoreEvent):void
-		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_SAVE_COMPLETE, adherenceSaveCompleteHandler);
-
-			showFormValidation("medicine schedule updated");
-		}
-
 		private function checkMedicationScheduleExist():void
 		{
-			//localStoreController.addEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE, medicationsScheduleLoadCompleteHandler);
-			//localStoreController.getMedicationsSchedule();
-
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
-
 		}
 
 		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
 		{
-			/*HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
-			trace("medicationsLoadCompleteHandler " + e.data.xmlResponse);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 
-			var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication;
+			this._medicationData = e.data.xmlResponse;
 
-			trace(medicationsXML.length());
-
-			if(medicationsXML.length() >0)
+			if(this._medicationData.children().length() > 0)
 			{
-				this._medications = [];
-				var medLoop:int = medicationsXML.length();
-				for(var i:int = 0 ; i < medLoop ; i++)
+				this._medicationSchedule = [];
+				var medicationCount:uint = this._medicationData.DCUserMedication.length();
+				for(var i:uint = 0 ; i < medicationCount ; i++)
 				{
-					var medObj:Object = {medication_name:medicationsXML[i].MedicationName , id: medicationsXML[i].MedicationID};
-					this._medications.push(medObj);
+
+					var medicationScheduleCount:uint = this._medicationData.DCUserMedication[i].Schedule.DCMedicationSchedule.length();
+					for(var j:uint = 0 ; j < medicationScheduleCount ; j++)
+					{
+						var medObj:Object =
+						{
+							medication_name: this._medicationData.DCUserMedication[i].MedicationName ,
+							tablet_count: this._medicationData.DCUserMedication[i].Schedule.DCMedicationSchedule[j].Count ,
+							tablet_taken: this._medicationData.DCUserMedication[i].Schedule.DCMedicationSchedule[j].Taken ,
+							tolerability: this._medicationData.DCUserMedication[i].Schedule.DCMedicationSchedule[j].Tolerability ,
+							schedule_id: this._medicationData.DCUserMedication[i].Schedule.DCMedicationSchedule[j].MedicationScheduleID ,
+							medication_guid: this._medicationData.DCUserMedication[i].UserMedicationGuid ,
+							time: this._medicationData.DCUserMedication[i].Schedule.DCMedicationSchedule[j].Time
+						};
+
+						this._medicationSchedule.push(medObj);
+					}
 				}
-				initializeShowMedications();
-			}
-			else
-			{
-				initializeEnterRegimen();
-			}*/
-		}
-
-		private function medicationsScheduleLoadCompleteHandler(e:LocalDataStoreEvent):void
-		{
-			trace("medicationsLoadCompleteHandler " + e.data.medicationSchedule);
-			this._medicationSchedule = e.data.medicationSchedule;
-			localStoreController.removeEventListener(LocalDataStoreEvent.MEDICATIONS_SCHEDULE_LOAD_COMPLETE, medicationsScheduleLoadCompleteHandler);
-			if (this._medicationSchedule != null)
-			{
 				populateMedications();
-
-				localStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE, adherenceLoadCompleteHandler);
-				localStoreController.getAdherence();
-			}
-			else
-			{
-				//TODO display message / button link to add medications if empty
 			}
 		}
 
@@ -236,7 +193,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			for (var i:uint = 0; i < medicationsLoop; i++)
 			{
 				var takeMedicationCell:SelectMedicationCell = new SelectMedicationCell();
-				takeMedicationCell.medicationScheduleId = this._medicationSchedule[i].id;
+				takeMedicationCell.medicationScheduleId = this._medicationSchedule[i].schedule_id;
+				takeMedicationCell.medicationGuid = this._medicationSchedule[i].medication_guid;
 				takeMedicationCell.scale = this.dpiScale;
 				takeMedicationCell.brandName = HivivaModifier.getBrandName(this._medicationSchedule[i].medication_name);
 				takeMedicationCell.genericName = HivivaModifier.getGenericName(this._medicationSchedule[i].medication_name);
@@ -244,6 +202,11 @@ package collaboRhythm.hiviva.view.screens.patient
 				takeMedicationCell.width = this._innerWidth;
 				this._takeMedicationCellHolder.addChild(takeMedicationCell);
 				takeMedicationCell.checkBox.addEventListener(Event.TRIGGERED, medCellChangeHandler);
+				if(this._medicationSchedule[i].tablet_taken == "true")
+				{
+					takeMedicationCell.checkBox.isSelected = true;
+					takeMedicationCell.validate();
+				}
 			}
 			drawResults()
 		}
@@ -255,11 +218,20 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._submitButton.visible = true;
 				this._submitButton.validate();
 			}
+
+			var takeMedicationCell:SelectMedicationCell = (DisplayObject(e.currentTarget).parent) as SelectMedicationCell;
+
+			var dcUserMedication:XML = XML(this._medicationData.DCUserMedication.(UserMedicationGuid == takeMedicationCell.medicationGuid));
+			var dcUserSchedule:XML = XML(dcUserMedication.Schedule.DCMedicationSchedule.(MedicationScheduleID == takeMedicationCell.medicationScheduleId));
+			dcUserSchedule.Taken = !takeMedicationCell.checkBox.isSelected;
+			dcUserSchedule.Tolerability = this._feelingSlider.value;
+
+
 		}
 
 		private function drawResults():void
 		{
-			this._takeMedicationCellHolder.y = this._feelingSliderRightLabel.y + this._feelingSliderRightLabel.height;
+			this._takeMedicationCellHolder.y = this._feelingSliderRightLabel.y + this._feelingSliderRightLabel.height + PADDING;
 			this._takeMedicationCellHolder.width = this._innerWidth;
 			this._takeMedicationCellHolder.height = this._submitButton.y - this._takeMedicationCellHolder.y;
 
@@ -269,55 +241,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._takeMedicationCellHolder.validate();
 		}
 
-		private function adherenceLoadCompleteHandler(e:LocalDataStoreEvent):void
+		private function submitButtonHandler(e:Event):void
 		{
-			trace("adherenceLoadCompleteHandler " + e.data.adherence);
-			localStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE, adherenceLoadCompleteHandler);
-
-			var allAdherenceData:Array = e.data.adherence;
-			if (allAdherenceData != null)
-			{
-				this._latestAdherenceData = allAdherenceData[allAdherenceData.length - 1];
-				populateCurrentAdherence();
-			}
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.takeMedication("scheduleid=1|tolerability=3;scheduleid=2|tolerability=4");
 		}
 
-		private function populateCurrentAdherence():void
+		private function takePatientMedicationCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			var today:Date = new Date(),
-				latestAdherenceDate:Date = HivivaModifier.getAS3DatefromString(this._latestAdherenceData.date),
-				latestAdherenceData:Array = String(this._latestAdherenceData.data).split(","),
-				rawIdData:String,
-				medicationId:int,
-				feeling:Number,
-				takeMedicationCell:SelectMedicationCell;
-
-			// latestAdherence.date
-			// latestAdherence.data[i].medication_id
-			// latestAdherence.data[i].feeling
-			// its the same day since the last adherence update so select taken medicines
-			if (HivivaModifier.getDaysDiff(today, latestAdherenceDate) == 0)
-			{
-				for (var i:int = 0; i < latestAdherenceData.length; i++)
-				{
-					rawIdData = String(latestAdherenceData[i]).split(";")[0];
-					medicationId = int(rawIdData.split(":")[1]);
-					//feeling = latestAdherenceData[i].feeling;
-
-					var medicationsLoop:uint = this._medicationSchedule.length;
-					for (var j:uint = 0; j < medicationsLoop; j++)
-					{
-						takeMedicationCell = this._takeMedicationCellHolder.getChildAt(j) as SelectMedicationCell;
-						if(takeMedicationCell.medicationScheduleId == medicationId)
-						{
-							takeMedicationCell.checkBox.isSelected = true;
-							takeMedicationCell.validate();
-						}
-					}
-				}
-			}
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
+			showFormValidation("medicine schedule updated");
 		}
-
-
 	}
 }

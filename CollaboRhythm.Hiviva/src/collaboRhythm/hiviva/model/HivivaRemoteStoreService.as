@@ -67,6 +67,21 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(new RemoteDataStoreEvent(RemoteDataStoreEvent.DELETE_PATIENT_MEDICATION_COMPLETE));
 		}
 
+		public function takeMedication(medicationData:String):void
+		{
+			var query:String = "intakeInformation=" + medicationData;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_TAKE_PATIENT_MEDICATION + query);
+			trace("takeMedication " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, takeMedicationCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function takeMedicationCompleteHandler(e:Event):void
+		{
+			this.dispatchEvent(new RemoteDataStoreEvent(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE));
+		}
+
 		public function getPatientMedicationList():void
 		{
 			var query:String = "userGuid=" + HivivaStartup.userVO.guid;

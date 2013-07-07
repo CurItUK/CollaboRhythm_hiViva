@@ -9,7 +9,7 @@ package collaboRhythm.hiviva.global
 		public static const RS_ADD_MEDICATION:String = 					"WSUserMedication.svc/AddUserMedication?";
 		public static const RS_DELETE_MEDICATION:String = 				"WSUserMedication.svc/DeleteUserMedication?";
 		public static const RS_GET_PATIENT_MEDICATION:String = 			"WSUserMedication.svc/GetUserMedicaton?";
-
+		public static const RS_TAKE_PATIENT_MEDICATION:String = 		"WSUserMedication.svc/TookMedication?";
 
 		//messaging
 		public static const RS_GET_MESSAGES:String = 					"WSMessage.svc/GetMessages";
