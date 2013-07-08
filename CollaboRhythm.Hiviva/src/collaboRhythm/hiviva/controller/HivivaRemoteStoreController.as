@@ -76,7 +76,7 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
-		public function takeMedication(medicationData:String):void
+		public function takeMedication(medicationData:XML):void
 		{
 			service.addEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE, takePatientMedicationListComplete);
 			service.takeMedication(medicationData);
