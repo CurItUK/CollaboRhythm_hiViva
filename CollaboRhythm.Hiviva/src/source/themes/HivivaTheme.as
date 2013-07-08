@@ -2018,6 +2018,7 @@ package source.themes
 			radio.stateToIconFunction = iconSelector.updateValue;
 
 			radio.defaultLabelProperties.textFormat = this.bodyBftf;
+			radio.defaultLabelProperties.wordWrap = true;
 			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			radio.gap = 12 * this.scale;
 			/*radio.padding = 32 * this.scale;
@@ -2066,6 +2067,7 @@ package source.themes
 
 			check.stateToIconFunction = iconSelector.updateValue;
 			check.defaultLabelProperties.textFormat = this.bodyBftf;
+			check.defaultLabelProperties.wordWrap = true;
 
 			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			check.gap = 12 * this.scale;

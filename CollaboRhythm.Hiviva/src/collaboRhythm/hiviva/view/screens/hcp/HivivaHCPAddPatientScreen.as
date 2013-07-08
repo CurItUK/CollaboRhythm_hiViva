@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
@@ -65,8 +66,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function draw():void
 		{
 			super.draw();
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.initTrueTitle();
 
 			drawHcpSearch();
 		}
@@ -101,8 +102,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function drawHcpSearch():void
 		{
-			var scaledPadding:Number = PADDING * this.dpiScale;
-			var horizontalAlign:Number = 32 * this.dpiScale;
+			var vGap:Number = Constants.PADDING_TOP;
 
 			this._appIDLabel = new Label();
 			this._appIDLabel.text = "AppID";
@@ -124,19 +124,19 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._searchButton.validate();
 			this._resultInfo.validate();
 
-			this._appIDLabel.y = this._header.y + this._header.height + scaledPadding;
-			this._appIDLabel.x = horizontalAlign;
+			this._appIDLabel.y = this._header.y + this._header.height + vGap;
+			this._appIDLabel.x = Constants.PADDING_LEFT;
 
-			this._searchInput.y =this._appIDLabel.y + this._appIDLabel.height + + scaledPadding;
-			this._searchInput.x = horizontalAlign;
-			this._searchInput.width = this.actualWidth - this._searchButton.width - (scaledPadding * 2) - horizontalAlign;
+			this._searchInput.y = this._appIDLabel.y + this._appIDLabel.height + vGap;
+			this._searchInput.x = Constants.PADDING_LEFT;
+			this._searchInput.width = Constants.INNER_WIDTH - this._searchButton.width - Constants.PADDING_LEFT;
 
 			this._searchButton.y = this._searchInput.y + (this._searchInput.height * 0.5) - (this._searchButton.height * 0.5);
-			this._searchButton.x = this._searchInput.x + this._searchInput.width + scaledPadding;
+			this._searchButton.x = this._searchInput.x + this._searchInput.width + Constants.PADDING_LEFT;
 
-			this._resultInfo.y = this._searchInput.y + this._searchInput.height + (scaledPadding * 0.5);
-			this._resultInfo.x = horizontalAlign;
-			this._resultInfo.width = this.actualWidth - scaledPadding - horizontalAlign;
+			this._resultInfo.y = this._searchInput.y + this._searchInput.height + (vGap * 0.5);
+			this._resultInfo.x = Constants.PADDING_LEFT;
+			this._resultInfo.width = Constants.INNER_WIDTH;
 		}
 
 		private function doSearchHcp(e:Event):void
@@ -205,8 +205,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			addChild(this._requestConnectionButton);
 
 			this._requestConnectionButton.validate();
-			this._requestConnectionButton.x = (this.actualWidth / 2) - (this._requestConnectionButton.width / 2);
-			this._requestConnectionButton.y = this.actualHeight - this._requestConnectionButton.height - (PADDING * this.dpiScale);
+			this._requestConnectionButton.x = (Constants.STAGE_WIDTH / 2) - (this._requestConnectionButton.width / 2);
+			this._requestConnectionButton.y = Constants.STAGE_HEIGHT - this._requestConnectionButton.height - Constants.PADDING_BOTTOM;
 
 			drawResults();
 		}
@@ -234,21 +234,21 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var hcpCell:HcpResultCell;
 
 			yStartPosition = (this._patientConnected ? this._header.y + this._header.height : this._resultInfo.y + this._resultInfo.height) + scaledPadding;
-			maxHeight = this.actualHeight - yStartPosition;
+			maxHeight = Constants.STAGE_HEIGHT - yStartPosition;
 
 			if(!this._patientConnected)
 			{
-				maxHeight -= (this.actualHeight - this._requestConnectionButton.y) + scaledPadding;
+				maxHeight -= (Constants.STAGE_HEIGHT - this._requestConnectionButton.y) + scaledPadding;
 			}
 
-			this._hcpCellContainer.width = this.actualWidth;
+			this._hcpCellContainer.width = Constants.STAGE_WIDTH;
 			this._hcpCellContainer.y = yStartPosition;
 			this._hcpCellContainer.height = maxHeight;
 
 			for (var i:int = 0; i < this._hcpCellContainer.numChildren; i++)
 			{
 				hcpCell = this._hcpCellContainer.getChildAt(i) as HcpResultCell;
-				hcpCell.width = this.actualWidth;
+				hcpCell.width = Constants.STAGE_WIDTH;
 			}
 
 			var layout:VerticalLayout = new VerticalLayout();

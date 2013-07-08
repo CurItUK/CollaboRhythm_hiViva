@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
@@ -43,13 +44,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function draw():void
 		{
 			super.draw();
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
-			this._backButton.validate();
+
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.initTrueTitle();
 
 			this._addConnectionButton.validate();
-			this._addConnectionButton.x = (this.actualWidth / 2) - (this._addConnectionButton.width / 2);
-			this._addConnectionButton.y = this.actualHeight - this._addConnectionButton.height - (PADDING * this.dpiScale);
+			this._addConnectionButton.x = (Constants.STAGE_WIDTH / 2) - (this._addConnectionButton.width / 2);
+			this._addConnectionButton.y = Constants.STAGE_HEIGHT - this._addConnectionButton.height - Constants.PADDING_BOTTOM;
 
 			getApprovedConnections();
 		}
@@ -178,17 +179,17 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var hcpCell:HcpResultCell;
 
 			yStartPosition = this._header.y + this._header.height + scaledPadding;
-			maxHeight = this.actualHeight - yStartPosition;
-			maxHeight -= (this.actualHeight - this._addConnectionButton.y) + scaledPadding;
+			maxHeight = Constants.STAGE_HEIGHT - yStartPosition;
+			maxHeight -= (Constants.STAGE_HEIGHT - this._addConnectionButton.y) + scaledPadding;
 
-			this._patientCellContainer.width = this.actualWidth;
+			this._patientCellContainer.width = Constants.STAGE_WIDTH;
 			this._patientCellContainer.y = yStartPosition;
 			this._patientCellContainer.height = maxHeight;
 
 			for (var i:int = 0; i < this._patientCellContainer.numChildren; i++)
 			{
 				hcpCell = this._patientCellContainer.getChildAt(i) as HcpResultCell;
-				hcpCell.width = this.actualWidth;
+				hcpCell.width = Constants.STAGE_WIDTH;
 			}
 
 			var layout:VerticalLayout = new VerticalLayout();

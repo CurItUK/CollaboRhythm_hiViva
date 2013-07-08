@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.controller.HivivaAppController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
@@ -32,8 +33,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _appIdLabel:Label;
 		private var _appId:Label;
 
-		private var _scaledPadding:Number;
-
 		public function HivivaHCPProfileScreen()
 		{
 		}
@@ -42,19 +41,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.draw();
 
-			this._scaledPadding = 44 * this.dpiScale;
-
 			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
+			this._header.paddingLeft = Constants.PADDING_LEFT;
+			this._header.initTrueTitle();
 
 			drawMenuBtnGroup();
 
 			this._appIdLabel.validate();
-			this._appIdLabel.x = this._scaledPadding;
-			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + (20 * this.dpiScale);
+			this._appIdLabel.x = Constants.PADDING_LEFT;
+			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + Constants.PADDING_TOP;
 
 			this._appId.validate();
-			this._appId.x = this.actualWidth - this._scaledPadding - this._appId.width;
+			this._appId.x = this.actualWidth - Constants.PADDING_RIGHT - this._appId.width;
 			this._appId.y = this._appIdLabel.y;
 		}
 
@@ -108,7 +106,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._appId.text = appIdData;
 
 			this._appId.validate();
-			this._appId.x = this.actualWidth - this._scaledPadding - this._appId.width;
+			this._appId.x = this.actualWidth - Constants.PADDING_RIGHT - this._appId.width;
 			this._appId.y = this._appIdLabel.y;
 		}
 

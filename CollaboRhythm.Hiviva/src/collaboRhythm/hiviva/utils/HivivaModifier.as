@@ -1,5 +1,7 @@
 package collaboRhythm.hiviva.utils
 {
+	import collaboRhythm.hiviva.global.Constants;
+
 	import flash.geom.Point;
 
 	import starling.display.Image;
@@ -8,6 +10,13 @@ package collaboRhythm.hiviva.utils
 	{
 		public function HivivaModifier()
 		{
+		}
+
+		public static function calculateComponentVerticalGap(rowNumber:int, usedVerticalSpace:Number, customVerticalSpace:Number = 0):Number
+		{
+			var totalVerticalSpace:Number = (customVerticalSpace == 0) ? (Constants.STAGE_HEIGHT - Constants.PADDING_TOP - Constants.PADDING_BOTTOM) : customVerticalSpace;
+			var gap:Number = (totalVerticalSpace - usedVerticalSpace) / (rowNumber - 1);
+			return gap;
 		}
 
 		public static function getBrandName(value:String):String

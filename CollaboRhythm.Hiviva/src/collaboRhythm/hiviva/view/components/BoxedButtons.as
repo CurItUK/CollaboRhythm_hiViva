@@ -18,7 +18,7 @@ package collaboRhythm.hiviva.view.components
 		private var _bg:Scale9Image;
 		private var _labels:Array = [];
 		private var _btns:Vector.<Button> = new <Button>[];
-		private var _scale:Number;
+		private var _scale:Number = 1;
 
 		public function BoxedButtons()
 		{

@@ -2,10 +2,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
@@ -29,7 +31,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	public class HivivaHCPDisplaySettings extends ValidationScreen
 	{
-		private var _orderInstructionsLabel:Label;
+		private var _subHeaderLabel:Label;
+		private var _instructionsLabel:Label;
 		private var _orderTypeGroup:ToggleGroup;
 		private var _adherenceRadio:Radio;
 		private var _tolerabilityRadio:Radio;
@@ -39,9 +42,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _fromInstructionsLabel:Label;
 		private var _fromPickerList:PickerList;
 		private var _scheduleDoseAmounts:ListCollection;
-
-		private var _cancelButton:Button;
-		private var _submitButton:Button;
+		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
 
 		public function HivivaHCPDisplaySettings()
@@ -52,23 +53,40 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function draw():void
 		{
 			super.draw();
+
+			this._ascendingRadio.y = this._adherenceRadio.y;
+			this._ascendingRadio.x = this._innerWidth * 0.5;
+
+			this._descendingRadio.y = this._tolerabilityRadio.y;
+			this._descendingRadio.x = this._innerWidth * 0.5;
+
+			this._fromInstructionsLabel.y = this._descendingRadio.y + this._descendingRadio.height + this._componentGap;
+			this._fromPickerList.y = this._fromInstructionsLabel.y + this._fromInstructionsLabel.height + this._componentGap;
+
+			this._content.height = this._cancelAndSave.y - this._content.y - this._componentGap;
+			this._content.validate();
 		}
 
 		override protected function preValidateContent():void
 		{
 			super.preValidateContent();
 
-			this._orderInstructionsLabel.width = this._content.width;
-			this._fromInstructionsLabel.width = this._content.width;
+			this._subHeaderLabel.width = this._innerWidth;
+			this._instructionsLabel.width = this._innerWidth;
+			this._fromInstructionsLabel.width = this._innerWidth;
+
+			this._cancelAndSave.width = this._innerWidth;
+			this._cancelAndSave.validate();
+			this._cancelAndSave.x = Constants.PADDING_LEFT;
+			this._cancelAndSave.y = Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._cancelAndSave.height;
 		}
 
+/*
 		override protected function postValidateContent():void
 		{
 			super.postValidateContent();
-
-			this._submitButton.y = this._cancelButton.y;
-			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + this._componentGap;
 		}
+*/
 
 		override protected function initialize():void
 		{
@@ -76,10 +94,15 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._header.title = "Display settings";
 
-			this._orderInstructionsLabel = new Label();
-			this._orderInstructionsLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
-			this._orderInstructionsLabel.text = "Home page\nOrder my patients by:";
-			this._content.addChild(this._orderInstructionsLabel);
+			this._subHeaderLabel = new Label();
+			this._subHeaderLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
+			this._subHeaderLabel.text = "Home page";
+			this._content.addChild(this._subHeaderLabel);
+
+			this._instructionsLabel = new Label();
+			this._instructionsLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._instructionsLabel.text = "Order my patients by:";
+			this._content.addChild(this._instructionsLabel);
 
 			this._orderTypeGroup = new ToggleGroup();
 
@@ -106,6 +129,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._descendingRadio);
 
 			this._fromInstructionsLabel = new Label();
+			this._fromInstructionsLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
 			this._fromInstructionsLabel.text = "Show patient data from:";
 			this._content.addChild(this._fromInstructionsLabel);
 
@@ -123,15 +147,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 //			this._fromPickerList.addEventListener(Event.CHANGE , doseListSelectedHandler);
 			this._content.addChild(this._fromPickerList);
 
-			this._cancelButton = new Button();
-			this._cancelButton.label = "Cancel";
-			this._cancelButton.addEventListener(starling.events.Event.TRIGGERED, cancelButtonClick);
-			this._content.addChild(this._cancelButton);
-
-			this._submitButton = new Button();
-			this._submitButton.label = "Save";
-			this._submitButton.addEventListener(starling.events.Event.TRIGGERED, submitButtonClick);
-			this._content.addChild(this._submitButton);
+			this._cancelAndSave = new BoxedButtons();
+			this._cancelAndSave.labels = ["Cancel","Save"];
+			this._cancelAndSave.addEventListener(starling.events.Event.TRIGGERED, cancelAndSaveHandler);
+			addChild(this._cancelAndSave);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -143,23 +162,27 @@ package collaboRhythm.hiviva.view.screens.hcp
 			populateOldData();
 		}
 
-
-		private function cancelButtonClick(e:starling.events.Event):void
+		private function cancelAndSaveHandler(e:starling.events.Event):void
 		{
-			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
-		}
+			var button:String = e.data.button;
 
-		private function submitButtonClick(e:Event):void
-		{
-			// TODO: validate
+			switch(button)
+			{
+				case "Cancel" :
+					this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+					break;
+				case "Save" :
+					// TODO: validate
 
-			var displaySettings:Object = {};
-			displaySettings.stat_type = Radio(this._orderTypeGroup.selectedItem).label;
-			displaySettings.direction = Radio(this._orderByGroup.selectedItem).label;
-			displaySettings.from_date = this._fromPickerList.selectedItem.text;
+					var displaySettings:Object = {};
+					displaySettings.stat_type = Radio(this._orderTypeGroup.selectedItem).label;
+					displaySettings.direction = Radio(this._orderByGroup.selectedItem).label;
+					displaySettings.from_date = this._fromPickerList.selectedItem.text;
 
-			localStoreController.addEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_SAVE_COMPLETE, setHcpDisplaySettingsHandler);
-			localStoreController.setHcpDisplaySettings(displaySettings);
+					localStoreController.addEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_SAVE_COMPLETE, setHcpDisplaySettingsHandler);
+					localStoreController.setHcpDisplaySettings(displaySettings);
+					break;
+			}
 		}
 
 		private function setHcpDisplaySettingsHandler(e:LocalDataStoreEvent):void

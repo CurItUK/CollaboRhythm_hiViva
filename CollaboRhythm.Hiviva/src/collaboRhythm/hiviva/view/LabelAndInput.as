@@ -10,7 +10,7 @@ package collaboRhythm.hiviva.view
 	public class LabelAndInput extends  FeathersControl
 	{
 
-		private var _scale:Number;
+		private var _scale:Number = 1;
 		private var _isPassword: Boolean  = false;
 		private var __color : String
 

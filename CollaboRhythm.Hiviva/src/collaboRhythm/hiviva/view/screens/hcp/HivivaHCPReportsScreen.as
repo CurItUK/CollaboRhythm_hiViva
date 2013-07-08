@@ -95,10 +95,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._includeLabel.width = this._innerWidth;
 
-			this._adherenceCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
-			this._feelingCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
-			this._cd4Check.defaultLabelProperties.width = this._innerWidth * 0.9;
-			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
+			this._adherenceCheck.defaultLabelProperties.width = this._innerWidth;
+			this._feelingCheck.defaultLabelProperties.width = this._innerWidth;
+			this._cd4Check.defaultLabelProperties.width = this._innerWidth;
+			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth;
 		}
 
 		override protected function postValidateContent():void
@@ -130,7 +130,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.title = "Generate Reports";
 
 			this._patientLabel = new Label();
-			this._patientLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._patientLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
 			this._patientLabel.text = "Patients";
 			this._content.addChild(this._patientLabel);
 
@@ -141,7 +141,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._patientPickerList);
 
 			this._reportDatesLabel = new Label();
-			this._reportDatesLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._reportDatesLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
 			this._reportDatesLabel.text = "Report dates";
 			this._content.addChild(this._reportDatesLabel);
 
@@ -168,7 +168,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._finishDateButton);
 
 			this._includeLabel = new Label();
-			this._includeLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._includeLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
 			this._includeLabel.text = "Include";
 			this._content.addChild(this._includeLabel);
 
@@ -312,26 +312,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 				if(!isValidDate)validationArray.push("Invalid date selection - start and end dates");
 			}
 
-			return validationArray.join("<br/>");
+			return validationArray.join("\n");
 		}
 
 		private function validateDates():Boolean
 		{
-			var tempStart:Array = new Array();
-			var tempFinish:Array = new Array();
-
-			tempStart = this._startDateInput._input.text.split('/');
-			tempFinish = this._finishDateInput._input.text.split('/');
+			var tempStart:Array = this._startDateInput._input.text.split('/');
+			var tempFinish:Array = this._finishDateInput._input.text.split('/');
 
 			var startAdd:Number = tempStart[2]*1300 + tempStart[0]*100 + tempStart[1];
 			var endAdd:Number = tempFinish[2]*1300 + tempFinish[0]*100 + tempFinish[1];
 
-			if(startAdd > endAdd){
-				return false;
-			}
-			else{
-				return true;
-			}
+			return (startAdd > endAdd);
 		}
 
 		private function displaySavedPDF():void

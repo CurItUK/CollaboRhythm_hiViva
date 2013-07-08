@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.view.HivivaHeader;
 	import collaboRhythm.hiviva.view.HivivaStartup;
@@ -40,25 +41,23 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			super.draw();
 
-			this._horizontalPadding = (this.actualWidth * 0.04) * this.dpiScale;
-			this._verticalPadding = (this.actualHeight * 0.02) * this.dpiScale;
-			this._componentGap = (this.actualHeight * 0.04) * this.dpiScale;
+			this._horizontalPadding = Constants.PADDING_LEFT;
+			this._verticalPadding = Constants.PADDING_TOP;
+			this._componentGap = Constants.PADDING_TOP;
 
-			this._header.width = this.actualWidth;
+			this._header.width = Constants.STAGE_WIDTH;
 			this._header.initTrueTitle();
 
-			this._contentHeight = this._customHeight > 0 ? this._customHeight : this.actualHeight;
-			this._contentHeight -= (this._header.y + this._header.height);
+			this._contentHeight = this._customHeight > 0 ? this._customHeight : (Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM);
+			this._contentHeight -= Constants.HEADER_HEIGHT;
 
 			this._content.y = this._header.y + this._header.height;
-			this._content.width = this.actualWidth - this._horizontalPadding;
+			this._content.width = this._innerWidth = Constants.INNER_WIDTH;
 			this._content.height = this._contentHeight - this._verticalPadding;
 
 			this._contentLayout.paddingLeft = this._contentLayout.paddingRight = this._horizontalPadding;
 			this._contentLayout.paddingTop = this._contentLayout.paddingBottom = this._verticalPadding;
 			this._contentLayout.gap = this._componentGap;
-
-			this._innerWidth = this._content.width - this._horizontalPadding;
 
 			//setChildrenHeights();
 			preValidateContent();

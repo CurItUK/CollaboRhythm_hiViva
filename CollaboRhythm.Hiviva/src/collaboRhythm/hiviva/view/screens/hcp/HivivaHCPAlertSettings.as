@@ -2,10 +2,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
@@ -30,8 +32,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _tolerabilityCheck:Check;
 		private var _tolerabilityLabelInput:LabelAndInput;
 
-		private var _cancelButton:Button;
-		private var _submitButton:Button;
+		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
 
 		public function HivivaHCPAlertSettings()
@@ -42,6 +43,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function draw():void
 		{
 			super.draw();
+
+			this._content.height = this._cancelAndSave.y - this._content.y - this._componentGap;
+			this._content.validate();
 		}
 
 		override protected function preValidateContent():void
@@ -50,19 +54,21 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._instructionsLabel.width = this._innerWidth;
 
-			this._requestsCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
-
 			drawAdherenceRow();
 			drawTolerabilityRow();
+
+			this._cancelAndSave.width = this._innerWidth;
+			this._cancelAndSave.validate();
+			this._cancelAndSave.x = Constants.PADDING_LEFT;
+			this._cancelAndSave.y = Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._cancelAndSave.height;
 		}
+/*
 
 		override protected function postValidateContent():void
 		{
 			super.postValidateContent();
-
-			this._submitButton.y = this._cancelButton.y;
-			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + this._componentGap;
 		}
+*/
 
 		override protected function initialize():void
 		{
@@ -71,7 +77,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.title = "Alerts";
 
 			this._instructionsLabel = new Label();
-			this._instructionsLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._instructionsLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
 			this._instructionsLabel.text = "Alert me for:";
 			this._content.addChild(this._instructionsLabel);
 
@@ -83,15 +89,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			initializeAdherenceRow();
 			initializeTolerabilityRow();
 
-			this._cancelButton = new Button();
-			this._cancelButton.label = "Cancel";
-			this._cancelButton.addEventListener(starling.events.Event.TRIGGERED, cancelButtonClick);
-			this._content.addChild(this._cancelButton);
-
-			this._submitButton = new Button();
-			this._submitButton.label = "Save";
-			this._submitButton.addEventListener(starling.events.Event.TRIGGERED, submitButtonClick);
-			this._content.addChild(this._submitButton);
+			this._cancelAndSave = new BoxedButtons();
+			this._cancelAndSave.labels = ["Cancel","Save"];
+			this._cancelAndSave.addEventListener(starling.events.Event.TRIGGERED, cancelAndSaveHandler);
+			addChild(this._cancelAndSave);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -103,13 +104,36 @@ package collaboRhythm.hiviva.view.screens.hcp
 			populateOldData();
 		}
 
+		private function cancelAndSaveHandler(e:starling.events.Event):void
+		{
+			var button:String = e.data.button;
+
+			switch(button)
+			{
+				case "Cancel" :
+					this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+					break;
+				case "Save" :
+					// TODO: validate if user has ticked a box but not filled the corresponding input
+
+					var alertSettings:Object = {};
+					alertSettings.requests = this._requestsCheck.isSelected ? 1 : -1;
+					alertSettings.adherence = this._adherenceCheck.isSelected ? this._adherenceLabelInput._input.text : "";
+					alertSettings.tolerability = this._tolerabilityCheck.isSelected ? this._tolerabilityLabelInput._input.text : "";
+
+					localStoreController.addEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_SAVE_COMPLETE, setHcpAlertSettingsHandler);
+					localStoreController.setHcpAlertSettings(alertSettings);
+					break;
+			}
+		}
+
 		private function initializeAdherenceRow():void
 		{
 			this._adherenceRow = new FeathersControl();
 			this._content.addChild(this._adherenceRow);
 
 			this._adherenceCheck = new Check();
-			this._adherenceCheck.label = "Adherence &lt;";
+			this._adherenceCheck.label = "Adherence >";
 			this._adherenceCheck.isSelected = false;
 			this._adherenceRow.addChild(this._adherenceCheck);
 
@@ -122,7 +146,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function drawAdherenceRow():void
 		{
-			this._adherenceCheck.defaultLabelProperties.width = this._innerWidth * 0.3;
 			this._adherenceCheck.validate();
 
 			var usableWidth:Number = (this._innerWidth - this._adherenceCheck.width) * 0.8;
@@ -131,7 +154,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._adherenceLabelInput._input.width = usableWidth * 0.75;
 			this._adherenceLabelInput.validate();
 
-			this._adherenceLabelInput.x = this._adherenceCheck.width;
+			this._adherenceLabelInput.x = this._innerWidth * 0.4;
 			this._adherenceCheck.y = (this._adherenceLabelInput.height * 0.5) - (this._adherenceCheck.height * 0.5);
 
 			this._adherenceRow.height = this._adherenceLabelInput.height;
@@ -143,7 +166,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._tolerabilityRow);
 
 			this._tolerabilityCheck = new Check();
-			this._tolerabilityCheck.label = "Tolerability &lt;";
+			this._tolerabilityCheck.label = "Tolerability >";
 			this._tolerabilityCheck.isSelected = false;
 			this._tolerabilityRow.addChild(this._tolerabilityCheck);
 
@@ -156,7 +179,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function drawTolerabilityRow():void
 		{
-			this._tolerabilityCheck.defaultLabelProperties.width = this._innerWidth * 0.3;
 			this._tolerabilityCheck.validate();
 
 			var usableWidth:Number = (this._innerWidth - this._tolerabilityCheck.width) * 0.8;
@@ -165,7 +187,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._tolerabilityLabelInput._input.width = usableWidth * 0.75;
 			this._tolerabilityLabelInput.validate();
 
-			this._tolerabilityLabelInput.x = this._tolerabilityCheck.width;
+			this._tolerabilityLabelInput.x = this._innerWidth * 0.4;
 			this._tolerabilityCheck.y = (this._tolerabilityLabelInput.height * 0.5) - (this._tolerabilityCheck.height * 0.5);
 
 			this._tolerabilityRow.height = this._tolerabilityLabelInput.height;

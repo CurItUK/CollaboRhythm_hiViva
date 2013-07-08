@@ -8,9 +8,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.HivivaHeader;
 	import collaboRhythm.hiviva.view.HivivaPopUp;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.PatientResultCell;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.PatientResultCellHome;
 
 	import feathers.controls.Button;
@@ -32,17 +35,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	public class HivivaHCPHomesScreen extends Screen
 	{
-
-
+		private var _header:HivivaHeader;
 		private var _userSignupPopupContent:HivivaPopUp;
 		private var _patientCellContainer:ScrollContainer;
-		private var _connectToPatientBtn:Button;
+		private var _connectToPatientBtn:BoxedButtons;
 		private var _patientsData:XML;
 		private var _patients:Array;
 		private var _filterdPatients:Array;
 		private var _patientLabel:Label;
 
-		private const PADDING:Number = 20;
+		private const BOTTOM:Number = Constants.STAGE_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT;
+		private var _patientCellYStart:Number;
+		private var _patientCellVSpace:Number;
 
 		public function HivivaHCPHomesScreen()
 		{
@@ -53,16 +57,21 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.draw();
 
-			var scaledPadding:Number = PADDING * this.dpiScale;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 
 			this._patientLabel.validate();
-			this._patientLabel.x = PADDING;
-			this._patientLabel.y = 120;
-			this._patientLabel.width = this.actualWidth;
+			this._patientLabel.x = Constants.PADDING_LEFT;
+			this._patientLabel.y = Constants.HEADER_HEIGHT + Constants.PADDING_TOP;
+			this._patientLabel.width = Constants.STAGE_WIDTH;
 
+			this._connectToPatientBtn.width = Constants.INNER_WIDTH;
 			_connectToPatientBtn.validate();
-			_connectToPatientBtn.x = this.actualWidth / 2 - _connectToPatientBtn.width / 2;
-			_connectToPatientBtn.y = this.actualHeight - _connectToPatientBtn.height - scaledPadding - Constants.FOOTER_BTNGROUP_HEIGHT;
+			_connectToPatientBtn.x = (Constants.STAGE_WIDTH * 0.5) - (_connectToPatientBtn.width * 0.5);
+			_connectToPatientBtn.y = BOTTOM - _connectToPatientBtn.height;
+
+			this._patientCellYStart = this._patientLabel.y - this._patientLabel.height;
+			this._patientCellVSpace = BOTTOM - this._patientCellYStart - this._connectToPatientBtn.height - Constants.PADDING_BOTTOM;
 
 			getHcpConnections();
 			//checkHCPSignupStatus();
@@ -71,18 +80,22 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._patientLabel = new Label();
-			this._patientLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
-			this._patientLabel.text = "Patients";
-			this..addChild(this._patientLabel);
 
-			_connectToPatientBtn = new Button();
-			_connectToPatientBtn.label = "Connect to patient";
+			this._header = new HivivaHeader();
+			this._header.title = "";
+			this.addChild(this._header);
+
+			this._patientLabel = new Label();
+			this._patientLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
+			this._patientLabel.text = "Patients";
+			this.addChild(this._patientLabel);
+
+			_connectToPatientBtn = new BoxedButtons();
+			_connectToPatientBtn.labels = ["Connect to patient"];
 			_connectToPatientBtn.addEventListener(starling.events.Event.TRIGGERED, connectToPatientBtnHandler);
 			this.addChild(_connectToPatientBtn);
 
 			this._patientCellContainer = new ScrollContainer();
-
 		}
 
 		/*
@@ -109,13 +122,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function getHcpConnections():void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController..addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE, getHcpListCompleteHandler)
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE, getHcpListCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getHCPConnections();
 		}
 
 		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE, getHcpListCompleteHandler)
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE, getHcpListCompleteHandler);
 			if (e.data.connections != null)
 			{
 				this._patients = e.data.connections;
@@ -186,42 +199,38 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function drawResults():void
 		{
-			var scaledPadding:Number = PADDING * this.dpiScale;
-			var yStartPosition:Number;
-			var maxHeight:Number;
+			var cellsTotalHeight:Number = 0;
+			var yStartPosition:Number = this._patientLabel.y + this._patientLabel.height;
 			var patientCell:PatientResultCellHome;
 
-			yStartPosition = this._patientLabel.y + scaledPadding + this._patientLabel.height;
-			maxHeight = this.actualHeight - yStartPosition -  this._patientLabel.height - _connectToPatientBtn.height - Constants.FOOTER_BTNGROUP_HEIGHT - 2 * (PADDING * this.dpiScale);
-
-			this._patientCellContainer.width = this.actualWidth;
+			this._patientCellContainer.width = Constants.STAGE_WIDTH;
 			this._patientCellContainer.y = yStartPosition;
-			this._patientCellContainer.height = maxHeight;
+			this._patientCellContainer.height = BOTTOM - yStartPosition;
 
 			for (var i:int = 0; i < this._patientCellContainer.numChildren; i++)
 			{
 				patientCell = this._patientCellContainer.getChildAt(i) as PatientResultCellHome;
-				patientCell.width = this.actualWidth;
+				patientCell.width = Constants.STAGE_WIDTH;
+				cellsTotalHeight += patientCell.height;
 			}
 
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.gap = scaledPadding;
+			layout.gap = HivivaModifier.calculateComponentVerticalGap(this._patientCellContainer.numChildren,cellsTotalHeight,this._patientCellVSpace);
 			this._patientCellContainer.layout = layout;
 			this._patientCellContainer.validate();
 		}
 
 		private function initAlertText():void
 		{
-
 			var alertLabel:Label = new Label();
+			alertLabel.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
 			alertLabel.text = "Connect to a patient to get started.";
 
 			this.addChild(alertLabel);
 			alertLabel.validate();
 
-			alertLabel.width = 390;
-			alertLabel.x = this.actualWidth / 2 - alertLabel.width / 2;
-			alertLabel.y = alertLabel.height * 4;
+			alertLabel.width = Constants.STAGE_WIDTH;
+			alertLabel.y = this._patientCellYStart + (this._patientCellVSpace * 0.5) - (alertLabel.height * 0.5);
 		}
 
 		private function connectToPatientBtnHandler(e:starling.events.Event):void
@@ -240,7 +249,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._userSignupPopupContent.confirmLabel = "Sign up";
 			this._userSignupPopupContent.addEventListener(starling.events.Event.COMPLETE, userSignupScreen);
 			this._userSignupPopupContent.addEventListener(starling.events.Event.CLOSE, userSignupScreen);
-			this._userSignupPopupContent.width = this.actualWidth * 0.75;
+			this._userSignupPopupContent.width = Constants.STAGE_WIDTH * 0.75;
 			this._userSignupPopupContent.validate();
 			this._userSignupPopupContent.message = "You will need to create an account in order to connect to a patient";
 

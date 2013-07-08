@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.HivivaScreens;
@@ -33,8 +34,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _appId:Label;
 		private var _userIsSignedUp:Boolean;
 
-		private var _scaledPadding:Number;
-
 		public function HivivaPatientProfileScreen()
 		{
 		}
@@ -43,19 +42,18 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.draw();
 
-			this._scaledPadding = (this.actualWidth * 0.04) * this.dpiScale;
-
 			this._header.width = this.actualWidth;
-			this._header.paddingLeft = this._scaledPadding;
+			this._header.paddingLeft = Constants.PADDING_LEFT;
 			this._header.initTrueTitle();
+
 			drawMenuBtnGroup();
 
 			this._appIdLabel.validate();
-			this._appIdLabel.x = this._scaledPadding;
-			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + this._scaledPadding;
+			this._appIdLabel.x = Constants.PADDING_LEFT;
+			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + Constants.PADDING_TOP;
 
 			this._appId.validate();
-			this._appId.x = this.actualWidth - this._scaledPadding - this._appId.width;
+			this._appId.x = this.actualWidth - Constants.PADDING_RIGHT - this._appId.width;
 			this._appId.y = this._appIdLabel.y;
 
 			/*
