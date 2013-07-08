@@ -225,8 +225,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			var dcUserSchedule:XML = XML(dcUserMedication.Schedule.DCMedicationSchedule.(MedicationScheduleID == takeMedicationCell.medicationScheduleId));
 			dcUserSchedule.Taken = !takeMedicationCell.checkBox.isSelected;
 			dcUserSchedule.Tolerability = this._feelingSlider.value;
-
-
 		}
 
 		private function drawResults():void
@@ -244,7 +242,13 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function submitButtonHandler(e:Event):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.takeMedication("scheduleid=1|tolerability=3;scheduleid=2|tolerability=4");
+
+			var medicationDataString:String = this._medicationData.toString();
+			var medicationDataStringXML:String = this._medicationData.toXMLString();
+			trace(medicationDataString);
+			trace(medicationDataStringXML);
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.takeMedication(this._medicationData);
 		}
 
 		private function takePatientMedicationCompleteHandler(e:RemoteDataStoreEvent):void
