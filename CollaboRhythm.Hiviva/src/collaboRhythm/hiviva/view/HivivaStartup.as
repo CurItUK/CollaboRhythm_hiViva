@@ -32,7 +32,7 @@ package collaboRhythm.hiviva.view
 
 	public class HivivaStartup extends Sprite
 	{
-		[Embed(source="/assets/images/Preloader_Bg.png")]
+		[Embed(source="/assets/images/temp/landing_page.png")]
 		public static const _Background:Class;
 
 		private var _starFW:Starling;
