@@ -243,11 +243,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
 
-			var medicationDataString:String = this._medicationData.toString();
-			var medicationDataStringXML:String = this._medicationData.toXMLString();
-			trace(medicationDataString);
-			trace(medicationDataStringXML);
-
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.takeMedication(this._medicationData);
 		}
 
