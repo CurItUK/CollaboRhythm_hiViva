@@ -58,9 +58,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._appId.x = this.actualWidth - this._scaledPadding - this._appId.width;
 			this._appId.y = this._appIdLabel.y;
 
-
+			/*
 			this._userSignupPopupContent.width = this.actualWidth * 0.75;
 			this._userSignupPopupContent.validate();
+			*/
+
+
 		}
 
 		override protected function initialize():void
@@ -93,6 +96,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._appId.text = HivivaStartup.userVO.appId;
 			addChild(this._appId);
 
+			initProfileMenuButtons();
+
+			/*
 			this._userSignupPopupContent = new HivivaPopUp();
 			this._userSignupPopupContent.scale = this.dpiScale;
 			this._userSignupPopupContent.message = "You will need to create an account in order to connect to a care provider";
@@ -101,8 +107,10 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._userSignupPopupContent.addEventListener(Event.CLOSE, closePopup);
 
 			userSignupCheck();
+			*/
 		}
 
+		/*
 		private function userSignupCheck():void
 		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
@@ -124,9 +132,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._userIsSignedUp = false;
 			}
 			trace("this._userIsSignedUp = " + this._userIsSignedUp);
-
-			initProfileMenuButtons();
 		}
+		*/
 
 			private function initProfileMenuButtons():void
 		{
@@ -202,6 +209,8 @@ package collaboRhythm.hiviva.view.screens.patient
 					this.owner.showScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN);
 					break;
 				case "connect" :
+					this.owner.showScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN);
+					/*
 					if (this._userIsSignedUp)
 					{
 						this.owner.showScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN);
@@ -210,6 +219,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					{
 						showSignupPopup();
 					}
+					*/
 					break;
 			}
 		}
@@ -219,6 +229,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.dispatchEventWith("navGoHome");
 		}
 
+
+		/*
 		private function showSignupPopup():void
 		{
 			PopUpManager.addPopUp(this._userSignupPopupContent,true,true);
@@ -239,14 +251,15 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			PopUpManager.removePopUp(this._userSignupPopupContent);
 		}
+		*/
 
 		override public function dispose():void
 		{
-			trace("HivivaPatientProfileScreen dispose");
-
 			super.dispose();
+			this.removeChild(this._menuBtnGroup);
+			this._menuBtnGroup.dispose();
+			this._menuBtnGroup = null;
+			trace("HivivaPatientProfileScreen dispose");
 		}
-
-
 	}
 }

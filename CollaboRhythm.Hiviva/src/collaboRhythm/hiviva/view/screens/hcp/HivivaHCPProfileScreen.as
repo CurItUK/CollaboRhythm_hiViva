@@ -62,7 +62,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			this._menuBtnGroup.validate();
 			this._menuBtnGroup.width = this.actualWidth;
-			this._menuBtnGroup.y = this._header.height + (30 * this.dpiScale);
+			this._menuBtnGroup.y = this._header.height;
 
 			var patternHeight:Number = Button(this._menuBtnGroup.getChildAt(0)).height;
 			for (var i:int = 0; i < _tilesInBtns.length; i++)

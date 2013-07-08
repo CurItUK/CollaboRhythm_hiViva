@@ -52,8 +52,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		override protected function draw():void
 		{
-			this._scaledPadding = (this.actualHeight * 0.04) * this.dpiScale;
 			super.draw();
+			this._scaledPadding = (this.actualHeight * 0.04) * this.dpiScale;
 
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
@@ -87,7 +87,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._header.rightItems = new <DisplayObject>[this._composeBtn, this._sentBtn];
 
-			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
+			//dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
 		}
 
 		private function initHCPMessagesXMLData():void

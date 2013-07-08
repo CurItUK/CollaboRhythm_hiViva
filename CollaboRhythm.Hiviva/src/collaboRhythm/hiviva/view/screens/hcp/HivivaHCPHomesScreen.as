@@ -64,7 +64,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			_connectToPatientBtn.x = this.actualWidth / 2 - _connectToPatientBtn.width / 2;
 			_connectToPatientBtn.y = this.actualHeight - _connectToPatientBtn.height - scaledPadding - Constants.FOOTER_BTNGROUP_HEIGHT;
 
-			checkHCPSignupStatus();
+			getHcpConnections();
+			//checkHCPSignupStatus();
 		}
 
 		override protected function initialize():void
@@ -84,6 +85,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		}
 
+		/*
 		private function checkHCPSignupStatus():void
 		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_PROFILE_LOAD_COMPLETE, getHcpProfileHandler);
@@ -103,6 +105,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 				initPatientSignupProcess();
 			}
 		}
+		*/
 
 		private function getHcpConnections():void
 		{
