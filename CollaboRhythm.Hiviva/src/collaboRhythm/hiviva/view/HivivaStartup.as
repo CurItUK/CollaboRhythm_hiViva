@@ -66,7 +66,8 @@ package collaboRhythm.hiviva.view
 			_hivivaAppController.initLocalStore();
 			_hivivaAppController.initRemoteStore();
 
- 			checkNetworkStatus();
+			initStarling()
+			//checkNetworkStatus();
 		}
 
 		private function checkNetworkStatus():void
