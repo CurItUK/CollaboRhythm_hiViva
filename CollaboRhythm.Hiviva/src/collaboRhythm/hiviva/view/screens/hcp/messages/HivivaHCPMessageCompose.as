@@ -42,6 +42,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 
 		private var _backButton:Button;
+		private var _remoteCallCount:int = 0;
 
 		private var _hcpName:Label;
 		private var _patientName:Label;
@@ -63,6 +64,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private var _remoteCallMade:Boolean;
 		private var _allSendableMessages:XMLList;
+		private var _patientConnections:Array;
 
 		private const MESSAGE_LABELS:Array =
 		[
@@ -105,16 +107,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._header.initTrueTitle();
 
-			getHcpConnections();
-/*
-
-			if(_cellContainer == null)
-			{
-				drawMessages();
-			}
-*/
-
-			if(!this._remoteCallMade) getSendableMessagesFromRemoteService();
+			if(!this._remoteCallMade) getMessageTypesAndConnections();
 		}
 
 		override protected function initialize():void
@@ -134,7 +127,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._hcpName = new Label();
 			this._hcpName.name = HivivaThemeConstants.BODY_BOLD_LABEL;
-			this._hcpName.text = "From : Dr Richard Gould"// + _main.selectedHCPPatientProfile.name;
+			this._hcpName.text = "From : " + HivivaStartup.userVO.appId;
 			this.addChild(this._hcpName);
 			this._hcpName.validate();
 
@@ -165,10 +158,14 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
 		}
 
-		private function getSendableMessagesFromRemoteService():void
+		private function getMessageTypesAndConnections():void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_MESSAGES_COMPLETE, getMessagesHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getMessages();
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConnectionsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnections();
+
 			this._remoteCallMade = true;
 		}
 
@@ -179,8 +176,65 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._allSendableMessages = e.data.xmlResponse.DCMessage;
 			/*<MessageGuid>649c68bb-e87c-4eb7-bd74-52fa271cea53</MessageGuid>
 			<Message>Great job, keep it up!</Message>*/
-			populateMessages();
+			this._remoteCallCount++;
+			allDataLoadedCheck();
 		}
+
+		private function getApprovedConnectionsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConnectionsCompleteHandler);
+
+			var xml:XML = e.data.xmlResponse;
+
+			this._patientConnections = [];
+			if(xml.children().length() > 0)
+			{
+
+				var loop:uint = xml.children().length();
+				var approvedHCPList:XMLList  = xml.DCConnection;
+				for(var i:uint = 0 ; i <loop ; i++)
+				{
+					var establishedUser:Object = establishToFromId(approvedHCPList[i]);
+					var patientObj:Object = {userAppId:establishedUser.appId , userGuid:establishedUser.appGuid};
+					this._patientConnections.push(patientObj);
+				}
+			}
+			else
+			{
+				trace("No Approved Connections");
+			}
+
+			this._remoteCallCount++;
+			allDataLoadedCheck();
+		}
+
+		private function establishToFromId(idsToCompare:XML):Object
+		{
+			var whoEstablishConnection:Object = [];
+			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
+			{
+				whoEstablishConnection.appGuid = idsToCompare.ToUserGuid;
+				whoEstablishConnection.appId = idsToCompare.ToAppId;
+			} else
+			{
+				whoEstablishConnection.appGuid = idsToCompare.FromUserGuid;
+				whoEstablishConnection.appId = idsToCompare.FromAppId;
+			}
+
+			return whoEstablishConnection;
+
+		}
+
+		private function allDataLoadedCheck():void
+		{
+			if(this._remoteCallCount == 2)
+			{
+
+				populateMessages();
+				populateConnectionsPickerlist();
+			}
+		}
+
 
 		private function populateMessages():void
 		{
@@ -207,50 +261,17 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._cellContainer.validate();
 			this.addChild(this._cellContainer);
 		}
-/*
 
-		private function drawMessages():void
+		private function populateConnectionsPickerlist():void
 		{
-			this._cellContainer = new ScrollContainer();
-//			var message:MessageCell;
-			this._radioGroup = new ToggleGroup();
-				for (var i:int = 0; i < MESSAGE_LABELS.length; i++)
-				{
-//					message = new MessageCell();
-//					message.scale = this.dpiScale/2;
-//					message.messageName = MESSAGE_LABELS[i];
-//					message.messageIcon = MESSAGE_ICONS[i];
-//					message.width = this.actualWidth;
-//					message.checkBox.addEventListener(Event.TRIGGERED, test);
-					this._cellContainer.addChild(message);
-					this._radioButton = new Radio();
-					this._radioButton.label = MESSAGE_LABELS[i];
-					this._radioGroup.addItem(this._radioButton);
+			var patients:ListCollection = new ListCollection( this._patientConnections );
 
-				//	this._radioButton.isSelected = false;
-				//	this._radioButton.toggleGroup = _radioGroup;
-					this._radioButton.y = this._selectMessage.y + (i*(this._radioButton.height*2));
+			this._patientPickerList.dataProvider = patients;
+			this._patientPickerList.prompt = "Select patient";
+			this._patientPickerList.selectedIndex = -1;
 
-					this._cellContainer.addChild(this._radioButton);
-
-				}
-				_radioGroup.addEventListener( starling.events.Event.CHANGE, group_changeHandler );
-				this._cellContainer.width = this.actualWidth;
-				this._cellContainer.x = this._hcpName.x;;
-				this._cellContainer.y = this._header.height + this._patientPickerList.y + this._patientPickerList.height + 120;
-				this._cellContainer.height = this.actualHeight - this._cellContainer.y - (this._scaledPadding * 2);
-				this._cellContainer.layout = new VerticalLayout();
-				this._cellContainer.validate();
-				this.addChild(this._cellContainer);
+			//patientsList.push(e.data.connections[listCount].name);
 		}
-
-		private function group_changeHandler( ev:starling.events.Event ):void
-		{
-		    var group:ToggleGroup = ToggleGroup( ev.currentTarget );
-		    trace( "group.selectedIndex:", group.selectedIndex );
-		}
-*/
-
 
 		private function sendButtonHandler(e:starling.events.Event):void
 		{
@@ -275,53 +296,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			}
 		}
 
-		private function getHcpConnections():void
-		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getHCPConnections();
-		}
-
-		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
-		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler);
-
-			if(e.data.connections != null)
-			{
-				trace("connectionsLength " + e.data.connections.length);
-				var connectionsLength:uint = e.data.connections.length;
-
-
-			var patientsList:Array = new Array();
-
-				for (var listCount:int = 0; listCount < connectionsLength; listCount++)
-				{
-
-					patientsList.push(e.data.connections[listCount].name);
-
-				}
-				var patients:ListCollection = new ListCollection( patientsList );
-
-				this._patientPickerList.dataProvider = patients;
-				this._patientPickerList.prompt = "Select patient";
-				this._patientPickerList.selectedIndex = -1;
-
-			//	if( _main.selectedHCPPatientProfile.name != null)this._patientPickerList.prompt = _main.selectedHCPPatientProfile.name;
-
-
-			}
-		}
-		private function initPatientSelectList():void
-		{
-
-
-		}
-
-		private function patientSelectedHandler(e:starling.events.Event):void
-		{
-			//TODO change patient PDF report details
-		}
-
-
 		private function initAlertText():void
 		{
 
@@ -334,14 +308,19 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			alertLabel.y = alertLabel.height * 4;
 		}
 
-		private function backBtnHandler(e:starling.events.Event):void
+		private function initPatientSelectList():void
 		{
-			this._owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN);
-		//	this.owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN);
-		//	this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_PATIENT_PROFILE , patientName:e.evtData.profile.name , appID:e.evtData.profile.appid});
 
 		}
 
+		private function patientSelectedHandler(e:starling.events.Event):void
+		{
+			//TODO change patient PDF report details
+		}
 
+		private function backBtnHandler(e:starling.events.Event):void
+		{
+			this._owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN);
+		}
 	}
 }
