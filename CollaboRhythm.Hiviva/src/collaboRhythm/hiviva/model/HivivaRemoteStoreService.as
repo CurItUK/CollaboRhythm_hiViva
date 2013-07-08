@@ -9,6 +9,8 @@ package collaboRhythm.hiviva.model
 	import flash.events.EventDispatcher;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.net.URLRequestMethod;
+	import flash.net.URLVariables;
 
 	public class HivivaRemoteStoreService extends EventDispatcher
 	{
@@ -67,10 +69,14 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(new RemoteDataStoreEvent(RemoteDataStoreEvent.DELETE_PATIENT_MEDICATION_COMPLETE));
 		}
 
-		public function takeMedication(medicationData:String):void
+		public function takeMedication(medicationData:XML):void
 		{
-			var query:String = "intakeInformation=" + medicationData;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_TAKE_PATIENT_MEDICATION + query);
+
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_TAKE_PATIENT_MEDICATION);
+			urlRequest.data = medicationData.toXMLString();
+			urlRequest.contentType = "text/xml";
+			urlRequest.method = URLRequestMethod.POST;
+
 			trace("takeMedication " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, takeMedicationCompleteHandler);
