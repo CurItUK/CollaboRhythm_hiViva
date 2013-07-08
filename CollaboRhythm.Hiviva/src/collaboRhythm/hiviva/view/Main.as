@@ -152,7 +152,7 @@ package collaboRhythm.hiviva.view
 		{
 			//var isDesktop:Boolean = true;
 			var isDesktop:Boolean = false;
-			var _hivivaTheme:HivivaTheme = new HivivaTheme(this.stage, !isDesktop);
+			var _hivivaTheme:HivivaTheme = new HivivaTheme(this.stage, false);
 			this._scaleFactor = isDesktop ? 1 : _hivivaTheme.scale;
 			_footerBtnGroupHeight = Constants.FOOTER_BTNGROUP_HEIGHT * this._scaleFactor;
 		}
