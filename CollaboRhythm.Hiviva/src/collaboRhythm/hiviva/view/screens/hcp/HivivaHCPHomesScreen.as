@@ -82,7 +82,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			super.initialize();
 
 			this._header = new HivivaHeader();
-			this._header.title = "";
+			this._header.title = " ";
 			this.addChild(this._header);
 
 			this._patientLabel = new Label();
@@ -215,7 +215,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.gap = HivivaModifier.calculateComponentVerticalGap(this._patientCellContainer.numChildren,cellsTotalHeight,this._patientCellVSpace);
+			layout.gap = Constants.PADDING_TOP * 0.5;
 			this._patientCellContainer.layout = layout;
 			this._patientCellContainer.validate();
 		}
