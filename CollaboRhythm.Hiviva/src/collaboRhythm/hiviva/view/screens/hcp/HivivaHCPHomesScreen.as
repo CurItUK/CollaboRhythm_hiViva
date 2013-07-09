@@ -82,7 +82,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			super.initialize();
 
 			this._header = new HivivaHeader();
-			this._header.title = "";
+			this._header.title = " ";
 			this.addChild(this._header);
 
 			this._patientLabel = new Label();
@@ -90,10 +90,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientLabel.text = "Patients";
 			this.addChild(this._patientLabel);
 
+
 			_connectToPatientBtn = new BoxedButtons();
 			_connectToPatientBtn.labels = ["Connect to patient"];
 			_connectToPatientBtn.addEventListener(starling.events.Event.TRIGGERED, connectToPatientBtnHandler);
 			this.addChild(_connectToPatientBtn);
+
 
 			this._patientCellContainer = new ScrollContainer();
 		}
