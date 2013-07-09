@@ -135,8 +135,8 @@ package collaboRhythm.hiviva.view
 
 			if (ratio == 1)
 			{
-				this._preloader.dispose();
 				removeChild(this._preloader);
+				this._preloader.dispose();
 				this._preloader = null;
 				startup();
 			}
