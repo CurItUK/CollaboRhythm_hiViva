@@ -16,6 +16,8 @@ package collaboRhythm.hiviva.global
 		public static const SETTING_SCREEN_FROM_HOME:String				= "settingScreenFromHome";
 		public static const MEDICATION_RADIO_TRIGGERED:String			= "medicationRadioTriggered"
 		public static const PRELOADER_ONPOGRESS:String					= "onProgress";
+		public static const PRELOADER_ON_COMPLETE:String	            = "onComplete";
+
 
 		public var message:String;
 		public var evtData:Object =  {};

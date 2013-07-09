@@ -13,6 +13,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.display3D.Context3D;
 
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 
 	import flash.net.URLLoader;
 	import flash.system.System;
@@ -595,7 +596,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._stageWebView.loadURL(this._reportTemplateLocation);
 		}
 
-		private function copyToBitmap(disp:DisplayObject, scl:Number=1.0):BitmapData
+		private function __copyToBitmap(disp:DisplayObject, scl:Number=1.0):BitmapData
 		{
 			var rc:Rectangle = new Rectangle();
 			disp.getBounds(disp, rc);
@@ -607,13 +608,19 @@ package collaboRhythm.hiviva.view.screens.patient
 			var stage:Stage = Starling.current.stage;
 			var rs:RenderSupport = new RenderSupport();
 
-			rs.clear();
+			rs.clear(stage.color , 1.0);
+			rs.applyBlendMode(true);
 			rs.scaleMatrix(scl, scl);
 			rs.setOrthographicProjection(0, 0, stage.stageWidth, stage.stageHeight);
 			rs.translateMatrix(-rc.x, -rc.y); // move to 0,0
+			//rs.transformMatrix(this.root);
+		//	rs.translateMatrix( -resultRect.x, -resultRect.y);
+
 			disp.render(rs, 1.0);
 			rs.finishQuadBatch();
-			var outBmp:BitmapData = new BitmapData(rc.width*scl, rc.height*scl, false);
+			var __nw : Number = rc.width*scl ;
+			var __nh : Number = rc.height*scl ;
+			var outBmp:BitmapData = new BitmapData(__nw, __nh , false);
 			Starling.context.drawToBitmapData(outBmp);
 
 			return outBmp;
@@ -636,6 +643,41 @@ package collaboRhythm.hiviva.view.screens.patient
 			context.drawToBitmapData(result);
 			return result;
 			*/
+		}
+
+		public static function copyToBitmap( displayObject : DisplayObject,transparentBackground : Boolean = false, backgroundColor : uint = 0xcccccc ) : BitmapData
+		{
+		    var resultRect : Rectangle = new Rectangle();
+		    displayObject.getBounds( displayObject, resultRect );
+
+		    var result : BitmapData = new BitmapData( Starling.current.stage.stageWidth, Starling.current.stage.stageHeight, transparentBackground, backgroundColor );
+		    var context : Context3D = Starling.context;
+
+		    var support : RenderSupport = new RenderSupport();
+		//			RenderSupport.clear();
+		    var stage:Stage= Starling.current.stage;
+		    RenderSupport.clear(stage.color,0.0);
+
+		    support.setOrthographicProjection(0,0, Starling.current.stage.stageWidth, Starling.current.stage.stageHeight );
+
+		    support.applyBlendMode( true );
+		 //   support.translateMatrix( -resultRect.x, -resultRect.y );
+		    support.pushMatrix();
+	//	    support.blendMode = displayObject.blendMode;
+
+		    displayObject.render(support, 1.0 );
+
+		    support.popMatrix();
+
+		    support.finishQuadBatch();
+		    context.drawToBitmapData( result );
+
+		    var croppedRes:BitmapData = new BitmapData(displayObject.width, displayObject.height, true, 0x00000000 );
+		    //croppedRes.copyPixels(result, resultRect, new Point(0,0));
+//   		    croppedRes.threshold(result, new Rectangle(0,0,displayObject.width, displayObject.height), new Point(0,0), "==", stage.color, 0x0000ff00, 0x0000ff, true);
+			croppedRes.threshold(result, new Rectangle(0,0,displayObject.width, displayObject.height), new Point(0,0), "==", stage.color, 0x0000ff00, 0x0000ff, true);
+
+		    return croppedRes;
 		}
 
 		private function stageWebCompleteHandler(e:flash.events.Event):void

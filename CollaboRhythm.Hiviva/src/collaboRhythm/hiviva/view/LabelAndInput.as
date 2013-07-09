@@ -76,6 +76,7 @@ package collaboRhythm.hiviva.view
 
 
 
+
 		//TODO: this part needs to be modified if new feathers is used
 		        /**
 			     * Display as password added to be able to access properties directly.

@@ -8,26 +8,63 @@ package collaboRhythm.hiviva.global
 	{
 
 		private var con : Boolean  = false ;
+		var results:Vector.<NetworkInterface> =  NetworkInfo.networkInfo.findInterfaces();
       /**
 	 * Returns network connection status as a Boolean
 	 * true if connected and false if not
 	 */
         public function get status():Boolean{
-			var network:NetworkInfo = NetworkInfo.networkInfo;
-		 		for each (var object:NetworkInterface in network.findInterfaces())
-				{
-		 		 trace(this ,  "NETWORK DETAILS ARE  :::::  " , object.name, object.active);
-				if(object.active){
+		        this.results =  NetworkInfo.networkInfo.findInterfaces();
+				var network:NetworkInfo = NetworkInfo.networkInfo;
 
-					this.con = true
-                  trace("con is " + this.con)
+		/*  for (var i:int=0; i<results.length; i++)
+		     {
+				 trace("connection results is  :::: " +  results[i].active )
+				 if(Boolean(results[int(i)].active)){
 
-				}else{
+					 this.con = true
+			         trace("con is " + this.con)
+				 }else {
 
-                    this.con  = false;
-				}
+					 this.con  = false;
 
-		          }
+				 }
+			 }*/
+		  for each (var interfaceObj:NetworkInterface in results)
+		  {
+
+		      // Access interfaceObj.name, interfaceObj.displayName, interfaceObj.active,
+		      // interfaceObj.hardwareAddress, and interfaceObj.mtu
+			  if(Boolean(interfaceObj.active)){
+
+								 this.con = true
+						         trace("con is " + this.con)
+							 }else {
+
+								 this.con  = false;
+
+							 }
+		   /*   for each(var address:InterfaceAddress in interfaceObj.addresses)
+		      {
+		          // Access address.address, address.broadcast, address.ipVersion, and address.prefixLength
+		      }*/
+		  }
+
+
+//		 		for each (var object:NetworkInterface in network.findInterfaces())
+//				{
+//		 		 trace(this ,  "NETWORK DETAILS ARE  :::::  " , object.name, object.active);
+//				if(object.active){
+//
+//					this.con = true
+//                  trace("con is " + this.con)
+//
+//				}else{
+//
+//                    this.con  = false;
+//				}
+//
+//		          }
 
 		   return this.con;
 
