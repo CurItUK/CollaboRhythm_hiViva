@@ -19,8 +19,11 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.display.TiledImage;
 	import feathers.events.FeathersEventType;
 
+	import starling.display.BlendMode;
+
 	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 
 
@@ -35,6 +38,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _header:HivivaHeader;
 
 		private var _virusSettingsBtn:Button;
+		private var _panelGradient:Quad;
 		private var _virusSettingsControl:VirusSettingsControl;
 
 		private var _virusHolder:Sprite;
@@ -46,7 +50,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _attachedViruses:Array = [];
 		private var _looseViruses:Array = [];
 
-		private var _scaledPadding:Number;
 
 		private var _adherence:Number;
 		private var _cd4Count:Number;
@@ -62,17 +65,15 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function draw():void
 		{
 
-			this._scaledPadding = (this.actualWidth * 0.02) * this.dpiScale;
-			var innerWidth:Number = this.actualWidth - (this._scaledPadding * 2);
-
-			this._header.width = this.actualWidth;
+			this._header.width = Constants.STAGE_WIDTH;
 			this._header.initTrueTitle();
 
 			this._virusSettingsBtn.validate();
-			this._virusSettingsBtn.x = this.actualWidth/2 - this._virusSettingsBtn.width/2;
-			this._virusSettingsBtn.y = this._header.height + this._scaledPadding;
+			this._virusSettingsBtn.x = Constants.STAGE_WIDTH/2 - this._virusSettingsBtn.width/2;
+			this._virusSettingsBtn.y = Constants.HEADER_HEIGHT + (Constants.PADDING_TOP / 2);
 
-			this._virusHolder.y = this._virusSettingsBtn.y + this._virusSettingsBtn.height + this._scaledPadding;
+			this._virusHolder.y = this._virusSettingsBtn.y + this._virusSettingsBtn.height + (Constants.PADDING_TOP / 2);
+			this._panelGradient.y = this._virusHolder.y - this._panelGradient.height;
 
 			getPatientAdherence();
 		}
@@ -86,6 +87,15 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._virusHolder = new Sprite();
 			this.addChild(this._virusHolder);
+
+			this._panelGradient = new Quad(Constants.STAGE_WIDTH, 60, 0x2f455f);
+			this._panelGradient.setVertexAlpha(0, 0);
+			this._panelGradient.setVertexAlpha(1, 0);
+			this._panelGradient.setVertexAlpha(2, 0.3);
+			this._panelGradient.setVertexAlpha(3, 0.3);
+//			this._panelGradient.alpha = 0.4;
+			this._panelGradient.blendMode = BlendMode.MULTIPLY;
+			this.addChild(this._panelGradient);
 
 			this._virusSettingsBtn = new Button();
 			this._virusSettingsBtn.defaultIcon = new Image(Main.assets.getTexture("vs_slider_icon"));
@@ -133,15 +143,15 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initSettingsControl():void
 		{
-			_virusSettingsControl = new VirusSettingsControl(this._adherence , this._cd4Count , this._viralLoad);
-			_virusSettingsControl.addEventListener("VirusControllClose" , virusSettingsCloseHandler);
-			this.addChild(_virusSettingsControl);
+			this._virusSettingsControl = new VirusSettingsControl(this._adherence , this._cd4Count , this._viralLoad);
+			this._virusSettingsControl.addEventListener("VirusControllClose" , virusSettingsCloseHandler);
+			this.addChild(this._virusSettingsControl);
 
-			_virusSettingsControl.width = this.actualWidth;
-			_virusSettingsControl.height = this.actualHeight;
-			_virusSettingsControl.validate();
+			this._virusSettingsControl.width = Constants.STAGE_WIDTH;
+			this._virusSettingsControl.height = Constants.STAGE_HEIGHT;
+			this._virusSettingsControl.validate();
 
-			_virusSettingsControl.y = this._header.height;
+			this._virusSettingsControl.y = Constants.HEADER_HEIGHT;
 		}
 
 		private function virusSettingsCloseHandler(e:Event):void
@@ -187,6 +197,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			placeTCells();
 			placeViruses();
 			placeMedications();
+
+			var virusBgShadow:Quad = new Quad(Constants.STAGE_WIDTH,60,0x2e445e);
+			virusBgShadow.setVertexAlpha(0, 0.3);
+			virusBgShadow.setVertexAlpha(1, 0.3);
+			virusBgShadow.setVertexAlpha(2, 0);
+			virusBgShadow.setVertexAlpha(3, 0);
+			virusBgShadow.blendMode = BlendMode.MULTIPLY;
+			this._virusHolder.addChild(virusBgShadow);
 		}
 
 		private function placeTCells():void
