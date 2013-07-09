@@ -129,7 +129,7 @@ package collaboRhythm.hiviva.view
 
 			this._passwordInputField.displayAsPassword = true;
 			this._passwordInputField._color = "0xFFFFFF"
-			//    this._passwordInputField.addEventListener(FocusEvent.FOCUS_IN  , focusIn )
+			//this._passwordInputField.addEventListener(FocusEvent.FOCUS_IN  , focusIn )
 
 
 		}

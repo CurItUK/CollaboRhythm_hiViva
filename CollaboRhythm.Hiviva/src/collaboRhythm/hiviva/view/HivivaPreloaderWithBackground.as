@@ -3,6 +3,9 @@ package collaboRhythm.hiviva.view
 
 
 	import feathers.core.FeathersControl;
+
+
+
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.textures.Texture;
@@ -23,7 +26,7 @@ package collaboRhythm.hiviva.view
 		private var ratio:Number;
 
 
-		/*	private var cos:Function					= Math.cos;
+		/*	private var cos:Function			    = Math.cos;
 		 private var sin:Function 					= Math.sin;
 		 private var  mcPreloader  					:Shape;
 		 public static const pi: Number  		    = Math.PI;
@@ -60,6 +63,8 @@ package collaboRhythm.hiviva.view
 
 
 			this.addEventListener(FeathersScreenEvent.PRELOADER_ONPOGRESS, _onProgress);
+			this.addEventListener(FeathersScreenEvent.PRELOADER_ON_COMPLETE ,_onComplete);
+
 		}
 
 		/**
@@ -140,6 +145,8 @@ package collaboRhythm.hiviva.view
 			trace("Preloder disposed");
 			super.dispose();
 			this.removeEventListener(FeathersScreenEvent.PRELOADER_ONPOGRESS, _onProgress);
+			this.removeEventListener(FeathersScreenEvent.PRELOADER_ON_COMPLETE, _onComplete);
+
 			this.bgTexture.dispose();
 			this.mBackground.removeFromParent(true);
 			this.bgTexture = null;
@@ -150,6 +157,8 @@ package collaboRhythm.hiviva.view
 
 		private function _onProgress(event:Event):void
 		{
+
+			event.stopImmediatePropagation()
 			this.progressBar.width = this.__width;
 			this.progressBar.height = this.__height;
 			/*trace("my Color is " + 	this.mcPreloader.x)
@@ -164,6 +173,13 @@ package collaboRhythm.hiviva.view
 			 this.mcPreloader.graphics.lineTo((cos(z*d_r)*r), (sin(z*d_r)*r));
 			 trace("my Color stage " + 	(cos(z*d_r)*r), (sin(z*d_r)*r) )
 			 }*/
+		}
+
+		private function _onComplete(event:Event):void
+		{
+
+            event.stopImmediatePropagation()
+			this.dispose();
 		}
 	}
 }

@@ -66,8 +66,7 @@ package collaboRhythm.hiviva.view
 			_hivivaAppController.initLocalStore();
 			_hivivaAppController.initRemoteStore();
 
-			initStarling()
-			//checkNetworkStatus();
+ 			checkNetworkStatus();
 		}
 
 		private function checkNetworkStatus():void
@@ -85,6 +84,7 @@ package collaboRhythm.hiviva.view
 
 		offline function loadData():void
 		{
+			initStarling();
 			trace("you are offline");
 		}
 
