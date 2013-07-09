@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
@@ -89,6 +90,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			super.draw();
 			this._scaledPadding = (this.actualHeight * 0.04) * this.dpiScale;
 
+			this._hcpName.validate();
 			this._hcpName.x = scaledPadding;
 			this._hcpName.y = this._header.height + scaledPadding;
 			this._hcpName.width = 300;
@@ -102,8 +104,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._selectMessage.x = scaledPadding;
 			this._selectMessage.y = this._patientName.y + 2*scaledPadding + PADDING;
 
-			this._sendButton.y = this._content.height - this._sendButton.height;
-			this._sendButton.x = (this.actualWidth)/2 - (this._sendButton.width)/2;
+
+
 
 			this._header.initTrueTitle();
 
@@ -128,18 +130,17 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._hcpName = new Label();
 			this._hcpName.name = HivivaThemeConstants.BODY_BOLD_LABEL;
 			this._hcpName.text = "From : " + HivivaStartup.userVO.appId;
-			this.addChild(this._hcpName);
-			this._hcpName.validate();
+			this._content.addChild(this._hcpName);
+
 
 			this._patientName = new Label();
 			this._patientName.name = HivivaThemeConstants.BODY_BOLD_LABEL;
 			this._patientName.text = "To : "// + _main.selectedHCPPatientProfile.name;
-			this.addChild(this._patientName);
+			this._content.addChild(this._patientName);
 			this._patientName.validate();
 
 			this._patientPickerList = new PickerList();
-			this._patientPickerList.listProperties.@itemRendererProperties.labelField = "text";
-			this._patientPickerList.labelField = "text";
+			this._patientPickerList.prompt = "Select patient";
 			this._patientPickerList.addEventListener(starling.events.Event.CHANGE, patientSelectedHandler);
 			this._patientPickerList.validate();
 			this._content.addChild(this._patientPickerList);
@@ -147,13 +148,10 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._selectMessage = new Label();
 			this._selectMessage.name = HivivaThemeConstants.BODY_BOLD_LABEL;
 			this._selectMessage.text = "Select Message "// + _main.selectedHCPPatientProfile.name;
-			this.addChild(this._selectMessage);
+			this._content.addChild(this._selectMessage);
 			this._selectMessage.validate();
 
-			this._sendButton = new Button();//
-			this._sendButton.addEventListener(starling.events.Event.TRIGGERED, sendButtonHandler);
-			this._sendButton.label = "Send";
-			this._content.addChild(this._sendButton);
+
 
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
 		}
@@ -194,6 +192,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				var approvedHCPList:XMLList  = xml.DCConnection;
 				for(var i:uint = 0 ; i <loop ; i++)
 				{
+
 					var establishedUser:Object = establishToFromId(approvedHCPList[i]);
 					var patientObj:Object = {userAppId:establishedUser.appId , userGuid:establishedUser.appGuid};
 					this._patientConnections.push(patientObj);
@@ -213,12 +212,12 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			var whoEstablishConnection:Object = [];
 			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
 			{
-				whoEstablishConnection.appGuid = idsToCompare.ToUserGuid;
-				whoEstablishConnection.appId = idsToCompare.ToAppId;
+				whoEstablishConnection.appGuid = (idsToCompare.ToUserGuid).toString();
+				whoEstablishConnection.appId = (idsToCompare.ToAppId).toString();
 			} else
 			{
-				whoEstablishConnection.appGuid = idsToCompare.FromUserGuid;
-				whoEstablishConnection.appId = idsToCompare.FromAppId;
+				whoEstablishConnection.appGuid = (idsToCompare.FromUserGuid).toString();
+				whoEstablishConnection.appId = (idsToCompare.FromAppId).toString();
 			}
 
 			return whoEstablishConnection;
@@ -229,7 +228,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		{
 			if(this._remoteCallCount == 2)
 			{
-
 				populateMessages();
 				populateConnectionsPickerlist();
 			}
@@ -269,21 +267,38 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._patientPickerList.dataProvider = patients;
 			this._patientPickerList.prompt = "Select patient";
 			this._patientPickerList.selectedIndex = -1;
+			this._patientPickerList.listProperties.@itemRendererProperties.labelField = "userAppId";
+			this._patientPickerList.labelField = "userAppId";
+			this._patientPickerList.addEventListener( Event.CHANGE, pickerListonChangeHandler );
+		}
 
-			//patientsList.push(e.data.connections[listCount].name);
+		private function pickerListonChangeHandler(e:Event):void
+		{
+			if(this._sendButton == null)
+			{
+				this._sendButton = new Button();
+				this._sendButton.label = "Send";
+				this._sendButton.addEventListener(starling.events.Event.TRIGGERED, sendButtonHandler);
+				this.addChild(this._sendButton);
+				this._sendButton.validate();
+
+				this._sendButton.y = this._content.height - this._sendButton.height  - PADDING;
+				this._sendButton.x = (this.actualWidth)/2 - (this._sendButton.width)/2;
+			}
 		}
 
 		private function sendButtonHandler(e:starling.events.Event):void
 		{
+			trace("sendButtonHandler ");
 			var messageGuid:String = this._allSendableMessages[this._radioGroup.selectedIndex].MessageGuid;
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.SEND_USER_MESSAGE_COMPLETE, sendUserMessageHandler);
-			// TODO : when we have valid connections, replace hardcoded toGuid below with variable
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.sendUserMessage('1616aad3-359d-4e40-89bb-e399e1961dcd',messageGuid);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.sendUserMessage(this._patientPickerList.selectedItem.userGuid,messageGuid);
 		}
 
 		private function sendUserMessageHandler(e:RemoteDataStoreEvent):void
 		{
+
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.SEND_USER_MESSAGE_COMPLETE, sendUserMessageHandler);
 
 			if(e.data.xmlResponse.Message == "Success")
