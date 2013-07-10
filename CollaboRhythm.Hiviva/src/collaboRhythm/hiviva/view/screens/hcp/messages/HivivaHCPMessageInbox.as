@@ -159,7 +159,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					messageInboxResultCell.secondaryText = this._allReceivedMessages[i].Name;
 					messageInboxResultCell.dateText = this._allReceivedMessages[i].SentDate;
 					messageInboxResultCell.scale = this.dpiScale;
-					messageInboxResultCell.addEventListener(FeathersScreenEvent.HCP_MESSAGE_SELECTED, messageSelectedHandler);
+					messageInboxResultCell.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
 					this._cellContainer.addChild(messageInboxResultCell);
 					this._messageCells.push(messageInboxResultCell);
 				}
@@ -179,7 +179,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					alertInboxResultCell.guid = this._pendingConnections[i].FromUserGuid;
 					alertInboxResultCell.text = "HCP user (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
 					alertInboxResultCell.scale = this.dpiScale;
-					alertInboxResultCell.addEventListener(FeathersScreenEvent.HCP_MESSAGE_SELECTED, alertSelectedHandler);
+					alertInboxResultCell.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, alertSelectedHandler);
 					this._cellContainer.addChild(alertInboxResultCell);
 					this._alertCells.push(alertInboxResultCell);
 				}

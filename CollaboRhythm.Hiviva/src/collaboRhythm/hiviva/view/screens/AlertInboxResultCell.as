@@ -84,7 +84,7 @@ package collaboRhythm.hiviva.view.screens
 
 		private function alertCellSelectHandler(e:Event):void
 		{
-			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.HCP_MESSAGE_SELECTED);
+			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.MESSAGE_SELECT);
 			evt.evtData.guid = this._guid;
 			this.dispatchEvent(evt);
 		}

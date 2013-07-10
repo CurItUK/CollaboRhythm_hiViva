@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
@@ -31,8 +32,10 @@ package collaboRhythm.hiviva.view.screens
 
 	public class MessageInboxResultCell extends FeathersControl
 	{
-		private var _scale:Number;
+		private var _scale:Number = 1;
+		private var _bg:Quad;
 		private var _seperator:Image;
+		private var _icon:Image;
 		private var _viewMessageBtn:Button;
 		private var _primaryLabel:Label;
 		private var _primaryText:String = "";
@@ -43,8 +46,13 @@ package collaboRhythm.hiviva.view.screens
 		private var _check:Check;
 		private var _guid:String;
 		private var _selected:Boolean;
-		private const IMAGE_SIZE:Number = 100;
-		private const PADDING:Number = 32;
+		private var _messageType:String;
+		private var _read:Boolean;
+
+		// message types
+		public static const CONNECTION_REQUEST_TYPE:String = 		"connectionRequestType";
+		public static const STATUS_ALERT_TYPE:String = 				"statusAlertType";
+		public static const COMPOSED_MESSAGE_TYPE:String = 			"composedMessageType";
 
 		public function MessageInboxResultCell()
 		{
@@ -53,41 +61,52 @@ package collaboRhythm.hiviva.view.screens
 
 		override protected function draw():void
 		{
-			var scaledPadding:Number = PADDING * this._scale,
-				gap:Number = scaledPadding * 0.5;
-				_selected = false;
-				trace("drawing")
+			var fullHeight:Number;
+
+			_selected = false;
+			trace("drawing");
 			super.draw();
 
 			this._primaryLabel.validate();
-			this._secondaryLabel.validate();
 			this._dateLabel.validate();
 			this._check.validate();
 
-			this._seperator.width = this.actualWidth;
+			this._seperator.width = Constants.STAGE_WIDTH;
 
-			_check.x = scaledPadding;
+			this._check.x = Constants.PADDING_LEFT;
+			this._dateLabel.x = Constants.STAGE_WIDTH - Constants.PADDING_RIGHT - this._dateLabel.width;
 
-			this._primaryLabel.y = gap;
-			this._primaryLabel.x = this._check.x + this._check.width + gap;
-			this._primaryLabel.width = this.actualWidth - this._primaryLabel.x - scaledPadding - _dateLabel.width - gap;
+			this._primaryLabel.y = Constants.PADDING_TOP;
+			this._primaryLabel.x = this._check.x + this._check.width + Constants.PADDING_LEFT;
+			this._primaryLabel.width = Constants.STAGE_WIDTH - this._primaryLabel.x - Constants.PADDING_RIGHT - this._dateLabel.width - Constants.PADDING_LEFT;
+			fullHeight = this._primaryLabel.y + this._primaryLabel.height + Constants.PADDING_BOTTOM;
 
-			this._secondaryLabel.y = this._primaryLabel.y + this._primaryLabel.height;
-			this._secondaryLabel.x = this._primaryLabel.x;
-			this._secondaryLabel.width = this._primaryLabel.width;
+			switch(this._messageType)
+			{
+				case COMPOSED_MESSAGE_TYPE :
+					this._secondaryLabel.validate();
+					this._secondaryLabel.y = this._primaryLabel.y + this._primaryLabel.height;
+					this._secondaryLabel.x = this._primaryLabel.x;
+					this._secondaryLabel.width = this._primaryLabel.width;
+					fullHeight += this._secondaryLabel.height;
+					this._bg.height = fullHeight;
+					break;
+				case CONNECTION_REQUEST_TYPE :
+				case STATUS_ALERT_TYPE :
+					this._primaryLabel.width -= this._icon.width;
+					this._icon.x = this._primaryLabel.x + this._primaryLabel.width;
+					this._icon.y = (fullHeight * 0.5) - (this._icon.height * 0.5);
+					break;
+			}
 
-			_dateLabel.x = this.actualWidth - this._dateLabel.width - scaledPadding;
-			_dateLabel.y = this._primaryLabel.y + (this._primaryLabel.height + this._secondaryLabel.height) * 0.5;
-			_dateLabel.y -= this._dateLabel.height * 0.5;
-
-			_check.y = this._primaryLabel.y + (this._primaryLabel.height + this._secondaryLabel.height) * 0.5;
-			_check.y -= this._check.height * 0.5;
+			this._check.y = (fullHeight * 0.5) - (this._check.height * 0.5);
+			this._dateLabel.y = (fullHeight * 0.5) - (this._dateLabel.height * 0.5);
 
 			this._viewMessageBtn.x =  this._primaryLabel.x;
-			this._viewMessageBtn.width = this.actualWidth - this._viewMessageBtn.x;
-			this._viewMessageBtn.height = this._primaryLabel.y + this._primaryLabel.height + this._secondaryLabel.height + gap;
+			this._viewMessageBtn.width = Constants.STAGE_WIDTH - this._viewMessageBtn.x;
+			this._viewMessageBtn.height = fullHeight;
 
-			setSizeInternal(this.actualWidth, this._viewMessageBtn.height, true);
+			setSizeInternal(Constants.STAGE_WIDTH, fullHeight, true);
 		}
 
 		override protected function initialize():void
@@ -96,14 +115,35 @@ package collaboRhythm.hiviva.view.screens
 			this._seperator = new Image(Main.assets.getTexture("header_line"));
 			addChild(this._seperator);
 
+			if(this._messageType == COMPOSED_MESSAGE_TYPE)
+			{
+				this._bg = new Quad(Constants.STAGE_WIDTH,100,0xFFFFFF);
+				this._bg.alpha = 0.2;
+				addChild(this._bg);
+			}
+
 			this._primaryLabel = new Label();
+			if(this._messageType == CONNECTION_REQUEST_TYPE || this._read) this._primaryLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
 			this._primaryLabel.text = _primaryText;
 			this.addChild(this._primaryLabel);
 
-			this._secondaryLabel = new Label();
-			this._secondaryLabel.name = HivivaThemeConstants.MESSAGE_DATE_LABEL;
-			this._secondaryLabel.text = _secondaryText;
-			this.addChild(this._secondaryLabel);
+			switch(this._messageType)
+			{
+				case COMPOSED_MESSAGE_TYPE :
+					this._secondaryLabel = new Label();
+					this._secondaryLabel.name = HivivaThemeConstants.MESSAGE_DATE_LABEL;
+					this._secondaryLabel.text = _secondaryText;
+					this.addChild(this._secondaryLabel);
+					break;
+				case CONNECTION_REQUEST_TYPE :
+					this._icon = new Image(Assets.getTexture("MessageIconReqPng"));
+					this.addChild(this._icon);
+					break;
+				case STATUS_ALERT_TYPE :
+					this._icon = new Image(Assets.getTexture("MessageIconAlertPng"));
+					this.addChild(this._icon);
+					break;
+			}
 
 			this._dateLabel = new Label();
 			this._dateLabel.name = HivivaThemeConstants.MESSAGE_DATE_LABEL;
@@ -123,8 +163,7 @@ package collaboRhythm.hiviva.view.screens
 
 		private function messageCellSelectHandler(e:Event):void
 		{
-			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.HCP_MESSAGE_SELECTED);
-			evt.evtData.guid = this._guid;
+			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.MESSAGE_SELECT);
 			this.dispatchEvent(evt);
 		}
 
@@ -212,6 +251,26 @@ package collaboRhythm.hiviva.view.screens
 		public function set isSelected(selected:Boolean):void
 		{
 			_selected = selected;
+		}
+
+		public function get messageType():String
+		{
+			return _messageType;
+		}
+
+		public function set messageType(value:String):void
+		{
+			_messageType = value;
+		}
+
+		public function get read():Boolean
+		{
+			return _read;
+		}
+
+		public function set read(value:Boolean):void
+		{
+			_read = value;
 		}
 	}
 

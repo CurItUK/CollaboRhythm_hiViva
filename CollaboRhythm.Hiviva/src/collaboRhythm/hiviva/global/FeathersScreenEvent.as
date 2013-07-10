@@ -10,7 +10,8 @@ package collaboRhythm.hiviva.global
 		public static const HIDE_MAIN_NAV:String						= "hideMainNav";
 		public static const SHOW_MAIN_NAV:String						= "showMainNav";
 		public static const PATIENT_PROFILE_SELECTED:String				= "patientProfileSelected";
-		public static const HCP_MESSAGE_SELECTED:String					= "hcpMessageSelected";
+		public static const MESSAGE_SELECT:String						= "messageSelect";
+		public static const MESSAGE_DELETE:String						= "messageDelete";
 		//public static const PATIENT_EDIT_MEDICINE_CELL:String			= "patientEditMedicineCell";
 		public static const CALENDAR_BUTTON_TRIGGERED:String			= "calendarButtonTriggered";
 		public static const SETTING_SCREEN_FROM_HOME:String				= "settingScreenFromHome";

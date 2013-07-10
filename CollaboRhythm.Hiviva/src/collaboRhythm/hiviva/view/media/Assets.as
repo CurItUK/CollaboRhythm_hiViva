@@ -53,6 +53,18 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/verticle_line.png")]
 		public static const VerticleLinePng:Class;
 
+		[Embed(source="/assets/images/temp/radiobtn.png")]
+		public static const RadioBtnPng:Class;
+
+		[Embed(source="/assets/images/temp/radiobtn_checked.png")]
+		public static const RadioCheckedBtnPng:Class;
+
+		[Embed(source="/assets/images/temp/message_icon_req.png")]
+		public static const MessageIconReqPng:Class;
+
+		[Embed(source="/assets/images/temp/message_icon_alert.png")]
+		public static const MessageIconAlertPng:Class;
+
 		// TTF FONTS
 
 		[Embed(source="/assets/fonts/exo-regular.ttf", fontName="ExoRegular", mimeType="application/x-font", embedAsCFF="false")]

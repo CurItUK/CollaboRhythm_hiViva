@@ -317,6 +317,7 @@ package source.themes
 		protected var headerBoldBftf:BitmapFontTextFormat;
 		protected var subHeaderBftf:BitmapFontTextFormat;
 		protected var bodyBftf:BitmapFontTextFormat;
+		protected var bodySmallerBftf:BitmapFontTextFormat;
 		protected var bodyBoldBftf:BitmapFontTextFormat;
 		protected var bodyCenteredBftf:BitmapFontTextFormat;
 		protected var bodyBoldCenteredBftf:BitmapFontTextFormat;
@@ -575,6 +576,7 @@ package source.themes
 			this.headerBoldBftf = new BitmapFontTextFormat(this.engravedDarkBoldBitmapFont,44 * this.scale,Color.WHITE);
 			this.subHeaderBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE);
 			this.bodyBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
+			this.bodySmallerBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 18 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
 			this.bodyBoldBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.bodyCenteredBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR,TextFormatAlign.CENTER);
 			this.bodyBoldCenteredBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
@@ -696,10 +698,6 @@ package source.themes
 			this.pickerListItemSelectedIconTexture = this.atlas.getTexture("picker-list-item-selected-icon");
 
 
-			this.radioUpIconTexture = backgroundSkinTexture;
-
-			this.radioDownIconTexture = backgroundDownSkinTexture;
-
 			this.radioDisabledIconTexture = backgroundDisabledSkinTexture;
 
 			this.radioSelectedUpIconTexture = this.atlas.getTexture("radio-selected-up-icon");
@@ -709,6 +707,9 @@ package source.themes
 			this.radioSelectedDisabledIconTexture = this.atlas.getTexture("radio-selected-disabled-icon");
 
 			this.seperatorLineTexture = new Scale9Textures(Main.assets.getTexture("header_line"), new Rectangle(0,2,10,3));
+
+			this.radioUpIconTexture = Assets.getTexture("RadioBtnPng");
+			this.radioDownIconTexture = Assets.getTexture("RadioCheckedBtnPng");
 
 			this.checkUpIconTexture = Main.assets.getTexture("tick_box");
 			this.checkDownIconTexture = Main.assets.getTexture("tick_box_active");
@@ -1032,46 +1033,44 @@ package source.themes
 
 		protected function feelingSwitchInitializer(button:Button):void
 		{
-			var skinWidth:Number = this.feelingSliderSwitchSkinTextures.width;
 			var skinHeight:Number = this.feelingSliderSwitchSkinTextures.height;
 			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
 			skinSelector.defaultValue = this.feelingSliderSwitchSkinTextures;
 			skinSelector.imageProperties =
 			{
-				width: skinWidth * this.scale,
+				width: skinHeight * this.scale,
 				height: skinHeight * this.scale,
 				textureScale: this.scale
 			};
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.minWidth = skinWidth * this.scale;
+			button.minWidth = skinHeight * this.scale;
 			button.minHeight = skinHeight * this.scale;
-			button.minTouchWidth = skinWidth * this.scale;
+			button.minTouchWidth = skinHeight * this.scale;
 			button.minTouchHeight = skinHeight * this.scale;
 		}
 
 		protected function toggleSwitchSwitchInitializer(button:Button):void
 		{
-			var skinWidth:Number = this.toggleSwitchTexture.width;
-			var skinHeight:Number = this.toggleSwitchTexture.height;
+			var skinSize:Number = this.toggleSwitchTexture.height;
 			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
 			skinSelector.defaultValue = this.toggleSwitchTexture;
 			//skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
 			//skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
 			skinSelector.imageProperties =
 			{
-				width: skinWidth * this.scale,
-				height: skinHeight * this.scale,
+				width: skinSize * this.scale,
+				height: skinSize * this.scale,
 				textureScale: this.scale
 			};
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.minWidth = skinWidth * this.scale;
-			button.minHeight = skinHeight * this.scale;
-			button.minTouchWidth = skinWidth * this.scale;
-			button.minTouchHeight = skinHeight * this.scale;
+			button.minWidth = skinSize * this.scale;
+			button.minHeight = skinSize * this.scale;
+			button.minTouchWidth = skinSize * this.scale;
+			button.minTouchHeight = skinSize * this.scale;
 		}
 
 /*
@@ -1098,6 +1097,7 @@ package source.themes
 		protected function bodyBoldLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.bodyBoldBftf;
+			label.textRendererProperties.wordWrap = true;
 		}
 
 		protected function bodyCenteredLabelInitializer(label:Label):void
@@ -1177,7 +1177,7 @@ package source.themes
 		}
 		protected function messageDateLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.bodyBftf
+			label.textRendererProperties.textFormat = this.bodySmallerBftf;
 		}
 
 		protected function patientDataLightLabelInitializer(label:Label):void
@@ -2003,12 +2003,12 @@ package source.themes
 		protected function radioInitializer(radio:Radio):void
 		{
 			const iconSelector:ImageStateValueSelector = new ImageStateValueSelector();
-			iconSelector.defaultValue = this.checkUpIconTexture;
-			iconSelector.defaultSelectedValue = this.checkDownIconTexture;
-			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DOWN, false);
-			iconSelector.setValueForState(this.checkUpIconTexture, Button.STATE_DISABLED, false);
-			iconSelector.setValueForState(this.checkUpIconTexture, Button.STATE_DOWN, true);
-			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DISABLED, true);
+			iconSelector.defaultValue = this.radioUpIconTexture;
+			iconSelector.defaultSelectedValue = this.radioDownIconTexture;
+			iconSelector.setValueForState(this.radioDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.radioUpIconTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.radioUpIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.radioDownIconTexture, Button.STATE_DISABLED, true);
 			iconSelector.imageProperties =
 			{
 				scaleX: this.scale,
