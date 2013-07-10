@@ -37,24 +37,19 @@ package collaboRhythm.hiviva.view.screens.patient.HelpScreens
 				 var __s:String
 				switch(s)
 						{
-					case "help1" :
-					__s = String(HivivaScreens.PATIENT_HELP_HELP1_SCREEN);
+					case "about" :
+					__s = String(HivivaScreens.PATIENT_HELP_ABOUT_SCREEN);
 						break;
-					case "help2" :
-						__s = String(HivivaScreens.PATIENT_HELP_HELP2_SCREEN);
+					case "privacy" :
+						__s = String(HivivaScreens.PATIENT_HELP_PRIVACY_SCREEN);
 					break;
-					case "help3" :
-						__s = String(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
+					case "gettingstarted" :
+						__s = String(HivivaScreens.PATIENT_HELP_GETTINGSTARTED_SCREEN);
 						break;
-					case "help4" :
-						__s = String(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
+					case "whatcanIdowithhiviva" :
+						__s = String(HivivaScreens.PATIENT_HELP_WCIDWH_SCREEN);
 						break;
-					case "help5" :
-						__s = String(HivivaScreens.PATIENT_HELP_HELP5_SCREEN);
-						break;
-					case "help6" :
-						__s = String(HivivaScreens.PATIENT_HELP_HELP6_SCREEN);
-						  	break;
+
 				}
 				return __s
 			}

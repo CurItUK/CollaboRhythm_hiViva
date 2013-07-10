@@ -34,10 +34,13 @@ package collaboRhythm.hiviva.global
 
 
 
-		public static const PATIENT_HELP_HELP1_SCREEN:String			= "patient_help_help1_Screen";
-		public static const PATIENT_HELP_HELP2_SCREEN:String			= "patient_help_help2_Screen";
-		public static const PATIENT_HELP_HELP3_SCREEN:String			= "patient_help_help3_Screen";
-		public static const PATIENT_HELP_HELP4_SCREEN:String			= "patient_help_help4_Screen";
+		public static const PATIENT_HELP_ABOUT_SCREEN:String			= "patient_help_About_Screen";
+		public static const PATIENT_HELP_PRIVACY_SCREEN:String			= "patient_help_Privacy_Screen";
+		public static const PATIENT_HELP_GETTINGSTARTED_SCREEN:String	= "patient_help_GettingStarted_Screen";
+		public static const PATIENT_HELP_DAILY_MEDICINES_SCREEN:String	= "patient_help_DailyMedicines_Screen";
+
+
+		public static const PATIENT_HELP_WCIDWH_SCREEN:String			= "patient_help_WCIDWH_Screen";
 		public static const PATIENT_HELP_HELP5_SCREEN:String			= "patient_help_help5_Screen";
 		public static const PATIENT_HELP_HELP6_SCREEN:String			= "patient_help_help6_Screen";
 

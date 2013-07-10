@@ -44,8 +44,8 @@ package collaboRhythm.hiviva.view
 
 		public namespace online = "use server";
 		public namespace offline = "use local" ;
-		public namespace IOS    = "IOS Data";
-		public namespace Android = "Android Data";
+		public namespace iOS    = "iOS Data";
+		public namespace otherOS = "other OS Data";
 		public var mode: Namespace = online;
 
 		private static var _hivivaAppController:HivivaAppController;
@@ -89,12 +89,12 @@ package collaboRhythm.hiviva.view
 			trace("you are offline");
 		}
 
-		IOS function setData():void
+		iOS function setData():void
 		{
 
 		}
 
-		Android function  setData():void
+		otherOS function  setData():void
 		{
 
 		}
