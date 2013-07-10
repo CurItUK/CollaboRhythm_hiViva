@@ -10,6 +10,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.screens.patient.VirusModel.VirusSettingsControl;
 	import collaboRhythm.hiviva.view.screens.patient.VirusModel.VirusSimulation;
 	import collaboRhythm.hiviva.view.screens.patient.VirusModel.VirusView;
+	import collaboRhythm.hiviva.view.screens.shared.MainBackground;
 
 	import feathers.controls.Button;
 	import feathers.controls.ImageLoader;
@@ -18,6 +19,11 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Slider;
 	import feathers.display.TiledImage;
 	import feathers.events.FeathersEventType;
+
+	import starling.animation.Transitions;
+
+	import starling.animation.Tween;
+	import starling.core.Starling;
 
 	import starling.display.BlendMode;
 
@@ -39,9 +45,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private var _virusSettingsBtn:Button;
 		private var _panelGradient:Quad;
+		private var _virusBgShadow:Quad;
 		private var _virusSettingsControl:VirusSettingsControl;
 
 		private var _virusHolder:Sprite;
+		private var _panelBackground:MainBackground;
+		private var _pseudoBackgroundPos:Number;
+		private var _topGrad:TiledImage;
 		private var _virusBg:ImageLoader;
 		private var _hivSimulation:VirusSimulation;
 		private var _tcells:Array = [];
@@ -64,7 +74,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function draw():void
 		{
-
 			this._header.width = Constants.STAGE_WIDTH;
 			this._header.initTrueTitle();
 
@@ -73,7 +82,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._virusSettingsBtn.y = Constants.HEADER_HEIGHT + (Constants.PADDING_TOP / 2);
 
 			this._virusHolder.y = this._virusSettingsBtn.y + this._virusSettingsBtn.height + (Constants.PADDING_TOP / 2);
-			this._panelGradient.y = this._virusHolder.y - this._panelGradient.height;
+			this._panelBackground.y = this._virusHolder.y - Constants.STAGE_HEIGHT;
+			this._pseudoBackgroundPos = this._panelBackground.y;
+
+			this._panelGradient.y = this._panelBackground.height - this._panelGradient.height;
+			this._virusBgShadow.y = this._panelBackground.height;
 
 			getPatientAdherence();
 		}
@@ -81,12 +94,29 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._header = new HivivaHeader();
-			this._header.title = "Virus Model";
-			addChild(this._header);
 
 			this._virusHolder = new Sprite();
 			this.addChild(this._virusHolder);
+
+			this._panelBackground = new MainBackground();
+			this._panelBackground.draw(Constants.STAGE_WIDTH,Constants.STAGE_HEIGHT,false);
+			addChild(this._panelBackground);
+
+			var headerBackground:MainBackground = new MainBackground();
+			headerBackground.draw(Constants.STAGE_WIDTH,Constants.HEADER_HEIGHT,false);
+			addChild(headerBackground);
+
+			this._topGrad = new TiledImage(Main.assets.getTexture("top_gradient"));
+			this._topGrad.touchable = false;
+			this._topGrad.width = Constants.STAGE_WIDTH;
+			this._topGrad.smoothing = TextureSmoothing.NONE;
+			this._topGrad.blendMode = BlendMode.MULTIPLY;
+			//topGrad.flatten();
+			addChild(this._topGrad);
+
+			this._header = new HivivaHeader();
+			this._header.title = "Virus Model";
+			addChild(this._header);
 
 			this._panelGradient = new Quad(Constants.STAGE_WIDTH, 60, 0x2f455f);
 			this._panelGradient.setVertexAlpha(0, 0);
@@ -95,7 +125,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._panelGradient.setVertexAlpha(3, 0.3);
 //			this._panelGradient.alpha = 0.4;
 			this._panelGradient.blendMode = BlendMode.MULTIPLY;
-			this.addChild(this._panelGradient);
+			_panelBackground.addChild(this._panelGradient);
+
+			this._virusBgShadow = new Quad(Constants.STAGE_WIDTH,60,0x2e445e);
+			this._virusBgShadow.setVertexAlpha(0, 0.3);
+			this._virusBgShadow.setVertexAlpha(1, 0.3);
+			this._virusBgShadow.setVertexAlpha(2, 0);
+			this._virusBgShadow.setVertexAlpha(3, 0);
+			this._virusBgShadow.blendMode = BlendMode.MULTIPLY;
+			_panelBackground.addChild(this._virusBgShadow);
 
 			this._virusSettingsBtn = new Button();
 			this._virusSettingsBtn.defaultIcon = new Image(Main.assets.getTexture("vs_slider_icon"));
@@ -145,18 +183,18 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			this._virusSettingsControl = new VirusSettingsControl(this._adherence , this._cd4Count , this._viralLoad);
 			this._virusSettingsControl.addEventListener("VirusControllClose" , virusSettingsCloseHandler);
-			this.addChild(this._virusSettingsControl);
+			this._panelBackground.addChild(this._virusSettingsControl);
 
 			this._virusSettingsControl.width = Constants.STAGE_WIDTH;
-			this._virusSettingsControl.height = Constants.STAGE_HEIGHT;
+//			this._virusSettingsControl.height = Constants.STAGE_HEIGHT;
 			this._virusSettingsControl.validate();
+			this._virusSettingsControl.y = this._panelBackground.height - this._virusBgShadow.height - this._virusSettingsControl.height;
 
-			this._virusSettingsControl.y = Constants.HEADER_HEIGHT;
+			showSettingsPanel(true);
 		}
 
 		private function virusSettingsCloseHandler(e:Event):void
 		{
-			this.removeChild(_virusSettingsControl);
 			if(this._adherence != e.data.adherence || this._cd4Count !=  e.data.cd4Count || this._viralLoad != e.data.viralLoad)
 			{
 				this._adherence = e.data.adherence;
@@ -166,8 +204,33 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._tcells.splice(0);
 				_hivSimulation = null;
 				this._virusTexture.dispose();
-				initVirusSimulation()
+				initVirusSimulation();
 			}
+			showSettingsPanel(false);
+		}
+
+		private function showSettingsPanel(show:Boolean):void
+		{
+			const animationTime:Number = 0.3;
+			const transition:String = show ? Transitions.EASE_OUT : Transitions.EASE_IN;
+			var pseudoBgDest:Number = show ? this._virusSettingsControl.height - _panelBackground.height + this._virusBgShadow.height + Constants.HEADER_HEIGHT : this._pseudoBackgroundPos;
+			var pseudoBgTween:Tween = new Tween(this._panelBackground , animationTime , transition);
+			pseudoBgTween.animate("y" , pseudoBgDest);
+
+			if(show)
+			{
+				this._virusSettingsBtn.visible = false;
+			}
+			pseudoBgTween.onComplete = function():void
+			{
+				Starling.juggler.remove(pseudoBgTween);
+				if(!show)
+				{
+					_virusSettingsBtn.visible = true;
+					_panelBackground.removeChild(_virusSettingsControl);
+				}
+			};
+			Starling.juggler.add(pseudoBgTween);
 		}
 
 		private function initVirusModel():void
@@ -197,14 +260,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			placeTCells();
 			placeViruses();
 			placeMedications();
-
-			var virusBgShadow:Quad = new Quad(Constants.STAGE_WIDTH,60,0x2e445e);
-			virusBgShadow.setVertexAlpha(0, 0.3);
-			virusBgShadow.setVertexAlpha(1, 0.3);
-			virusBgShadow.setVertexAlpha(2, 0);
-			virusBgShadow.setVertexAlpha(3, 0);
-			virusBgShadow.blendMode = BlendMode.MULTIPLY;
-			this._virusHolder.addChild(virusBgShadow);
 		}
 
 		private function placeTCells():void

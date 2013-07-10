@@ -203,7 +203,7 @@ package collaboRhythm.hiviva.view
 		protected function drawScreenBackground():void
 		{
 			this._screenBackground = new MainBackground();
-			this._screenBackground.draw(Constants.STAGE_WIDTH , Constants.STAGE_HEIGHT);
+			this._screenBackground.draw(Constants.STAGE_WIDTH , Constants.STAGE_HEIGHT, true);
 			this._mainScreenNav.addChildAt(this._screenBackground , 0);
 		}
 
