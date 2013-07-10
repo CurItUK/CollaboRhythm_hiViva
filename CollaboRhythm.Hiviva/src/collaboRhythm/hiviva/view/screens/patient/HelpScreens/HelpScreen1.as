@@ -34,7 +34,7 @@ package collaboRhythm.hiviva.view.screens.patient.HelpScreens
 
 			//temp = String(HivivaScreens.PATIENT_HELP_HELP1_SCREEN);
 			var screenNavItem1:ScreenNavigatorItem = new ScreenNavigatorItem(this.__HivivaPatient_help_help_Screen);
-			this.__sNav.addScreen(HivivaScreens.PATIENT_HELP_HELP1_SCREEN, screenNavItem1);
+			this.__sNav.addScreen(HivivaScreens.PATIENT_HELP_ABOUT_SCREEN, screenNavItem1);
 
 
 
@@ -42,7 +42,7 @@ package collaboRhythm.hiviva.view.screens.patient.HelpScreens
 
 		public function __showScreen(){
 
-			this.__sNav.showScreen(HivivaScreens.PATIENT_HELP_HELP1_SCREEN);
+			this.__sNav.showScreen(HivivaScreens.PATIENT_HELP_ABOUT_SCREEN);
 
 
 		}

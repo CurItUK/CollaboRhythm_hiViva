@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.components.Calendar;
@@ -72,12 +73,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._cd4Count._labelLeft.text = "CD4 Count:";
 			this._cd4Count._labelRight.text = "Cells/mm3";
 			labelAndInputDrawProperties(this._cd4Count);
-/*
-
-			this._cd4._labelLeft.text = "CD4:";
-			this._cd4._labelRight.text = "%";
-			labelAndInputDrawProperties(this._cd4);
-*/
 
 			this._viralLoad._labelLeft.text = "Viral load:";
 			this._viralLoad._labelRight.text = "Copies/ML";
@@ -109,13 +104,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._cd4Count.scale = this.dpiScale;
 			this._cd4Count.labelStructure = "leftAndRight";
 			this._content.addChild(this._cd4Count);
-/*
-
-			this._cd4 = new LabelAndInput();
-			this._cd4.scale = this.dpiScale;
-			this._cd4.labelStructure = "leftAndRight";
-			this._content.addChild(this._cd4);
-*/
 
 			this._viralLoad = new LabelAndInput();
 			this._viralLoad.scale = this.dpiScale;
@@ -194,41 +182,44 @@ package collaboRhythm.hiviva.view.screens.patient
 			var formValidation:String = patientTestResultsCheck();
 			if(formValidation.length == 0)
 			{
+				var cd4CountData:Number = Number(this._cd4Count._input.text);
+				var viralLoadData:Number = Number(this._viralLoad._input.text);
+				var dateData:String = this._date._input.text;
+				var userGuid:String = HivivaStartup.userVO.guid;
 
-			//trace("UPDATE test_results SET cd4_count='" + cd4CountInput.text + "', cd4='" + cd4Input.text + "', viral_load='" + viralLoadInput.text + "', date_of_last_test='" + dateInput.text + "'");
+				var resultData:XML =
+						<DCUserTestResults>
+							<UserGuid>{userGuid}</UserGuid>
+							<Results>
+								<DCTestResult>
+									<TestDate>{dateData}</TestDate>
+									<TestDescription>Cd4 count</TestDescription>
+									<Result>{cd4CountData}</Result>
+								</DCTestResult>
+								<DCTestResult>
+									<TestDate>{dateData}</TestDate>
+									<TestDescription>Viral load</TestDescription>
+									<Result>{viralLoadData}</Result>
+								</DCTestResult>
+							</Results>
+						</DCUserTestResults>;
 
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
-
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
-
-			this._sqStatement = new SQLStatement();
-
-			var cd4CountData:Number = Number(this._cd4Count._input.text);
-//			var cd4Data:Number = Number(this._cd4._input.text);
-			var viralLoadData:Number = Number(this._viralLoad._input.text);
-			var dateData:String = "'" + this._date._input.text + "'";
-				if(this._dataExists)
-				{
-					this._sqStatement.text = "UPDATE test_results SET cd4_count=" + cd4CountData + ", cd4=" + 0 + ", viral_load=" + viralLoadData + ", date_of_last_test=" + dateData;
-				}
-				else
-				{
-					this._sqStatement.text = "INSERT INTO test_results (cd4_count, cd4, viral_load, date_of_last_test) VALUES (" + cd4CountData + ", " + 0 + ", " + viralLoadData + ", " + dateData + ")";
-				}
-				trace(this._sqStatement.text);
-				this._sqStatement.sqlConnection = this._sqConn;
-				this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
-				this._sqStatement.execute();
-
-
-				showFormValidation("Your details have been saved");
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ADD_TEST_RESULTS_COMPLETE , addTestResultsCompleteHandler);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addTestResults(resultData);
 			}
 			else
 			{
 				showFormValidation(formValidation);
 			}
+		}
+
+
+
+		private function addTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ADD_TEST_RESULTS_COMPLETE , addTestResultsCompleteHandler);
+			trace("addTestResultsCompleteHandler " + e.data.xmlResponse);
+			showFormValidation("Your details have been saved");
 		}
 
 		private function patientTestResultsCheck():String

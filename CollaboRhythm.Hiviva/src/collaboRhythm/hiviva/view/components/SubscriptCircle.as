@@ -55,6 +55,12 @@ package collaboRhythm.hiviva.view.components
 		public function set text(value:String):void
 		{
 			_text = value;
+			if(this._label != null)
+			{
+				this._label.text = value;
+				this.draw();
+			}
+
 		}
 	}
 }

@@ -5,13 +5,13 @@ package collaboRhythm.hiviva.global
 		//Users
 		public static const RS_CREATE_USER:String = 					"WSHealthUser.svc/createuser?type=";
 
-		//medications
+		//Medications
 		public static const RS_ADD_MEDICATION:String = 					"WSUserMedication.svc/AddUserMedication?";
 		public static const RS_DELETE_MEDICATION:String = 				"WSUserMedication.svc/DeleteUserMedication?";
 		public static const RS_GET_PATIENT_MEDICATION:String = 			"WSUserMedication.svc/GetUserMedication?";
 		public static const RS_TAKE_PATIENT_MEDICATION:String = 		"WSUserMedication.svc/TookMedication?";
 
-		//messaging
+		//Messaging
 		public static const RS_GET_MESSAGES:String = 					"WSMessage.svc/GetMessages";
 		public static const RS_GET_HCP_SENT_MESSAGES:String = 			"WSMessage.svc/GetAllSentMessages?";
 		public static const RS_GET_USER_RECEIVED_MESSAGES:String = 		"WSMessage.svc/GetAllReceivedMessages?";
@@ -26,6 +26,9 @@ package collaboRhythm.hiviva.global
 		public static const RS_CONNECTION_APPROVE:String = 				"WSConnection.svc/Approve?";
 		public static const RS_CONNECTION_IGNORE:String = 				"WSConnection.svc/Ignore?";
 		public static const RS_GET_PENDING_CONNECTIONS:String = 		"WSConnection.svc/GetPendingConnections?";
+
+		//Test results
+		public static const RS_ADD_TEST_RESULTS:String = 				"WSTestResults.svc/AddTestResults?";
 
 	}
 }

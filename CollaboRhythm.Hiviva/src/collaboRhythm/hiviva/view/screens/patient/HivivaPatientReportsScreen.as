@@ -657,13 +657,15 @@ package collaboRhythm.hiviva.view.screens.patient
 		//			RenderSupport.clear();
 		    var stage:Stage= Starling.current.stage;
 		    RenderSupport.clear(stage.color,0.0);
-
-		    support.setOrthographicProjection(0,0, Starling.current.stage.stageWidth, Starling.current.stage.stageHeight );
+			support.clear();
+		    support.setOrthographicProjection(0,0, Starling.current.stage.stageWidth  , Starling.current.stage.stageHeight    );
 
 		    support.applyBlendMode( true );
-		 //   support.translateMatrix( -resultRect.x, -resultRect.y );
+
+			support.scaleMatrix(1.0,1.0);
+		    support.translateMatrix( -resultRect.x, -resultRect.y );
 		    support.pushMatrix();
-	//	    support.blendMode = displayObject.blendMode;
+	   	    support.blendMode = displayObject.blendMode;
 
 		    displayObject.render(support, 1.0 );
 
@@ -673,8 +675,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		    context.drawToBitmapData( result );
 
 		    var croppedRes:BitmapData = new BitmapData(displayObject.width, displayObject.height, true, 0x00000000 );
-		    //croppedRes.copyPixels(result, resultRect, new Point(0,0));
-//   		    croppedRes.threshold(result, new Rectangle(0,0,displayObject.width, displayObject.height), new Point(0,0), "==", stage.color, 0x0000ff00, 0x0000ff, true);
+		       //croppedRes.copyPixels(result, resultRect, new Point(0,0));
+              //  croppedRes.threshold(result, new Rectangle(0,0,displayObject.width, displayObject.height), new Point(0,0), "==", stage.color, 0x0000ff00, 0x0000ff, true);
 			croppedRes.threshold(result, new Rectangle(0,0,displayObject.width, displayObject.height), new Point(0,0), "==", stage.color, 0x0000ff00, 0x0000ff, true);
 
 		    return croppedRes;

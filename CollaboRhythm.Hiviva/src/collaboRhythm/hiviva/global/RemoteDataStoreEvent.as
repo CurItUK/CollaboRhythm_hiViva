@@ -29,6 +29,9 @@ package collaboRhythm.hiviva.global
 		public static const GET_PENDING_CONNECTIONS_COMPLETE:String				= "getPendingConnectionsComplete";
 		public static const CONNECTION_APPROVE_COMPLETE:String					= "connectionApproveComplete";
 
+		//Test results
+		public static const ADD_TEST_RESULTS_COMPLETE:String					= "addTestResultsComplete";
+
 
 
 
