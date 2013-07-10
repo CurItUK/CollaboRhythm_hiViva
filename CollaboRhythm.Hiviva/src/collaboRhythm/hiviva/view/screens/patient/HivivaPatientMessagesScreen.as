@@ -82,6 +82,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._deleteMessageButton = new Button();
 			this._deleteMessageButton.label = "Delete";
+			this._deleteMessageButton.visible = false;
 			this._deleteMessageButton.addEventListener(Event.TRIGGERED, deleteMessageButtonHandler);
 			this.addChild(this._deleteMessageButton);
 
@@ -169,6 +170,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var messageInboxResultCell:MessageInboxResultCell;
 			if(listCount > 0)
 			{
+
 				for(var i:uint = 0 ; i < listCount ; i++)
 				{
 					messageInboxResultCell = new MessageInboxResultCell();
@@ -182,6 +184,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					this._cellContainer.addChild(messageInboxResultCell);
 					this._messageCells.push(messageInboxResultCell);
 				}
+				this._deleteMessageButton.visible = true;
 			}
 		}
 

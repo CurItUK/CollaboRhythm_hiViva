@@ -190,13 +190,13 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function getMessages():void
 		{
 			// dummy data
-			this._messagesButton.subScript = "1";
+			//this._messagesButton.subScript = "1";
 		}
 
 		private function checkForNewBadges():void
 		{
 			// dummy data
-			this._badgesButton.subScript = "1";
+			//this._badgesButton.subScript = "1";
 		}
 
 		private function initHomePhoto():void

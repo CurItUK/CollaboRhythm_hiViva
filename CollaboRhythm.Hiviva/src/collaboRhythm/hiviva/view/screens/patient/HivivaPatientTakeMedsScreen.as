@@ -60,7 +60,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			super.preValidateContent();
 
 			this._feelingQuestion.width = this._innerWidth;
-			this._feelingSlider.width = this._innerWidth * 0.8;
+			this._feelingSlider.width = this._innerWidth * 0.7;
 			this._submitButton.width = this._innerWidth * 0.25;
 		}
 
@@ -199,7 +199,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				takeMedicationCell.brandName = HivivaModifier.getBrandName(this._medicationSchedule[i].medication_name);
 				takeMedicationCell.genericName = HivivaModifier.getGenericName(this._medicationSchedule[i].medication_name);
 				takeMedicationCell.doseDetails = HivivaModifier.getNeatTabletText(this._medicationSchedule[i].tablet_count) + " " + HivivaModifier.getNeatTime(this._medicationSchedule[i].time);
-				takeMedicationCell.width = this._innerWidth;
+				takeMedicationCell.width = this._innerWidth - 20;
 				this._takeMedicationCellHolder.addChild(takeMedicationCell);
 				takeMedicationCell.checkBox.addEventListener(Event.TRIGGERED, medCellChangeHandler);
 				if(this._medicationSchedule[i].tablet_taken == "true")
