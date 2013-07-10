@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
@@ -148,9 +149,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._header.rightItems =  new <DisplayObject>[this._messagesButton, this._badgesButton];
 
-//			this._messagesButton.visible = false;
-//			this._badgesButton.visible = false;
-			//
 		}
 
 		private function messagesButtonHandler(e:Event):void
@@ -165,32 +163,21 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function checkForNewMessages():void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getPatientProfile();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE, getMessagesCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserReceivedMessages();
 		}
 
-		private function getPatientProfileHandler(e:LocalDataStoreEvent):void
+		private function getMessagesCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
 
-			var patientProfile:Array = e.data.patientProfile,
-				userIsSignedUp:Boolean;
-
-			try
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE , getMessagesCompleteHandler);
+			trace("getMessagesCompleteHandler " + e.data.xmlResponse);
+			var messageCount:uint = e.data.xmlResponse.children().length();
+			if(messageCount > 0)
 			{
-				userIsSignedUp = patientProfile != null;
+				trace("messageCount " + messageCount);
+				this._messagesButton.subScript = String(messageCount);
 			}
-			catch(e:Error)
-			{
-				userIsSignedUp = false;
-			}
-			if(userIsSignedUp) getMessages();
-		}
-
-		private function getMessages():void
-		{
-			// dummy data
-			//this._messagesButton.subScript = "1";
 		}
 
 		private function checkForNewBadges():void

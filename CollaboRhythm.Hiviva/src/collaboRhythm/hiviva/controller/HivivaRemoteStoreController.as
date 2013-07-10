@@ -243,8 +243,19 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function addTestResults(testResultData:XML):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.ADD_TEST_RESULTS_COMPLETE , addTestResultsCompleteHandler);
+			service.addTestResults(testResultData);
+		}
 
-
+		private function addTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.ADD_TEST_RESULTS_COMPLETE , addTestResultsCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
 
 		public function get service():HivivaRemoteStoreService
 		{

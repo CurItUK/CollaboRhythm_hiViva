@@ -74,6 +74,7 @@ package collaboRhythm.hiviva.view.components
 			{
 				this._subScriptCircle.text = value;
 				this._subScriptCircle.visible = this._subScript.length > 0;
+				this._subScriptCircle.validate();
 			}
 		}
 	}
