@@ -254,54 +254,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function messageDetailEventHandler(e:Event):void
 		{
-			var messageData:XML = e.data.messageData as XML;
-			trace(e.data.eventType);
-			switch(e.data.eventType)
-			{
-				case "Delete" :
-					for (var i:int = 0; i < this._messageCells.length; i++)
-					{
-						if(this._messageCells[i].guid == messageData.MessageGuid)
-						{
-							this._cellContainer.removeChild(this._messageCells[i], true);
-							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
-							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.deleteUserMessage(this._messageCells[i].guid);
-						}
-					}
-					this._cellContainer.validate();
-					break;
-				case "Ignore" :
-					trace("Ignore connection request from " + messageData.FromAppId);
-					break;
-				case "Accept" :
-					this._alertGuidToAccept = messageData.FromUserGuid;
-					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
-					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(this._alertGuidToAccept);
-					break;
-				case "Go to patient" :
-					trace("go to patient");
-					break;
-				case "Edit Alerts" :
-					trace("Edit Alerts");
-					break;
-			}
-		}
-
-		private function approveConnectionHandler(e:RemoteDataStoreEvent):void
-		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
-
-			if(e.data.xmlResponse.StatusCode == "1")
-			{
-				for (var i:int = 0; i < this._messageCells.length; i++)
-				{
-					if(this._messageCells[i].guid == this._alertGuidToAccept)
-					{
-						this._cellContainer.removeChild(this._messageCells[i], true);
-					}
-				}
-				this._cellContainer.validate();
-			}
+			trace("messageDetailEventHandler");
 		}
 
 		private function getMessageXMLByProperty(xmlList:XMLList,property:String,value:String):XML
@@ -321,6 +274,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			}
 			return xmlData;
 		}
+
 
 		private function deleteMessageButtonHandler(e:Event):void
 		{

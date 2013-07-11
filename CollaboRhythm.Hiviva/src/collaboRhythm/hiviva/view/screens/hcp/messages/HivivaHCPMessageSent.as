@@ -174,10 +174,9 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			return xmlData;
 		}
 
-		private function deleteUserMessageHandler(e:RemoteDataStoreEvent):void
+		private function messageDetailEventHandler(e:Event):void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
-			trace('message deleted');
+			trace("messageDetailEventHandler");
 		}
 
 		override public function dispose():void

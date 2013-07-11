@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.MessageInboxResultCell;
@@ -142,24 +143,43 @@ package collaboRhythm.hiviva.view.screens.shared
 					break;
 			}*/
 			trace(button);
-			this.dispatchEventWith("messageDetailEvent" , false , {eventType:button,messageData:_messageData});
-			this.owner.showScreen(_parentScreen);
-			/*switch(button)
+			switch(button)
 			{
 				case "Delete" :
-					this.dispatchEventWith("messageDetailEvent" , false , {eventType:button,guid:guidReference});
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.deleteUserMessage(_messageData.MessageGuid);
 					break;
 				case "Ignore" :
-					this.dispatchEventWith("messageDetailEvent" , false , {eventType:button,guid:guidReference});
+
 					break;
 				case "Accept" :
-					this.dispatchEventWith("messageDetailEvent" , false , {eventType:button,guid:guidReference});
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(_messageData.FromUserGuid);
 					break;
 				case "Go to patient" :
 					break;
 				case "Edit Alerts" :
 					break;
-			}*/
+			}
+		}
+
+		private function deleteUserMessageHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
+
+			this.dispatchEventWith("messageDetailEvent");
+			this.owner.showScreen(_parentScreen);
+		}
+
+		private function approveConnectionHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
+
+			if(e.data.xmlResponse.StatusCode == "1")
+			{
+				this.dispatchEventWith("messageDetailEvent");
+				this.owner.showScreen(_parentScreen);
+			}
 		}
 
 		private function backBtnHandler(e:starling.events.Event = null):void
