@@ -89,7 +89,7 @@ package collaboRhythm.hiviva.view.screens
 					this._secondaryLabel.x = this._primaryLabel.x;
 					this._secondaryLabel.width = this._primaryLabel.width;
 					fullHeight += this._secondaryLabel.height;
-					this._bg.height = fullHeight;
+					if(!this._read) this._bg.height = fullHeight;
 					break;
 				case CONNECTION_REQUEST_TYPE :
 				case STATUS_ALERT_TYPE :
@@ -123,7 +123,7 @@ package collaboRhythm.hiviva.view.screens
 			}
 
 			this._primaryLabel = new Label();
-			if(this._messageType == CONNECTION_REQUEST_TYPE || this._read) this._primaryLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			if(this._messageType == CONNECTION_REQUEST_TYPE || (this._messageType == COMPOSED_MESSAGE_TYPE && !this._read)) this._primaryLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
 			this._primaryLabel.text = _primaryText;
 			this.addChild(this._primaryLabel);
 

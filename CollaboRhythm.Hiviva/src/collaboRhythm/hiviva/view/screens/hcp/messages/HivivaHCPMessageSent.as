@@ -100,6 +100,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				{
 					hcpSentMessage = new MessageInboxResultCell();
 					hcpSentMessage.messageType = MessageInboxResultCell.COMPOSED_MESSAGE_TYPE;
+					// set <read = true> so messages never appear as 'new' in sent list
 					hcpSentMessage.read = true;
 					hcpSentMessage.guid = this._allSentMessages[i].MessageGuid;
 					hcpSentMessage.primaryText = this._allSentMessages[i].Message;
