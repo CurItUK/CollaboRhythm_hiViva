@@ -100,7 +100,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				{
 					hcpSentMessage = new MessageInboxResultCell();
 					hcpSentMessage.messageType = MessageInboxResultCell.COMPOSED_MESSAGE_TYPE;
-					hcpSentMessage.read = this._allSentMessages[i].read == "true";
+					hcpSentMessage.read = true;
 					hcpSentMessage.guid = this._allSentMessages[i].MessageGuid;
 					hcpSentMessage.primaryText = this._allSentMessages[i].Message;
 //					hcpMessage.secondaryText = this._allSentMessages[i].Name;
