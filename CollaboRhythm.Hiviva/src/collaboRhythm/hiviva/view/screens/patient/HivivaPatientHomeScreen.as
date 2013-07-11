@@ -172,6 +172,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE , getMessagesCompleteHandler);
 			trace("getMessagesCompleteHandler " + e.data.xmlResponse);
+			//TODO change from all messages to unread
 			var messageCount:uint = e.data.xmlResponse.children().length();
 			if(messageCount > 0)
 			{
