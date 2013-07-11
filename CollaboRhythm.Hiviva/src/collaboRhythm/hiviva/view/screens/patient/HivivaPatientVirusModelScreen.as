@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.screens.patient.VirusModel.TCellView;
 	import collaboRhythm.hiviva.view.screens.patient.VirusModel.TCellView;
@@ -59,13 +60,12 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _viruses:Array = [];
 		private var _attachedViruses:Array = [];
 		private var _looseViruses:Array = [];
-
-
-		private var _adherence:Number;
-		private var _cd4Count:Number;
-		private var _viralLoad:Number;
-
+		private var _adherence:Number = 0;
+		private var _cd4Count:Number = 0;
+		private var _viralLoad:Number = 0;
 		private var _virusTexture:Texture;
+		private var _remoteCallMade:Boolean = false;
+		private var _remoteCallCount:int = 0;
 
 		public function HivivaPatientVirusModelScreen()
 		{
@@ -88,7 +88,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._panelGradient.y = this._panelBackground.height - this._panelGradient.height;
 			this._virusBgShadow.y = this._panelBackground.height;
 
-			getPatientAdherence();
+			if(!this._remoteCallMade) getPatientAdherenceTestResults();
 		}
 
 		override protected function initialize():void
@@ -142,10 +142,15 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		}
 
-		private function getPatientAdherence():void
+		private function getPatientAdherenceTestResults():void
 		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getAdherence();
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE, getPatientLatestTestResultsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientLastTestResult(escape("Cd4 count,Viral load"));
+
+			this._remoteCallMade = true;
 		}
 
 		private function adherenceLoadCompleteHandler(e:LocalDataStoreEvent):void
@@ -153,21 +158,38 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
 			trace("Virus Simulation " + e.data.adherence);
 
-			getPatientTestResults();
-
-
+			this._remoteCallCount++;
+			allDataLoadedCheck();
 
 		}
 
-		private function getPatientTestResults():void
+		private function getPatientLatestTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			this._adherence = 95;
-			this._cd4Count = 350;
-			this._viralLoad = 50000;
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE, getPatientLatestTestResultsCompleteHandler);
 
-			initVirusModel();
+			var testResults:XMLList = e.data.xmlResponse.Results.DCTestResult;
 
+			if(testResults.children().length() > 0)
+			{
+				this._cd4Count = Number(Math.floor(testResults[0].Result));
+				this._viralLoad = Number(Math.floor(testResults[1].Result));
+			}
+			else
+			{
+				this._cd4Count = 0;
+				this._viralLoad = 0;
+			}
 
+			this._remoteCallCount++;
+			allDataLoadedCheck();
+		}
+
+		private function allDataLoadedCheck():void
+		{
+			if(this._remoteCallCount == 2)
+			{
+				initVirusModel();
+			}
 		}
 
 		private function virusSettingsBtnHandler(e:Event):void
