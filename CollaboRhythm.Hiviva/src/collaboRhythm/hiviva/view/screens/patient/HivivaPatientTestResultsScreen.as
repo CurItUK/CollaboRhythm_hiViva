@@ -176,7 +176,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				var cd4CountData:Number = Number(this._cd4Count._input.text);
 				var viralLoadData:Number = Number(this._viralLoad._input.text);
+
+				//TODO add this date format to modifier class
+				var pattern:RegExp = /\//g;
 				var dateData:String = this._date._input.text;
+				var formatedDate:String = dateData.replace(pattern ,"-") + "T00:00:00";
 				var userGuid:String = HivivaStartup.userVO.guid;
 
 				var resultData:XML =
@@ -184,12 +188,12 @@ package collaboRhythm.hiviva.view.screens.patient
 							<UserGuid>{userGuid}</UserGuid>
 							<Results>
 								<DCTestResult>
-									<TestDate>{dateData}</TestDate>
+									<TestDate>{formatedDate}</TestDate>
 									<TestDescription>Cd4 count</TestDescription>
 									<Result>{cd4CountData}</Result>
 								</DCTestResult>
 								<DCTestResult>
-									<TestDate>{dateData}</TestDate>
+									<TestDate>{formatedDate}</TestDate>
 									<TestDescription>Viral load</TestDescription>
 									<Result>{viralLoadData}</Result>
 								</DCTestResult>
@@ -234,14 +238,25 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE, addTestResultsCompleteHandler);
 
-			var result:XMLList = e.data.xmlResponse.Results.DCTestResult;
-			trace(result.length());
+			var testResults:XMLList = e.data.xmlResponse.Results.DCTestResult;
+			/*
+			<DCTestResult xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			  <TestDate>2013-01-01T00:00:00</TestDate>
+			  <TestDescription>Cd4 count</TestDescription>
+			  <Result>234234.00</Result>
+			</DCTestResult>
+			<DCTestResult xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			  <TestDate>2013-01-01T00:00:00</TestDate>
+			  <TestDescription>Viral load</TestDescription>
+			  <Result>34234.00</Result>
+			</DCTestResult>
+			*/
 
-			if(result.children().length() > 0)
+			if(testResults.children().length() > 0)
 			{
-				this._cd4Count._input.text = result[0].Result;
-				this._viralLoad._input.text = result[0].Result;
-				this._date._input.text = result[0].TestDate;
+				this._cd4Count._input.text = String(Math.floor(testResults[0].Result));
+				this._viralLoad._input.text = String(Math.floor(testResults[1].Result));
+				this._date._input.text = String(testResults[0].TestDate).substring(0,10);
 			}
 			else
 			{
