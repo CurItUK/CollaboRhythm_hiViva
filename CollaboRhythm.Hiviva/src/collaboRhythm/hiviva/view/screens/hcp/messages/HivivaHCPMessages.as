@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.hcp.messages
 {
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.view.screens.shared.HivivaMessageDetail;
 
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigator;
@@ -43,12 +44,12 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private function messageNavGoDetails(e:Event):void
 		{
 			var screenNavProperties:Object = { messageData:e.data};
-			if(this._messageNav.hasScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN))
+			if(this._messageNav.hasScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN))
 			{
-				this._messageNav.removeScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN);
+				this._messageNav.removeScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN);
 			}
-			this._messageNav.addScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN, new ScreenNavigatorItem(HivivaHCPMessageDetail, null, screenNavProperties));
-			this._messageNav.showScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN);
+			this._messageNav.addScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN, new ScreenNavigatorItem(HivivaMessageDetail, null, screenNavProperties));
+			this._messageNav.showScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN);
 		}
 	}
 }

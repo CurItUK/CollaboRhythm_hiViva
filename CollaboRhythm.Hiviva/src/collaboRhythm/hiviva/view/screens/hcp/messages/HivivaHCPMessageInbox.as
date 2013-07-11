@@ -5,8 +5,10 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
-	import collaboRhythm.hiviva.view.screens.AlertInboxResultCell;
+	import collaboRhythm.hiviva.view.components.TopNavButton;
+	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.MessageInboxResultCell;
+	import collaboRhythm.hiviva.view.screens.shared.HivivaMessageDetail;
 
 	import feathers.controls.Button;
 	import feathers.controls.Screen;
@@ -15,7 +17,11 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 	import feathers.core.PopUpManager;
 	import feathers.layout.VerticalLayout;
 
+	import source.themes.HivivaTheme;
+
 	import starling.display.DisplayObject;
+	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.events.Event;
 
 
@@ -25,8 +31,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private var _header:HivivaHeader;
 		private var _messagesData:XML;
 		private var _messageCellContainer:ScrollContainer;
-		private var _composeBtn:Button;
-		private var _sentBtn:Button;
+		private var _composeBtn:TopNavButton;
+		private var _sentBtn:TopNavButton;
 		private var _deleteBtn:Button;
 		private var _messageCentre:Array;
 		private var _allReceivedMessages:XMLList;
@@ -44,7 +50,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 
 		private var _messageCells:Vector.<MessageInboxResultCell> = new <MessageInboxResultCell>[];
-		private var _alertCells:Vector.<AlertInboxResultCell> = new <AlertInboxResultCell>[];
+//		private var _alertCells:Vector.<AlertInboxResultCell> = new <AlertInboxResultCell>[];
 		private var _cellContainer:ScrollContainer;
 		private var _approveAlert:HivivaPopUp;
 		private var _alertGuidToAccept:String;
@@ -60,18 +66,17 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		override protected function draw():void
 		{
 			super.draw();
-			this._vPadding = (this.actualHeight * 0.04) * this.dpiScale;
-			this._hPadding = (this.actualWidth * 0.04) * this.dpiScale;
+			this._vPadding = (Constants.STAGE_HEIGHT * 0.04) * this.dpiScale;
+			this._hPadding = (Constants.STAGE_WIDTH * 0.04) * this.dpiScale;
 
-
-			this._header.paddingLeft = this._hPadding;
-			this._header.width = this.actualWidth;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 			this._header.initTrueTitle();
 
 			this._deleteMessageButton.validate();
-			this._deleteMessageButton.width = this.actualWidth * 0.25;
-			this._deleteMessageButton.y = this.actualHeight - this._vPadding - this._deleteMessageButton.height - Constants.FOOTER_BTNGROUP_HEIGHT;
-			this._deleteMessageButton.x = (this.actualWidth * 0.5) - (this._deleteMessageButton.width * 0.5);
+			this._deleteMessageButton.width = Constants.STAGE_WIDTH * 0.25;
+			this._deleteMessageButton.y = Constants.STAGE_HEIGHT - this._vPadding - this._deleteMessageButton.height - Constants.FOOTER_BTNGROUP_HEIGHT;
+			this._deleteMessageButton.x = (Constants.STAGE_WIDTH * 0.5) - (this._deleteMessageButton.width * 0.5);
 
 			if(!this._remoteCallMade) getAllMessagesFromRemoteService();
 		}
@@ -82,7 +87,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._header = new HivivaHeader();
 			this._header.title = "Messages";
-			this._header.scale = this.dpiScale;
 			addChild(this._header);
 
 			this._deleteMessageButton = new Button();
@@ -90,23 +94,31 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._deleteMessageButton.addEventListener(Event.TRIGGERED, deleteMessageButtonHandler);
 			this.addChild(this._deleteMessageButton);
 
-			this._composeBtn = new Button();
-			this._composeBtn.label = "Compose";
-			this._composeBtn.addEventListener(starling.events.Event.TRIGGERED , composeBtnHandler);
-
-			this._sentBtn = new Button();
-			this._sentBtn.label = "Sent";
+			this._sentBtn = new TopNavButton();
+			this._sentBtn.hivivaImage = new Image(Assets.getTexture("MessageIconSentPng"));
 			this._sentBtn.addEventListener(starling.events.Event.TRIGGERED , sentBtnHandler);
 
-			this._header.rightItems = new <DisplayObject>[this._composeBtn, this._sentBtn];
+			this._composeBtn = new TopNavButton();
+			this._composeBtn.hivivaImage = new Image(Assets.getTexture("MessageIconComposePng"));
+			this._composeBtn.addEventListener(starling.events.Event.TRIGGERED , composeBtnHandler);
+
+			this._header.rightItems = new <DisplayObject>[this._sentBtn, this._composeBtn];
+
+			// added this because header.padding doesn't work, header.titleProperties.paddingLeft doesn't work.
+			var dudForPadding:Quad = new Quad(130, Constants.HEADER_HEIGHT, 0x000000);
+			dudForPadding.alpha = 0;
+			this._header.leftItems = new <DisplayObject>[dudForPadding];
 
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
 		}
 
 		private function getAllMessagesFromRemoteService():void
 		{
+			/*
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE, getUserReceivedMessagesHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserReceivedMessages();
+*/
+			// TODO : get alerts
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE, getPendingConnectionsHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPendingConnections();
@@ -133,12 +145,13 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function allDataLoadedCheck():void
 		{
-			if(this._remoteCallCount == 2)
+//			if(this._remoteCallCount == 2)
+			if(this._remoteCallCount == 1)
 			{
 				this._cellContainer = new ScrollContainer();
 				this._cellContainer.layout = new VerticalLayout();
 
-				populateMessages();
+//				populateMessages();
 				populateAlerts();
 				drawResults()
 			}
@@ -169,54 +182,67 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private function populateAlerts():void
 		{
 			var listCount:uint = this._pendingConnections.length();
-			var alertInboxResultCell:AlertInboxResultCell;
+			var connectionRequest:MessageInboxResultCell;
 			if(listCount > 0)
 			{
 				for(var i:uint = 0 ; i < listCount ; i++)
 				{
-					alertInboxResultCell = new AlertInboxResultCell();
-
-					alertInboxResultCell.guid = this._pendingConnections[i].FromUserGuid;
-					alertInboxResultCell.text = "HCP user (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
-					alertInboxResultCell.scale = this.dpiScale;
-					alertInboxResultCell.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, alertSelectedHandler);
-					this._cellContainer.addChild(alertInboxResultCell);
-					this._alertCells.push(alertInboxResultCell);
+					connectionRequest = new MessageInboxResultCell();
+					connectionRequest.messageType = MessageInboxResultCell.CONNECTION_REQUEST_TYPE;
+					connectionRequest.guid = this._pendingConnections[i].FromUserGuid;
+					connectionRequest.primaryText = "User (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
+//					hcpMessage.secondaryText = this._allReceivedMessages[i].Name;
+					connectionRequest.dateText = this._pendingConnections[i].SentDate;
+					connectionRequest.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
+					this._cellContainer.addChild(connectionRequest);
+					this._messageCells.push(connectionRequest);
 				}
+				this._deleteMessageButton.visible = true;
 			}
 		}
 
 		private function drawResults():void
 		{
 			this.addChild(this._cellContainer);
-			this._cellContainer.width = this.actualWidth;
+			this._cellContainer.width = Constants.STAGE_WIDTH;
 			this._cellContainer.y = this._header.height;
-			this._cellContainer.height = this.actualHeight - this._cellContainer.y - this._deleteMessageButton.height - (this._vPadding * 2);
+			this._cellContainer.height = Constants.STAGE_HEIGHT - this._cellContainer.y - this._deleteMessageButton.height - (this._vPadding * 2);
 
 			for (var i:int = 0; i < this._messageCells.length; i++)
 			{
-				this._messageCells[i].width = this.actualWidth;
+				this._messageCells[i].width = Constants.STAGE_WIDTH;
 			}
+/*
 
 			for (var j:int = 0; j < this._alertCells.length; j++)
 			{
-				this._alertCells[j].width = this.actualWidth;
+				this._alertCells[j].width = Constants.STAGE_WIDTH;
 			}
+*/
 
 			this._cellContainer.validate();
 		}
 
 		private function messageSelectedHandler(e:FeathersScreenEvent):void
 		{
-			var guid:String = String(e.evtData.guid);
-			var screenNavProperties:Object = {messageData:getMessageXMLByGuid(guid)};
-			if(this.owner.hasScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN))
+			var targetCell:MessageInboxResultCell = e.target as MessageInboxResultCell;
+			var messageData:XML = getMessageXMLByGuid(targetCell.guid);
+			var messageType:String = targetCell.messageType;
+			var screenNavProperties:Object =
 			{
-				this.owner.removeScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN);
+				messageName:messageData.Name,
+				messageDate:messageData.SentDate,
+				messageText:messageData.Message,
+				messageType:messageType
+			};
+			if(this.owner.hasScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN))
+			{
+				this.owner.removeScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN);
 			}
-			this.owner.addScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN, new ScreenNavigatorItem(HivivaHCPMessageDetail, null, screenNavProperties));
-			this.owner.showScreen(HivivaScreens.HCP_MESSAGE_DETAIL_SCREEN);
+			this.owner.addScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN, new ScreenNavigatorItem(HivivaMessageDetail, null, screenNavProperties));
+			this.owner.showScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN);
 		}
+/*
 
 		private function alertSelectedHandler(e:FeathersScreenEvent):void
 		{
@@ -227,7 +253,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._approveAlert.confirmLabel = "Accept";
 			this._approveAlert.addEventListener(Event.COMPLETE, remoteApproveConnection);
 			this._approveAlert.addEventListener(Event.CLOSE, closePopup);
-			this._approveAlert.width = this.actualWidth * 0.8;
+			this._approveAlert.width = Constants.STAGE_WIDTH * 0.8;
 			this._approveAlert.validate();
 			this._approveAlert.message = "Approve connection request from this HCP?";
 
@@ -272,6 +298,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			PopUpManager.removePopUp(this._approveAlert);
 			this._alertGuidToAccept = "";
 		}
+		*/
 
 		private function getMessageXMLByGuid(guid:String):XML
 		{

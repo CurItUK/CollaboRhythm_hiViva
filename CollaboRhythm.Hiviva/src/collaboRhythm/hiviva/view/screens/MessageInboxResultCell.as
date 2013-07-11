@@ -115,7 +115,7 @@ package collaboRhythm.hiviva.view.screens
 			this._seperator = new Image(Main.assets.getTexture("header_line"));
 			addChild(this._seperator);
 
-			if(this._messageType == COMPOSED_MESSAGE_TYPE)
+			if(this._messageType == COMPOSED_MESSAGE_TYPE && !this._read)
 			{
 				this._bg = new Quad(Constants.STAGE_WIDTH,100,0xFFFFFF);
 				this._bg.alpha = 0.2;
@@ -159,12 +159,19 @@ package collaboRhythm.hiviva.view.screens
 			this._viewMessageBtn.alpha = 0;
 			this._viewMessageBtn.addEventListener(Event.TRIGGERED , messageCellSelectHandler);
 			addChild(this._viewMessageBtn);
+
+			if(!this._read) markAsReadThroughRemoteService();
 		}
 
 		private function messageCellSelectHandler(e:Event):void
 		{
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.MESSAGE_SELECT);
 			this.dispatchEvent(evt);
+		}
+
+		private function markAsReadThroughRemoteService():void
+		{
+			// TODO : Mark message as read through remote service
 		}
 
 		private function checkBoxSelectHandler(e:Event):void

@@ -65,6 +65,12 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/message_icon_alert.png")]
 		public static const MessageIconAlertPng:Class;
 
+		[Embed(source="/assets/images/temp/message_icon_sent.png")]
+		public static const MessageIconSentPng:Class;
+
+		[Embed(source="/assets/images/temp/message_icon_compose.png")]
+		public static const MessageIconComposePng:Class;
+
 		// TTF FONTS
 
 		[Embed(source="/assets/fonts/exo-regular.ttf", fontName="ExoRegular", mimeType="application/x-font", embedAsCFF="false")]

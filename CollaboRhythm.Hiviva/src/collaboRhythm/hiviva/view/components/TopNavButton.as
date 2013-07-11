@@ -13,7 +13,7 @@ package collaboRhythm.hiviva.view.components
 	public class TopNavButton extends Button
 	{
 		private var _icon:Image;
-		private var _hivivaImage:String;
+		private var _hivivaImage:Image;
 		private var _subScript:String = "";
 		private var _subScriptCircle:SubscriptCircle;
 
@@ -38,7 +38,7 @@ package collaboRhythm.hiviva.view.components
 
 			this.name = HivivaTheme.NONE_THEMED;
 
-			this._icon = new Image(Main.assets.getTexture(this._hivivaImage));
+			this._icon = this._hivivaImage;
 
 			var icon:Quad = new Quad(this._icon.width,this._icon.height,0x000000);
 			icon.alpha = 0;
@@ -52,12 +52,12 @@ package collaboRhythm.hiviva.view.components
 			this._subScriptCircle.visible = this._subScript.length > 0;
 		}
 
-		public function get hivivaImage():String
+		public function get hivivaImage():Image
 		{
 			return _hivivaImage;
 		}
 
-		public function set hivivaImage(value:String):void
+		public function set hivivaImage(value:Image):void
 		{
 			_hivivaImage = value;
 		}

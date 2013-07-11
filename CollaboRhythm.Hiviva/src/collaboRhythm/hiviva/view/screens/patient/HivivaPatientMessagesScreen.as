@@ -9,9 +9,9 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
-	import collaboRhythm.hiviva.view.screens.AlertInboxResultCell;
 
 	import collaboRhythm.hiviva.view.screens.MessageInboxResultCell;
+	import collaboRhythm.hiviva.view.screens.shared.HivivaMessageDetail;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -40,7 +40,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _pendingConnections:XMLList;
 		private var _deleteMessageButton:Button;
 		private var _messageCells:Vector.<MessageInboxResultCell> = new <MessageInboxResultCell>[];
-		private var _alertCells:Vector.<AlertInboxResultCell> = new <AlertInboxResultCell>[];
+//		private var _alertCells:Vector.<AlertInboxResultCell> = new <AlertInboxResultCell>[];
 		private var _cellContainer:ScrollContainer;
 		private var _approveAlert:HivivaPopUp;
 		private var _alertGuidToAccept:String;
@@ -222,11 +222,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				this._messageCells[i].width = this.actualWidth;
 			}
+/*
 
 			for (var j:int = 0; j < this._alertCells.length; j++)
 			{
 				this._alertCells[j].width = this.actualWidth;
 			}
+*/
 
 			this._cellContainer.validate();
 		}
@@ -241,15 +243,17 @@ package collaboRhythm.hiviva.view.screens.patient
 				messageName:messageData.Name,
 				messageDate:messageData.SentDate,
 				messageText:messageData.Message,
-				messageType:messageType
+				messageType:messageType,
+				parentScreen:this.owner.activeScreenID
 			};
-			if(this.owner.hasScreen(HivivaScreens.PATIENT_MESSAGE_DETAIL_SCREEN))
+			if(this.owner.hasScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN))
 			{
-				this.owner.removeScreen(HivivaScreens.PATIENT_MESSAGE_DETAIL_SCREEN);
+				this.owner.removeScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN);
 			}
-			this.owner.addScreen(HivivaScreens.PATIENT_MESSAGE_DETAIL_SCREEN, new ScreenNavigatorItem(HivivaPatientMessageDetail, null, screenNavProperties));
-			this.owner.showScreen(HivivaScreens.PATIENT_MESSAGE_DETAIL_SCREEN);
+			this.owner.addScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN, new ScreenNavigatorItem(HivivaMessageDetail, null, screenNavProperties));
+			this.owner.showScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN);
 		}
+/*
 
 		private function alertSelectedHandler(e:FeathersScreenEvent):void
 		{
@@ -305,6 +309,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			PopUpManager.removePopUp(this._approveAlert);
 			this._alertGuidToAccept = "";
 		}
+*/
 
 		private function getMessageXMLByGuid(guid:String):XML
 		{
@@ -338,9 +343,6 @@ package collaboRhythm.hiviva.view.screens.patient
 							break;
 						case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
 							// TODO : call 'add to ignore list' remote service
-							break;
-						case MessageInboxResultCell.STATUS_ALERT_TYPE :
-							// TODO : call 'remove alert' remote service
 							break;
 					}
 					this._cellContainer.removeChild(this._messageCells[i], true);

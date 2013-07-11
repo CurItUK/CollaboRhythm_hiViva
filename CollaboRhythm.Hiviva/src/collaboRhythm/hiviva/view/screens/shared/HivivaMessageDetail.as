@@ -1,5 +1,8 @@
-package collaboRhythm.hiviva.view.screens.patient
+package collaboRhythm.hiviva.view.screens.shared
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
+	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
@@ -9,18 +12,17 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.screens.MessageInboxResultCell;
 
 	import feathers.controls.Button;
-
 	import feathers.controls.Label;
 
 
 	import feathers.controls.Screen;
-	import feathers.events.FeathersEventType;
 
 	import starling.display.DisplayObject;
+
 	import starling.events.Event;
 
 
-	public class HivivaPatientMessageDetail extends Screen
+	public class HivivaMessageDetail extends Screen
 	{
 		private var _header:HivivaHeader;
 		private var _backButton:Button;
@@ -29,6 +31,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _messageDate:String;
 		private var _messageText:String;
 		private var _messageType:String;
+		private var _parentScreen:String;
 
 		private var _nameLabel:Label;
 		private var _dateLabel:Label;
@@ -37,7 +40,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _vPadding:Number;
 		private var _hPadding:Number;
 
-		public function HivivaPatientMessageDetail()
+		public function HivivaMessageDetail()
 		{
 
 		}
@@ -63,7 +66,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._messageLabel.width = Constants.STAGE_WIDTH - (this._hPadding * 2);
 			this._messageLabel.x = this._hPadding;
 			this._messageLabel.y = this._nameLabel.y + this._nameLabel.height + this._vPadding;
-			
+
 			this._options.width = Constants.STAGE_WIDTH - (this._hPadding * 2);
 			this._options.validate();
 			this._options.x = Constants.PADDING_LEFT;
@@ -111,7 +114,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					optionButtons = ["Ignore","Accept"];
 					break;
 				case MessageInboxResultCell.STATUS_ALERT_TYPE :
-					optionButtons = ["Go to Patient","Edit Alerts"];
+					optionButtons = ["Go to patient","Edit Alerts"];
 					break;
 			}
 
@@ -135,7 +138,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					break;
 				case "Accept" :
 					break;
-				case "Go to Patient" :
+				case "Go to patient" :
 					break;
 				case "Edit Alerts" :
 					break;
@@ -144,7 +147,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function backBtnHandler(e:starling.events.Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN);
+			this.owner.showScreen(_parentScreen);
 		}
 		/*
 		public function get messageData():XML
@@ -195,6 +198,16 @@ package collaboRhythm.hiviva.view.screens.patient
 		public function set messageType(value:String):void
 		{
 			_messageType = value;
+		}
+
+		public function get parentScreen():String
+		{
+			return _parentScreen;
+		}
+
+		public function set parentScreen(value:String):void
+		{
+			_parentScreen = value;
 		}
 	}
 }

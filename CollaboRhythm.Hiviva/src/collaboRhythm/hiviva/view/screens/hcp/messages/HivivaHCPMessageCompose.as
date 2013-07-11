@@ -84,6 +84,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		{
 			super.draw();
 
+			this._patientPickerList.width = this._innerWidth;
 
 			this._content.layout = this._contentLayout;
 			if(!this._remoteCallMade) getMessageTypesAndConnections();
@@ -113,7 +114,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._content.addChild(this._patientName);
 
 			this._patientPickerList = new PickerList();
-			this._patientPickerList.prompt = "Select patient";
+			this._patientPickerList.prompt = "SELECT PATIENT";
 			this._patientPickerList.addEventListener(starling.events.Event.CHANGE, patientSelectedHandler);
 			this._content.addChild(this._patientPickerList);
 
