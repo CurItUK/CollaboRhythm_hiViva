@@ -52,8 +52,10 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._contentHeight -= Constants.HEADER_HEIGHT;
 
 			this._content.y = this._header.y + this._header.height;
-			this._content.width = this._innerWidth = Constants.INNER_WIDTH;
+			this._content.width = Constants.STAGE_WIDTH;
 			this._content.height = this._contentHeight - this._verticalPadding;
+
+			this._innerWidth = Constants.INNER_WIDTH;
 
 			this._contentLayout.paddingLeft = this._contentLayout.paddingRight = this._horizontalPadding;
 			this._contentLayout.paddingTop = this._contentLayout.paddingBottom = this._verticalPadding;
