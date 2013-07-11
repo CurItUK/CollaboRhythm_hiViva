@@ -25,7 +25,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private var _header:HivivaHeader;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _remoteCallMade:Boolean;
+		private var _remoteCallMade:Boolean = false;
 		private var _allSentMessages:XMLList;
 		private var _cellContainer:ScrollContainer;
 		private var _messageCells:Vector.<MessageInboxResultCell> = new <MessageInboxResultCell>[];
@@ -84,6 +84,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._cellContainer = new ScrollContainer();
 			this._cellContainer.layout = new VerticalLayout();
+			this.addChild(this._cellContainer);
 
 			populateMessages();
 			drawResults()
@@ -100,8 +101,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				{
 					hcpSentMessage = new MessageInboxResultCell();
 					hcpSentMessage.messageType = MessageInboxResultCell.COMPOSED_MESSAGE_TYPE;
-					// set <read = true> so messages never appear as 'new' in sent list
-					hcpSentMessage.read = true;
+					hcpSentMessage.isSent = true;
 					hcpSentMessage.guid = this._allSentMessages[i].MessageGuid;
 					hcpSentMessage.primaryText = this._allSentMessages[i].Message;
 //					hcpMessage.secondaryText = this._allSentMessages[i].Name;
@@ -109,13 +109,14 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					hcpSentMessage.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
 					this._cellContainer.addChild(hcpSentMessage);
 					this._messageCells.push(hcpSentMessage);
+					hcpSentMessage.validate();
 				}
+				this._cellContainer.validate();
 			}
 		}
 
 		private function drawResults():void
 		{
-			this.addChild(this._cellContainer);
 			this._cellContainer.width = Constants.STAGE_WIDTH;
 			this._cellContainer.y = this._header.height;
 			this._cellContainer.height = Constants.STAGE_HEIGHT - this._cellContainer.y - Constants.PADDING_BOTTOM;
@@ -125,7 +126,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				this._messageCells[i].width = Constants.STAGE_WIDTH;
 			}
 
-			this._cellContainer.validate();
 		}
 
 		private function messageSelectedHandler(e:FeathersScreenEvent):void
@@ -167,5 +167,9 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			return messageData;
 		}
 
+		override public function dispose():void
+		{
+			super.dispose();
+		}
 	}
 }

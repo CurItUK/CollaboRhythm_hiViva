@@ -55,9 +55,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private var _approveAlert:HivivaPopUp;
 		private var _alertGuidToAccept:String;
 
-		private var _vPadding:Number;
-		private var _hPadding:Number;
-
 		public function HivivaHCPMessageInbox()
 		{
 
@@ -66,8 +63,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		override protected function draw():void
 		{
 			super.draw();
-			this._vPadding = (Constants.STAGE_HEIGHT * 0.04) * this.dpiScale;
-			this._hPadding = (Constants.STAGE_WIDTH * 0.04) * this.dpiScale;
 
 			this._header.width = Constants.STAGE_WIDTH;
 			this._header.height = Constants.HEADER_HEIGHT;
@@ -75,7 +70,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._deleteMessageButton.validate();
 			this._deleteMessageButton.width = Constants.STAGE_WIDTH * 0.25;
-			this._deleteMessageButton.y = Constants.STAGE_HEIGHT - this._vPadding - this._deleteMessageButton.height - Constants.FOOTER_BTNGROUP_HEIGHT;
+			this._deleteMessageButton.y = Constants.STAGE_HEIGHT - this._deleteMessageButton.height - Constants.FOOTER_BTNGROUP_HEIGHT;
 			this._deleteMessageButton.x = (Constants.STAGE_WIDTH * 0.5) - (this._deleteMessageButton.width * 0.5);
 
 			if(!this._remoteCallMade) getAllMessagesFromRemoteService();
@@ -91,6 +86,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._deleteMessageButton = new Button();
 			this._deleteMessageButton.label = "Delete";
+			this._deleteMessageButton.visible = false;
 			this._deleteMessageButton.addEventListener(Event.TRIGGERED, deleteMessageButtonHandler);
 			this.addChild(this._deleteMessageButton);
 
@@ -205,8 +201,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		{
 			this.addChild(this._cellContainer);
 			this._cellContainer.width = Constants.STAGE_WIDTH;
-			this._cellContainer.y = this._header.height;
-			this._cellContainer.height = Constants.STAGE_HEIGHT - this._cellContainer.y - this._deleteMessageButton.height - (this._vPadding * 2);
+			this._cellContainer.y = Constants.HEADER_HEIGHT + Constants.PADDING_TOP;
+			this._cellContainer.height = Constants.STAGE_HEIGHT - this._cellContainer.y - this._deleteMessageButton.height - Constants.PADDING_BOTTOM;
 
 			for (var i:int = 0; i < this._messageCells.length; i++)
 			{

@@ -48,11 +48,12 @@ package collaboRhythm.hiviva.view.screens
 		private var _selected:Boolean;
 		private var _messageType:String;
 		private var _read:Boolean;
+		private var _isSent:Boolean = false;
 
 		// message types
-		public static const CONNECTION_REQUEST_TYPE:String = 		"connectionRequestType";
-		public static const STATUS_ALERT_TYPE:String = 				"statusAlertType";
-		public static const COMPOSED_MESSAGE_TYPE:String = 			"composedMessageType";
+		public static const CONNECTION_REQUEST_TYPE:String = 	"connectionRequestType";
+		public static const STATUS_ALERT_TYPE:String = 			"statusAlertType";
+		public static const COMPOSED_MESSAGE_TYPE:String = 		"composedMessageType";
 
 		public function MessageInboxResultCell()
 		{
@@ -67,19 +68,26 @@ package collaboRhythm.hiviva.view.screens
 			trace("drawing");
 			super.draw();
 
-			this._primaryLabel.validate();
-			this._dateLabel.validate();
-			this._check.validate();
-
 			this._seperator.width = Constants.STAGE_WIDTH;
 
-			this._check.x = Constants.PADDING_LEFT;
-			this._dateLabel.x = Constants.STAGE_WIDTH - Constants.PADDING_RIGHT - this._dateLabel.width;
+			this._primaryLabel.validate();
+			if(!this._isSent)
+			{
+				this._check.validate();
+				this._check.x = Constants.PADDING_LEFT;
 
+				this._primaryLabel.x = this._check.x + this._check.width + Constants.PADDING_LEFT;
+			}
+			else
+			{
+				this._primaryLabel.x = Constants.PADDING_LEFT;
+			}
 			this._primaryLabel.y = Constants.PADDING_TOP;
-			this._primaryLabel.x = this._check.x + this._check.width + Constants.PADDING_LEFT;
 			this._primaryLabel.width = Constants.STAGE_WIDTH - this._primaryLabel.x - Constants.PADDING_RIGHT - this._dateLabel.width - Constants.PADDING_LEFT;
 			fullHeight = this._primaryLabel.y + this._primaryLabel.height + Constants.PADDING_BOTTOM;
+
+			this._dateLabel.validate();
+			this._dateLabel.x = Constants.STAGE_WIDTH - Constants.PADDING_RIGHT - this._dateLabel.width;
 
 			switch(this._messageType)
 			{
@@ -99,7 +107,7 @@ package collaboRhythm.hiviva.view.screens
 					break;
 			}
 
-			this._check.y = (fullHeight * 0.5) - (this._check.height * 0.5);
+			if(!this._isSent) this._check.y = (fullHeight * 0.5) - (this._check.height * 0.5);
 			this._dateLabel.y = (fullHeight * 0.5) - (this._dateLabel.height * 0.5);
 
 			this._viewMessageBtn.x =  this._primaryLabel.x;
@@ -150,9 +158,12 @@ package collaboRhythm.hiviva.view.screens
 			this._dateLabel.text = _dateText;
 			this.addChild(this._dateLabel);
 
-			this._check = new Check();
-			this.addChild(this._check);
-			this._check.addEventListener(Event.TRIGGERED , checkBoxSelectHandler);
+			if(!this._isSent)
+			{
+				this._check = new Check();
+				this.addChild(this._check);
+				this._check.addEventListener(Event.TRIGGERED , checkBoxSelectHandler);
+			}
 
 			this._viewMessageBtn = new Button();
 			this._viewMessageBtn.label = "";
@@ -191,7 +202,7 @@ package collaboRhythm.hiviva.view.screens
 
 		override public function dispose():void
 		{
-			this._seperator.removeEventListener(Event.TRIGGERED , messageCellSelectHandler);
+			this._viewMessageBtn.removeEventListener(Event.TRIGGERED , messageCellSelectHandler);
 			super.dispose();
 		}
 
@@ -278,6 +289,17 @@ package collaboRhythm.hiviva.view.screens
 		public function set read(value:Boolean):void
 		{
 			_read = value;
+		}
+
+		public function get isSent():Boolean
+		{
+			return _isSent;
+		}
+
+		public function set isSent(value:Boolean):void
+		{
+			_isSent = value;
+			if(value) read = true;
 		}
 	}
 
