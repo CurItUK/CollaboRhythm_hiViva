@@ -241,8 +241,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function submitButtonHandler(e:Event):void
 		{
+			trace(this._medicationData);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
-
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.takeMedication(this._medicationData);
 		}
 
