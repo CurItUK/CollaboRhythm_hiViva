@@ -27,9 +27,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _header:HivivaHeader;
 		private var _backButton:Button;
 
-		private var _messageName:String;
-		private var _messageDate:String;
-		private var _messageText:String;
+		private var _messageData:XML;
 		private var _messageType:String;
 		private var _parentScreen:String;
 
@@ -37,8 +35,10 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _dateLabel:Label;
 		private var _messageLabel:Label;
 		private var _options:BoxedButtons;
+		private var _customHeight:Number;
 		private var _vPadding:Number;
 		private var _hPadding:Number;
+		private var _isSent:Boolean;
 
 		public function HivivaMessageDetail()
 		{
@@ -67,10 +67,13 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._messageLabel.x = this._hPadding;
 			this._messageLabel.y = this._nameLabel.y + this._nameLabel.height + this._vPadding;
 
-			this._options.width = Constants.STAGE_WIDTH - (this._hPadding * 2);
-			this._options.validate();
-			this._options.x = Constants.PADDING_LEFT;
-			this._options.y = Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._options.height;
+			if(!_isSent)
+			{
+				this._options.width = Constants.STAGE_WIDTH - (this._hPadding * 2);
+				this._options.validate();
+				this._options.x = Constants.PADDING_LEFT;
+				this._options.y = this._customHeight - Constants.PADDING_BOTTOM - this._options.height;
+			}
 		}
 
 		override protected function initialize():void
@@ -89,67 +92,81 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._nameLabel = new Label();
 			this._nameLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
-//			this._nameLabel.text = _messageData[0].Name;
-			this._nameLabel.text = _messageName;
-			this.addChild(this._nameLabel);
 
 			this._dateLabel = new Label();
 			this._dateLabel.name = HivivaThemeConstants.MESSAGE_DATE_LABEL;
-//			this._dateLabel.text = _messageData[0].SentDate;
-			this._dateLabel.text = _messageDate;
-			this.addChild(this._dateLabel);
 
 			this._messageLabel = new Label();
-//			this._messageLabel.text = _messageData[0].Message;
-			this._messageLabel.text = _messageText;
-			this.addChild(this._messageLabel);
 
-			var optionButtons:Array;
+			this._options = new BoxedButtons();
+			this._options.addEventListener(starling.events.Event.TRIGGERED, optionsHandler);
+
 			switch(_messageType)
 			{
 				case MessageInboxResultCell.COMPOSED_MESSAGE_TYPE :
-					optionButtons = ["Delete"];
+					this._nameLabel.text = _messageData.Name;
+					this._dateLabel.text = _messageData.SentDate;
+					this._messageLabel.text = _messageData.Message;
+					this._options.labels = ["Delete"];
 					break;
 				case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
-					optionButtons = ["Ignore","Accept"];
+					this._nameLabel.text = _messageData.FromAppId;
+					this._dateLabel.text = _messageData.SentDate;
+					this._messageLabel.text = "User (" + _messageData.FromAppId + ") has requested to connect";
+					this._options.labels = ["Ignore","Accept"];
 					break;
 				case MessageInboxResultCell.STATUS_ALERT_TYPE :
-					optionButtons = ["Go to patient","Edit Alerts"];
+					this._options.labels = ["Go to patient","Edit Alerts"];
 					break;
 			}
 
-			this._options = new BoxedButtons();
-			this._options.labels = optionButtons;
-			this._options.addEventListener(starling.events.Event.TRIGGERED, cancelAndSaveHandler);
-			addChild(this._options);
+			this.addChild(this._nameLabel);
+			this.addChild(this._dateLabel);
+			this.addChild(this._messageLabel);
+			if(!_isSent) addChild(this._options);
 		}
-		private function cancelAndSaveHandler(e:starling.events.Event):void
+		private function optionsHandler(e:starling.events.Event):void
 		{
 			var button:String = e.data.button;
-
+/*
+			var guidReference:String;
+			switch(_messageType)
+			{
+				case MessageInboxResultCell.COMPOSED_MESSAGE_TYPE :
+					guidReference = _messageData.MessageGuid;
+					break;
+				case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
+					guidReference = _messageData.FromUserGuid;
+					break;
+				case MessageInboxResultCell.STATUS_ALERT_TYPE :
+					break;
+			}*/
 			trace(button);
-			switch(button)
+			this.dispatchEventWith("messageDetailEvent" , false , {eventType:button,messageData:_messageData});
+			this.owner.showScreen(_parentScreen);
+			/*switch(button)
 			{
 				case "Delete" :
-					var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.MESSAGE_DELETE);
-					dispatchEvent(evt);
+					this.dispatchEventWith("messageDetailEvent" , false , {eventType:button,guid:guidReference});
 					break;
 				case "Ignore" :
+					this.dispatchEventWith("messageDetailEvent" , false , {eventType:button,guid:guidReference});
 					break;
 				case "Accept" :
+					this.dispatchEventWith("messageDetailEvent" , false , {eventType:button,guid:guidReference});
 					break;
 				case "Go to patient" :
 					break;
 				case "Edit Alerts" :
 					break;
-			}
+			}*/
 		}
 
-		private function backBtnHandler(e:starling.events.Event):void
+		private function backBtnHandler(e:starling.events.Event = null):void
 		{
 			this.owner.showScreen(_parentScreen);
 		}
-		/*
+
 		public function get messageData():XML
 		{
 			return _messageData;
@@ -159,35 +176,15 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			_messageData = value;
 		}
-		*/
-		public function get messageName():String
+
+		public function get parentScreen():String
 		{
-			return _messageName;
+			return _parentScreen;
 		}
 
-		public function set messageName(value:String):void
+		public function set parentScreen(value:String):void
 		{
-			_messageName = value;
-		}
-
-		public function get messageDate():String
-		{
-			return _messageDate;
-		}
-
-		public function set messageDate(value:String):void
-		{
-			_messageDate = value;
-		}
-
-		public function get messageText():String
-		{
-			return _messageText;
-		}
-
-		public function set messageText(value:String):void
-		{
-			_messageText = value;
+			_parentScreen = value;
 		}
 
 		public function get messageType():String
@@ -200,14 +197,24 @@ package collaboRhythm.hiviva.view.screens.shared
 			_messageType = value;
 		}
 
-		public function get parentScreen():String
+		public function get customHeight():Number
 		{
-			return _parentScreen;
+			return _customHeight;
 		}
 
-		public function set parentScreen(value:String):void
+		public function set customHeight(value:Number):void
 		{
-			_parentScreen = value;
+			_customHeight = value;
+		}
+
+		public function get isSent():Boolean
+		{
+			return _isSent;
+		}
+
+		public function set isSent(value:Boolean):void
+		{
+			_isSent = value;
 		}
 	}
 }

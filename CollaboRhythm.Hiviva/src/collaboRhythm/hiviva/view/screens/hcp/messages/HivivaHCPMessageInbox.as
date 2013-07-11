@@ -148,7 +148,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				this._cellContainer.layout = new VerticalLayout();
 
 //				populateMessages();
-				populateAlerts();
+				populatePendingConnections();
 				drawResults()
 			}
 		}
@@ -175,7 +175,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			}
 		}
 
-		private function populateAlerts():void
+		private function populatePendingConnections():void
 		{
 			var listCount:uint = this._pendingConnections.length();
 			var connectionRequest:MessageInboxResultCell;
@@ -222,48 +222,69 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private function messageSelectedHandler(e:FeathersScreenEvent):void
 		{
 			var targetCell:MessageInboxResultCell = e.target as MessageInboxResultCell;
-			var messageData:XML = getMessageXMLByGuid(targetCell.guid);
 			var messageType:String = targetCell.messageType;
+			var messageData:XML;
+			switch(messageType)
+			{
+				case MessageInboxResultCell.COMPOSED_MESSAGE_TYPE :
+					messageData = getMessageXMLByProperty(this._allReceivedMessages,"MessageGuid",targetCell.guid);
+					break;
+				case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
+					messageData = getMessageXMLByProperty(this._pendingConnections,"FromUserGuid",targetCell.guid);
+					break;
+				case MessageInboxResultCell.STATUS_ALERT_TYPE :
+//					messageData = getMessageXMLByProperty(this._allReceivedMessages,"MessageGuid",targetCell.guid);
+					break;
+			}
 			var screenNavProperties:Object =
 			{
-				messageName:messageData.Name,
-				messageDate:messageData.SentDate,
-				messageText:messageData.Message,
-				messageType:messageType
+				customHeight:Constants.STAGE_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT,
+				messageData:messageData,
+				messageType:messageType,
+				parentScreen:this.owner.activeScreenID,
+				isSent:false
 			};
 			if(this.owner.hasScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN))
 			{
 				this.owner.removeScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN);
 			}
-			this.owner.addScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN, new ScreenNavigatorItem(HivivaMessageDetail, null, screenNavProperties));
+			this.owner.addScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN, new ScreenNavigatorItem(HivivaMessageDetail, {messageDetailEvent:messageDetailEventHandler}, screenNavProperties));
 			this.owner.showScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN);
 		}
-/*
 
-		private function alertSelectedHandler(e:FeathersScreenEvent):void
+		private function messageDetailEventHandler(e:Event):void
 		{
-			this._alertGuidToAccept = e.evtData.guid;
-
-			this._approveAlert = new HivivaPopUp();
-			this._approveAlert.scale = this.dpiScale;
-			this._approveAlert.confirmLabel = "Accept";
-			this._approveAlert.addEventListener(Event.COMPLETE, remoteApproveConnection);
-			this._approveAlert.addEventListener(Event.CLOSE, closePopup);
-			this._approveAlert.width = Constants.STAGE_WIDTH * 0.8;
-			this._approveAlert.validate();
-			this._approveAlert.message = "Approve connection request from this HCP?";
-
-			PopUpManager.addPopUp(this._approveAlert,true,true);
-			this._approveAlert.validate();
-			PopUpManager.centerPopUp(this._approveAlert);
-			// draw close button post center so the centering works correctly
-			this._approveAlert.drawCloseButton();
-		}
-
-		private function remoteApproveConnection(e:Event):void
-		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(this._alertGuidToAccept);
+			var messageData:XML = e.data.messageData as XML;
+			trace(e.data.eventType);
+			switch(e.data.eventType)
+			{
+				case "Delete" :
+					for (var i:int = 0; i < this._messageCells.length; i++)
+					{
+						if(this._messageCells[i].guid == messageData.MessageGuid)
+						{
+							this._cellContainer.removeChild(this._messageCells[i], true);
+							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
+							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.deleteUserMessage(this._messageCells[i].guid);
+						}
+					}
+					this._cellContainer.validate();
+					break;
+				case "Ignore" :
+					trace("Ignore connection request from " + messageData.FromAppId);
+					break;
+				case "Accept" :
+					this._alertGuidToAccept = messageData.FromUserGuid;
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(this._alertGuidToAccept);
+					break;
+				case "Go to patient" :
+					trace("go to patient");
+					break;
+				case "Edit Alerts" :
+					trace("Edit Alerts");
+					break;
+			}
 		}
 
 		private function approveConnectionHandler(e:RemoteDataStoreEvent):void
@@ -272,46 +293,33 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			if(e.data.xmlResponse.StatusCode == "1")
 			{
-				removeAlertCell();
-			}
-			closePopup();
-		}
-
-		private function removeAlertCell():void
-		{
-			for (var i:int = 0; i < this._alertCells.length; i++)
-			{
-				if(this._alertCells[i].guid == this._alertGuidToAccept)
+				for (var i:int = 0; i < this._messageCells.length; i++)
 				{
-					this._cellContainer.removeChild(this._alertCells[i], true);
+					if(this._messageCells[i].guid == this._alertGuidToAccept)
+					{
+						this._cellContainer.removeChild(this._messageCells[i], true);
+					}
 				}
+				this._cellContainer.validate();
 			}
-			this._cellContainer.validate();
 		}
 
-		private function closePopup(e:Event = null):void
+		private function getMessageXMLByProperty(xmlList:XMLList,property:String,value:String):XML
 		{
-			PopUpManager.removePopUp(this._approveAlert);
-			this._alertGuidToAccept = "";
-		}
-		*/
-
-		private function getMessageXMLByGuid(guid:String):XML
-		{
-			var messageData:XML;
-			var listCount:uint = this._allReceivedMessages.length();
+			var xmlData:XML;
+			var listCount:uint = xmlList.length();
 			if(listCount > 0)
 			{
 				for(var i:uint = 0 ; i < listCount ; i++)
 				{
-					if(this._allReceivedMessages[i].MessageGuid == guid)
+					if(xmlList[i][property] == value)
 					{
-						messageData = this._allReceivedMessages[i];
+						xmlData = xmlList[i];
 						break;
 					}
 				}
 			}
-			return messageData;
+			return xmlData;
 		}
 
 		private function deleteMessageButtonHandler(e:Event):void

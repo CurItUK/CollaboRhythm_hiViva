@@ -131,15 +131,22 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private function messageSelectedHandler(e:FeathersScreenEvent):void
 		{
 			var targetCell:MessageInboxResultCell = e.target as MessageInboxResultCell;
-			var messageData:XML = getMessageXMLByGuid(targetCell.guid);
 			var messageType:String = targetCell.messageType;
+			var messageData:XML;
+			// WILL NEVER HAVE STATUS_ALERT_TYPE
+			switch(messageType)
+			{
+				case MessageInboxResultCell.COMPOSED_MESSAGE_TYPE :
+					messageData = getMessageXMLByProperty(this._allSentMessages,"MessageGuid",targetCell.guid);
+					break;
+			}
 			var screenNavProperties:Object =
 			{
-				messageName:messageData.Name,
-				messageDate:messageData.SentDate,
-				messageText:messageData.Message,
+				customHeight:Constants.STAGE_HEIGHT,
+				messageData:messageData,
 				messageType:messageType,
-				parentScreen:this.owner.activeScreenID
+				parentScreen:this.owner.activeScreenID,
+				isSent:true
 			};
 			if(this.owner.hasScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN))
 			{
@@ -149,22 +156,28 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this.owner.showScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN);
 		}
 
-		private function getMessageXMLByGuid(guid:String):XML
+		private function getMessageXMLByProperty(xmlList:XMLList,property:String,value:String):XML
 		{
-			var messageData:XML;
-			var listCount:uint = this._allSentMessages.length();
+			var xmlData:XML;
+			var listCount:uint = xmlList.length();
 			if(listCount > 0)
 			{
 				for(var i:uint = 0 ; i < listCount ; i++)
 				{
-					if(this._allSentMessages[i].MessageGuid == guid)
+					if(xmlList[i][property] == value)
 					{
-						messageData = this._allSentMessages[i];
+						xmlData = xmlList[i];
 						break;
 					}
 				}
 			}
-			return messageData;
+			return xmlData;
+		}
+
+		private function deleteUserMessageHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
+			trace('message deleted');
 		}
 
 		override public function dispose():void
