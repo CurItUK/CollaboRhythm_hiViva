@@ -32,6 +32,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.system.System;
 
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -69,34 +70,34 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.draw();
 
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 
-			this._usableHeight = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT - this._header.height;
+			this._usableHeight = Constants.STAGE_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT - Constants.HEADER_HEIGHT;
 
 			// 90% of stage width
-			IMAGE_SIZE = this.actualWidth * 0.9;
+			IMAGE_SIZE = Constants.STAGE_WIDTH * 0.9;
 
 
 			this._bg.width = IMAGE_SIZE;
 			this._bg.scaleY = this._bg.scaleX;
-			this._bg.x = (this.actualWidth * 0.5) - (this._bg.width * 0.5);
-			this._bg.y = (this._usableHeight * 0.5) + this._header.height - (this._bg.height * 0.5);
+			this._bg.x = (Constants.STAGE_WIDTH * 0.5) - (this._bg.width * 0.5);
+			this._bg.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._bg.height * 0.5);
 
 			this._rim.scaleX = this._bg.scaleX;
 			this._rim.scaleY = this._bg.scaleY;
-			this._rim.x = (this.actualWidth * 0.5) - (this._rim.width * 0.5);
-			this._rim.y = (this._usableHeight * 0.5) + this._header.height - (this._rim.height * 0.5);
+			this._rim.x = (Constants.STAGE_WIDTH * 0.5) - (this._rim.width * 0.5);
+			this._rim.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._rim.height * 0.5);
 
 			this._shine.scaleX = this._bg.scaleX;
 			this._shine.scaleY = this._bg.scaleY;
-			this._shine.x = (this.actualWidth * 0.5) - (this._shine.width * 0.5);
-			this._shine.y = (this._usableHeight * 0.5) + this._header.height - (this._shine.height * 0.5);
+			this._shine.x = (Constants.STAGE_WIDTH * 0.5) - (this._shine.width * 0.5);
+			this._shine.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._shine.height * 0.5);
 
 			this._homeImageInstructions.width = IMAGE_SIZE;
 			this._homeImageInstructions.validate();
-			this._homeImageInstructions.x =  (this.actualWidth * 0.5) - (this._homeImageInstructions.width * 0.5);
-			this._homeImageInstructions.y =  (this._usableHeight * 0.5) + this._header.height - (this._homeImageInstructions.height * 0.5);
+			this._homeImageInstructions.x =  (Constants.STAGE_WIDTH * 0.5) - (this._homeImageInstructions.width * 0.5);
+			this._homeImageInstructions.y =  (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._homeImageInstructions.height * 0.5);
 
 
 			if(this._today == null)
@@ -140,11 +141,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._homeImageInstructions);
 
 			this._messagesButton = new TopNavButton();
-			this._messagesButton.hivivaImage = "top_nav_icon_02";
+			this._messagesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_02"));
 			this._messagesButton.addEventListener(Event.TRIGGERED , messagesButtonHandler);
 
 			this._badgesButton = new TopNavButton();
-			this._badgesButton.hivivaImage = "top_nav_icon_03";
+			this._badgesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_03"));
 			this._badgesButton.addEventListener(Event.TRIGGERED , rewardsButtonHandler);
 
 			this._header.rightItems =  new <DisplayObject>[this._messagesButton, this._badgesButton];
@@ -339,13 +340,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			var bgHolder:flash.display.Sprite = new flash.display.Sprite();
 
 			var bgBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
-			cropToFit(bgBm, this.actualWidth, this._usableHeight);
+			cropToFit(bgBm, Constants.STAGE_WIDTH, this._usableHeight);
 			bgBm.alpha = 0.35;
 			bgHolder.addChild(bgBm);
 
 			var bgMask:flash.display.Sprite = new flash.display.Sprite();
 			bgMask.graphics.beginFill(0x000000);
-			bgMask.graphics.drawRect((bgBm.width * 0.5) - (this.actualWidth * 0.5),(bgBm.height * 0.5) - (this._usableHeight * 0.5),this.actualWidth, this._usableHeight);
+			bgMask.graphics.drawRect((bgBm.width * 0.5) - (Constants.STAGE_WIDTH * 0.5),(bgBm.height * 0.5) - (this._usableHeight * 0.5),Constants.STAGE_WIDTH, this._usableHeight);
 			bgHolder.addChild(bgMask);
 
 			bgBm.mask = bgMask;
@@ -355,8 +356,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var bgImage:Image = new Image(Texture.fromBitmapData(bmd));
 			bgImage.touchable = false;
-			bgImage.x = (this.actualWidth * 0.5) - (bgImage.width * 0.5);
-			bgImage.y = (this._usableHeight * 0.5) + this._header.height - (bgImage.height * 0.5);
+			bgImage.x = (Constants.STAGE_WIDTH * 0.5) - (bgImage.width * 0.5);
+			bgImage.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (bgImage.height * 0.5);
 			this._bgImageHolder.addChild(bgImage);
 
 
@@ -376,7 +377,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var circleHolder:flash.display.Sprite = new flash.display.Sprite();
 
 			var circleBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
-			cropToFit(circleBm, this.actualWidth, this._usableHeight);
+			cropToFit(circleBm, Constants.STAGE_WIDTH, this._usableHeight);
 			circleHolder.addChild(circleBm);
 
 			var blurValue:Number = Math.ceil((20 / 100) * this._adherencePercent);
@@ -399,8 +400,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var bgImage:Image = new Image(Texture.fromBitmapData(bmd));
 			bgImage.touchable = false;
-			bgImage.x = (this.actualWidth * 0.5) - (bgImage.width * 0.5);
-			bgImage.y = (this._usableHeight * 0.5) + this._header.height - (bgImage.height * 0.5);
+			bgImage.x = (Constants.STAGE_WIDTH * 0.5) - (bgImage.width * 0.5);
+			bgImage.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (bgImage.height * 0.5);
 			this._lensImageHolder.addChild(bgImage);
 
 			var colorFilter:ColorMatrixFilter = new ColorMatrixFilter();
