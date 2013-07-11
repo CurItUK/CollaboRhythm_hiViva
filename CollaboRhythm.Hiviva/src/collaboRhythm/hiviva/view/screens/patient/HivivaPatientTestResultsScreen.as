@@ -236,7 +236,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function getPatientLatestTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE, addTestResultsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE, getPatientLatestTestResultsCompleteHandler);
 
 			var testResults:XMLList = e.data.xmlResponse.Results.DCTestResult;
 			/*
