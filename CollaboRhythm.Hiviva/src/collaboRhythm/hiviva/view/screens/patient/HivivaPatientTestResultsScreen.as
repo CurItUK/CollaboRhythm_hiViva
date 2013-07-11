@@ -36,19 +36,13 @@ package collaboRhythm.hiviva.view.screens.patient
 	public class HivivaPatientTestResultsScreen extends ValidationScreen
 	{
 		private var _cd4Count:LabelAndInput;
-//		private var _cd4:LabelAndInput;
 		private var _viralLoad:LabelAndInput;
 		private var _date:LabelAndInput;
 		private var _dateButton:Button;
 		private var _cancelButton:Button;
 		private var _submitButton:Button;
 		private var _backButton:Button;
-		private var _sqConn:SQLConnection;
-		private var _sqStatement:SQLStatement;
-		private var _dataExists:Boolean;
 		private var _calendar:Calendar;
-
-//		private var _rightLabelFormat:TextFormat;
 
 		public function HivivaPatientTestResultsScreen()
 		{
@@ -57,7 +51,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function draw():void
 		{
-//			this._rightLabelFormat = new TextFormat("ExoRegular", Math.round(24 * this.dpiScale), 0x495c72);
 			super.draw();
 
 			this._dateButton.x = this._date.x + this._date._labelRight.x;
@@ -141,7 +134,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-			populateOldData();
+			getPatientLatestTestResult();
 		}
 
 		private function labelAndInputDrawProperties(landi:LabelAndInput):void
@@ -158,7 +151,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			PopUpManager.addPopUp(this._calendar,true,false);
 			this._calendar.width = this.actualWidth;
 			this._calendar.validate();
-			//PopUpManager.centerPopUp(this._calendar);
 		}
 
 		private function calendarButtonHandler(e:FeathersScreenEvent):void
@@ -213,8 +205,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
-
-
 		private function addTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ADD_TEST_RESULTS_COMPLETE , addTestResultsCompleteHandler);
@@ -234,76 +224,30 @@ package collaboRhythm.hiviva.view.screens.patient
 			return validationArray.join("\n");
 		}
 
-		private function sqlResultHandler(e:SQLEvent):void
+		private function getPatientLatestTestResult():void
 		{
-			trace("sqlResultHandler " + e);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE, getPatientLatestTestResultsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientLastTestResult(escape("Cd4 count,Viral load"));
 		}
-		private function populateOldData():void
+
+		private function getPatientLatestTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			var dbFile:File = File.applicationStorageDirectory;
-			dbFile = dbFile.resolvePath("settings.sqlite");
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE, addTestResultsCompleteHandler);
 
-			this._sqConn = new SQLConnection();
-			this._sqConn.open(dbFile);
+			var result:XMLList = e.data.xmlResponse.Results.DCTestResult;
+			trace(result.length());
 
-			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "SELECT * FROM test_results";
-			this._sqStatement.sqlConnection = this._sqConn;
-			this._sqStatement.execute();
-
-			var sqlRes:SQLResult = this._sqStatement.getResult();
-			//trace(sqlRes.data[0].cd4_count);
-			//trace(sqlRes.data[0].cd4);
-			//trace(sqlRes.data[0].viral_load);
-			//trace(sqlRes.data[0].date_of_last_test);
-			this._dataExists = true;
-
-			try
+			if(result.children().length() > 0)
 			{
-				this._cd4Count._input.text = sqlRes.data[0].cd4_count;
+				this._cd4Count._input.text = result[0].Result;
+				this._viralLoad._input.text = result[0].Result;
+				this._date._input.text = result[0].TestDate;
 			}
-			catch(e:Error)
+			else
 			{
-				//trace("fail");
 				this._cd4Count._input.text = "";
-				this._dataExists = false;
-			}
-
-
-/*
-
-			try
-			{
-				this._cd4._input.text = sqlRes.data[0].cd4;
-			}
-			catch(e:Error)
-			{
-				//trace("fail");
-				this._cd4._input.text = "";
-				this._dataExists = false;
-			}
-*/
-
-			try
-			{
-				this._viralLoad._input.text = sqlRes.data[0].viral_load;
-			}
-			catch(e:Error)
-			{
-				//trace("fail");
 				this._viralLoad._input.text = "";
-				this._dataExists = false;
-			}
-
-			try
-			{
-				this._date._input.text = sqlRes.data[0].date_of_last_test;
-			}
-			catch(e:Error)
-			{
-				//trace("fail");
 				this._date._input.text = "";
-				this._dataExists = false;
 			}
 		}
 	}

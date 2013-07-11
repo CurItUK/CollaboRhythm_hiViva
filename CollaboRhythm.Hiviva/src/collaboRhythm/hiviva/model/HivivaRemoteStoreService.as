@@ -300,12 +300,12 @@ package collaboRhythm.hiviva.model
 
 		public function addTestResults(testResultData:XML):void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_ADD_TEST_RESULTS);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_ADD_TEST_RESULTS );
 			urlRequest.data = testResultData.toXMLString();
 			urlRequest.contentType = "text/xml";
 			urlRequest.method = URLRequestMethod.POST;
 
-			trace("takeMedication " + urlRequest.url);
+			trace("addTestResults " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, addTestResultsCompleteHandler);
 			urlLoader.load(urlRequest);
@@ -318,6 +318,26 @@ package collaboRhythm.hiviva.model
 			evt.data.xmlResponse = xmlResponse;
 			this.dispatchEvent(evt)
 		}
+
+		public function getPatientLastTestResult(testData:String):void
+		{
+			var query:String = "userGuid=" + HivivaStartup.userVO.guid + "&testDescriptions=" + testData;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_PATIENT_LATEST_RESULTS + query);
+			trace("getPatientLastTestResult " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getPatientLatestTestResultsCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getPatientLatestTestResultsCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt);
+		}
+
+
 	}
 }
 
