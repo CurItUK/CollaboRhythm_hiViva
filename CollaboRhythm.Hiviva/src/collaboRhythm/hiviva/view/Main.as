@@ -23,6 +23,11 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessages;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHelpScreen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_About_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_Display_Settings_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_GettingStarted_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_Privacy_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_Wcidwh_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientAddHCP;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientBagesScreen;
 	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
@@ -43,6 +48,18 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientViewMedicationScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientVirusModelScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientUserSignupScreen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Connect_To_Care_Provider_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_DailyMedicines_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_GettingStarted_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_HomePagePhoto_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Messages_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Produce_A_Report_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Register_Tolerability_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Rewards_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_SeeAdherence_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_TakeMedicine_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_TestResults_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Virus_Model_Screen;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaSplashScreen;
 	import collaboRhythm.hiviva.view.screens.shared.MainBackground;
 
@@ -270,6 +287,23 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.HCP_PATIENT_PROFILE, new ScreenNavigatorItem(HivivaHCPPatientProfileScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.HCP_MESSAGE_COMPOSE_SCREEN, new ScreenNavigatorItem(HivivaHCPMessageCompose, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.HCP_RESET_SETTINGS, new ScreenNavigatorItem(HivivaHCPSettingsScreen, {navGoHome:goBackToMainScreen, navFromReset:resetApplication}));
+		//	this._settingsNav.addScreen(HivivaScreens.HCP_RESET_SETTINGS, new ScreenNavigatorItem(HivivaHCPSettingsScreen, {navGoHome:goBackToMainScreen, navFromReset:resetApplication}));
+
+			this._settingsNav.addScreen(HivivaScreens.HCP_HELP_ABOUT_SCREEN, new ScreenNavigatorItem(HivivaHCP_help_About_Screen, {navGoHome:goBackToMainScreen }));
+			this._settingsNav.addScreen(HivivaScreens.HCP_HELP_GETTINGSTARTED_SCREEN, new ScreenNavigatorItem(HivivaHCP_help_GettingStarted_Screen, {navGoHome:goBackToMainScreen }));
+			this._settingsNav.addScreen(HivivaScreens.HCP_HELP_WCIDWH_SCREEN, new ScreenNavigatorItem(HivivaHCP_help_Wcidwh_Screen, {navGoHome:goBackToMainScreen }));
+
+            this._settingsNav.addScreen(HivivaScreens.HCP_HELP_DISPLAY_SETTINGS , new ScreenNavigatorItem(HivivaHCP_help_Display_Settings_Screen, {navGoHome:goBackToMainScreen }));
+			this._settingsNav.addScreen(HivivaScreens.HCP_HELP_PRIVACY_SCREEN, new ScreenNavigatorItem(HivivaHCP_help_Privacy_Screen , {navGoHome:goBackToMainScreen }));
+
+
+
+
+
+
+
+
+
 
 		}
 
@@ -286,6 +320,34 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientAddMedsScreen));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN, new ScreenNavigatorItem(HivivaPatientUserSignupScreen));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:goBackToMainScreen}));
+
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_GETTINGSTARTED_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_GettingStarted_Screen, {navGoHome:goBackToMainScreen}));
+
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_DAILY_MEDICINES_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_DailyMedicines_Screen, {navGoHome:goBackToMainScreen}));
+		    this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_HOMEPAGE_PHOTO_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_HomePagePhoto_Screen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_CONNECT_TO_CARE_PROVIDER_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_Connect_To_Care_Provider_Screen, {navGoHome:goBackToMainScreen}));
+
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_TEST_RESULTS_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_TestResults_Screen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_TAKE_MEDICINE_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_TakeMedicine_Screen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_SEE_ADHERENCE_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_SeeAdherence_Screen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_REWARDS_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_Rewards_Screen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_Messages_Screen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_REGISTER_TOLERABILITY_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_Register_Tolerability_Screen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_VIRUS_MODEL_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_Virus_Model_Screen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_PULL_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_Produce_A_Report_Screen, {navGoHome:goBackToMainScreen}));
+
+
+
+
+
+
+
+
+
+
+
+
+
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_EDIT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientSettingsScreen, {navGoHome:goBackToMainScreen , navFromReset:resetApplication}));

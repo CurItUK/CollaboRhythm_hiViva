@@ -81,8 +81,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				var lc:ListCollection = new ListCollection(
 					[
 						{name: "dailyMedicines", label: "Daily Medicines"},
-					    {name: "privacy", label: "Homepage photo"},
-					 	{name: "gettingstarted", label: "Connect to care provider"}
+					    {name: "homepagephoto", label: "Homepage photo"},
+					 	{name: "connecttocareprovider", label: "Connect to care provider"}
 					]
 				);
 
@@ -174,9 +174,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	{
 
 	case "dailyMedicines" :
-	scrManager.init( HivivaPatient_help_About_Screen)
-
-
+	scrManager.init( HivivaPatient_help_About_Screen);
 	scrManager.__addScreen(HivivaScreens.PATIENT_HELP_ABOUT_SCREEN)
 	break;
 	case "privacy" :

@@ -39,10 +39,27 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_HELP_GETTINGSTARTED_SCREEN:String	= "patient_help_GettingStarted_Screen";
 		public static const PATIENT_HELP_DAILY_MEDICINES_SCREEN:String	= "patient_help_DailyMedicines_Screen";
 
+		public static const PATIENT_HELP_HOMEPAGE_PHOTO_SCREEN:String	= "patient_help_HomePagePhoto_Screen";
+		public static const PATIENT_HELP_CONNECT_TO_CARE_PROVIDER_SCREEN:String	= "patient_help_Connect_To_Care_Provider_Screen";
+
 
 		public static const PATIENT_HELP_WCIDWH_SCREEN:String			= "patient_help_WCIDWH_Screen";
 		public static const PATIENT_HELP_HELP5_SCREEN:String			= "patient_help_help5_Screen";
 		public static const PATIENT_HELP_HELP6_SCREEN:String			= "patient_help_help6_Screen";
+
+		public static const PATIENT_HELP_TEST_RESULTS_SCREEN:String	    = "patient_help_test_results_Screen";
+		public static const PATIENT_HELP_TAKE_MEDICINE_SCREEN:String	= "patient_help_take_medicine_Screen";
+		public static const PATIENT_HELP_SEE_ADHERENCE_SCREEN:String    = "patient_help_see_adherence_Screen";
+		public static const PATIENT_HELP_REWARDS_SCREEN:String	        = "patient_help_rewards_Screen";
+		public static const PATIENT_HELP_MESSAGES_SCREEN:String	        = "patient_help_messages_Screen";
+		public static const PATIENT_HELP_REGISTER_TOLERABILITY_SCREEN:String = "patient_help_register_tolerability_Screen";
+		public static const PATIENT_HELP_VIRUS_MODEL_SCREEN:String	   = "patient_help_virus_model_Screen";
+		public static const PATIENT_HELP_PULL_REPORTS_SCREEN:String	   = "patient_help_pull_reports_Screen";
+
+
+
+
+
 
 
 	     public static const HCP_HELP_HELP1_SCREEN:String				= "hcp_help_help1_Screen";
@@ -51,6 +68,20 @@ package collaboRhythm.hiviva.global
 		 public static const HCP_HELP_HELP4_SCREEN:String				= "hcp_help_help4_Screen";
 		 public static const HCP_HELP_HELP5_SCREEN:String				= "hcp_help_help5_Screen";
 		 public static const HCP_HELP_HELP6_SCREEN:String				= "hcp_help_help6_Screen";
+
+		public static const HCP_HELP_DISPLAY_SETTINGS : String          = "hcp_help_display_settings"
+
+
+		public static const HCP_HELP_ABOUT_SCREEN : String              = "hcp_help_about_screen";
+		public static const HCP_HELP_PRIVACY_SCREEN : String            = "hcp_help_privacy_screen";
+		public static const HCP_HELP_GETTINGSTARTED_SCREEN : String     = "hcp_help_getting_started_screen";
+		public static const HCP_HELP_WCIDWH_SCREEN : String             = "hcp_help_wcidwh_screen";
+
+		public static const HCP_HELP_DAILY_MEDICINES : String           = "hcp_help_daily_medicines";
+
+
+
+
 
 
 		public static const HCP_HOME_SCREEN:String						= "hcpHomeScreen";
@@ -67,7 +98,7 @@ package collaboRhythm.hiviva.global
 		public static const HCP_MESSAGE_INBOX_SCREEN:String				= "hcpMessageInboxScreen";
 		public static const HCP_MESSAGE_COMPOSE_SCREEN:String			= "hcpMessageComposeScreen";
 		public static const HCP_MESSAGE_SENT_SCREEN:String				= "hcpMessageSentScreen";
-		public static const MESSAGE_DETAIL_SCREEN:String			= "hcpMessageDetailScreen";
+		public static const MESSAGE_DETAIL_SCREEN:String			    = "hcpMessageDetailScreen";
 		public static const HCP_HELP_DETAIL_SCREEN:String				= "patientHelpDetailScreen";
 		public static const HCP_PATIENT_MESSAGE_COMPOSE_SCREEN:String	= "hcpPatientMessageComposeScreen";
 		public static const HCP_RESET_SETTINGS:String					= "hcpResetSettings";

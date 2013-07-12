@@ -17,36 +17,22 @@ package collaboRhythm.hiviva.view.screens.patient
 		import feathers.layout.AnchorLayoutData;
 	    import starling.events.Event;
 	import starling.display.DisplayObject;
-	public class HivivaPatient_help_Privacy_Screen extends Screen
+	public class HivivaPatient_help_TakeMedicine_Screen extends Screen
 	{
 		private var _header:HivivaHeader;
 		private var _title:String;
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  =  "A number of precautions are in place to preserve privacy.\n\n"+
-                "Patients and care providers are assigned a unique identifier for their app profile.  " +
-                "If you wish to make a connection, your connection will require this identifier to " +
-                "find you specifically.  The only key connecting the identifier with patient name should " +
-                "be secured in a locked cabinet of the study of the provider treating that patient.\n\n"+
-		        "The app has a password in addition to any password that a user may already have established " +
-				"on his or her smart phone or tablet. This level of protection does not limit access " +
-				"to other applications, but does prevent others from viewing screens within the HIV " +
-				"medication adherence application that reveal its purpose and, therefore, " +
-				"the HIV status of the user. \n\n"+
-				"All patient data will be stored on a centrally managed database server that is password " +
-				"protected and kept in a locked server room in London, UK. Only a coded identifier will be " +
-				"stored with each patient’s adherence data on the server. This means that no identifiable " +
-				"health information will be stored on any of the cell phones or the server at any time. This " +
-				"additional privacy protection mechanism will ensure that data cannot be linked to an individual " +
-				"patient. \n\n"+
-				"All patient data sent between cell phone and server will be encrypted using industry standard 128-bit encryption. " +
-				"This means that, even if data is intercepted between the device and the server, no identifiable health " +
-				"information is available. "
+		private var _pageString : String  = "You can view your regimen either on a clock face or within a table. " +
+						"The page loads with the clock face, showing how many meds are taken at what time. " +
+						"This can be switched to the tabular view of how many tablets per medication, " +
+						"morning or afternoon, via the " +
+				"slider at the top. On the Take Medication page, you can indicate " +
+				"whether you have taken your medication in line with your prescribed regimen."
 
 
-
-		public function HivivaPatient_help_Privacy_Screen()
+		public function HivivaPatient_help_TakeMedicine_Screen()
 		{
 			super();
 		}
@@ -70,8 +56,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				super.initialize();
 				this._header = new HivivaHeader();
-				this._header.bold = true ;
-				this._header.title = "Privacy"//  this._title;
+				this._header.bold = true;
+				this._header.title = "Take Medicine"//  this._title;
 				addChild(this._header);
 				this._scrollText = new ScrollText();
                 this._scrollText.text =  this._pageString;  //"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.\n\nNeque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\n\nAt vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.";
@@ -87,7 +73,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		private function backBtnHandler():void
 				{
-					this.owner.showScreen(HivivaScreens.PATIENT_HELP_SCREEN);
+					this.owner.showScreen(HivivaScreens.PATIENT_HELP_WCIDWH_SCREEN);
 				}
 
 				public function get title():String

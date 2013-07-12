@@ -6,6 +6,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.media.Assets;
     import collaboRhythm.hiviva.view.screens.patient.HelpScreens.ScreenManager;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_About_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_GettingStarted_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_Privacy_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_Wcidwh_Screen;
+
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Header;
@@ -85,10 +90,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			var lc:ListCollection = new ListCollection(
 				[
-					{name: "about", label: "About"},
-					{name: "privacy", label: "Privacy"},
-					{name: "gettingstarted", label: "Getting Started"},
-					{name: "whatcanIdowithhiviva", label: "What can I do with hiVIVA?"}
+					{name: "hcpabout", label: "About"},
+					{name: "hcpprivacy", label: "Privacy"},
+					{name: "hcpgettingstarted", label: "Getting Started"},
+					{name: "hcpwhatcanIdowithhiviva", label: "What can I do with hiVIVA?"}
 				]
 			);
 
@@ -158,16 +163,18 @@ package collaboRhythm.hiviva.view.screens.hcp
             scrManager._sNav = this.owner;
 			var __exists : Boolean  = scrManager.setStatus(_searchString) ;
 
+
 			if(__exists)return;
 
 			switch(_searchString)
 			{
 
-				case "about" :
-//					scrManager.init( HivivaPatient_help_About_Screen)
-//					scrManager.__addScreen(HivivaScreens.PATIENT_HELP_ABOUT_SCREEN)
+				case "hcpabout" :
+					scrManager.init( HivivaHCP_help_About_Screen)
+					scrManager.__addScreen(HivivaScreens.HCP_HELP_ABOUT_SCREEN)
+//						PATIENT_HELP_ABOUT_SCREEN
 					break;
-				case "privacy" :
+				case "hcpprivacy" :
 						/*
 					temp = String(HivivaScreens.PATIENT_HELP_HELP2_SCREEN);
 					var screenNavItem2:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help2_Screen);
@@ -178,10 +185,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 					new HelpScreen2(this.owner , HivivaPatient_help_help2_Screen).__addScreen();
 					// __arr.push(temp);
 					*/
-//					scrManager.init(  HivivaPatient_help_Privacy_Screen)
-//					scrManager.__addScreen(HivivaScreens.PATIENT_HELP_PRIVACY_SCREEN)
+					scrManager.init(  HivivaHCP_help_Privacy_Screen)
+					scrManager.__addScreen(HivivaScreens.HCP_HELP_PRIVACY_SCREEN)
 					break;
-				case "gettingstarted" :
+				case "hcpgettingstarted" :
 						/*
 					var screenNavItem3:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help3_Screen);
 					// temp = String(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
@@ -189,18 +196,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 					this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
 					// __arr.push(temp);
 					*/
-//					scrManager.init( HivivaPatient_help_GettingStarted_Screen)
-//					scrManager.__addScreen(HivivaScreens.PATIENT_HELP_GETTINGSTARTED_SCREEN)
+				 	 scrManager.init( HivivaHCP_help_GettingStarted_Screen)
+		             scrManager.__addScreen(HivivaScreens.HCP_HELP_GETTINGSTARTED_SCREEN)
 					break;
-				case "whatcanIdowithhiviva" :
+				case "hcpwhatcanIdowithhiviva" :
 				/*	var screenNavItem4:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help4_Screen);
 					// temp = String(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
 					this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN, screenNavItem4);
 					this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
 					// __arr.push(temp);*/
-//					scrManager.init( HivivaPatient_help_Wcidwh_Screen)
-//					scrManager.__addScreen(HivivaScreens.PATIENT_HELP_WCIDWH_SCREEN)
-						break;
+					scrManager.init( HivivaHCP_help_Wcidwh_Screen)
+					scrManager.__addScreen(HivivaScreens.HCP_HELP_WCIDWH_SCREEN)
+				 break;
 
 
 			}

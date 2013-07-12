@@ -15,9 +15,12 @@ package collaboRhythm.hiviva.view.screens.patient
 		import feathers.display.TiledImage;
 		import feathers.events.FeathersEventType;
 		import feathers.layout.AnchorLayoutData;
-	    import starling.events.Event;
+
+//	import flash.events.Event;
+
+	import starling.events.Event;
 	import starling.display.DisplayObject;
-	public class HivivaPatient_help_Privacy_Screen extends Screen
+	public class HivivaHCP_help_Privacy_Screen extends Screen
 	{
 		private var _header:HivivaHeader;
 		private var _title:String;
@@ -46,7 +49,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 
 
-		public function HivivaPatient_help_Privacy_Screen()
+		public function HivivaHCP_help_Privacy_Screen()
 		{
 			super();
 		}
@@ -81,13 +84,13 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._backButton = new Button();
 				this._backButton.name = "back-button";
 				this._backButton.label = "Back";
-				this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
+				 this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 				this._header.leftItems = new <DisplayObject>[_backButton];
 			}
-		private function backBtnHandler():void
+		private function backBtnHandler(e:Event):void
 				{
-					this.owner.showScreen(HivivaScreens.PATIENT_HELP_SCREEN);
+					this.owner.showScreen(HivivaScreens.HCP_HELP_SCREEN);
 				}
 
 				public function get title():String
