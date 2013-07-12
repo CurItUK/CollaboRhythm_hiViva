@@ -252,8 +252,7 @@ package collaboRhythm.hiviva.controller
 		private function addTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
 			service.removeEventListener(RemoteDataStoreEvent.ADD_TEST_RESULTS_COMPLETE , addTestResultsCompleteHandler);
-			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE);
-			evt.data = e.data;
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.ADD_TEST_RESULTS_COMPLETE);
 			this.dispatchEvent(evt);
 		}
 

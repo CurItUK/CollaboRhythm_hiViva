@@ -2,6 +2,8 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.components.Calendar;
@@ -180,7 +182,9 @@ package collaboRhythm.hiviva.view.screens.patient
 				//TODO add this date format to modifier class
 				var pattern:RegExp = /\//g;
 				var dateData:String = this._date._input.text;
-				var formatedDate:String = dateData.replace(pattern ,"-") + "T00:00:00";
+				var formatedDate:String = dateData.replace(pattern ,"-");
+				var ukDate:String = HivivaModifier.toUKDateFromUS(formatedDate) + "T00:00:00";
+
 				var userGuid:String = HivivaStartup.userVO.guid;
 
 				var resultData:XML =
@@ -188,12 +192,12 @@ package collaboRhythm.hiviva.view.screens.patient
 							<UserGuid>{userGuid}</UserGuid>
 							<Results>
 								<DCTestResult>
-									<TestDate>{formatedDate}</TestDate>
+									<TestDate>{ukDate}</TestDate>
 									<TestDescription>Cd4 count</TestDescription>
 									<Result>{cd4CountData}</Result>
 								</DCTestResult>
 								<DCTestResult>
-									<TestDate>{formatedDate}</TestDate>
+									<TestDate>{ukDate}</TestDate>
 									<TestDescription>Viral load</TestDescription>
 									<Result>{viralLoadData}</Result>
 								</DCTestResult>
@@ -209,10 +213,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
+
+
 		private function addTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ADD_TEST_RESULTS_COMPLETE , addTestResultsCompleteHandler);
-			trace("addTestResultsCompleteHandler " + e.data.xmlResponse);
 			showFormValidation("Your details have been saved");
 		}
 
@@ -256,7 +261,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				this._cd4Count._input.text = String(Math.floor(testResults[0].Result));
 				this._viralLoad._input.text = String(Math.floor(testResults[1].Result));
-				this._date._input.text = String(testResults[0].TestDate).substring(0,10);
+				this._date._input.text = HivivaModifier.toUSDateFromUK(String(testResults[0].TestDate).substring(0,10));
 			}
 			else
 			{
