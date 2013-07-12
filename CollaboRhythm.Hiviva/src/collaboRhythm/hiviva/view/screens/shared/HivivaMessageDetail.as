@@ -130,7 +130,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._statusResponse = new HivivaPopUp();
 			this._statusResponse.confirmLabel = "Ok";
-			this._statusResponse.width = Constants.STAGE_WIDTH * 0.5;
+			this._statusResponse.width = Constants.STAGE_WIDTH * 0.8;
 		}
 		private function optionsHandler(e:starling.events.Event):void
 		{
@@ -194,7 +194,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			if(e.data.xmlResponse.StatusCode == "1")
 			{
-				initStatusResponsePopup("Success! You are now connected to user(" + _messageData.FromUserGuid + ")", callBack);
+				initStatusResponsePopup("Success! You are now connected to user(" + _messageData.FromAppId + ")", callBack);
 			}
 			else
 			{
@@ -216,14 +216,10 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._statusResponse.drawCloseButton();
 		}
 
-		private function closePopup(e:Event):void
-		{
-			PopUpManager.removePopUp(this._statusResponse);
-		}
-
 		private function callBack():void
 		{
 			this.dispatchEventWith("messageDetailEvent");
+			PopUpManager.removePopUp(this._statusResponse);
 			backBtnHandler();
 		}
 
