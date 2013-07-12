@@ -30,7 +30,7 @@ package collaboRhythm.hiviva.view.screens
 
 	public class PatientResultCellHome extends FeathersControl
 	{
-		private var _scale:Number;
+		private var _scale:Number = 1;
 		private var _isResult:Boolean;
 		private var _patientData:XML;
 		private var _bg:Scale9Image;

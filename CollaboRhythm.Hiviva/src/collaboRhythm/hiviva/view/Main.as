@@ -84,7 +84,7 @@ package collaboRhythm.hiviva.view
 		private var _patientSideNavScreen:HivivaPatientSideNavScreen;
 		private var _hcpSideNavScreen:HivivaHCPSideNavigationScreen;
 
-		private static var _selectedHCPPatientProfile:Object = {};
+		private static var _selectedHCPPatientProfile:XML;
 		private static var _assets:AssetManager;
 		private static var _footerBtnGroupHeight:Number;
 
@@ -299,11 +299,7 @@ package collaboRhythm.hiviva.view
 
 		private function navigateToDirectProfileMenu(e:Event):void
 		{
-			if(e.data.patientName != null)
-			{
-				_selectedHCPPatientProfile.name = e.data.patientName;
-				_selectedHCPPatientProfile.appID = e.data.appID;
-			}
+			if(e.data.patientProfile != null) _selectedHCPPatientProfile = e.data.patientProfile as XML;
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
 			evt.message = e.data.profileMenu;
 
@@ -413,7 +409,7 @@ package collaboRhythm.hiviva.view
 			this._footerBtnGroup.asButtonGroup().visible = true;
 		}
 
-		public static function get selectedHCPPatientProfile():Object
+		public static function get selectedHCPPatientProfile():XML
 		{
 			return _selectedHCPPatientProfile;
 		}

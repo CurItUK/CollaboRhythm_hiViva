@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
@@ -79,10 +80,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function draw():void
 		{
 			super.draw();
-			this._header.width = this.actualWidth;
+			this._header.width = Constants.STAGE_WIDTH;
 			this._header.initTrueTitle();
 
-			initPatientXMLData();
+			drawPatientProfile();
 		}
 
 		override protected function initialize():void
@@ -98,7 +99,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
+
+			_patientData = Main.selectedHCPPatientProfile;
 		}
+/*
 
 		private function initPatientXMLData():void
 		{
@@ -114,6 +118,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			drawPatientProfile();
 
 		}
+*/
 
 		private function drawPatientProfile():void
 		{
@@ -124,7 +129,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientImageBg.touchable = false;
 			this.addChild(this._patientImageBg);
 
-			var innerWidth:Number = this.actualWidth - (scaledPadding * 2);
+			var innerWidth:Number = Constants.STAGE_WIDTH - (scaledPadding * 2);
 
 
 			this._patientImageBg.x = scaledPadding;
@@ -171,7 +176,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._reportAndMessage.x = scaledPadding;
 			this._reportAndMessage.y = this._patientImageBg.y + this._patientImageBg.height + gap;
 
-			drawPatientTable();
+			// TODO : uncomment when we have patient history from remote service
+//			drawPatientTable();
 
 			doImageLoad("media/patients/" + _patientData.picture);
 
@@ -184,7 +190,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			patientAdherenceTable.patientData = _patientData;
 			addChild(patientAdherenceTable);
 			patientAdherenceTable.y = this._reportAndMessage.y + this._reportAndMessage.height + (this.actualHeight * 0.02);
-			patientAdherenceTable.width = this.actualWidth;
+			patientAdherenceTable.width = Constants.STAGE_WIDTH;
 			patientAdherenceTable.height = this.actualHeight - patientAdherenceTable.y;
 			patientAdherenceTable.validate();
 			patientAdherenceTable.drawTable();
