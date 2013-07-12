@@ -133,7 +133,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._adherenceRow);
 
 			this._adherenceCheck = new Check();
-			this._adherenceCheck.label = "Adherence >";
+			this._adherenceCheck.label = "Adherence <";
 			this._adherenceCheck.isSelected = false;
 			this._adherenceRow.addChild(this._adherenceCheck);
 
@@ -166,7 +166,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._tolerabilityRow);
 
 			this._tolerabilityCheck = new Check();
-			this._tolerabilityCheck.label = "Tolerability >";
+			this._tolerabilityCheck.label = "Tolerability <";
 			this._tolerabilityCheck.isSelected = false;
 			this._tolerabilityRow.addChild(this._tolerabilityCheck);
 
