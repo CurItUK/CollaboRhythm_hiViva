@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 
@@ -239,8 +240,34 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function closeDownScreen():void
 		{
+			if(HivivaStartup.userVO.type == Constants.APP_TYPE_PATIENT)
+			{
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
+			}
+			else
+			{
+				this.dispatchEventWith("complete");
+			}
+		}
+
+		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+
+			if(e.data.xmlResponse.children().length() > 0)
+			{
+				updateUserDailyAdherence(e.data.xmlResponse);
+			}
 			this.dispatchEventWith("complete");
 		}
+
+		private function updateUserDailyAdherence(medicationData:XML):void
+		{
+			HivivaStartup.patientAdherenceVO.percentage = HivivaModifier.calculateDailyAdherence(medicationData.DCUserMedication.Schedule.DCMedicationSchedule);
+			trace("patientAdherenceVO " + HivivaStartup.patientAdherenceVO.percentage);
+		}
+
 
 		override public function dispose():void
 		{

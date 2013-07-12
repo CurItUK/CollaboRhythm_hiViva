@@ -196,6 +196,7 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+
 		public function getAdherence():void
 		{
 			service.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);

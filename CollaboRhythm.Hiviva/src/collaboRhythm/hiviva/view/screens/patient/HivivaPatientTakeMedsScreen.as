@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.components.SelectMedicationCell;
@@ -241,7 +242,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function submitButtonHandler(e:Event):void
 		{
-			trace(this._medicationData);
+
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.takeMedication(this._medicationData);
 		}
@@ -250,6 +251,16 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
 			showFormValidation("medicine schedule updated");
+			updateUserDailyAdherence();
+		}
+
+		private function updateUserDailyAdherence():void
+		{
+			trace(this._medicationData);
+			HivivaStartup.patientAdherenceVO.percentage = HivivaModifier.calculateDailyAdherence(this._medicationData.DCUserMedication.Schedule.DCMedicationSchedule);
+			trace("patientAdherenceVO " + HivivaStartup.patientAdherenceVO.percentage);
 		}
 	}
 }
+
+

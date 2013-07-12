@@ -354,5 +354,19 @@ package collaboRhythm.hiviva.utils
 			var dateSplit:Array = date.split("-");
 			return dateSplit[1] + "/" + dateSplit[2] + "/" + dateSplit[0];
 		}
+
+		public static function calculateDailyAdherence(patientShedules:XMLList):Number
+		{
+			var scheduleList:XMLList = patientShedules ;
+			var scheduleCount:uint = scheduleList.length();
+			var scheduleTaken:uint = 0;
+			for(var i :uint = 0 ; i < scheduleCount ; i++)
+			{
+				if(scheduleList[i].Taken == "true") scheduleTaken += 1;
+			}
+			var percentage:Number = Math.round(scheduleTaken / scheduleCount * 100);
+
+			return percentage;
+		}
 	}
 }

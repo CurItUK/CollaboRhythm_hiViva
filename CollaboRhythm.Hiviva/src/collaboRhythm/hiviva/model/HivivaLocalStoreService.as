@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.model
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.model.vo.PatientAdherenceVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.vo.AppDataVO;
@@ -35,10 +36,12 @@ package collaboRhythm.hiviva.model
 		private var _alertSettings:Object;
 		private var _viewedMessagesIds:Array;
 		private var _userVO:UserVO;
+		private var _patientAdherenceVO:PatientAdherenceVO;
 
 		public function HivivaLocalStoreService()
 		{
 			this._userVO = new UserVO();
+			this._patientAdherenceVO = new PatientAdherenceVO();
 		}
 
 		public function initDataLoad():void
@@ -1103,8 +1106,7 @@ package collaboRhythm.hiviva.model
 
 			this._sqStatement = new SQLStatement();
 
-			this._sqStatement.text = "INSERT INTO patient_messages (viewed_ids) VALUES ('" +
-					this._viewedMessagesIds.join(",") + "')";
+			this._sqStatement.text = "INSERT INTO patient_messages (viewed_ids) VALUES ('" + this._viewedMessagesIds.join(",") + "')";
 
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, savePatientMessagesViewedHandler);
@@ -1120,6 +1122,11 @@ package collaboRhythm.hiviva.model
 		public function get userVO():UserVO
 		{
 			return this._userVO;
+		}
+
+		public function get patientAdherenceVO():PatientAdherenceVO
+		{
+			return this._patientAdherenceVO;
 		}
 
 	}
