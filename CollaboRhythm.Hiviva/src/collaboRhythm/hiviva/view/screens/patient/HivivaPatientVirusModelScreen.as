@@ -188,6 +188,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			if(this._remoteCallCount == 2)
 			{
+				this._adherence = HivivaStartup.patientAdherenceVO.percentage;
 				initVirusModel();
 			}
 		}
