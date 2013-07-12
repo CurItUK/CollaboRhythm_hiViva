@@ -119,7 +119,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._menuBtnGroup.customLastButtonName = "patient-profile-nav-buttons";
 			this._menuBtnGroup.dataProvider = new ListCollection(
 				[
-					{name: "edit", label: "Edit profile"},
+					//{name: "edit", label: "Edit profile"},
 					{name: "display", label: "Display settings"},
 					{name: "alerts", label: "Alerts"},
 					{name: "connect", label: "Connect to a patient"},

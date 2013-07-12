@@ -2,12 +2,15 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 {
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientVirusModelScreen;
 
+	import com.greensock.TweenLite;
+
 	import feathers.controls.Screen;
 
 	import flash.utils.Timer;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.textures.Texture;
 
 	public class TCellView extends Sprite
@@ -134,6 +137,8 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 		public function addMedication(adherence:Number , medTexture:Texture):void
 		{
+
+
 			this._medShield = new Image(medTexture);
 			this._medShield.width = 90;
 			this._medShield.height = 90;
@@ -151,26 +156,126 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 				removeVirusatPosition([10, 12]);
 				removeVirusatPosition([-10, -12]);
 				removeVirusatPosition([10, -12]);
+				this._medShield.alpha = 1;
 			}
 			else if (adherence <= 90 && adherence >= 85)
 			{
-				removeVirusatPosition([-14, 0]);
-				removeVirusatPosition([24, 0]);
-				removeVirusatPosition([-10, 12]);
-				removeVirusatPosition([10, 12]);
+
+				switch(getRandomVirusPosition(4))
+				{
+					case 0 :
+
+						removeVirusatPosition([-10, 12]);
+						removeVirusatPosition([10, 12]);
+						removeVirusatPosition([-10, -12]);
+						removeVirusatPosition([10, -12]);
+
+						break;
+
+					case 1 :
+
+						removeVirusatPosition([24, 0]);
+						removeVirusatPosition([-10, 12]);
+						removeVirusatPosition([10, 12]);
+						removeVirusatPosition([-10, -12]);
+
+						break;
+
+					case 2 :
+
+						removeVirusatPosition([-14, 0]);
+						removeVirusatPosition([24, 0]);
+						removeVirusatPosition([10, 12]);
+						removeVirusatPosition([10, -12]);
+
+						break;
+
+					case 3 :
+
+						removeVirusatPosition([-14, 0]);
+						removeVirusatPosition([24, 0]);
+						removeVirusatPosition([-10, 12]);
+						removeVirusatPosition([10, 12]);
+
+						break;
+
+					case 4 :
+
+						removeVirusatPosition([-14, 0]);
+						removeVirusatPosition([-10, 12]);
+						removeVirusatPosition([10, 12]);
+						removeVirusatPosition([-10, -12]);
+
+						break;
+				}
+
+
 				this._medShield.alpha = 0.8;
+			}
+			else if (adherence < 85 && adherence >= 80)
+			{
+
+				switch(getRandomVirusPosition(4))
+				{
+					case 0 :
+
+						removeVirusatPosition([-10, 12]);
+						removeVirusatPosition([10, 12]);
+
+						break;
+
+					case 1 :
+
+						removeVirusatPosition([10, 12]);
+						removeVirusatPosition([-10, -12]);
+
+						break;
+
+					case 2 :
+
+						removeVirusatPosition([-14, 0]);
+						removeVirusatPosition([10, -12]);
+
+						break;
+
+					case 3 :
+
+						removeVirusatPosition([-14, 0]);
+						removeVirusatPosition([10, 12]);
+
+						break;
+
+					case 4 :
+						removeVirusatPosition([10, 12]);
+						removeVirusatPosition([-10, -12]);
+
+						break;
+				}
+
+				this._medShield.alpha = 0.5;
 			}
 			else
 			{
-				this._medShield.alpha = 0.3;
+				this._medShield.alpha = 0.2;
 			}
 
 
 			if (this._attachedViruses.length == 0)
 			{
+				this.addEventListener(Event.ENTER_FRAME, aliveAnimation);
 				this.alive = true;
-				this._tCellImage..alpha = 1;
+				this._tCellImage.alpha = 1;
 			}
+		}
+
+		private function getRandomVirusPosition(maxValue:Number):Number
+		{
+			return Math.round(Math.random() * maxValue);
+		}
+
+		private function aliveAnimation(e:Event):void
+		{
+			TweenLite.to(this._holder, 0.2, {x: (Math.random() * 7) - 1 , y: (Math.random() * 7) - 1});
 		}
 	}
 }

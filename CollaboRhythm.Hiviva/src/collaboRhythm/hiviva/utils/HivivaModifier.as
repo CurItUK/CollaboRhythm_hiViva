@@ -342,5 +342,17 @@ package collaboRhythm.hiviva.utils
 			img.setTexCoords(2, new Point(left, bottom));
 			img.setTexCoords(3, new Point(right, bottom));
 		}
+
+		public static function toUKDateFromUS(date:String):String
+		{
+			var dateSplit:Array = date.split("-");
+			return dateSplit[2] + "-" + dateSplit[0] + "-" + dateSplit[1];
+		}
+
+		public static function toUSDateFromUK(date:String):String
+		{
+			var dateSplit:Array = date.split("-");
+			return dateSplit[1] + "/" + dateSplit[2] + "/" + dateSplit[0];
+		}
 	}
 }
