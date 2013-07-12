@@ -172,25 +172,12 @@ package collaboRhythm.hiviva.view.screens
 			this._viewMessageBtn.alpha = 0;
 			this._viewMessageBtn.addEventListener(Event.TRIGGERED , messageCellSelectHandler);
 			addChild(this._viewMessageBtn);
-
-			if(this._messageType == COMPOSED_MESSAGE_TYPE && !this._read) markMessageAsRead();
 		}
 
 		private function messageCellSelectHandler(e:Event):void
 		{
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.MESSAGE_SELECT);
 			this.dispatchEvent(evt);
-		}
-
-		private function markMessageAsRead():void
-		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.MARK_MESSAGE_AS_READ_COMPLETE, markMessageAsReadHandler);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.markMessageAsRead(this._guid);
-		}
-
-		private function markMessageAsReadHandler(e:RemoteDataStoreEvent):void
-		{
-			trace("message marked as read");
 		}
 
 		private function checkBoxSelectHandler(e:Event):void

@@ -111,6 +111,9 @@ package collaboRhythm.hiviva.view.screens.shared
 					this._dateLabel.text = _messageData.SentDate;
 					this._messageLabel.text = _messageData.Message;
 					this._options.labels = ["Delete"];
+
+					if(_messageData.read == "false") markMessageAsRead();
+
 					break;
 				case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
 					this._nameLabel.text = _messageData.FromAppId;
@@ -132,6 +135,18 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._statusResponse.confirmLabel = "Ok";
 			this._statusResponse.width = Constants.STAGE_WIDTH * 0.8;
 		}
+
+		private function markMessageAsRead():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.MARK_MESSAGE_AS_READ_COMPLETE, markMessageAsReadHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.markMessageAsRead(_messageData.MessageGuid);
+		}
+
+		private function markMessageAsReadHandler(e:RemoteDataStoreEvent):void
+		{
+			trace("message marked as read");
+		}
+
 		private function optionsHandler(e:starling.events.Event):void
 		{
 			var button:String = e.data.button;
