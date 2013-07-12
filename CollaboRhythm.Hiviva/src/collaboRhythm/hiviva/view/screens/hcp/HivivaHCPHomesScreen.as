@@ -8,6 +8,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaHeader;
 	import collaboRhythm.hiviva.view.HivivaPopUp;
@@ -43,6 +44,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _patients:Array;
 		private var _filterdPatients:Array;
 		private var _patientLabel:Label;
+		private var _remoteCallMade:Boolean = false;
 
 		private const BOTTOM:Number = Constants.STAGE_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT;
 		private var _patientCellYStart:Number;
@@ -73,8 +75,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientCellYStart = this._patientLabel.y - this._patientLabel.height;
 			this._patientCellVSpace = BOTTOM - this._patientCellYStart - this._connectToPatientBtn.height - Constants.PADDING_BOTTOM;
 
-			getHcpConnections();
-			//checkHCPSignupStatus();
+			if(!this._remoteCallMade) getApprovedConnections();
 		}
 
 		override protected function initialize():void
@@ -95,9 +96,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 			_connectToPatientBtn.labels = ["Connect to patient"];
 			_connectToPatientBtn.addEventListener(starling.events.Event.TRIGGERED, connectToPatientBtnHandler);
 			this.addChild(_connectToPatientBtn);
+		}
 
-
-			this._patientCellContainer = new ScrollContainer();
+		private function connectToPatientBtnHandler(e:starling.events.Event):void
+		{
+			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_CONNECT_PATIENT});
 		}
 
 		/*
@@ -121,6 +124,130 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 		}
 		*/
+		private function getApprovedConnections():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE, getApprovedConnectionsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnections();
+			this._remoteCallMade = true;
+		}
+
+		private function getApprovedConnectionsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE, getApprovedConnectionsCompleteHandler);
+
+			var xml:XML = e.data.xmlResponse;
+			this._filterdPatients = [];
+
+			if(xml.children().length() > 0)
+			{
+				var loop:uint = xml.children().length();
+				var approvedHCPList:XMLList  = xml.DCConnection;
+				for(var i:uint = 0 ; i <loop ; i++)
+				{
+					var establishedUser:Object = establishToFromId(approvedHCPList[i]);
+					var appGuid:String = establishedUser.appGuid;
+					var appId:String = establishedUser.appId;
+
+					var data:XML = new XML
+					(
+							<hcp>
+								<name>{appId}</name>
+								<email>{appId}@domain.com</email>
+								<appid>{appId}</appid>
+								<guid>{appGuid}</guid>
+								<picture>dummy.png</picture>
+							</hcp>
+					);
+					this._filterdPatients.push(data);
+				}
+				initResults();
+			}
+			else
+			{
+				initAlertText();
+			}
+		}
+
+		private function establishToFromId(idsToCompare:XML):Object
+		{
+			var whoEstablishConnection:Object = [];
+			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
+			{
+				whoEstablishConnection.appGuid = idsToCompare.ToUserGuid;
+				whoEstablishConnection.appId = idsToCompare.ToAppId;
+			} else
+			{
+				whoEstablishConnection.appGuid = idsToCompare.FromUserGuid;
+				whoEstablishConnection.appId = idsToCompare.FromAppId;
+			}
+
+			return whoEstablishConnection;
+		}
+
+		private function initAlertText():void
+		{
+			var alertLabel:Label = new Label();
+			alertLabel.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
+			alertLabel.text = "Connect to a patient to get started.";
+
+			this.addChild(alertLabel);
+			alertLabel.validate();
+
+			alertLabel.width = Constants.STAGE_WIDTH;
+			alertLabel.y = this._patientCellYStart + (this._patientCellVSpace * 0.5) - (alertLabel.height * 0.5);
+		}
+
+		private function initResults():void
+		{
+			this._patientCellContainer = new ScrollContainer();
+
+			var resultsLength:int = this._filterdPatients.length;
+			var currItem:XML;
+			var resultCell:PatientResultCellHome;
+
+			for(var listCount:int = 0; listCount < resultsLength; listCount++)
+			{
+				currItem = this._filterdPatients[listCount];
+
+				resultCell = new PatientResultCellHome();
+				resultCell.addEventListener(FeathersScreenEvent.PATIENT_PROFILE_SELECTED, profileSelectedHandler);
+				resultCell.patientData = currItem;
+				resultCell.isResult = false;
+				this._patientCellContainer.addChild(resultCell);
+			}
+			addChild(this._patientCellContainer);
+			drawResults();
+		}
+
+		private function profileSelectedHandler(e:FeathersScreenEvent):void
+		{
+			trace("Profile Selected " + e.evtData.profile);
+			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_PATIENT_PROFILE , patientProfile:e.evtData.profile});
+		}
+
+		private function drawResults():void
+		{
+			var cellsTotalHeight:Number = 0;
+			var yStartPosition:Number = this._patientLabel.y + this._patientLabel.height;
+			var patientCell:PatientResultCellHome;
+
+			this._patientCellContainer.width = Constants.STAGE_WIDTH;
+			this._patientCellContainer.y = yStartPosition;
+			this._patientCellContainer.height = BOTTOM - yStartPosition;
+
+			for (var i:int = 0; i < this._patientCellContainer.numChildren; i++)
+			{
+				patientCell = this._patientCellContainer.getChildAt(i) as PatientResultCellHome;
+				patientCell.width = Constants.STAGE_WIDTH;
+				cellsTotalHeight += patientCell.height;
+			}
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.gap = Constants.PADDING_TOP * 0.5;
+			this._patientCellContainer.layout = layout;
+			this._patientCellContainer.validate();
+		}
+/*
 
 		private function getHcpConnections():void
 		{
@@ -193,53 +320,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		}
 
-		private function profileSelectedHandler(e:FeathersScreenEvent):void
-		{
-			trace("Profile Selected " + e.evtData.profile);
-			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_PATIENT_PROFILE , patientName:e.evtData.profile.name , appID:e.evtData.profile.appid});
-		}
-
-		private function drawResults():void
-		{
-			var cellsTotalHeight:Number = 0;
-			var yStartPosition:Number = this._patientLabel.y + this._patientLabel.height;
-			var patientCell:PatientResultCellHome;
-
-			this._patientCellContainer.width = Constants.STAGE_WIDTH;
-			this._patientCellContainer.y = yStartPosition;
-			this._patientCellContainer.height = BOTTOM - yStartPosition;
-
-			for (var i:int = 0; i < this._patientCellContainer.numChildren; i++)
-			{
-				patientCell = this._patientCellContainer.getChildAt(i) as PatientResultCellHome;
-				patientCell.width = Constants.STAGE_WIDTH;
-				cellsTotalHeight += patientCell.height;
-			}
-
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.gap = Constants.PADDING_TOP * 0.5;
-			this._patientCellContainer.layout = layout;
-			this._patientCellContainer.validate();
-		}
-
-		private function initAlertText():void
-		{
-			var alertLabel:Label = new Label();
-			alertLabel.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
-			alertLabel.text = "Connect to a patient to get started.";
-
-			this.addChild(alertLabel);
-			alertLabel.validate();
-
-			alertLabel.width = Constants.STAGE_WIDTH;
-			alertLabel.y = this._patientCellYStart + (this._patientCellVSpace * 0.5) - (alertLabel.height * 0.5);
-		}
-
-		private function connectToPatientBtnHandler(e:starling.events.Event):void
-		{
-			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_CONNECT_PATIENT});
-		}
-
 		private function initPatientSignupProcess():void
 		{
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV, true));
@@ -270,6 +350,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			PopUpManager.removePopUp(this._userSignupPopupContent);
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV, true));
 		}
+		*/
 
 		public function set patientsData(value:XML):void
 		{

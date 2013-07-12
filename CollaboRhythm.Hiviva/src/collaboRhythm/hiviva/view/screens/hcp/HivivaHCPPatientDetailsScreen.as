@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.view.*;
 
 
@@ -19,8 +20,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function draw():void
 		{
 			super.draw();
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 		}
 
 		override protected function initialize():void
