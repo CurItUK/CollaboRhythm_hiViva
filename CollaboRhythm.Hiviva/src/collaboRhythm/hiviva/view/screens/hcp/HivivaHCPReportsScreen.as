@@ -140,7 +140,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientPickerList.listProperties.@itemRendererProperties.labelField = "text";
 			this._patientPickerList.labelField = "text";
 			this._patientPickerList.isEnabled = false;
-			this._patientPickerList.prompt = "No connections";
+			this._patientPickerList.prompt = "Loading connections...";
 			this._patientPickerList.selectedIndex = -1;
 			this._patientPickerList.addEventListener(starling.events.Event.CHANGE, patientSelectedHandler);
 			this._content.addChild(this._patientPickerList);
@@ -240,6 +240,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 				this._patientPickerList.selectedIndex = -1;
 				this._patientPickerList.listProperties.@itemRendererProperties.labelField = "userAppId";
 				this._patientPickerList.labelField = "userAppId";
+			}
+			else
+			{
+				this._patientPickerList.prompt = "No connections...";
 			}
 
 		}

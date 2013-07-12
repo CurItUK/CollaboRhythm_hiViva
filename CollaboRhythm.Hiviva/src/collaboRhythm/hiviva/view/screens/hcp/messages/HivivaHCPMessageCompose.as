@@ -114,7 +114,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._content.addChild(this._patientName);
 
 			this._patientPickerList = new PickerList();
-			this._patientPickerList.prompt = "No connections";
+			this._patientPickerList.prompt = "Loading connections...";
 			this._patientPickerList.selectedIndex = -1;
 			this._patientPickerList.isEnabled = false;
 			this._patientPickerList.addEventListener(starling.events.Event.CHANGE, patientSelectedHandler);
@@ -174,6 +174,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			else
 			{
 				trace("No Approved Connections");
+				this._patientPickerList.prompt = "No connections";
 			}
 
 			this._remoteCallCount++;
