@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
@@ -61,12 +62,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _photoHolder:Image;
 		private var _spoofData:Image;
 		private var _patientEmail:Label;
-		private var _patientData:XML;
+		private var _patientProfileData:XML;
+		private var _patientHistoryData:XML;
 		private var _adherenceLabel:Label;
 		private var _tolerabilityLabel:Label;
 		private var _generateReportBtn:Button;
 		private var _sendMessageBtn:Button;
 		private var _reportAndMessage:BoxedButtons;
+		private var _remoteCallMade:Boolean = false;
 
 
 		private const IMAGE_SIZE:Number = 125;
@@ -84,6 +87,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.initTrueTitle();
 
 			drawPatientProfile();
+			if(!this._remoteCallMade) getUserMedicationHistory();
 		}
 
 		override protected function initialize():void
@@ -100,7 +104,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-			_patientData = Main.selectedHCPPatientProfile;
+			this._patientProfileData = Main.selectedHCPPatientProfile;
 		}
 /*
 
@@ -120,6 +124,34 @@ package collaboRhythm.hiviva.view.screens.hcp
 		}
 */
 
+		private function getUserMedicationHistory():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_MEDICATION_HISTORY_COMPLETE,getUserMedicationHistoryCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserMedicationHistory(this._patientProfileData.guid);
+
+			this._remoteCallMade = true;
+		}
+
+		private function getUserMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_MEDICATION_HISTORY_COMPLETE,getUserMedicationHistoryCompleteHandler);
+
+			this._patientHistoryData = e.data.xmlResponse;
+
+			var medicationList:XMLList = this._patientHistoryData.DCUserMedication;
+			var medicationListLength:int = medicationList.length();
+
+			if (medicationListLength > 0)
+			{
+				// TODO : uncomment and update parsing when xml structure is updated
+//				drawPatientTable();
+			}
+			else
+			{
+				trace("no patient history");
+			}
+		}
+
 		private function drawPatientProfile():void
 		{
 			var scaledPadding:Number = PADDING * this.dpiScale;
@@ -136,7 +168,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientImageBg.y = this._header.height + gap;
 
 			this._patientEmail = new Label();
-			this._patientEmail.text = _patientData.email;
+			this._patientEmail.text = _patientProfileData.email;
 			this.addChild(this._patientEmail);
 
 			this._patientEmail.width = innerWidth - this._patientEmail.x;
@@ -144,10 +176,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientEmail.x = this._patientImageBg.x + this._patientImageBg.width + gap;
 			this._patientEmail.y = this._patientImageBg.y;
 
-			var avgAdherence:Number = HivivaModifier.calculateOverallAdherence(_patientData.medicationHistory.history);
 			this._adherenceLabel = new Label();
 			this._adherenceLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
-			this._adherenceLabel.text = "Overall adherence:  " + String(avgAdherence) + "%";
+			this._adherenceLabel.text = "Overall adherence:  " + Main.selectedHCPPatientProfile.adherence + "%";
 			this.addChild(this._adherenceLabel);
 
 			this._adherenceLabel.width = innerWidth - this._adherenceLabel.x;
@@ -155,10 +186,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._adherenceLabel.x = this._patientEmail.x;
 			this._adherenceLabel.y = this._patientImageBg.y + (this._patientImageBg.height * 0.5) - (this._adherenceLabel.height * 0.5);
 
-			var avgTolerability:Number = HivivaModifier.calculateOverallTolerability(_patientData.medicationHistory.history);
 			this._tolerabilityLabel = new Label();
 			this._tolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
-			this._tolerabilityLabel.text = "Overall tolerability:  " + String(avgTolerability) + "%";
+			this._tolerabilityLabel.text = "Overall tolerability:  " + Main.selectedHCPPatientProfile.tolerability + "%";
 			this.addChild(this._tolerabilityLabel);
 
 			this._tolerabilityLabel.width = innerWidth - this._tolerabilityLabel.x;
@@ -176,18 +206,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._reportAndMessage.x = scaledPadding;
 			this._reportAndMessage.y = this._patientImageBg.y + this._patientImageBg.height + gap;
 
-			// TODO : uncomment when we have patient history from remote service
-//			drawPatientTable();
-
-			doImageLoad("media/patients/" + _patientData.picture);
+			doImageLoad("media/patients/" + _patientProfileData.picture);
 
 		}
 
 		private function drawPatientTable():void
 		{
 			var patientAdherenceTable:PatientAdherenceTable = new PatientAdherenceTable();
-			patientAdherenceTable.scale = this.dpiScale;
-			patientAdherenceTable.patientData = _patientData;
+			patientAdherenceTable.patientData = this._patientHistoryData;
 			addChild(patientAdherenceTable);
 			patientAdherenceTable.y = this._reportAndMessage.y + this._reportAndMessage.height + (this.actualHeight * 0.02);
 			patientAdherenceTable.width = Constants.STAGE_WIDTH;
@@ -216,7 +242,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function reportAndMessageHandler(e:starling.events.Event):void
 		{
 			var button:String = e.data.button;
-			var screenParams:Object = {selectedPatient: _patientData};
+			var screenParams:Object = {selectedPatient: _patientProfileData};
 			var targetScreen:String;
 			var screenNavigatorItem:ScreenNavigatorItem;
 			switch(button)
@@ -302,16 +328,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 				img.scaleY = img.scaleX;
 			}
 		}
+/*
 
-		public function set patientData(value:XML):void
+		public function set patientProfileData(value:XML):void
 		{
-			this._patientData = value;
+			this._patientProfileData = value;
 		}
 
-		public function get patientData():XML
+		public function get patientProfileData():XML
 		{
-			return this._patientData;
+			return this._patientProfileData;
 		}
+*/
 
 		override public function dispose():void
 		{

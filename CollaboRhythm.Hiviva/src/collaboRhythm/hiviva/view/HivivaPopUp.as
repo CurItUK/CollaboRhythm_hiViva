@@ -17,7 +17,7 @@ package collaboRhythm.hiviva.view
 
 	public class HivivaPopUp extends FeathersControl
 	{
-		private var _scale:Number;
+		private var _scale:Number = 1;
 		private var _message:String;
 		private var _confirmLabel:String;
 		private var _bg:Scale9Image;

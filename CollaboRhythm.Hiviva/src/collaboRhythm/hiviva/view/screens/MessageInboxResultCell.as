@@ -4,7 +4,9 @@ package collaboRhythm.hiviva.view.screens
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -171,7 +173,7 @@ package collaboRhythm.hiviva.view.screens
 			this._viewMessageBtn.addEventListener(Event.TRIGGERED , messageCellSelectHandler);
 			addChild(this._viewMessageBtn);
 
-			if(!this._read) markAsReadThroughRemoteService();
+			if(this._messageType == COMPOSED_MESSAGE_TYPE && !this._read) markMessageAsRead();
 		}
 
 		private function messageCellSelectHandler(e:Event):void
@@ -180,9 +182,15 @@ package collaboRhythm.hiviva.view.screens
 			this.dispatchEvent(evt);
 		}
 
-		private function markAsReadThroughRemoteService():void
+		private function markMessageAsRead():void
 		{
-			// TODO : Mark message as read through remote service
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.MARK_MESSAGE_AS_READ_COMPLETE, markMessageAsReadHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.markMessageAsRead(this._guid);
+		}
+
+		private function markMessageAsReadHandler(e:RemoteDataStoreEvent):void
+		{
+			trace("message marked as read");
 		}
 
 		private function checkBoxSelectHandler(e:Event):void

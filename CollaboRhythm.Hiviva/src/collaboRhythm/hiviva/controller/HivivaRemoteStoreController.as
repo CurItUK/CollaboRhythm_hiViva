@@ -159,6 +159,20 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getApprovedConnectionsWithSummary():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE , getApprovedConnectionsWithSummaryHandler);
+			service.getApprovedConnectionsWithSummary();
+		}
+
+		private function getApprovedConnectionsWithSummaryHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE , getApprovedConnectionsWithSummaryHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function getPendingConnections():void
 		{
 			service.addEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE , getPendingConnectionsHandler);
@@ -243,6 +257,20 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function markMessageAsRead(messageGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.MARK_MESSAGE_AS_READ_COMPLETE , markMessageAsReadHandler);
+			service.markMessageAsRead(messageGuid);
+		}
+
+		private function markMessageAsReadHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.MARK_MESSAGE_AS_READ_COMPLETE , markMessageAsReadHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.MARK_MESSAGE_AS_READ_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function addTestResults(testResultData:XML):void
 		{
 			service.addEventListener(RemoteDataStoreEvent.ADD_TEST_RESULTS_COMPLETE , addTestResultsCompleteHandler);
@@ -267,6 +295,20 @@ package collaboRhythm.hiviva.controller
 		{
 			service.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE , getPatientLatestTestResultsCompleteHandler);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function getUserMedicationHistory(userGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_USER_MEDICATION_HISTORY_COMPLETE , getUserMedicationHistoryCompleteHandler);
+			service.getUserMedicationHistory(userGuid);
+		}
+
+		private function getUserMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_USER_MEDICATION_HISTORY_COMPLETE , getUserMedicationHistoryCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_USER_MEDICATION_HISTORY_COMPLETE);
 			evt.data = e.data;
 			this.dispatchEvent(evt);
 		}

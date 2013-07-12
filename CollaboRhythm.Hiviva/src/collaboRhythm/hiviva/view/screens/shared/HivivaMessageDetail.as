@@ -17,6 +17,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 
 	import feathers.controls.Screen;
+	import feathers.core.PopUpManager;
 
 	import starling.display.DisplayObject;
 
@@ -40,6 +41,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _vPadding:Number;
 		private var _hPadding:Number;
 		private var _isSent:Boolean;
+		private var _statusResponse:HivivaPopUp;
 
 		public function HivivaMessageDetail()
 		{
@@ -125,6 +127,10 @@ package collaboRhythm.hiviva.view.screens.shared
 			this.addChild(this._dateLabel);
 			this.addChild(this._messageLabel);
 			if(!_isSent) addChild(this._options);
+
+			this._statusResponse = new HivivaPopUp();
+			this._statusResponse.confirmLabel = "Ok";
+			this._statusResponse.width = Constants.STAGE_WIDTH * 0.5;
 		}
 		private function optionsHandler(e:starling.events.Event):void
 		{
@@ -149,16 +155,21 @@ package collaboRhythm.hiviva.view.screens.shared
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.deleteUserMessage(_messageData.MessageGuid);
 					break;
-				case "Ignore" :
-
-					break;
+//				case "Ignore" :
+//
+//					break;
 				case "Accept" :
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(_messageData.FromUserGuid);
 					break;
-				case "Go to patient" :
-					break;
-				case "Edit Alerts" :
+//				case "Go to patient" :
+//
+//					break;
+//				case "Edit Alerts" :
+//
+//					break;
+				default :
+					callBack();
 					break;
 			}
 		}
@@ -167,8 +178,14 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
 
-			this.dispatchEventWith("messageDetailEvent");
-			this.owner.showScreen(_parentScreen);
+			if(e.data.xmlResponse.StatusCode == "1")
+			{
+				initStatusResponsePopup("Message deleted", callBack);
+			}
+			else
+			{
+				initStatusResponsePopup("Error! " + e.data.xmlResponse.Message, callBack);
+			}
 		}
 
 		private function approveConnectionHandler(e:RemoteDataStoreEvent):void
@@ -177,9 +194,37 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			if(e.data.xmlResponse.StatusCode == "1")
 			{
-				this.dispatchEventWith("messageDetailEvent");
-				this.owner.showScreen(_parentScreen);
+				initStatusResponsePopup("Success! You are now connected to user(" + _messageData.FromUserGuid + ")", callBack);
 			}
+			else
+			{
+				initStatusResponsePopup("Error! " + e.data.xmlResponse.Message, callBack);
+			}
+		}
+
+		private function initStatusResponsePopup(message:String, callBack:Function):void
+		{
+			this._statusResponse.addEventListener(Event.COMPLETE, callBack);
+			this._statusResponse.addEventListener(Event.CLOSE, callBack);
+			this._statusResponse.message = message;
+			this._statusResponse.validate();
+
+			PopUpManager.addPopUp(this._statusResponse,true,true);
+			this._statusResponse.validate();
+			PopUpManager.centerPopUp(this._statusResponse);
+			// draw close button post center so the centering works correctly
+			this._statusResponse.drawCloseButton();
+		}
+
+		private function closePopup(e:Event):void
+		{
+			PopUpManager.removePopUp(this._statusResponse);
+		}
+
+		private function callBack():void
+		{
+			this.dispatchEventWith("messageDetailEvent");
+			backBtnHandler();
 		}
 
 		private function backBtnHandler(e:starling.events.Event = null):void

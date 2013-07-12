@@ -192,6 +192,23 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt)
 		}
 
+		public function getApprovedConnectionsWithSummary():void
+		{
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_APPROVED_CONNECTIONS_WITH_SUMMARY + "UserGuid=" + HivivaStartup.userVO.guid);
+			trace("getApprovedConnectionsWithSummary " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getApprovedConnectionsWithSummaryHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getApprovedConnectionsWithSummaryHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
 		public function getPendingConnections():void
 		{
 			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_PENDING_CONNECTIONS + "UserGuid=" + HivivaStartup.userVO.guid);
@@ -298,6 +315,24 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt)
 		}
 
+		public function markMessageAsRead(messageGuid:String):void
+		{
+			var query:String = "MessageGuid=" + messageGuid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_MARK_MESSAGE_AS_READ + query);
+			trace("markMessageAsRead " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, markMessageAsReadComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function markMessageAsReadComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.MARK_MESSAGE_AS_READ_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
 		public function addTestResults(testResultData:XML):void
 		{
 			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_ADD_TEST_RESULTS );
@@ -333,6 +368,24 @@ package collaboRhythm.hiviva.model
 		{
 			var xmlResponse:XML = new XML(e.target.data);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt);
+		}
+
+		public function getUserMedicationHistory(userGuid:String):void
+		{
+			var query:String = "userGuid=" + userGuid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_USER_MEDICATION_HISTORY + query);
+			trace("getUserMedicationHistory " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getUserMedicationHistoryCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getUserMedicationHistoryCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_USER_MEDICATION_HISTORY_COMPLETE);
 			evt.data.xmlResponse = xmlResponse;
 			this.dispatchEvent(evt);
 		}
