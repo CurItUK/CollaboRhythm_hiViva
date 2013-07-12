@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
@@ -99,6 +100,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._feelingCheck.defaultLabelProperties.width = this._innerWidth;
 			this._cd4Check.defaultLabelProperties.width = this._innerWidth;
 			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth;
+			this._patientPickerList.width = this._innerWidth;
 		}
 
 		override protected function postValidateContent():void
@@ -137,6 +139,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientPickerList = new PickerList();
 			this._patientPickerList.listProperties.@itemRendererProperties.labelField = "text";
 			this._patientPickerList.labelField = "text";
+			this._patientPickerList.isEnabled = false;
+			this._patientPickerList.prompt = "No connections";
+			this._patientPickerList.selectedIndex = -1;
 			this._patientPickerList.addEventListener(starling.events.Event.CHANGE, patientSelectedHandler);
 			this._content.addChild(this._patientPickerList);
 
@@ -203,35 +208,56 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function getHcpConnections():void
 		{
-			localStoreController.addEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
-			localStoreController.getHCPConnections();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConnectionsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnections();
 		}
 
-		private function getHcpListCompleteHandler(e:LocalDataStoreEvent):void
+		private function getApprovedConnectionsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_CONNECTIONS_LOAD_COMPLETE , getHcpListCompleteHandler)
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedConnectionsCompleteHandler);
 
-			if(e.data.connections != null)
+			var approvedConnections:XML = e.data.xmlResponse;
+
+			if(approvedConnections.children().length() > 0)
 			{
-				trace("connectionsLength " + e.data.connections.length);
-				var connectionsLength:uint = e.data.connections.length;
+				var patientsList:Array = [];
+				var loop:uint = approvedConnections.children().length();
+				var approvedHCPList:XMLList  = approvedConnections.DCConnection;
 
 
-			var patientsList:Array = new Array();
-
-				for (var listCount:int = 0; listCount < connectionsLength; listCount++)
+				for (var listCount:int = 0; listCount < loop; listCount++)
 				{
-
-					patientsList.push(e.data.connections[listCount].name);
-
+					var establishedUser:Object = establishToFromId(approvedHCPList[listCount]);
+					var patientObj:Object = {userAppId:establishedUser.appId , userGuid:establishedUser.appGuid};
+					patientsList.push(patientObj);
 				}
+
 				var patients:ListCollection = new ListCollection( patientsList );
 
 				this._patientPickerList.dataProvider = patients;
 				this._patientPickerList.prompt = "Select patient";
+				this._patientPickerList.isEnabled = true;
 				this._patientPickerList.selectedIndex = -1;
-
+				this._patientPickerList.listProperties.@itemRendererProperties.labelField = "userAppId";
+				this._patientPickerList.labelField = "userAppId";
 			}
+
+		}
+
+		private function establishToFromId(idsToCompare:XML):Object
+		{
+			var whoEstablishConnection:Object = [];
+			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
+			{
+				whoEstablishConnection.appGuid = (idsToCompare.ToUserGuid).toString();
+				whoEstablishConnection.appId = (idsToCompare.ToAppId).toString();
+			} else
+			{
+				whoEstablishConnection.appGuid = (idsToCompare.FromUserGuid).toString();
+				whoEstablishConnection.appId = (idsToCompare.FromAppId).toString();
+			}
+
+			return whoEstablishConnection;
 		}
 
 		private function calendarButtonHandler(e:FeathersScreenEvent):void

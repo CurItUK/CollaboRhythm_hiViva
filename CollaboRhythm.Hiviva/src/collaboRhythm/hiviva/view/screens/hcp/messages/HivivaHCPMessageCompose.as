@@ -114,7 +114,9 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._content.addChild(this._patientName);
 
 			this._patientPickerList = new PickerList();
-			this._patientPickerList.prompt = "SELECT PATIENT";
+			this._patientPickerList.prompt = "No connections";
+			this._patientPickerList.selectedIndex = -1;
+			this._patientPickerList.isEnabled = false;
 			this._patientPickerList.addEventListener(starling.events.Event.CHANGE, patientSelectedHandler);
 			this._content.addChild(this._patientPickerList);
 
@@ -167,6 +169,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					var patientObj:Object = {userAppId:establishedUser.appId , userGuid:establishedUser.appGuid};
 					this._patientConnections.push(patientObj);
 				}
+				populateConnectionsPickerlist();
 			}
 			else
 			{
@@ -199,10 +202,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			if(this._remoteCallCount == 2)
 			{
 				populateMessages();
-				populateConnectionsPickerlist();
 			}
 		}
-
 
 		private function populateMessages():void
 		{
@@ -227,6 +228,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._patientPickerList.dataProvider = patients;
 			this._patientPickerList.prompt = "Select patient";
+			this._patientPickerList.isEnabled = true;
 			this._patientPickerList.selectedIndex = -1;
 			this._patientPickerList.listProperties.@itemRendererProperties.labelField = "userAppId";
 			this._patientPickerList.labelField = "userAppId";
