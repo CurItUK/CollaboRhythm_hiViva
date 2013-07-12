@@ -209,10 +209,14 @@ package collaboRhythm.hiviva.view.screens.patient
 
 					this._dayDiff = HivivaModifier.getDaysDiff(this._today, date);
 
-					HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE,getAdherenceHandler);
-					HivivaStartup.hivivaAppController.hivivaLocalStoreController.getAdherence();
+					this._adherencePercent = HivivaStartup.patientAdherenceVO.percentage;
 
 					this._homeImageInstructions.visible = false;
+
+					HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
+					HivivaStartup.hivivaAppController.hivivaLocalStoreController.getGalleryImages();
+
+
 				}
 				else
 				{
@@ -246,8 +250,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 			trace("this._adherencePercent = " + this._adherencePercent);
 
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getGalleryImages();
+
 		}
 
 		private function getGalleryImagesHandler(e:LocalDataStoreEvent):void
