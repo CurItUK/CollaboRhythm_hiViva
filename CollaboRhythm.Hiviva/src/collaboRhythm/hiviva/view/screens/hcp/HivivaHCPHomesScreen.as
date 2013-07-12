@@ -72,8 +72,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			_connectToPatientBtn.x = (Constants.STAGE_WIDTH * 0.5) - (_connectToPatientBtn.width * 0.5);
 			_connectToPatientBtn.y = BOTTOM - _connectToPatientBtn.height;
 
-			this._patientCellYStart = this._patientLabel.y - this._patientLabel.height;
-			this._patientCellVSpace = BOTTOM - this._patientCellYStart - this._connectToPatientBtn.height - Constants.PADDING_BOTTOM;
+			this._patientCellYStart = this._patientLabel.y + this._patientLabel.height + (Constants.PADDING_TOP * 0.5);
+			this._patientCellVSpace = _connectToPatientBtn.y - this._patientCellYStart - (Constants.PADDING_TOP * 0.5);
 
 			if(!this._remoteCallMade) getApprovedConnections();
 		}
@@ -126,37 +126,42 @@ package collaboRhythm.hiviva.view.screens.hcp
 		*/
 		private function getApprovedConnections():void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE, getApprovedConnectionsCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnections();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnectionsWithSummary();
 			this._remoteCallMade = true;
 		}
 
-		private function getApprovedConnectionsCompleteHandler(e:RemoteDataStoreEvent):void
+		private function getApprovedConnectionsWithSummaryHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE, getApprovedConnectionsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
 
-			var xml:XML = e.data.xmlResponse;
+
+			var xmlData:XMLList = e.data.xmlResponse.DCConnectionSummary;
+			var loop:uint = xmlData.length();
+			var approvedPatient:XML;
+
 			this._filterdPatients = [];
 
-			if(xml.children().length() > 0)
+			if(loop > 0)
 			{
-				var loop:uint = xml.children().length();
-				var approvedHCPList:XMLList  = xml.DCConnection;
 				for(var i:uint = 0 ; i <loop ; i++)
 				{
-					var establishedUser:Object = establishToFromId(approvedHCPList[i]);
+					approvedPatient = xmlData[i];
+					var establishedUser:Object = establishToFromId(approvedPatient);
 					var appGuid:String = establishedUser.appGuid;
 					var appId:String = establishedUser.appId;
 
 					var data:XML = new XML
 					(
-							<hcp>
+							<patient>
 								<name>{appId}</name>
 								<email>{appId}@domain.com</email>
 								<appid>{appId}</appid>
 								<guid>{appGuid}</guid>
+								<tolerability>{String(approvedPatient.Tolerability)}</tolerability>
+								<adherence>{String(approvedPatient.Adherence)}</adherence>
 								<picture>dummy.png</picture>
-							</hcp>
+							</patient>
 					);
 					this._filterdPatients.push(data);
 				}
@@ -228,12 +233,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function drawResults():void
 		{
 			var cellsTotalHeight:Number = 0;
-			var yStartPosition:Number = this._patientLabel.y + this._patientLabel.height;
 			var patientCell:PatientResultCellHome;
 
 			this._patientCellContainer.width = Constants.STAGE_WIDTH;
-			this._patientCellContainer.y = yStartPosition;
-			this._patientCellContainer.height = BOTTOM - yStartPosition;
+			this._patientCellContainer.y = this._patientCellYStart;
+			this._patientCellContainer.height = this._patientCellVSpace;
 
 			for (var i:int = 0; i < this._patientCellContainer.numChildren; i++)
 			{

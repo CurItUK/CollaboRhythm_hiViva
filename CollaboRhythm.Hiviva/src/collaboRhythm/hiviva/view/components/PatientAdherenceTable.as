@@ -2,6 +2,8 @@ package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -48,7 +50,7 @@ package collaboRhythm.hiviva.view.components
 		private var _currWeekBeginning:Date;
 		private var _historyLength:int;
 		private var _patientData:XML;
-		private var _scale:Number;
+		private var _scale:Number = 1;
 
 		public function PatientAdherenceTable()
 		{
@@ -163,15 +165,15 @@ package collaboRhythm.hiviva.view.components
 		private function initMedicineNamesColumn():void
 		{
 			// names column
-			var medications:XMLList = _patientData.medications.medication as XMLList;
+			var medications:XMLList = _patientData.DCUserMedication as XMLList;
 			var medicationCount:uint = medications.length();
 			var medicationCell:MedicationCell;
 			for (var cellCount:int = 0; cellCount < medicationCount; cellCount++)
 			{
 				medicationCell = new MedicationCell();
 				medicationCell.scale = this._scale;
-				medicationCell.brandName = medications[cellCount].brandname;
-				medicationCell.genericName = medications[cellCount].genericname;
+				medicationCell.brandName = HivivaModifier.getBrandName(medications[cellCount].MedicationName);
+				medicationCell.genericName = HivivaModifier.getGenericName(medications[cellCount].MedicationName);
 				this._mainScrollContainer.addChild(medicationCell);
 				medicationCell.width = this._firstColumnWidth;
 

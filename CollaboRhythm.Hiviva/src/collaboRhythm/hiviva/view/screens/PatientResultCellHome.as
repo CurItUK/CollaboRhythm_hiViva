@@ -103,12 +103,12 @@ package collaboRhythm.hiviva.view.screens
 
 			addChild(this._patientName);
 
-			var avgTolerability:Number = HivivaModifier.calculateOverallTolerability(patientData.medicationHistory.history);
-			var avgAdherence:Number = HivivaModifier.calculateOverallAdherence(patientData.medicationHistory.history);
+//			var avgTolerability:Number = HivivaModifier.calculateOverallTolerability(patientData.medicationHistory.history);
+//			var avgAdherence:Number = HivivaModifier.calculateOverallAdherence(patientData.medicationHistory.history);
 			this._adherenceTolerabilityLabel = new Label();
 			this._adherenceTolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
-			this._adherenceTolerabilityLabel.text = "Adherence: " + String(avgAdherence) +  "%\n" +
-													"Tolerability: " + String(avgTolerability) + "%";
+			this._adherenceTolerabilityLabel.text = "Adherence: " + String(patientData.adherence) +  "%\n" +
+													"Tolerability: " + String(patientData.tolerability) + "%";
 
 			addChild(this._adherenceTolerabilityLabel);
 
