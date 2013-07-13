@@ -19,6 +19,20 @@ package collaboRhythm.hiviva.view.screens.patient.HelpScreens
 			btn  =  e.target as Button;
 		}
 
+		/**
+		 * To create a Help Screen or a help screen with sub pages please follow the steps
+		 * 1. Create the class ( copy and paste one of the screen classes and edit.
+		 * 2. Add screen name into HivivaScreens.as class, with the relevant name you choose
+		 * 3. Add your screen in the main.as Class into the relevant area.
+		 * 4. Add your screen name string into getStatus statement  in ScreenManager (this) class and copy the string you created.
+		 * 5. Add the copied string in the parent class you created for help screens in the relevant part of the code.
+		 */
+
+		public function helpScreensCreation(){
+
+			trace("This function does nothing")
+		}
+
 		public function init ( __Hiviva_help_help_Screen:Object =null ){
 		    this.__Hiviva_help_help_Screen = __Hiviva_help_help_Screen;
 		}
@@ -38,6 +52,9 @@ package collaboRhythm.hiviva.view.screens.patient.HelpScreens
 					    this.__sNav.showScreen(__screen);
 					trace("screen added  ::::: ")
 					}
+
+
+
 
 		public function getStatus(s:String):String{
 				 var __s:String
@@ -107,6 +124,25 @@ package collaboRhythm.hiviva.view.screens.patient.HelpScreens
                     break;
 					case "hcphelpdisplaySettings":
 						__s = String(HivivaScreens.HCP_HELP_DISPLAY_SETTINGS);
+                     break;
+					case "hcphelpAlertsScreen":
+					    __s = String(HivivaScreens.HCP_HELP_ALERTS_SCREEN);
+				     break;
+					case "hcphelpConnectToPatientScreen":
+						__s = String(HivivaScreens.HCP_HELP_CONNECT_TO_PATIENT_SCREEN);
+					break;
+					case "hcphelpPatientSummaryScreen":
+					__s = String(HivivaScreens.HCP_HELP_PATIENT_SUMMARY_SCREEN);
+					break;
+					case "hcphelpSinglePatientInformationScreen":
+					__s = String(HivivaScreens.HCP_HELP_SINGLE_PATIENT_INFORMATION_SCREEN);
+					break;
+					case "hcphelpPatientInteractionScreen":
+					__s = String(HivivaScreens.HCP_HELP_PATIENT_INTERACTION_SCREEN);
+					break;
+					case "hcphelpGeneratereportsScreen":
+					__s = String(HivivaScreens.HCP_HELP_GENERATE_REPORTS_SCREEN);
+					break;
 				}
 				return __s
 			}

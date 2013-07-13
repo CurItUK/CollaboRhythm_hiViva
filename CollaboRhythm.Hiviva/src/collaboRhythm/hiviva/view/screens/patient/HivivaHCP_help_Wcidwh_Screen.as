@@ -80,10 +80,10 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				var lc:ListCollection = new ListCollection(
 					[
-						{name: "patientsummary", label: "Patient Summary"},
-					    {name: "singlepatient", label: "Single Patient Information"},
-					 	{name: "patientinteraction", label: "Patient Interaction"},
-						{name: "generatereports", label: "Generate Reports"}
+						{name: "hcphelpPatientSummaryScreen", label: "Patient Summary"},
+					    {name: "hcphelpSinglePatientInformationScreen", label: "Single Patient Information"},
+					 	{name: "hcphelpPatientInteractionScreen", label: "Patient Interaction"},
+						{name: "hcphelpGeneratereportsScreen", label: "Generate Reports"}
 
 					]
 				);
@@ -176,14 +176,12 @@ package collaboRhythm.hiviva.view.screens.patient
 	{
 
 
-	case "patientsummary" :
-//	scrManager.init( HivivaPatient_help_About_Screen)
-//
-//
-//	scrManager.__addScreen(HivivaScreens.PATIENT_HELP_ABOUT_SCREEN)
+	case "hcphelpPatientSummaryScreen" :
+    	scrManager.init( HivivaHCP_help_Patient_Summary_Screen)
+        scrManager.__addScreen(HivivaScreens.HCP_HELP_PATIENT_SUMMARY_SCREEN)
 	break;
 
-	case "singlepatient" :
+	case "hcphelpSinglePatientInformationScreen" :
 	/*
 	var screenNavItem3:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help3_Screen);
 	// temp = String(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
@@ -191,27 +189,27 @@ package collaboRhythm.hiviva.view.screens.patient
 	this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
 	// __arr.push(temp);
 	*/
-//	scrManager.init( HivivaPatient_help_GettingStarted_Screen)
-//	scrManager.__addScreen(HivivaScreens.PATIENT_HELP_GETTINGSTARTED_SCREEN)
+    scrManager.init( HivivaHCP_help_Single_Patient_Information_Screen)
+    scrManager.__addScreen(HivivaScreens.HCP_HELP_SINGLE_PATIENT_INFORMATION_SCREEN)
 	break;
-	case "patientinteraction" :
+	case "hcphelpPatientInteractionScreen" :
 	/*	var screenNavItem4:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help4_Screen);
 	// temp = String(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
 	this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN, screenNavItem4);
 	this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
 	// __arr.push(temp);*/
-//	scrManager.init( HivivaPatient_help_Wcidwh_Screen)
-//	scrManager.__addScreen(HivivaScreens.PATIENT_HELP_WCIDWH_SCREEN)
+    	scrManager.init( HivivaHCP_help_Patient_Interaction_Screen)
+        scrManager.__addScreen(HivivaScreens.HCP_HELP_PATIENT_INTERACTION_SCREEN)
 	break;
 
-		case "generatereports" :
+		case "hcphelpGeneratereportsScreen" :
 	/*	var screenNavItem4:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help4_Screen);
 	// temp = String(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
 	this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN, screenNavItem4);
 	this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
 	// __arr.push(temp);*/
-//	scrManager.init( HivivaPatient_help_Wcidwh_Screen)
-//	scrManager.__addScreen(HivivaScreens.PATIENT_HELP_WCIDWH_SCREEN)
+    scrManager.init( HivivaHCP_help_Generate_Reports_Screen)
+    scrManager.__addScreen(HivivaScreens.HCP_HELP_GENERATE_REPORTS_SCREEN)
 	break;
 
 
