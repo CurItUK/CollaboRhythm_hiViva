@@ -85,6 +85,7 @@ package collaboRhythm.hiviva.view.components
 			this.addChild(this._brandNameLabel);
 
 			this._genericNameLabel = new Label();
+			this._genericNameLabel.name = HivivaThemeConstants.MESSAGE_DATE_LABEL;
 			this._genericNameLabel.text = this._genericName;
 			this.addChild(this._genericNameLabel);
 

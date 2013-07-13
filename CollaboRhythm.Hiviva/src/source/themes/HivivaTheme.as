@@ -1178,6 +1178,7 @@ package source.themes
 		protected function messageDateLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.bodySmallerBftf;
+			label.textRendererProperties.wordWrap = true;
 		}
 
 		protected function patientDataLightLabelInitializer(label:Label):void

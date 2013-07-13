@@ -4,6 +4,8 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -18,6 +20,7 @@ package collaboRhythm.hiviva.view.components
 
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import flash.utils.Dictionary;
 
 	import source.themes.HivivaTheme;
 
@@ -37,6 +40,8 @@ package collaboRhythm.hiviva.view.components
 
 	public class PatientAdherenceTable extends FeathersControl
 	{
+		private var _medications:XMLList;
+		private var _history:Dictionary;
 		private var _weekNavHolder:Sprite;
 		private var _weekText:Label;
 		private const _weekDays:Array = ["M", "T", "W", "T", "F", "S", "S"];
@@ -68,6 +73,8 @@ package collaboRhythm.hiviva.view.components
 		override protected function initialize():void
 		{
 			super.initialize();
+			this._medications = _patientData.DCUserMedication as XMLList;
+			extractHistory();
 		}
 
 		public function drawTable():void
@@ -112,6 +119,7 @@ package collaboRhythm.hiviva.view.components
 			rightArrow.validate();
 
 			this._weekText = new Label();
+			this._weekText.touchable = false;
 			this._weekText.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
 			this._weekNavHolder.addChild(this._weekText);
 			this._weekText.width = (this._dataColumnsWidth * 7) -
@@ -165,19 +173,18 @@ package collaboRhythm.hiviva.view.components
 		private function initMedicineNamesColumn():void
 		{
 			// names column
-			var medications:XMLList = _patientData.DCUserMedication as XMLList;
-			var medicationCount:uint = medications.length();
+			var medicationCount:uint = _medications.length();
 			var medicationCell:MedicationCell;
 			for (var cellCount:int = 0; cellCount < medicationCount; cellCount++)
 			{
 				medicationCell = new MedicationCell();
 				medicationCell.scale = this._scale;
-				medicationCell.brandName = HivivaModifier.getBrandName(medications[cellCount].MedicationName);
-				medicationCell.genericName = HivivaModifier.getGenericName(medications[cellCount].MedicationName);
+				medicationCell.brandName = HivivaModifier.getBrandName(_medications[cellCount].MedicationName);
+				medicationCell.genericName = HivivaModifier.getGenericName(_medications[cellCount].MedicationName);
 				this._mainScrollContainer.addChild(medicationCell);
 				medicationCell.width = this._firstColumnWidth;
 
-				this._rowsData.push({id: medications[cellCount].id});
+				this._rowsData.push({id: cellCount});
 			}
 			// tolerability row name
 			var tolerabilityRowLabel:Label = new Label();
@@ -218,21 +225,21 @@ package collaboRhythm.hiviva.view.components
 
 		private function leftArrowHandler(e:Event):void
 		{
-			this._currWeekBeginning.setDate(this._currWeekBeginning.getDate() - 7);
+			this._currWeekBeginning.date -= 7;
 			changeTableData();
 		}
 
 		private function rightArrowHandler(e:Event):void
 		{
-			this._currWeekBeginning.setDate(this._currWeekBeginning.getDate() + 7);
+			trace("rightArrowHandler");
+			this._currWeekBeginning.date += 7;
 			changeTableData();
 		}
 
 		private function initTableData():void
 		{
-			var history:XMLList = _patientData.medicationHistory.history as XMLList;
-			this._currWeekBeginning = HivivaModifier.getDateFromString(history[0].date);
-
+			this._currWeekBeginning = HivivaStartup.userVO.serverDate;
+			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
 			setCurrentWeek();
 			initTableDataContainer();
 			populateData();
@@ -247,9 +254,29 @@ package collaboRhythm.hiviva.view.components
 
 		private function setCurrentWeek():void
 		{
-			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
+//			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
 			this._weekText.text = "wc: " + (this._currWeekBeginning.getMonth() + 1) + "/" + this._currWeekBeginning.getDate() + "/" + this._currWeekBeginning.getFullYear();
 			this._weekText.validate();
+		}
+
+		private function extractHistory():void
+		{
+			_history = new Dictionary();
+			var medicationLength:int = this._medications.length();
+			var medicationSchedule:XMLList;
+			var medicationScheduleLength:int;
+			var referenceDate:Number;
+			for (var i:int = 0; i < medicationLength; i++)
+			{
+				medicationSchedule = this._medications[i].Schedule.DCMedicationSchedule as XMLList;
+				medicationScheduleLength = medicationSchedule.length();
+				for (var j:int = 0; j < medicationScheduleLength; j++)
+				{
+					referenceDate = HivivaModifier.isoDateToFlashDate(String(medicationSchedule[j].DateTaken)).getTime();
+					if (_history[referenceDate] == undefined) _history[referenceDate] = [];
+					_history[referenceDate].push(medicationSchedule[j]);
+				}
+			}
 		}
 
 		private function initTableDataContainer():void
@@ -274,11 +301,10 @@ package collaboRhythm.hiviva.view.components
 
 		private function populateData():void
 		{
-			var history:XMLList = _patientData.medicationHistory.history as XMLList;
-			this._historyLength = history.length();
 			var currWeekDay:Date = new Date(this._currWeekBeginning.getFullYear(),this._currWeekBeginning.getMonth(),this._currWeekBeginning.getDate(),0,0,0,0);
-			var historyDate:Date;
-			var historicalMedication:XMLList;
+			var columnData:Array;
+			var columnDataLength:int;
+			var rowXML:XML;
 			var rowData:Object;
 			var cell:Sprite;
 			var cellX:Number;
@@ -289,13 +315,15 @@ package collaboRhythm.hiviva.view.components
 			var tickCrossImage:Image;
 			for (var dayCount:int = 0; dayCount < 7; dayCount++)
 			{
-				for (var historyCount:int = 0; historyCount < _historyLength; historyCount++)
+				if(_history[currWeekDay.getTime()] != null)
 				{
-					historyDate = HivivaModifier.getDateFromString(history[historyCount].date);
+					columnData = _history[currWeekDay.getTime()];
+					columnDataLength = columnData.length;
 
-					if(historyDate.getTime() == currWeekDay.getTime())
+					cellX = this._dataColumnsWidth * dayCount;
+					for (var i:int = 0; i < columnDataLength; i++)
 					{
-						cellX = this._dataColumnsWidth * dayCount;
+						rowXML = columnData[i];
 						for (var rowCount:int = 0; rowCount < this._rowsData.length; rowCount++)
 						{
 							rowData = this._rowsData[rowCount];
@@ -308,23 +336,21 @@ package collaboRhythm.hiviva.view.components
 							cellBg = new Quad(this._dataColumnsWidth,rowData.cellHeight,0x000000);
 							cellBg.alpha = 0;
 							cell.addChild(cellBg);
-
 							if (rowData.id == "tolerability")
 							{
 								// write tolerability data cell
-								// history[historyCount].tolerability
 								cellLabel = new Label();
 								cellLabel.width = this._dataColumnsWidth;
 								cellLabel.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
-								cellLabel.text = history[historyCount].tolerability;
+								cellLabel.text = rowXML.Tolerability;
 								cell.addChild(cellLabel);
 								cellLabel.validate();
 								cellLabel.y = (cellBg.height * 0.5) - (cellLabel.height * 0.5);
 							}
 							else
 							{
-								historicalMedication = history[historyCount].medication.(@id == rowData.id);
-								if (historicalMedication.adhered == "yes")
+//									historicalMedication = rowXML.medication.(@id == rowData.id);
+								if (String(rowXML.PercentTaken) == "100")
 								{
 									// tick
 									tickCrossImage = new Image(tickTexture);

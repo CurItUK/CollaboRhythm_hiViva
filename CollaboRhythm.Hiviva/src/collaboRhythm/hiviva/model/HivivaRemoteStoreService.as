@@ -407,6 +407,42 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
+		public function getDailyMedicationHistory(userGuid:String):void
+		{
+			var query:String = "userGuid=" + userGuid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_DAILY_MEDICATION_HISTORY + query);
+			trace("getDailyMedicationHistory " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getDailyMedicationHistoryCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getDailyMedicationHistoryCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt);
+		}
+
+		public function getWeeklyMedicationHistory(userGuid:String):void
+		{
+			var query:String = "userGuid=" + userGuid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_WEEKLY_MEDICATION_HISTORY + query);
+			trace("getWeeklyMedicationHistory " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getWeeklyMedicationHistoryCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getWeeklyMedicationHistoryCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_WEEKLY_MEDICATION_HISTORY_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt);
+		}
+
 
 	}
 }

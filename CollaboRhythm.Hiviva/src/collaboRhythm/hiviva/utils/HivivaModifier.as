@@ -308,7 +308,7 @@ package collaboRhythm.hiviva.utils
 			}
 			else if(dayOfWeek > 1)
 			{
-				date.date -= (dayOfWeek + 1);
+				date.date -= (dayOfWeek - 1);
 			}
 		}
 

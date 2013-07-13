@@ -126,25 +126,21 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function getUserMedicationHistory():void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_MEDICATION_HISTORY_COMPLETE,getUserMedicationHistoryCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserMedicationHistory(this._patientProfileData.guid);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE,getDailyMedicationHistoryCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getDailyMedicationHistory(this._patientProfileData.guid);
 
 			this._remoteCallMade = true;
 		}
 
-		private function getUserMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
+		private function getDailyMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_MEDICATION_HISTORY_COMPLETE,getUserMedicationHistoryCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE,getDailyMedicationHistoryCompleteHandler);
 
 			this._patientHistoryData = e.data.xmlResponse;
 
-			var medicationList:XMLList = this._patientHistoryData.DCUserMedication;
-			var medicationListLength:int = medicationList.length();
-
-			if (medicationListLength > 0)
+			if (this._patientHistoryData.children().length() > 0)
 			{
-				// TODO : uncomment and update parsing when xml structure is updated
-//				drawPatientTable();
+				drawPatientTable();
 			}
 			else
 			{

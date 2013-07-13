@@ -327,6 +327,34 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getDailyMedicationHistory(userGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE , getDailyMedicationHistoryCompleteHandler);
+			service.getDailyMedicationHistory(userGuid);
+		}
+
+		private function getDailyMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE , getDailyMedicationHistoryCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function getWeeklyMedicationHistory(userGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_WEEKLY_MEDICATION_HISTORY_COMPLETE , getWeeklyMedicationHistoryCompleteHandler);
+			service.getWeeklyMedicationHistory(userGuid);
+		}
+
+		private function getWeeklyMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_WEEKLY_MEDICATION_HISTORY_COMPLETE , getWeeklyMedicationHistoryCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_WEEKLY_MEDICATION_HISTORY_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function get service():HivivaRemoteStoreService
 		{
 			return _hivivaRemoteStoreService;
