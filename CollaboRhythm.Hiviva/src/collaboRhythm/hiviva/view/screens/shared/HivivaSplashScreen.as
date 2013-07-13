@@ -44,6 +44,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _hcpButton:Button;
 		private var _patientButton:Button;
 		private var _userType:String;
+		private var _preCloseDownCount:int = 0;
 
 		private var _starlingMain:Main;
 
@@ -240,15 +241,43 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function closeDownScreen():void
 		{
-			if(HivivaStartup.userVO.type == Constants.APP_TYPE_PATIENT)
+			getServerDate();
+			getPatientDailyAdherenceIfUserIsPatient();
+		}
+
+		private function getServerDate():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_SERVER_DATE_COMPLETE,
+					getServerDateComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getServerDate();
+		}
+
+		private function getPatientDailyAdherenceIfUserIsPatient():void
+		{
+			if (HivivaStartup.userVO.type == Constants.APP_TYPE_PATIENT)
 			{
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE,
+						getPatientMedicationListComplete);
 				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
 			}
 			else
 			{
-				this.dispatchEventWith("complete");
+				this._preCloseDownCount++;
 			}
+		}
+
+		private function getServerDateComplete(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_SERVER_DATE_COMPLETE,
+					getServerDateComplete);
+
+			if(e.data.xmlResponse.children().length() > 0)
+			{
+				updateServerDate(e.data.xmlResponse);
+			}
+
+			this._preCloseDownCount++;
+			checkToClose();
 		}
 
 		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
@@ -259,13 +288,27 @@ package collaboRhythm.hiviva.view.screens.shared
 			{
 				updateUserDailyAdherence(e.data.xmlResponse);
 			}
-			this.dispatchEventWith("complete");
+			this._preCloseDownCount++;
+			checkToClose();
+		}
+
+		private function updateServerDate(dateData:String):void
+		{
+			// TODO : need to include xml schema in xmlResponse
+			var datStr:String = dateData;
+			HivivaStartup.userVO.serverDate = HivivaModifier.isoDateToFlashDate(datStr);
+			trace("userVO.serverDate " + dateData);
 		}
 
 		private function updateUserDailyAdherence(medicationData:XML):void
 		{
 			HivivaStartup.patientAdherenceVO.percentage = HivivaModifier.calculateDailyAdherence(medicationData.DCUserMedication.Schedule.DCMedicationSchedule);
 			trace("patientAdherenceVO " + HivivaStartup.patientAdherenceVO.percentage);
+		}
+
+		private function checkToClose():void
+		{
+			if(this._preCloseDownCount == 2) this.dispatchEventWith("complete");
 		}
 
 

@@ -88,6 +88,23 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(new RemoteDataStoreEvent(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE));
 		}
 
+		public function getServerDate():void
+		{
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_SERVER_DATE);
+			trace("getServerDate " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getServerDateComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getServerDateComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_SERVER_DATE_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
 		public function getPatientMedicationList():void
 		{
 			var query:String = "userGuid=" + HivivaStartup.userVO.guid;

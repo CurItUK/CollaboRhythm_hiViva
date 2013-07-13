@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.global
 	{
 		//Users
 		public static const RS_CREATE_USER:String = 								"WSHealthUser.svc/createuser?type=";
+		public static const RS_GET_SERVER_DATE:String = 							"WSHealthUser.svc/CurrentDateTime";
 
 		//Medications
 		public static const RS_ADD_MEDICATION:String = 								"WSUserMedication.svc/AddUserMedication?";

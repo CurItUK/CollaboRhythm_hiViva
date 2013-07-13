@@ -62,6 +62,20 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getServerDate():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_SERVER_DATE_COMPLETE, getServerDateComplete);
+			service.getServerDate();
+		}
+
+		private function getServerDateComplete(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_SERVER_DATE_COMPLETE, getServerDateComplete);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_SERVER_DATE_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function getPatientMedicationList():void
 		{
 			service.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);

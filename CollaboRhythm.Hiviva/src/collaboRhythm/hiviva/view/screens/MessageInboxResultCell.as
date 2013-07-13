@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -238,7 +239,7 @@ package collaboRhythm.hiviva.view.screens
 
 		public function set dateText(value:String):void
 		{
-			_dateText = value;
+			_dateText = HivivaModifier.isoDateToPrettyString(value);
 		}
 
 		public function get check():Check

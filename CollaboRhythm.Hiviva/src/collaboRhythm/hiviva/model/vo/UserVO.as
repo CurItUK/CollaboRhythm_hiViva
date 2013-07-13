@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.model.vo
 		private var _appId:String;
 		private var _guid:String;
 		private var _type:String;
+		private var _serverDate:Date;
 
 
 		public function UserVO()
@@ -40,6 +41,16 @@ package collaboRhythm.hiviva.model.vo
 		public function get type():String
 		{
 			return this._type;
+		}
+
+		public function get serverDate():Date
+		{
+			return _serverDate;
+		}
+
+		public function set serverDate(value:Date):void
+		{
+			_serverDate = value;
 		}
 	}
 }

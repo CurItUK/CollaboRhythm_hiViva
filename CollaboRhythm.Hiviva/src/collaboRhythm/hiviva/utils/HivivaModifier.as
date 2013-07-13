@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.utils
 {
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 
 	import flash.geom.Point;
 
@@ -8,6 +9,9 @@ package collaboRhythm.hiviva.utils
 
 	public class HivivaModifier
 	{
+		public static const WeekDays:Array = new Array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
+		public static const Months:Array = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
 		public function HivivaModifier()
 		{
 		}
@@ -81,11 +85,13 @@ package collaboRhythm.hiviva.utils
 		public static function getDaysDiff(endDate:Date, startDate:Date):Number
 		{
 			var dayDiff:Number;
-			var endMidnight:Date = endDate;
-			var startMidnight:Date = startDate;
+			var endMidnight:Date = new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),0,0,0,0);
+			var startMidnight:Date = new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate(),0,0,0,0);
+/*
 
 			endMidnight.setHours(0,0,0,0);
 			startMidnight.setHours(0,0,0,0);
+*/
 
 			if (endMidnight > startMidnight)
 			{
@@ -367,6 +373,49 @@ package collaboRhythm.hiviva.utils
 			var percentage:Number = Math.round(scheduleTaken / scheduleCount * 100);
 
 			return percentage;
+		}
+
+		public static function isoDateToFlashDate(value:String):Date
+		{
+			// 2013-07-13T14:25:15.9644542+01:00
+			var splitAtT:Array = value.split("T");
+			var dateArr:Array = String(splitAtT[0]).split("-");
+			var splitAtPlus:Array = String(splitAtT[1]).split("+");
+			var timeArr:Array = String(splitAtPlus[0]).split(":");
+
+			var date:Date = new Date(int(dateArr[0]),int(dateArr[1])-1,int(dateArr[2]),int(timeArr[0]),int(timeArr[1]),int(timeArr[2]),null);
+
+			return date;
+		}
+
+		public static function isoDateToPrettyString(value:String):String
+		{
+			var prettyStr:String;
+			var date:Date = isoDateToFlashDate(value);
+			if(getDaysDiff(HivivaStartup.userVO.serverDate, date) > 0)
+			{
+				// return date and month name
+				prettyStr = date.getDate() + " " + String(Months[date.getMonth()]).substr(0,3);
+			}
+			else
+			{
+				// today, so return time in 24 hour
+				var prettyHours:String = date.getHours().toString();
+				var prettyMinutes:String = date.getMinutes().toString();
+				if(prettyHours.length == 1)
+				{
+					prettyHours = "0" + prettyHours;
+				}
+				if(prettyMinutes.length == 1)
+				{
+					prettyMinutes = "0" + prettyMinutes;
+				}
+				prettyStr = prettyHours + "." + prettyMinutes;
+				// TODO : need to compare to server time for just now
+//				if(prettyStr == "00.00") prettyStr = "Just now";
+			}
+
+			return prettyStr;
 		}
 	}
 }

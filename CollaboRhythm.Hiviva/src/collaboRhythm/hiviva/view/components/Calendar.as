@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import source.themes.HivivaTheme;
@@ -27,8 +28,6 @@ package collaboRhythm.hiviva.view.components
 		private var _allDayCells:Array = [];
 		private var _firstDayOfMonth:Date;
 		private var _daysPerWeek:Array = new Array(6,0,1,2,3,4,5);
-		private var _weekDays:Array = new Array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
-		private var _months:Array = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
 		private var _maxDaysMonth:uint = 30;
 		private var _leapYear:Number;
 		private var _cellWidth:Number = 50;
@@ -183,7 +182,7 @@ package collaboRhythm.hiviva.view.components
 		private function rightArrowPressed(e:starling.events.Event):void
 		{
 			_monthValue++;
-			if(_monthValue > _months.length-1)
+			if(_monthValue > HivivaModifier.Months.length-1)
 			{
 				_monthValue = 0;
 				_yearValue++;
@@ -212,7 +211,7 @@ package collaboRhythm.hiviva.view.components
 
 				_month = new Label();
 				_month.name = HivivaThemeConstants.CALENDAR_MONTH_LABEL;
-				_month.text = _months[_monthValue] + " " + _yearValue;
+				_month.text = HivivaModifier.Months[_monthValue] + " " + _yearValue;
 				_month.width = stageWidth - 2*arrowGap;
 			 	_month.x = stageWidth/2 - _month.width/2;
 				_month.y = 125;
@@ -223,7 +222,7 @@ package collaboRhythm.hiviva.view.components
 
 		private function updateMonthNameLabel():void
 		{
-			_month.text = _months[_monthValue] + " " + _yearValue;
+			_month.text = HivivaModifier.Months[_monthValue] + " " + _yearValue;
 		}
 
 		
@@ -234,7 +233,7 @@ package collaboRhythm.hiviva.view.components
 			{
 				var days:Label = new Label();
 				days.name = HivivaThemeConstants.CALENDAR_DAYS_LABEL;
-				days.text = this._weekDays[i];
+				days.text = HivivaModifier.WeekDays[i];
 				this.addChild(days);
 				
 				days.validate();
