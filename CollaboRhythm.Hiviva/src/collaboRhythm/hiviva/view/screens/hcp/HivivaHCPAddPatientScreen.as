@@ -272,11 +272,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
 
 			this._requestPopupContainer = new HivivaPopUp();
-			this._requestPopupContainer.scale = this.dpiScale;
-			this._requestPopupContainer.confirmLabel = "Close";
-			this._requestPopupContainer.addEventListener(Event.COMPLETE, closePopup);
-			this._requestPopupContainer.addEventListener(Event.CLOSE, closePopup);
-			this._requestPopupContainer.width = 500 * dpiScale;
+			this._requestPopupContainer.buttons = ["Close"];
+			this._requestPopupContainer.addEventListener(Event.TRIGGERED, closePopup);
 			this._requestPopupContainer.validate();
 			this._requestPopupContainer.message = "A request to connect has been sent.";
 
