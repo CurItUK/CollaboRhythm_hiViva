@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	import starling.display.BlendMode;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.textures.TextureSmoothing;
 
 	public class MainBackground extends Sprite
@@ -60,6 +61,10 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			holder.flatten();
 //			holder.touchable = false; causes the touch event to propagate to the settings menu underneath!
+			/*holder.addEventListener(Event.TRIGGERED, function(e:Event):void{
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+			});*/
 			this.addChild(holder);
 		}
 	}
