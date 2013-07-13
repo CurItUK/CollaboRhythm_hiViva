@@ -1,43 +1,25 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
-	import collaboRhythm.hiviva.controller.HivivaAppController;
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaHeader;
-	import collaboRhythm.hiviva.view.HivivaPopUp;
 	import collaboRhythm.hiviva.view.HivivaStartup;
-	import collaboRhythm.hiviva.view.PatientResultCell;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.PatientResultCellHome;
-
-	import feathers.controls.Button;
-
 	import feathers.controls.Label;
 
 	import feathers.controls.Screen;
-	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
-	import feathers.core.PopUpManager;
 	import feathers.layout.VerticalLayout;
-
-	import flash.events.Event;
-
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
 
 	import starling.events.Event;
 
 	public class HivivaHCPHomesScreen extends Screen
 	{
 		private var _header:HivivaHeader;
-		private var _userSignupPopupContent:HivivaPopUp;
 		private var _patientCellContainer:ScrollContainer;
 		private var _connectToPatientBtn:BoxedButtons;
 		private var _patientsData:XML;
