@@ -60,6 +60,10 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var IMAGE_SIZE:Number;
 		private var _usableHeight:Number;
 		private var _today:Date;
+		private var _remoteCallMade:Boolean = false;
+		private var _remoteCallCount:int = 0;
+
+		private var _messageCount:uint = 0;
 
 		public function HivivaPatientHomeScreenScreen():void
 		{
@@ -103,8 +107,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			if(this._today == null)
 			{
 				this._today = new Date();
-				checkForNewMessages();
-				checkForNewBadges();
+				if(!this._remoteCallMade) getAllMessagesFromRemoteService();
 				initHomePhoto();
 			}
 		}
@@ -164,24 +167,61 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.dispatchEventWith("navGoSettings", false, {screen:HivivaScreens.PATIENT_BADGES_SCREEN});
 		}
 
-		private function checkForNewMessages():void
+
+
+		private function getAllMessagesFromRemoteService():void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE, getMessagesCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE, getUserReceivedMessagesHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserReceivedMessages();
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE, getPendingConnectionsHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPendingConnections();
+			this._remoteCallMade = true;
 		}
 
-		private function getMessagesCompleteHandler(e:RemoteDataStoreEvent):void
+		private function getUserReceivedMessagesHandler(e:RemoteDataStoreEvent):void
 		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE, getUserReceivedMessagesHandler);
 
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE , getMessagesCompleteHandler);
-			trace("getMessagesCompleteHandler " + e.data.xmlResponse);
-			//TODO change from all messages to unread
-			var messageCount:uint = e.data.xmlResponse.children().length();
-			if(messageCount > 0)
+			var messages:uint = e.data.xmlResponse.DCMessageRecord.length();
+			if(messages > 0)
 			{
-				trace("messageCount " + messageCount);
-				this._messagesButton.visible = true;
-				this._messagesButton.subScript = String(messageCount);
+				for(var i:uint = 0 ; i < messages ; i++)
+				{
+					if(e.data.xmlResponse.DCMessageRecord[i].read == "false")
+					{
+						this._messageCount += 1;
+					}
+				}
+			}
+
+			this._remoteCallCount++;
+			allDataLoadedCheck();
+		}
+
+		private function getPendingConnectionsHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE, getPendingConnectionsHandler);
+
+			if(e.data.xmlResponse.children().length() > 0)
+			{
+				this._messageCount += e.data.xmlResponse.DCConnection.length();
+			}
+
+			this._remoteCallCount++;
+			allDataLoadedCheck();
+		}
+
+		private function allDataLoadedCheck():void
+		{
+			if(this._remoteCallCount == 2)
+			{
+				if(this._messageCount > 0 )
+				{
+					this._messagesButton.visible = true;
+					this._messagesButton.subScript = String(this._messageCount);
+				}
+
 			}
 		}
 
