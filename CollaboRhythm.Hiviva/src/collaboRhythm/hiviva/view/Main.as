@@ -243,6 +243,17 @@ package collaboRhythm.hiviva.view
 			settingsTween.animate("x" , xLoc);
 			settingsTween.onComplete = function():void{_settingsOpen = !_settingsOpen; Starling.juggler.remove(settingsTween);};
 			Starling.juggler.add(settingsTween);
+
+			// to stop settings nav being clickable when the settings are closed
+			switch(HivivaStartup.userVO.type)
+			{
+				case Constants.APP_TYPE_PATIENT :
+					this._patientSideNavScreen.touchable = !_settingsOpen;
+					break;
+				case Constants.APP_TYPE_HCP :
+					this._hcpSideNavScreen.touchable = !_settingsOpen;
+					break;
+			}
 		}
 
 		private function initPatientNavigator():void
@@ -250,6 +261,7 @@ package collaboRhythm.hiviva.view
 			this._patientSideNavScreen = new HivivaPatientSideNavScreen(Constants.SETTING_MENU_WIDTH, this._scaleFactor);
 			this._patientSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , settingsNavHandler);
 			this.addChildAt(this._patientSideNavScreen , 0);
+			this._patientSideNavScreen.touchable = false;
 
 			this._mainScreenNav.addScreen(HivivaScreens.PATIENT_HOME_SCREEN, new ScreenNavigatorItem(HivivaPatientHomeScreen, {navGoSettings:navGoSettings}));
 			this._mainScreenNav.addScreen(HivivaScreens.PATIENT_VIEW_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientViewMedicationScreen));
@@ -264,6 +276,7 @@ package collaboRhythm.hiviva.view
 			this._hcpSideNavScreen = new HivivaHCPSideNavigationScreen(Constants.SETTING_MENU_WIDTH, this._scaleFactor);
 			this._hcpSideNavScreen.addEventListener(FeathersScreenEvent.NAVIGATE_AWAY , settingsNavHandler);
 			this.addChildAt(this._hcpSideNavScreen , 0);
+			this._hcpSideNavScreen.touchable = false;
 
 			this._mainScreenNav.addScreen(HivivaScreens.HCP_HOME_SCREEN, new ScreenNavigatorItem(HivivaHCPHomesScreen, {mainToSubNav:navigateToDirectProfileMenu}));
 			this._mainScreenNav.addScreen(HivivaScreens.HCP_ADHERENCE_SCREEN, new ScreenNavigatorItem(HivivaHCPAllPatientsAdherenceScreen));
