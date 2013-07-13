@@ -8,5 +8,10 @@ package collaboRhythm.hiviva.controller
 		{
 			trace("HivivaNotificationsController construct");
 		}
+
+		public function initNotificationService():void
+		{
+
+		}
 	}
 }
