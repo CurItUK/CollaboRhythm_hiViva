@@ -170,12 +170,9 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private function sendButtonHandler(e:starling.events.Event):void
 		{
 					this._popupContainer = new HivivaPopUp();
-					this._popupContainer.scale = this.dpiScale;
-					this._popupContainer.width = this.actualWidth;
-					this._popupContainer.height = this.actualHeight;
-					this._popupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
+					this._popupContainer.addEventListener(starling.events.Event.TRIGGERED, closePopup);
 //					this._popupContainer.message = _main.selectedHCPPatientProfile.name;
-					this._popupContainer.confirmLabel = 'Message Sent';
+					this._popupContainer.buttons = ['Message Sent'];
 					this._popupContainer.validate();
 
 					PopUpManager.addPopUp(this._popupContainer, true, true);

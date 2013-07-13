@@ -132,8 +132,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			if(!_isSent) addChild(this._options);
 
 			this._statusResponse = new HivivaPopUp();
-			this._statusResponse.confirmLabel = "Ok";
-			this._statusResponse.width = Constants.STAGE_WIDTH * 0.8;
+			this._statusResponse.buttons = ["Ok"];
 		}
 
 		private function markMessageAsRead():void
@@ -219,8 +218,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function initStatusResponsePopup(message:String, callBack:Function):void
 		{
-			this._statusResponse.addEventListener(Event.COMPLETE, callBack);
-			this._statusResponse.addEventListener(Event.CLOSE, callBack);
+			this._statusResponse.addEventListener(Event.TRIGGERED, callBack);
 			this._statusResponse.message = message;
 			this._statusResponse.validate();
 
