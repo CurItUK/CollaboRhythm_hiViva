@@ -22,7 +22,7 @@ package collaboRhythm.hiviva.global
 		public static const DEFAULT_PASSWORD_FOR_DEBUGGING:String 			= "123456";
 
 		//Notifications
-		public static const PATIENT_HOMEPAGE_MESSAGE_CHECK_TIME:Number 		= 60000;
+		public static const PATIENT_HOMEPAGE_MESSAGE_CHECK_TIME:Number 		= 20000;
 
 
 

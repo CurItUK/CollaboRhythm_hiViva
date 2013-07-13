@@ -18,7 +18,5 @@ package collaboRhythm.hiviva.model.vo
 		{
 			return this._percentage;
 		}
-
-
 	}
 }

@@ -1,12 +1,14 @@
 package collaboRhythm.hiviva.controller
 {
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.NotificationsEvent;
+	import collaboRhythm.hiviva.global.NotificationsEvent;
 
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 
-	import org.osmf.events.TimeEvent;
+
 
 	public class HivivaNotificationsController extends EventDispatcher
 	{
@@ -37,9 +39,10 @@ package collaboRhythm.hiviva.controller
 			this._timer = null;
 		}
 
-		private function onPatientMessageCheck(e:TimeEvent):void
+		private function onPatientMessageCheck(e:TimerEvent):void
 		{
-
+			trace("PATIENT HOMEPAGE: TICK - get messages");
+			this.dispatchEvent(new NotificationsEvent(NotificationsEvent.PATIENT_HOMEPAGE_TICK_COMPLETE));
 		}
 	}
 }

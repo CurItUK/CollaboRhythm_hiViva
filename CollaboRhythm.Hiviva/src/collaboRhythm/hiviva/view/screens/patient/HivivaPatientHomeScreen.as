@@ -1,9 +1,11 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.controller.HivivaAppController;
+	import collaboRhythm.hiviva.controller.HivivaNotificationsController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.global.NotificationsEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
@@ -233,8 +235,16 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initHomePhoto():void
 		{
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.PATIENT_HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.enableAutoPatientHomePageMessageCheck();
+
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE, getGalleryTimeStampHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getGalleryTimeStamp();
+		}
+
+		private function homePageTickHandler(e:NotificationsEvent):void
+		{
+			getAllMessagesFromRemoteService();
 		}
 
 		private function getGalleryTimeStampHandler(e:LocalDataStoreEvent):void
@@ -460,6 +470,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		override public function dispose():void
 		{
 			trace("HivivaPatientHomeScreenScreen dispose" );
+			closeDownApplicationNotifications();
 
 
 			//this._bg.texture.base.dispose();
@@ -484,6 +495,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			super.dispose();
 			System.gc();
 
+		}
+
+		private function closeDownApplicationNotifications():void
+		{
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.disbaleAutoPatientHomePageMessageCheck();
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.PATIENT_HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
 		}
 	}
 }
