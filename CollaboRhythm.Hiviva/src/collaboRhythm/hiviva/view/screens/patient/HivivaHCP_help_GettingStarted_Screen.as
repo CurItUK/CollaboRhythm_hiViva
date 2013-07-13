@@ -80,9 +80,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				var lc:ListCollection = new ListCollection(
 					[
-						{name: "hcpdisplaysettings", label: "Display Settings"},
-					    {name: "hcpalerts", label: "Alerts"},
-					 	{name: "hcpconnecttopatient", label: "Connect to Patient"}
+						{name: "hcphelpdisplaySettings", label: "Display Settings"},
+					    {name: "hcphelpAlertsScreen", label: "Alerts"},
+					 	{name: "hcphelpConnectToPatientScreen", label: "Connect to Patient"}
 					]
 				);
 
@@ -173,11 +173,11 @@ package collaboRhythm.hiviva.view.screens.patient
 	switch(_searchString)
 	{
 
-	case "hcpdisplaysettings" :
+	case "hcphelpdisplaySettings" :
 	scrManager.init( HivivaHCP_help_Display_Settings_Screen);
 	scrManager.__addScreen(HivivaScreens.HCP_HELP_DISPLAY_SETTINGS)
 	break;
-	case "hcphomepagephoto" :
+	case "hcphelpAlertsScreen" :
 	/*
 	temp = String(HivivaScreens.PATIENT_HELP_HELP2_SCREEN);
 	var screenNavItem2:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help2_Screen);
@@ -188,10 +188,10 @@ package collaboRhythm.hiviva.view.screens.patient
 	new HelpScreen2(this.owner , HivivaPatient_help_help2_Screen).__addScreen();
 	// __arr.push(temp);
 	*/
-	scrManager.init(  HivivaPatient_help_Privacy_Screen)
-	scrManager.__addScreen(HivivaScreens.HCP_HELP_PRIVACY_SCREEN)
+	scrManager.init(  HivivaHCP_help_Alerts_Screen)
+	scrManager.__addScreen(HivivaScreens.HCP_HELP_ALERTS_SCREEN)
 	break;
-	case "hcpconnecttocareprovider" :
+	case "hcphelpConnectToPatientScreen" :
 	/*
 	var screenNavItem3:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help3_Screen);
 	// temp = String(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
@@ -199,8 +199,8 @@ package collaboRhythm.hiviva.view.screens.patient
 	this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
 	// __arr.push(temp);
 	*/
-	scrManager.init( HivivaPatient_help_GettingStarted_Screen)
-	scrManager.__addScreen(HivivaScreens.HCP_HELP_GETTINGSTARTED_SCREEN)
+	scrManager.init( HivivaHCP_help_Connect_To_Patient_Screen)
+	scrManager.__addScreen(HivivaScreens.HCP_HELP_CONNECT_TO_PATIENT_SCREEN)
 	break;
 
 

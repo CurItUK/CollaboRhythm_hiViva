@@ -216,12 +216,12 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			if(this._remoteCallCount == 2)
 			{
+				this._remoteCallCount = 0;
 				if(this._messageCount > 0 )
 				{
 					this._messagesButton.visible = true;
 					this._messagesButton.subScript = String(this._messageCount);
 				}
-
 			}
 		}
 
