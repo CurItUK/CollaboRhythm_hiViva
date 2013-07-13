@@ -244,6 +244,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function homePageTickHandler(e:NotificationsEvent):void
 		{
+			this._messageCount = 0;
 			getAllMessagesFromRemoteService();
 		}
 
