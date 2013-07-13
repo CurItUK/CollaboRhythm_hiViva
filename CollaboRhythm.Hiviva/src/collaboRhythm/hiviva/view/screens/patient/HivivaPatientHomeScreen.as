@@ -142,10 +142,12 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._messagesButton = new TopNavButton();
 			this._messagesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_02"));
+			this._messagesButton.visible = false;
 			this._messagesButton.addEventListener(Event.TRIGGERED , messagesButtonHandler);
 
 			this._badgesButton = new TopNavButton();
 			this._badgesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_03"));
+			this._badgesButton.visible = false;
 			this._badgesButton.addEventListener(Event.TRIGGERED , rewardsButtonHandler);
 
 			this._header.rightItems =  new <DisplayObject>[this._messagesButton, this._badgesButton];
@@ -230,27 +232,6 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._homeImageInstructions.visible = true;
 				//TODO: delete all old image entries in sql
 			}
-		}
-
-		private function getAdherenceHandler(e:LocalDataStoreEvent):void
-		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE,getAdherenceHandler);
-
-			var allAdherenceData:Array = e.data.adherence,
-				latestAdherenceData:Object;
-
-			this._adherencePercent = 0;
-			if (allAdherenceData != null)
-			{
-				latestAdherenceData = allAdherenceData[allAdherenceData.length - 1];
-				if(latestAdherenceData.date == HivivaModifier.getSQLStringFromDate(this._today))
-				{
-					this._adherencePercent = allAdherenceData[allAdherenceData.length - 1].adherence_percentage;
-				}
-			}
-			trace("this._adherencePercent = " + this._adherencePercent);
-
-
 		}
 
 		private function getGalleryImagesHandler(e:LocalDataStoreEvent):void
