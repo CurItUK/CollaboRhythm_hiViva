@@ -64,8 +64,6 @@ package collaboRhythm.hiviva.view
 			this._sh = stage.fullScreenHeight;
 
 			_hivivaAppController = new HivivaAppController();
-			_hivivaAppController.initLocalStore();
-			_hivivaAppController.initRemoteStore();
 
  			//checkNetworkStatus();
 			initStarling();
