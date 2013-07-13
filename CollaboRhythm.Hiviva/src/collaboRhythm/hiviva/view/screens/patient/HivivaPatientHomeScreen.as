@@ -180,6 +180,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			if(messageCount > 0)
 			{
 				trace("messageCount " + messageCount);
+				this._messagesButton.visible = true;
 				this._messagesButton.subScript = String(messageCount);
 			}
 		}
