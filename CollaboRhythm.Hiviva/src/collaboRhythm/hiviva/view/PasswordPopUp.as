@@ -96,7 +96,7 @@ package collaboRhythm.hiviva.view
 			addChild(this._passwordInputField);
 			this._passwordInputField._input.isEnabled = true ;
 			this._passwordInputField._input.setFocus()
-			this._passwordInputField.isFocusEnabled = true ;
+			//this._passwordInputField.isFocusEnabled = true ;
 			this._passwordInputField.y -= 200
 			this._passwordInputField.x += 120
 			this._saveSettings = new Check();
