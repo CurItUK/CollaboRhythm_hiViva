@@ -11,16 +11,17 @@ package collaboRhythm.hiviva.controller
 
 		public function HivivaAppController()
 		{
-
+			initLocalStore();
+			initRemoteStore();
 		}
 
-		public function initLocalStore():void
+		private function initLocalStore():void
 		{
 			_hivivaLocalStoreController = new HivivaLocalStoreController();
 			_hivivaLocalStoreController.initStoreService();
 		}
 
-		public function initRemoteStore():void
+		private function initRemoteStore():void
 		{
 			this._hivivaRemoteStoreController = new HivivaRemoteStoreController();
 			this._hivivaRemoteStoreController.initStoreService();
