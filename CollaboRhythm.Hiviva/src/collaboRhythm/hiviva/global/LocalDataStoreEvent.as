@@ -37,6 +37,9 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_MESSAGES_VIEWED_LOAD_COMPLETE :String		= "patientMessagesViewedLoadComplete";
 		public static const PATIENT_MESSAGES_VIEWED_SAVE_COMPLETE :String		= "patientMessagesViewedSaveComplete";
 
+		public static const PATIENT_LOAD_KUDOS_COMPLETE :String					= "patientLoadKudosComplete";
+		public static const PATIENT_SAVE_KUDOS_COMPLETE :String					= "patientLoadSaveComplete";
+
 
 		public static const APPLICATION_RESET_COMPLETE :String					= "applicationResetComplete";
 

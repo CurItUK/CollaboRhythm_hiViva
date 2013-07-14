@@ -440,6 +440,38 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getPatientKudosData():void
+		{
+			service.addEventListener(LocalDataStoreEvent.PATIENT_LOAD_KUDOS_COMPLETE , loadPatientKudosCompleteHandler);
+			service.getPatientKudosData();
+		}
+
+		private function loadPatientKudosCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PATIENT_LOAD_KUDOS_COMPLETE , loadPatientKudosCompleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_LOAD_KUDOS_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function savePatientKudosData(date:String , count:String):void
+		{
+			service.addEventListener(LocalDataStoreEvent.PATIENT_SAVE_KUDOS_COMPLETE , savePatientKudosCompleteHandler);
+			service.savePatientKudosData(date , count);
+		}
+
+		private function savePatientKudosCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PATIENT_SAVE_KUDOS_COMPLETE , savePatientKudosCompleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_SAVE_KUDOS_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function updatePatientBadges(id:uint):void
+		{
+			service.updatePatientBadges(id);
+		}
+
 		public function get service():HivivaLocalStoreService
 		{
 			return _hivivaLocalStoreService;

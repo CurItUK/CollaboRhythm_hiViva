@@ -1119,6 +1119,66 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
+		public function getPatientKudosData():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+
+			this._sqStatement.text = "SELECT * FROM patient_kudos";
+
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, loadPatientKudosDataCompleteHandler);
+			this._sqStatement.execute();
+		}
+
+		private function loadPatientKudosDataCompleteHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_LOAD_KUDOS_COMPLETE);
+			evt.data.kudos = result;
+			this.dispatchEvent(evt);
+		}
+
+		public function savePatientKudosData(date:String , count:String):void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "UPDATE patient_kudos SET medication_take_date='" + date + "' , count='" + count + "'";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, savePatientKudosDataCompleteHandler);
+			this._sqStatement.execute();
+		}
+
+		private function savePatientKudosDataCompleteHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_SAVE_KUDOS_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function updatePatientBadges(id:uint):void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "UPDATE patient_badges SET badge_attained='true' WHERE id='"+ id + "'";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+		}
+
 		public function get userVO():UserVO
 		{
 			return this._userVO;

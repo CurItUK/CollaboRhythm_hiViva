@@ -417,5 +417,11 @@ package collaboRhythm.hiviva.utils
 
 			return prettyStr;
 		}
+
+		public static function getDaysDiffence(futureDate:Date , pastDate:Date):Number
+		{
+			var milliSecondsToDays:Number = 24 * 60 * + 60 * 1000;
+			return Math.round((futureDate.valueOf()) / milliSecondsToDays - (pastDate.valueOf()) / milliSecondsToDays);
+		}
 	}
 }

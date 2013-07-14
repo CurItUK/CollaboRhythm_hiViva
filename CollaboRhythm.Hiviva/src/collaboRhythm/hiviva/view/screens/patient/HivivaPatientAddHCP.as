@@ -16,6 +16,8 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.core.ToggleGroup;
 	import feathers.layout.VerticalLayout;
 
+	import spark.skins.mobile.DefaultBeveledActionButtonSkin;
+
 	import starling.display.DisplayObject;
 
 
@@ -255,11 +257,24 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
 
+			var msg:String = "An error occurred please try again.";
+
+			switch (e.data.xmlResponse.StatusCode)
+			{
+				case "1" :
+					msg = "A request to connect has been sent.";
+					break;
+
+				case "5" :
+					msg = "Pending connection already exists.";
+					break;
+			}
+
 			this._requestPopupContainer = new HivivaPopUp();
 			this._requestPopupContainer.buttons = ["Close"];
 			this._requestPopupContainer.addEventListener(Event.TRIGGERED, closePopup);
 			this._requestPopupContainer.validate();
-			this._requestPopupContainer.message = "A request to connect has been sent.";
+			this._requestPopupContainer.message = msg;
 
 			PopUpManager.addPopUp(this._requestPopupContainer,true,true);
 			this._requestPopupContainer.validate();
