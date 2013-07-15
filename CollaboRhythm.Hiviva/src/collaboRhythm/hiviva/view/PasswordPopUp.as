@@ -129,7 +129,7 @@ package collaboRhythm.hiviva.view
 
 			this._passwordInputField.displayAsPassword = true;
 			this._passwordInputField._color = "0xFFFFFF"
-			//this._passwordInputField.addEventListener(FocusEvent.FOCUS_IN  , focusIn )
+		//	 this._passwordInputField.addEventListener(FocusEvent.FOCUS_IN  , focusIn )
 
 
 		}
@@ -144,7 +144,10 @@ package collaboRhythm.hiviva.view
 		{
 			trace("now in Focus ")
 			this._passwordInputField._color = "0xFFFFFF"
-			this._passwordInputField.validate();
+
+			this._passwordInputField.drawColor()
+			//this._passwordInputField.validate();
+
 		}
 
 		private function confirmButtonHandler(e:Event):void
@@ -157,9 +160,13 @@ package collaboRhythm.hiviva.view
 			//ToDo :  A singleton class needs to be created for password connection and db connection
 			if(  this._passwordInputField._input.text  !== passController.Pass){
 
-				// trace("incorrect password")
-				this._passwordInputField._color = "0x000000"
-				this._passwordInputField.validate()
+				  trace("incorrect password")
+				this._passwordInputField._color = "0xFF0000"
+				//this._passwordInputField.setSize(20 , 40);
+				this._passwordInputField.drawColor();
+				this._passwordInputField._color = "0xFFFFFF";
+				this._passwordInputField.setFocus()
+		//		this._passwordInputField.validate()
 				return
 			}
 
