@@ -5,6 +5,11 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Label;
 	import feathers.controls.TextInput;
 	import feathers.core.FeathersControl;
+	//import flash.events.FocusEvent ;
+
+      import starling.events.TouchEvent;
+      import starling.events.Touch;
+	//import flash.events.Event;
 
 
 	public class LabelAndInput extends  FeathersControl
@@ -35,6 +40,20 @@ package collaboRhythm.hiviva.view
 		}
 
 
+
+		public function setFocus(){
+		//	this._input.addEventListener(Event.F)
+	     	this._input.addEventListener(TouchEvent.TOUCH  , onTouch )
+
+		}
+
+		private function onTouch (e:TouchEvent):void
+				{
+					this._input.removeEventListener(TouchEvent.TOUCH  , onTouch )
+					this._input.textEditorProperties.color =  this.__color
+					this._input.text = ""
+
+				}
 
 
 		public var _labelLeft:Label;
@@ -90,6 +109,14 @@ package collaboRhythm.hiviva.view
 					this.__color = b ;
 				};
 
+		       public function drawColor (){
+				   if(this.__color != null )
+				 	this._input.textEditorProperties.color =  this.__color
+		//  this._input.validate();
+
+
+			   }
+
     //TODO: this part needs to be modified if new feathers is used
 		/**
         * Display as password added to be able to access properties directly.
@@ -108,6 +135,9 @@ package collaboRhythm.hiviva.view
 
 
 
+
+
+
 		override protected function draw():void
 		{
 			var scaledPadding:Number = PADDING * this._scale;
@@ -118,6 +148,8 @@ package collaboRhythm.hiviva.view
 			this._input.textEditorProperties.displayAsPassword =  this._isPassword;
 			if(this.__color != null )
 			this._input.textEditorProperties.color =  this.__color
+
+			trace(this , "this.__color == null     :::: " , this.__color)
 
 			this._input.validate();
 
