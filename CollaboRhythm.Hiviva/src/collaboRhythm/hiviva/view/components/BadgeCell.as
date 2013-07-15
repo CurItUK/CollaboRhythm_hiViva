@@ -61,11 +61,11 @@ package collaboRhythm.hiviva.view.components
 			this._pillTrophy.x = this._gap +(this._pillImageBg.width - this._pillTrophy.width)/2;
 			this._pillTrophy.y = this._gap + (this._pillImageBg.height - this._pillTrophy.height)/2;
 
-			this._badgeNameLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
+			this._badgeNameLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap * 5;
 			this._badgeNameLabel.y = this._pillImageBg.y;
 			this._badgeNameLabel.width = this.actualWidth - this._pillImageBg.x;
 
-			this._dateRangeLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
+			this._dateRangeLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap * 5;
 			this._dateRangeLabel.y = this._badgeNameLabel.y + this._badgeNameLabel.height;
 			this._dateRangeLabel.width = this.actualWidth - this._pillImageBg.x;
 

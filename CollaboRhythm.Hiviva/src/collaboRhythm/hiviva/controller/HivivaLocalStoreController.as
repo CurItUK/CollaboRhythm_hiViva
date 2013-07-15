@@ -472,6 +472,25 @@ package collaboRhythm.hiviva.controller
 			service.updatePatientBadges(id);
 		}
 
+		public function getPatientBadges():void
+		{
+			service.addEventListener(LocalDataStoreEvent.PATIENT_LOAD_BADGES_COMPLETE , loadPatientBadgesCompleteHandler);
+			service.getPatientBadges();
+		}
+
+		private function loadPatientBadgesCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PATIENT_LOAD_BADGES_COMPLETE , loadPatientBadgesCompleteHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.PATIENT_LOAD_BADGES_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function clearDownBadgeAlerts():void
+		{
+			service.clearDownBadgeAlerts();
+		}
+
 		public function get service():HivivaLocalStoreService
 		{
 			return _hivivaLocalStoreService;

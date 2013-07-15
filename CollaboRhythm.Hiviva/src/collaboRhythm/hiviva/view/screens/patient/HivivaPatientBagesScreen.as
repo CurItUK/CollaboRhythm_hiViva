@@ -27,13 +27,14 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _header:HivivaHeader;
 		private var _cellContainer:ScrollContainer;
 		private var _scaledPadding:Number;
+		private var _badgesAwarded:Number = 0;
 
 		private const BADGE_LABELS:Array =
 		[
-			"Nice work. 1 week adherence",
-			"Excellent job. 10 weeks adherence",
-			"Outstanding achievement! 25 weeks adherence",
-			"King of the Meds! 50 weeks adherence"
+			"Nice work.\n1 week adherence",
+			"Excellent job.\n10 weeks adherence",
+			"Outstanding achievement!\n25 weeks adherence",
+			"King of the Meds!\n50 weeks adherence"
 		];
 
 		private const BADGE_ICONS:Array =
@@ -66,7 +67,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
 
-			if(_cellContainer == null) drawDummyBadges();
+			if(_cellContainer == null) getPatientBadges();
 		}
 
 		override protected function initialize():void
@@ -84,12 +85,37 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.leftItems = new <DisplayObject>[homeBtn];
 		}
 
-		private function drawDummyBadges():void
+
+		private function getPatientBadges():void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_LOAD_BADGES_COMPLETE , loadPatientBadgesCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getPatientBadges();
+		}
+
+		private function loadPatientBadgesCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_LOAD_BADGES_COMPLETE , loadPatientBadgesCompleteHandler);
+
+			var badgeCount:Number = e.data.badges.length;
+			for(var i:uint = 0 ; i < badgeCount ; i++)
+			{
+				if(e.data.badges[i].badge_attained == true)
+				{
+					this._badgesAwarded += 1;
+				}
+			}
+			if(this._badgesAwarded > 0)
+			{
+				drawBadges();
+			}
+		}
+
+		private function drawBadges():void
 		{
 			this._cellContainer = new ScrollContainer();
 
 			var badge:BadgeCell;
-			for (var i:int = 0; i < BADGE_LABELS.length; i++)
+			for (var i:int = 0; i < this._badgesAwarded; i++)
 			{
 				badge = new BadgeCell();
 				badge.scale = this.dpiScale;
@@ -107,7 +133,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._cellContainer.height = this.actualHeight - this._cellContainer.y - (this._scaledPadding * 2);
 			this._cellContainer.layout = new VerticalLayout();
 			this._cellContainer.validate();
+
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.clearDownBadgeAlerts();
 		}
+
+
 
 		private function homeBtnHandler():void
 		{

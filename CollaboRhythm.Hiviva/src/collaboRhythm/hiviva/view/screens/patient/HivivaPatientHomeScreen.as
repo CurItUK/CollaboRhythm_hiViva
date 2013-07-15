@@ -66,6 +66,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _remoteCallCount:int = 0;
 
 		private var _messageCount:uint = 0;
+		private var _badgesAwarded:Number = 0;
 
 		public function HivivaPatientHomeScreenScreen():void
 		{
@@ -110,6 +111,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				this._today = new Date();
 				if(!this._remoteCallMade) getAllMessagesFromRemoteService();
+				checkForNewBadges();
 				initHomePhoto();
 			}
 		}
@@ -178,6 +180,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE, getPendingConnectionsHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPendingConnections();
+
 			this._remoteCallMade = true;
 		}
 
@@ -219,6 +222,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			if(this._remoteCallCount == 2)
 			{
 				this._remoteCallCount = 0;
+
 				if(this._messageCount > 0 )
 				{
 					this._messagesButton.visible = true;
@@ -229,8 +233,27 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function checkForNewBadges():void
 		{
-			// dummy data
-			//this._badgesButton.subScript = "1";
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_LOAD_BADGES_COMPLETE , loadPatientBadgesCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getPatientBadges();
+		}
+
+		private function loadPatientBadgesCompleteHandler(e:LocalDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_LOAD_BADGES_COMPLETE , loadPatientBadgesCompleteHandler);
+
+			var badgeCount:Number = e.data.badges.length;
+			for(var i:uint = 0 ; i < badgeCount ; i++)
+			{
+				if(e.data.badges[i].badge_viewed == false && e.data.badges[i].badge_attained == true)
+				{
+					this._badgesAwarded += 1;
+				}
+			}
+			if(this._badgesAwarded > 0 )
+			{
+				this._badgesButton.visible = true;
+				this._badgesButton.subScript = String(this._badgesAwarded);
+			}
 		}
 
 		private function initHomePhoto():void
