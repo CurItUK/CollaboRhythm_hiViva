@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import source.themes.HivivaTheme;
@@ -114,7 +115,7 @@ package collaboRhythm.hiviva.view.components
 				this.addChild(cell);
 				cell.validate();
 				
-				cell.x = 10 + (cell.width * (i - (Math.floor(i/7) * 7)));
+				cell.x = (this.width - cell.width * 7 ) / 2 + (cell.width * (i - (Math.floor(i/7) * 7)));
 				cell.y = 250 + (cell.height * Math.floor(i/7));
 
 				this._allDayCells.push(cell);
@@ -151,13 +152,16 @@ package collaboRhythm.hiviva.view.components
 			this._arrowLeft.addEventListener(starling.events.Event.TRIGGERED, leftArrowPressed);
 			this._arrowRight.addEventListener(starling.events.Event.TRIGGERED, rightArrowPressed);
 
-			this._closeBtn = new Button();
-			this._closeBtn.name = "close_button";
-			this._closeBtn.x = stageWidth - this._closeBtn.width - arrowGap;
-			this._closeBtn.y = this._closeBtn.height;
 
-			this.addChild(this._closeBtn);
+
+			this._closeBtn = new Button();
+		    this._closeBtn.name = "close-button";
+
+
 			this._closeBtn.addEventListener(starling.events.Event.TRIGGERED, closeBtnPressed);
+			this._closeBtn.x = stageWidth - this._closeBtn.width - arrowGap + 30 ;
+			this._closeBtn.y = this._closeBtn.height + 10 ;
+			addChild(this._closeBtn);
 
 			createCurrentMonthNameLabel();
 

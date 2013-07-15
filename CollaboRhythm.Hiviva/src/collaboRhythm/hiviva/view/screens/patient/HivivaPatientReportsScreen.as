@@ -154,6 +154,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._customHeight = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT;
 			super.draw();
 			this._content.validate();
+
+
 		}
 
 		override protected function preValidateContent():void
@@ -265,6 +267,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._calendar = new Calendar();
 			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler);
 
+
 			// TODO : to be removed when we have remote data
 			initPatientXMLData();
 
@@ -291,6 +294,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			if(this._calendarActive) this._calendar.resetCalendar();
 
 			this._calendarActive = true;
+			this._calendar.x =    this.width/2  -  this._calendar.width/2 // + 10
+		    trace(this , "width and height  ::: " ,  this.width , this._calendar.width )
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 
