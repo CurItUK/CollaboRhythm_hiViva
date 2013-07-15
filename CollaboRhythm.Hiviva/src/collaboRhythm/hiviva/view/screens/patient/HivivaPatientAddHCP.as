@@ -258,8 +258,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
 
 			var msg:String = "An error occurred please try again.";
+			var responseStatus:String = e.data.xmlResponse.StatusCode;
 
-			switch (e.data.xmlResponse.StatusCode)
+			switch (responseStatus)
 			{
 				case "1" :
 					msg = "A request to connect has been sent.";
