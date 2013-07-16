@@ -7,13 +7,19 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaHeader;
 	import collaboRhythm.hiviva.view.HivivaStartup;
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
+	import collaboRhythm.hiviva.view.components.TopNavButton;
 	import collaboRhythm.hiviva.view.screens.PatientResultCellHome;
 	import feathers.controls.Label;
 
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
 	import feathers.layout.VerticalLayout;
+
+	import starling.display.DisplayObject;
+
+	import starling.display.Image;
 
 	import starling.events.Event;
 
@@ -27,10 +33,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _filterdPatients:Array;
 		private var _patientLabel:Label;
 		private var _remoteCallMade:Boolean = false;
+		private var _messagesButton:TopNavButton;
 
 		private const BOTTOM:Number = Constants.STAGE_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT;
 		private var _patientCellYStart:Number;
 		private var _patientCellVSpace:Number;
+		private var _messageCount:uint = 0;
 
 		public function HivivaHCPHomesScreen()
 		{
@@ -78,6 +86,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 			_connectToPatientBtn.labels = ["Connect to patient"];
 			_connectToPatientBtn.addEventListener(starling.events.Event.TRIGGERED, connectToPatientBtnHandler);
 			this.addChild(_connectToPatientBtn);
+
+			this._messagesButton = new TopNavButton();
+			this._messagesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_02"));
+			this._messagesButton.visible = false;
+			this._messagesButton.addEventListener(Event.TRIGGERED , messagesButtonHandler);
+
+			this._header.rightItems =  new <DisplayObject>[this._messagesButton];
+		}
+
+		private function messagesButtonHandler(e:Event):void
+		{
+			this.dispatchEventWith("navGoToMessages");
 		}
 
 		private function connectToPatientBtnHandler(e:starling.events.Event):void
@@ -110,6 +130,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnectionsWithSummary();
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE, getPendingConnectionsHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPendingConnections();
+
 			this._remoteCallMade = true;
 		}
 
@@ -169,6 +193,22 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 
 			return whoEstablishConnection;
+		}
+
+		private function getPendingConnectionsHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE, getPendingConnectionsHandler);
+
+			if(e.data.xmlResponse.children().length() > 0)
+			{
+				this._messageCount += e.data.xmlResponse.DCConnection.length();
+
+				if(this._messageCount > 0 )
+				{
+					this._messagesButton.visible = true;
+					this._messagesButton.subScript = String(this._messageCount);
+				}
+			}
 		}
 
 		private function initAlertText():void

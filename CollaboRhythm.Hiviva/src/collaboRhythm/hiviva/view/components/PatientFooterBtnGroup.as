@@ -127,5 +127,11 @@ package collaboRhythm.hiviva.view.components
 		{
 			return this;
 		}
+
+		//TODO Ugly hack needs tidy up
+		public function navigateToMessages():void
+		{
+
+		}
 	}
 }

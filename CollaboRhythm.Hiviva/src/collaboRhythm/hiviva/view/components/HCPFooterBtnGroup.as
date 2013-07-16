@@ -122,5 +122,17 @@ package collaboRhythm.hiviva.view.components
 		{
 			return this;
 		}
+
+		//TODO Ugly hack needs tidy up
+		public function navigateToMessages():void
+		{
+			trace("HCP Messages")
+			this._currFooterBtn.isSelected = false;
+			this._currFooterBtn = this.getChildAt(3) as Button;
+			this._currFooterBtn.isSelected = true;
+			this._mainScreenNav.showScreen(HivivaScreens.HCP_MESSAGE_SCREEN);
+		}
+
+
 	}
 }

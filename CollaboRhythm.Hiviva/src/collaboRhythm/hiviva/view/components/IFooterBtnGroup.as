@@ -7,5 +7,7 @@ package collaboRhythm.hiviva.view.components
 		function resetToHomeState():void;
 
 		function asButtonGroup():ButtonGroup;
+
+		function navigateToMessages():void;
 	}
 }
