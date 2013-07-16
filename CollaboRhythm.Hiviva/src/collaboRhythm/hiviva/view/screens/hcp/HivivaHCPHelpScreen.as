@@ -6,10 +6,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.media.Assets;
     import collaboRhythm.hiviva.view.screens.patient.HelpScreens.ScreenManager;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_About_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_GettingStarted_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_Privacy_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaHCP_help_Wcidwh_Screen;
+	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_About_Screen;
+	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_GettingStarted_Screen;
+	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_Privacy_Screen;
+	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_Wcidwh_Screen;
 
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;

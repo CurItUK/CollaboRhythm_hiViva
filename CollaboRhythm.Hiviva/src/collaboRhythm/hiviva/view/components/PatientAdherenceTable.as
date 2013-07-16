@@ -53,7 +53,7 @@ package collaboRhythm.hiviva.view.components
 		private var _rowsData:Array = [];
 		private var _dataContainer:ScrollContainer;
 		private var _currWeekBeginning:Date;
-		private var _historyLength:int;
+		private var _dailyTolerabilityData:Array;
 		private var _patientData:XML;
 		private var _scale:Number = 1;
 
@@ -193,7 +193,7 @@ package collaboRhythm.hiviva.view.components
 			tolerabilityRowLabel.textRendererProperties.textFormat = new BitmapFontTextFormat(TextField.getBitmapFont("engraved-lighter-bold"), 24 * this.scale, Color.WHITE);
 			tolerabilityRowLabel.width = this._firstColumnWidth - (30 * this.scale);
 
-			this._rowsData.push({id: "tolerability"});
+			this._rowsData.push({id: medicationCount});
 
 			this._mainScrollContainer.validate();
 			tolerabilityRowLabel.x += 30 * this.scale; // MedicationCell gap * 2
@@ -231,7 +231,6 @@ package collaboRhythm.hiviva.view.components
 
 		private function rightArrowHandler(e:Event):void
 		{
-			trace("rightArrowHandler");
 			this._currWeekBeginning.date += 7;
 			changeTableData();
 		}
@@ -242,14 +241,16 @@ package collaboRhythm.hiviva.view.components
 			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
 			setCurrentWeek();
 			initTableDataContainer();
-			populateData();
+			populateAdherence();
+			populateTolerability();
 		}
 
 		private function changeTableData():void
 		{
 			setCurrentWeek();
 			this._dataContainer.removeChildren();
-			populateData();
+			populateAdherence();
+			populateTolerability();
 		}
 
 		private function setCurrentWeek():void
@@ -274,7 +275,7 @@ package collaboRhythm.hiviva.view.components
 				{
 					referenceDate = HivivaModifier.isoDateToFlashDate(String(medicationSchedule[j].DateTaken)).getTime();
 					if (_history[referenceDate] == undefined) _history[referenceDate] = [];
-					_history[referenceDate].push(medicationSchedule[j]);
+					_history[referenceDate].push({id:i,data:medicationSchedule[j]});
 				}
 			}
 		}
@@ -299,76 +300,102 @@ package collaboRhythm.hiviva.view.components
 			this._dataContainer.height = this._mainScrollContainer.height;
 		}
 
-		private function populateData():void
+		private function populateAdherence():void
 		{
-			var currWeekDay:Date = new Date(this._currWeekBeginning.getFullYear(),this._currWeekBeginning.getMonth(),this._currWeekBeginning.getDate(),0,0,0,0);
+			var rowData:Object;
+			var currWeekDay:Date = new Date(this._currWeekBeginning.getFullYear(), this._currWeekBeginning.getMonth(),
+					this._currWeekBeginning.getDate(), 0, 0, 0, 0);
 			var columnData:Array;
 			var columnDataLength:int;
-			var rowXML:XML;
-			var rowData:Object;
+			var columnXML:XML;
 			var cell:Sprite;
-			var cellX:Number;
-			var cellBg:Quad;
-			var cellLabel:Label;
 			var tickTexture:Texture = Assets.getTexture("TickPng");
 			var crossTexture:Texture = Assets.getTexture("CrossPng");
-			var tickCrossImage:Image;
-			for (var dayCount:int = 0; dayCount < 7; dayCount++)
+
+			this._dailyTolerabilityData = [];
+
+			for (var rowCount:int = 0; rowCount < this._rowsData.length - 1; rowCount++)
 			{
-				if(_history[currWeekDay.getTime()] != null)
+				rowData = this._rowsData[rowCount];
+				for (var dayCount:int = 0; dayCount < 7; dayCount++)
 				{
 					columnData = _history[currWeekDay.getTime()];
-					columnDataLength = columnData.length;
-
-					cellX = this._dataColumnsWidth * dayCount;
-					for (var i:int = 0; i < columnDataLength; i++)
+					if (columnData != null)
 					{
-						rowXML = columnData[i];
-						for (var rowCount:int = 0; rowCount < this._rowsData.length; rowCount++)
+						columnDataLength = columnData.length;
+						for (var i:int = 0; i < columnDataLength; i++)
 						{
-							rowData = this._rowsData[rowCount];
-
-							cell = new Sprite();
-							cell.x = cellX;
-							cell.y = rowData.y;
-							this._dataContainer.addChild(cell);
-
-							cellBg = new Quad(this._dataColumnsWidth,rowData.cellHeight,0x000000);
-							cellBg.alpha = 0;
-							cell.addChild(cellBg);
-							if (rowData.id == "tolerability")
+							if (columnData[i].id == rowData.id)
 							{
-								// write tolerability data cell
-								cellLabel = new Label();
-								cellLabel.width = this._dataColumnsWidth;
-								cellLabel.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
-								cellLabel.text = rowXML.Tolerability;
-								cell.addChild(cellLabel);
-								cellLabel.validate();
-								cellLabel.y = (cellBg.height * 0.5) - (cellLabel.height * 0.5);
-							}
-							else
-							{
-//									historicalMedication = rowXML.medication.(@id == rowData.id);
-								if (String(rowXML.PercentTaken) == "100")
-								{
-									// tick
-									tickCrossImage = new Image(tickTexture);
-								}
-								else
-								{
-									// cross
-									tickCrossImage = new Image(crossTexture);
-								}
+								columnXML = columnData[i].data;
+								cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
+								this._dataContainer.addChild(cell);
+
+								var tickCrossImage:Image = new Image(String(columnXML.PercentTaken) ==
+										"100" ? tickTexture : crossTexture);
 								cell.addChild(tickCrossImage);
-								tickCrossImage.x = (cellBg.width * 0.5) - (tickCrossImage.width * 0.5);
-								tickCrossImage.y = (cellBg.height * 0.5) - (tickCrossImage.height * 0.5);
+								tickCrossImage.x = (cell.width * 0.5) - (tickCrossImage.width * 0.5);
+								tickCrossImage.y = (cell.height * 0.5) - (tickCrossImage.height * 0.5);
+
+								this._dailyTolerabilityData.push({day: dayCount, value: int(columnXML.Tolerability)});
 							}
 						}
 					}
+					currWeekDay.date++;
 				}
-				currWeekDay.date++;
+				currWeekDay = new Date(this._currWeekBeginning.getFullYear(), this._currWeekBeginning.getMonth(),
+						this._currWeekBeginning.getDate(), 0, 0, 0, 0);
 			}
+		}
+
+		private function populateTolerability():void
+		{
+			var rowData:Object = this._rowsData[this._rowsData.length - 1];
+			var cell:Sprite;
+			var medicationTolerability:Number = 0;
+			var medicationTolerabilityCount:int = 0;
+
+			for (var dayCount:int = 0; dayCount < 7; dayCount++)
+			{
+				if(this._dailyTolerabilityData.length > 0)
+				{
+					for (var tolCount:int = 0; tolCount < this._dailyTolerabilityData.length; tolCount++)
+					{
+						if(this._dailyTolerabilityData[tolCount].day == dayCount)
+						{
+							medicationTolerability += this._dailyTolerabilityData[tolCount].value;
+							medicationTolerabilityCount++;
+						}
+					}
+
+					cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
+					this._dataContainer.addChild(cell);
+
+					var cellLabel:Label = new Label();
+					cellLabel.width = this._dataColumnsWidth;
+					cellLabel.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
+					cellLabel.text = String(int(medicationTolerability / medicationTolerabilityCount));
+					cell.addChild(cellLabel);
+					cellLabel.validate();
+					cellLabel.y = (cell.height * 0.5) - (cellLabel.height * 0.5);
+
+					medicationTolerability = 0;
+					medicationTolerabilityCount = 0;
+				}
+			}
+		}
+
+		private function createCell(cellHeight:Number, cellX:Number, cellY:Number):Sprite
+		{
+			var cell:Sprite = new Sprite();
+			cell.x = cellX;
+			cell.y = cellY;
+
+			var cellBg:Quad = new Quad(this._dataColumnsWidth,cellHeight,0x000000);
+			cellBg.alpha = 0;
+			cell.addChild(cellBg);
+
+			return cell;
 		}
 
 		private function initTableBackground():void

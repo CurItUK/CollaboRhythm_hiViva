@@ -1,5 +1,7 @@
-package collaboRhythm.hiviva.view.screens.patient
+package collaboRhythm.hiviva.view.screens.hcp.help
 {
+	import collaboRhythm.hiviva.view.screens.hcp.*;
+	import collaboRhythm.hiviva.view.screens.patient.*;
 	import feathers.controls.Screen;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 		import collaboRhythm.hiviva.global.HivivaScreens;
