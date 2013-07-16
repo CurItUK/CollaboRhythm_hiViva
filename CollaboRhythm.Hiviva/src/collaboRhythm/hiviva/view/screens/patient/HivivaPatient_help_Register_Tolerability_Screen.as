@@ -24,10 +24,10 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  = 		"As you record that you have taken your medication, you can register how you are feeling on the medication that day. " +
+		private var _pageString : String  = "As you record that you have taken your medication, you can register how you are feeling on the medication that day. " +
 						"The slider is designed to be used alongside taking your medication to give an overall picture of how well you are " +
 						"tolerating your medication. The position " +
-				"is assigned a numerical value on a scale of 0-5 in order to build a comparative picture of day-today " +
+				"is assigned a numerical value on a scale of 0-5 in order to build a comparative picture of day-to-day " +
 				"tolerability of your medication. \n\nIf you are connected to a care provider, " +
 				"they can also monitor your adherence via their version of the application."
 

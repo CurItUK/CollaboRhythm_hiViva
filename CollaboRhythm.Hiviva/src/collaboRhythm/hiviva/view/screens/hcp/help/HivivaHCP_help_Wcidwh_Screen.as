@@ -83,7 +83,7 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 				var lc:ListCollection = new ListCollection(
 					[
 						{name: "hcphelpPatientSummaryScreen", label: "Patient Summary"},
-					    {name: "hcphelpSinglePatientInformationScreen", label: "Single Patient Information"},
+					    {name: "hcphelpSinglePatientInformationScreen", label: "Patient Information"},
 					 	{name: "hcphelpPatientInteractionScreen", label: "Patient Interaction"},
 						{name: "hcphelpGeneratereportsScreen", label: "Generate Reports"}
 
