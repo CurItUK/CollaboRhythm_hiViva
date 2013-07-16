@@ -40,9 +40,14 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _clockCenterY:Number;
 		private var _headerHeight:Number;
 		private var _tablets:Vector.<Sprite>
+		private var _medicationTypes:XMLList;
+		private var _medicationResponse:XML;
 
 		private const CLOCK_TICK:uint						= 120000; //5 Minutes
 		private const CLOCK_ANGLE_DEGREES:Number			= 15;
+
+		private var vx :Number
+		private var vy : Number
 
 		public function HivivaPatientClockScreen()
 		{
@@ -126,7 +131,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 			trace("medicationsLoadCompleteHandler " + e.data.xmlResponse);
 
+			this._medicationResponse = e.data.xmlResponse;
+
 			var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication.Schedule.DCMedicationSchedule;
+			this._medicationTypes = e.data.xmlResponse.DCUserMedication;
+
+			trace("this._medicationTypes " + this._medicationTypes.length());
+			trace("shedules " + this._medicationTypes.Schedule.DCMedicationSchedule.length());
 
 			if(medicationsXML.length() >0)
 			{
@@ -143,12 +154,72 @@ package collaboRhythm.hiviva.view.screens.patient
 						_pmMedication.push(medicationsXML[i]);
 					}
 				}
-				if(_amMedication.length > 0) buildTabletAMCells();
-				if(_pmMedication.length > 0) buildTabletPMCells();
+				//if(_amMedication.length > 0) buildTabletAMCells();
+				//if(_pmMedication.length > 0) buildTabletPMCells();
+			}
+
+			if(this._medicationTypes.length() > 0)
+			{
+				buildClockMedications();
 			}
 		}
-		private var vx :Number
-		private var vy : Number
+
+		private function buildClockMedications():void
+		{
+			trace("buildClockMedications init");
+			this._tablets = new Vector.<Sprite>();
+
+			var medLoop:uint = this._medicationTypes.length();
+			var clockHandSpacing:Number = 20;
+
+			for(var i:uint = 0 ; i < medLoop ; i++)
+			{
+
+				var sheduleLoop:uint = this._medicationResponse.DCUserMedication[i].Schedule.DCMedicationSchedule.length();
+
+				for(var j:uint = 0 ; j < sheduleLoop ; j ++)
+				{
+					trace("sheduleLoop " + i + " : " + j);
+					var holderCell:Sprite = new Sprite();
+					var time:Number = this._medicationResponse.DCUserMedication[i].Schedule.DCMedicationSchedule[j].Time;
+
+					holderCell.width = this._clockFace.width;
+					holderCell.height = this._clockFace.height;
+					var tabletCell:Sprite = new Sprite();
+
+					var timeSegment:Image = new Image(Assets.getTexture("ClockFaceSegmentPng"));
+					timeSegment.width = timeSegment.width * 0.96;
+					timeSegment.scaleY = timeSegment.scaleX;
+					timeSegment.smoothing = TextureSmoothing.TRILINEAR;
+					var tempRotation : Number = timeSegment.rotation - HivivaModifier.degreesToRadians(7.5);
+					timeSegment.visible = true
+
+					var tablet:Image = new Image(Main.assets.getTexture("tablet" + (i + 1)));
+					this.tabletHolder.addChild(timeSegment);
+
+					tabletCell.addChild(tablet);
+
+					tablet.y = -tablet.width/2;
+					tablet.x = clockHandSpacing + (i * tablet.width) + 10;
+					holderCell.addChild(tabletCell);
+
+					holderCell.x = this._clockCenterX;
+					holderCell.y = this._clockCenterY;
+
+					timeSegment.rotation =  holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * time) - HivivaModifier.degreesToRadians(90);
+					timeSegment.rotation += tempRotation
+					timeSegment.x = holderCell.x
+					timeSegment.y = holderCell.y
+
+					this.addChild(holderCell);
+
+
+				}
+
+
+			}
+		}
+
 
 		private function buildTabletAMCells():void
 		{
@@ -172,14 +243,14 @@ package collaboRhythm.hiviva.view.screens.patient
 					timeSegment.scaleY = timeSegment.scaleX;
 					timeSegment.smoothing = TextureSmoothing.TRILINEAR;
 					var tempRotation : Number = timeSegment.rotation - HivivaModifier.degreesToRadians(7.5);
-				 	//timeSegment.rotation = timeSegment.rotation - HivivaModifier.degreesToRadians(7.5);
+					//timeSegment.rotation = timeSegment.rotation - HivivaModifier.degreesToRadians(7.5);
 					timeSegment.visible = true
 
 
-							var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
+					var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
 //					tabletCell.addChild(timeSegment);
 					//holderCell.addChild(timeSegment);
-					 this.tabletHolder.addChild(timeSegment)
+					this.tabletHolder.addChild(timeSegment)
 
 					tabletCell.addChild(tablet);
 
@@ -199,9 +270,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 					timeSegment.rotation =  holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * Number(_amMedication[i].Time)) - HivivaModifier.degreesToRadians(90);
 					timeSegment.rotation += tempRotation
-			 	//	 vx = Math.cos(holderCell.rotation) * 11;
-				 //   vy = Math.sin(holderCell.rotation) * 11;
-				//						holderCell.y -= vy;
 					timeSegment.x = holderCell.x
 					timeSegment.y = holderCell.y
 
@@ -213,12 +281,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 
 			}
-
-		/*	for ( var t  : uint  = 0 ; t < _tablets.length ; t++){
-
-				holderCell.setChildIndex(Sprite(_tablets[t]) ,( holderCell.numChildren-1 ) )
-
-			}*/
 		}
 
 		private function buildTabletPMCells():void
