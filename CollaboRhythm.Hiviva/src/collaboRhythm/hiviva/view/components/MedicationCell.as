@@ -49,22 +49,28 @@ package collaboRhythm.hiviva.view.components
 
 			this._seperator.width = this.actualWidth;
 
-			this._brandNameLabel.validate();
-			this._genericNameLabel.validate();
 			//trace("this._genericNameLabel " + this._genericNameLabel.height);
 
 			this._pillImageBg.x = this._gap;
 			this._pillImageBg.y = this._gap;
 
+			this._brandNameLabel.validate();
 			this._brandNameLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
-			this._brandNameLabel.y = this._pillImageBg.y;
-			this._brandNameLabel.width = this.actualWidth - this._pillImageBg.x;
+			this._brandNameLabel.width = this.actualWidth - this._brandNameLabel.x - this._gap;
+			this._brandNameLabel.y = this._gap;
 
-			this._genericNameLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
+			this._genericNameLabel.width = this._brandNameLabel.width;
+			positionGenericLabel();
+
+			setSizeInternal(this.actualWidth, this._genericNameLabel.y + this._genericNameLabel.height + this._gap, false);
+		}
+
+		protected function positionGenericLabel():void
+		{
+			this._brandNameLabel.validate();
+			this._genericNameLabel.validate();
+			this._genericNameLabel.x = this._brandNameLabel.x;
 			this._genericNameLabel.y = this._brandNameLabel.y + this._brandNameLabel.height;
-			this._genericNameLabel.width = this.actualWidth - this._pillImageBg.x;
-
-			setSizeInternal(this.actualWidth, this._genericNameLabel.y + this._genericNameLabel.height + this._gap, true);
 		}
 
 		override protected function initialize():void
@@ -85,7 +91,7 @@ package collaboRhythm.hiviva.view.components
 			this.addChild(this._brandNameLabel);
 
 			this._genericNameLabel = new Label();
-			this._genericNameLabel.name = HivivaThemeConstants.MESSAGE_DATE_LABEL;
+			this._genericNameLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
 			this._genericNameLabel.text = this._genericName;
 			this.addChild(this._genericNameLabel);
 

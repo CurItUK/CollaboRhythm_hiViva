@@ -318,6 +318,7 @@ package source.themes
 		protected var subHeaderBftf:BitmapFontTextFormat;
 		protected var bodyBftf:BitmapFontTextFormat;
 		protected var bodySmallerBftf:BitmapFontTextFormat;
+		protected var bodySmallerBoldBftf:BitmapFontTextFormat;
 		protected var bodyBoldBftf:BitmapFontTextFormat;
 		protected var bodyCenteredBftf:BitmapFontTextFormat;
 		protected var bodyBoldCenteredBftf:BitmapFontTextFormat;
@@ -577,6 +578,7 @@ package source.themes
 			this.subHeaderBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE);
 			this.bodyBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
 			this.bodySmallerBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 18 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
+			this.bodySmallerBoldBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 18 * this.scale, Color.WHITE);
 			this.bodyBoldBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.bodyCenteredBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR,TextFormatAlign.CENTER);
 			this.bodyBoldCenteredBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
@@ -812,7 +814,8 @@ package source.themes
 			this.setInitializerForClass(Label, instructionsLabelInitializer, HivivaThemeConstants.INSTRUCTIONS_LABEL);
 			this.setInitializerForClass(Label, calendarDaysLabelInitializer, HivivaThemeConstants.CALENDAR_DAYS_LABEL);
 			this.setInitializerForClass(Label, superscriptLabelInitializer, HivivaThemeConstants.SUPERSCRIPT_LABEL);
-			this.setInitializerForClass(Label, messageDateLabelInitializer, HivivaThemeConstants.MESSAGE_DATE_LABEL);
+			this.setInitializerForClass(Label, cellSmallLabelInitializer, HivivaThemeConstants.CELL_SMALL_LABEL);
+			this.setInitializerForClass(Label, cellSmallBoldLabelInitializer, HivivaThemeConstants.CELL_SMALL_BOLD_LABEL);
 			this.setInitializerForClass(Label, patientDataLightLabelInitializer, HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL);
 
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer,
@@ -1175,9 +1178,14 @@ package source.themes
 		{
 			label.textRendererProperties.textFormat = this.superscriptLabelBftf;
 		}
-		protected function messageDateLabelInitializer(label:Label):void
+		protected function cellSmallLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.bodySmallerBftf;
+			label.textRendererProperties.wordWrap = true;
+		}
+		protected function cellSmallBoldLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.bodySmallerBoldBftf;
 			label.textRendererProperties.wordWrap = true;
 		}
 

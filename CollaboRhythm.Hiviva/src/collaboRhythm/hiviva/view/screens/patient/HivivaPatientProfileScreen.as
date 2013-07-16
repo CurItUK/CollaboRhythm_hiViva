@@ -42,8 +42,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.draw();
 
-			this._header.width = this.actualWidth;
-			this._header.paddingLeft = Constants.PADDING_LEFT;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.paddingLeft = 35;
 			this._header.initTrueTitle();
 
 			drawMenuBtnGroup();

@@ -117,16 +117,42 @@ package collaboRhythm.hiviva.view.screens.patient
 			trace("medicationsLoadCompleteHandler " + e.data.xmlResponse);
 
 			var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication;
+			var medicationSchedule:XMLList;
 
-			trace(medicationsXML.length());
-
-			if(medicationsXML.length() >0)
+			if(medicationsXML.length() > 0)
 			{
 				this._medications = [];
 				var medLoop:int = medicationsXML.length();
 				for(var i:int = 0 ; i < medLoop ; i++)
 				{
-					var medObj:Object = {medication_name:medicationsXML[i].MedicationName , medication_guid: medicationsXML[i].UserMedicationGuid};
+					medicationSchedule = medicationsXML[i].Schedule.DCMedicationSchedule;
+					var scheduleStr:String;
+					switch(medicationSchedule.length())
+					{
+						case 1 :
+							scheduleStr = "Once";
+							break;
+						case 2 :
+							scheduleStr = "Twice";
+							break;
+						case 3 :
+							scheduleStr = "Three";
+							break;
+					}
+					scheduleStr += " daily | ";
+
+					for (var j:int = 0; j < medicationSchedule.length(); j++)
+					{
+						if(j > 0) scheduleStr += " and ";
+						scheduleStr += HivivaModifier.getNeatTime(medicationSchedule[j].Time);
+					}
+
+					var medObj:Object =
+					{
+						medication_name:medicationsXML[i].MedicationName,
+						medication_guid: medicationsXML[i].UserMedicationGuid,
+						medication_schedule: scheduleStr
+					};
 					this._medications.push(medObj);
 				}
 				initializeShowMedications();
@@ -155,6 +181,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				editMedicationCell.scale = this.dpiScale;
 				editMedicationCell.brandName = HivivaModifier.getBrandName(this._medications[i].medication_name);
 				editMedicationCell.genericName = HivivaModifier.getGenericName(this._medications[i].medication_name);
+				editMedicationCell.doseDetails = this._medications[i].medication_schedule;
 				editMedicationCell.width = this._content.width;
 				this._content.addChild(editMedicationCell);
 				this._editMedsCells.push(editMedicationCell);

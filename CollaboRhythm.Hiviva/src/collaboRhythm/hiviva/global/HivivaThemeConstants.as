@@ -28,7 +28,8 @@ package collaboRhythm.hiviva.global
 		public static const APPID_LABEL:String						= "appid-label";
 		public static const INSTRUCTIONS_LABEL:String				= "instructions-label";
 		public static const SUPERSCRIPT_LABEL:String				= "superscript-label";
-		public static const MESSAGE_DATE_LABEL:String				= "message-date-label";
+		public static const CELL_SMALL_LABEL:String					= "cell-small-label";
+		public static const CELL_SMALL_BOLD_LABEL:String			= "cell-small-bold-label";
 		public static const PATIENT_DATA_LIGHTER_LABEL:String		= "patient-data-lighter-label";
 
 		// buttons style names

@@ -1,5 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+
 	import feathers.controls.Check;
 	import feathers.controls.Label;
 
@@ -24,11 +26,24 @@ package collaboRhythm.hiviva.view.components
 			super.draw();
 
 			this._doseDetailsLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
-			this._doseDetailsLabel.y = this._genericNameLabel.y + this._genericNameLabel.height;
-			this._doseDetailsLabel.width = this.actualWidth - this._pillImageBg.x;
+			this._doseDetailsLabel.width = this.actualWidth - this._doseDetailsLabel.x;
 
 			this._checkBox.validate();
-			this._checkBox.x = this.actualWidth - this._gap - this._checkBox.width;
+
+			var labelWidthMinus:Number = this._checkBox.width + (this._gap * 2);
+
+			this._checkBox.x = this.actualWidth - labelWidthMinus;
+
+			this._brandNameLabel.width = this.actualWidth - this._brandNameLabel.x - labelWidthMinus - this._gap;
+			this._genericNameLabel.width = this._doseDetailsLabel.width = this._brandNameLabel.width;
+
+			positionGenericLabel();
+
+			this._doseDetailsLabel.y = this._genericNameLabel.y + this._genericNameLabel.height;
+			this._doseDetailsLabel.validate();
+
+			setSizeInternal(this.actualWidth, this._doseDetailsLabel.y + this._doseDetailsLabel.height + this._gap, false);
+
 			this._checkBox.y = (this.actualHeight * 0.5) - (this._checkBox.height * 0.5);
 		}
 
@@ -37,6 +52,7 @@ package collaboRhythm.hiviva.view.components
 			super.initialize();
 
 			this._doseDetailsLabel = new Label();
+			this._doseDetailsLabel.name = HivivaThemeConstants.CELL_SMALL_BOLD_LABEL;
 			this._doseDetailsLabel.text = this._doseDetails;
 			this.addChild(this._doseDetailsLabel);
 

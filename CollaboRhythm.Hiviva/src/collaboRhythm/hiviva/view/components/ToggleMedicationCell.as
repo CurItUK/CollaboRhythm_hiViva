@@ -23,34 +23,30 @@ package collaboRhythm.hiviva.view.components
 		override protected function draw():void
 		{
 			super.draw();
-/*
-
-			this._doseDetailsLabel.x = this._pillImageBg.x + this._pillImageBg.width + this._gap;
-			this._doseDetailsLabel.y = this._genericNameLabel.y + this._genericNameLabel.height;
-			this._doseDetailsLabel.width = this.actualWidth - this._pillImageBg.x;
-*/
 
 			this._radio.validate();
-			this._radio.x = this.actualWidth - this._gap - this._radio.width;
+
+			var labelWidthMinus:Number = this._radio.width + (this._gap * 2);
+
+			this._radio.x = this.actualWidth - labelWidthMinus;
+
+			this._brandNameLabel.width = this.actualWidth - this._brandNameLabel.x - labelWidthMinus - this._gap;
+			this._genericNameLabel.width = this._brandNameLabel.width;
+
+			positionGenericLabel();
+
+			setSizeInternal(this.actualWidth, this._genericNameLabel.y + this._genericNameLabel.height + this._gap, true);
+
 			this._radio.y = (this.actualHeight * 0.5) - (this._radio.height * 0.5);
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
-/*
-
-			this._doseDetailsLabel = new Label();
-			this._doseDetailsLabel.text = this._doseDetails;
-			this.addChild(this._doseDetailsLabel);
-*/
 
 			this._radio = new Radio();
 			this._radio.addEventListener(Event.TRIGGERED, radioTriggerHandler);
-			this._radio.padding = 0;
 			this.addChild(this._radio);
-
-//			this._isChanged = false;
 		}
 
 		private function radioTriggerHandler(e:Event):void

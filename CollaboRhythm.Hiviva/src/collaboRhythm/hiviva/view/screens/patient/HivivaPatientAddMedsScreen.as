@@ -164,15 +164,12 @@ package collaboRhythm.hiviva.view.screens.patient
 				foundMedication.width = this._medicationContainer.width;
 				this._medicationContainer.addChild(foundMedication);
 			}
+			// select first result
+			ToggleMedicationCell(this._medicationContainer.getChildAt(0)).radio.isSelected = true;
+			this._selectedMedicationId = 0;
 			this._medicationContainer.validate();
 
-			this._continueBtn = new Button();
-			this._continueBtn.label = "Continue";
-			this._continueBtn.addEventListener(Event.TRIGGERED, continueBtnHandler);
-			this.addChild(this._continueBtn);
-			this._continueBtn.validate();
-			this._continueBtn.y = this.actualHeight - this._continueBtn.height - this._verticalPadding;
-			this._continueBtn.x = this._horizontalPadding;
+			if(this._continueBtn == null) addContinueButton();
 
 			var usableScrollHeight:Number = this.actualHeight - this._medicationContainer.y -
 										this._verticalPadding - this._continueBtn.height - this._componentGap;
@@ -182,6 +179,17 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._medicationContainer.height = usableScrollHeight;
 			}
 			this._medicationContainer.validate();
+		}
+
+		protected function addContinueButton():void
+		{
+			this._continueBtn = new Button();
+			this._continueBtn.label = "Continue";
+			this._continueBtn.addEventListener(Event.TRIGGERED, continueBtnHandler);
+			this.addChild(this._continueBtn);
+			this._continueBtn.validate();
+			this._continueBtn.y = this.actualHeight - this._continueBtn.height - this._verticalPadding;
+			this._continueBtn.x = this._horizontalPadding;
 		}
 
 		private function medicationRadioTriggerHandler(e:FeathersScreenEvent):void

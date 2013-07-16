@@ -142,7 +142,7 @@ package collaboRhythm.hiviva.view.screens
 			{
 				case COMPOSED_MESSAGE_TYPE :
 					this._secondaryLabel = new Label();
-					this._secondaryLabel.name = HivivaThemeConstants.MESSAGE_DATE_LABEL;
+					this._secondaryLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
 					this._secondaryLabel.text = _secondaryText;
 					this.addChild(this._secondaryLabel);
 					break;
@@ -157,7 +157,7 @@ package collaboRhythm.hiviva.view.screens
 			}
 
 			this._dateLabel = new Label();
-			this._dateLabel.name = HivivaThemeConstants.MESSAGE_DATE_LABEL;
+			this._dateLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
 			this._dateLabel.text = _dateText;
 			this.addChild(this._dateLabel);
 
