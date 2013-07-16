@@ -33,14 +33,11 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _clockHandHolder:Sprite;
 		private var _usableHeight:Number;
 		private var _clockHandCenterPoint:Number;
-		private var _amMedication:Array = [];
-		private var _pmMedication:Array = [];
 		private var _clockTimer:Timer;
 		private var _clockCenterX:Number;
 		private var _clockCenterY:Number;
 		private var _headerHeight:Number;
 		private var _tablets:Vector.<Sprite>
-		private var _medicationTypes:XMLList;
 		private var _medicationResponse:XML;
 
 		private const CLOCK_TICK:uint						= 120000; //5 Minutes
@@ -133,32 +130,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._medicationResponse = e.data.xmlResponse;
 
-			var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication.Schedule.DCMedicationSchedule;
-			this._medicationTypes = e.data.xmlResponse.DCUserMedication;
-
-			trace("this._medicationTypes " + this._medicationTypes.length());
-			trace("shedules " + this._medicationTypes.Schedule.DCMedicationSchedule.length());
-
-			if(medicationsXML.length() >0)
-			{
-
-				var loop:uint = medicationsXML.length();
-				for(var i:uint = 0 ; i < loop ; i++)
-				{
-					if (medicationsXML[i].Time >= 0 && medicationsXML[i].Time <= 11)
-					{
-						_amMedication.push(medicationsXML[i]);
-					}
-					else if (medicationsXML[i].Time >= 12 && medicationsXML[i].Time <= 23)
-					{
-						_pmMedication.push(medicationsXML[i]);
-					}
-				}
-				//if(_amMedication.length > 0) buildTabletAMCells();
-				//if(_pmMedication.length > 0) buildTabletPMCells();
-			}
-
-			if(this._medicationTypes.length() > 0)
+			if(e.data.xmlResponse.DCUserMedication.length() > 0)
 			{
 				buildClockMedications();
 			}
@@ -169,7 +141,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			trace("buildClockMedications init");
 			this._tablets = new Vector.<Sprite>();
 
-			var medLoop:uint = this._medicationTypes.length();
+			var medLoop:uint = this._medicationResponse.DCUserMedication.length();
 			var clockHandSpacing:Number = 20;
 
 			for(var i:uint = 0 ; i < medLoop ; i++)
@@ -212,120 +184,6 @@ package collaboRhythm.hiviva.view.screens.patient
 					timeSegment.y = holderCell.y
 
 					this.addChild(holderCell);
-
-
-				}
-
-
-			}
-		}
-
-
-		private function buildTabletAMCells():void
-		{
-			trace("buildTabletAMCells " + _amMedication.length);
-			var clockHandSpacing:Number = 20;
-			_tablets = new Vector.<Sprite>();
-
-			var loop:uint = _amMedication.length;
-			if (loop > 0)
-			{
-				var tabletColorCount:uint = 1;
-				for (var i:uint = 0; i < loop; i++)
-				{
-					var holderCell:Sprite = new Sprite();
-					holderCell.width = this._clockFace.width;
-					holderCell.height = this._clockFace.height;
-					var tabletCell:Sprite = new Sprite();
-
-					var timeSegment:Image = new Image(Assets.getTexture("ClockFaceSegmentPng"));
-					timeSegment.width = timeSegment.width * 0.96;
-					timeSegment.scaleY = timeSegment.scaleX;
-					timeSegment.smoothing = TextureSmoothing.TRILINEAR;
-					var tempRotation : Number = timeSegment.rotation - HivivaModifier.degreesToRadians(7.5);
-					//timeSegment.rotation = timeSegment.rotation - HivivaModifier.degreesToRadians(7.5);
-					timeSegment.visible = true
-
-
-					var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
-//					tabletCell.addChild(timeSegment);
-					//holderCell.addChild(timeSegment);
-					this.tabletHolder.addChild(timeSegment)
-
-					tabletCell.addChild(tablet);
-
-					tablet.y = -tablet.width/2;
-					tablet.x = clockHandSpacing + (i * tablet.width) + 10;
-					holderCell.addChild(tabletCell);
-
-					tabletColorCount++;
-					if (tabletColorCount > 4)
-					{
-						tabletColorCount = 1;
-					}
-					_tablets.push(tabletCell)
-
-					holderCell.x = this._clockCenterX;
-					holderCell.y = this._clockCenterY;
-
-					timeSegment.rotation =  holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * Number(_amMedication[i].Time)) - HivivaModifier.degreesToRadians(90);
-					timeSegment.rotation += tempRotation
-					timeSegment.x = holderCell.x
-					timeSegment.y = holderCell.y
-
-					this.addChild(holderCell);
-					trace("rotation values are  ::::b " + vx , vy)
-
-
-				}
-
-
-			}
-		}
-
-		private function buildTabletPMCells():void
-		{
-			trace("buildTabletAMCells " + _pmMedication.length);
-			var clockHandSpacing:Number = 20;
-
-			var loop:uint = _pmMedication.length;
-			if (loop > 0)
-			{
-				var tabletColorCount:uint = 1;
-				for (var i:uint = 0; i < loop; i++)
-				{
-					var holderCell:Sprite = new Sprite();
-					holderCell.width = this._clockFace.width;
-					holderCell.height = this._clockFace.height;
-
-					var timeSegment:Image = new Image(Assets.getTexture("ClockFaceSegmentPng"));
-					    timeSegment.width = timeSegment.width * 0.96;
-						timeSegment.scaleY = timeSegment.scaleX;
-						timeSegment.smoothing = TextureSmoothing.TRILINEAR;
-					var tempRotation : Number = timeSegment.rotation - HivivaModifier.degreesToRadians(7.5);
-					    //timeSegment.rotation = timeSegment.rotation - HivivaModifier.degreesToRadians(7.5);
-					    timeSegment.visible = true
-					this.tabletHolder.addChild(timeSegment)
-
-					var tabletCell:Sprite = new Sprite();
-					var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
-					tabletCell.addChild(tablet);
-					tablet.x = clockHandSpacing + (i * tablet.width) + 10;
-					tablet.y = -tablet.width/2;
-					holderCell.addChild(tabletCell);
-					tabletColorCount++;
-					if (tabletColorCount > 4)
-					{
-						tabletColorCount = 1;
-					}
-					this.addChild(holderCell);
-					holderCell.x = this._clockCenterX;
-					holderCell.y = this._clockCenterY;
-					trace(Number(_pmMedication[i].Time));
-					timeSegment.rotation = holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES *	Number(_pmMedication[i].Time)) - HivivaModifier.degreesToRadians(90);
-					timeSegment.rotation += tempRotation;
-					timeSegment.x = holderCell.x
-					timeSegment.y = holderCell.y
 				}
 			}
 		}

@@ -16,6 +16,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Screen;
 
 	import starling.display.Image;
+	import starling.display.Sprite;
 
 	public class HivivaPatientPillboxScreen extends Screen
 	{
@@ -34,6 +35,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _amTableYloc:Number;
 		private var _pmTableYloc:Number;
 		private var _pillboxYCellSpacing:Number;
+		private var _medicationResponse:XML;
+		private var _tablets:Vector.<Sprite>
 
 		public function HivivaPatientPillboxScreen()
 		{
@@ -86,6 +89,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication.Schedule.DCMedicationSchedule;
 
+
+			/*
 			if(medicationsXML.length() >0)
 			{
 
@@ -103,6 +108,42 @@ package collaboRhythm.hiviva.view.screens.patient
 				}
 				if(_amMedication.length > 0) buildTabletAMCells();
 				if(_pmMedication.length > 0) buildTabletPMCells();
+			}
+
+			*/
+
+
+			this._medicationResponse = e.data.xmlResponse;
+
+			if(e.data.xmlResponse.DCUserMedication.length() > 0)
+			{
+				buildAMMedications();
+			}
+
+		}
+
+		private function buildAMMedications():void
+		{
+			var daysLoop:uint = 7;
+
+			for(var j:uint=0  ; j <daysLoop ; j++)
+			{
+				var medLoop:uint = this._medicationResponse.DCUserMedication.length();
+				for(var i:uint = 0 ; i < medLoop ; i++)
+				{
+
+					var scheduleLoop:uint = this._medicationResponse.DCUserMedication[i].Schedule.DCMedicationSchedule.length();
+					var tablet:Image = new Image(Main.assets.getTexture("tablet" + (i+1)));
+					//var tabletCount:SuperscriptCircle = new SuperscriptCircle();
+					//tabletCount.text = _amMedication[i].Count;
+					this.addChild(tablet);
+					//this.addChild(tabletCount);
+
+					tablet.x = this._amTableXloc + (i * tablet.width) + 10;
+					tablet.y = this._amTableYloc + this._pillboxYCellSpacing * j;
+					//tabletCount.x = tablet.x + tablet.width/3;
+					//tabletCount.y = tablet.y - tablet.height/2;
+				}
 			}
 		}
 
