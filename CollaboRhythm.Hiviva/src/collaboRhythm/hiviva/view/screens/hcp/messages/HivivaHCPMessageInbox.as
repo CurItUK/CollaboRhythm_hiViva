@@ -169,6 +169,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					messageInboxResultCell.dateText = this._allReceivedMessages[i].SentDate;
 					messageInboxResultCell.scale = this.dpiScale;
 					messageInboxResultCell.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
+					messageInboxResultCell.addEventListener(FeathersScreenEvent.MESSAGE_CB_SELECT, messageCheckBoxSelectedHandler);
 					this._cellContainer.addChild(messageInboxResultCell);
 					this._messageCells.push(messageInboxResultCell);
 				}
@@ -186,14 +187,14 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					connectionRequest = new MessageInboxResultCell();
 					connectionRequest.messageType = MessageInboxResultCell.CONNECTION_REQUEST_TYPE;
 					connectionRequest.guid = this._pendingConnections[i].FromUserGuid;
-					connectionRequest.primaryText = "User (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
+					connectionRequest.primaryText = "Patient (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
 //					hcpMessage.secondaryText = this._allReceivedMessages[i].Name;
 					connectionRequest.dateText = this._pendingConnections[i].SentDate;
 					connectionRequest.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
 					this._cellContainer.addChild(connectionRequest);
 					this._messageCells.push(connectionRequest);
 				}
-				this._deleteMessageButton.visible = true;
+				//this._deleteMessageButton.visible = true;
 			}
 		}
 
@@ -255,6 +256,28 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		private function messageDetailEventHandler(e:Event):void
 		{
 			trace("messageDetailEventHandler");
+		}
+
+		private function messageCheckBoxSelectedHandler():void
+		{
+			trace("messageCheckBoxSelectedHandler");
+			var msgCount:uint = this._messageCells.length;
+			var targetCell:MessageInboxResultCell;
+			var isSelectedCount:uint = 0;
+			for(var i:uint = 0 ; i < msgCount ; i++)
+			{
+				targetCell = this._messageCells[i];
+				if(targetCell.isSelected)
+				{
+					isSelectedCount += 1;
+				}
+			}
+			isSelectedCount > 0 ? showHideDeleteButton(true) : showHideDeleteButton(false);
+		}
+
+		private function showHideDeleteButton(visible:Boolean):void
+		{
+			this._deleteMessageButton.visible = visible;
 		}
 
 		private function getMessageXMLByProperty(xmlList:XMLList,property:String,value:String):XML

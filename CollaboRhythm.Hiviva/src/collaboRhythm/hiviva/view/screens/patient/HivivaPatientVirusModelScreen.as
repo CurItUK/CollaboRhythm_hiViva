@@ -67,6 +67,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _remoteCallMade:Boolean = false;
 		private var _remoteCallCount:int = 0;
 
+		private var _trueTestResults:Object = {};
+
 		public function HivivaPatientVirusModelScreen()
 		{
 
@@ -169,6 +171,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var testResults:XMLList = e.data.xmlResponse.Results.DCTestResult;
 
+
+
 			if(testResults.children().length() > 0)
 			{
 				this._cd4Count = Number(Math.floor(testResults[0].Result));
@@ -180,6 +184,9 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._viralLoad = 0;
 			}
 
+
+
+
 			this._remoteCallCount++;
 			allDataLoadedCheck();
 		}
@@ -189,6 +196,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			if(this._remoteCallCount == 2)
 			{
 				this._adherence = HivivaStartup.patientAdherenceVO.percentage;
+
+				this._trueTestResults.cd4Count = this._cd4Count;
+				this._trueTestResults.viralLoad = this._viralLoad;
+				this._trueTestResults.adherence = this._adherence;
+
 				initVirusModel();
 			}
 		}
@@ -204,7 +216,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initSettingsControl():void
 		{
-			this._virusSettingsControl = new VirusSettingsControl(this._adherence , this._cd4Count , this._viralLoad);
+			this._virusSettingsControl = new VirusSettingsControl(this._adherence , this._cd4Count , this._viralLoad , this._trueTestResults);
 			this._virusSettingsControl.addEventListener("VirusControllClose" , virusSettingsCloseHandler);
 			this._panelBackground.addChild(this._virusSettingsControl);
 

@@ -112,6 +112,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 					var establishedUser:Object = establishToFromId(approvedHCPList[i]);
 					var appGuid:String = establishedUser.appGuid;
 					var appId:String = establishedUser.appId;
+					var userEstablishedConnection:Boolean = didCurrentUserEstablishConnection(approvedHCPList[i]);
 
 					var hcpList:XMLList = new XMLList
 					(
@@ -121,6 +122,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 								<appid>{appId}</appid>
 								<guid>{appGuid}</guid>
 								<picture>dummy.png</picture>
+								<establishedConnection>{userEstablishedConnection}</establishedConnection>
 							</hcp>
 					);
 					this._patientFilteredList.push(hcpList);
@@ -150,6 +152,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		}
 
+		private function didCurrentUserEstablishConnection(idsToCompare:XML):Boolean
+		{
+			return idsToCompare.FromAppId == HivivaStartup.userVO.appId;
+		}
+
 		private function initResults():void
 		{
 			var resultsLength:int = this._patientFilteredList.length;
@@ -162,10 +169,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 				hcpCell = new HcpResultCell();
 				hcpCell.hcpData = currItem;
-				hcpCell.isResult = true;
+				hcpCell.isResult = false;
 				hcpCell.scale = this.dpiScale;
 				this._patientCellContainer.addChild(hcpCell);
-				this._patientCellRadioGroup.addItem(hcpCell._hcpSelect);
+				//this._patientCellRadioGroup.addItem(hcpCell._hcpSelect);
 			}
 
 			drawResults();

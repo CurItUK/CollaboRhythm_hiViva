@@ -161,22 +161,22 @@ package collaboRhythm.hiviva.view.screens.hcp
 				var hcpList:XMLList = new XMLList
 				(
 						<hcp>
-							<name>HCP Display name</name>
-							<email>hcp@domain.com</email>
+							<name>{appId}</name>
+							<email>{appId}@domain.com</email>
 							<appid>{appId}</appid>
 							<guid>{appGuid}</guid>
 							<picture>dummy.png</picture>
 						</hcp>
 				);
 				this._patientFilteredList.push(hcpList);
-				this._resultInfo.text = "Registered doctor " + this._patientFilteredList[0].appid + " found.";
+				this._resultInfo.text = "Registered patient " + this._patientFilteredList[0].appid + " found.";
 				this._resultInfo.validate();
 
 				initResults();
 			}
 			else
 			{
-				this._resultInfo.text = "0 registered doctors found";
+				this._resultInfo.text = "0 registered patients found";
 				this._resultInfo.validate();
 			}
 		}
@@ -196,7 +196,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 				hcpCell.isResult = true;
 				hcpCell.scale = this.dpiScale;
 				this._hcpCellContainer.addChild(hcpCell);
-				this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
+				//this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
 			}
 
 			this._requestConnectionButton = new Button();
@@ -260,8 +260,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function onRequestConnection(e:Event):void
 		{
-			var selectedHcpInd:int = this._hcpCellRadioGroup.selectedIndex;
-			var hcpCell:XMLList = XMLList(this._patientFilteredList[selectedHcpInd]);
+			//var selectedHcpInd:int = this._hcpCellRadioGroup.selectedIndex;
+			var hcpCell:XMLList = XMLList(this._patientFilteredList[0]);
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.establishConnection(HivivaStartup.userVO.guid , hcpCell.guid);
@@ -271,11 +271,25 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
 
+			var msg:String = "An error occurred please try again.";
+			var responseStatus:String = e.data.xmlResponse.StatusCode;
+
+			switch (responseStatus)
+			{
+				case "1" :
+					msg = "A request to connect has been sent.";
+					break;
+
+				case "5" :
+					msg = "Pending connection already exists.";
+					break;
+			}
+
 			this._requestPopupContainer = new HivivaPopUp();
 			this._requestPopupContainer.buttons = ["Close"];
 			this._requestPopupContainer.addEventListener(Event.TRIGGERED, closePopup);
 			this._requestPopupContainer.validate();
-			this._requestPopupContainer.message = "A request to connect has been sent.";
+			this._requestPopupContainer.message = msg;
 
 			PopUpManager.addPopUp(this._requestPopupContainer,true,true);
 			this._requestPopupContainer.validate();

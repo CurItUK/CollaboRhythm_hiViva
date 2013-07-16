@@ -192,6 +192,24 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt)
 		}
 
+		public function deleteConnection(fromGuid:String , toGuid:String):void
+		{
+			var query:String = "From=" + fromGuid + "&To=" + toGuid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_CONNECTION_DELETE + query);
+			trace("deleteConnection " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, deleteConnectionHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function deleteConnectionHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.CONNECTION_DELETE_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
 		public function getApprovedConnections():void
 		{
 			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_APPROVED_CONNECTIONS + "UserGuid=" + HivivaStartup.userVO.guid);

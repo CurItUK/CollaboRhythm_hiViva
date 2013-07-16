@@ -194,6 +194,8 @@ package collaboRhythm.hiviva.view.screens
 				_selected = true;
 			}
 			trace("SELECTED VALUE " + _selected)
+			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.MESSAGE_CB_SELECT);
+			this.dispatchEvent(evt);
 		}
 
 		override public function dispose():void

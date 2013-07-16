@@ -182,10 +182,11 @@ package collaboRhythm.hiviva.view.screens.patient
 //					hcpMessage.secondaryText = this._allReceivedMessages[i].Name;
 					hcpMessage.dateText = this._allReceivedMessages[i].SentDate;
 					hcpMessage.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
+					hcpMessage.addEventListener(FeathersScreenEvent.MESSAGE_CB_SELECT, messageCheckBoxSelectedHandler);
 					this._cellContainer.addChild(hcpMessage);
 					this._messageCells.push(hcpMessage);
 				}
-				this._deleteMessageButton.visible = true;
+				//this._deleteMessageButton.visible = true;
 			}
 		}
 
@@ -200,14 +201,14 @@ package collaboRhythm.hiviva.view.screens.patient
 					connectionRequest = new MessageInboxResultCell();
 					connectionRequest.messageType = MessageInboxResultCell.CONNECTION_REQUEST_TYPE;
 					connectionRequest.guid = this._pendingConnections[i].FromUserGuid;
-					connectionRequest.primaryText = "User (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
+					connectionRequest.primaryText = "Care provider (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
 //					hcpMessage.secondaryText = this._allReceivedMessages[i].Name;
 					connectionRequest.dateText = this._pendingConnections[i].SentDate;
 					connectionRequest.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
 					this._cellContainer.addChild(connectionRequest);
 					this._messageCells.push(connectionRequest);
 				}
-				this._deleteMessageButton.visible = true;
+				//this._deleteMessageButton.visible = true;
 			}
 		}
 
@@ -216,8 +217,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.addChild(this._cellContainer);
 			this._cellContainer.width = this.actualWidth;
 			this._cellContainer.y = this._header.height;
-			this._cellContainer.height = this.actualHeight - this._cellContainer.y -
-					this._deleteMessageButton.height - (this._vPadding * 2);
+			this._cellContainer.height = this.actualHeight - this._cellContainer.y - this._deleteMessageButton.height - (this._vPadding * 2);
 
 			for (var i:int = 0; i < this._messageCells.length; i++)
 			{
@@ -266,6 +266,27 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 			this.owner.addScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN, new ScreenNavigatorItem(HivivaMessageDetail, {messageDetailEvent:messageDetailEventHandler}, screenNavProperties));
 			this.owner.showScreen(HivivaScreens.MESSAGE_DETAIL_SCREEN);
+		}
+
+		private function messageCheckBoxSelectedHandler():void
+		{
+			var msgCount:uint = this._messageCells.length;
+			var targetCell:MessageInboxResultCell;
+			var isSelectedCount:uint = 0;
+			for(var i:uint = 0 ; i < msgCount ; i++)
+			{
+				targetCell = this._messageCells[i];
+				if(targetCell.isSelected)
+				{
+					isSelectedCount += 1;
+				}
+			}
+			isSelectedCount > 0 ? showHideDeleteButton(true) : showHideDeleteButton(false);
+		}
+
+		private function showHideDeleteButton(visible:Boolean):void
+		{
+			this._deleteMessageButton.visible = visible;
 		}
 
 		private function messageDetailEventHandler(e:Event):void
