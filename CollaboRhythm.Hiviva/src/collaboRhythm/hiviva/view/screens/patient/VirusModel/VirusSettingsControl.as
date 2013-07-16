@@ -42,12 +42,14 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 		private var _adherence:Number;
 		private var _cd4Count:Number;
 		private var _viralLoad:Number;
+		private var _trueResults:Object;
 
-		public function VirusSettingsControl(adherence:Number , cd4Count:Number , viralLoad:Number)
+		public function VirusSettingsControl(adherence:Number , cd4Count:Number , viralLoad:Number , trueResults:Object)
 		{
 			this._adherence = adherence;
 			this._cd4Count = cd4Count;
 			this._viralLoad = viralLoad;
+			this._trueResults = trueResults;
 		}
 
 		override protected function draw():void
@@ -260,7 +262,15 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 		private function resetBtnHandler(e:Event):void
 		{
-			setDefaultSliderValues();
+			this._adheranceResultLabel.text = String(this._trueResults.adherence );
+			this._adheranceSlider.value = this._trueResults.adherence ;
+
+
+			this._viralLoadResultLabel.text = String(this._trueResults.viralLoad );
+			this._viralLoadSlider.value = this._trueResults.viralLoad ;
+
+			this._CD4CountResultLabel.text = String(this._trueResults.cd4Count );
+			this._CD4CountSlider.value = this._trueResults.cd4Count;
 		}
 
 		private function minimiseBtnHandler():void
@@ -270,6 +280,8 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 		private function setDefaultSliderValues():void
 		{
+
+
 			this._adheranceResultLabel.text = String(this._adherence);
 			this._adheranceSlider.value = this._adherence;
 
