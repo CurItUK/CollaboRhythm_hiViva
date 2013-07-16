@@ -150,7 +150,7 @@ package collaboRhythm.hiviva.view
 			else
 			{
 				trace("Browsing in camera roll is not supported.");
-			}132465
+			}
 		}
 
 		private function imageSelected(e:MediaEvent):void

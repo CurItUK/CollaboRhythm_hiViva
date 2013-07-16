@@ -3,7 +3,7 @@
   ~ Copyright 2013 John Moore, Scott Gilroy
   ~
   ~ This file is part of CollaboRhythm.
-  ~
+  ~````
   ~ CollaboRhythm is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
   ~ License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later
   ~ version.
@@ -116,6 +116,8 @@
 		<!-- The render mode for the app (either auto, cpu, or gpu). Optional. Mobile only. Default auto -->
 		<renderMode>direct</renderMode>
 
+
+
 		<!-- Whether or not to pan when a soft keyboard is raised or lowered (either "pan" or "none").  Optional.  Defaults "pan." -->
 		<!-- <softKeyboardBehavior></softKeyboardBehavior> -->
 	</initialWindow>
@@ -146,20 +148,20 @@
 
 
     <!-- *************  this part added new and needs to be modified ********* -->
-		<image57x57>assets/images/icons/Icon.png</image57x57>
-		<image114x114>assets/images/icons/Icon@2x.png</image114x114>
-		<image72x72>assets/images/icons/Icon-72.png</image72x72>
-		<image144x144>assets/images/icons/Icon-72@2x.png</image144x144>
-		<image29x29>assets/images/icons/Icon-small.png</image29x29>
-		<image58x58>assets/images/icons/Icon-small@2x.png</image58x58>
-        <image50x50>assets/images/icons/Icon-Small-50.png</image50x50>
-        <image100x100>assets/images/icons/Icon-Small-50@2x.png</image100x100>
-	    <image512x512>assets/images/icons/iTunesArtwork.png</image512x512>
-		<image1024x1024>assets/images/icons/iTunesArtwork@2x.png</image1024x1024>
+		 <image57x57>assets/images/icons/Icon.png</image57x57>
+	 	  <image114x114>assets/images/icons/Icon@2x.png</image114x114>
+	 	  <image72x72>assets/images/icons/Icon-72.png</image72x72>
+		  <image144x144>assets/images/icons/Icon-72@2x.png</image144x144>
+	      <image29x29>assets/images/icons/Icon-Small.png</image29x29>
+		  <image58x58>assets/images/icons/Icon-Small@2x.png</image58x58>
+           <image50x50>assets/images/icons/Icon-Small-50.png</image50x50>
+          <image100x100>assets/images/icons/Icon-Small-50@2x.png</image100x100>
+	      <image512x512>assets/images/icons/iTunesArtwork.png</image512x512>
+		   <image1024x1024>assets/images/icons/iTunesArtwork@2x.png</image1024x1024>
+
 		<!-- *************  this part added new and needs to be modified ********* -->
 
 	</icon>
-    
 
 
 	<!-- Whether the application handles the update when a user double-clicks an update version
@@ -181,8 +183,9 @@
 			<!-- <name></name> -->
 
 			<!-- The extension to register. Required. -->
-			<!-- <extension></extension> -->
-			
+			<!-- <extension></extension>-->
+
+
 			<!-- The description of the file type. Optional. -->
 			<!-- <description></description> -->
 			
@@ -192,7 +195,7 @@
 			<!-- The icon to display for the file type. Optional. -->
 			<!-- <icon>
 				<image16x16></image16x16>
-				<image32x32></image32x32>
+				<image32x32></image32x32
 				<image48x48></image48x48>
 				<image128x128></image128x128>
 			</icon> -->

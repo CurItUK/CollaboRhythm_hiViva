@@ -23,6 +23,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.IOErrorEvent;
+	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.filters.BitmapFilter;
 	import flash.filters.BitmapFilterQuality;
@@ -32,6 +33,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
 	import flash.system.System;
+	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -67,6 +69,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private var _messageCount:uint = 0;
 		private var _badgesAwarded:Number = 0;
+
 
 		public function HivivaPatientHomeScreenScreen():void
 		{
@@ -351,7 +354,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function doImageLoad(url:String):void
 		{
 
-			trace("Image load start");
+
 			var loaderContext:LoaderContext = new LoaderContext();
 			loaderContext.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
 			var imageLoader:Loader = new Loader();
@@ -364,14 +367,14 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function imageLoaded(e:flash.events.Event):void
 		{
-			trace("Image load finish");
+
 
 
 			var sourceBm:Bitmap = e.target.content as Bitmap;
 
-			drawBgHomeImage(sourceBm);
+			 drawBgHomeImage(sourceBm);
 
-			drawLensHomeImage(sourceBm);
+			 drawLensHomeImage(sourceBm);
 
 			//clean up
 			sourceBm.bitmapData.dispose();
@@ -390,18 +393,46 @@ package collaboRhythm.hiviva.view.screens.patient
 			if (!contains(this._imageHolder)) addChild(this._imageHolder);*/
 		}
 
+
 		private function imageLoadFailed(e:flash.events.IOErrorEvent):void
 		{
 			trace("Image load failed.");
 		}
+/*
+		private function imageLoaded(e:flash.events.Event):void
+				{
+					var imageLoader:LoaderInfo = e.target as LoaderInfo;
+
+					var bm:Bitmap = imageLoader.content as Bitmap;
+					bm.scaleX = bm.scaleY = 0.3;
+					trace("Image loaded.");
+
+					//this._photo = new Image(getStarlingCompatibleTexture(e.target.content));
+					this._photo = new Image(Texture.fromBitmap(bm));
+					bm.bitmapData.dispose();
+					bm = null;
+
+					this._tint = new Quad(this._photo.width, this._photo.height, 0x0073ff);
+					this._tint.alpha = this._isActive ? 1 : 0;
+
+					addChild(this._tint);
+					addChild(this._photo);
+
+					dispatchEventWith(Event.COMPLETE, false, {id:this._id});
+				}
+*/
+
+
 
 		private function drawBgHomeImage(sourceBm:Bitmap):void
 		{
+
+			trace("draw Bg Ho,e Image now  ")
 			var bgHolder:flash.display.Sprite = new flash.display.Sprite();
 
 			var bgBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
 			cropToFit(bgBm, Constants.STAGE_WIDTH, this._usableHeight);
-			bgBm.alpha = 0.35;
+			//bgBm.alpha = 0.35;
 			bgHolder.addChild(bgBm);
 
 			var bgMask:flash.display.Sprite = new flash.display.Sprite();
@@ -434,6 +465,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function drawLensHomeImage(sourceBm:Bitmap):void
 		{
+
 			var circleHolder:flash.display.Sprite = new flash.display.Sprite();
 
 			var circleBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
@@ -455,19 +487,19 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			circleBm.mask = circleMask;
 
-			var bmd:BitmapData = new BitmapData(circleHolder.width, circleHolder.height, true, 0x00000000);
+			var bmd:BitmapData = new BitmapData(circleHolder.width, circleHolder.height, true,  0x00000000);
 			bmd.draw(circleHolder, new Matrix(), null, null, null, true);
 
-			var bgImage:Image = new Image(Texture.fromBitmapData(bmd));
+ 			var bgImage:Image = new Image(Texture.fromBitmapData(bmd));
 			bgImage.touchable = false;
 			bgImage.x = (Constants.STAGE_WIDTH * 0.5) - (bgImage.width * 0.5);
 			bgImage.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (bgImage.height * 0.5);
 			this._lensImageHolder.addChild(bgImage);
 
-			var colorFilter:ColorMatrixFilter = new ColorMatrixFilter();
+/*		var colorFilter:ColorMatrixFilter = new ColorMatrixFilter();
 			trace("colorFilter.adjustSaturation = " + (-1 + (this._adherencePercent / 100)));
 			colorFilter.adjustSaturation(-1 + (this._adherencePercent / 100));
-			this._lensImageHolder.filter = colorFilter;
+			this._lensImageHolder.filter = colorFilter;*/
 
 			bmd.dispose();
 		}

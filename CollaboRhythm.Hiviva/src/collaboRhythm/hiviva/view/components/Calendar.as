@@ -90,7 +90,7 @@ package collaboRhythm.hiviva.view.components
 			createNavigationBar();
 		}
 		
-		private function getCurrentDate():void
+		private  function getCurrentDate():void
 		{
 			now = new Date();
 			this._firstDayOfMonth = new Date(now.fullYear, now.month, 1);
@@ -101,9 +101,27 @@ package collaboRhythm.hiviva.view.components
 			this._cDay = now.date;
 
 
-		//	trace("CYEAR " + _cYear + " CMONTH " + _cMonth + " CDAY " + _cDay)
+		 // trace("CYEAR " + _cYear + " CMONTH " + _cMonth + " CDAY " + _cDay)
 		}
-		
+
+
+		public function get CurrentDate():String
+			{
+				now = new Date();
+				this._firstDayOfMonth = new Date(now.fullYear, now.month, 1);
+				this._cYear = now.fullYear;
+				this._yearValue = now.fullYear;
+				this._cMonth = now.getMonth();
+				this._monthValue = now.getMonth();
+				this._cDay = now.date;
+               return (  "0" + String(now.getMonth()  +1) +"/"+ _cDay +"/"+ _cYear + "" )
+             // return({year:_cYear , Month :_cMonth , Day : _cDay  })
+//			 fillWithZero(String(this._firstDayOfMonth.month + 1)) + "/" + fillWithZero(cell.label) + "/" + String(this._firstDayOfMonth.fullYear);
+			 // trace("CYEAR " + _cYear + " CMONTH " + _cMonth + " CDAY " + _cDay)
+			}
+
+
+
 		private function createDayHolderCells():void
 		{
 			for(var i:uint = 0 ; i < 42 ; i++)

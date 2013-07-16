@@ -59,7 +59,7 @@ package collaboRhythm.hiviva.view
 			this.progressBar.y = 0;
 			this.addChild(this.mBackground);
 			this.addChild(this.progressBar)
-//		this.addChild(this.mcPreloader);
+  //		this.addChild(this.mcPreloader);
 
 
 			this.addEventListener(FeathersScreenEvent.PRELOADER_ONPOGRESS, _onProgress);

@@ -240,22 +240,22 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._includeLabel);
 
 			this._adherenceCheck = new Check();
-			this._adherenceCheck.isSelected = false;
+			this._adherenceCheck.isSelected = true ;
 			this._adherenceCheck.label = "Adherence";
 			this._content.addChild(this._adherenceCheck);
 
 			this._feelingCheck = new Check();
-			this._feelingCheck.isSelected = false;
+			this._feelingCheck.isSelected = true;
 			this._feelingCheck.label = "How I am feeling";
 			this._content.addChild(this._feelingCheck);
 
 			this._cd4Check = new Check();
-			this._cd4Check.isSelected = false;
+			this._cd4Check.isSelected = true;
 			this._cd4Check.label = "CD4 count test results";
 			this._content.addChild(this._cd4Check);
 
 			this._viralLoadCheck = new Check();
-			this._viralLoadCheck.isSelected = false;
+			this._viralLoadCheck.isSelected = true;
 			this._viralLoadCheck.label = "Viral load test results";
 			this._content.addChild(this._viralLoadCheck);
 
@@ -266,8 +266,11 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._calendar = new Calendar();
 			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler);
+			trace("My Current Date is  ::::  " ,  this._calendar.CurrentDate)
+	        this._finishDateInput._input.text = this._calendar.CurrentDate;
+//		    var endDate:String = this._finishDateInput._input.text;
 
-
+			//this._activeCalendarInput.text = e.evtData.date;
 			// TODO : to be removed when we have remote data
 			initPatientXMLData();
 
@@ -279,6 +282,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			PopUpManager.removePopUp(this._calendar);
 			this._activeCalendarInput.text = e.evtData.date;
+			trace("Active Date is  ::: " + e.evtData.date )
+
 		}
 
 		private function startDateCalendarHandler(e:starling.events.Event):void
@@ -307,6 +312,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			PopUpManager.addPopUp(this._calendar,true,false);
 			this._calendar.width = this.actualWidth;
 			this._calendar.validate();
+
 
 			if(this._calendarActive) this._calendar.resetCalendar();
 
