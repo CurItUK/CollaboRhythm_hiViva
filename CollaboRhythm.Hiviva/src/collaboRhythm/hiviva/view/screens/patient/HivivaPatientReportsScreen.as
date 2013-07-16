@@ -268,7 +268,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler);
 			trace("My Current Date is  ::::  " ,  this._calendar.CurrentDate)
 	        this._finishDateInput._input.text = this._calendar.CurrentDate;
+            trace("MONTH BEFORE IS   ::: " +  this._calendar.monthBefore)
 //		    var endDate:String = this._finishDateInput._input.text;
+			this._startDateInput._input.text = this._calendar.monthBefore;
 
 			//this._activeCalendarInput.text = e.evtData.date;
 			// TODO : to be removed when we have remote data

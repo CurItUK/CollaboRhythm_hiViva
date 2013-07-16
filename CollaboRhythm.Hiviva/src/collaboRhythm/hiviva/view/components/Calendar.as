@@ -120,6 +120,42 @@ package collaboRhythm.hiviva.view.components
 			 // trace("CYEAR " + _cYear + " CMONTH " + _cMonth + " CDAY " + _cDay)
 			}
 
+		public function getTimeDifference(startTime:Date, endTime:Date) : String
+		{
+		if (startTime == null) { return "startTime empty."; }
+		if (endTime   == null) { return "endTime empty."; }
+		var aTms = Math.floor(endTime.valueOf() - startTime.valueOf());
+		return "Time taken:  "
+		    + String( int(aTms/(24*60*+60*1000))     ) + " days, "
+		    + String( int(aTms/(    60*60*1000)) %24 ) + " hours, "
+		    + String( int(aTms/(       60*1000)) %60 ) + " minutes, "
+		    + String( int(aTms/(        1*1000)) %60 ) + " seconds.";
+		}
+
+
+
+
+  public function get monthBefore()
+  {
+	var   __now : Date = new Date();
+
+	//  var __lastMonth:Date = new Date(__now.fullYear,__now.month ,__now.day - 25 );
+	  var date: Date = new Date();
+	// trace("old Date. seconds  ::: " +date.seconds )
+	  //date.seconds -= 2592000;
+	 // trace("new Date. seconds  ::: " + date.seconds)
+	  var endDate:Date = new Date();
+	//  endDate.month--;
+	 // trace("end:   " + endDate.toString());
+	  //trace("  MY NEW DATE IS  ::::  _____________  " +  date.seconds -= 2592000 )
+	  return (  "0" + endDate.month-- +"/"+ endDate.date +"/"+  endDate.fullYear + "" )
+	 //return( this.getTimeDifference(__now,  date));
+   // return (date)
+
+    // return (  "0" + String(now.getMonth()  +1) +"/"+ _cDay +"/"+ _cYear + "" )
+
+  };
+
 
 
 		private function createDayHolderCells():void
