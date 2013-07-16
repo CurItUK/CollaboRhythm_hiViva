@@ -200,7 +200,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					connectionRequest = new MessageInboxResultCell();
 					connectionRequest.messageType = MessageInboxResultCell.CONNECTION_REQUEST_TYPE;
 					connectionRequest.guid = this._pendingConnections[i].FromUserGuid;
-					connectionRequest.primaryText = "User (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
+					connectionRequest.primaryText = "Care provider (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
 //					hcpMessage.secondaryText = this._allReceivedMessages[i].Name;
 					connectionRequest.dateText = this._pendingConnections[i].SentDate;
 					connectionRequest.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);

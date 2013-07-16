@@ -117,7 +117,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					var establishedUser:Object = establishToFromId(approvedHCPList[i]);
 					var appGuid:String = establishedUser.appGuid;
 					var appId:String = establishedUser.appId;
-					var userEstablishedConnection:Boolean = didUserEstablishConnection(approvedHCPList[i]);
+					var userEstablishedConnection:Boolean = didCurrentUserEstablishConnection(approvedHCPList[i]);
 
 					var hcpList:XMLList = new XMLList
 					(
@@ -157,19 +157,9 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		}
 
-		private function didUserEstablishConnection(idsToCompare:XML):Boolean
+		private function didCurrentUserEstablishConnection(idsToCompare:XML):Boolean
 		{
-			var result:Boolean;
-			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
-			{
-				result = true;
-			} else
-			{
-				result = false;
-			}
-
-			return result;
-
+			return idsToCompare.FromAppId == HivivaStartup.userVO.appId;
 		}
 
 		private function initResults():void

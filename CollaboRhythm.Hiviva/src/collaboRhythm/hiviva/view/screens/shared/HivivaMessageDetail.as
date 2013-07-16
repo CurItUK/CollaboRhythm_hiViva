@@ -83,6 +83,9 @@ package collaboRhythm.hiviva.view.screens.shared
 		override protected function initialize():void
 		{
 			super.initialize();
+
+			var user:String = HivivaStartup.userVO.type == "HCP" ? "Patient" : "Care provider";
+
 			this._header = new HivivaHeader();
 			this._header.title = "Message detail";
 			this.addChild(this._header);
@@ -119,7 +122,7 @@ package collaboRhythm.hiviva.view.screens.shared
 				case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
 					this._nameLabel.text = _messageData.FromAppId;
 					this._dateLabel.text = HivivaModifier.isoDateToPrettyString(_messageData.SentDate);
-					this._messageLabel.text = "User (" + _messageData.FromAppId + ") has requested to connect";
+					this._messageLabel.text = user + " (" + _messageData.FromAppId + ") has requested to connect";
 					this._options.labels = ["Ignore","Accept"];
 					break;
 				case MessageInboxResultCell.STATUS_ALERT_TYPE :
@@ -207,9 +210,11 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
 
+			var user:String = HivivaStartup.userVO.type == "HCP" ? "patient" : "care provider";
+
 			if(e.data.xmlResponse.StatusCode == "1")
 			{
-				initStatusResponsePopup("Success! You are now connected to user(" + _messageData.FromAppId + ")", callBack);
+				initStatusResponsePopup("Success! You are now connected to " + user + " (" + _messageData.FromAppId + ")", callBack);
 			}
 			else
 			{

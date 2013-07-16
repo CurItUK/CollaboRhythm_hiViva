@@ -152,16 +152,16 @@ package collaboRhythm.hiviva.view
 			var toGuid:String;
 			var fromGuid:String;
 
-			if(hcpData.establishedConnection)
+			// if current user establish connection = true; from is than current user
+			if(hcpData.establishedConnection == "true")
 			{
-				toGuid = HivivaStartup.userVO.guid;
-				fromGuid = hcpData.guid;
+				fromGuid = HivivaStartup.userVO.guid;
+				toGuid = hcpData.guid;
 			}
 			else
 			{
-				toGuid = hcpData.guid;
-				fromGuid = HivivaStartup.userVO.guid;
-
+				toGuid = HivivaStartup.userVO.guid;
+				fromGuid = hcpData.guid;
 			}
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_DELETE_COMPLETE , deleteConnectionCompleteHandler);

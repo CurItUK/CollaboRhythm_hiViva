@@ -155,14 +155,14 @@ package collaboRhythm.hiviva.view.screens.patient
 						</hcp>
 				);
 				this._hcpFilteredList.push(hcpList);
-				this._resultInfo.text = "Registered doctor " + this._hcpFilteredList[0].appid + " found.";
+				this._resultInfo.text = "Registered care provider " + this._hcpFilteredList[0].appid + " found.";
 				this._resultInfo.validate();
 
 				initResults();
 			}
 			else
 			{
-				this._resultInfo.text = "0 registered doctors found";
+				this._resultInfo.text = "0 registered care providers found";
 				this._resultInfo.validate();
 			}
 		}
