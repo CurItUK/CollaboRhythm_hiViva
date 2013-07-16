@@ -162,10 +162,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 				hcpCell = new HcpResultCell();
 				hcpCell.hcpData = currItem;
-				hcpCell.isResult = true;
+				hcpCell.isResult = false;
 				hcpCell.scale = this.dpiScale;
 				this._patientCellContainer.addChild(hcpCell);
-				this._patientCellRadioGroup.addItem(hcpCell._hcpSelect);
+				//this._patientCellRadioGroup.addItem(hcpCell._hcpSelect);
 			}
 
 			drawResults();

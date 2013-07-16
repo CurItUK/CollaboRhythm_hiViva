@@ -161,8 +161,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 				var hcpList:XMLList = new XMLList
 				(
 						<hcp>
-							<name>HCP Display name</name>
-							<email>hcp@domain.com</email>
+							<name>{appId}</name>
+							<email>{appId}@domain.com</email>
 							<appid>{appId}</appid>
 							<guid>{appGuid}</guid>
 							<picture>dummy.png</picture>
@@ -196,7 +196,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 				hcpCell.isResult = true;
 				hcpCell.scale = this.dpiScale;
 				this._hcpCellContainer.addChild(hcpCell);
-				this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
+				//this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
 			}
 
 			this._requestConnectionButton = new Button();

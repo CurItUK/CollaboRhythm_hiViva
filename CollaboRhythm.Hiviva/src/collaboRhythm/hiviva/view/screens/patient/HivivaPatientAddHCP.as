@@ -147,8 +147,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				var hcpList:XMLList = new XMLList
 				(
 						<hcp>
-							<name>HCP Display name</name>
-							<email>hcp@domain.com</email>
+							<name>{appId}</name>
+							<email>{appId}@domain.com</email>
 							<appid>{appId}</appid>
 							<guid>{appGuid}</guid>
 							<picture>dummy.png</picture>
@@ -182,7 +182,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				hcpCell.isResult = true;
 				hcpCell.scale = this.dpiScale;
 				this._hcpCellContainer.addChild(hcpCell);
-				this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
+				//this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
 			}
 
 			this._requestConnectionButton = new Button();
@@ -246,8 +246,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function onRequestConnection(e:Event):void
 		{
-			var selectedHcpInd:int = this._hcpCellRadioGroup.selectedIndex;
-			var hcpCell:XMLList = XMLList(this._hcpFilteredList[selectedHcpInd]);
+			//var selectedHcpInd:int = this._hcpCellRadioGroup.selectedIndex;
+			var hcpCell:XMLList = XMLList(this._hcpFilteredList[0]);
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.establishConnection(HivivaStartup.userVO.guid , hcpCell.guid);

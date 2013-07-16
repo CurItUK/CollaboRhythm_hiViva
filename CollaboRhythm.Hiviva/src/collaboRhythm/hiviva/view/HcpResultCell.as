@@ -1,6 +1,8 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -63,7 +65,7 @@ package collaboRhythm.hiviva.view
 		private var _hcpName:Label;
 		private var _hcpEmail:Label;
 		private var _hcpDelete:Button;
-		public var _hcpSelect:Radio;
+		//public var _hcpSelect:Radio;
 
 		private const IMAGE_SIZE:Number = 100;
 		private const PADDING:Number = 32;
@@ -84,18 +86,18 @@ package collaboRhythm.hiviva.view
 			doImageLoad("media/hcps/" + hcpData.picture);
 			this._hcpName.validate();
 			this._hcpEmail.validate();
-			this._hcpSelect.padding = 0;
-			this._hcpSelect.validate();
+			//this._hcpSelect.padding = 0;
+			//this._hcpSelect.validate();
 			this._hcpDelete.validate();
 
 			this._bg.x = scaledPadding;
 			this._bg.width = this.actualWidth - (scaledPadding * 2);
 			this._bg.height = scaledPadding + this._hcpImageBg.height;
 
-			this._hcpSelect.y = this._bg.y + (this._bg.height * 0.5) - (this._hcpSelect.height * 0.5);
-			this._hcpSelect.x = this._bg.x + gap;
+		//	this._hcpSelect.y = this._bg.y + (this._bg.height * 0.5) - (this._hcpSelect.height * 0.5);
+			//this._hcpSelect.x = this._bg.x + gap;
 
-			this._hcpImageBg.x = this._isResult ? (this._hcpSelect.x + this._hcpSelect.width) + gap : this._bg.x + gap;
+			this._hcpImageBg.x = this._bg.x + gap;
 			this._hcpImageBg.y = this._bg.y + gap;
 
 			this._hcpName.x = this._hcpImageBg.x + this._hcpImageBg.width + gap;
@@ -112,7 +114,7 @@ package collaboRhythm.hiviva.view
 			setSizeInternal(this.actualWidth, this._bg.height, true);
 
 			this._hcpDelete.visible = !this._isResult;
-			this._hcpSelect.visible = this._isResult;
+		//	this._hcpSelect.visible = this._isResult;
 		}
 
 		override protected function initialize():void
@@ -134,17 +136,42 @@ package collaboRhythm.hiviva.view
 			this._hcpEmail.text = hcpData.email;
 			addChild(this._hcpEmail);
 
-			this._hcpSelect = new Radio();
-			addChild(this._hcpSelect);
+			//this._hcpSelect = new Radio();
+			//addChild(this._hcpSelect);
 
 			this._hcpDelete = new Button();
-			this._hcpDelete.label = "x";
+			this._hcpDelete.name = "delete-cell-button";
 			this._hcpDelete.addEventListener(Event.TRIGGERED, onHcpDelete);
 			addChild(this._hcpDelete);
 		}
 
 		private function onHcpDelete(e:Event):void
 		{
+			this._hcpDelete.addEventListener(Event.TRIGGERED, onHcpDelete);
+
+			var toGuid:String;
+			var fromGuid:String;
+
+			if(hcpData.establishedConnection)
+			{
+				toGuid = HivivaStartup.userVO.guid;
+				fromGuid = hcpData.guid;
+			}
+			else
+			{
+				toGuid = hcpData.guid;
+				fromGuid = HivivaStartup.userVO.guid;
+
+			}
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_DELETE_COMPLETE , deleteConnectionCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.deleteConnection(fromGuid , toGuid );
+		}
+
+		private function deleteConnectionCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.CONNECTION_DELETE_COMPLETE , deleteConnectionCompleteHandler);
+			trace("Connection with id:" + hcpData.guid + " deleted.");
 			this.removeFromParent(true);
 		}
 

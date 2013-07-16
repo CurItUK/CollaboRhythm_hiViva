@@ -30,6 +30,7 @@ package collaboRhythm.hiviva.global
 		public static const RS_GET_APPROVED_CONNECTIONS:String = 					"WSConnection.svc/GetApprovedConnections?";
 		public static const RS_GET_APPROVED_CONNECTIONS_WITH_SUMMARY:String = 		"WSConnection.svc/GetApprovedConnectionsWithSummary?";
 		public static const RS_CONNECTION_APPROVE:String = 							"WSConnection.svc/Approve?";
+		public static const RS_CONNECTION_DELETE:String = 							"WSConnection.svc/Delete?";
 		public static const RS_CONNECTION_IGNORE:String = 							"WSConnection.svc/Ignore?";
 		public static const RS_GET_PENDING_CONNECTIONS:String = 					"WSConnection.svc/GetPendingConnections?";
 
