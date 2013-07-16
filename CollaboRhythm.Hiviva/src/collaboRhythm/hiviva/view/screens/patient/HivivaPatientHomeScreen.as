@@ -258,8 +258,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initHomePhoto():void
 		{
-			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.PATIENT_HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
-			HivivaStartup.hivivaAppController.hivivaNotificationsController.enableAutoPatientHomePageMessageCheck();
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.enableAutoHomePageMessageCheck();
 
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE, getGalleryTimeStampHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getGalleryTimeStamp();
@@ -523,8 +523,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function closeDownApplicationNotifications():void
 		{
-			HivivaStartup.hivivaAppController.hivivaNotificationsController.disbaleAutoPatientHomePageMessageCheck();
-			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.PATIENT_HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.disbaleAutoHomePageMessageCheck();
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
 		}
 	}
 }

@@ -25,24 +25,24 @@ package collaboRhythm.hiviva.controller
 
 		}
 
-		public function enableAutoPatientHomePageMessageCheck():void
+		public function enableAutoHomePageMessageCheck():void
 		{
-			this._timer = new Timer(Constants.PATIENT_HOMEPAGE_MESSAGE_CHECK_TIME);
-			this._timer.addEventListener(TimerEvent.TIMER, onPatientMessageCheck);
+			this._timer = new Timer(Constants.HOMEPAGE_MESSAGE_CHECK_TIME);
+			this._timer.addEventListener(TimerEvent.TIMER, onMessageCheck);
 			this._timer.start();
 		}
 
-		public function disbaleAutoPatientHomePageMessageCheck():void
+		public function disbaleAutoHomePageMessageCheck():void
 		{
-			this._timer.removeEventListener(TimerEvent.TIMER, onPatientMessageCheck);
+			this._timer.removeEventListener(TimerEvent.TIMER, onMessageCheck);
 			this._timer.stop();
 			this._timer = null;
 		}
 
-		private function onPatientMessageCheck(e:TimerEvent):void
+		private function onMessageCheck(e:TimerEvent):void
 		{
 			trace("PATIENT HOMEPAGE: TICK - get messages");
-			this.dispatchEvent(new NotificationsEvent(NotificationsEvent.PATIENT_HOMEPAGE_TICK_COMPLETE));
+			this.dispatchEvent(new NotificationsEvent(NotificationsEvent.HOMEPAGE_TICK_COMPLETE));
 		}
 	}
 }
