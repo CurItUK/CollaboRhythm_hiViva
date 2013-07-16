@@ -15,6 +15,7 @@ package collaboRhythm.hiviva.model
 	public class HivivaRemoteStoreService extends EventDispatcher
 	{
 		private static const RS_BASE_URL_DEV:String = "http://pwshealthtest.dev/services/";
+		//private static const RS_BASE_URL_DEV:String = "http://collaborythm.pharmiwebsolutions.com/services/";
 
 		public function HivivaRemoteStoreService()
 		{
