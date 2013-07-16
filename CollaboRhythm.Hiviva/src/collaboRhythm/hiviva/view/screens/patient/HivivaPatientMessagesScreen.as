@@ -60,7 +60,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._hPadding = (this.actualWidth * 0.04) * this.dpiScale;
 			super.draw();
 
-			this._header.paddingLeft = this._hPadding;
+			this._header.paddingLeft = Constants.HEADER_HOMEBTN_PADDING;
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
 
@@ -254,7 +254,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 			var screenNavProperties:Object =
 			{
-				customHeight:Constants.STAGE_HEIGHT,
 				messageData:messageData,
 				messageType:messageType,
 				parentScreen:this.owner.activeScreenID,

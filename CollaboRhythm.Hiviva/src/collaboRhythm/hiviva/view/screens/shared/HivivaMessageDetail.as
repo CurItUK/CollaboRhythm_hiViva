@@ -38,7 +38,6 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _dateLabel:Label;
 		private var _messageLabel:Label;
 		private var _options:BoxedButtons;
-		private var _customHeight:Number;
 		private var _vPadding:Number;
 		private var _hPadding:Number;
 		private var _isSent:Boolean;
@@ -76,7 +75,7 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._options.width = Constants.STAGE_WIDTH - (this._hPadding * 2);
 				this._options.validate();
 				this._options.x = Constants.PADDING_LEFT;
-				this._options.y = this._customHeight - Constants.PADDING_BOTTOM - this._options.height;
+				this._options.y = Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._options.height;
 			}
 		}
 
@@ -137,6 +136,8 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._statusResponse = new HivivaPopUp();
 			this._statusResponse.buttons = ["Ok"];
+
+			if(HivivaStartup.userVO.type == "HCP") dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
 		}
 
 		private function markMessageAsRead():void
@@ -244,6 +245,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function backBtnHandler(e:starling.events.Event = null):void
 		{
+			if(HivivaStartup.userVO.type == "HCP") dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
 			this.owner.showScreen(_parentScreen);
 		}
 
@@ -275,16 +277,6 @@ package collaboRhythm.hiviva.view.screens.shared
 		public function set messageType(value:String):void
 		{
 			_messageType = value;
-		}
-
-		public function get customHeight():Number
-		{
-			return _customHeight;
-		}
-
-		public function set customHeight(value:Number):void
-		{
-			_customHeight = value;
 		}
 
 		public function get isSent():Boolean

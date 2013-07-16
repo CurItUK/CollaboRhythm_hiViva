@@ -12,6 +12,7 @@ package collaboRhythm.hiviva.global
 		public static const PADDING_LEFT:int 								= 20;
 		public static const FOOTER_BTNGROUP_HEIGHT:int 						= 135;
 		public static const HEADER_HEIGHT:int 								= 100;
+		public static const HEADER_HOMEBTN_PADDING:int 						= 35;
 		public static const INNER_WIDTH:int 								= STAGE_WIDTH - PADDING_LEFT - PADDING_RIGHT;
 //		public static const INNER_SUB_SCREEN_HEIGHT:int 					= STAGE_HEIGHT - PADDING_TOP - PADDING_BOTTOM - HEADER_HEIGHT;
 //		public static const INNER_MAIN_SCREEN_HEIGHT:int 					= INNER_SUB_SCREEN_HEIGHT - FOOTER_BTNGROUP_HEIGHT;

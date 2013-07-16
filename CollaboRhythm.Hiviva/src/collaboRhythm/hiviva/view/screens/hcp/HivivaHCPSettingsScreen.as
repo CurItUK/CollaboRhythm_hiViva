@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
 
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaHeader;
@@ -34,7 +35,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._scaledPadding = (this.actualWidth * 0.04) * this.dpiScale;
 
 			this._header.width = this.actualWidth;
-			this._header.paddingLeft = this._scaledPadding;
+			this._header.paddingLeft = Constants.HEADER_HOMEBTN_PADDING;
 			this._header.initTrueTitle();
 
 

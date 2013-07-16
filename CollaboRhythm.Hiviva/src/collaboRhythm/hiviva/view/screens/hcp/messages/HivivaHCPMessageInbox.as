@@ -202,7 +202,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		{
 			this.addChild(this._cellContainer);
 			this._cellContainer.width = Constants.STAGE_WIDTH;
-			this._cellContainer.y = Constants.HEADER_HEIGHT + Constants.PADDING_TOP;
+			this._cellContainer.y = Constants.HEADER_HEIGHT;
 			this._cellContainer.height = Constants.STAGE_HEIGHT - this._cellContainer.y - this._deleteMessageButton.height - Constants.PADDING_BOTTOM;
 
 			for (var i:int = 0; i < this._messageCells.length; i++)
@@ -239,7 +239,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			}
 			var screenNavProperties:Object =
 			{
-				customHeight:Constants.STAGE_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT,
 				messageData:messageData,
 				messageType:messageType,
 				parentScreen:this.owner.activeScreenID,

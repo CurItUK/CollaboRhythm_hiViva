@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.controller.HivivaApplicationController;
 	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
@@ -63,7 +64,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._scaledPadding = (this.actualHeight * 0.04) * this.dpiScale;
 			super.draw();
 
-			this._header.paddingLeft = this._scaledPadding;
+			this._header.paddingLeft = Constants.HEADER_HOMEBTN_PADDING;
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
 

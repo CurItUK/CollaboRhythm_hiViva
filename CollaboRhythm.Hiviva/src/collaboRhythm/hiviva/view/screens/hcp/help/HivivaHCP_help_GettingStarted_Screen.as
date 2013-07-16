@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp.help
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.view.screens.hcp.*;
 	import collaboRhythm.hiviva.view.screens.patient.*;
 	import feathers.controls.Screen;
@@ -42,7 +43,6 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 						this._scaledPadding = (this.actualWidth * 0.04) * this.dpiScale;
 
 						this._header.width = this.actualWidth;
-				this._header.paddingLeft = this._scaledPadding;
 						this._header.initTrueTitle();
 						drawMenuBtnGroup();
 					//	this._scrollText.y = this._header.y + this._header.height;

@@ -34,7 +34,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._scaledPadding = (this.actualWidth * 0.04) * this.dpiScale;
 
 			this._header.width = this.actualWidth;
-			this._header.paddingLeft = this._scaledPadding;
 			this._header.initTrueTitle();
 
 			this._instructions.validate();
