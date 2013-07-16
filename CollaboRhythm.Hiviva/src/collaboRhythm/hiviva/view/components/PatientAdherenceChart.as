@@ -6,17 +6,31 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
+	import feathers.controls.Button;
+
 	import feathers.controls.Label;
 	import feathers.core.FeathersControl;
+	import feathers.display.TiledImage;
+	import feathers.text.BitmapFontTextFormat;
 
 	import flash.utils.Dictionary;
+
+	import starling.animation.Transitions;
+
+	import starling.animation.Tween;
+	import starling.core.Starling;
 
 	import starling.display.BlendMode;
 	import starling.display.Image;
 
 	import starling.display.Quad;
 	import starling.display.Shape;
+	import starling.display.Sprite;
+	import starling.events.Event;
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
 	import starling.textures.Texture;
+	import starling.textures.TextureSmoothing;
 
 	import starling.utils.deg2rad;
 
@@ -24,6 +38,7 @@ package collaboRhythm.hiviva.view.components
 	{
 		private var TOTAL_WEEKS:int = 5;
 		private const LINE_COLOURS:Array = [0x2e445e,0x0b88ec,0xc20315,0x697a8f,0xffffff,0x000000];
+		private const PLOT_GIRTH:int = 4;
 
 		private var _filterdPatients:Array;
 		private var _firstWeek:Date;
@@ -41,7 +56,11 @@ package collaboRhythm.hiviva.view.components
 		private var _lowestAdherence:Number;
 		private var _adherenceRange:Number;
 		private var _bottomAxisValueHeight:Number;
-		private var _history:Dictionary;
+		private var _legendData:Array = [];
+		private var _legend:Sprite;
+		private var _isLegendActive:Boolean = false;
+		private var _legendInactiveX:Number;
+		private var _legendActiveX:Number;
 
 		public function PatientAdherenceChart()
 		{
@@ -87,6 +106,7 @@ package collaboRhythm.hiviva.view.components
 			drawBottomAxisValuesAndLines();
 			drawBottomAxisLabels();
 			drawPlotPoints();
+			drawLegend();
 		}
 
 		private function drawBottomAxisLabels():void
@@ -243,14 +263,26 @@ package collaboRhythm.hiviva.view.components
 			// tempDate will never be larger than currDate on the first loop iteration
 			var tempDate:Date = new Date(0,0,0,0,0,0,0);
 			var currDate:Date = new Date();
+			var medicationList:XMLList;
+			var medicationListLength:int;
+			var medicationSchedule:XMLList;
+			var medicationScheduleLength:int;
 			for (var i:int = 0; i < _filterdPatients.length; i++)
 			{
-				// TODO : need to loop through medications to check all available 'latest dates'
-				var xml:XMLList = _filterdPatients[i].xml.DCUserMedication[0].Schedule.DCMedicationSchedule;
-				currDate = HivivaModifier.isoDateToFlashDate(xml.DateTaken);
-				if(currDate.getTime() > tempDate.getTime())
+				medicationList = _filterdPatients[i].xml.DCUserMedication;
+				medicationListLength = medicationList.length();
+				for (var j:int = 0; j < medicationListLength; j++)
 				{
-					tempDate = currDate;
+					medicationSchedule = medicationList[j].Schedule.DCMedicationSchedule;
+					medicationScheduleLength = medicationSchedule.length();
+					for (var k:int = 0; k < medicationScheduleLength; k++)
+					{
+						currDate = HivivaModifier.isoDateToFlashDate(medicationSchedule.DateTaken);
+						if(currDate.getTime() > tempDate.getTime())
+						{
+							tempDate = currDate;
+						}
+					}
 				}
 			}
 			// set to week beginning
@@ -284,8 +316,6 @@ package collaboRhythm.hiviva.view.components
 					medicationAdherence = 0;
 					medicationCount = 0;
 
-					weekItar.date += 7;
-
 					medicationList = _filterdPatients[i].xml.DCUserMedication;
 					medicationListLength = medicationList.length();
 					for (var j:int = 0; j < medicationListLength; j++)
@@ -312,6 +342,8 @@ package collaboRhythm.hiviva.view.components
 					{
 						adherenceData.adherence.push(0);
 					}
+
+					weekItar.date += 7;
 				}
 				trace(TOTAL_WEEKS + " weeks adherence for " + adherenceData.patient + " = " + adherenceData.adherence.join(','));
 				this._patientAdherence.push(adherenceData);
@@ -346,7 +378,6 @@ package collaboRhythm.hiviva.view.components
 			var adherence:Number;
 			var plotLine:Shape;
 			var plotCircles:Shape;
-			var plotGirth:Number = 4;
 			var adherenceY:Number;
 			var currColour:uint;
 			var patientAdherenceLength:int = _patientAdherence.length;
@@ -364,7 +395,7 @@ package collaboRhythm.hiviva.view.components
 				}
 
 				plotLine = new Shape();
-				plotLine.graphics.lineStyle(plotGirth,currColour);
+				plotLine.graphics.lineStyle(PLOT_GIRTH,currColour);
 				plotCircles = new Shape();
 				for (var weekCount:int = 0; weekCount < TOTAL_WEEKS; weekCount++)
 				{
@@ -374,13 +405,93 @@ package collaboRhythm.hiviva.view.components
 						adherenceY = (fullAdherenceHeight / 100) * adherence;
 						plotLine.graphics.lineTo(this._chartStartX + (this._horizontalSegmentWidth * weekCount),plotStartY - adherenceY);
 						plotCircles.graphics.beginFill(currColour);
-						plotCircles.graphics.drawCircle(this._chartStartX + (this._horizontalSegmentWidth * weekCount),plotStartY - adherenceY,plotGirth * 2);
+						plotCircles.graphics.drawCircle(this._chartStartX + (this._horizontalSegmentWidth * weekCount),plotStartY - adherenceY,PLOT_GIRTH * 2);
 						plotCircles.graphics.endFill();
 					}
 				}
 				addChild(plotLine);
 				addChild(plotCircles);
+
+				this._legendData.push({colour:uint(currColour),patient:patient})
 			}
+		}
+
+		private function drawLegend():void
+		{
+			const textLeftPadding:Number = (PLOT_GIRTH * 2) + (Constants.PADDING_LEFT * 2);
+			const gap:Number = 20;
+			const labelFont:BitmapFont = TextField.getBitmapFont("normal-white-regular");
+			const labelSize:int = 18;
+
+			var fullLegendHeight:Number = gap;
+			var fullLegendWidth:Number = 0;
+			var currCompareWidth:Number;
+			var legendItem:Object;
+			var legendLabel:Label;
+			var legendCircle:Shape;
+
+			_legend = new Sprite();
+			addChild(_legend);
+
+			var legendBg:Sprite = new Sprite();
+			_legend.addChild(legendBg);
+
+			for (var i:int = 0; i < this._legendData.length; i++)
+			{
+				legendItem = this._legendData[i];
+
+				legendLabel = new Label();
+				legendLabel.text = legendItem.patient;
+				_legend.addChild(legendLabel);
+				legendLabel.textRendererProperties.textFormat = new BitmapFontTextFormat(labelFont,labelSize,uint(legendItem.colour));
+				legendLabel.x = textLeftPadding;
+				legendLabel.y = fullLegendHeight;
+				legendLabel.validate();
+
+				legendCircle = new Shape();
+				legendCircle.graphics.beginFill(uint(legendItem.colour));
+				legendCircle.graphics.drawCircle(Constants.PADDING_LEFT, fullLegendHeight + (legendLabel.height * 0.5), PLOT_GIRTH * 2);
+				legendCircle.graphics.endFill();
+				_legend.addChild(legendCircle);
+
+				currCompareWidth = legendLabel.x + legendLabel.width + gap;
+				if(fullLegendWidth < currCompareWidth) fullLegendWidth = currCompareWidth;
+				fullLegendHeight += legendLabel.height + gap;
+			}
+
+			var legendBgQuad:Quad = new Quad(fullLegendWidth,fullLegendHeight,0xFFFFFF);
+			legendBg.addChild(legendBgQuad);
+
+			var grainEffect:TiledImage = new TiledImage(Main.assets.getTexture("patient-profile-nav-button-pattern"));
+			grainEffect.smoothing = TextureSmoothing.NONE;
+			grainEffect.blendMode =  BlendMode.MULTIPLY;
+			grainEffect.width = fullLegendWidth;
+			grainEffect.height = fullLegendHeight;
+			legendBg.addChild(grainEffect);
+
+			var legendBtn:Button = new Button();
+			legendBtn.addEventListener(Event.TRIGGERED, legendButtonHandler);
+			legendBtn.width = fullLegendWidth;
+			legendBtn.height = fullLegendHeight;
+			legendBtn.alpha = 0;
+			_legend.addChild(legendBtn);
+
+			this._isLegendActive = false;
+			this._legendInactiveX = Constants.STAGE_WIDTH - textLeftPadding;
+			this._legendActiveX = Constants.STAGE_WIDTH - this._rightPadding - gap - fullLegendWidth;
+
+			_legend.x = this._legendInactiveX;
+			_legend.y = this._chartStartY + gap;
+		}
+
+		private function legendButtonHandler(e:Event):void
+		{
+			var xLoc:Number = this._isLegendActive ? this._legendInactiveX : this._legendActiveX;
+
+			var legendTween:Tween = new Tween(this._legend , 0.2 , this._isLegendActive ? Transitions.EASE_IN : Transitions.EASE_OUT);
+			legendTween.animate("x" , xLoc);
+			legendTween.onComplete = function():void{_isLegendActive = !_isLegendActive; Starling.juggler.remove(legendTween);};
+			Starling.juggler.add(legendTween);
 		}
 
 		public function get filterdPatients():Array
