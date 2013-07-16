@@ -397,7 +397,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				if(!isValidDate)validationArray.push("Invalid date selection - start and end dates");
 			}
 
-			return validationArray.join("<br/>");
+			return validationArray.join("\n");
 		}
 
 		private function validateDates():Boolean
