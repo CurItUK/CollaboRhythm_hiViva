@@ -18,6 +18,8 @@ package collaboRhythm.hiviva.global
 		public static const PRELOADER_ONPOGRESS:String					= "onProgress";
 		public static const PRELOADER_ON_COMPLETE:String	            = "onComplete";
 
+		public static const MESSAGE_CB_SELECT:String					= "messageCBSelect";
+
 
 		public var message:String;
 		public var evtData:Object =  {};
