@@ -30,7 +30,7 @@ package collaboRhythm.hiviva.view.screens.patient
                 "find you specifically.  The only key connecting the identifier with patient name should " +
                 "be secured in a locked cabinet of the study of the provider treating that patient.\n\n"+
 		        "The app has a password in addition to any password that a user may already have established " +
-				"on his or her smart phone or tablet. This level of protection does not limit access " +
+				"on his or her smart phone. This level of protection does not limit access " +
 				"to other applications, but does prevent others from viewing screens within the HIV " +
 				"medication adherence application that reveal its purpose and, therefore, " +
 				"the HIV status of the user. \n\n"+
