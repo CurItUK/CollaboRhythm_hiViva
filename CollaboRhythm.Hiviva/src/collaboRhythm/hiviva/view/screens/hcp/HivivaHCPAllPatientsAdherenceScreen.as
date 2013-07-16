@@ -93,7 +93,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 			if(this._patientCount == _patientData.length())
 			{
 				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_WEEKLY_MEDICATION_HISTORY_COMPLETE, getWeeklyMedicationHistoryCompleteHandler);
-				drawAdherenceChart();
+				if(this._patientHistoryData.length > 0)
+				{
+					drawAdherenceChart();
+				}
+				else
+				{
+					trace("no medication history for connected patients");
+				}
 			}
 			else
 			{
@@ -111,7 +118,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			patientAdherenceChart.width = Constants.STAGE_WIDTH;
 			patientAdherenceChart.height = Constants.STAGE_HEIGHT - Constants.HEADER_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT;
 			patientAdherenceChart.validate();
-			patientAdherenceChart.drawChart();
+			patientAdherenceChart.initChart();
 		}
 
 	}

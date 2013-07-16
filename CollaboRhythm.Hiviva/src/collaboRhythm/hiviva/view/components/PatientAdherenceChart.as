@@ -54,7 +54,7 @@ package collaboRhythm.hiviva.view.components
 
 			this._leftAxisSpace = this.actualWidth * 0.2;
 			//var leftPadding:Number = this.actualWidth * 0;
-			this._rightPadding = this.actualWidth * 0.05;
+			this._rightPadding = this.actualWidth * 0.1;
 			this._vPadding = this.actualHeight * 0.02;
 			this._chartWidth = this.actualWidth - this._leftAxisSpace - this._rightPadding;
 			this._chartHeight = this.actualHeight * 0.75;
@@ -69,54 +69,31 @@ package collaboRhythm.hiviva.view.components
 		}
 
 
-		public function drawChart():void
+		public function initChart():void
 		{
-			extractHistory();
 			setFirstWeekCommencing();
 			populateDates();
 			populatePatientAdherence();
 
-			initPatientNumberLabel();
-			initBackground();
-			initLeftAxisLabels();
-			initLeftAxisLines();
-			initBottomAxisValuesAndLines();
-			initBottomAxisLabels();
+			//drawChart();
+		}
+
+		private function drawChart():void
+		{
+			drawPatientNumberLabel();
+			drawBackground();
+			drawLeftAxisLabels();
+			drawLeftAxisLines();
+			drawBottomAxisValuesAndLines();
+			drawBottomAxisLabels();
 			drawPlotPoints();
 		}
 
-		private function extractHistory():void
-		{
-			_history = new Dictionary();
-			var medicationList:XMLList;
-			var medicationListLength:int;
-			var medicationSchedule:XMLList;
-			var medicationScheduleLength:int;
-			var referenceDate:Number;
-
-			for (var i:int = 0; i < _filterdPatients.length; i++)
-			{
-				medicationList = _filterdPatients[i].xml.DCUserMedication;
-				medicationListLength = medicationList.length();
-				for (var j:int = 0; j < medicationListLength; j++)
-				{
-					medicationSchedule = medicationList[j].Schedule.DCMedicationSchedule;
-					medicationScheduleLength = medicationSchedule.length();
-					for (var k:int = 0; k < medicationScheduleLength; k++)
-					{
-						referenceDate = HivivaModifier.isoDateToFlashDate(String(medicationSchedule[k].DateTaken)).getTime();
-						if (_history[referenceDate] == undefined) _history[referenceDate] = [];
-						_history[referenceDate].push({patientId:_filterdPatients[i].patientAppId,data:int(medicationSchedule[k].PercentTaken)});
-					}
-				}
-			}
-		}
-
-		private function initBottomAxisLabels():void
+		private function drawBottomAxisLabels():void
 		{
 			var bottomAxisLabel:Label = new Label();
 			bottomAxisLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
-			bottomAxisLabel.text = "Week commencing (2013)";
+			bottomAxisLabel.text = "Week commencing (" + this._firstWeek.getFullYear() + ")";
 			addChild(bottomAxisLabel);
 			bottomAxisLabel.x = this._chartStartX;
 			bottomAxisLabel.y = this._chartStartY + this._chartHeight + this._bottomAxisValueHeight;
@@ -134,7 +111,7 @@ package collaboRhythm.hiviva.view.components
 			bottomAxisGrad.y = this._chartStartY + this._chartHeight;
 		}
 
-		private function initLeftAxisLines():void
+		private function drawLeftAxisLines():void
 		{
 			var horizLineTexture:Texture = Main.assets.getTexture("header_line");
 			var horizontalLine:Image;
@@ -150,7 +127,7 @@ package collaboRhythm.hiviva.view.components
 			}
 		}
 
-		private function initBottomAxisValuesAndLines():void
+		private function drawBottomAxisValuesAndLines():void
 		{
 			var vertLineTexture:Texture = Assets.getTexture("VerticleLinePng");
 			var verticalLine:Image;
@@ -196,7 +173,7 @@ package collaboRhythm.hiviva.view.components
 			this._bottomAxisValueHeight = bottomAxisValue.height;
 		}
 
-		private function initPatientNumberLabel():void
+		private function drawPatientNumberLabel():void
 		{
 			var patientNumberLabel:Label = new Label();
 			patientNumberLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
@@ -209,7 +186,7 @@ package collaboRhythm.hiviva.view.components
 			this._chartStartY += patientNumberLabel.height;
 		}
 
-		private function initBackground():void
+		private function drawBackground():void
 		{
 			var chartBg:Quad = new Quad(this._chartWidth, this._chartHeight, 0x4c5f76);
 			chartBg.alpha = 0.25;
@@ -219,7 +196,7 @@ package collaboRhythm.hiviva.view.components
 			chartBg.y = this._chartStartY;
 		}
 
-		private function initLeftAxisLabels():void
+		private function drawLeftAxisLabels():void
 		{
 			var leftAxisTop:Label = new Label();
 			leftAxisTop.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
@@ -263,11 +240,12 @@ package collaboRhythm.hiviva.view.components
 
 		private function setFirstWeekCommencing():void
 		{
-			// compareDate will never be larger than currDate on the first loop iteration
+			// tempDate will never be larger than currDate on the first loop iteration
 			var tempDate:Date = new Date(0,0,0,0,0,0,0);
 			var currDate:Date = new Date();
 			for (var i:int = 0; i < _filterdPatients.length; i++)
 			{
+				// TODO : need to loop through medications to check all available 'latest dates'
 				var xml:XMLList = _filterdPatients[i].xml.DCUserMedication[0].Schedule.DCMedicationSchedule;
 				currDate = HivivaModifier.isoDateToFlashDate(xml.DateTaken);
 				if(currDate.getTime() > tempDate.getTime())
@@ -283,16 +261,12 @@ package collaboRhythm.hiviva.view.components
 		}
 
 		private function populatePatientAdherence():void
-		{var historyData:Array;
-					var weekItar:Date;
-					var comparePatient:String;
-					var medicationAdherence:Number = 0;
-					var medicationCount:int = 0;
-					var patientAverage:Number;
-					var adherenceData:Object;
-					this._lowestAdherence = 100;
-
-			_history = new Dictionary();
+		{
+			var weekItar:Date;
+			var medicationAdherence:Number = 0;
+			var medicationCount:int = 0;
+			var patientAverage:Number;
+			var adherenceData:Object;
 			var medicationList:XMLList;
 			var medicationListLength:int;
 			var medicationSchedule:XMLList;
@@ -316,7 +290,6 @@ package collaboRhythm.hiviva.view.components
 					medicationListLength = medicationList.length();
 					for (var j:int = 0; j < medicationListLength; j++)
 					{
-
 						medicationSchedule = medicationList[j].Schedule.DCMedicationSchedule;
 						medicationScheduleLength = medicationSchedule.length();
 						for (var k:int = 0; k < medicationScheduleLength; k++)
@@ -329,106 +302,40 @@ package collaboRhythm.hiviva.view.components
 							}
 						}
 					}
-
-						patientAverage = medicationAdherence / medicationCount;
+					patientAverage = medicationAdherence / medicationCount;
+					if(!isNaN(patientAverage))
+					{
 						adherenceData.adherence.push(patientAverage);
-						this._patientAdherence.push(adherenceData);
-						if(patientAverage < this._lowestAdherence) this._lowestAdherence = patientAverage;
-				}
-			}
-			// round down to the closest 10
-			this._lowestAdherence = Math.floor(this._lowestAdherence / 10) * 10;
-			this._adherenceRange = 100 - this._lowestAdherence;
-
-
-			/*var historyData:Array;
-			var weekItar:Date = new Date(this._firstWeek.getFullYear(),this._firstWeek.getMonth(),this._firstWeek.getDate(),0,0,0,0);
-			var comparePatient:String;
-			var medicationAdherence:Number = 0;
-			var medicationCount:int = 0;
-			var patientAverage:Number;
-			var adherenceData:Object;
-			this._lowestAdherence = 100;
-			for (var i:int = 0; i < TOTAL_WEEKS; i++)
-			{
-				historyData = _history[weekItar.getTime()];
-				if(historyData != null)
-				{
-					comparePatient = historyData[0].patientId;
-					for (var j:int = 0; j < historyData.length; j++)
+						if(isNaN(this._lowestAdherence) || this._lowestAdherence > patientAverage) this._lowestAdherence = patientAverage;
+					}
+					else
 					{
-						if(historyData[j].patientId != comparePatient)
-						{
-
-							patientAverage = medicationAdherence / medicationCount;
-							this._patientAdherence.push({patientAverage:patientAverage,date:weekItar.getTime(),patient:historyData[j].patientId});
-							if(patientAverage < this._lowestAdherence) this._lowestAdherence = patientAverage;
-
-							medicationAdherence = 0;
-							medicationCount = 0;
-						}
-
-						medicationAdherence += historyData[j].data;
-						medicationCount++;
-
-						comparePatient = historyData[j].patientId;
+						adherenceData.adherence.push(0);
 					}
 				}
-				weekItar.date += 7;
-			}
-			trace(this._patientAdherence.join(','));
-			// round down to the closest 10
-			this._lowestAdherence = Math.floor(this._lowestAdherence / 10) * 10;
-			this._adherenceRange = 100 - this._lowestAdherence;
-*/
-			/*
-
-
-
-			var dayLength:int = TOTAL_WEEKS * 7;
-			var daysItar:Date;
-			var daysCount:int = 0;
-			var patientData:XMLList;
-			var adherenceData:Object;
-			var adherence:Number;
-			var averageAdherence:Number = 0;
-			this._lowestAdherence = 100;
-			for (var j:int = 0; j < _filterdPatients.length; j++)
-			{
-				patientData = _filterdPatients[j];
-
-				adherenceData = {};
-				adherenceData.patient = _filterdPatients[j].name;
-				adherenceData.adherence = [];
-
-				daysItar = new Date(this._firstWeek.getFullYear(),this._firstWeek.getMonth(),this._firstWeek.getDate(),0,0,0,0);
-				for (var i:int = 0; i < dayLength; i++)
-				{
-					adherence = HivivaModifier.getPatientAdherenceByDate(patientData, daysItar);
-					averageAdherence += adherence;
-					daysItar.date++;
-					daysCount++;
-					if(daysCount == 7)
-					{
-						// calculate average adherence
-						averageAdherence /= 7;
-						adherenceData.adherence.push(averageAdherence);
-
-						if(this._lowestAdherence > averageAdherence && averageAdherence > 0)
-						{
-							this._lowestAdherence = averageAdherence;
-						}
-
-						averageAdherence = 0;
-						daysCount = 0
-					}
-				}
+				trace(TOTAL_WEEKS + " weeks adherence for " + adherenceData.patient + " = " + adherenceData.adherence.join(','));
 				this._patientAdherence.push(adherenceData);
-				trace(adherenceData.adherence.join(","));
 			}
-			// round down to the closest 10
-			this._lowestAdherence = Math.floor(this._lowestAdherence / 10) * 10;
-			this._adherenceRange = 100 - this._lowestAdherence;*/
+			if(!isNaN(this._lowestAdherence))
+			{
+				if(this._lowestAdherence < 100)
+				{
+					// round down to the closest 10
+					this._lowestAdherence = Math.floor(this._lowestAdherence / 10) * 10;
+				}
+				else
+				{
+					this._lowestAdherence = 90;
+				}
+
+				this._adherenceRange = 100 - this._lowestAdherence;
+
+				drawChart();
+			}
+			else
+			{
+				trace('all connected patients do not have medication history');
+			}
 		}
 
 		private function drawPlotPoints():void
