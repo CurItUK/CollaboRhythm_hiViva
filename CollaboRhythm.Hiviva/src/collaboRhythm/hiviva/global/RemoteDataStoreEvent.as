@@ -40,6 +40,8 @@ package collaboRhythm.hiviva.global
 		public static const ADD_TEST_RESULTS_COMPLETE:String							= "addTestResultsComplete";
 		public static const GET_PATIENT_LATEST_RESULTS_COMPLETE:String					= "getPatientLatestResultsComplete";
 
+		//display Settings
+		public static const GET_DISPLAY_SETTINGS_COMPLETE:String						= "getDisplaySettingsComplete";
 
 
 
