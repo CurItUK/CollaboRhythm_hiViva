@@ -456,22 +456,9 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function displayHtmlReport():void
 		{
-			this._pdfPopupContainer = new HivivaPDFPopUp();
-			this._pdfPopupContainer.scale = this.dpiScale;
-			this._pdfPopupContainer.width = this.actualWidth;
-			this._pdfPopupContainer.height = this.actualHeight;
-			this._pdfPopupContainer.addEventListener("sendMail", mailBtnHandler);
-			this._pdfPopupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
-			this._pdfPopupContainer.validate();
-
-			PopUpManager.addPopUp(this._pdfPopupContainer, true, true);
-			this._pdfPopupContainer.validate();
 
 
-			var padding:Number = 150;
-			this._stageWebView = new StageWebView();
-			this._stageWebView.stage = Starling.current.nativeStage.stage;
-			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - padding);
+
 			/*pdf = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
 
 			var htmlString:String = "<!DOCTYPE HTML>" +
@@ -492,7 +479,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._reportChart.dataCategory = "adherence";
 			this._reportChart.startDate = HivivaModifier.getDateFromString(this._startDateInput._input.text);
 			this._reportChart.endDate = HivivaModifier.getDateFromString(this._finishDateInput._input.text);
-			this._reportChart.patientData = _patientData;
+//			this._reportChart.patientData = _patientData;
 			// must be added to stage or snapshot will be blank
 			addChild(this._reportChart);
 			this._reportChart.width = this._reportChart.height = this.actualWidth;
@@ -513,6 +500,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._reportChartTimer.stop();
 
 			this._adherenceChartBd = copyToBitmap(this._reportChart, this.dpiScale);
+//			this._adherenceChartBd = __copyToBitmap(this._reportChart, this.dpiScale);
+
+			/*var bmd:BitmapData = new BitmapData(Constants.STAGE_WIDTH, Constants.STAGE_HEIGHT);
+			bmd.draw(Starling.current.nativeStage.stage);
+			var bm:Bitmap = new Bitmap(bmd);
+			bm.x = 10
+			bm.y = 10
+			Starling.current.nativeStage.stage.addChild(bm);*/
+
 			var pngenc:PNGEncoder = new PNGEncoder();
 			var byteArray:ByteArray = pngenc.encode(this._adherenceChartBd);
 
@@ -548,7 +544,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._reportChart.dataCategory = "tolerability";
 			this._reportChart.startDate = HivivaModifier.getDateFromString(this._startDateInput._input.text);
 			this._reportChart.endDate = HivivaModifier.getDateFromString(this._finishDateInput._input.text);
-			this._reportChart.patientData = _patientData;
+//			this._reportChart.patientData = _patientData;
 			// must be added to stage or snapshot will be blank
 			addChild(this._reportChart);
 			this._reportChart.width = this._reportChart.height = this.actualWidth;
@@ -604,7 +600,22 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			System.gc();
 
+			this._pdfPopupContainer = new HivivaPDFPopUp();
+			this._pdfPopupContainer.scale = this.dpiScale;
+			this._pdfPopupContainer.width = this.actualWidth;
+			this._pdfPopupContainer.height = this.actualHeight;
+			this._pdfPopupContainer.addEventListener("sendMail", mailBtnHandler);
+			this._pdfPopupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
+			this._pdfPopupContainer.validate();
+
+			PopUpManager.addPopUp(this._pdfPopupContainer, true, true);
+			this._pdfPopupContainer.validate();
+
 			this._reportTemplateLocation = "file://" + File.applicationStorageDirectory.resolvePath("report_template/index.html").nativePath;
+
+			this._stageWebView = new StageWebView();
+			this._stageWebView.stage = Starling.current.nativeStage.stage;
+			this._stageWebView.viewPort = new Rectangle(20, 20, Starling.current.nativeStage.stage.stageWidth - 30, Starling.current.nativeStage.stage.stageHeight - 150);
 			this._stageWebView.addEventListener(flash.events.Event.COMPLETE, stageWebCompleteHandler);
 			this._stageWebView.loadURL(this._reportTemplateLocation);
 		}
@@ -665,10 +676,10 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		    var result : BitmapData = new BitmapData( Starling.current.stage.stageWidth, Starling.current.stage.stageHeight, transparentBackground, backgroundColor );
 		    var context : Context3D = Starling.context;
+			var stage:Stage= Starling.current.stage;
 
 		    var support : RenderSupport = new RenderSupport();
 		//			RenderSupport.clear();
-		    var stage:Stage= Starling.current.stage;
 		    RenderSupport.clear(stage.color,0.0);
 			support.clear();
 		    support.setOrthographicProjection(0,0, Starling.current.stage.stageWidth  , Starling.current.stage.stageHeight    );

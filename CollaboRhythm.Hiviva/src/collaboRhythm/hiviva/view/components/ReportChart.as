@@ -21,7 +21,7 @@ package collaboRhythm.hiviva.view.components
 
 	public class ReportChart extends FeathersControl
 	{
-		private var _patientData:XML;
+		private var _patientData:XMLList;
 		// adherence, tolerability
 		private var _dataCategory:String;
 		private var _startDate:Date;
@@ -100,19 +100,35 @@ package collaboRhythm.hiviva.view.components
 		private function populatePatientData():void
 		{
 			var daysItar:Date;
+			var referenceDate:Date;
 			var valueData:Number;
+			var medicationSchedule:XMLList;
+			var medicationScheduleLength:int;
+
 			this._lowestValue = 100;
 
 			daysItar = new Date(this._startDate.getFullYear(),this._startDate.getMonth(),this._startDate.getDate(),0,0,0,0);
 			for (var i:int = 0; i < _dayTotal; i++)
 			{
-				valueData = this._dataCategory == "adherence" ? HivivaModifier.getPatientAdherenceByDate(_patientData, daysItar) : HivivaModifier.getPatientTolerabilityByDate(_patientData, daysItar);
-				if(this._lowestValue > valueData && valueData > 0)
+				for (var j:int = 0; j < _patientData.length(); j++)
 				{
-					this._lowestValue = valueData;
+					medicationSchedule = _patientData[j].Schedule.DCMedicationSchedule;
+					medicationScheduleLength = medicationSchedule.length();
+					for (var k:int = 0; k < medicationScheduleLength; k++)
+					{
+						referenceDate = HivivaModifier.isoDateToFlashDate(String(medicationSchedule[k].DateTaken));
+						if(daysItar.getTime() == referenceDate.getTime())
+						{
+							valueData = int(medicationSchedule[k].PercentTaken);
+							if(this._lowestValue > valueData/* && valueData > 0*/)
+							{
+								this._lowestValue = valueData;
+							}
+							daysItar.date++;
+							this._valueData.push(valueData);
+						}
+					}
 				}
-				daysItar.date++;
-				this._valueData.push(valueData);
 			}
 			trace(this._valueData.join(","));
 
@@ -314,12 +330,12 @@ package collaboRhythm.hiviva.view.components
 			_endDate = value;
 		}
 
-		public function get patientData():XML
+		public function get patientData():XMLList
 		{
 			return _patientData;
 		}
 
-		public function set patientData(value:XML):void
+		public function set patientData(value:XMLList):void
 		{
 			_patientData = value;
 		}
