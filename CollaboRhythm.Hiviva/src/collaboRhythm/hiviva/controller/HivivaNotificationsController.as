@@ -41,7 +41,6 @@ package collaboRhythm.hiviva.controller
 
 		private function onMessageCheck(e:TimerEvent):void
 		{
-			trace("PATIENT HOMEPAGE: TICK - get messages");
 			this.dispatchEvent(new NotificationsEvent(NotificationsEvent.HOMEPAGE_TICK_COMPLETE));
 		}
 	}

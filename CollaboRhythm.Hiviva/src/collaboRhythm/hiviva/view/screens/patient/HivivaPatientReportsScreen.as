@@ -283,6 +283,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function calendarButtonHandler(e:FeathersScreenEvent):void
 		{
 			PopUpManager.removePopUp(this._calendar);
+
+			if(e.evtData.date != "" )
 			this._activeCalendarInput.text = e.evtData.date;
 			trace("Active Date is  ::: " + e.evtData.date )
 
@@ -679,6 +681,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var stage:Stage= Starling.current.stage;
 
 		    var support : RenderSupport = new RenderSupport();
+			support.pushClipRect(resultRect)
 		//			RenderSupport.clear();
 		    RenderSupport.clear(stage.color,0.0);
 			support.clear();
@@ -705,6 +708,9 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		    return croppedRes;
 		}
+
+
+
 
 		private function stageWebCompleteHandler(e:flash.events.Event):void
 		{
@@ -733,6 +739,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._stageWebView.loadURL(this._reportTemplateLocation + hashStr);
 			generatePDFReport();
 		}
+
 
 		private function generatePDFReport():void
 		{

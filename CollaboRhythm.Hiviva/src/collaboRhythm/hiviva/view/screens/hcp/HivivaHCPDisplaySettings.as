@@ -1,29 +1,21 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
-
-	import feathers.controls.Label;
+ 	import feathers.controls.Label;
 	import feathers.controls.PickerList;
 	import feathers.controls.Radio;
-
-
-	import feathers.controls.Screen;
-	import feathers.controls.ScrollContainer;
-	import feathers.controls.Scroller;
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
-	import feathers.layout.VerticalLayout;
-
 	import starling.display.DisplayObject;
 
 	import starling.events.Event;
@@ -160,6 +152,17 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			populateOldData();
+		}
+
+		private function getUserDisplaySettings():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_DISPLAY_SETTINGS_COMPLETE , getDisplaySettingsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserDisplaySettings();
+		}
+
+		private function getDisplaySettingsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DISPLAY_SETTINGS_COMPLETE , getDisplaySettingsCompleteHandler);
 		}
 
 		private function cancelAndSaveHandler(e:starling.events.Event):void

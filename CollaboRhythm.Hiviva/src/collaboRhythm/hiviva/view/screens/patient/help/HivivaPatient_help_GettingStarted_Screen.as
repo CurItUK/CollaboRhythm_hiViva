@@ -1,5 +1,6 @@
-package collaboRhythm.hiviva.view.screens.patient
+package collaboRhythm.hiviva.view.screens.patient.help
 {
+	import collaboRhythm.hiviva.view.screens.patient.*;
 	import collaboRhythm.hiviva.global.Constants;
 
 	import feathers.controls.Screen;
@@ -7,7 +8,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		import collaboRhythm.hiviva.global.HivivaScreens;
 		import collaboRhythm.hiviva.view.*;
 		import collaboRhythm.hiviva.view.media.Assets;
-	    import collaboRhythm.hiviva.view.screens.patient.HelpScreens.ScreenManager;
+	    import collaboRhythm.hiviva.view.screens.shared.HelpScreenManager;
 		import feathers.controls.Button;
 		import feathers.controls.ButtonGroup;
 		import feathers.controls.Header;
@@ -165,7 +166,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	return;
 	}
 	*/
-	var scrManager : ScreenManager =  new ScreenManager(e);
+	var scrManager : HelpScreenManager =  new HelpScreenManager(e);
 	      scrManager._sNav = this.owner;
 	var __exists : Boolean  = scrManager.setStatus(_searchString) ;
 

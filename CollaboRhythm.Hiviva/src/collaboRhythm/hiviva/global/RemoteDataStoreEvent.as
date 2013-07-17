@@ -41,6 +41,8 @@ package collaboRhythm.hiviva.global
 		public static const GET_PATIENT_LATEST_RESULTS_COMPLETE:String					= "getPatientLatestResultsComplete";
 		public static const GET_PATIENT_ALL_RESULTS_COMPLETE:String						= "getPatientAllResultsComplete";
 
+		//display Settings
+		public static const GET_DISPLAY_SETTINGS_COMPLETE:String						= "getDisplaySettingsComplete";
 
 
 

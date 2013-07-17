@@ -384,6 +384,17 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getUserDisplaySettings():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_DISPLAY_SETTINGS_COMPLETE , getDisplaySettingsCompleteHandler);
+			//service.getUserDisplaySettings()
+		}
+
+		private function getDisplaySettingsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_DISPLAY_SETTINGS_COMPLETE , getDisplaySettingsCompleteHandler);
+		}
+
 		public function get service():HivivaRemoteStoreService
 		{
 			return _hivivaRemoteStoreService;

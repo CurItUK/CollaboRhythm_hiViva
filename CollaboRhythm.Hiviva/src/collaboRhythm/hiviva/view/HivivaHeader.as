@@ -105,6 +105,7 @@ package collaboRhythm.hiviva.view
 		}
 
 		public function set scale(value:Number):void
+
 		{
 			_scale = value;
 		}
