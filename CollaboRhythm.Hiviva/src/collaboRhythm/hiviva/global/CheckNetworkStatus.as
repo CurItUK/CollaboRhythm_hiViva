@@ -8,7 +8,7 @@ package collaboRhythm.hiviva.global
 	{
 
 		private var con : Boolean  = false ;
-		var results:Vector.<NetworkInterface> =  NetworkInfo.networkInfo.findInterfaces();
+		public var results:Vector.<NetworkInterface> =  NetworkInfo.networkInfo.findInterfaces();
       /**
 	 * Returns network connection status as a Boolean
 	 * true if connected and false if not

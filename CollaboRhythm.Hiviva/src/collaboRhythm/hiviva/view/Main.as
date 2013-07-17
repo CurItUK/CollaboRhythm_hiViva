@@ -54,18 +54,18 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientViewMedicationScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientVirusModelScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientUserSignupScreen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Connect_To_Care_Provider_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_DailyMedicines_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_GettingStarted_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_HomePagePhoto_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Messages_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Produce_A_Report_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Register_Tolerability_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Rewards_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_SeeAdherence_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_TakeMedicine_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_TestResults_Screen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatient_help_Virus_Model_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Connect_To_Care_Provider_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_DailyMedicines_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_GettingStarted_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_HomePagePhoto_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Messages_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Produce_A_Report_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Register_Tolerability_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Rewards_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_SeeAdherence_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_TakeMedicine_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_TestResults_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Virus_Model_Screen;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaSplashScreen;
 	import collaboRhythm.hiviva.view.screens.shared.MainBackground;
 
@@ -86,6 +86,7 @@ package collaboRhythm.hiviva.view
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
+
 	import feathers.core.PopUpManager;
 
 	public class Main extends Sprite

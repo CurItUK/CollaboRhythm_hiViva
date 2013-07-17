@@ -48,6 +48,15 @@ package collaboRhythm.hiviva.controller
 			service.getGalleryImages()
 		}
 
+		public function deleteGalleryImages():void
+				{
+					service.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
+					service.getGalleryImages()
+				}
+
+
+
+
 		private function getGalleryImagesHandler(e:LocalDataStoreEvent):void
 		{
 			service.removeEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);

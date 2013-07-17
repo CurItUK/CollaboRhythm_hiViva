@@ -6,7 +6,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.media.Assets;
-    import collaboRhythm.hiviva.view.screens.patient.HelpScreens.ScreenManager;
+    import collaboRhythm.hiviva.view.screens.shared.HelpScreenManager;
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_About_Screen;
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_GettingStarted_Screen;
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_Privacy_Screen;
@@ -35,7 +35,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	import starling.events.Event;
 	import starling.textures.TextureSmoothing;
-    import collaboRhythm.hiviva.view.screens.patient.HelpScreens.*;
+   // import collaboRhythm.hiviva.view.screens.patient.HelpScreens.*;
 
 	public class HivivaHCPHelpScreen extends Screen
 	{
@@ -160,7 +160,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			 return;
 				 }
 				 */
-			var scrManager : ScreenManager =  new ScreenManager(e);
+			var scrManager : HelpScreenManager =  new HelpScreenManager(e);
             scrManager._sNav = this.owner;
 			var __exists : Boolean  = scrManager.setStatus(_searchString) ;
 

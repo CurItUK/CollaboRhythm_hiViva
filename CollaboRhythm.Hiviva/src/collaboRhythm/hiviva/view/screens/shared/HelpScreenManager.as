@@ -1,4 +1,4 @@
-package collaboRhythm.hiviva.view.screens.patient.HelpScreens
+package collaboRhythm.hiviva.view.screens.shared
 {
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientHelpScreen;
 	import feathers.controls.ScreenNavigator;
@@ -7,13 +7,13 @@ package collaboRhythm.hiviva.view.screens.patient.HelpScreens
 	import starling.events.Event;
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
-	public class ScreenManager extends HivivaPatientHelpScreen
+	public class HelpScreenManager extends HivivaPatientHelpScreen
 	{
 		private var __screenName : String;
         private var __sNav : ScreenNavigator;
         private var __Hiviva_help_help_Screen:Object
 		private var btn:Button
-		public function ScreenManager(e:Event)
+		public function HelpScreenManager(e:Event)
 		{
 			super();
 			btn  =  e.target as Button;
@@ -116,7 +116,7 @@ package collaboRhythm.hiviva.view.screens.patient.HelpScreens
 						__s = String(HivivaScreens.HCP_HELP_PRIVACY_SCREEN);
 						break;
 					case "hcpgettingstarted" :
-				    __s = String(HivivaScreens.HCP_HELP_GETTINGSTARTED_SCREEN);
+				        __s = String(HivivaScreens.HCP_HELP_GETTINGSTARTED_SCREEN);
 
 					 break;
 					case "hcpwhatcanIdowithhiviva" :
