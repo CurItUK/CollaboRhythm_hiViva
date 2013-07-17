@@ -14,8 +14,8 @@ package collaboRhythm.hiviva.model
 
 	public class HivivaRemoteStoreService extends EventDispatcher
 	{
-		private static const RS_BASE_URL_DEV:String = "http://pwshealthtest.dev/services/";
-		//private static const RS_BASE_URL_DEV:String = "http://collaborythm.pharmiwebsolutions.com/services/";
+		//private static const RS_BASE_URL:String = "http://pwshealthtest.dev/services/";
+		private static const RS_BASE_URL:String = "http://collaborythm.pharmiwebsolutions.com/services/";
 
 		public function HivivaRemoteStoreService()
 		{
@@ -24,7 +24,7 @@ package collaboRhythm.hiviva.model
 
 		public function createUser(appType:String):void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_CREATE_USER + appType);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_CREATE_USER + appType);
 			trace("createUser " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, createUserCompleteHandler);
@@ -43,7 +43,7 @@ package collaboRhythm.hiviva.model
 		public function addUserMedication(medicationName:String , medicationSchedule:String):void
 		{
 			var query:String = "userGuid=" + HivivaStartup.userVO.guid + "&medicationInformation=medicationname:" + medicationName + "," + "schedule:" + medicationSchedule;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_ADD_MEDICATION + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_ADD_MEDICATION + query);
 			trace("AddUserMedication " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, addUserMedicationCompleteHandler);
@@ -58,7 +58,7 @@ package collaboRhythm.hiviva.model
 		public function deleteMedication(medicationId:String):void
 		{
 			var query:String = "userMedicationGuid=" + medicationId;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_DELETE_MEDICATION + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_DELETE_MEDICATION + query);
 			trace("deleteMedication " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, deleteUserMedicationCompleteHandler);
@@ -73,7 +73,7 @@ package collaboRhythm.hiviva.model
 		public function takeMedication(medicationData:XML):void
 		{
 
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_TAKE_PATIENT_MEDICATION);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_TAKE_PATIENT_MEDICATION);
 			urlRequest.data = medicationData.toXMLString();
 			urlRequest.contentType = "text/xml";
 			urlRequest.method = URLRequestMethod.POST;
@@ -91,7 +91,7 @@ package collaboRhythm.hiviva.model
 
 		public function getServerDate():void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_SERVER_DATE);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_SERVER_DATE);
 			trace("getServerDate " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getServerDateComplete);
@@ -109,7 +109,7 @@ package collaboRhythm.hiviva.model
 		public function getPatientMedicationList():void
 		{
 			var query:String = "userGuid=" + HivivaStartup.userVO.guid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_PATIENT_MEDICATION + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_PATIENT_MEDICATION + query);
 			trace("getPatientMedicationList " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getPatientMedicationListComplete);
@@ -126,7 +126,7 @@ package collaboRhythm.hiviva.model
 
 		public function getHCP(appID:String):void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_HCP + "AppId=" + appID);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_HCP + "AppId=" + appID);
 			trace("getHCP " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getHCPCompleteHandler);
@@ -143,7 +143,7 @@ package collaboRhythm.hiviva.model
 
 		public function getPatient(appID:String):void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_PATIENT + "AppId=" + appID);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_PATIENT + "AppId=" + appID);
 			trace("getPatient " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getPatientCompleteHandler);
@@ -160,7 +160,7 @@ package collaboRhythm.hiviva.model
 
 		public function establishConnection(fromGuid:String , toGuid:String):void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_CONNECTION_ESTABLISH + "From=" + fromGuid + "&To=" + toGuid);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_CONNECTION_ESTABLISH + "From=" + fromGuid + "&To=" + toGuid);
 			trace("establishConnection " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, establishConnectionCompleteHandler);
@@ -178,7 +178,7 @@ package collaboRhythm.hiviva.model
 		public function approveConnection(fromGuid:String):void
 		{
 			var query:String = "From=" + fromGuid + "&To=" + HivivaStartup.userVO.guid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_CONNECTION_APPROVE + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_CONNECTION_APPROVE + query);
 			trace("approveConnection " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, approveConnectionHandler);
@@ -196,7 +196,7 @@ package collaboRhythm.hiviva.model
 		public function deleteConnection(fromGuid:String , toGuid:String):void
 		{
 			var query:String = "From=" + fromGuid + "&To=" + toGuid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_CONNECTION_DELETE + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_CONNECTION_DELETE + query);
 			trace("deleteConnection " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, deleteConnectionHandler);
@@ -213,7 +213,7 @@ package collaboRhythm.hiviva.model
 
 		public function getApprovedConnections():void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_APPROVED_CONNECTIONS + "UserGuid=" + HivivaStartup.userVO.guid);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_APPROVED_CONNECTIONS + "UserGuid=" + HivivaStartup.userVO.guid);
 			trace("getApprovedConections " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getApprovedConectionsHandler);
@@ -230,7 +230,7 @@ package collaboRhythm.hiviva.model
 
 		public function getApprovedConnectionsWithSummary():void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_APPROVED_CONNECTIONS_WITH_SUMMARY + "UserGuid=" + HivivaStartup.userVO.guid);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_APPROVED_CONNECTIONS_WITH_SUMMARY + "UserGuid=" + HivivaStartup.userVO.guid);
 			trace("getApprovedConnectionsWithSummary " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getApprovedConnectionsWithSummaryHandler);
@@ -247,7 +247,7 @@ package collaboRhythm.hiviva.model
 
 		public function getPendingConnections():void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_PENDING_CONNECTIONS + "UserGuid=" + HivivaStartup.userVO.guid);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_PENDING_CONNECTIONS + "UserGuid=" + HivivaStartup.userVO.guid);
 			trace("getPendingConnections " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getPendingConnectionsHandler);
@@ -265,7 +265,7 @@ package collaboRhythm.hiviva.model
 		public function getHCPSentMessages():void
 		{
 			var query:String = "From=" + HivivaStartup.userVO.guid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_HCP_SENT_MESSAGES + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_HCP_SENT_MESSAGES + query);
 			trace("getHCPSentMessages " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getHCPSentMessagesComplete);
@@ -283,7 +283,7 @@ package collaboRhythm.hiviva.model
 		public function getUserReceivedMessages():void
 		{
 			var query:String = "To=" + HivivaStartup.userVO.guid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_USER_RECEIVED_MESSAGES + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_USER_RECEIVED_MESSAGES + query);
 			trace("getUserReceivedMessages " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getUserReceivedMessagesComplete);
@@ -300,7 +300,7 @@ package collaboRhythm.hiviva.model
 
 		public function getMessages():void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_MESSAGES);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_MESSAGES);
 			trace("getMessages " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getMessagesComplete);
@@ -318,7 +318,7 @@ package collaboRhythm.hiviva.model
 		public function sendUserMessage(toGuid:String, messageGuid:String):void
 		{
 			var query:String = "From=" + HivivaStartup.userVO.guid + "&To=" + toGuid + "&MessageGuid=" + messageGuid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_SEND_USER_MESSAGE + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_SEND_USER_MESSAGE + query);
 			trace("sendUserMessage " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, sendUserMessageComplete);
@@ -336,7 +336,7 @@ package collaboRhythm.hiviva.model
 		public function deleteUserMessage(messageGuid:String):void
 		{
 			var query:String = "MessageGuid=" + messageGuid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_DELETE_USER_MESSAGE + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_DELETE_USER_MESSAGE + query);
 			trace("deleteUserMessage " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, deleteUserMessageComplete);
@@ -354,7 +354,7 @@ package collaboRhythm.hiviva.model
 		public function markMessageAsRead(messageGuid:String):void
 		{
 			var query:String = "MessageGuid=" + messageGuid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_MARK_MESSAGE_AS_READ + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_MARK_MESSAGE_AS_READ + query);
 			trace("markMessageAsRead " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, markMessageAsReadComplete);
@@ -371,7 +371,7 @@ package collaboRhythm.hiviva.model
 
 		public function addTestResults(testResultData:XML):void
 		{
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_ADD_TEST_RESULTS );
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_ADD_TEST_RESULTS );
 			urlRequest.data = testResultData.toXMLString();
 			urlRequest.contentType = "text/xml";
 			urlRequest.method = URLRequestMethod.POST;
@@ -393,7 +393,7 @@ package collaboRhythm.hiviva.model
 		public function getPatientLastTestResult(testData:String):void
 		{
 			var query:String = "userGuid=" + HivivaStartup.userVO.guid + "&testDescriptions=" + testData;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_PATIENT_LATEST_RESULTS + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_PATIENT_LATEST_RESULTS + query);
 			trace("getPatientLastTestResult " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getPatientLatestTestResultsCompleteHandler);
@@ -411,7 +411,7 @@ package collaboRhythm.hiviva.model
 		public function getUserMedicationHistory(userGuid:String):void
 		{
 			var query:String = "userGuid=" + userGuid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_USER_MEDICATION_HISTORY + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_USER_MEDICATION_HISTORY + query);
 			trace("getUserMedicationHistory " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getUserMedicationHistoryCompleteHandler);
@@ -429,7 +429,7 @@ package collaboRhythm.hiviva.model
 		public function getDailyMedicationHistory(userGuid:String):void
 		{
 			var query:String = "userGuid=" + userGuid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_DAILY_MEDICATION_HISTORY + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_DAILY_MEDICATION_HISTORY + query);
 			trace("getDailyMedicationHistory " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getDailyMedicationHistoryCompleteHandler);
@@ -447,7 +447,7 @@ package collaboRhythm.hiviva.model
 		public function getWeeklyMedicationHistory(userGuid:String):void
 		{
 			var query:String = "userGuid=" + userGuid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL_DEV + RemoteServiceAPI.RS_GET_WEEKLY_MEDICATION_HISTORY + query);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_WEEKLY_MEDICATION_HISTORY + query);
 			trace("getWeeklyMedicationHistory " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getWeeklyMedicationHistoryCompleteHandler);
