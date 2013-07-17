@@ -327,6 +327,21 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getPatientAllTestResults(userGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE , getPatientAllTestResultsCompleteHandler);
+			service.getPatientAllTestResults(userGuid);
+
+		}
+
+		private function getPatientAllTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE , getPatientAllTestResultsCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function getUserMedicationHistory(userGuid:String):void
 		{
 			service.addEventListener(RemoteDataStoreEvent.GET_USER_MEDICATION_HISTORY_COMPLETE , getUserMedicationHistoryCompleteHandler);

@@ -408,6 +408,24 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
+		public function getPatientAllTestResults(userGuid:String):void
+		{
+			var query:String = "userGuid=" + userGuid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_PATIENT_ALL_RESULTS + query);
+			trace("getPatientAllTestResults " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getPatientAllTestResultsCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getPatientAllTestResultsCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt);
+		}
+
 		public function getUserMedicationHistory(userGuid:String):void
 		{
 			var query:String = "userGuid=" + userGuid;

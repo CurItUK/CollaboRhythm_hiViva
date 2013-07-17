@@ -1,12 +1,13 @@
 package collaboRhythm.hiviva.view.components
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.view.Main;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
+	import feathers.controls.ScrollContainer;
+	import feathers.controls.Scroller;
 	import feathers.core.FeathersControl;
 	import feathers.display.Scale9Image;
+	import feathers.layout.HorizontalLayout;
 	import feathers.textures.Scale9Textures;
 
 	import flash.geom.Rectangle;
@@ -16,8 +17,8 @@ package collaboRhythm.hiviva.view.components
 	public class BoxedButtons extends FeathersControl
 	{
 		private var _bg:Scale9Image;
+		private var _btnHolder:ScrollContainer;
 		private var _labels:Array = [];
-		private var _btns:Vector.<Button> = new <Button>[];
 		private var _scale:Number = 1;
 
 		public function BoxedButtons()
@@ -32,7 +33,7 @@ package collaboRhythm.hiviva.view.components
 			drawButtons();
 
 			this._bg.width = this.actualWidth;
-			this._bg.height = this._btns[0].height * 1.8;
+			this._bg.height = this._btnHolder.height;
 
 			setSizeInternal(this._bg.width, this._bg.height, true);
 		}
@@ -45,47 +46,37 @@ package collaboRhythm.hiviva.view.components
 			this._bg = new Scale9Image(bgTexture, this._scale);
 			this._bg.touchable = false;
 			addChild(this._bg);
-
-			initializeButtons();
 		}
 
-		private function initializeButtons():void
+		private function drawButtons():void
 		{
-			var loop:int = this._labels.length,
-				btn:Button;
+			var btn:Button;
+			const 	loop:int = this._labels.length,
+					gap:Number = (this.actualWidth * 0.02) * this._scale,
+					minButtonWidth:Number = (this.actualWidth * 0.25) * this._scale,
+					hLayout:HorizontalLayout = new HorizontalLayout();
+			hLayout.gap = gap;
+			hLayout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
+			hLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+
+			this._btnHolder = new ScrollContainer();
+			this._btnHolder.layout = hLayout;
+			this._btnHolder.scrollerProperties.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
+			addChild(this._btnHolder);
+
 			for (var i:int = 0; i < loop; i++)
 			{
 				btn = new Button();
 				btn.addEventListener(Event.TRIGGERED, buttonHandler);
 				btn.label = _labels[i];
-				addChild(btn);
-				_btns.push(btn);
-			}
-		}
-
-		private function drawButtons():void
-		{
-			var loop:int = this._btns.length,
-				btn:Button,
-				gap:Number = (this.actualWidth * 0.02) * this._scale,
-				minButtonWidth:Number = (this.actualWidth * 0.25) * this._scale,
-				btnsWidth:Number = gap,
-				i:int;
-			for (i= 0; i < loop; i++)
-			{
-				btn = _btns[i];
+				this._btnHolder.addChild(btn);
 				btn.validate();
 				btn.width = btn.width < minButtonWidth ? minButtonWidth : btn.width;
-				btn.y = (_bg.height * 0.5) - (btn.height * 0.5);
-				btnsWidth += btn.width + gap;
 			}
 
-			for (i = 0; i < _btns.length; i++)
-			{
-				btn = _btns[i];
-				btn.x = (this.actualWidth * 0.5) - (btnsWidth * 0.5);
-				btn.x += (btn.width * i) + gap;
-			}
+			this._btnHolder.height = btn.height * 1.8;
+			this._btnHolder.width = this.actualWidth;
+			this._btnHolder.validate();
 		}
 
 		private function buttonHandler(e:Event):void
@@ -112,12 +103,6 @@ package collaboRhythm.hiviva.view.components
 		public function set labels(value:Array):void
 		{
 			_labels = value;
-		}
-
-		override public function dispose():void
-		{
-			_btns = null;
-			super.dispose();
 		}
 	}
 }
