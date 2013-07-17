@@ -38,12 +38,11 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _feelingSliderRightImage:Image;
 		private var _submitButton:Button;
 		private var _medicationSchedule:Array;
-		private var _latestAdherenceData:Object;
 		private var _takeMedicationCellHolder:ScrollContainer;
 
 		private var _medicationData:XML;
 		private var _patientKudosCount:Number;
-
+		private var _remoteCallMade:Boolean = false;
 
 		private const PADDING:Number = 20;
 
@@ -54,17 +53,19 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function draw():void
 		{
-			this._customHeight = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT;
+			this._customHeight = Constants.STAGE_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT;
 			super.draw();
+			if(!_remoteCallMade) checkMedicationScheduleExist();
 		}
 
 		override protected function preValidateContent():void
 		{
 			super.preValidateContent();
 
-			this._feelingQuestion.width = this._innerWidth;
-			this._feelingSlider.width = this._innerWidth * 0.7;
-			this._submitButton.width = this._innerWidth * 0.25;
+			this._contentLayout.paddingLeft = this._contentLayout.paddingRight = 0;
+
+			this._feelingQuestion.width = Constants.STAGE_WIDTH;
+			this._feelingSlider.width = this._innerWidth * 0.8;
 		}
 
 		override protected function postValidateContent():void
@@ -89,11 +90,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._feelingSliderRightLabel.x = this._feelingSliderRightImage.x + (this._feelingSliderRightImage.width * 0.5) - (this._feelingSliderRightLabel.width * 0.5);
 			this._feelingSliderRightLabel.y = this._feelingSlider.y + this._feelingSlider.height;
-
-			this._submitButton.y = this._content.height - this._submitButton.height;
 			// scroll not needed for this screen
 			killContentScroll();
-			checkMedicationScheduleExist();
 		}
 
 		override protected function initialize():void
@@ -142,18 +140,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._takeMedicationCellHolder = new ScrollContainer();
 			this._content.addChild(this._takeMedicationCellHolder);
-
-			this._submitButton = new Button();
-			this._submitButton.visible = false;
-			this._submitButton.addEventListener(Event.TRIGGERED, submitButtonHandler);
-			this._submitButton.label = "Save";
-			this._content.addChild(this._submitButton);
 		}
 
 		private function checkMedicationScheduleExist():void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
+			this._remoteCallMade = true;
 		}
 
 		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
@@ -202,7 +195,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				takeMedicationCell.brandName = HivivaModifier.getBrandName(this._medicationSchedule[i].medication_name);
 				takeMedicationCell.genericName = HivivaModifier.getGenericName(this._medicationSchedule[i].medication_name);
 				takeMedicationCell.doseDetails = HivivaModifier.getNeatTabletText(this._medicationSchedule[i].tablet_count) + " " + HivivaModifier.getNeatTime(this._medicationSchedule[i].time);
-				takeMedicationCell.width = this._innerWidth - 20;
+				takeMedicationCell.width = Constants.STAGE_WIDTH;
 				this._takeMedicationCellHolder.addChild(takeMedicationCell);
 				takeMedicationCell.checkBox.addEventListener(Event.TRIGGERED, medCellChangeHandler);
 				if(this._medicationSchedule[i].tablet_taken == "true")
@@ -216,10 +209,19 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function medCellChangeHandler(e:Event):void
 		{
-			if (!this._submitButton.visible)
+			if (this._submitButton == null)
 			{
-				this._submitButton.visible = true;
+				this._submitButton = new Button();
+				this._submitButton.addEventListener(Event.TRIGGERED, submitButtonHandler);
+				this._submitButton.label = "Save";
+				this._content.addChild(this._submitButton);
+				this._submitButton.width = this._innerWidth * 0.25;
 				this._submitButton.validate();
+				this._submitButton.x = (Constants.STAGE_WIDTH * 0.5) - (this._submitButton.width * 0.5);
+				this._submitButton.y = this._content.height - this._submitButton.height;
+
+				this._takeMedicationCellHolder.height = this._submitButton.y - this._takeMedicationCellHolder.y;
+				this._takeMedicationCellHolder.validate();
 			}
 
 			var takeMedicationCell:SelectMedicationCell = (DisplayObject(e.currentTarget).parent) as SelectMedicationCell;
@@ -233,12 +235,10 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function drawResults():void
 		{
 			this._takeMedicationCellHolder.y = this._feelingSliderRightLabel.y + this._feelingSliderRightLabel.height + PADDING;
-			this._takeMedicationCellHolder.width = this._innerWidth;
-			this._takeMedicationCellHolder.height = this._submitButton.y - this._takeMedicationCellHolder.y;
+			this._takeMedicationCellHolder.width = Constants.STAGE_WIDTH;
+			this._takeMedicationCellHolder.height = this._customHeight - this._takeMedicationCellHolder.y;
 
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.gap = this._componentGap * 0.5;
-			this._takeMedicationCellHolder.layout = layout;
+			this._takeMedicationCellHolder.layout = new VerticalLayout();
 			this._takeMedicationCellHolder.validate();
 		}
 

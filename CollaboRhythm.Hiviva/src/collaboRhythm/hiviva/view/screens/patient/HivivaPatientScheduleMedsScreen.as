@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.model.MedicationScheduleTimeList;
@@ -201,8 +202,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._saveToProfileBtn.x = this._horizontalPadding;
 				this._saveToProfileBtn.width = this._innerWidth;
 				this._saveToProfileBtn.validate();
-				this._saveToProfileBtn.y = this.actualHeight - this._saveToProfileBtn.height - (this._componentGap);
-				this._content.height = this._contentHeight - this._verticalPadding - this._saveToProfileBtn.height - this._componentGap;
+				this._saveToProfileBtn.y = Constants.STAGE_HEIGHT - this._saveToProfileBtn.height - this._componentGap;
+				this._content.height = this._saveToProfileBtn.y - this._componentGap;
 				this._content.validate();
 			}
 		}

@@ -30,7 +30,6 @@ package collaboRhythm.hiviva.view.screens.shared
 		protected var _componentGap:Number;
 		protected var _innerWidth:Number;
 		protected var _customHeight:Number = 0;
-		protected var _contentHeight:Number;
 
 		public function BaseScreen()
 		{
@@ -48,12 +47,12 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._header.width = Constants.STAGE_WIDTH;
 			this._header.initTrueTitle();
 
-			this._contentHeight = this._customHeight > 0 ? this._customHeight : (Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM);
-			this._contentHeight -= Constants.HEADER_HEIGHT;
+			var contentHeight:Number = this._customHeight > 0 ? this._customHeight : (Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._verticalPadding);
+			contentHeight -= Constants.HEADER_HEIGHT;
 
-			this._content.y = this._header.y + this._header.height;
+			this._content.y = Constants.HEADER_HEIGHT;
 			this._content.width = Constants.STAGE_WIDTH;
-			this._content.height = this._contentHeight - this._verticalPadding;
+			this._content.height = contentHeight;
 
 			this._innerWidth = Constants.INNER_WIDTH;
 

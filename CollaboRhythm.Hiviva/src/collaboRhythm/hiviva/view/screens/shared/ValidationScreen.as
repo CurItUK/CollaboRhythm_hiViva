@@ -20,6 +20,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _validationLabel:Label;
 		private var _closeValidationButton:Button;
 		protected var _isValidationActive:Boolean = false;
+		private var _contentHeight:Number;
 
 		public function ValidationScreen()
 		{
@@ -29,6 +30,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		override protected function draw():void
 		{
 			super.draw();
+			if(isNaN(this._contentHeight)) this._contentHeight = this._content.height;
 		}
 
 		override protected function preValidateContent():void
