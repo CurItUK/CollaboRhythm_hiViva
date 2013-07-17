@@ -1,29 +1,19 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
-
-	import feathers.controls.Label;
+ 	import feathers.controls.Label;
 	import feathers.controls.PickerList;
 	import feathers.controls.Radio;
-
-
-	import feathers.controls.Screen;
-	import feathers.controls.ScrollContainer;
-	import feathers.controls.Scroller;
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
-	import feathers.layout.VerticalLayout;
-
 	import starling.display.DisplayObject;
 
 	import starling.events.Event;
