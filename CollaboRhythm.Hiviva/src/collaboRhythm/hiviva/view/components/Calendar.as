@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -52,7 +53,7 @@ package collaboRhythm.hiviva.view.components
 		private var monthsList:Array;
 		private var arrowGap:uint;
 		private var _month:Label;
-		private var currentDate:Date;
+		private var _currentDate:Date;
 		private var _calendarType:String;
 
 		private var now:Date;
@@ -62,6 +63,7 @@ package collaboRhythm.hiviva.view.components
 		public function Calendar()
 		{
 			super();
+			_currentDate = HivivaStartup.userVO.serverDate;
 		}
 
 		override protected function draw():void
@@ -74,14 +76,13 @@ package collaboRhythm.hiviva.view.components
 			stageWidth   = Constants.STAGE_WIDTH;
 		    stageHeight  = Constants.STAGE_HEIGHT;
 
-			currentDate = new Date();
 			arrowGap = 130;
 
 		}
 		
 		private function initCalendar():void
 		{
-			getCurrentDate();
+			setCurrentDate();
 			createDayHolderCells();
 			createDayNameLabels();
 			populateDayCellsWithData();
@@ -90,35 +91,23 @@ package collaboRhythm.hiviva.view.components
 			createNavigationBar();
 		}
 		
-		private  function getCurrentDate():void
+		private function setCurrentDate():void
 		{
-			now = new Date();
-			this._firstDayOfMonth = new Date(now.fullYear, now.month, 1);
-			this._cYear = now.fullYear;
-			this._yearValue = now.fullYear;
-			this._cMonth = now.getMonth();
-			this._monthValue = now.getMonth();
-			this._cDay = now.date;
-
-
-		 // trace("CYEAR " + _cYear + " CMONTH " + _cMonth + " CDAY " + _cDay)
+			this._firstDayOfMonth = new Date(_currentDate.fullYear, _currentDate.month, 1);
+			this._cYear = _currentDate.fullYear;
+			this._yearValue = _currentDate.fullYear;
+			this._cMonth = _currentDate.getMonth();
+			this._monthValue = _currentDate.getMonth();
+			this._cDay = _currentDate.date;
+			// trace("CYEAR " + _cYear + " CMONTH " + _cMonth + " CDAY " + _cDay)
 		}
 
 
-		public function get CurrentDate():String
-			{
-				now = new Date();
-				this._firstDayOfMonth = new Date(now.fullYear, now.month, 1);
-				this._cYear = now.fullYear;
-				this._yearValue = now.fullYear;
-				this._cMonth = now.getMonth();
-				this._monthValue = now.getMonth();
-				this._cDay = now.date;
-               return (  "0" + String(now.getMonth()  +1) +"/"+ _cDay +"/"+ _cYear + "" )
-             // return({year:_cYear , Month :_cMonth , Day : _cDay  })
-//			 fillWithZero(String(this._firstDayOfMonth.month + 1)) + "/" + fillWithZero(cell.label) + "/" + String(this._firstDayOfMonth.fullYear);
-			 // trace("CYEAR " + _cYear + " CMONTH " + _cMonth + " CDAY " + _cDay)
-			}
+		public function getCurrentDate():String
+		{
+			setCurrentDate();
+			return HivivaModifier.getCalendarStringFromDate(_currentDate);
+		}
 
 		public function getTimeDifference(startTime:Date, endTime:Date) : String
 		{
@@ -135,26 +124,11 @@ package collaboRhythm.hiviva.view.components
 
 
 
-  public function get monthBefore()
-  {
-	var   __now : Date = new Date();
-
-	//  var __lastMonth:Date = new Date(__now.fullYear,__now.month ,__now.day - 25 );
-	  var date: Date = new Date();
-	// trace("old Date. seconds  ::: " +date.seconds )
-	  //date.seconds -= 2592000;
-	 // trace("new Date. seconds  ::: " + date.seconds)
-	  var endDate:Date = new Date();
-	//  endDate.month--;
-	 // trace("end:   " + endDate.toString());
-	  //trace("  MY NEW DATE IS  ::::  _____________  " +  date.seconds -= 2592000 )
-	  return (  "0" + endDate.month-- +"/"+ endDate.date +"/"+  endDate.fullYear + "" )
-	 //return( this.getTimeDifference(__now,  date));
-   // return (date)
-
-    // return (  "0" + String(now.getMonth()  +1) +"/"+ _cDay +"/"+ _cYear + "" )
-
-  };
+		public function getMonthBefore():String
+		{
+			var monthBeforeCurrent:Date = new Date(_currentDate.fullYear,_currentDate.month - 1,_currentDate.date,_currentDate.hours,_currentDate.minutes,_currentDate.seconds,_currentDate.milliseconds);
+			return HivivaModifier.getCalendarStringFromDate(monthBeforeCurrent);
+		}
 
 
 
@@ -263,9 +237,8 @@ package collaboRhythm.hiviva.view.components
 
 		private function createCurrentMonthNameLabel():void
 		{
-			currentDate = new Date();
-			_monthValue = currentDate.getMonth();
-			_yearValue = currentDate.getFullYear();
+				_monthValue = _currentDate.getMonth();
+				_yearValue = _currentDate.getFullYear();
 
 				_month = new Label();
 				_month.name = HivivaThemeConstants.CALENDAR_MONTH_LABEL;
@@ -498,7 +471,8 @@ package collaboRhythm.hiviva.view.components
 //			trace("Date Selected is " + fillWithZero(cell.label) + fillWithZero(String(this._firstDayOfMonth.month + 1)) + this._firstDayOfMonth.fullYear);
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED);
 			//evt.evtData.date = fillWithZero(cell.label) + fillWithZero(String(this._firstDayOfMonth.month + 1)) + String(this._firstDayOfMonth.fullYear);
-			evt.evtData.date = fillWithZero(String(this._firstDayOfMonth.month + 1)) + "/" + fillWithZero(cell.label) + "/" + String(this._firstDayOfMonth.fullYear);
+
+			evt.evtData.date = HivivaModifier.getCalendarStringFromDate(new Date(this._firstDayOfMonth.fullYear,this._firstDayOfMonth.month,int(cell.label)));
 
 			dispatchEvent(evt);
 		}

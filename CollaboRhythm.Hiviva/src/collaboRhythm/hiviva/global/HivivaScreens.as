@@ -99,7 +99,7 @@ package collaboRhythm.hiviva.global
 		public static const HCP_MESSAGE_INBOX_SCREEN:String				= "hcpMessageInboxScreen";
 		public static const HCP_MESSAGE_COMPOSE_SCREEN:String			= "hcpMessageComposeScreen";
 		public static const HCP_MESSAGE_SENT_SCREEN:String				= "hcpMessageSentScreen";
-		public static const MESSAGE_DETAIL_SCREEN:String			    = "hcpMessageDetailScreen";
+		public static const MESSAGE_DETAIL_SCREEN:String			    = "messageDetailScreen";
 		public static const HCP_HELP_DETAIL_SCREEN:String				= "patientHelpDetailScreen";
 		public static const HCP_PATIENT_MESSAGE_COMPOSE_SCREEN:String	= "hcpPatientMessageComposeScreen";
 		public static const HCP_RESET_SETTINGS:String					= "hcpResetSettings";
@@ -114,6 +114,7 @@ package collaboRhythm.hiviva.global
 		//HCP Reporting screens
 		public static const HCP_REPORTS_SCREEN:String					= "hcpReportsScreen";
 		public static const HCP_PATIENT_PROFILE_REPORT:String			= "hcpPatientProfileReport";
+		public static const REPORT_PREVIEW:String						= "reportPreview";
 
 
 

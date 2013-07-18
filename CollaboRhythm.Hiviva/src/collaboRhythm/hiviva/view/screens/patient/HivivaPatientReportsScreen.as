@@ -2,13 +2,18 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.Calendar;
 	import collaboRhythm.hiviva.view.components.ReportChart;
+	import collaboRhythm.hiviva.view.screens.shared.ReportPreview;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+
+	import feathers.controls.ScreenNavigatorItem;
+	import feathers.layout.AnchorLayout;
 
 	import flash.display3D.Context3D;
 
@@ -153,9 +158,12 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			this._customHeight = this.actualHeight - Constants.FOOTER_BTNGROUP_HEIGHT;
 			super.draw();
-			this._content.validate();
 
-
+			// add calendar buttons post validate so scrollable area is correctly calculated
+			if(!_content.contains(this._startDateButton))
+			{
+				addCalendarButtons();
+			}
 		}
 
 		override protected function preValidateContent():void
@@ -173,32 +181,10 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._includeLabel.width = this._innerWidth;
 
-			this._adherenceCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
-			this._feelingCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
-			this._cd4Check.defaultLabelProperties.width = this._innerWidth * 0.9;
-			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
-		}
-
-		override protected function postValidateContent():void
-		{
-			super.postValidateContent();
-
-			this._startDateButton.x = this._startDateInput.width + this._componentGap;
-			this._startDateButton.y = this._startDateInput.y + this._startDateInput._input.y + (this._startDateInput._input.height * 0.5);
-			this._startDateButton.y -= this._startDateButton.height * 0.5;
-
-			this._finishDateInput.y = this._startDateInput.y + this._startDateInput.height + this._componentGap;
-
-			this._finishDateButton.x = this._finishDateInput.width + this._componentGap;
-			this._finishDateButton.y = this._finishDateInput.y + this._finishDateInput._input.y + (this._finishDateInput._input.height * 0.5);
-			this._finishDateButton.y -= this._finishDateButton.height * 0.5;
-
-			this._includeLabel.y = this._finishDateInput.y + this._finishDateInput.height + this._componentGap;
-			this._adherenceCheck.y = this._includeLabel.y + this._includeLabel.height + this._componentGap;
-			this._feelingCheck.y = this._adherenceCheck.y + this._adherenceCheck.height + this._componentGap;
-			this._cd4Check.y = this._feelingCheck.y + this._feelingCheck.height + this._componentGap;
-			this._viralLoadCheck.y = this._cd4Check.y + this._cd4Check.height + this._componentGap;
-			this._previewAndSendBtn.y = this._viralLoadCheck.y + this._viralLoadCheck.height + this._componentGap;
+			this._adherenceCheck.defaultLabelProperties.width = this._innerWidth;
+			this._feelingCheck.defaultLabelProperties.width = this._innerWidth;
+			this._cd4Check.defaultLabelProperties.width = this._innerWidth;
+			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth;
 		}
 
 		override protected function initialize():void
@@ -208,7 +194,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.title = "Generate Reports";
 
 			this._reportDatesLabel = new Label();
-			this._reportDatesLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._reportDatesLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
 			this._reportDatesLabel.text = "Report dates";
 			this._content.addChild(this._reportDatesLabel);
 
@@ -218,24 +204,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._startDateInput);
 			this._startDateInput._input.isEnabled = false;
 
-			this._startDateButton = new Button();
-			this._startDateButton.addEventListener(starling.events.Event.TRIGGERED, startDateCalendarHandler);
-			this._startDateButton.name = "calendar-button";
-			this._content.addChild(this._startDateButton);
-
 			this._finishDateInput = new LabelAndInput();
 			this._finishDateInput.scale = this.dpiScale;
 			this._finishDateInput.labelStructure = "left";
 			this._content.addChild(this._finishDateInput);
 			this._finishDateInput._input.isEnabled = false;
 
-			this._finishDateButton = new Button();
-			this._finishDateButton.addEventListener(starling.events.Event.TRIGGERED, finishDateCalendarHandler);
-			this._finishDateButton.name = "calendar-button";
-			this._content.addChild(this._finishDateButton);
-
 			this._includeLabel = new Label();
-			this._includeLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._includeLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
 			this._includeLabel.text = "Include";
 			this._content.addChild(this._includeLabel);
 
@@ -266,18 +242,30 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._calendar = new Calendar();
 			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler);
-			trace("My Current Date is  ::::  " ,  this._calendar.CurrentDate)
-	        this._finishDateInput._input.text = this._calendar.CurrentDate;
-            trace("MONTH BEFORE IS   ::: " +  this._calendar.monthBefore)
-//		    var endDate:String = this._finishDateInput._input.text;
-			this._startDateInput._input.text = this._calendar.monthBefore;
-
-			//this._activeCalendarInput.text = e.evtData.date;
-			// TODO : to be removed when we have remote data
-			initPatientXMLData();
-
+			trace("My Current Date is  ::::  " ,  this._calendar.getCurrentDate());
+	        this._finishDateInput._input.text = this._calendar.getCurrentDate();
+            trace("MONTH BEFORE IS   ::: " +  this._calendar.getMonthBefore());
+			this._startDateInput._input.text = this._calendar.getMonthBefore();
 		}
 
+		private function addCalendarButtons():void
+		{
+			this._startDateButton = new Button();
+			this._startDateButton.addEventListener(starling.events.Event.TRIGGERED, startDateCalendarHandler);
+			this._startDateButton.name = "calendar-button";
+			this._content.addChild(this._startDateButton);
+			this._startDateButton.validate();
+			this._startDateButton.x = this._startDateInput.width + this._componentGap;
+			this._startDateButton.y = this._startDateInput.y + this._startDateInput._input.y + (this._startDateInput._input.height * 0.5) - (this._startDateButton.height * 0.5);
+
+			this._finishDateButton = new Button();
+			this._finishDateButton.addEventListener(starling.events.Event.TRIGGERED, finishDateCalendarHandler);
+			this._finishDateButton.name = "calendar-button";
+			this._content.addChild(this._finishDateButton);
+			this._finishDateButton.validate();
+			this._finishDateButton.x = this._finishDateInput.width + this._componentGap;
+			this._finishDateButton.y = this._finishDateInput.y + this._finishDateInput._input.y + (this._finishDateInput._input.height * 0.5) - (this._finishDateButton.height * 0.5);
+		}
 
 
 		private function calendarButtonHandler(e:FeathersScreenEvent):void
@@ -304,7 +292,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._calendarActive = true;
 			this._calendar.x =    this.width/2  -  this._calendar.width/2 // + 10
-		    trace(this , "width and height  ::: " ,  this.width , this._calendar.width )
+		    trace(this , "width and height  ::: " ,  this.width , this._calendar.width );
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 
@@ -329,11 +317,36 @@ package collaboRhythm.hiviva.view.screens.patient
 			// TODO : validate medications and schedule when we have data from remote database
 //			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
 //			localStoreController.getPatientProfile();
-			var formValidation:String = patientReportsCheck();
+			/*var formValidation:String = patientReportsCheck();
 			if (formValidation.length == 0)
 			{
 				localStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE, adherenceLoadCompleteHandler);
 				localStoreController.getAdherence();
+			}
+			else
+			{
+				showFormValidation(formValidation);
+			}*/
+			var formValidation:String = patientReportsCheck();
+			if (formValidation.length == 0)
+			{
+				var screenNavProperties:Object =
+				{
+					adherenceIsChecked:this._adherenceCheck.isSelected,
+					feelingIsChecked:this._feelingCheck.isSelected,
+					cd4IsChecked:this._cd4Check.isSelected,
+					viralLoadIsChecked:this._viralLoadCheck.isSelected,
+					startDate:HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text),
+					endDate:HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text),
+					patientGuid:HivivaStartup.userVO.guid,
+					parentScreen:this.owner.activeScreenID
+				};
+				if(this.owner.hasScreen(HivivaScreens.REPORT_PREVIEW))
+				{
+					this.owner.removeScreen(HivivaScreens.REPORT_PREVIEW);
+				}
+				this.owner.addScreen(HivivaScreens.REPORT_PREVIEW, new ScreenNavigatorItem(ReportPreview, null, screenNavProperties));
+				this.owner.showScreen(HivivaScreens.REPORT_PREVIEW);
 			}
 			else
 			{
@@ -479,8 +492,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			this._reportChart = new ReportChart();
 			this._reportChart.dataCategory = "adherence";
-			this._reportChart.startDate = HivivaModifier.getDateFromString(this._startDateInput._input.text);
-			this._reportChart.endDate = HivivaModifier.getDateFromString(this._finishDateInput._input.text);
+			this._reportChart.startDate = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text);
+			this._reportChart.endDate = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text);
 //			this._reportChart.patientData = _patientData;
 			// must be added to stage or snapshot will be blank
 			addChild(this._reportChart);
@@ -544,8 +557,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._reportChart = new ReportChart();
 			this._reportChart.dataCategory = "tolerability";
-			this._reportChart.startDate = HivivaModifier.getDateFromString(this._startDateInput._input.text);
-			this._reportChart.endDate = HivivaModifier.getDateFromString(this._finishDateInput._input.text);
+			this._reportChart.startDate = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text);
+			this._reportChart.endDate = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text);
 //			this._reportChart.patientData = _patientData;
 			// must be added to stage or snapshot will be blank
 			addChild(this._reportChart);
@@ -732,7 +745,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			for (var i:int = 0; i < medications.length(); i++)
 			{
 				hashStr += "<strong>" + medications[i].brandname + "</strong><br />" + medications[i].genericname + "=" +
-						HivivaModifier.getPatientAdherenceByMedication(medicationHistory,int(medications[i].id),HivivaModifier.getDateFromString(startDate),HivivaModifier.getDateFromString(endDate));
+						HivivaModifier.getPatientAdherenceByMedication(medicationHistory,int(medications[i].id),HivivaModifier.getDateFromCalendarString(startDate),HivivaModifier.getDateFromCalendarString(endDate));
 				if(i < medications.length() - 1) hashStr += "&";
 			}
 			trace(hashStr);
@@ -813,7 +826,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var adherenceCollection:ArrayCollection = new ArrayCollection();
 			for (var i:int = 0; i < medications.length(); i++)
 			{
-				adherenceValue =  HivivaModifier.getPatientAdherenceByMedication(medicationHistory,int(medications[i].id),HivivaModifier.getDateFromString(startDate),HivivaModifier.getDateFromString(endDate));
+				adherenceValue =  HivivaModifier.getPatientAdherenceByMedication(medicationHistory,int(medications[i].id),HivivaModifier.getDateFromCalendarString(startDate),HivivaModifier.getDateFromCalendarString(endDate));
 				adherenceTotal += adherenceValue;
 				adherenceCollection.addItem({adherenceName : medications[i].brandname + "\n" + medications[i].genericname,
 											adherenceValue : adherenceValue});

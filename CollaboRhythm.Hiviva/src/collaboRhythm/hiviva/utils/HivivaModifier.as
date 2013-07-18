@@ -16,13 +16,6 @@ package collaboRhythm.hiviva.utils
 		{
 		}
 
-		public static function calculateComponentVerticalGap(rowNumber:int, usedVerticalSpace:Number, customVerticalSpace:Number = 0):Number
-		{
-			var totalVerticalSpace:Number = (customVerticalSpace == 0) ? (Constants.STAGE_HEIGHT - Constants.PADDING_TOP - Constants.PADDING_BOTTOM) : customVerticalSpace;
-			var gap:Number = (totalVerticalSpace - usedVerticalSpace) / (rowNumber - 1);
-			return gap;
-		}
-
 		public static function getBrandName(value:String):String
 		{
 			var startIndex:uint = value.indexOf("[");
@@ -194,7 +187,7 @@ package collaboRhythm.hiviva.utils
 		public static function getPatientAdherenceByDate(patientData:XML, compareDate:Date):Number
 		{
 			var adherencePercent:Number;
-			var dateCompareStr:String = getStringFromDate(compareDate);
+			var dateCompareStr:String = getCalendarStringFromDate(compareDate);
 			var history:XMLList = patientData.medicationHistory.history as XMLList;
 			var historyLength:int = history.length();
 			var patientMedicationHistory:XML;
@@ -211,7 +204,7 @@ package collaboRhythm.hiviva.utils
 		public static function getPatientTolerabilityByDate(patientData:XML, compareDate:Date):Number
 		{
 			var tolerability:Number;
-			var dateCompareStr:String = getStringFromDate(compareDate);
+			var dateCompareStr:String = getCalendarStringFromDate(compareDate);
 			var history:XMLList = patientData.medicationHistory.history as XMLList;
 			var historyLength:int = history.length();
 			var patientMedicationHistory:XML;
@@ -238,7 +231,7 @@ package collaboRhythm.hiviva.utils
 			{
 				for (var i:uint = 0; i < historyCount; i++)
 				{
-					historicalDate = getDateFromString(history[i].date);
+					historicalDate = getDateFromCalendarString(history[i].date);
 					if(historicalDate.getTime() > startDate.getTime() && historicalDate.getTime() < endDate.getTime())
 					{
 						historyRangeCount++;
@@ -274,13 +267,13 @@ package collaboRhythm.hiviva.utils
 			return Math.round(avgAdherence);
 		}
 
-		public static function getDateFromString(dateStr:String):Date
+		public static function getDateFromCalendarString(dateStr:String):Date
 		{
 			var dateData:Array = dateStr.split('/');
 			return new Date(int(dateData[2]),int(dateData[0]) - 1,int(dateData[1]),0,0,0,0);
 		}
 
-		public static function getStringFromDate(date:Date):String
+		public static function getCalendarStringFromDate(date:Date):String
 		{
 			return addPrecedingZero((date.getMonth() + 1).toString()) + "/" + addPrecedingZero(date.getDate().toString()) + "/" + date.getFullYear();
 		}

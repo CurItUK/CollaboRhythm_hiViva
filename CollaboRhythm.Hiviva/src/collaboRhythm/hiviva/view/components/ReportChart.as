@@ -55,7 +55,7 @@ package collaboRhythm.hiviva.view.components
 			this._leftAxisSpace = this.actualWidth * 0.2;
 			//var leftPadding:Number = this.actualWidth * 0;
 			this._rightPadding = this.actualWidth * 0.05;
-			this._vPadding = this.actualHeight * 0.02;
+			this._vPadding = 0;
 			this._chartWidth = this.actualWidth - this._leftAxisSpace - this._rightPadding;
 			this._chartHeight = this.actualHeight * 0.75;
 			this._chartStartX = this._leftAxisSpace;
@@ -73,7 +73,7 @@ package collaboRhythm.hiviva.view.components
 			this._horizontalSegmentWidth = this._chartWidth / (_dayTotal - 1);
 
 			// tiled background here to compensate for no transparency on the draw
-			initTiledBackground();
+//			initTiledBackground();
 
 			populatePatientData();
 			initChartTitleLabel();
@@ -83,6 +83,7 @@ package collaboRhythm.hiviva.view.components
 			initBottomAxisValuesAndLines();
 //			initBottomAxisLabels();
 			drawPlotPoints();
+			this.validate();
 		}
 
 		private function initTiledBackground():void
@@ -110,6 +111,7 @@ package collaboRhythm.hiviva.view.components
 			daysItar = new Date(this._startDate.getFullYear(),this._startDate.getMonth(),this._startDate.getDate(),0,0,0,0);
 			for (var i:int = 0; i < _dayTotal; i++)
 			{
+				valueData = -1;
 				for (var j:int = 0; j < _patientData.length(); j++)
 				{
 					medicationSchedule = _patientData[j].Schedule.DCMedicationSchedule;
@@ -119,16 +121,18 @@ package collaboRhythm.hiviva.view.components
 						referenceDate = HivivaModifier.isoDateToFlashDate(String(medicationSchedule[k].DateTaken));
 						if(daysItar.getTime() == referenceDate.getTime())
 						{
-							valueData = int(medicationSchedule[k].PercentTaken);
+							valueData = this._dataCategory == "adherence" ? int(medicationSchedule[k].PercentTaken) : int(medicationSchedule[k].Tolerability);
+
 							if(this._lowestValue > valueData/* && valueData > 0*/)
 							{
 								this._lowestValue = valueData;
 							}
-							daysItar.date++;
-							this._valueData.push(valueData);
 						}
 					}
+
 				}
+				this._valueData.push(valueData);
+				daysItar.date++;
 			}
 			trace(this._valueData.join(","));
 
@@ -148,7 +152,7 @@ package collaboRhythm.hiviva.view.components
 			chartTitleLabel.width = this._chartWidth;
 			chartTitleLabel.validate();
 			// * 1.5 for padding
-			this._chartStartY += (chartTitleLabel.height * 1.5);
+			this._chartStartY += chartTitleLabel.height;
 		}
 
 		private function initBackground():void
@@ -287,13 +291,14 @@ package collaboRhythm.hiviva.view.components
 			for (var valueCount:int = 0; valueCount < _dayTotal; valueCount++)
 			{
 				value = this._valueData[valueCount];
-				if(value > 0)
+				if(value > -1)
 				{
 					valueY = (fullValueHeight / 100) * value;
 					plotLine.graphics.lineTo(this._chartStartX + (this._horizontalSegmentWidth * valueCount),plotStartY - valueY);
 					plotCircles.graphics.beginFill(currColour);
 					plotCircles.graphics.drawCircle(this._chartStartX + (this._horizontalSegmentWidth * valueCount),plotStartY - valueY,plotGirth * 2);
 					plotCircles.graphics.endFill();
+					trace('plot drawn')
 				}
 			}
 			addChild(plotLine);

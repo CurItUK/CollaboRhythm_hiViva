@@ -202,6 +202,9 @@ package collaboRhythm.hiviva.view
 			this._mainScreenNav.clearScreen();
 			this._mainScreenNav.removeScreen(HivivaScreens.SPLASH_SCREEN);
 
+			addEventListener(FeathersScreenEvent.HIDE_MAIN_NAV, hideMainNav);
+			addEventListener(FeathersScreenEvent.SHOW_MAIN_NAV, showMainNav);
+
 			drawScreenBackground();
 			drawSettingsBtn();
 
@@ -289,10 +292,6 @@ package collaboRhythm.hiviva.view
 			this._mainScreenNav.addScreen(HivivaScreens.HCP_ADHERENCE_SCREEN, new ScreenNavigatorItem(HivivaHCPAllPatientsAdherenceScreen));
 			this._mainScreenNav.addScreen(HivivaScreens.HCP_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaHCPReportsScreen));
 			this._mainScreenNav.addScreen(HivivaScreens.HCP_MESSAGE_SCREEN, new ScreenNavigatorItem(HivivaHCPMessages ,  {mainToSubNav:navigateToDirectProfileMenu}));
-
-			// add listeners for homepage user signup check, to hide / show the footer and settings button
-			addEventListener(FeathersScreenEvent.HIDE_MAIN_NAV, hideMainNav);
-			addEventListener(FeathersScreenEvent.SHOW_MAIN_NAV, showMainNav);
 		}
 
 		private function initHCPSettingsNavigator():void

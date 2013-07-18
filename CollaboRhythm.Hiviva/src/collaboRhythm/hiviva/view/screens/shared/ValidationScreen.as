@@ -48,7 +48,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		override protected function postValidateContent():void
 		{
-			// kill layout to prevent resort while animating
+			// kill layout to prevent restore while animating
 			this._content.layout = null;
 		}
 

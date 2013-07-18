@@ -1,20 +1,26 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
+	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.components.ReportChart;
 
 	import feathers.controls.Button;
-
-	import flash.events.Event;
+	import feathers.controls.Label;
+	import feathers.layout.VerticalLayout;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	public class ReportPreview extends BaseScreen
 	{
 		private var _backButton:Button;
+		private var _cancelAndSend:BoxedButtons;
+		private var _parentScreen:String;
 		private var _adherenceIsChecked:Boolean = false;
 		private var _feelingIsChecked:Boolean = false;
 		private var _cd4IsChecked:Boolean = false;
@@ -22,6 +28,8 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _startDate:Date;
 		private var _endDate:Date;
 		private var _patientGuid:String;
+		private var _medicationHistoryCallMade:Boolean = false;
+		private var _testResultsCallMade:Boolean = false;
 		private var _filteredMedicationHistory:XMLList;
 		private var _filteredTestResults:XMLList;
 		private var _adherenceReportChart:ReportChart;
@@ -30,6 +38,41 @@ package collaboRhythm.hiviva.view.screens.shared
 		public function ReportPreview()
 		{
 			super();
+		}
+
+		override protected function draw():void
+		{
+			super.draw();
+
+			applyPreviewLayout();
+
+			if(!this._medicationHistoryCallMade && (this._adherenceIsChecked || this._feelingIsChecked))
+			{
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE, getDailyMedicationHistoryCompleteHandler);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getDailyMedicationHistory(this._patientGuid);
+			}
+
+			if(!this._testResultsCallMade && (this._cd4IsChecked || this._viralLoadIsChecked))
+			{
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientAllTestResults(this._patientGuid);
+			}
+		}
+
+		private function applyPreviewLayout():void
+		{
+//			this._contentLayout.gap = 0;
+			this._content.layout = this._contentLayout;
+			this._content.y = Constants.HEADER_HEIGHT + Constants.PADDING_TOP;
+			this._content.height = this._cancelAndSend.y - this._content.y - Constants.PADDING_BOTTOM;
+		}
+
+		override protected function preValidateContent():void
+		{
+			this._cancelAndSend.x = Constants.PADDING_LEFT;
+			this._cancelAndSend.width = Constants.INNER_WIDTH;
+			this._cancelAndSend.validate();
+			this._cancelAndSend.y = Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._cancelAndSend.height;
 		}
 
 		override protected function initialize():void
@@ -45,23 +88,35 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-			if(this._adherenceIsChecked || this._feelingIsChecked)
-			{
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE, getDailyMedicationHistoryCompleteHandler);
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getDailyMedicationHistory(this._patientGuid);
-			}
+			this._cancelAndSend = new BoxedButtons();
+			this._cancelAndSend.labels = ["Cancel","Send"];
+			this._cancelAndSend.addEventListener(starling.events.Event.TRIGGERED, cancelAndSendHandler);
+			addChild(this._cancelAndSend);
 
-			if(this._cd4IsChecked || this._viralLoadIsChecked)
-			{
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientAllTestResults(this._patientGuid);
-			}
+			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
 		}
 
-		private function backBtnHandler(e:starling.events.Event):void
+		private function backBtnHandler(e:starling.events.Event = null):void
 		{
-
+			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
+			this.owner.showScreen(_parentScreen);
 		}
+
+		private function cancelAndSendHandler(e:starling.events.Event):void
+		{
+			var btn:String = e.data.button;
+			switch(btn)
+			{
+				case "Cancel" :
+					backBtnHandler();
+					break;
+				case "Send" :
+					// send
+					break;
+			}
+		}
+
+
 
 		private function getDailyMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
 		{
@@ -76,6 +131,8 @@ package collaboRhythm.hiviva.view.screens.shared
 			{
 				trace("Medical history data requested but this patient has no medical history");
 			}
+
+			this._medicationHistoryCallMade = true;
 		}
 
 		private function getPatientAllTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
@@ -91,6 +148,8 @@ package collaboRhythm.hiviva.view.screens.shared
 			{
 				trace("Test result data requested but this patient has no test result history");
 			}
+
+			this._testResultsCallMade = true;
 		}
 
 		private function prepareSelectedMedicalData():void
@@ -103,13 +162,13 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._adherenceReportChart.endDate = this._endDate;
 				this._adherenceReportChart.patientData = this._filteredMedicationHistory;
 				// must be added to stage or snapshot will be blank
-				addChild(this._adherenceReportChart);
-				this._adherenceReportChart.width = this.actualWidth;
-				this._adherenceReportChart.height = this.actualHeight;
+				this._content.addChild(this._adherenceReportChart);
+				this._adherenceReportChart.width = Constants.INNER_WIDTH;
+				this._adherenceReportChart.height = this._content.height;
 				this._adherenceReportChart.validate();
 				this._adherenceReportChart.drawChart();
 			}
-			if(this._adherenceIsChecked)
+			if(this._feelingIsChecked)
 			{
 				this._tolerabilityReportChart = new ReportChart();
 				this._tolerabilityReportChart.dataCategory = "tolerability";
@@ -117,17 +176,40 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._tolerabilityReportChart.endDate = this._endDate;
 				this._tolerabilityReportChart.patientData = this._filteredMedicationHistory;
 				// must be added to stage or snapshot will be blank
-				addChild(this._tolerabilityReportChart);
-				this._tolerabilityReportChart.width = this.actualWidth;
-				this._tolerabilityReportChart.height = this.actualHeight;
+				this._content.addChild(this._tolerabilityReportChart);
+				this._tolerabilityReportChart.width = Constants.INNER_WIDTH;
+				this._tolerabilityReportChart.height = this._content.height;
 				this._tolerabilityReportChart.validate();
 				this._tolerabilityReportChart.drawChart();
 			}
+			this._content.validate();
 		}
 
 		private function prepareSelectedTestResultData():void
 		{
+			if(this._cd4IsChecked)
+			{
+				drawTestTable("Cd4 count");
+			}
+			if(this._viralLoadIsChecked)
+			{
+				drawTestTable("Viral load");
+			}
+		}
 
+		private function drawTestTable(resultType:String):void
+		{
+			var testDate:Date;
+			var result:Number;
+			for (var i:int = 0; i < _filteredTestResults.length(); i++)
+			{
+				if(String(_filteredTestResults[i].TestDescription) == resultType)
+				{
+					testDate = HivivaModifier.isoDateToFlashDate(_filteredTestResults[i].TestDate);
+					result = _filteredTestResults[i].Result;
+					trace(testDate.toDateString() + " = " + result);
+				}
+			}
 		}
 
 		public function get adherenceIsChecked():Boolean
@@ -198,6 +280,16 @@ package collaboRhythm.hiviva.view.screens.shared
 		public function set patientGuid(value:String):void
 		{
 			_patientGuid = value;
+		}
+
+		public function get parentScreen():String
+		{
+			return _parentScreen;
+		}
+
+		public function set parentScreen(value:String):void
+		{
+			_parentScreen = value;
 		}
 	}
 }

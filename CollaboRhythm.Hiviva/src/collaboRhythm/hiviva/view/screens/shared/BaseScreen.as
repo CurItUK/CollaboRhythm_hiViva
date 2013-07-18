@@ -45,6 +45,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._componentGap = Constants.PADDING_TOP;
 
 			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 			this._header.initTrueTitle();
 
 			var contentHeight:Number = this._customHeight > 0 ? this._customHeight : (Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._verticalPadding);
