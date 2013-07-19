@@ -26,7 +26,7 @@ package collaboRhythm.hiviva.view.components
 
 		protected var _bg:Scale9Image;
 		protected var _seperator:Image;
-		protected var _scale:Number;
+		protected var _scale:Number = 1;
 		protected var _pillImageBg:Quad;
 
 		protected var _brandNameLabel:Label;

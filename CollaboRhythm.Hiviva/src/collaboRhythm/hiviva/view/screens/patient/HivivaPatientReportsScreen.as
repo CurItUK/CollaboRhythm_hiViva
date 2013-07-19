@@ -7,7 +7,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.Calendar;
-	import collaboRhythm.hiviva.view.components.ReportChart;
+	import collaboRhythm.hiviva.view.components.ScheduleChartReport;
 	import collaboRhythm.hiviva.view.screens.shared.ReportPreview;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
@@ -118,6 +118,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _feelingCheck:Check;
 		private var _cd4Check:Check;
 		private var _viralLoadCheck:Check;
+		private var _emailLabel:Label;
+		private var _emailInput:TextInput;
 		private var _previewAndSendBtn:Button;
 		private var _calendar:Calendar;
 		private var _activeCalendarInput:TextInput;
@@ -145,7 +147,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _patientProfile:Array;
 		private var _medications:Array;
 		private var _reportChartTimer:Timer;
-		private var _reportChart:ReportChart;
+		private var _reportChart:ScheduleChartReport;
 		private var _adherenceChartBd:BitmapData;
 		private var _tolerabilityChartBd:BitmapData;
 
@@ -185,6 +187,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._feelingCheck.defaultLabelProperties.width = this._innerWidth;
 			this._cd4Check.defaultLabelProperties.width = this._innerWidth;
 			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth;
+
+			this._emailLabel.width = this._innerWidth;
+			this._emailInput.width = this._innerWidth * 0.75;
+		}
+
+		override protected function postValidateContent():void
+		{
+			super.postValidateContent();
+			this._previewAndSendBtn.x = (this._innerWidth * 0.5) - (this._previewAndSendBtn.width * 0.5);
 		}
 
 		override protected function initialize():void
@@ -235,6 +246,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._viralLoadCheck.label = "Viral load test results";
 			this._content.addChild(this._viralLoadCheck);
 
+			this._emailLabel = new Label();
+			this._emailLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
+			this._emailLabel.text = "Send report to";
+			this._content.addChild(this._emailLabel);
+
+			this._emailInput = new TextInput();
+			this._content.addChild(this._emailInput);
+
 			this._previewAndSendBtn = new Button();
 			this._previewAndSendBtn.label = "Preview and send";
 			this._previewAndSendBtn.addEventListener(starling.events.Event.TRIGGERED, previewSendHandler);
@@ -280,7 +299,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function startDateCalendarHandler(e:starling.events.Event):void
 		{
-
 			this._activeCalendarInput = this._startDateInput._input;
 			this._calendar.cType = "start";
 
@@ -339,6 +357,8 @@ package collaboRhythm.hiviva.view.screens.patient
 					startDate:HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text),
 					endDate:HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text),
 					patientGuid:HivivaStartup.userVO.guid,
+					patientAppId:HivivaStartup.userVO.appId,
+					emailAddress:this._emailInput.text,
 					parentScreen:this.owner.activeScreenID
 				};
 				if(this.owner.hasScreen(HivivaScreens.REPORT_PREVIEW))
@@ -420,6 +440,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				if(!isValidDate)validationArray.push("Invalid date selection - start and end dates");
 			}
 
+			if(this._emailInput.text.length == 0) validationArray.push("Please enter a valid email address");
+
 			return validationArray.join("\n");
 		}
 
@@ -490,7 +512,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function drawAndSaveReportCharts():void
 		{
-			this._reportChart = new ReportChart();
+			this._reportChart = new ScheduleChartReport();
 			this._reportChart.dataCategory = "adherence";
 			this._reportChart.startDate = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text);
 			this._reportChart.endDate = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text);
@@ -555,7 +577,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			removeChild(this._reportChart);
 			this._reportChart.dispose();
 
-			this._reportChart = new ReportChart();
+			this._reportChart = new ScheduleChartReport();
 			this._reportChart.dataCategory = "tolerability";
 			this._reportChart.startDate = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text);
 			this._reportChart.endDate = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text);
@@ -661,7 +683,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var __nh : Number = rc.height*scl ;
 			var outBmp:BitmapData = new BitmapData(__nw, __nh , false);
 			Starling.context.drawToBitmapData(outBmp);
-
+			Starling.context.clear();
 			return outBmp;
 			/*
 			if (sprite == null) return null;
@@ -682,6 +704,25 @@ package collaboRhythm.hiviva.view.screens.patient
 			context.drawToBitmapData(result);
 			return result;
 			*/
+		}
+		public function drawToBitmapData(destination:BitmapData=null):BitmapData
+		{
+			var stage:Stage = Starling.current.stage;
+			var support:RenderSupport = new RenderSupport();
+
+			if (destination == null)
+			destination = new BitmapData(stage.stageWidth, stage.stageHeight);
+
+			support.renderTarget = null;
+			support.setOrthographicProjection(0, 0, stage.stageWidth, stage.stageHeight);
+			support.clear(stage.color, 1);
+			render(support, 1.0);
+			support.finishQuadBatch();
+
+			Starling.current.context.drawToBitmapData(destination);
+			Starling.current.context.present(); // required on some platforms to avoid flickering
+
+			return destination;
 		}
 
 		public static function copyToBitmap( displayObject : DisplayObject,transparentBackground : Boolean = false, backgroundColor : uint = 0xcccccc ) : BitmapData

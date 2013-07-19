@@ -17,7 +17,7 @@ package collaboRhythm.hiviva.view.components
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 
-	public class ReportTable extends FeathersControl
+	public class TestTableReport extends FeathersControl
 	{
 		private var _patientData:XMLList;
 		private var _testData:Object = {dates:[]};
@@ -39,7 +39,7 @@ package collaboRhythm.hiviva.view.components
 		public static const DATA_CD4:String = "Cd4 count";
 		public static const DATA_VIRAL_LOAD:String = "Viral load";
 
-		public function ReportTable()
+		public function TestTableReport()
 		{
 			super();
 		}
@@ -51,7 +51,7 @@ package collaboRhythm.hiviva.view.components
 			this._cellPadding = 10;
 			this._tableWidth = this.actualWidth;
 			this._tableStartY = 0;
-			this._tableStartX = Constants.PADDING_LEFT;
+			this._tableStartX = 0;
 			this._totalColumns = this._dataCategory == DATA_ALL ? 3 : 2;
 
 			var totalWidthOfPaddings:Number = this._cellPadding * (this._totalColumns * 2);
@@ -88,6 +88,8 @@ package collaboRhythm.hiviva.view.components
 			initTableTitleLabel();
 			drawTableColumns();
 			initBackground();
+			this.setSizeInternal(this._tableWidth, this._tableStartY + this._tableHeight, true);
+			this.validate();
 		}
 		
 		private function populateTestData():void
@@ -147,6 +149,7 @@ package collaboRhythm.hiviva.view.components
 					testDate = HivivaModifier.isoDateToFlashDate(patientNode.TestDate);
 					_testData.dates.push(HivivaModifier.getCalendarStringFromDate(testDate));
 					_testData.cd4s.push(Number(patientNode.Result));
+					dataCount++;
 				}
 			}
 			trace("dates : " + _testData.dates.join(','));
@@ -167,6 +170,7 @@ package collaboRhythm.hiviva.view.components
 					testDate = HivivaModifier.isoDateToFlashDate(patientNode.TestDate);
 					_testData.dates.push(HivivaModifier.getCalendarStringFromDate(testDate));
 					_testData.viralLoads.push(Number(patientNode.Result));
+					dataCount++;
 				}
 			}
 			trace("dates : " + _testData.dates.join(','));
@@ -206,7 +210,6 @@ package collaboRhythm.hiviva.view.components
 			this._tableHolder.removeChild(sampleLabel);
 
 			drawTableCell("Date", 0, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_LABEL);
-
 			drawValues(_testData.dates, 0);
 
 			switch(this._dataCategory)
@@ -222,8 +225,8 @@ package collaboRhythm.hiviva.view.components
 					drawValues(_testData.cd4s, _fullColumnWidth);
 					break;
 				case DATA_VIRAL_LOAD :
-					drawTableCell("Viral Load", _fullColumnWidth * 2, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_LABEL);
-					drawValues(_testData.viralLoads, _fullColumnWidth * 2);
+					drawTableCell("Viral Load", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_LABEL);
+					drawValues(_testData.viralLoads, _fullColumnWidth);
 					break;
 			}
 

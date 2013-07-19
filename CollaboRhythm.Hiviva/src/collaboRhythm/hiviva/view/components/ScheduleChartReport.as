@@ -19,7 +19,7 @@ package collaboRhythm.hiviva.view.components
 	import starling.textures.TextureSmoothing;
 	import starling.utils.deg2rad;
 
-	public class ReportChart extends FeathersControl
+	public class ScheduleChartReport extends FeathersControl
 	{
 		private var _patientData:XMLList;
 		// adherence, tolerability
@@ -43,7 +43,7 @@ package collaboRhythm.hiviva.view.components
 		private var _horizontalSegmentWidth:Number;
 		private var _bottomAxisValueHeight:Number;
 
-		public function ReportChart()
+		public function ScheduleChartReport()
 		{
 			super();
 		}
@@ -52,9 +52,9 @@ package collaboRhythm.hiviva.view.components
 		{
 			super.draw();
 
-			this._leftAxisSpace = this.actualWidth * 0.2;
+			this._leftAxisSpace = this.actualWidth * 0.1;
 			//var leftPadding:Number = this.actualWidth * 0;
-			this._rightPadding = this.actualWidth * 0.05;
+			this._rightPadding = 0;
 			this._vPadding = 0;
 			this._chartWidth = this.actualWidth - this._leftAxisSpace - this._rightPadding;
 			this._chartHeight = this.actualHeight * 0.75;
@@ -224,7 +224,7 @@ package collaboRhythm.hiviva.view.components
 				xAxisPosition = this._horizontalSegmentWidth * dayCount;
 
 				bottomAxisValue = new Label();
-				bottomAxisValue.name = "patient-data-lighter";
+				bottomAxisValue.name = HivivaThemeConstants.CELL_SMALL_LABEL;
 				/*bottomAxisValue.text = HivivaModifier.isoDateToPrettyString((daysItar.getMonth() + 1).toString()) + "/" +
 						HivivaModifier.addPrecedingZero(daysItar.getDate().toString());*/
 				bottomAxisValue.text = HivivaModifier.flashDateToPrettyString(daysItar,false);

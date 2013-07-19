@@ -51,7 +51,7 @@ package collaboRhythm.hiviva.view.components
 		private var _tableStartY:Number;
 		private var _mainScrollContainer:ScrollContainer;
 		private var _rowsData:Array = [];
-		private var _dataContainer:ScrollContainer;
+		private var _dataContainer:Sprite;
 		private var _currWeekBeginning:Date;
 		private var _dailyTolerabilityData:Array;
 		private var _patientData:XML;
@@ -291,8 +291,8 @@ package collaboRhythm.hiviva.view.components
 
 			this._dataContainer = new ScrollContainer();
 			//dataContainer.layout = hLayout;
-			this._dataContainer.scrollerProperties.snapToPages = TiledColumnsLayout.PAGING_HORIZONTAL;
-			this._dataContainer.scrollerProperties.snapScrollPositionsToPixels = true;
+//			this._dataContainer.scrollerProperties.snapToPages = TiledColumnsLayout.PAGING_HORIZONTAL;
+//			this._dataContainer.scrollerProperties.snapScrollPositionsToPixels = true;
 			this._mainScrollContainer.addChild(this._dataContainer);
 			this._dataContainer.x = this._firstColumnWidth;
 			//dataContainer.y = firstRowHeight;
@@ -403,8 +403,7 @@ package collaboRhythm.hiviva.view.components
 
 			// whole table background
 			var wholeTableBg:Sprite = new Sprite();
-			addChild(wholeTableBg);
-			swapChildren(wholeTableBg, this._mainScrollContainer);
+			this._mainScrollContainer.addChildAt(wholeTableBg,0);
 			wholeTableBg.y = this._weekNavHolder.height;
 
 			var dayRowGrad:Quad = new Quad(this.actualWidth, this._firstRowHeight);

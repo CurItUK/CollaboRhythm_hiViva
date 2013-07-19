@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
@@ -7,12 +8,16 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
-	import collaboRhythm.hiviva.view.components.ReportChart;
-	import collaboRhythm.hiviva.view.components.ReportTable;
+	import collaboRhythm.hiviva.view.components.ScheduleChartReport;
+	import collaboRhythm.hiviva.view.components.TestTableReport;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.layout.VerticalLayout;
+
+	import flash.display.Stage3D;
+
+	import flash.display3D.Context3D;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -29,13 +34,15 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _startDate:Date;
 		private var _endDate:Date;
 		private var _patientGuid:String;
+		private var _patientAppId:String;
+		private var _emailAddress:String;
 		private var _medicationHistoryCallMade:Boolean = false;
 		private var _testResultsCallMade:Boolean = false;
 		private var _filteredMedicationHistory:XMLList;
 		private var _filteredTestResults:XMLList;
-		private var _adherenceReportChart:ReportChart;
-		private var _tolerabilityReportChart:ReportChart;
-		private var _reportTable:ReportTable;
+		private var _adherenceReportChart:ScheduleChartReport;
+		private var _tolerabilityReportChart:ScheduleChartReport;
+		private var _reportTable:TestTableReport;
 
 		public function ReportPreview()
 		{
@@ -58,7 +65,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function applyPreviewLayout():void
 		{
 //			this._contentLayout.gap = 0;
-			this._contentLayout.padding = 0;
+//			this._contentLayout.padding = 0;
 			this._content.layout = this._contentLayout;
 			this._content.y = Constants.HEADER_HEIGHT + Constants.PADDING_TOP;
 			this._content.height = this._cancelAndSend.y - this._content.y - Constants.PADDING_BOTTOM;
@@ -113,11 +120,11 @@ package collaboRhythm.hiviva.view.screens.shared
 			}
 		}
 
-
-
 		private function getDailyMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE, getDailyMedicationHistoryCompleteHandler);
+
+			addMainText();
 
 			this._filteredMedicationHistory = e.data.xmlResponse.DCUserMedication;
 			if(this._filteredMedicationHistory.length() > 0)
@@ -130,13 +137,36 @@ package collaboRhythm.hiviva.view.screens.shared
 			}
 
 			this._medicationHistoryCallMade = true;
+
+
+			if(!this._testResultsCallMade && (this._cd4IsChecked || this._viralLoadIsChecked))
+			{
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientAllTestResults(this._patientGuid);
+			}
+		}
+
+		private function addMainText():void
+		{
+			var mainLabel:Label = new Label();
+			mainLabel.text = 	"From: " + HivivaStartup.userVO.appId + "\n\n" +
+							 	"To: " + this._emailAddress + "\n\n" +
+							 	"Date: " + HivivaModifier.getCalendarStringFromDate(HivivaStartup.userVO.serverDate) + "\n\n" +
+								"Subject: Patient Report\n\n" +
+								"Please find below details of patient (" + this._patientAppId + ") record of their HIV tracking via the HiVIVA application.\n\n" +
+								"This covers the time period between: " + HivivaModifier.getCalendarStringFromDate(this._startDate) + " - " + HivivaModifier.getCalendarStringFromDate(this._endDate);
+
+			this._content.addChild(mainLabel);
+			mainLabel.x = Constants.PADDING_LEFT;
+			mainLabel.width = Constants.INNER_WIDTH;
+			mainLabel.validate();
 		}
 
 		private function prepareSelectedMedicalData():void
 		{
 			if(this._adherenceIsChecked)
 			{
-				this._adherenceReportChart = new ReportChart();
+				this._adherenceReportChart = new ScheduleChartReport();
 				this._adherenceReportChart.dataCategory = "adherence";
 				this._adherenceReportChart.startDate = this._startDate;
 				this._adherenceReportChart.endDate = this._endDate;
@@ -148,9 +178,10 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._adherenceReportChart.validate();
 				this._adherenceReportChart.drawChart();
 			}
+
 			if(this._feelingIsChecked)
 			{
-				this._tolerabilityReportChart = new ReportChart();
+				this._tolerabilityReportChart = new ScheduleChartReport();
 				this._tolerabilityReportChart.dataCategory = "tolerability";
 				this._tolerabilityReportChart.startDate = this._startDate;
 				this._tolerabilityReportChart.endDate = this._endDate;
@@ -162,13 +193,8 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._tolerabilityReportChart.validate();
 				this._tolerabilityReportChart.drawChart();
 			}
-			this._content.validate();
 
-			if(!this._testResultsCallMade && (this._cd4IsChecked || this._viralLoadIsChecked))
-			{
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientAllTestResults(this._patientGuid);
-			}
+			this._content.validate();
 		}
 
 		private function getPatientAllTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
@@ -191,18 +217,19 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function prepareSelectedTestResultData():void
 		{
 			var dataCategory:String;
-			if(this._cd4IsChecked) dataCategory = ReportTable.DATA_CD4;
-			if(this._viralLoadIsChecked) dataCategory = ReportTable.DATA_VIRAL_LOAD;
-			if(this._cd4IsChecked && this._viralLoadIsChecked) dataCategory = ReportTable.DATA_ALL;
+			if(this._cd4IsChecked) dataCategory = TestTableReport.DATA_CD4;
+			if(this._viralLoadIsChecked) dataCategory = TestTableReport.DATA_VIRAL_LOAD;
+			if(this._cd4IsChecked && this._viralLoadIsChecked) dataCategory = TestTableReport.DATA_ALL;
 
-			this._reportTable = new ReportTable();
+			this._reportTable = new TestTableReport();
 			this._reportTable.dataCategory = dataCategory;
 			this._reportTable.patientData = this._filteredTestResults;
 			this._content.addChild(this._reportTable);
 			this._reportTable.width = Constants.INNER_WIDTH;
-			this._reportTable.height = this._content.height;
 			this._reportTable.validate();
 			this._reportTable.drawTestTable();
+
+			this._content.validate();
 		}
 
 		public function get adherenceIsChecked():Boolean
@@ -283,6 +310,26 @@ package collaboRhythm.hiviva.view.screens.shared
 		public function set parentScreen(value:String):void
 		{
 			_parentScreen = value;
+		}
+
+		public function get patientAppId():String
+		{
+			return _patientAppId;
+		}
+
+		public function set patientAppId(value:String):void
+		{
+			_patientAppId = value;
+		}
+
+		public function get emailAddress():String
+		{
+			return _emailAddress;
+		}
+
+		public function set emailAddress(value:String):void
+		{
+			_emailAddress = value;
 		}
 	}
 }
