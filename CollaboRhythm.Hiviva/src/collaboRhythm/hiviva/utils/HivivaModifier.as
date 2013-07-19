@@ -381,31 +381,29 @@ package collaboRhythm.hiviva.utils
 			return date;
 		}
 
-		public static function isoDateToPrettyString(value:String):String
+		public static function isoDateToPrettyString(value:String, getTimeForToday:Boolean = true):String
+		{
+			var date:Date = isoDateToFlashDate(value);
+			var prettyStr:String = flashDateToPrettyString(date, getTimeForToday);
+
+			return prettyStr;
+		}
+
+		public static function flashDateToPrettyString(date:Date, getTimeForToday:Boolean = true):String
 		{
 			var prettyStr:String;
-			var date:Date = isoDateToFlashDate(value);
-			if(getDaysDiff(HivivaStartup.userVO.serverDate, date) > 0)
+			var isToday:Boolean = getDaysDiff(HivivaStartup.userVO.serverDate, date) == 0;
+
+			if(getTimeForToday && isToday)
 			{
-				// return date and month name
-				prettyStr = date.getDate() + " " + String(Months[date.getMonth()]).substr(0,3);
+				// today, so return time in 24 hour
+				var prettyHours:String = addPrecedingZero(date.getHours().toString());
+				var prettyMinutes:String = addPrecedingZero(date.getMinutes().toString());
+				prettyStr = prettyHours + "." + prettyMinutes;
 			}
 			else
 			{
-				// today, so return time in 24 hour
-				var prettyHours:String = date.getHours().toString();
-				var prettyMinutes:String = date.getMinutes().toString();
-				if(prettyHours.length == 1)
-				{
-					prettyHours = "0" + prettyHours;
-				}
-				if(prettyMinutes.length == 1)
-				{
-					prettyMinutes = "0" + prettyMinutes;
-				}
-				prettyStr = prettyHours + "." + prettyMinutes;
-				// TODO : need to compare to server time for just now
-//				if(prettyStr == "00.00") prettyStr = "Just now";
+				prettyStr = date.getDate() + " " + String(Months[date.getMonth()]).substr(0,3)
 			}
 
 			return prettyStr;

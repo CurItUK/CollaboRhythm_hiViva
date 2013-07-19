@@ -8,6 +8,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.components.ReportChart;
+	import collaboRhythm.hiviva.view.components.ReportTable;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -34,6 +35,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _filteredTestResults:XMLList;
 		private var _adherenceReportChart:ReportChart;
 		private var _tolerabilityReportChart:ReportChart;
+		private var _reportTable:ReportTable;
 
 		public function ReportPreview()
 		{
@@ -51,17 +53,12 @@ package collaboRhythm.hiviva.view.screens.shared
 				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE, getDailyMedicationHistoryCompleteHandler);
 				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getDailyMedicationHistory(this._patientGuid);
 			}
-
-			if(!this._testResultsCallMade && (this._cd4IsChecked || this._viralLoadIsChecked))
-			{
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientAllTestResults(this._patientGuid);
-			}
 		}
 
 		private function applyPreviewLayout():void
 		{
 //			this._contentLayout.gap = 0;
+			this._contentLayout.padding = 0;
 			this._content.layout = this._contentLayout;
 			this._content.y = Constants.HEADER_HEIGHT + Constants.PADDING_TOP;
 			this._content.height = this._cancelAndSend.y - this._content.y - Constants.PADDING_BOTTOM;
@@ -135,23 +132,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._medicationHistoryCallMade = true;
 		}
 
-		private function getPatientAllTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
-		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
-
-			this._filteredTestResults = e.data.xmlResponse.DCTestResult;
-			if(this._filteredTestResults.length() > 0)
-			{
-				prepareSelectedTestResultData();
-			}
-			else
-			{
-				trace("Test result data requested but this patient has no test result history");
-			}
-
-			this._testResultsCallMade = true;
-		}
-
 		private function prepareSelectedMedicalData():void
 		{
 			if(this._adherenceIsChecked)
@@ -183,33 +163,46 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._tolerabilityReportChart.drawChart();
 			}
 			this._content.validate();
+
+			if(!this._testResultsCallMade && (this._cd4IsChecked || this._viralLoadIsChecked))
+			{
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientAllTestResults(this._patientGuid);
+			}
+		}
+
+		private function getPatientAllTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
+
+			this._filteredTestResults = e.data.xmlResponse.Results.DCTestResult;
+			if(this._filteredTestResults.length() > 0)
+			{
+				prepareSelectedTestResultData();
+			}
+			else
+			{
+				trace("Test result data requested but this patient has no test result history");
+			}
+
+			this._testResultsCallMade = true;
 		}
 
 		private function prepareSelectedTestResultData():void
 		{
-			if(this._cd4IsChecked)
-			{
-				drawTestTable("Cd4 count");
-			}
-			if(this._viralLoadIsChecked)
-			{
-				drawTestTable("Viral load");
-			}
-		}
+			var dataCategory:String;
+			if(this._cd4IsChecked) dataCategory = ReportTable.DATA_CD4;
+			if(this._viralLoadIsChecked) dataCategory = ReportTable.DATA_VIRAL_LOAD;
+			if(this._cd4IsChecked && this._viralLoadIsChecked) dataCategory = ReportTable.DATA_ALL;
 
-		private function drawTestTable(resultType:String):void
-		{
-			var testDate:Date;
-			var result:Number;
-			for (var i:int = 0; i < _filteredTestResults.length(); i++)
-			{
-				if(String(_filteredTestResults[i].TestDescription) == resultType)
-				{
-					testDate = HivivaModifier.isoDateToFlashDate(_filteredTestResults[i].TestDate);
-					result = _filteredTestResults[i].Result;
-					trace(testDate.toDateString() + " = " + result);
-				}
-			}
+			this._reportTable = new ReportTable();
+			this._reportTable.dataCategory = dataCategory;
+			this._reportTable.patientData = this._filteredTestResults;
+			this._content.addChild(this._reportTable);
+			this._reportTable.width = Constants.INNER_WIDTH;
+			this._reportTable.height = this._content.height;
+			this._reportTable.validate();
+			this._reportTable.drawTestTable();
 		}
 
 		public function get adherenceIsChecked():Boolean

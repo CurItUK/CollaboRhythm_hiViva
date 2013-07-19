@@ -225,8 +225,9 @@ package collaboRhythm.hiviva.view.components
 
 				bottomAxisValue = new Label();
 				bottomAxisValue.name = "patient-data-lighter";
-				bottomAxisValue.text = HivivaModifier.addPrecedingZero((daysItar.getMonth() + 1).toString()) + "/" +
-						HivivaModifier.addPrecedingZero(daysItar.getDate().toString());
+				/*bottomAxisValue.text = HivivaModifier.isoDateToPrettyString((daysItar.getMonth() + 1).toString()) + "/" +
+						HivivaModifier.addPrecedingZero(daysItar.getDate().toString());*/
+				bottomAxisValue.text = HivivaModifier.flashDateToPrettyString(daysItar,false);
 				addChild(bottomAxisValue);
 				bottomAxisValue.validate();
 				bottomAxisValue.rotation = deg2rad(-90);
