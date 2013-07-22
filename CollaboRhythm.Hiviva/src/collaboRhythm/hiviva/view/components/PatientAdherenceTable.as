@@ -176,12 +176,6 @@ package collaboRhythm.hiviva.view.components
 		private function initMedicineNamesColumn():void
 		{
 			// names column
-
-			// first row spacer
-			/*var firstRowSpace:Quad = new Quad(this._firstColumnWidth, this._weekNavHolder.height + this._firstRowHeight, 0x000000);
-			firstRowSpace.alpha = 0;
-			this._mainScrollContainer.addChild(firstRowSpace);*/
-
 			var medicationCount:uint = _medications.length();
 			var medicationCell:MedicationCell;
 			for (var cellCount:int = 0; cellCount < medicationCount; cellCount++)

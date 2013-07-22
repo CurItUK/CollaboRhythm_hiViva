@@ -88,6 +88,7 @@ package collaboRhythm.hiviva.view.components
 			initTableTitleLabel();
 			drawTableColumns();
 			initBackground();
+
 			this.setSizeInternal(this._tableWidth, this._tableStartY + this._tableHeight, true);
 			this.validate();
 		}

@@ -52,7 +52,7 @@ package collaboRhythm.hiviva.view.components
 		{
 			super.draw();
 
-			this._leftAxisSpace = this.actualWidth * 0.1;
+			this._leftAxisSpace = this.actualWidth * 0.2;
 			//var leftPadding:Number = this.actualWidth * 0;
 			this._rightPadding = 0;
 			this._vPadding = 0;
@@ -299,7 +299,6 @@ package collaboRhythm.hiviva.view.components
 					plotCircles.graphics.beginFill(currColour);
 					plotCircles.graphics.drawCircle(this._chartStartX + (this._horizontalSegmentWidth * valueCount),plotStartY - valueY,plotGirth * 2);
 					plotCircles.graphics.endFill();
-					trace('plot drawn')
 				}
 			}
 			addChild(plotLine);
