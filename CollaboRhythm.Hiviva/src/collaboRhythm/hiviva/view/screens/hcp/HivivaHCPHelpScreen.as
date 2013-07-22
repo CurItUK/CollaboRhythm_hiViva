@@ -1,11 +1,11 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.global.Constants;
-	import collaboRhythm.hiviva.global.HivivaAssets;
+
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.*;
-	import collaboRhythm.hiviva.view.media.Assets;
+
     import collaboRhythm.hiviva.view.screens.shared.HelpScreenManager;
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_About_Screen;
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_GettingStarted_Screen;
@@ -14,20 +14,15 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
-	import feathers.controls.Header;
+
 	import feathers.controls.Screen;
-	import feathers.controls.ScreenNavigatorItem;
-	import feathers.controls.ScrollText;
+
 	import feathers.data.ListCollection;
 	import feathers.display.TiledImage;
-	import feathers.events.FeathersEventType;
-	import feathers.layout.AnchorLayoutData;
+
 
 	import collaboRhythm.hiviva.view.HivivaHeader;
 
-	import mx.core.IFactory;
-
-	import spark.components.supportClasses.ViewReturnObject;
 
 	import starling.display.BlendMode;
 
@@ -35,7 +30,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	import starling.events.Event;
 	import starling.textures.TextureSmoothing;
-   // import collaboRhythm.hiviva.view.screens.patient.HelpScreens.*;
+
 
 	public class HivivaHCPHelpScreen extends Screen
 	{
