@@ -151,7 +151,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-			populateOldData();
+			//populateOldData();
+			getUserDisplaySettings()
 		}
 
 		private function getUserDisplaySettings():void
@@ -163,6 +164,19 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function getDisplaySettingsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DISPLAY_SETTINGS_COMPLETE , getDisplaySettingsCompleteHandler);
+			trace("getDisplaySettingsCompleteHandler " + e.data.xmlResponse);
+
+			var displaySettings:XMLList = e.data.xmlResponse.Attributes.DCUserAttribute;
+
+			if(displaySettings.children().length() > 0)
+			{
+				populateStoredSettings();
+			}
+		}
+
+		private function populateStoredSettings():void
+		{
+			trace("populateStoredSettings");
 		}
 
 		private function cancelAndSaveHandler(e:starling.events.Event):void
@@ -177,6 +191,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 				case "Save" :
 					// TODO: validate
 
+					saveDisplaySettings();
 					var displaySettings:Object = {};
 					displaySettings.stat_type = Radio(this._orderTypeGroup.selectedItem).label;
 					displaySettings.direction = Radio(this._orderByGroup.selectedItem).label;
@@ -186,6 +201,41 @@ package collaboRhythm.hiviva.view.screens.hcp
 					localStoreController.setHcpDisplaySettings(displaySettings);
 					break;
 			}
+		}
+
+		private function saveDisplaySettings():void
+		{
+			var userGuid:String = HivivaStartup.userVO.guid;
+
+
+			var settings:XML =
+					<DCUserSettings>
+						<UserGuid>{userGuid}</UserGuid>
+						<Attributes>
+							<DCUserAttribute>
+								<UserAttributeId>1</UserAttributeId>
+								<Value>Ascending</Value>
+								<Enabled>1</Enabled>
+							</DCUserAttribute>
+							<DCUserAttribute>
+								<UserAttributeId>2</UserAttributeId>
+								<Value>Ascending</Value>
+								<Enabled>2</Enabled>
+							</DCUserAttribute>
+							<DCUserAttribute>
+								<UserAttributeId>3</UserAttributeId>
+								<Value>Ascending</Value>
+								<Enabled>1</Enabled>
+							</DCUserAttribute>
+						</Attributes>
+					</DCUserSettings>
+
+			trace(settings);
+
+
+
+
+
 		}
 
 		private function setHcpDisplaySettingsHandler(e:LocalDataStoreEvent):void

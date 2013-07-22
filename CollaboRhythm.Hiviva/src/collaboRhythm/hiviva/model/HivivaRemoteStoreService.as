@@ -482,6 +482,24 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
+		public function getUserDisplaySettings():void
+		{
+			var query:String = "userGuid=" + HivivaStartup.userVO.guid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_DISPLAY_SETTINGS + query);
+			trace("getUserDisplaySettings " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getUserDisplaySettingsCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getUserDisplaySettingsCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_DISPLAY_SETTINGS_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt);
+		}
+
 
 	}
 }

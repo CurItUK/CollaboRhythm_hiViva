@@ -39,5 +39,9 @@ package collaboRhythm.hiviva.global
 		public static const RS_GET_PATIENT_LATEST_RESULTS:String = 					"WSTestResults.svc/GetLatestUserTestResults?";
 		public static const RS_GET_PATIENT_ALL_RESULTS:String = 					"WSTestResults.svc/GetAllUserResults?";
 
+		//HCP Display Settings
+		public static const RS_GET_DISPLAY_SETTINGS:String = 						"WSHealthUser.svc/GetUserSettings?";
+
+
 	}
 }
