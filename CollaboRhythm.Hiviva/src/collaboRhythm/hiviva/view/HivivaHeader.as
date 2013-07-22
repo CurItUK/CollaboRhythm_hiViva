@@ -1,7 +1,6 @@
 package collaboRhythm.hiviva.view
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
-	import collaboRhythm.hiviva.view.media.Assets;
+
 
 	import feathers.controls.Header;
 	import feathers.controls.text.TextFieldTextRenderer;
@@ -9,7 +8,7 @@ package collaboRhythm.hiviva.view
 
 	import flash.text.TextFormat;
 
-	import spark.components.supportClasses.ViewReturnObject;
+
 
 	import starling.display.Image;
 
