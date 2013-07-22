@@ -42,6 +42,7 @@ package collaboRhythm.hiviva.view.components
 	{
 		private var _medications:XMLList;
 		private var _history:Dictionary;
+		private var _dayRow:Sprite;
 		private var _weekNavHolder:Sprite;
 		private var _weekText:Label;
 		private const _weekDays:Array = ["M", "T", "W", "T", "F", "S", "S"];
@@ -75,6 +76,8 @@ package collaboRhythm.hiviva.view.components
 			super.initialize();
 			this._medications = _patientData.DCUserMedication as XMLList;
 			extractHistory();
+			this._currWeekBeginning = HivivaStartup.userVO.serverDate;
+			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
 		}
 
 		public function drawTable():void
@@ -84,7 +87,7 @@ package collaboRhythm.hiviva.view.components
 			initTableContainer();
 			initMedicineNamesColumn();
 			recordRowHeights();
-			initTableData();
+			updateTableData();
 			initTableBackground();
 		}
 
@@ -136,10 +139,9 @@ package collaboRhythm.hiviva.view.components
 		{
 			// day names row
 			var firstRowPadding:Number = this.actualHeight * 0.02;
-			var dayRow:Sprite = new Sprite();
-			dayRow.x = this._firstColumnWidth;
-			dayRow.y = this._weekNavHolder.height + firstRowPadding;
-			addChild(dayRow);
+			_dayRow = new Sprite();
+			_dayRow.y = this._weekNavHolder.height;
+			addChild(_dayRow);
 
 			var dayLabel:Label;
 			for (var dayCount:int = 0; dayCount < 8; dayCount++)
@@ -147,13 +149,14 @@ package collaboRhythm.hiviva.view.components
 				dayLabel = new Label();
 				dayLabel.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
 				dayLabel.width = this._dataColumnsWidth;
-				dayLabel.x = this._dataColumnsWidth * dayCount;
+				dayLabel.x = this._firstColumnWidth + (this._dataColumnsWidth * dayCount);
+				dayLabel.y = firstRowPadding;
 				dayLabel.text = this._weekDays[dayCount];
-				dayRow.addChild(dayLabel);
+				_dayRow.addChild(dayLabel);
 				dayLabel.validate();
 			}
 			// need to validate for row height
-			this._firstRowHeight = dayRow.height + (firstRowPadding * 2);
+			this._firstRowHeight = _dayRow.height + (firstRowPadding * 2);
 		}
 
 		private function initTableContainer():void
@@ -173,6 +176,12 @@ package collaboRhythm.hiviva.view.components
 		private function initMedicineNamesColumn():void
 		{
 			// names column
+
+			// first row spacer
+			/*var firstRowSpace:Quad = new Quad(this._firstColumnWidth, this._weekNavHolder.height + this._firstRowHeight, 0x000000);
+			firstRowSpace.alpha = 0;
+			this._mainScrollContainer.addChild(firstRowSpace);*/
+
 			var medicationCount:uint = _medications.length();
 			var medicationCell:MedicationCell;
 			for (var cellCount:int = 0; cellCount < medicationCount; cellCount++)
@@ -187,18 +196,26 @@ package collaboRhythm.hiviva.view.components
 				this._rowsData.push({id: cellCount});
 			}
 			// tolerability row name
+
+			var tolerabilityRowHolder:Sprite = new Sprite();
+			this._mainScrollContainer.addChild(tolerabilityRowHolder);
+
 			var tolerabilityRowLabel:Label = new Label();
 			tolerabilityRowLabel.text = "Tolerability";
-			this._mainScrollContainer.addChild(tolerabilityRowLabel);
+			tolerabilityRowHolder.addChild(tolerabilityRowLabel);
 			tolerabilityRowLabel.textRendererProperties.textFormat = new BitmapFontTextFormat(TextField.getBitmapFont("engraved-lighter-bold"), 24 * this.scale, Color.WHITE);
-			tolerabilityRowLabel.width = this._firstColumnWidth - (30 * this.scale);
+			tolerabilityRowLabel.x = 30 * this.scale; // MedicationCell gap * 2
+			tolerabilityRowLabel.y = 15 * this.scale; // MedicationCell gap
+			tolerabilityRowLabel.width = this._firstColumnWidth - tolerabilityRowLabel.x;
+			tolerabilityRowLabel.validate();
+
+			var tolerabilityRowBg:Quad = new Quad(this._firstColumnWidth, tolerabilityRowLabel.height + (30 * this.scale), 0x000000);
+			tolerabilityRowBg.alpha = 0;
+			tolerabilityRowHolder.addChild(tolerabilityRowBg);
 
 			this._rowsData.push({id: medicationCount});
 
 			this._mainScrollContainer.validate();
-			tolerabilityRowLabel.x += 30 * this.scale; // MedicationCell gap * 2
-			tolerabilityRowLabel.y += 15 * this.scale; // MedicationCell gap
-			this._mainScrollContainer.height += 30 * this.scale; // MedicationCell gap * 2
 
 			var maxHeight:Number = this.actualHeight - this._tableStartY;
 			if (maxHeight < this._mainScrollContainer.height) this._mainScrollContainer.height = maxHeight;
@@ -220,35 +237,24 @@ package collaboRhythm.hiviva.view.components
 				rowData.cellHeight = rowLabel.height;
 				cellY += rowLabel.height;
 			}
-			rowData.cellHeight += 30 * this.scale; // MedicationCell gap * 2
 		}
 
 		private function leftArrowHandler(e:Event):void
 		{
 			this._currWeekBeginning.date -= 7;
-			changeTableData();
+			updateTableData();
 		}
 
 		private function rightArrowHandler(e:Event):void
 		{
 			this._currWeekBeginning.date += 7;
-			changeTableData();
+			updateTableData();
 		}
 
-		private function initTableData():void
+		private function updateTableData():void
 		{
-			this._currWeekBeginning = HivivaStartup.userVO.serverDate;
-			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
 			setCurrentWeek();
 			initTableDataContainer();
-			populateAdherence();
-			populateTolerability();
-		}
-
-		private function changeTableData():void
-		{
-			setCurrentWeek();
-			this._dataContainer.removeChildren();
 			populateAdherence();
 			populateTolerability();
 		}
@@ -256,7 +262,7 @@ package collaboRhythm.hiviva.view.components
 		private function setCurrentWeek():void
 		{
 //			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
-			this._weekText.text = "wc: " + (this._currWeekBeginning.getMonth() + 1) + "/" + this._currWeekBeginning.getDate() + "/" + this._currWeekBeginning.getFullYear();
+			this._weekText.text = "wc: " + HivivaModifier.getCalendarStringFromDate(this._currWeekBeginning);
 			this._weekText.validate();
 		}
 
@@ -282,22 +288,13 @@ package collaboRhythm.hiviva.view.components
 
 		private function initTableDataContainer():void
 		{
-// data horizontal
-//			const hLayout:TiledColumnsLayout = new TiledColumnsLayout();
-//			hLayout.paging = TiledColumnsLayout.PAGING_HORIZONTAL;
-//			hLayout.useSquareTiles = false;
-//			hLayout.horizontalAlign = TiledColumnsLayout.HORIZONTAL_ALIGN_LEFT;
-//			hLayout.verticalAlign = TiledColumnsLayout.VERTICAL_ALIGN_TOP;
-
-			this._dataContainer = new ScrollContainer();
-			//dataContainer.layout = hLayout;
-//			this._dataContainer.scrollerProperties.snapToPages = TiledColumnsLayout.PAGING_HORIZONTAL;
-//			this._dataContainer.scrollerProperties.snapScrollPositionsToPixels = true;
+			if(this._dataContainer != null)
+			{
+				this._dataContainer.removeChildren(0,-1,true);
+			}
+			this._dataContainer = new Sprite();
 			this._mainScrollContainer.addChild(this._dataContainer);
 			this._dataContainer.x = this._firstColumnWidth;
-			//dataContainer.y = firstRowHeight;
-			this._dataContainer.width = this._dataColumnsWidth * 8;
-			this._dataContainer.height = this._mainScrollContainer.height;
 		}
 
 		private function populateAdherence():void
@@ -400,26 +397,22 @@ package collaboRhythm.hiviva.view.components
 
 		private function initTableBackground():void
 		{
+			initTableBgColours();
+			initDayRowBg();
+			initVerticalLines();
+			initHorizontalLines();
+		}
 
-			// whole table background
+		private function initTableBgColours():void
+		{
 			var wholeTableBg:Sprite = new Sprite();
-			this._mainScrollContainer.addChildAt(wholeTableBg,0);
-			wholeTableBg.y = this._weekNavHolder.height;
-
-			var dayRowGrad:Quad = new Quad(this.actualWidth, this._firstRowHeight);
-			dayRowGrad.setVertexColor(0, 0xFFFFFF);
-			dayRowGrad.setVertexColor(1, 0xFFFFFF);
-			dayRowGrad.setVertexColor(2, 0x293d54);
-			dayRowGrad.setVertexColor(3, 0x293d54);
-			dayRowGrad.alpha = 0.2;
-			wholeTableBg.addChild(dayRowGrad);
+			wholeTableBg.y = this._mainScrollContainer.y;
+			addChildAt(wholeTableBg, 0);
 
 			var tableBgColour:Quad = new Quad(this.actualWidth, this._mainScrollContainer.height, 0x4c5f76);
 			tableBgColour.alpha = 0.1;
-			tableBgColour.y = dayRowGrad.height;
+//			tableBgColour.y = dayRowGrad.height;
 			tableBgColour.blendMode = BlendMode.MULTIPLY;
-
-
 			wholeTableBg.addChild(tableBgColour);
 
 			var firstColumnGrad:Quad = new Quad(this._firstColumnWidth, this._mainScrollContainer.height, 0x233448);
@@ -427,7 +420,7 @@ package collaboRhythm.hiviva.view.components
 			firstColumnGrad.setVertexAlpha(1, 1);
 			firstColumnGrad.setVertexAlpha(2, 0);
 			firstColumnGrad.setVertexAlpha(3, 1);
-			firstColumnGrad.y = this._firstRowHeight;
+//			firstColumnGrad.y = this._firstRowHeight;
 			firstColumnGrad.alpha = 0.1;
 			wholeTableBg.addChild(firstColumnGrad);
 
@@ -437,20 +430,46 @@ package collaboRhythm.hiviva.view.components
 			lastColumnGrad.setVertexAlpha(2, 1);
 			lastColumnGrad.setVertexAlpha(3, 0);
 			lastColumnGrad.x = this._firstColumnWidth + (this._dataColumnsWidth * 7);
-			lastColumnGrad.y = this._firstRowHeight;
+//			lastColumnGrad.y = this._firstRowHeight;
 			lastColumnGrad.alpha = 0.1;
 			wholeTableBg.addChild(lastColumnGrad);
+		}
 
+		private function initDayRowBg():void
+		{
+			var horizLineTexture:Texture = Main.assets.getTexture("header_line");
+			var horizontalLine:Image;
+
+			var dayRowGrad:Quad = new Quad(this.actualWidth, this._firstRowHeight);
+			dayRowGrad.setVertexColor(0, 0xFFFFFF);
+			dayRowGrad.setVertexColor(1, 0xFFFFFF);
+			dayRowGrad.setVertexColor(2, 0x293d54);
+			dayRowGrad.setVertexColor(3, 0x293d54);
+			dayRowGrad.alpha = 0.2;
+			this._dayRow.addChildAt(dayRowGrad, 0);
+
+			horizontalLine = new Image(horizLineTexture);
+			horizontalLine.y = this._firstRowHeight;
+			horizontalLine.width = this.actualWidth;
+			this._dayRow.addChildAt(horizontalLine, 1);
+		}
+
+		private function initVerticalLines():void
+		{
 			var vertLineTexture:Texture = Assets.getTexture("VerticleLinePng");
 			var verticalLine:Image;
 			for (var dayCount:int = 0; dayCount < 8; dayCount++)
 			{
 				verticalLine = new Image(vertLineTexture);
 				verticalLine.x = this._firstColumnWidth + (this._dataColumnsWidth * dayCount);
+				verticalLine.y = this._weekNavHolder.height;
 				verticalLine.height = this._firstRowHeight + this._mainScrollContainer.height;
-				wholeTableBg.addChild(verticalLine);
+				addChild(verticalLine);
 			}
+		}
 
+		private function initHorizontalLines():void
+		{
 			var horizLineTexture:Texture = Main.assets.getTexture("header_line");
 			var horizontalLine:Image;
 			var rowData:Object;
@@ -458,10 +477,14 @@ package collaboRhythm.hiviva.view.components
 			{
 				rowData = this._rowsData[rowCount];
 				horizontalLine = new Image(horizLineTexture);
-				horizontalLine.y = this._firstRowHeight + rowData.y;
+				horizontalLine.y = rowData.y;
 				horizontalLine.width = this.actualWidth;
-				wholeTableBg.addChild(horizontalLine);
+				this._mainScrollContainer.addChild(horizontalLine);
 			}
+			horizontalLine = new Image(horizLineTexture);
+			horizontalLine.y = rowData.y + rowData.cellHeight;
+			horizontalLine.width = this.actualWidth;
+			this._mainScrollContainer.addChild(horizontalLine);
 		}
 
 		public function get patientData():XML
