@@ -13,6 +13,7 @@ package collaboRhythm.hiviva.global
 		public static const RS_TAKE_PATIENT_MEDICATION:String = 					"WSUserMedication.svc/TookMedication?";
 		public static const RS_GET_USER_MEDICATION_HISTORY:String = 				"WSUserMedication.svc/GetHistoryUserMedicationTaken?";
 		public static const RS_GET_DAILY_MEDICATION_HISTORY:String = 				"WSUserMedication.svc/GetDailyHistoryOfMedicationTaken?";
+		public static const RS_GET_DAILY_MEDICATION_HISTORY_RANGE:String = 			"WSUserMedication.svc/GetDailyMedicationTakenBetweenDates?";
 		public static const RS_GET_WEEKLY_MEDICATION_HISTORY:String = 				"WSUserMedication.svc/GetWeeklyHistoryOfMedicationTaken?";
 
 		//Messaging
@@ -38,6 +39,7 @@ package collaboRhythm.hiviva.global
 		public static const RS_ADD_TEST_RESULTS:String = 							"WSTestResults.svc/AddTestResults?";
 		public static const RS_GET_PATIENT_LATEST_RESULTS:String = 					"WSTestResults.svc/GetLatestUserTestResults?";
 		public static const RS_GET_PATIENT_ALL_RESULTS:String = 					"WSTestResults.svc/GetAllUserResults?";
+		public static const RS_GET_PATIENT_RESULTS_RANGE:String = 					"WSTestResults.svc/GetUserTestResultsBetweenDates?";
 
 		//HCP Display Settings
 		public static const RS_GET_DISPLAY_SETTINGS:String = 						"WSHealthUser.svc/GetUserSettings?";

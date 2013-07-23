@@ -410,20 +410,20 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
-		public function getPatientAllTestResults(userGuid:String):void
+		public function getPatientTestResultsRange(userGuid:String, startIsoDate:String, endIsoDate:String):void
 		{
-			var query:String = "userGuid=" + userGuid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_PATIENT_ALL_RESULTS + query);
-			trace("getPatientAllTestResults " + urlRequest.url);
+			var query:String = "userGuid=" + userGuid + "&startDate=" + startIsoDate + "&endDate=" + endIsoDate;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_PATIENT_RESULTS_RANGE + query);
+			trace("getPatientTestResultsRange " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
-			urlLoader.addEventListener(Event.COMPLETE, getPatientAllTestResultsCompleteHandler);
+			urlLoader.addEventListener(Event.COMPLETE, getPatientTestResultsRangeCompleteHandler);
 			urlLoader.load(urlRequest);
 		}
 
-		private function getPatientAllTestResultsCompleteHandler(e:Event):void
+		private function getPatientTestResultsRangeCompleteHandler(e:Event):void
 		{
 			var xmlResponse:XML = new XML(e.target.data);
-			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_RESULTS_RANGE_COMPLETE);
 			evt.data.xmlResponse = xmlResponse;
 			this.dispatchEvent(evt);
 		}
@@ -460,6 +460,24 @@ package collaboRhythm.hiviva.model
 		{
 			var xmlResponse:XML = new XML(e.target.data);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt);
+		}
+
+		public function getDailyMedicationHistoryRange(userGuid:String, startIsoDate:String, endIsoDate:String):void
+		{
+			var query:String = "userGuid=" + userGuid + "&startDate=" + startIsoDate + "&endDate=" + endIsoDate;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_DAILY_MEDICATION_HISTORY_RANGE + query);
+			trace("getDailyMedicationHistoryRange " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getDailyMedicationHistoryRangeCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getDailyMedicationHistoryRangeCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE);
 			evt.data.xmlResponse = xmlResponse;
 			this.dispatchEvent(evt);
 		}

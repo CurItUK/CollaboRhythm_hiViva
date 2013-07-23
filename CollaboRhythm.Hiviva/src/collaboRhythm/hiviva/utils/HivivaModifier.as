@@ -278,6 +278,12 @@ package collaboRhythm.hiviva.utils
 			return addPrecedingZero((date.getMonth() + 1).toString()) + "/" + addPrecedingZero(date.getDate().toString()) + "/" + date.getFullYear();
 		}
 
+		public static function getCalendarStringFromIsoString(isoStr:String):String
+		{
+			var date:Date = getDateFromIsoString(isoStr);
+			return getCalendarStringFromDate(date);
+		}
+
 		public static function addPrecedingZero(val:String):String
 		{
 			var zeroFilledVal:String;
@@ -381,15 +387,36 @@ package collaboRhythm.hiviva.utils
 			return date;
 		}
 
-		public static function isoDateToPrettyString(value:String, getTimeForToday:Boolean = true):String
+		public static function getIsoStringFromDate(date:Date):String
+		{
+			// 2013-07-13T14:25:15
+
+			var month:Number = date.getMonth() + 1;
+			var day:Number = date.getDate();
+			var hours:Number = date.getHours();
+			var mins:Number = date.getMinutes();
+			var secs:Number = date.getSeconds();
+
+			var isoStr:String =
+			date.getFullYear() + "-" +
+			addPrecedingZero(month.toString()) + "-" +
+			addPrecedingZero(day.toString()) + "T" +
+			addPrecedingZero(hours.toString()) + ":" +
+			addPrecedingZero(mins.toString()) + ":" +
+			addPrecedingZero(secs.toString());
+
+			return isoStr;
+		}
+
+		public static function getPrettyStringFromIsoString(value:String, getTimeForToday:Boolean = true):String
 		{
 			var date:Date = getDateFromIsoString(value);
-			var prettyStr:String = flashDateToPrettyString(date, getTimeForToday);
+			var prettyStr:String = getPrettyStringFromDate(date, getTimeForToday);
 
 			return prettyStr;
 		}
 
-		public static function flashDateToPrettyString(date:Date, getTimeForToday:Boolean = true):String
+		public static function getPrettyStringFromDate(date:Date, getTimeForToday:Boolean = true):String
 		{
 			var prettyStr:String;
 			var isToday:Boolean = getDaysDiff(HivivaStartup.userVO.serverDate, date) == 0;

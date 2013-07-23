@@ -16,6 +16,7 @@ package collaboRhythm.hiviva.global
 		public static const TAKE_PATIENT_MEDICATION_COMPLETE:String						= "takePatientMedicationComplete";
 		public static const GET_USER_MEDICATION_HISTORY_COMPLETE:String					= "getUserMedicationHistoryComplete";
 		public static const GET_DAILY_MEDICATION_HISTORY_COMPLETE:String				= "getDailyMedicationHistoryComplete";
+		public static const GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE:String			= "getDailyMedicationHistoryRangeComplete";
 		public static const GET_WEEKLY_MEDICATION_HISTORY_COMPLETE:String				= "getWeeklyMedicationHistoryComplete";
 
 		//Messaging
@@ -40,6 +41,7 @@ package collaboRhythm.hiviva.global
 		public static const ADD_TEST_RESULTS_COMPLETE:String							= "addTestResultsComplete";
 		public static const GET_PATIENT_LATEST_RESULTS_COMPLETE:String					= "getPatientLatestResultsComplete";
 		public static const GET_PATIENT_ALL_RESULTS_COMPLETE:String						= "getPatientAllResultsComplete";
+		public static const GET_PATIENT_RESULTS_RANGE_COMPLETE:String					= "getPatientResultsRangeComplete";
 
 		//display Settings
 		public static const GET_DISPLAY_SETTINGS_COMPLETE:String						= "getDisplaySettingsComplete";

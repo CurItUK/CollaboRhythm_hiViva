@@ -327,17 +327,17 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
-		public function getPatientAllTestResults(userGuid:String):void
+		public function getPatientTestResultsRange(userGuid:String, startIsoDate:String, endIsoDate:String):void
 		{
-			service.addEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE , getPatientAllTestResultsCompleteHandler);
-			service.getPatientAllTestResults(userGuid);
+			service.addEventListener(RemoteDataStoreEvent.GET_PATIENT_RESULTS_RANGE_COMPLETE , getPatientTestResultsRangeHandler);
+			service.getPatientTestResultsRange(userGuid, startIsoDate, endIsoDate);
 
 		}
 
-		private function getPatientAllTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
+		private function getPatientTestResultsRangeHandler(e:RemoteDataStoreEvent):void
 		{
-			service.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE , getPatientAllTestResultsCompleteHandler);
-			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE);
+			service.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_RESULTS_RANGE_COMPLETE , getPatientTestResultsRangeHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_RESULTS_RANGE_COMPLETE);
 			evt.data = e.data;
 			this.dispatchEvent(evt);
 		}
@@ -366,6 +366,20 @@ package collaboRhythm.hiviva.controller
 		{
 			service.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE , getDailyMedicationHistoryCompleteHandler);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function getDailyMedicationHistoryRange(userGuid:String, startIsoDate:String, endIsoDate:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE , getDailyMedicationHistoryRangeCompleteHandler);
+			service.getDailyMedicationHistoryRange(userGuid, startIsoDate, endIsoDate);
+		}
+
+		private function getDailyMedicationHistoryRangeCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE , getDailyMedicationHistoryRangeCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE);
 			evt.data = e.data;
 			this.dispatchEvent(evt);
 		}
