@@ -285,8 +285,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 			else
 			{
-				var storedTakeMedDate:Date = HivivaModifier.isoDateToFlashDate(e.data.kudos[0].medication_take_date);
-				var takeMedDate:Date = HivivaModifier.isoDateToFlashDate(this._medicationData.DCUserMedication.Schedule.DCMedicationSchedule[0].DateTaken);
+				var storedTakeMedDate:Date = HivivaModifier.getDateFromIsoString(e.data.kudos[0].medication_take_date);
+				var takeMedDate:Date = HivivaModifier.getDateFromIsoString(this._medicationData.DCUserMedication.Schedule.DCMedicationSchedule[0].DateTaken);
 				var daysDifference:Number = HivivaModifier.getDaysDiffence(takeMedDate , storedTakeMedDate);
 
 				trace(daysDifference);

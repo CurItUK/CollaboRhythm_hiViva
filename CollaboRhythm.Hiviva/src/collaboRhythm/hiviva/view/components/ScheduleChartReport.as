@@ -52,9 +52,9 @@ package collaboRhythm.hiviva.view.components
 		{
 			super.draw();
 
-			this._leftAxisSpace = this.actualWidth * 0.2;
+			this._leftAxisSpace = this.actualWidth * 0.15;
 			//var leftPadding:Number = this.actualWidth * 0;
-			this._rightPadding = 0;
+			this._rightPadding = this.actualWidth * 0.01;
 			this._vPadding = 0;
 			this._chartWidth = this.actualWidth - this._leftAxisSpace - this._rightPadding;
 			this._chartHeight = this.actualHeight * 0.75;
@@ -118,7 +118,7 @@ package collaboRhythm.hiviva.view.components
 					medicationScheduleLength = medicationSchedule.length();
 					for (var k:int = 0; k < medicationScheduleLength; k++)
 					{
-						referenceDate = HivivaModifier.isoDateToFlashDate(String(medicationSchedule[k].DateTaken));
+						referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
 						if(daysItar.getTime() == referenceDate.getTime())
 						{
 							valueData = this._dataCategory == "adherence" ? int(medicationSchedule[k].PercentTaken) : int(medicationSchedule[k].Tolerability);
