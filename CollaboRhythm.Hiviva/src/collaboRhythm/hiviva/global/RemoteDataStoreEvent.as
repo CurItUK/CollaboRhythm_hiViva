@@ -45,6 +45,10 @@ package collaboRhythm.hiviva.global
 		public static const GET_DISPLAY_SETTINGS_COMPLETE:String						= "getDisplaySettingsComplete";
 		public static const ADD_DISPLAY_SETTINGS_COMPLETE:String						= "addDisplaySettingsComplete";
 
+		//alertSettings
+		public static const GET_ALERT_SETTINGS_COMPLETE:String							= "getAlertSettingsComplete";
+		public static const ADD_ALERT_SETTINGS_COMPLETE:String							= "addAlertSettingsComplete";
+
 
 
 		public var message:String;

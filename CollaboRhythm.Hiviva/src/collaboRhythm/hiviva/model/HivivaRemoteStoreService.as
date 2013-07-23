@@ -522,6 +522,46 @@ package collaboRhythm.hiviva.model
 		}
 
 
+		public function getUserAlertSettings():void
+		{
+			var query:String = "userGuid=" + HivivaStartup.userVO.guid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_ALERT_SETTINGS + query);
+			trace("getUserAlertSettings " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getUserAlertSettingsCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getUserAlertSettingsCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_ALERT_SETTINGS_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt);
+		}
+
+		public function addUserAlertSettings(alertSettings:XML):void
+		{
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_ADD_ALERT_SETTINGS);
+			urlRequest.data = alertSettings.toXMLString();
+			urlRequest.contentType = "text/xml";
+			urlRequest.method = URLRequestMethod.POST;
+
+			trace("addUserAlertSettings " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, addUserAlertSettingsCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function addUserAlertSettingsCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			trace(xmlResponse);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.ADD_ALERT_SETTINGS_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+
 	}
 }
 
