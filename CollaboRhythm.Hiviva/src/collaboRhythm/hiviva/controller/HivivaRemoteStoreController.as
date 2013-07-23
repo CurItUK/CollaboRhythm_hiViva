@@ -412,6 +412,47 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function addUserDisplaySettings(displaySettings:XML):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE , addDisplaySettingsCompleteHandler);
+			service.addUserDisplaySettings(displaySettings);
+		}
+
+		private function addDisplaySettingsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE , addDisplaySettingsCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+
+		public function getUserAlertSettings():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_ALERT_SETTINGS_COMPLETE , getAlertSettingsCompleteHandler);
+			service.getUserAlertSettings()
+		}
+
+		private function getAlertSettingsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_ALERT_SETTINGS_COMPLETE , getAlertSettingsCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_ALERT_SETTINGS_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function addUserAlertSettings(alertSettings:XML):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.ADD_ALERT_SETTINGS_COMPLETE , addAlertSettingsCompleteHandler);
+			service.addUserAlertSettings(alertSettings);
+		}
+
+		private function addAlertSettingsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.ADD_ALERT_SETTINGS_COMPLETE , addDisplaySettingsCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.ADD_ALERT_SETTINGS_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function get service():HivivaRemoteStoreService
 		{
 			return _hivivaRemoteStoreService;

@@ -43,6 +43,11 @@ package collaboRhythm.hiviva.global
 
 		//HCP Display Settings
 		public static const RS_GET_DISPLAY_SETTINGS:String = 						"WSHealthUser.svc/GetUserSettings?";
+		public static const RS_ADD_DISPLAY_SETTINGS:String = 						"WSHealthUser.svc/AddUserSettings?";
+
+		//HCP Alert Settings
+		public static const RS_GET_ALERT_SETTINGS:String = 							"WSHealthUser.svc/GetUserAlerts?";
+		public static const RS_ADD_ALERT_SETTINGS:String = 							"WSHealthUser.svc/AddUserAlerts?";
 
 
 	}
