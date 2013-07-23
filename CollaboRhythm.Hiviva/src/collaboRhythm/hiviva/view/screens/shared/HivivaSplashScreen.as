@@ -296,7 +296,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			// TODO : need to include xml schema in xmlResponse
 			var datStr:String = dateData;
-			HivivaStartup.userVO.serverDate = HivivaModifier.isoDateToFlashDate(datStr);
+			HivivaStartup.userVO.serverDate = HivivaModifier.getDateFromIsoString(datStr);
 			trace("userVO.serverDate " + dateData);
 		}
 

@@ -368,7 +368,7 @@ package collaboRhythm.hiviva.utils
 			return percentage;
 		}
 
-		public static function isoDateToFlashDate(value:String):Date
+		public static function getDateFromIsoString(value:String):Date
 		{
 			// 2013-07-13T14:25:15.9644542+01:00
 			var splitAtT:Array = value.split("T");
@@ -383,7 +383,7 @@ package collaboRhythm.hiviva.utils
 
 		public static function isoDateToPrettyString(value:String, getTimeForToday:Boolean = true):String
 		{
-			var date:Date = isoDateToFlashDate(value);
+			var date:Date = getDateFromIsoString(value);
 			var prettyStr:String = flashDateToPrettyString(date, getTimeForToday);
 
 			return prettyStr;

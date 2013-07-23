@@ -61,24 +61,11 @@ package collaboRhythm.hiviva.view.components
 		override protected function initialize():void
 		{
 			super.initialize();
-
-			switch(this._dataCategory)
-			{
-				case DATA_ALL :
-					_testData.cd4s = [];
-					_testData.viralLoads = [];
-					break;
-				case DATA_CD4 :
-					_testData.cd4s = [];
-					break;
-				case DATA_VIRAL_LOAD :
-					_testData.viralLoads = [];
-					break;
-			}
 		}
 
 		public function drawTestTable():void
 		{
+			setupTestDataObject();
 			populateTestData();
 
 			this._tableHolder = new Sprite();
@@ -91,6 +78,23 @@ package collaboRhythm.hiviva.view.components
 
 			this.setSizeInternal(this._tableWidth, this._tableStartY + this._tableHeight, true);
 			this.validate();
+		}
+
+		private function setupTestDataObject():void
+		{
+			switch (this._dataCategory)
+			{
+				case DATA_ALL :
+					_testData.cd4s = [];
+					_testData.viralLoads = [];
+					break;
+				case DATA_CD4 :
+					_testData.cd4s = [];
+					break;
+				case DATA_VIRAL_LOAD :
+					_testData.viralLoads = [];
+					break;
+			}
 		}
 		
 		private function populateTestData():void
@@ -122,7 +126,7 @@ package collaboRhythm.hiviva.view.components
 				dataTypeCount++;
 				if(dataTypeCount == 2)
 				{
-					_testData.dates.push(HivivaModifier.getCalendarStringFromDate(HivivaModifier.isoDateToFlashDate(patientNode.TestDate)));
+					_testData.dates.push(HivivaModifier.getCalendarStringFromDate(HivivaModifier.getDateFromIsoString(patientNode.TestDate)));
 					dataTypeCount = 0;
 					dataCount++;
 				}
@@ -147,7 +151,7 @@ package collaboRhythm.hiviva.view.components
 				patientNode = _patientData[i];
 				if(String(patientNode.TestDescription) == DATA_CD4)
 				{
-					testDate = HivivaModifier.isoDateToFlashDate(patientNode.TestDate);
+					testDate = HivivaModifier.getDateFromIsoString(patientNode.TestDate);
 					_testData.dates.push(HivivaModifier.getCalendarStringFromDate(testDate));
 					_testData.cd4s.push(Number(patientNode.Result));
 					dataCount++;
@@ -168,7 +172,7 @@ package collaboRhythm.hiviva.view.components
 				patientNode = _patientData[i];
 				if(String(patientNode.TestDescription) == DATA_VIRAL_LOAD)
 				{
-					testDate = HivivaModifier.isoDateToFlashDate(patientNode.TestDate);
+					testDate = HivivaModifier.getDateFromIsoString(patientNode.TestDate);
 					_testData.dates.push(HivivaModifier.getCalendarStringFromDate(testDate));
 					_testData.viralLoads.push(Number(patientNode.Result));
 					dataCount++;

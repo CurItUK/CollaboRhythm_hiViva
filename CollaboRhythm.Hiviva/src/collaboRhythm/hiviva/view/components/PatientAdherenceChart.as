@@ -277,7 +277,7 @@ package collaboRhythm.hiviva.view.components
 					medicationScheduleLength = medicationSchedule.length();
 					for (var k:int = 0; k < medicationScheduleLength; k++)
 					{
-						currDate = HivivaModifier.isoDateToFlashDate(medicationSchedule.DateTaken);
+						currDate = HivivaModifier.getDateFromIsoString(medicationSchedule.DateTaken);
 						if(currDate.getTime() > tempDate.getTime())
 						{
 							tempDate = currDate;
@@ -324,7 +324,7 @@ package collaboRhythm.hiviva.view.components
 						medicationScheduleLength = medicationSchedule.length();
 						for (var k:int = 0; k < medicationScheduleLength; k++)
 						{
-							referenceDate = HivivaModifier.isoDateToFlashDate(String(medicationSchedule[k].DateTaken));
+							referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
 							if(weekItar.getTime() == referenceDate.getTime())
 							{
 								medicationAdherence += int(medicationSchedule[k].PercentTaken);

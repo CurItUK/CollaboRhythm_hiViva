@@ -1,9 +1,7 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
-	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
-	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
@@ -14,13 +12,6 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
-	import feathers.layout.VerticalLayout;
-
-	import flash.display.Stage3D;
-
-	import flash.display3D.Context3D;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -41,16 +32,13 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _emailAddress:String;
 		private var _medicationHistoryCallMade:Boolean = false;
 		private var _testResultsCallMade:Boolean = false;
-		private var _medicationHistoryExists:Boolean = false;
-		private var _testResultsExists:Boolean = false;
 		private var _filteredMedicationHistory:XMLList;
 		private var _filteredTestResults:XMLList;
 		private var _adherenceReportChart:ScheduleChartReport;
 		private var _adherenceReportTable:ScheduleTableReport;
 		private var _tolerabilityReportChart:ScheduleChartReport;
 		private var _reportTable:TestTableReport;
-		private var _remoteCallsTimer:Timer;
-		private var _asynchronousProcessStarted:Boolean = false;
+		private var _layoutApplied:Boolean = false;
 
 		public function ReportPreview()
 		{
@@ -61,7 +49,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			super.draw();
 
-			if(!this._asynchronousProcessStarted) startAsynchronousProcess();
+			if(!this._layoutApplied) applyLayout();
 
 			if(!this._medicationHistoryCallMade && (this._adherenceIsChecked || this._feelingIsChecked))
 			{
@@ -73,34 +61,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			{
 				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
 				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientAllTestResults(this._patientGuid);
-			}
-		}
-
-		private function startAsynchronousProcess():void
-		{
-//			this._contentLayout.gap = 0;
-//			this._contentLayout.padding = 0;
-			this._content.layout = this._contentLayout;
-			this._content.y = Constants.HEADER_HEIGHT + Constants.PADDING_TOP;
-			this._content.height = this._cancelAndSend.y - this._content.y - Constants.PADDING_BOTTOM;
-
-			this._remoteCallsTimer = new Timer(100,0);
-			this._remoteCallsTimer.addEventListener(TimerEvent.TIMER, remoteCallsTimerHandler);
-			this._remoteCallsTimer.start();
-
-			this._asynchronousProcessStarted = true;
-		}
-
-		private function remoteCallsTimerHandler(e:TimerEvent):void
-		{
-			if(this._medicationHistoryCallMade && this._testResultsCallMade)
-			{
-				this._remoteCallsTimer.stop();
-				this._remoteCallsTimer.removeEventListener(TimerEvent.TIMER, remoteCallsTimerHandler);
-				this._remoteCallsTimer = null;
-
-				if(this._medicationHistoryExists) prepareSelectedMedicalData();
-				if(this._testResultsExists) prepareSelectedTestResultData();
 			}
 		}
 
@@ -130,7 +90,23 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._cancelAndSend.addEventListener(starling.events.Event.TRIGGERED, cancelAndSendHandler);
 			addChild(this._cancelAndSend);
 
+			getSettingsFromVO();
+
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
+		}
+
+		private function getSettingsFromVO():void
+		{
+			var settings:Object = HivivaStartup.reportVO.settingsData;
+			this._adherenceIsChecked = settings.adherenceIsChecked;
+			this._feelingIsChecked = settings.feelingIsChecked;
+			this._cd4IsChecked = settings.cd4IsChecked;
+			this._viralLoadIsChecked = settings.viralLoadIsChecked;
+			this._startDate = HivivaModifier.getDateFromCalendarString(settings.startDate);
+			this._endDate = HivivaModifier.getDateFromCalendarString(settings.endDate);
+			this._emailAddress = settings.emailAddress;
+			this._patientGuid = settings.patientGuid;
+			this._patientAppId = settings.patientAppId;
 		}
 
 		private function backBtnHandler(e:starling.events.Event = null):void
@@ -153,42 +129,29 @@ package collaboRhythm.hiviva.view.screens.shared
 			}
 		}
 
-		private function getDailyMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
+		private function applyLayout():void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE, getDailyMedicationHistoryCompleteHandler);
+//			this._contentLayout.gap = 0;
+//			this._contentLayout.padding = 0;
+			this._content.layout = this._contentLayout;
+			this._content.y = Constants.HEADER_HEIGHT + Constants.PADDING_TOP;
+			this._content.height = this._cancelAndSend.y - this._content.y - Constants.PADDING_BOTTOM;
 
 			addMainText();
 
-			this._filteredMedicationHistory = e.data.xmlResponse.DCUserMedication;
-			if(this._filteredMedicationHistory.length() > 0)
-			{
-				this._medicationHistoryExists = true;
-//				prepareSelectedMedicalData();
-			}
-			else
-			{
-				trace("Medical history data requested but this patient has no medical history");
-			}
+			this._adherenceReportChart = new ScheduleChartReport();
+			this._content.addChild(this._adherenceReportChart);
 
-			this._medicationHistoryCallMade = true;
-		}
+			this._adherenceReportTable = new ScheduleTableReport();
+			this._content.addChild(this._adherenceReportTable);
 
-		private function getPatientAllTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
-		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
+			this._tolerabilityReportChart = new ScheduleChartReport();
+			this._content.addChild(this._tolerabilityReportChart);
 
-			this._filteredTestResults = e.data.xmlResponse.Results.DCTestResult;
-			if(this._filteredTestResults.length() > 0)
-			{
-				this._testResultsExists = true;
-//				prepareSelectedTestResultData();
-			}
-			else
-			{
-				trace("Test result data requested but this patient has no test result history");
-			}
+			this._reportTable = new TestTableReport();
+			this._content.addChild(this._reportTable);
 
-			this._testResultsCallMade = true;
+			this._layoutApplied = true;
 		}
 
 		private function addMainText():void
@@ -207,24 +170,54 @@ package collaboRhythm.hiviva.view.screens.shared
 			mainLabel.validate();
 		}
 
+		private function getDailyMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE, getDailyMedicationHistoryCompleteHandler);
+
+			this._filteredMedicationHistory = e.data.xmlResponse.DCUserMedication;
+			if(this._filteredMedicationHistory.length() > 0)
+			{
+				prepareSelectedMedicalData();
+			}
+			else
+			{
+				trace("Medical history data requested but this patient has no medical history");
+			}
+
+			this._medicationHistoryCallMade = true;
+		}
+
+		private function getPatientAllTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
+
+			this._filteredTestResults = e.data.xmlResponse.Results.DCTestResult;
+			if(this._filteredTestResults.length() > 0)
+			{
+				prepareSelectedTestResultData();
+			}
+			else
+			{
+				trace("Test result data requested but this patient has no test result history");
+			}
+
+			this._testResultsCallMade = true;
+		}
+
 		private function prepareSelectedMedicalData():void
 		{
 			if(this._adherenceIsChecked)
 			{
-				this._adherenceReportChart = new ScheduleChartReport();
 				this._adherenceReportChart.dataCategory = "adherence";
 				this._adherenceReportChart.startDate = this._startDate;
 				this._adherenceReportChart.endDate = this._endDate;
 				this._adherenceReportChart.patientData = this._filteredMedicationHistory;
-				this._content.addChild(this._adherenceReportChart);
 				this._adherenceReportChart.width = Constants.INNER_WIDTH;
 				this._adherenceReportChart.height = this._content.height;
 				this._adherenceReportChart.validate();
 				this._adherenceReportChart.drawChart();
 
-				this._adherenceReportTable = new ScheduleTableReport();
 				this._adherenceReportTable.patientData = this._filteredMedicationHistory;
-				this._content.addChild(this._adherenceReportTable);
 				this._adherenceReportTable.width = Constants.INNER_WIDTH;
 				this._adherenceReportTable.validate();
 				this._adherenceReportTable.drawTable();
@@ -232,12 +225,10 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			if(this._feelingIsChecked)
 			{
-				this._tolerabilityReportChart = new ScheduleChartReport();
 				this._tolerabilityReportChart.dataCategory = "tolerability";
 				this._tolerabilityReportChart.startDate = this._startDate;
 				this._tolerabilityReportChart.endDate = this._endDate;
 				this._tolerabilityReportChart.patientData = this._filteredMedicationHistory;
-				this._content.addChild(this._tolerabilityReportChart);
 				this._tolerabilityReportChart.width = Constants.INNER_WIDTH;
 				this._tolerabilityReportChart.height = this._content.height;
 				this._tolerabilityReportChart.validate();
@@ -254,85 +245,13 @@ package collaboRhythm.hiviva.view.screens.shared
 			if(this._viralLoadIsChecked) dataCategory = TestTableReport.DATA_VIRAL_LOAD;
 			if(this._cd4IsChecked && this._viralLoadIsChecked) dataCategory = TestTableReport.DATA_ALL;
 
-			this._reportTable = new TestTableReport();
 			this._reportTable.dataCategory = dataCategory;
 			this._reportTable.patientData = this._filteredTestResults;
-			this._content.addChild(this._reportTable);
 			this._reportTable.width = Constants.INNER_WIDTH;
 			this._reportTable.validate();
 			this._reportTable.drawTestTable();
 
 			this._content.validate();
-		}
-
-		public function get adherenceIsChecked():Boolean
-		{
-			return _adherenceIsChecked;
-		}
-
-		public function set adherenceIsChecked(value:Boolean):void
-		{
-			_adherenceIsChecked = value;
-		}
-
-		public function get feelingIsChecked():Boolean
-		{
-			return _feelingIsChecked;
-		}
-
-		public function set feelingIsChecked(value:Boolean):void
-		{
-			_feelingIsChecked = value;
-		}
-
-		public function get cd4IsChecked():Boolean
-		{
-			return _cd4IsChecked;
-		}
-
-		public function set cd4IsChecked(value:Boolean):void
-		{
-			_cd4IsChecked = value;
-		}
-
-		public function get viralLoadIsChecked():Boolean
-		{
-			return _viralLoadIsChecked;
-		}
-
-		public function set viralLoadIsChecked(value:Boolean):void
-		{
-			_viralLoadIsChecked = value;
-		}
-
-		public function get startDate():Date
-		{
-			return _startDate;
-		}
-
-		public function set startDate(value:Date):void
-		{
-			_startDate = value;
-		}
-
-		public function get endDate():Date
-		{
-			return _endDate;
-		}
-
-		public function set endDate(value:Date):void
-		{
-			_endDate = value;
-		}
-
-		public function get patientGuid():String
-		{
-			return _patientGuid;
-		}
-
-		public function set patientGuid(value:String):void
-		{
-			_patientGuid = value;
 		}
 
 		public function get parentScreen():String
@@ -343,26 +262,6 @@ package collaboRhythm.hiviva.view.screens.shared
 		public function set parentScreen(value:String):void
 		{
 			_parentScreen = value;
-		}
-
-		public function get patientAppId():String
-		{
-			return _patientAppId;
-		}
-
-		public function set patientAppId(value:String):void
-		{
-			_patientAppId = value;
-		}
-
-		public function get emailAddress():String
-		{
-			return _emailAddress;
-		}
-
-		public function set emailAddress(value:String):void
-		{
-			_emailAddress = value;
 		}
 	}
 }

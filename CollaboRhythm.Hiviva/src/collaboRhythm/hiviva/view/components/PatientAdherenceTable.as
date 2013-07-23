@@ -273,7 +273,7 @@ package collaboRhythm.hiviva.view.components
 				medicationScheduleLength = medicationSchedule.length();
 				for (var j:int = 0; j < medicationScheduleLength; j++)
 				{
-					referenceDate = HivivaModifier.isoDateToFlashDate(String(medicationSchedule[j].DateTaken)).getTime();
+					referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[j].DateTaken)).getTime();
 					if (_history[referenceDate] == undefined) _history[referenceDate] = [];
 					_history[referenceDate].push({id:i,data:medicationSchedule[j]});
 				}
