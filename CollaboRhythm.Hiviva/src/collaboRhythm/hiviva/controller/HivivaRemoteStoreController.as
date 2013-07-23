@@ -398,6 +398,19 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function addUserDisplaySettings(displaySettings:XML):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE , addDisplaySettingsCompleteHandler);
+			service.addUserDisplaySettings(displaySettings);
+		}
+
+		private function addDisplaySettingsCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE , addDisplaySettingsCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function get service():HivivaRemoteStoreService
 		{
 			return _hivivaRemoteStoreService;

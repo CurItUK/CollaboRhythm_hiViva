@@ -43,6 +43,7 @@ package collaboRhythm.hiviva.global
 
 		//display Settings
 		public static const GET_DISPLAY_SETTINGS_COMPLETE:String						= "getDisplaySettingsComplete";
+		public static const ADD_DISPLAY_SETTINGS_COMPLETE:String						= "addDisplaySettingsComplete";
 
 
 

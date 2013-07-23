@@ -500,6 +500,27 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
+		public function addUserDisplaySettings(displaySettings:XML):void
+		{
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_ADD_DISPLAY_SETTINGS);
+			urlRequest.data = displaySettings.toXMLString();
+			urlRequest.contentType = "text/xml";
+			urlRequest.method = URLRequestMethod.POST;
+
+			trace("addUserDisplaySettings " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, addUserDisplaySettingsCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function addUserDisplaySettingsCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			trace(xmlResponse);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 
 	}
 }

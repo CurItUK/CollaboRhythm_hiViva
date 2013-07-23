@@ -188,59 +188,46 @@ package collaboRhythm.hiviva.view.screens.hcp
 				case "Cancel" :
 					this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 					break;
+
 				case "Save" :
-					// TODO: validate
-
 					saveDisplaySettings();
-					var displaySettings:Object = {};
-					displaySettings.stat_type = Radio(this._orderTypeGroup.selectedItem).label;
-					displaySettings.direction = Radio(this._orderByGroup.selectedItem).label;
-					displaySettings.from_date = this._fromPickerList.selectedItem.text;
-
-					localStoreController.addEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_SAVE_COMPLETE, setHcpDisplaySettingsHandler);
-					localStoreController.setHcpDisplaySettings(displaySettings);
 					break;
 			}
 		}
 
 		private function saveDisplaySettings():void
 		{
-			var userGuid:String = HivivaStartup.userVO.guid;
-
 
 			var settings:XML =
 					<DCUserSettings>
-						<UserGuid>{userGuid}</UserGuid>
+						<UserGuid>{HivivaStartup.userVO.guid}</UserGuid>
 						<Attributes>
 							<DCUserAttribute>
 								<UserAttributeId>1</UserAttributeId>
-								<Value>Ascending</Value>
-								<Enabled>1</Enabled>
+								<Value>{Radio(this._orderByGroup.selectedItem).label}</Value>
+								<Enabled>{this._adherenceRadio.isSelected ? 1 : 0}</Enabled>
 							</DCUserAttribute>
 							<DCUserAttribute>
 								<UserAttributeId>2</UserAttributeId>
-								<Value>Ascending</Value>
-								<Enabled>2</Enabled>
+								<Value>{Radio(this._orderByGroup.selectedItem).label}</Value>
+								<Enabled>{this._tolerabilityRadio.isSelected ? 1 : 0}</Enabled>
 							</DCUserAttribute>
 							<DCUserAttribute>
 								<UserAttributeId>3</UserAttributeId>
-								<Value>Ascending</Value>
+								<Value>{this._fromPickerList.selectedItem.text}</Value>
 								<Enabled>1</Enabled>
 							</DCUserAttribute>
 						</Attributes>
 					</DCUserSettings>
 
-			trace(settings);
-
-
-
-
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE, addDisplaySettingsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addUserDisplaySettings(settings);
 
 		}
 
-		private function setHcpDisplaySettingsHandler(e:LocalDataStoreEvent):void
+		private function addDisplaySettingsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_SAVE_COMPLETE, setHcpDisplaySettingsHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE , addDisplaySettingsCompleteHandler);
 			showFormValidation("Your display settings have been saved...");
 		}
 
