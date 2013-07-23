@@ -61,24 +61,11 @@ package collaboRhythm.hiviva.view.components
 		override protected function initialize():void
 		{
 			super.initialize();
-
-			switch(this._dataCategory)
-			{
-				case DATA_ALL :
-					_testData.cd4s = [];
-					_testData.viralLoads = [];
-					break;
-				case DATA_CD4 :
-					_testData.cd4s = [];
-					break;
-				case DATA_VIRAL_LOAD :
-					_testData.viralLoads = [];
-					break;
-			}
 		}
 
 		public function drawTestTable():void
 		{
+			setupTestDataObject();
 			populateTestData();
 
 			this._tableHolder = new Sprite();
@@ -91,6 +78,23 @@ package collaboRhythm.hiviva.view.components
 
 			this.setSizeInternal(this._tableWidth, this._tableStartY + this._tableHeight, true);
 			this.validate();
+		}
+
+		private function setupTestDataObject():void
+		{
+			switch (this._dataCategory)
+			{
+				case DATA_ALL :
+					_testData.cd4s = [];
+					_testData.viralLoads = [];
+					break;
+				case DATA_CD4 :
+					_testData.cd4s = [];
+					break;
+				case DATA_VIRAL_LOAD :
+					_testData.viralLoads = [];
+					break;
+			}
 		}
 		
 		private function populateTestData():void

@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.components.Calendar;
 	import collaboRhythm.hiviva.view.components.ScheduleChartReport;
 	import collaboRhythm.hiviva.view.screens.shared.ReportPreview;
@@ -150,6 +151,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _reportChart:ScheduleChartReport;
 		private var _adherenceChartBd:BitmapData;
 		private var _tolerabilityChartBd:BitmapData;
+		private var _settingsData:Object;
 
 		public function HivivaPatientReportsScreen()
 		{
@@ -227,22 +229,18 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._includeLabel);
 
 			this._adherenceCheck = new Check();
-			this._adherenceCheck.isSelected = true ;
 			this._adherenceCheck.label = "Adherence";
 			this._content.addChild(this._adherenceCheck);
 
 			this._feelingCheck = new Check();
-			this._feelingCheck.isSelected = true;
 			this._feelingCheck.label = "How I am feeling";
 			this._content.addChild(this._feelingCheck);
 
 			this._cd4Check = new Check();
-			this._cd4Check.isSelected = true;
 			this._cd4Check.label = "CD4 count test results";
 			this._content.addChild(this._cd4Check);
 
 			this._viralLoadCheck = new Check();
-			this._viralLoadCheck.isSelected = true;
 			this._viralLoadCheck.label = "Viral load test results";
 			this._content.addChild(this._viralLoadCheck);
 
@@ -261,10 +259,44 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._calendar = new Calendar();
 			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler);
+			/*
 			trace("My Current Date is  ::::  " ,  this._calendar.getCurrentDate());
 	        this._finishDateInput._input.text = this._calendar.getCurrentDate();
             trace("MONTH BEFORE IS   ::: " +  this._calendar.getMonthBefore());
 			this._startDateInput._input.text = this._calendar.getMonthBefore();
+			*/
+
+			_settingsData = HivivaStartup.reportVO.settingsData;
+			if(_settingsData == null)
+			{
+				populateDefaults();
+			}
+			else
+			{
+				prePopulateData();
+			}
+		}
+
+		private function populateDefaults():void
+		{
+			this._adherenceCheck.isSelected =
+			this._feelingCheck.isSelected =
+			this._cd4Check.isSelected =
+			this._viralLoadCheck.isSelected = true;
+			this._startDateInput._input.text = this._calendar.getMonthBefore();
+			this._finishDateInput._input.text = this._calendar.getCurrentDate();
+			this._emailInput.text = "";
+		}
+
+		private function prePopulateData():void
+		{
+			this._adherenceCheck.isSelected = _settingsData.adherenceIsChecked;
+			this._feelingCheck.isSelected = _settingsData.feelingIsChecked;
+			this._cd4Check.isSelected = _settingsData.cd4IsChecked;
+			this._viralLoadCheck.isSelected = _settingsData.viralLoadIsChecked;
+			this._startDateInput._input.text = _settingsData.startDate;
+			this._finishDateInput._input.text = _settingsData.endDate;
+			this._emailInput.text = _settingsData.emailAddress;
 		}
 
 		private function addCalendarButtons():void
@@ -348,30 +380,35 @@ package collaboRhythm.hiviva.view.screens.patient
 			var formValidation:String = patientReportsCheck();
 			if (formValidation.length == 0)
 			{
-				var screenNavProperties:Object =
+				HivivaStartup.reportVO.settingsData =
 				{
 					adherenceIsChecked:this._adherenceCheck.isSelected,
 					feelingIsChecked:this._feelingCheck.isSelected,
 					cd4IsChecked:this._cd4Check.isSelected,
 					viralLoadIsChecked:this._viralLoadCheck.isSelected,
-					startDate:HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text),
-					endDate:HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text),
+					startDate:this._startDateInput._input.text,
+					endDate:this._finishDateInput._input.text,
 					patientGuid:HivivaStartup.userVO.guid,
 					patientAppId:HivivaStartup.userVO.appId,
-					emailAddress:this._emailInput.text,
-					parentScreen:this.owner.activeScreenID
+					emailAddress:this._emailInput.text
 				};
 				if(this.owner.hasScreen(HivivaScreens.REPORT_PREVIEW))
 				{
 					this.owner.removeScreen(HivivaScreens.REPORT_PREVIEW);
 				}
-				this.owner.addScreen(HivivaScreens.REPORT_PREVIEW, new ScreenNavigatorItem(ReportPreview, null, screenNavProperties));
+				this.owner.addScreen(HivivaScreens.REPORT_PREVIEW, new ScreenNavigatorItem(ReportPreview, null, {parentScreen:this.owner.activeScreenID}));
 				this.owner.showScreen(HivivaScreens.REPORT_PREVIEW);
 			}
 			else
 			{
 				showFormValidation(formValidation);
 			}
+		}
+
+		private function reportSettingsHandler(e:Event):void
+		{
+			_settingsData = e.data;
+			prePopulateData();
 		}
 
 		private function initPatientXMLData():void
