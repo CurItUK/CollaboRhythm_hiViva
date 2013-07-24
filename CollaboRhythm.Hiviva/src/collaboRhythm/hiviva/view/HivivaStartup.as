@@ -6,8 +6,6 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.model.vo.ReportVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
 
-
-
 	import flash.display.Sprite;
 	import flash.display.Bitmap;
 	import flash.events.Event;
