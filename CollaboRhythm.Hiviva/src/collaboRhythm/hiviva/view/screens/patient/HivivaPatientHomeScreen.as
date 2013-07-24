@@ -112,6 +112,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			if(this._today == null)
 			{
+				trace("this._today " + this._today);
 				this._today = new Date();
 				if(!this._remoteCallMade) getAllMessagesFromRemoteService();
 				checkForNewBadges();

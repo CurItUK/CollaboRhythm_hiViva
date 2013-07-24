@@ -248,7 +248,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE, addDisplaySettingsCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addUserDisplaySettings(settings);
-
 		}
 
 		private function addDisplaySettingsCompleteHandler(e:RemoteDataStoreEvent):void
