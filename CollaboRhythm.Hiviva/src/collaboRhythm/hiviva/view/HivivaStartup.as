@@ -36,12 +36,6 @@ package collaboRhythm.hiviva.view
 		private var _starFW:Starling;
 		private var _assets:AssetManager;
 
-
-		protected var _sw:Number;
-		protected var _sh:Number;
-
-
-
 		private static var _hivivaAppController:HivivaAppController;
 
 		public function HivivaStartup()
@@ -53,22 +47,13 @@ package collaboRhythm.hiviva.view
 		{
 			removeEventListener(flash.events.Event.ADDED_TO_STAGE, onAdded);
 
-			this._sw = stage.fullScreenWidth;
-			this._sh = stage.fullScreenHeight;
-
 			_hivivaAppController = new HivivaAppController();
-
 
 			initStarling();
 		}
 
-
-
-
-
 		private function initStarling():void
 		{
-
 
 			var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
 			Starling.multitouchEnabled = true;
