@@ -6,29 +6,25 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.model.vo.ReportVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
 
-	import flash.display.DisplayObject;
-	import flash.display.MovieClip;
+
 
 	import flash.display.Sprite;
 	import flash.display.Bitmap;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
-	import flash.net.URLLoaderDataFormat;
+
 	import flash.system.Capabilities;
-	import flash.text.TextField;
+
 
 	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
-	import flash.display.Shape;
-	import collaboRhythm.hiviva.view.components.PasswordBox;
-	import flash.desktop.NativeApplication;
+
 	import starling.textures.Texture;
-	import flash.desktop.NativeApplication;
-	import flash.desktop.SystemIdleMode;
-	import collaboRhythm.hiviva.global.CheckNetworkStatus;
+
+
 
 	[SWF(backgroundColor="0x000000" , frameRate="60")]
 
@@ -39,16 +35,12 @@ package collaboRhythm.hiviva.view
 
 		private var _starFW:Starling;
 		private var _assets:AssetManager;
-		private var _networkStatus:Boolean;
+
 
 		protected var _sw:Number;
 		protected var _sh:Number;
 
-		public namespace online = "use server";
-		public namespace offline = "use local" ;
-		public namespace iOS    = "iOS Data";
-		public namespace otherOS = "other OS Data";
-		public var mode: Namespace = online;
+
 
 		private static var _hivivaAppController:HivivaAppController;
 
@@ -66,44 +58,17 @@ package collaboRhythm.hiviva.view
 
 			_hivivaAppController = new HivivaAppController();
 
- 			//checkNetworkStatus();
+
 			initStarling();
 		}
 
-		private function checkNetworkStatus():void
-		{
-			_networkStatus = new CheckNetworkStatus().status as Boolean;
-			(_networkStatus == true ) ? mode = online: mode = offline;
-			mode::loadData();
-		}
 
-		online function loadData():void
-		{
-			trace("there you go on line data");
-			initStarling();
-		}
 
-		offline function loadData():void
-		{
-			initStarling();
-			trace("you are offline");
-		}
 
-		iOS function setData():void
-		{
-
-		}
-
-		otherOS function  setData():void
-		{
-
-		}
 
 		private function initStarling():void
 		{
-			//var viewPort:Rectangle;
-			//viewPort = new Rectangle(0, 0, 640, 960);
-			//viewPort = new Rectangle(0, 0, this._sw, this._sh);
+
 
 			var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
 			Starling.multitouchEnabled = true;
