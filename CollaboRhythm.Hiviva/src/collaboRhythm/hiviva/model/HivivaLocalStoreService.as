@@ -5,24 +5,17 @@ package collaboRhythm.hiviva.model
 	import collaboRhythm.hiviva.model.vo.PatientAdherenceVO;
 	import collaboRhythm.hiviva.model.vo.ReportVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.vo.AppDataVO;
 
 	import flash.data.SQLConnection;
-	import flash.data.SQLResult;
 	import flash.data.SQLResult;
 	import flash.data.SQLStatement;
 	import flash.events.EventDispatcher;
 	import flash.events.SQLEvent;
 	import flash.filesystem.File;
-	import flash.utils.Timer;
-	import flash.events.TimerEvent;
-	import flash.system.System;
+
 
 	public class HivivaLocalStoreService extends EventDispatcher
 	{
-
-
 		private var _sqStatement:SQLStatement;
 		private var _sqConn:SQLConnection;
 
