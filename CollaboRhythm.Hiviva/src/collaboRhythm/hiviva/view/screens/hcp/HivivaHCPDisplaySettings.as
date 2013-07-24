@@ -128,9 +128,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._fromPickerList = new PickerList();
 			this._scheduleDoseAmounts = new ListCollection(
 					[
-						{text: "Last week"},
-						{text: "Last month"},
-						{text: "All time"}
+						{text: "Last week" , weekData:1},
+						{text: "Last month" , weekData:4},
+						{text: "All time" , weekData:-1}
 					]);
 			this._fromPickerList.dataProvider = this._scheduleDoseAmounts;
 			this._fromPickerList.listProperties.@itemRendererProperties.labelField = "text";
@@ -151,8 +151,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-			//populateOldData();
-			getUserDisplaySettings()
+			getUserDisplaySettings();
 		}
 
 		private function getUserDisplaySettings():void
@@ -164,19 +163,46 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function getDisplaySettingsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DISPLAY_SETTINGS_COMPLETE , getDisplaySettingsCompleteHandler);
-			trace("getDisplaySettingsCompleteHandler " + e.data.xmlResponse);
+
 
 			var displaySettings:XMLList = e.data.xmlResponse.Attributes.DCUserAttribute;
 
 			if(displaySettings.children().length() > 0)
 			{
-				populateStoredSettings();
-			}
-		}
+				if(displaySettings[0].Enabled == "true")
+				{
+					this._adherenceRadio.isSelected = true;
+					if(displaySettings[0].Value == "Descending")
+					{
+						this._descendingRadio.isSelected = true;
+					}
+				}
+				else
+				{
+					this._tolerabilityRadio.isSelected = true;
+					if(displaySettings[1].Value == "Descending")
+					{
+						this._descendingRadio.isSelected = true;
+					}
+				}
 
-		private function populateStoredSettings():void
-		{
-			trace("populateStoredSettings");
+
+				switch(String(displaySettings[2].Value))
+				{
+					case "1" :
+						this._fromPickerList.selectedIndex = 0;
+						break;
+
+					case "4":
+						this._fromPickerList.selectedIndex = 1;
+						break;
+
+					case "-1" :
+						this._fromPickerList.selectedIndex = 2;
+						break;
+				}
+
+			}
 		}
 
 		private function cancelAndSaveHandler(e:starling.events.Event):void
@@ -214,7 +240,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 							</DCUserAttribute>
 							<DCUserAttribute>
 								<UserAttributeId>3</UserAttributeId>
-								<Value>{this._fromPickerList.selectedItem.text}</Value>
+								<Value>{this._fromPickerList.selectedItem.weekData}</Value>
 								<Enabled>1</Enabled>
 							</DCUserAttribute>
 						</Attributes>
@@ -236,57 +262,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
 
-		private function populateOldData():void
-		{
-			localStoreController.addEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_LOAD_COMPLETE, getHcpDisplaySettingsHandler);
-			localStoreController.getHcpDisplaySettings();
-		}
-
-		private function getHcpDisplaySettingsHandler(e:LocalDataStoreEvent):void
-		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_DISPLAY_SETTINGS_LOAD_COMPLETE, getHcpDisplaySettingsHandler);
-
-			var settings:Array = e.data.settings;
-			var loopLength:int = this._scheduleDoseAmounts.length;
-
-			try
-			{
-				if(settings != null)
-				{
-					switch(settings[0].stat_type)
-					{
-						case "Adherence" :
-							this._adherenceRadio.isSelected = true;
-							break;
-						case "Tolerability" :
-							this._tolerabilityRadio.isSelected = true;
-							break;
-					}
-
-					switch(settings[0].direction)
-					{
-						case "Ascending" :
-							this._ascendingRadio.isSelected = true;
-							break;
-						case "Descending" :
-							this._descendingRadio.isSelected = true;
-							break;
-					}
-
-					for (var i:int = 0; i < loopLength; i++)
-					{
-						if(this._scheduleDoseAmounts.data[i].text == settings[0].from_date)
-						{
-							this._fromPickerList.selectedIndex = i;
-							break;
-						}
-					}
-				}
-			}
-			catch(e:Error)
-			{
-
-			}
-		}
 	}
 }
+
+

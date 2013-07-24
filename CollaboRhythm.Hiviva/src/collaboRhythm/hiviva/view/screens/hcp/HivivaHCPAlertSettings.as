@@ -1,19 +1,19 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.view.HivivaStartup;
+	import collaboRhythm.hiviva.view.LabelAndInput;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
 	import feathers.controls.Label;
-	import feathers.controls.Screen;
 	import feathers.core.FeathersControl;
 
 	import starling.display.DisplayObject;
@@ -62,13 +62,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._cancelAndSave.x = Constants.PADDING_LEFT;
 			this._cancelAndSave.y = Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._cancelAndSave.height;
 		}
-/*
-
-		override protected function postValidateContent():void
-		{
-			super.postValidateContent();
-		}
-*/
 
 		override protected function initialize():void
 		{
@@ -82,7 +75,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._instructionsLabel);
 
 			this._requestsCheck = new Check();
-			this._requestsCheck.isSelected = false;
+			this._requestsCheck.isSelected = true;
 			this._requestsCheck.label = "New connection requests";
 			this._content.addChild(this._requestsCheck);
 
@@ -101,31 +94,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-			populateOldData();
+			getUserDisplaySettings();
 		}
 
-		private function cancelAndSaveHandler(e:starling.events.Event):void
-		{
-			var button:String = e.data.button;
-
-			switch(button)
-			{
-				case "Cancel" :
-					this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
-					break;
-				case "Save" :
-					// TODO: validate if user has ticked a box but not filled the corresponding input
-
-					var alertSettings:Object = {};
-					alertSettings.requests = this._requestsCheck.isSelected ? 1 : -1;
-					alertSettings.adherence = this._adherenceCheck.isSelected ? this._adherenceLabelInput._input.text : "";
-					alertSettings.tolerability = this._tolerabilityCheck.isSelected ? this._tolerabilityLabelInput._input.text : "";
-
-					localStoreController.addEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_SAVE_COMPLETE, setHcpAlertSettingsHandler);
-					localStoreController.setHcpAlertSettings(alertSettings);
-					break;
-			}
-		}
 
 		private function initializeAdherenceRow():void
 		{
@@ -134,7 +105,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._adherenceCheck = new Check();
 			this._adherenceCheck.label = "Adherence <";
-			this._adherenceCheck.isSelected = false;
+			this._adherenceCheck.isSelected = true;
 			this._adherenceRow.addChild(this._adherenceCheck);
 
 			this._adherenceLabelInput = new LabelAndInput();
@@ -142,6 +113,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._adherenceLabelInput.labelStructure = "right";
 			this._adherenceRow.addChild(this._adherenceLabelInput);
 			this._adherenceLabelInput._labelRight.text = "%";
+
+			this._adherenceLabelInput._input.text = String(95);
 		}
 
 		private function drawAdherenceRow():void
@@ -167,7 +140,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._tolerabilityCheck = new Check();
 			this._tolerabilityCheck.label = "Tolerability <";
-			this._tolerabilityCheck.isSelected = false;
+			this._tolerabilityCheck.isSelected = true;
 			this._tolerabilityRow.addChild(this._tolerabilityCheck);
 
 			this._tolerabilityLabelInput = new LabelAndInput();
@@ -175,6 +148,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._tolerabilityLabelInput.labelStructure = "right";
 			this._tolerabilityRow.addChild(this._tolerabilityLabelInput);
 			this._tolerabilityLabelInput._labelRight.text = "%";
+
+			this._tolerabilityLabelInput._input.text = String(95);
 		}
 
 		private function drawTolerabilityRow():void
@@ -193,27 +168,53 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._tolerabilityRow.height = this._tolerabilityLabelInput.height;
 		}
 
-		private function cancelButtonClick(e:starling.events.Event):void
+		private function cancelAndSaveHandler(e:starling.events.Event):void
 		{
-			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+			var button:String = e.data.button;
+
+			switch(button)
+			{
+				case "Cancel" :
+					this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+					break;
+
+				case "Save" :
+					saveAlertSettings();
+					break;
+			}
 		}
 
-		private function submitButtonClick(e:starling.events.Event):void
+		private function saveAlertSettings():void
 		{
-			// TODO: validate if user has ticked a box but not filled the corresponding input
+			var settings:XML =
+					<DCUserAlerts>
+						<UserGuid>{HivivaStartup.userVO.guid}</UserGuid>
+						<Alerts>
+							<DCUserAlert>
+								<UserAlertId>1</UserAlertId>
+								<Value>-1</Value>
+								<Enabled>{_requestsCheck.isSelected ? 1 : 0}</Enabled>
+							</DCUserAlert>
+							<DCUserAlert>
+								<UserAlertId>2</UserAlertId>
+								<Value>{this._adherenceLabelInput._input.text}</Value>
+								<Enabled>{_adherenceCheck.isSelected ? 1 : 0}</Enabled>
+							</DCUserAlert>
+							<DCUserAlert>
+								<UserAlertId>3</UserAlertId>
+								<Value>{this._tolerabilityLabelInput._input.text}</Value>
+								<Enabled>{_tolerabilityCheck.isSelected ? 1 : 0}</Enabled>
+							</DCUserAlert>
+						</Alerts>
+					</DCUserAlerts>
 
-			var alertSettings:Object = {};
-			alertSettings.requests = this._requestsCheck.isSelected ? 1 : -1;
-			alertSettings.adherence = this._adherenceCheck.isSelected ? this._adherenceLabelInput._input.text : "";
-			alertSettings.tolerability = this._tolerabilityCheck.isSelected ? this._tolerabilityLabelInput._input.text : "";
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ADD_ALERT_SETTINGS_COMPLETE, addAlertSettingsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addUserAlertSettings(settings);
 
-			localStoreController.addEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_SAVE_COMPLETE, setHcpAlertSettingsHandler);
-			localStoreController.setHcpAlertSettings(alertSettings);
 		}
 
-		private function setHcpAlertSettingsHandler(e:LocalDataStoreEvent):void
+		private function addAlertSettingsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_SAVE_COMPLETE, setHcpAlertSettingsHandler);
 			showFormValidation("Your alert settings have been saved...");
 		}
 
@@ -222,39 +223,27 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
 
-		private function populateOldData():void
+		private function getUserDisplaySettings():void
 		{
-			localStoreController.addEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_LOAD_COMPLETE, getHcpAlertSettingsHandler);
-			localStoreController.getHcpAlertSettings();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_ALERT_SETTINGS_COMPLETE, getAlertSettingsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserAlertSettings();
 		}
 
-		private function getHcpAlertSettingsHandler(e:LocalDataStoreEvent):void
+		private function getAlertSettingsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			localStoreController.removeEventListener(LocalDataStoreEvent.HCP_ALERT_SETTINGS_LOAD_COMPLETE, getHcpAlertSettingsHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_ALERT_SETTINGS_COMPLETE, getAlertSettingsCompleteHandler);
 
-			var settings:Array = e.data.settings;
+			trace(e.data.xmlResponse);
 
-			try
-			{
-				if(settings != null)
-				{
-					this._requestsCheck.isSelected = settings[0].requests == "1";
-					if(settings[0].adherence.length > 0)
-					{
-						this._adherenceCheck.isSelected = true;
-						this._adherenceLabelInput._input.text = settings[0].adherence;
-					}
-					if(settings[0].tolerability.length > 0)
-					{
-						this._tolerabilityCheck.isSelected = true;
-						this._tolerabilityLabelInput._input.text = settings[0].tolerability;
-					}
-				}
-			}
-			catch(e:Error)
-			{
+			var settings:XML = e.data.xmlResponse;
 
-			}
-		}
+			this._requestsCheck.isSelected = Boolean(settings.Alerts.DCUserAlert[0].Enabled == "true");
+			this._adherenceCheck.isSelected = Boolean(settings.Alerts.DCUserAlert[1].Enabled == "true");
+			this._adherenceLabelInput._input.text = String(settings.Alerts.DCUserAlert[1].Value);
+			this._tolerabilityCheck.isSelected = Boolean(settings.Alerts.DCUserAlert[2].Enabled == "true");
+			this._tolerabilityLabelInput._input.text = String(settings.Alerts.DCUserAlert[2].Value);
+
+
+ 		}
 	}
 }
