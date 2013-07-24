@@ -43,8 +43,6 @@ package collaboRhythm.hiviva.view.components
 		private var _medications:XMLList;
 		private var _history:Dictionary;
 		private var _dayRow:Sprite;
-		private var _weekNavHolder:Sprite;
-		private var _weekText:Label;
 		private const _weekDays:Array = ["M", "T", "W", "T", "F", "S", "S"];
 		private var _firstColumnWidth:Number;
 		private var _firstRowHeight:Number;
@@ -53,10 +51,12 @@ package collaboRhythm.hiviva.view.components
 		private var _mainScrollContainer:ScrollContainer;
 		private var _rowsData:Array = [];
 		private var _dataContainer:Sprite;
+		private var _medicineNamesContainer:Sprite;
 		private var _currWeekBeginning:Date;
 		private var _dailyTolerabilityData:Array;
 		private var _patientData:XML;
 		private var _scale:Number = 1;
+		private var _wholeTableBg:Sprite;
 
 		public function PatientAdherenceTable()
 		{
@@ -74,65 +74,35 @@ package collaboRhythm.hiviva.view.components
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._medications = _patientData.DCUserMedication as XMLList;
-			extractHistory();
-			this._currWeekBeginning = HivivaStartup.userVO.serverDate;
-			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
+		}
+
+		private function extractHistory():void
+		{
+			_history = new Dictionary();
+			var medicationLength:int = this._medications.length();
+			var medicationSchedule:XMLList;
+			var medicationScheduleLength:int;
+			var referenceDate:Number;
+			var medicationId:String;
+			for (var i:int = 0; i < medicationLength; i++)
+			{
+				medicationSchedule = this._medications[i].Schedule.DCMedicationSchedule as XMLList;
+				medicationId = _medications[i].MedicationID;
+
+				medicationScheduleLength = medicationSchedule.length();
+				for (var j:int = 0; j < medicationScheduleLength; j++)
+				{
+					referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[j].DateTaken)).getTime();
+					if (_history[referenceDate] == undefined) _history[referenceDate] = [];
+					_history[referenceDate].push({id:medicationId,data:medicationSchedule[j]});
+				}
+			}
 		}
 
 		public function drawTable():void
 		{
-			initWeekNav();
 			initDayRow();
-			initTableContainer();
-			initMedicineNamesColumn();
-			recordRowHeights();
-			updateTableData();
-			initTableBackground();
-		}
-
-		private function initWeekNav():void
-		{
-//			var arrowTexture:Texture = Assets.getTexture('ArrowPng');
-			this._weekNavHolder = new Sprite();
-			addChild(this._weekNavHolder);
-			this._weekNavHolder.x = this._firstColumnWidth;
-
-			var viewLabel:Label = new Label();
-			viewLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
-			viewLabel.text = "View:";
-			this._weekNavHolder.addChild(viewLabel);
-			viewLabel.width = this._dataColumnsWidth * 2;
-			viewLabel.validate();
-
-			var leftArrow:Button = new Button();
-			leftArrow.name = "calendar-arrows";
-//			leftArrow.defaultSkin = new Image(arrowTexture);
-			leftArrow.addEventListener(starling.events.Event.TRIGGERED, leftArrowHandler);
-			this._weekNavHolder.addChild(leftArrow);
-			leftArrow.validate();
-			leftArrow.x = viewLabel.x + viewLabel.width;
-
-			var rightArrow:Button = new Button();
-			rightArrow.name = "calendar-arrows";
-//			rightArrow.defaultSkin = new Image(arrowTexture);
-			rightArrow.addEventListener(starling.events.Event.TRIGGERED, rightArrowHandler);
-			this._weekNavHolder.addChild(rightArrow);
-			rightArrow.scaleX = -1;
-			rightArrow.validate();
-
-			this._weekText = new Label();
-			this._weekText.touchable = false;
-			this._weekText.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
-			this._weekNavHolder.addChild(this._weekText);
-			this._weekText.width = (this._dataColumnsWidth * 7) -
-					rightArrow.width - leftArrow.width - viewLabel.width;
-			this._weekText.validate();
-
-			this._weekText.x = leftArrow.x + leftArrow.width;
-			leftArrow.y = (this._weekText.height * 0.5) - (leftArrow.height * 0.25);
-			rightArrow.y = (this._weekText.height * 0.5) - (rightArrow.height * 0.25);
-			rightArrow.x = (this._dataColumnsWidth * 8) - rightArrow.width;
+			initDayRowBg();
 		}
 
 		private function initDayRow():void
@@ -140,7 +110,6 @@ package collaboRhythm.hiviva.view.components
 			// day names row
 			var firstRowPadding:Number = this.actualHeight * 0.02;
 			_dayRow = new Sprite();
-			_dayRow.y = this._weekNavHolder.height;
 			addChild(_dayRow);
 
 			var dayLabel:Label;
@@ -157,12 +126,12 @@ package collaboRhythm.hiviva.view.components
 			}
 			// need to validate for row height
 			this._firstRowHeight = _dayRow.height + (firstRowPadding * 2);
+			this._tableStartY = this._firstRowHeight;
 		}
 
 		private function initTableContainer():void
 		{
-			// data vertical scroll container
-			this._tableStartY = this._weekNavHolder.height + this._firstRowHeight;
+			if(this._mainScrollContainer != null) this._mainScrollContainer.removeChildren(0,-1,true);
 
 			this._mainScrollContainer = new ScrollContainer();
 			addChild(this._mainScrollContainer);
@@ -173,21 +142,48 @@ package collaboRhythm.hiviva.view.components
 			this._mainScrollContainer.layout = vLayout;
 		}
 
+		private function initTableDataContainer():void
+		{
+			if(this._dataContainer != null) this._dataContainer.removeChildren(0,-1,true);
+
+			this._dataContainer = new Sprite();
+			this._mainScrollContainer.addChild(this._dataContainer);
+			this._dataContainer.x = this._firstColumnWidth;
+		}
+
 		private function initMedicineNamesColumn():void
 		{
+			this._rowsData = [];
 			// names column
-			var medicationCount:uint = _medications.length();
+			var medLength:uint = _medications.length();
 			var medicationCell:MedicationCell;
-			for (var cellCount:int = 0; cellCount < medicationCount; cellCount++)
+			var medicationId:String;
+			var medIds:Array = [];
+			var medExists:Boolean;
+			for (var medCount:int = 0; medCount < medLength; medCount++)
 			{
-				medicationCell = new MedicationCell();
-				medicationCell.scale = this._scale;
-				medicationCell.brandName = HivivaModifier.getBrandName(_medications[cellCount].MedicationName);
-				medicationCell.genericName = HivivaModifier.getGenericName(_medications[cellCount].MedicationName);
-				this._mainScrollContainer.addChild(medicationCell);
-				medicationCell.width = this._firstColumnWidth;
+				medicationId = _medications[medCount].MedicationID;
+				medExists = false;
+				for (var i:int = 0; i < medIds.length; i++)
+				{
+					if(medIds[i] == medicationId)
+					{
+						medExists = true;
+						break;
+					}
+				}
+				if(!medExists)
+				{
+					medicationCell = new MedicationCell();
+					medicationCell.scale = this._scale;
+					medicationCell.brandName = HivivaModifier.getBrandName(_medications[medCount].MedicationName);
+					medicationCell.genericName = HivivaModifier.getGenericName(_medications[medCount].MedicationName);
+					this._mainScrollContainer.addChild(medicationCell);
+					medicationCell.width = this._firstColumnWidth;
 
-				this._rowsData.push({id: cellCount});
+					medIds.push(medicationId);
+					this._rowsData.push({id: medicationId});
+				}
 			}
 			// tolerability row name
 
@@ -207,7 +203,7 @@ package collaboRhythm.hiviva.view.components
 			tolerabilityRowBg.alpha = 0;
 			tolerabilityRowHolder.addChild(tolerabilityRowBg);
 
-			this._rowsData.push({id: medicationCount});
+			this._rowsData.push({id: medLength});
 
 			this._mainScrollContainer.validate();
 
@@ -233,62 +229,26 @@ package collaboRhythm.hiviva.view.components
 			}
 		}
 
-		private function leftArrowHandler(e:Event):void
+		public function updateTableData():void
 		{
-			this._currWeekBeginning.date -= 7;
-			updateTableData();
-		}
+			this._medications = _patientData.DCUserMedication as XMLList;
+			extractHistory();
 
-		private function rightArrowHandler(e:Event):void
-		{
-			this._currWeekBeginning.date += 7;
-			updateTableData();
-		}
+			initTableContainer();
 
-		private function updateTableData():void
-		{
-			setCurrentWeek();
+			initMedicineNamesColumn();
+			recordRowHeights();
+
 			initTableDataContainer();
+
 			populateAdherence();
 			populateTolerability();
-		}
+			initHorizontalLines();
 
-		private function setCurrentWeek():void
-		{
-//			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
-			this._weekText.text = "wc: " + HivivaModifier.getCalendarStringFromDate(this._currWeekBeginning);
-			this._weekText.validate();
-		}
-
-		private function extractHistory():void
-		{
-			_history = new Dictionary();
-			var medicationLength:int = this._medications.length();
-			var medicationSchedule:XMLList;
-			var medicationScheduleLength:int;
-			var referenceDate:Number;
-			for (var i:int = 0; i < medicationLength; i++)
-			{
-				medicationSchedule = this._medications[i].Schedule.DCMedicationSchedule as XMLList;
-				medicationScheduleLength = medicationSchedule.length();
-				for (var j:int = 0; j < medicationScheduleLength; j++)
-				{
-					referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[j].DateTaken)).getTime();
-					if (_history[referenceDate] == undefined) _history[referenceDate] = [];
-					_history[referenceDate].push({id:i,data:medicationSchedule[j]});
-				}
+			if(_wholeTableBg == null) {
+				initTableBgColours();
+				initVerticalLines();
 			}
-		}
-
-		private function initTableDataContainer():void
-		{
-			if(this._dataContainer != null)
-			{
-				this._dataContainer.removeChildren(0,-1,true);
-			}
-			this._dataContainer = new Sprite();
-			this._mainScrollContainer.addChild(this._dataContainer);
-			this._dataContainer.x = this._firstColumnWidth;
 		}
 
 		private function populateAdherence():void
@@ -389,34 +349,24 @@ package collaboRhythm.hiviva.view.components
 			return cell;
 		}
 
-		private function initTableBackground():void
-		{
-			initTableBgColours();
-			initDayRowBg();
-			initVerticalLines();
-			initHorizontalLines();
-		}
-
 		private function initTableBgColours():void
 		{
-			var wholeTableBg:Sprite = new Sprite();
-			wholeTableBg.y = this._mainScrollContainer.y;
-			addChildAt(wholeTableBg, 0);
+			_wholeTableBg = new Sprite();
+			_wholeTableBg.y = this._mainScrollContainer.y;
+			addChildAt(_wholeTableBg, 0);
 
 			var tableBgColour:Quad = new Quad(this.actualWidth, this._mainScrollContainer.height, 0x4c5f76);
 			tableBgColour.alpha = 0.1;
-//			tableBgColour.y = dayRowGrad.height;
 			tableBgColour.blendMode = BlendMode.MULTIPLY;
-			wholeTableBg.addChild(tableBgColour);
+			_wholeTableBg.addChild(tableBgColour);
 
 			var firstColumnGrad:Quad = new Quad(this._firstColumnWidth, this._mainScrollContainer.height, 0x233448);
 			firstColumnGrad.setVertexAlpha(0, 0);
 			firstColumnGrad.setVertexAlpha(1, 1);
 			firstColumnGrad.setVertexAlpha(2, 0);
 			firstColumnGrad.setVertexAlpha(3, 1);
-//			firstColumnGrad.y = this._firstRowHeight;
 			firstColumnGrad.alpha = 0.1;
-			wholeTableBg.addChild(firstColumnGrad);
+			_wholeTableBg.addChild(firstColumnGrad);
 
 			var lastColumnGrad:Quad = new Quad(this._firstColumnWidth, this._mainScrollContainer.height, 0x233448);
 			lastColumnGrad.setVertexAlpha(0, 1);
@@ -424,9 +374,8 @@ package collaboRhythm.hiviva.view.components
 			lastColumnGrad.setVertexAlpha(2, 1);
 			lastColumnGrad.setVertexAlpha(3, 0);
 			lastColumnGrad.x = this._firstColumnWidth + (this._dataColumnsWidth * 7);
-//			lastColumnGrad.y = this._firstRowHeight;
 			lastColumnGrad.alpha = 0.1;
-			wholeTableBg.addChild(lastColumnGrad);
+			_wholeTableBg.addChild(lastColumnGrad);
 		}
 
 		private function initDayRowBg():void
@@ -456,7 +405,7 @@ package collaboRhythm.hiviva.view.components
 			{
 				verticalLine = new Image(vertLineTexture);
 				verticalLine.x = this._firstColumnWidth + (this._dataColumnsWidth * dayCount);
-				verticalLine.y = this._weekNavHolder.height;
+//				verticalLine.y = this._weekNavHolder.height;
 				verticalLine.height = this._firstRowHeight + this._mainScrollContainer.height;
 				addChild(verticalLine);
 			}
@@ -499,6 +448,16 @@ package collaboRhythm.hiviva.view.components
 		public function set scale(value:Number):void
 		{
 			_scale = value;
+		}
+
+		public function get currWeekBeginning():Date
+		{
+			return _currWeekBeginning;
+		}
+
+		public function set currWeekBeginning(value:Date):void
+		{
+			_currWeekBeginning = value;
 		}
 	}
 }
