@@ -241,7 +241,7 @@ package collaboRhythm.hiviva.view.screens
 
 		public function set dateText(value:String):void
 		{
-			_dateText = HivivaModifier.isoDateToPrettyString(value);
+			_dateText = HivivaModifier.getPrettyStringFromIsoString(value);
 		}
 
 		public function get check():Check

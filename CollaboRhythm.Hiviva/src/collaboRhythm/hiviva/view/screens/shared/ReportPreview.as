@@ -53,14 +53,14 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			if(!this._medicationHistoryCallMade && (this._adherenceIsChecked || this._feelingIsChecked))
 			{
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE, getDailyMedicationHistoryCompleteHandler);
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getDailyMedicationHistory(this._patientGuid);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE, getDailyMedicationHistoryRangeCompleteHandler);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getDailyMedicationHistoryRange(this._patientGuid, HivivaModifier.getIsoStringFromDate(this._startDate), HivivaModifier.getIsoStringFromDate(this._endDate));
 			}
 
 			if(!this._testResultsCallMade && (this._cd4IsChecked || this._viralLoadIsChecked))
 			{
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientAllTestResults(this._patientGuid);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_RESULTS_RANGE_COMPLETE, getPatientTestResultsRangeCompleteHandler);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientTestResultsRange(this._patientGuid, HivivaModifier.getIsoStringFromDate(this._startDate), HivivaModifier.getIsoStringFromDate(this._endDate));
 			}
 		}
 
@@ -170,9 +170,9 @@ package collaboRhythm.hiviva.view.screens.shared
 			mainLabel.validate();
 		}
 
-		private function getDailyMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
+		private function getDailyMedicationHistoryRangeCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_COMPLETE, getDailyMedicationHistoryCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE, getDailyMedicationHistoryRangeCompleteHandler);
 
 			this._filteredMedicationHistory = e.data.xmlResponse.DCUserMedication;
 			if(this._filteredMedicationHistory.length() > 0)
@@ -187,9 +187,9 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._medicationHistoryCallMade = true;
 		}
 
-		private function getPatientAllTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
+		private function getPatientTestResultsRangeCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_ALL_RESULTS_COMPLETE, getPatientAllTestResultsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_RESULTS_RANGE_COMPLETE, getPatientTestResultsRangeCompleteHandler);
 
 			this._filteredTestResults = e.data.xmlResponse.Results.DCTestResult;
 			if(this._filteredTestResults.length() > 0)

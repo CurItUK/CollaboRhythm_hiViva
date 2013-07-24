@@ -227,7 +227,7 @@ package collaboRhythm.hiviva.view.components
 				bottomAxisValue.name = HivivaThemeConstants.CELL_SMALL_LABEL;
 				/*bottomAxisValue.text = HivivaModifier.isoDateToPrettyString((daysItar.getMonth() + 1).toString()) + "/" +
 						HivivaModifier.addPrecedingZero(daysItar.getDate().toString());*/
-				bottomAxisValue.text = HivivaModifier.flashDateToPrettyString(daysItar,false);
+				bottomAxisValue.text = HivivaModifier.getPrettyStringFromDate(daysItar,false);
 				addChild(bottomAxisValue);
 				bottomAxisValue.validate();
 				bottomAxisValue.rotation = deg2rad(-90);

@@ -111,7 +111,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			{
 				case MessageInboxResultCell.COMPOSED_MESSAGE_TYPE :
 					this._nameLabel.text = _messageData.Name;
-					this._dateLabel.text = HivivaModifier.isoDateToPrettyString(_messageData.SentDate);
+					this._dateLabel.text = HivivaModifier.getPrettyStringFromIsoString(_messageData.SentDate);
 					this._messageLabel.text = _messageData.Message;
 					this._options.labels = ["Delete"];
 
@@ -120,7 +120,7 @@ package collaboRhythm.hiviva.view.screens.shared
 					break;
 				case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
 					this._nameLabel.text = _messageData.FromAppId;
-					this._dateLabel.text = HivivaModifier.isoDateToPrettyString(_messageData.SentDate);
+					this._dateLabel.text = HivivaModifier.getPrettyStringFromIsoString(_messageData.SentDate);
 					this._messageLabel.text = user + " (" + _messageData.FromAppId + ") has requested to connect";
 					this._options.labels = ["Ignore","Accept"];
 					break;

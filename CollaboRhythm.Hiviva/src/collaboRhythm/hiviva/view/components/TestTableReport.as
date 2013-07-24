@@ -126,7 +126,7 @@ package collaboRhythm.hiviva.view.components
 				dataTypeCount++;
 				if(dataTypeCount == 2)
 				{
-					_testData.dates.push(HivivaModifier.getCalendarStringFromDate(HivivaModifier.getDateFromIsoString(patientNode.TestDate)));
+					_testData.dates.push(HivivaModifier.getCalendarStringFromIsoString(patientNode.TestDate));
 					dataTypeCount = 0;
 					dataCount++;
 				}
@@ -143,7 +143,6 @@ package collaboRhythm.hiviva.view.components
 
 		private function populateTestDateWithCd4():void
 		{
-			var testDate:Date;
 			var patientNode:XML;
 			var dataCount:int = 0;
 			for (var i:int = 0; i < _patientData.length(); i++)
@@ -151,8 +150,7 @@ package collaboRhythm.hiviva.view.components
 				patientNode = _patientData[i];
 				if(String(patientNode.TestDescription) == DATA_CD4)
 				{
-					testDate = HivivaModifier.getDateFromIsoString(patientNode.TestDate);
-					_testData.dates.push(HivivaModifier.getCalendarStringFromDate(testDate));
+					_testData.dates.push(HivivaModifier.getCalendarStringFromIsoString(patientNode.TestDate));
 					_testData.cd4s.push(Number(patientNode.Result));
 					dataCount++;
 				}
@@ -164,7 +162,6 @@ package collaboRhythm.hiviva.view.components
 
 		private function populateTestDateWithViralLoad():void
 		{
-			var testDate:Date;
 			var patientNode:XML;
 			var dataCount:int = 0;
 			for (var i:int = 0; i < _patientData.length(); i++)
@@ -172,8 +169,7 @@ package collaboRhythm.hiviva.view.components
 				patientNode = _patientData[i];
 				if(String(patientNode.TestDescription) == DATA_VIRAL_LOAD)
 				{
-					testDate = HivivaModifier.getDateFromIsoString(patientNode.TestDate);
-					_testData.dates.push(HivivaModifier.getCalendarStringFromDate(testDate));
+					_testData.dates.push(HivivaModifier.getCalendarStringFromIsoString(patientNode.TestDate));
 					_testData.viralLoads.push(Number(patientNode.Result));
 					dataCount++;
 				}
