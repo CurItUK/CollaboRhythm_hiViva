@@ -15,6 +15,7 @@ package collaboRhythm.hiviva.global
 		public static const RS_GET_DAILY_MEDICATION_HISTORY:String = 				"WSUserMedication.svc/GetDailyHistoryOfMedicationTaken?";
 		public static const RS_GET_DAILY_MEDICATION_HISTORY_RANGE:String = 			"WSUserMedication.svc/GetDailyMedicationTakenBetweenDates?";
 		public static const RS_GET_WEEKLY_MEDICATION_HISTORY:String = 				"WSUserMedication.svc/GetWeeklyHistoryOfMedicationTaken?";
+		public static const RS_GET_ALL_WEEKLY_MEDICATION_HISTORY:String = 			"WSUserMedication.svc/GetAllUsersWeeklyMedication?";
 
 		//Messaging
 		public static const RS_GET_MESSAGES:String = 								"WSMessage.svc/GetMessages";

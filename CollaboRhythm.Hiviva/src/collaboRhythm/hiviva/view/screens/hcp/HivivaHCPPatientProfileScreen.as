@@ -105,7 +105,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._patientProfileData = Main.selectedHCPPatientProfile;
 
-			this._currWeekBeginning = HivivaStartup.userVO.serverDate;
+			var currentDate:Date = HivivaStartup.userVO.serverDate;
+			this._currWeekBeginning = new Date(currentDate.fullYear,currentDate.month,currentDate.date,currentDate.hours,currentDate.minutes,currentDate.seconds,currentDate.milliseconds);
 			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
 
 			this._header = new HivivaHeader();

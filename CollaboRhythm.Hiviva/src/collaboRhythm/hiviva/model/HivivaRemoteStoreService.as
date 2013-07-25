@@ -500,6 +500,24 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
+		public function getAllWeeklyMedicationHistory(noOfWeeks:int):void
+		{
+			var query:String = "userGuid=" + HivivaStartup.userVO.guid + "&numberOfWeeks=" + noOfWeeks;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_ALL_WEEKLY_MEDICATION_HISTORY + query);
+			trace("getAllWeeklyMedicationHistory " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getAllWeeklyMedicationHistoryCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getAllWeeklyMedicationHistoryCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_ALL_WEEKLY_MEDICATION_HISTORY_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt);
+		}
+
 		public function getUserDisplaySettings():void
 		{
 			var query:String = "userGuid=" + HivivaStartup.userVO.guid;

@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
@@ -36,11 +37,12 @@ package collaboRhythm.hiviva.view.components
 
 	public class PatientAdherenceChart extends FeathersControl
 	{
-		private var TOTAL_WEEKS:int = 5;
+		public static const TOTAL_WEEKS:int = 5;
 		private const LINE_COLOURS:Array = [0x2e445e,0x0b88ec,0xc20315,0x697a8f,0xffffff,0x000000];
 		private const PLOT_GIRTH:int = 4;
 
-		private var _filterdPatients:Array;
+		private var _patientData:Array;
+		private var _scheduleHistoryData:XMLList;
 		private var _firstWeek:Date;
 		private var _weeks:Vector.<Date>;
 		private var _patientAdherence:Array = [];
@@ -197,7 +199,7 @@ package collaboRhythm.hiviva.view.components
 		{
 			var patientNumberLabel:Label = new Label();
 			patientNumberLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
-			patientNumberLabel.text = _filterdPatients.length + " patient" + ((_filterdPatients.length > 1) ? "s" : "");
+			patientNumberLabel.text = _scheduleHistoryData.length() + " patient" + ((_scheduleHistoryData.length() > 1) ? "s" : "");
 			addChild(patientNumberLabel);
 			patientNumberLabel.x = this._chartStartX;
 			patientNumberLabel.y = this._chartStartY;
@@ -261,15 +263,15 @@ package collaboRhythm.hiviva.view.components
 		private function setFirstWeekCommencing():void
 		{
 			// tempDate will never be larger than currDate on the first loop iteration
-			var tempDate:Date = new Date(0,0,0,0,0,0,0);
+			/*var tempDate:Date = new Date(0,0,0,0,0,0,0);
 			var currDate:Date = new Date();
 			var medicationList:XMLList;
 			var medicationListLength:int;
 			var medicationSchedule:XMLList;
 			var medicationScheduleLength:int;
-			for (var i:int = 0; i < _filterdPatients.length; i++)
+			for (var i:int = 0; i < _scheduleHistoryData.length(); i++)
 			{
-				medicationList = _filterdPatients[i].xml.DCUserMedication;
+				medicationList = _scheduleHistoryData[i].UsersMedication.DCUserMedication;
 				medicationListLength = medicationList.length();
 				for (var j:int = 0; j < medicationListLength; j++)
 				{
@@ -284,12 +286,30 @@ package collaboRhythm.hiviva.view.components
 						}
 					}
 				}
-			}
+			}*/
+			var currentDate:Date = HivivaStartup.userVO.serverDate;
+			var tempDate:Date = new Date(currentDate.fullYear,currentDate.month,currentDate.date,currentDate.hours,currentDate.minutes,currentDate.seconds,currentDate.milliseconds);
 			// set to week beginning
 			HivivaModifier.floorToClosestMonday(tempDate);
 			// set to day, week * _totalWeeks before. -1 so the latest week is included in results
 			tempDate.date -= 7 * (TOTAL_WEEKS);
 			this._firstWeek = tempDate;
+		}
+
+		private function getAppIdWithGuid(guid:String):String
+		{
+			var appId:String;
+
+			for (var i:int = 0; i < _patientData.length; i++)
+			{
+				if(_patientData[i].appGuid == guid)
+				{
+					appId = _patientData[i].appId;
+					break;
+				}
+			}
+
+			return appId;
 		}
 
 		private function populatePatientAdherence():void
@@ -299,39 +319,35 @@ package collaboRhythm.hiviva.view.components
 			var medicationCount:int = 0;
 			var patientAverage:Number;
 			var adherenceData:Object;
-			var medicationList:XMLList;
-			var medicationListLength:int;
 			var medicationSchedule:XMLList;
-			var medicationScheduleLength:int;
 			var referenceDate:Date;
 
-			for (var i:int = 0; i < _filterdPatients.length; i++)
+			for (var i:int = 0; i < _scheduleHistoryData.length(); i++)
 			{
 				adherenceData = {};
-				adherenceData.patient = _filterdPatients[i].patientAppId;
+				adherenceData.patient = getAppIdWithGuid(_scheduleHistoryData[i].HealthUserGuid);
 				adherenceData.adherence = [];
+
+				medicationSchedule = _scheduleHistoryData[i]..DCMedicationSchedule;
+
 				weekItar = new Date(this._firstWeek.getFullYear(),this._firstWeek.getMonth(),this._firstWeek.getDate(),0,0,0,0);
 				for (var weekCount:int = 0; weekCount < TOTAL_WEEKS; weekCount++)
 				{
+					weekItar.date += 7;
+
 					medicationAdherence = 0;
 					medicationCount = 0;
 
-					medicationList = _filterdPatients[i].xml.DCUserMedication;
-					medicationListLength = medicationList.length();
-					for (var j:int = 0; j < medicationListLength; j++)
+					for (var k:int = 0; k < medicationSchedule.length(); k++)
 					{
-						medicationSchedule = medicationList[j].Schedule.DCMedicationSchedule;
-						medicationScheduleLength = medicationSchedule.length();
-						for (var k:int = 0; k < medicationScheduleLength; k++)
+						referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
+						if(weekItar.getTime() == referenceDate.getTime())
 						{
-							referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
-							if(weekItar.getTime() == referenceDate.getTime())
-							{
-								medicationAdherence += int(medicationSchedule[k].PercentTaken);
-								medicationCount++;
-							}
+							medicationAdherence += int(medicationSchedule[k].PercentTaken);
+							medicationCount++;
 						}
 					}
+
 					patientAverage = medicationAdherence / medicationCount;
 					if(!isNaN(patientAverage))
 					{
@@ -342,8 +358,6 @@ package collaboRhythm.hiviva.view.components
 					{
 						adherenceData.adherence.push(0);
 					}
-
-					weekItar.date += 7;
 				}
 				trace(TOTAL_WEEKS + " weeks adherence for " + adherenceData.patient + " = " + adherenceData.adherence.join(','));
 				this._patientAdherence.push(adherenceData);
@@ -494,14 +508,24 @@ package collaboRhythm.hiviva.view.components
 			Starling.juggler.add(legendTween);
 		}
 
-		public function get filterdPatients():Array
+		public function get scheduleHistoryData():XMLList
 		{
-			return _filterdPatients;
+			return _scheduleHistoryData;
 		}
 
-		public function set filterdPatients(value:Array):void
+		public function set scheduleHistoryData(value:XMLList):void
 		{
-			_filterdPatients = value;
+			_scheduleHistoryData = value;
+		}
+
+		public function get patientData():Array
+		{
+			return _patientData;
+		}
+
+		public function set patientData(value:Array):void
+		{
+			_patientData = value;
 		}
 	}
 }
