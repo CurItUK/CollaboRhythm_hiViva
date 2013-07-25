@@ -26,6 +26,7 @@ package collaboRhythm.hiviva.view.components
 
 	public class ScheduleTableReport extends FeathersControl
 	{
+		private var _history:Dictionary;
 		private var _patientData:XMLList;
 		private var _totalHeight:Number;
 		private var _rowsData:Array = [];
@@ -110,17 +111,36 @@ package collaboRhythm.hiviva.view.components
 			// names column
 			var medicationCount:uint = _patientData.length();
 			var medicationCell:MedicationCell;
+			var medicationId:String;
+			var medIds:Array = [];
+			var medExists:Boolean;
 			for (var cellCount:int = 0; cellCount < medicationCount; cellCount++)
 			{
-				medicationCell = new MedicationCell();
-				medicationCell.brandName = HivivaModifier.getBrandName(_patientData[cellCount].MedicationName);
-				medicationCell.genericName = HivivaModifier.getGenericName(_patientData[cellCount].MedicationName);
-				_dataHolder.addChild(medicationCell);
-				medicationCell.width = this._columnWidth;
-				medicationCell.validate();
-				medicationCell.y = _totalHeight;
-				_totalHeight += medicationCell.height;
-				this._rowsData.push({id: cellCount});
+				medicationId = _patientData[cellCount].MedicationID;
+				medExists = false;
+				for (var i:int = 0; i < medIds.length; i++)
+				{
+					if(medIds[i] == medicationId)
+					{
+						medExists = true;
+						break;
+					}
+				}
+				if(!medExists)
+				{
+					medicationCell = new MedicationCell();
+					medicationCell.brandName = HivivaModifier.getBrandName(_patientData[cellCount].MedicationName);
+					medicationCell.genericName = HivivaModifier.getGenericName(_patientData[cellCount].MedicationName);
+
+					_dataHolder.addChild(medicationCell);
+					medicationCell.width = this._columnWidth;
+					medicationCell.validate();
+					medicationCell.y = _totalHeight;
+					_totalHeight += medicationCell.height;
+
+					medIds.push(medicationId);
+					this._rowsData.push({id: medicationId});
+				}
 			}
 
 			// average row name
@@ -136,7 +156,7 @@ package collaboRhythm.hiviva.view.components
 
 			_totalHeight += averageRowLabel.height + (this._cellPadding * 2);
 
-			this._rowsData.push({id: medicationCount});
+			this._rowsData.push({id: -1});
 		}
 
 		private function recordRowHeights():void
@@ -159,6 +179,43 @@ package collaboRhythm.hiviva.view.components
 
 		private function populateTableCells():void
 		{
+			var realMedLength:int = this._rowsData.length - 1;
+			var rowData:Object;
+			var valueCount:int;
+			var value:Number;
+			var medicationLength:int = this._patientData.length();
+			var medicationSchedule:XMLList;
+			var medicationScheduleLength:int;
+			var overallAverage:Number = 0;
+			for (var rowCount:int = 0; rowCount < realMedLength; rowCount++)
+			{
+				rowData = this._rowsData[rowCount];
+
+				value = 0;
+				valueCount = 0;
+
+				for (var i:int = 0; i < medicationLength; i++)
+				{
+					if(String(_patientData[i].MedicationID) == rowData.id)
+					{
+						medicationSchedule = this._patientData[i].Schedule.DCMedicationSchedule as XMLList;
+						medicationScheduleLength = medicationSchedule.length();
+						for (var j:int = 0; j < medicationScheduleLength; j++)
+						{
+							value += int(medicationSchedule[j].PercentTaken);
+							valueCount++;
+						}
+					}
+				}
+				overallAverage += (value / valueCount);
+				drawTableCell(String(Math.round(value / valueCount)), rowCount);
+			}
+			drawTableCell(String(Math.round(overallAverage / realMedLength)), realMedLength);
+		}
+/*
+
+		private function populateTableCells():void
+		{
 			var medicationLength:int = this._patientData.length();
 			var medicationSchedule:XMLList;
 			var medicationScheduleLength:int;
@@ -175,10 +232,11 @@ package collaboRhythm.hiviva.view.components
 					medicineAverage += int(medicationSchedule[j].PercentTaken)
 				}
 				overallAverage += (medicineAverage / medicationScheduleLength);
-				drawTableCell(String(Math.round(medicineAverage / medicationScheduleLength)), i);
+				drawTableCell(String(Math.round(medicineAverage / medicationScheduleLength)), int(_patientData[i].MedicationID));
 			}
 			drawTableCell(String(Math.round(overallAverage / medicationLength)), medicationLength);
 		}
+*/
 
 		private function drawTableCell(value:String, rowDataId:int):void
 		{
