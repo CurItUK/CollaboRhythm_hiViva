@@ -212,31 +212,6 @@ package collaboRhythm.hiviva.view.components
 			}
 			drawTableCell(String(Math.round(overallAverage / realMedLength)), realMedLength);
 		}
-/*
-
-		private function populateTableCells():void
-		{
-			var medicationLength:int = this._patientData.length();
-			var medicationSchedule:XMLList;
-			var medicationScheduleLength:int;
-			var medicineAverage:Number;
-			var overallAverage:Number = 0;
-			for (var i:int = 0; i < medicationLength; i++)
-			{
-				medicineAverage = 0;
-
-				medicationSchedule = this._patientData[i].Schedule.DCMedicationSchedule as XMLList;
-				medicationScheduleLength = medicationSchedule.length();
-				for (var j:int = 0; j < medicationScheduleLength; j++)
-				{
-					medicineAverage += int(medicationSchedule[j].PercentTaken)
-				}
-				overallAverage += (medicineAverage / medicationScheduleLength);
-				drawTableCell(String(Math.round(medicineAverage / medicationScheduleLength)), int(_patientData[i].MedicationID));
-			}
-			drawTableCell(String(Math.round(overallAverage / medicationLength)), medicationLength);
-		}
-*/
 
 		private function drawTableCell(value:String, rowDataId:int):void
 		{
