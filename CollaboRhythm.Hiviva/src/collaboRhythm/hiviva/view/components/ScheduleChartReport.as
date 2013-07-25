@@ -119,7 +119,7 @@ package collaboRhythm.hiviva.view.components
 					for (var k:int = 0; k < medicationScheduleLength; k++)
 					{
 						referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
-						if(daysItar.getTime() == referenceDate.getTime())
+						if(daysItar.getTime() == referenceDate.getTime()/* && daysItar.getTime() > first && daysItar.getTime() < last */)
 						{
 							valueData = this._dataCategory == "adherence" ? int(medicationSchedule[k].PercentTaken) : int(medicationSchedule[k].Tolerability);
 
