@@ -1,12 +1,11 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
-	import collaboRhythm.hiviva.controller.HivivaAppController;
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
-	import collaboRhythm.hiviva.view.screens.patient.VirusModel.TCellView;
+
 	import collaboRhythm.hiviva.view.screens.patient.VirusModel.TCellView;
 	import collaboRhythm.hiviva.view.screens.patient.VirusModel.VirusSettingsControl;
 	import collaboRhythm.hiviva.view.screens.patient.VirusModel.VirusSimulation;
@@ -15,11 +14,11 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import feathers.controls.Button;
 	import feathers.controls.ImageLoader;
-	import feathers.controls.Label;
+
 	import feathers.controls.Screen;
-	import feathers.controls.Slider;
+
 	import feathers.display.TiledImage;
-	import feathers.events.FeathersEventType;
+
 
 	import starling.animation.Transitions;
 

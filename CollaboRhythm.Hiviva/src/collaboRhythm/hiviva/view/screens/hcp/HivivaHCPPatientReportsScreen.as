@@ -1,50 +1,28 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.controller.HivivaAppController;
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
-
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
-	import collaboRhythm.hiviva.global.HivivaThemeConstants;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.view.components.Calendar;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.components.Calendar;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
-
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
 	import feathers.controls.Label;
-	import feathers.controls.List;
-	import feathers.controls.PickerList;
-	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
 	import feathers.core.PopUpManager;
-	import feathers.data.ListCollection;
 
-	import flash.display.Sprite;
-	import flash.events.MouseEvent;
 	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
 	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
-	import flash.utils.ByteArray;
-
-	import org.alivepdf.layout.Orientation;
-	import org.alivepdf.layout.Size;
-	import org.alivepdf.layout.Unit;
-	import org.alivepdf.pdf.PDF;
-	import org.alivepdf.saving.Method;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.Event;
-
 
 	public class HivivaHCPPatientReportsScreen extends ValidationScreen
 	{
@@ -143,7 +121,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
@@ -164,7 +142,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._startDateInput._input.isEnabled = false;
 
 			this._startDateButton = new Button();
-			this._startDateButton.addEventListener(starling.events.Event.TRIGGERED, startDateCalendarHandler);
+			this._startDateButton.addEventListener(Event.TRIGGERED, startDateCalendarHandler);
 			this._startDateButton.name = "calendar-button";
 			this._content.addChild(this._startDateButton);
 
@@ -175,7 +153,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._finishDateInput._input.isEnabled = false;
 
 			this._finishDateButton = new Button();
-			this._finishDateButton.addEventListener(starling.events.Event.TRIGGERED, finishDateCalendarHandler);
+			this._finishDateButton.addEventListener(Event.TRIGGERED, finishDateCalendarHandler);
 			this._finishDateButton.name = "calendar-button";
 			this._content.addChild(this._finishDateButton);
 
@@ -207,7 +185,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._previewAndSendBtn = new Button();
 			this._previewAndSendBtn.label = "Preview and send";
-			this._previewAndSendBtn.addEventListener(starling.events.Event.TRIGGERED, previewSendHandler);
+			this._previewAndSendBtn.addEventListener(Event.TRIGGERED, previewSendHandler);
 			this._content.addChild(this._previewAndSendBtn);
 
 			this._calendar = new Calendar();
@@ -221,7 +199,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._activeCalendarInput.text = e.evtData.date;
 		}
 
-		private function startDateCalendarHandler(e:starling.events.Event):void
+		private function startDateCalendarHandler(e:Event):void
 		{
 			this._activeCalendarInput = this._startDateInput._input;
 			PopUpManager.addPopUp(this._calendar,true,false);
@@ -231,7 +209,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 
-		private function finishDateCalendarHandler(e:starling.events.Event):void
+		private function finishDateCalendarHandler(e:Event):void
 		{
 			this._activeCalendarInput = this._finishDateInput._input;
 			PopUpManager.addPopUp(this._calendar,true,false);
@@ -242,12 +220,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 		}
 
 
-		private function backBtnHandler(e:starling.events.Event):void
+		private function backBtnHandler(e:Event):void
 		{
 			this._owner.showScreen(HivivaScreens.HCP_PATIENT_PROFILE);
 		}
 
-		private function previewSendHandler(e:starling.events.Event):void
+		private function previewSendHandler(e:Event):void
 		{
 			//TODO move PDF creating into UTILS class
 			//TODO move fileStream - report PDF file creation to local service class
@@ -305,7 +283,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._pdfPopupContainer.width = this.actualWidth;
 			this._pdfPopupContainer.height = this.actualHeight;
 			this._pdfPopupContainer.addEventListener("sendMail", mailBtnHandler);
-			this._pdfPopupContainer.addEventListener(starling.events.Event.CLOSE, closePopup);
+			this._pdfPopupContainer.addEventListener(Event.CLOSE, closePopup);
 			this._pdfPopupContainer.validate();
 
 			PopUpManager.addPopUp(this._pdfPopupContainer, true, true);
@@ -322,7 +300,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		}
 
-		private function closePopup(e:starling.events.Event):void
+		private function closePopup(e:Event):void
 		{
 			this._stageWebView.viewPort = null;
 			this._stageWebView.dispose();
@@ -334,7 +312,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 
 
-		private function mailBtnHandler(e:starling.events.Event):void
+		private function mailBtnHandler(e:Event):void
 		{
 			closePopup(e);
 			//TODO add mail native extentions for IOS and Android

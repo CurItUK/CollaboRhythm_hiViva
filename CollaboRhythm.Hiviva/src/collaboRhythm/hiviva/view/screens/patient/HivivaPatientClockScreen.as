@@ -1,8 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 
-	import collaboRhythm.hiviva.controller.HivivaAppController;
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;

@@ -1,37 +1,31 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
-	import collaboRhythm.hiviva.global.HivivaAssets;
+
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
+
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
-	import collaboRhythm.hiviva.view.components.MedicationCell;
+
 	import collaboRhythm.hiviva.view.components.PatientAdherenceTable;
-	import collaboRhythm.hiviva.view.media.Assets;
-	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
+
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPPatientMessageCompose;
 
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientReportsScreen;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
-	import feathers.display.Scale9Image;
+
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.layout.HorizontalLayout;
-	import feathers.layout.TiledColumnsLayout;
-	import feathers.layout.VerticalLayout;
-	import feathers.textures.Scale9Textures;
+
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -41,16 +35,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import flash.events.IOErrorEvent;
 	import flash.geom.Matrix;
 
-	import flash.geom.Rectangle;
-	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 
-	import starling.display.BlendMode;
+
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
-	import starling.display.Sprite;
+
 	import starling.events.Event;
 
 	import starling.textures.Texture;

@@ -1,13 +1,11 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
-	import collaboRhythm.hiviva.controller.HivivaAppController;
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
@@ -15,21 +13,20 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.screens.shared.HivivaMessageDetail;
 
 	import feathers.controls.Button;
-	import feathers.controls.Label;
+
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
-	import feathers.core.FeathersControl;
-	import feathers.core.PopUpManager;
+
 	import feathers.layout.VerticalLayout;
 
-	import source.themes.HivivaTheme;
+
 
 	import starling.display.DisplayObject;
-	import starling.display.Image;
+
 
 	import starling.events.Event;
-	import starling.textures.Texture;
+
 
 
 	public class HivivaPatientMessagesScreen extends Screen

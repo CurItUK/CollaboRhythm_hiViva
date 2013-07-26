@@ -3,18 +3,15 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.view.*;
 
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
+
 	import collaboRhythm.hiviva.global.HivivaScreens;
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
-	import feathers.controls.Header;
+
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
-	import feathers.controls.ScrollText;
-	import feathers.controls.TextInput;
-	import feathers.layout.VerticalLayout;
-	import feathers.layout.ViewPortBounds;
+
 
 	import flash.data.SQLConnection;
 	import flash.data.SQLResult;

@@ -2,12 +2,9 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.view.*;
 
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.global.HivivaAssets;
+
 	import collaboRhythm.hiviva.global.HivivaScreens;
-	import collaboRhythm.hiviva.view.media.Assets;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientClockScreen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientPillboxScreen;
+
 	import collaboRhythm.hiviva.view.screens.shared.BaseScreen;
 
 	import feathers.controls.Header;
