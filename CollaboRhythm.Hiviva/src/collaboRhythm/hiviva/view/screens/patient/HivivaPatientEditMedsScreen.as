@@ -5,32 +5,26 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
-	import collaboRhythm.hiviva.controller.HivivaApplicationController;
-	import collaboRhythm.hiviva.controller.HivivaLocalStoreController;
+
 	import collaboRhythm.hiviva.global.HivivaScreens;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.components.EditMedicationCell;
-	import collaboRhythm.hiviva.view.components.MedicationCell;
+
 	import collaboRhythm.hiviva.view.media.Assets;
-	import collaboRhythm.hiviva.view.screens.shared.BaseScreen;
 
 	import feathers.controls.Button;
-	import feathers.controls.Check;
-	import feathers.controls.Label;
-	import feathers.controls.List;
+
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.Scroller;
-	import feathers.controls.TextInput;
-	import feathers.data.ListCollection;
-	import feathers.data.ListCollection;
+
 	import feathers.layout.VerticalLayout;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
-	import starling.display.Sprite;
+
 
 	import starling.events.Event;
 

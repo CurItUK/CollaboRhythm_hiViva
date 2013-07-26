@@ -5,7 +5,8 @@ package collaboRhythm.hiviva.global
 	public class NotificationsEvent extends Event
 	{
 
-		public static const HOMEPAGE_TICK_COMPLETE:String			= "patientHomepageTickComplete";
+		public static const HOMEPAGE_TICK_COMPLETE:String			= "homepageTickComplete";
+		public static const GLOBAL_TICK:String						= "globalTick";
 
 
 
