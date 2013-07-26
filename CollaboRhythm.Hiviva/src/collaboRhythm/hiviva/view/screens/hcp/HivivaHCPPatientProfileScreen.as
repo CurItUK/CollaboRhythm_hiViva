@@ -249,7 +249,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function getDailyMedicationHistoryRange():void
 		{
-			var startIsoDate:String = HivivaModifier.getIsoStringFromDate(this._currWeekBeginning);
+			var startDate:Date = new Date(this._currWeekBeginning.getFullYear(),this._currWeekBeginning.getMonth(),this._currWeekBeginning.getDate(),0,0,0,0);
+			startDate.date += 1;
+			var startIsoDate:String = HivivaModifier.getIsoStringFromDate(startDate);
 			var endDate:Date = new Date(this._currWeekBeginning.getFullYear(),this._currWeekBeginning.getMonth(),this._currWeekBeginning.getDate(),0,0,0,0);
 			endDate.date += 7;
 			var endIsoDate:String = HivivaModifier.getIsoStringFromDate(endDate);
