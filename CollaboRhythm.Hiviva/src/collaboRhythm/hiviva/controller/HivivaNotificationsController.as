@@ -2,16 +2,10 @@ package collaboRhythm.hiviva.controller
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.NotificationsEvent;
-	import collaboRhythm.hiviva.global.NotificationsEvent;
-
-	import flash.events.Event;
 
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-
-	import org.osmf.events.TimeEvent;
-
 
 	public class HivivaNotificationsController extends EventDispatcher
 	{
@@ -28,7 +22,7 @@ package collaboRhythm.hiviva.controller
 		{
 			this._globalTimer = new Timer(Constants.GLOBAL_CHECK_DATETIME);
 			this._globalTimer.addEventListener(TimerEvent.TIMER , onGlobalTimerTick);
-
+			this._globalTimer.start();
 		}
 
 		private function onGlobalTimerTick(e:TimerEvent):void
