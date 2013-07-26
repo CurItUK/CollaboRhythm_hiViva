@@ -3,50 +3,36 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
-
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
-
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
-
 	import collaboRhythm.hiviva.view.components.PatientAdherenceTable;
-
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPPatientMessageCompose;
-
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
-
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 
-
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.geom.Matrix;
-
 	import flash.net.URLRequest;
-
-
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
-
 	import starling.events.Event;
-
 	import starling.textures.Texture;
-
 
 	public class HivivaHCPPatientProfileScreen extends Screen
 	{
@@ -231,7 +217,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var weekTextLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			weekTextLayoutData.top = (_leftArrow.height * 0.5) - (_weekText.height * 0.5);
 			weekTextLayoutData.left = _leftArrow.x + _leftArrow.width + 20;
-			weekTextLayoutData.right = _rightArrow.x - 20;
+			weekTextLayoutData.right = _rightArrow.x + _rightArrow.width - 20;
 			_weekText.layoutData = weekTextLayoutData;
 		}
 

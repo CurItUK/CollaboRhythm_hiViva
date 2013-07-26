@@ -6,23 +6,16 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
-
 	import feathers.core.FeathersControl;
-	import feathers.text.BitmapFontTextFormat;
 
 	import flash.utils.Dictionary;
 
 	import starling.display.BlendMode;
-
 	import starling.display.DisplayObject;
 	import starling.display.Image;
-
 	import starling.display.Quad;
-
 	import starling.display.Sprite;
-	import starling.text.TextField;
 	import starling.textures.Texture;
-	import starling.utils.Color;
 
 	public class ScheduleTableReport extends FeathersControl
 	{
@@ -183,10 +176,20 @@ package collaboRhythm.hiviva.view.components
 			var rowData:Object;
 			var valueCount:int;
 			var value:Number;
+			var scheduleValue:Number;
+			var scheduleValueCount:int;
+			var currValue:Number;
 			var medicationLength:int = this._patientData.length();
 			var medicationSchedule:XMLList;
 			var medicationScheduleLength:int;
 			var overallAverage:Number = 0;
+
+			var earliestSchedule:Date;
+			var latestSchedule:Date;
+			var currentSchedule:Date;
+			var referenceDate:Date;
+			var range:Number;
+
 			for (var rowCount:int = 0; rowCount < realMedLength; rowCount++)
 			{
 				rowData = this._rowsData[rowCount];
@@ -200,11 +203,32 @@ package collaboRhythm.hiviva.view.components
 					{
 						medicationSchedule = this._patientData[i].Schedule.DCMedicationSchedule as XMLList;
 						medicationScheduleLength = medicationSchedule.length();
-						for (var j:int = 0; j < medicationScheduleLength; j++)
+						earliestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[medicationScheduleLength - 1].DateTaken));
+						latestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[0].DateTaken));
+						range = HivivaModifier.getDaysDiff(latestSchedule, earliestSchedule) + 1;
+
+						scheduleValue = 0;
+						scheduleValueCount = 0;
+						currentSchedule = new Date(earliestSchedule.getFullYear(),earliestSchedule.getMonth(),earliestSchedule.getDate(),0,0,0,0);
+						for (var dayCount:int = 0; dayCount < range; dayCount++)
 						{
-							value += int(medicationSchedule[j].PercentTaken);
-							valueCount++;
+							currValue = -1;
+							for (var j:int = 0; j < medicationScheduleLength; j++)
+							{
+								referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[j].DateTaken));
+								if(currentSchedule.getTime() == referenceDate.getTime())
+								{
+									currValue = int(medicationSchedule[j].PercentTaken);
+								}
+							}
+							// set value to Zero if within data range but missing
+							if(currValue == -1) currValue = 0;
+							scheduleValue += currValue;
+							scheduleValueCount++;
+							currentSchedule.date++;
 						}
+						value += scheduleValue;
+						valueCount += scheduleValueCount;
 					}
 				}
 				overallAverage += (value / valueCount);

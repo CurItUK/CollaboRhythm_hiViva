@@ -2,41 +2,25 @@ package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
-
-	import feathers.controls.Button;
 
 	import feathers.controls.Label;
 	import feathers.controls.ScrollContainer;
 	import feathers.core.FeathersControl;
-	import feathers.layout.TiledColumnsLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.text.BitmapFontTextFormat;
 
-	import flash.text.TextFormat;
-	import flash.text.TextFormatAlign;
 	import flash.utils.Dictionary;
-
-	import source.themes.HivivaTheme;
 
 	import starling.display.BlendMode;
 	import starling.display.DisplayObject;
-
 	import starling.display.Image;
 	import starling.display.Quad;
-
 	import starling.display.Sprite;
-	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.Color;
-	import starling.utils.deg2rad;
-	import starling.utils.rad2deg;
 
 	public class PatientAdherenceTable extends FeathersControl
 	{
@@ -258,7 +242,8 @@ package collaboRhythm.hiviva.view.components
 					this._currWeekBeginning.getDate(), 0, 0, 0, 0);
 			var columnData:Array;
 			var columnDataLength:int;
-			var columnXML:XML;
+			var percentTaken:Number;
+			var tolerability:Number;
 			var cell:Sprite;
 			var tickTexture:Texture = Assets.getTexture("TickPng");
 			var crossTexture:Texture = Assets.getTexture("CrossPng");
@@ -270,6 +255,9 @@ package collaboRhythm.hiviva.view.components
 				rowData = this._rowsData[rowCount];
 				for (var dayCount:int = 0; dayCount < 7; dayCount++)
 				{
+					percentTaken = 0;
+					tolerability = 0;
+
 					columnData = _history[currWeekDay.getTime()];
 					if (columnData != null)
 					{
@@ -278,20 +266,22 @@ package collaboRhythm.hiviva.view.components
 						{
 							if (columnData[i].id == rowData.id)
 							{
-								columnXML = columnData[i].data;
-								cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
-								this._dataContainer.addChild(cell);
-
-								var tickCrossImage:Image = new Image(String(columnXML.PercentTaken) ==
-										"100" ? tickTexture : crossTexture);
-								cell.addChild(tickCrossImage);
-								tickCrossImage.x = (cell.width * 0.5) - (tickCrossImage.width * 0.5);
-								tickCrossImage.y = (cell.height * 0.5) - (tickCrossImage.height * 0.5);
-
-								this._dailyTolerabilityData.push({day: dayCount, value: int(columnXML.Tolerability)});
+								percentTaken = columnData[i].data.PercentTaken;
+								tolerability = columnData[i].data.Tolerability;
 							}
 						}
 					}
+
+					cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
+					this._dataContainer.addChild(cell);
+
+					var tickCrossImage:Image = new Image(percentTaken == 100 ? tickTexture : crossTexture);
+					cell.addChild(tickCrossImage);
+					tickCrossImage.x = (cell.width * 0.5) - (tickCrossImage.width * 0.5);
+					tickCrossImage.y = (cell.height * 0.5) - (tickCrossImage.height * 0.5);
+
+					this._dailyTolerabilityData.push({day: dayCount, value: tolerability});
+
 					currWeekDay.date++;
 				}
 				currWeekDay = new Date(this._currWeekBeginning.getFullYear(), this._currWeekBeginning.getMonth(),
