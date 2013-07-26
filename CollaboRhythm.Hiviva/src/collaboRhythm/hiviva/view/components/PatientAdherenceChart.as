@@ -8,22 +8,16 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
-
 	import feathers.controls.Label;
 	import feathers.core.FeathersControl;
 	import feathers.display.TiledImage;
 	import feathers.text.BitmapFontTextFormat;
 
-	import flash.utils.Dictionary;
-
 	import starling.animation.Transitions;
-
 	import starling.animation.Tween;
 	import starling.core.Starling;
-
 	import starling.display.BlendMode;
 	import starling.display.Image;
-
 	import starling.display.Quad;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -32,7 +26,6 @@ package collaboRhythm.hiviva.view.components
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
-
 	import starling.utils.deg2rad;
 
 	public class PatientAdherenceChart extends FeathersControl

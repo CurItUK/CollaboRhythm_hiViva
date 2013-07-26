@@ -6,13 +6,11 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
-
 	import feathers.core.FeathersControl;
 	import feathers.display.TiledImage;
 
 	import starling.display.BlendMode;
 	import starling.display.Image;
-
 	import starling.display.Quad;
 	import starling.display.Shape;
 	import starling.textures.Texture;
@@ -105,6 +103,8 @@ package collaboRhythm.hiviva.view.components
 			var valueData:Number;
 			var medicationSchedule:XMLList;
 			var medicationScheduleLength:int;
+			var earliestSchedule:Date;
+			var latestSchedule:Date;
 
 			this._lowestValue = 100;
 
@@ -116,18 +116,21 @@ package collaboRhythm.hiviva.view.components
 				{
 					medicationSchedule = _patientData[j].Schedule.DCMedicationSchedule;
 					medicationScheduleLength = medicationSchedule.length();
+					earliestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[medicationScheduleLength - 1].DateTaken));
+					latestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[0].DateTaken));
 					for (var k:int = 0; k < medicationScheduleLength; k++)
 					{
-						referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
-						if(daysItar.getTime() == referenceDate.getTime()/* && daysItar.getTime() > first && daysItar.getTime() < last */)
+						if(daysItar.getTime() >= earliestSchedule.getTime() && daysItar.getTime() <= latestSchedule.getTime())
 						{
-							valueData = this._dataCategory == "adherence" ? int(medicationSchedule[k].PercentTaken) : int(medicationSchedule[k].Tolerability);
-
-							if(this._lowestValue > valueData/* && valueData > 0*/)
+							referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
+							if(daysItar.getTime() == referenceDate.getTime())
 							{
-								this._lowestValue = valueData;
+								valueData = this._dataCategory == "adherence" ? int(medicationSchedule[k].PercentTaken) : int(medicationSchedule[k].Tolerability);
 							}
+							// set valueData to Zero if within data range but missing
+							if(valueData == -1) valueData = 0;
 						}
+						if(this._lowestValue > valueData && valueData > -1) this._lowestValue = valueData;
 					}
 
 				}
@@ -284,7 +287,7 @@ package collaboRhythm.hiviva.view.components
 			var value:Number;
 			var plotLine:Shape = new Shape();
 			var plotCircles:Shape = new Shape();
-			var plotGirth:Number = 4;
+			var plotGirth:Number = 3;
 			var currColour:uint = LINE_COLOURS[Math.round((Math.random()*LINE_COLOURS.length))];
 			var valueY:Number;
 
