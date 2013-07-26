@@ -1,37 +1,17 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.view.*;
-	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.view.galleryscreens.Gallery;
+	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.galleryscreens.GalleryData;
 	import collaboRhythm.hiviva.view.galleryscreens.GalleryScreen;
-	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
-	import feathers.controls.ButtonGroup;
 	import feathers.controls.Label;
-	import feathers.controls.List;
-	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
-	import feathers.controls.ScrollContainer;
-	import feathers.controls.Scroller;
-	import feathers.data.ListCollection;
-	import feathers.layout.HorizontalLayout;
-	import feathers.layout.TiledColumnsLayout;
-	import feathers.skins.Scale9ImageStateValueSelector;
-	import feathers.textures.Scale9Textures;
-
-	import flash.data.SQLConnection;
-	import flash.data.SQLStatement;
-	import flash.events.SQLEvent;
-	import flash.filesystem.File;
-	import flash.geom.Rectangle;
-	import flash.text.TextFormatAlign;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -55,12 +35,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		public function HivivaPatientHomepagePhotoScreen()
 		{
-
+			 trace("HivivaPatientHomepagePhotoScreen construct");
 		}
 
 		override protected function draw():void
 		{
 			super.draw();
+			trace("HivivaPatientHomepagePhotoScreen draw");
 		}
 
 		override protected function preValidateContent():void
@@ -88,6 +69,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function initialize():void
 		{
 			super.initialize();
+			trace("HivivaPatientHomepagePhotoScreen initialize");
 
 			this._header.title = "Homepage Photo";
 
