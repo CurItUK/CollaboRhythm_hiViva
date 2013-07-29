@@ -235,26 +235,31 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function checkForNewBadges():void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_LOAD_BADGES_COMPLETE , loadPatientBadgesCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getPatientBadges();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE , getUserAlertMessagesCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserAlertMessages();
 		}
 
-		private function loadPatientBadgesCompleteHandler(e:LocalDataStoreEvent):void
+		private function getUserAlertMessagesCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_LOAD_BADGES_COMPLETE , loadPatientBadgesCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE , getUserAlertMessagesCompleteHandler);
 
-			var badgeCount:Number = e.data.badges.length;
-			for(var i:uint = 0 ; i < badgeCount ; i++)
-			{
-				if(e.data.badges[i].badge_viewed == false && e.data.badges[i].badge_attained == true)
-				{
-					this._badgesAwarded += 1;
-				}
-			}
-			if(this._badgesAwarded > 0 )
+			trace(e.data.xmlResponse);
+
+			var badgesAwarded:XMLList = e.data.xmlResponse.DCAlertMessageRecord;
+			var badgesAwardedLength:int = badgesAwarded.length();
+
+			if(badgesAwardedLength > 0)
 			{
 				this._badgesButton.visible = true;
-				this._badgesButton.subScript = String(this._badgesAwarded);
+				this._badgesButton.subScript = String(badgesAwardedLength);
+
+				if(HivivaStartup.userVO.badges.length == 0)
+				{
+					for (var badgeCount:int = 0; badgeCount < badgesAwardedLength; badgeCount++)
+					{
+						HivivaStartup.userVO.badges.push(String(badgesAwarded[badgeCount].AlertMessageGuid));
+					}
+				}
 			}
 		}
 

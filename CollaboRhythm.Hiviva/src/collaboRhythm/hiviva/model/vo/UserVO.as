@@ -7,7 +7,7 @@ package collaboRhythm.hiviva.model.vo
 		private var _guid:String;
 		private var _type:String;
 		private var _serverDate:Date;
-
+		private var _badges:Array = [];
 
 		public function UserVO()
 		{
@@ -51,6 +51,16 @@ package collaboRhythm.hiviva.model.vo
 		public function set serverDate(value:Date):void
 		{
 			_serverDate = value;
+		}
+
+		public function get badges():Array
+		{
+			return _badges;
+		}
+
+		public function set badges(value:Array):void
+		{
+			_badges = value;
 		}
 	}
 }

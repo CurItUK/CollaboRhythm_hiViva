@@ -3,13 +3,9 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
-
-
 	import collaboRhythm.hiviva.view.components.BadgeCell;
-
 
 	import feathers.controls.Button;
 	import feathers.controls.Screen;
@@ -17,40 +13,17 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.layout.VerticalLayout;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
-
 
 	public class HivivaPatientBagesScreen extends Screen
 	{
 		private var _header:HivivaHeader;
 		private var _cellContainer:ScrollContainer;
 		private var _scaledPadding:Number;
-		private var _badgesAwarded:Number = 0;
-
-		private const BADGE_LABELS:Array =
-		[
-			"Nice work.\n1 week adherence",
-			"Excellent job.\n10 weeks adherence",
-			"Outstanding achievement!\n25 weeks adherence",
-			"King of the Meds!\n50 weeks adherence"
-		];
-
-		private const BADGE_ICONS:Array =
-		[
-			"star1",
-			"star2",
-			"star3",
-			"star4"
-		]
-
-		private const BADGE_DATES:Array =
-		[
-			"24-30 JULY 2013",
-			"24 JULY - 13 SEPTEMBER",
-			"24 JULY - 13 SEPTEMBER",
-			"24 JULY - 22 JUNE 2013"
-		]
+		private var _markAsReadCount:int = 0;
+		private var _remoteCallMade:Boolean = false;
+		private var _NumberOfDaysAdhered:Number;
+		private var _newBadges:Vector.<BadgeCell>;
 
 		public function HivivaPatientBagesScreen()
 		{
@@ -66,7 +39,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
 
-			if(_cellContainer == null) getPatientBadges();
+			if(!_remoteCallMade) getNumberDaysAdherence();
 		}
 
 		override protected function initialize():void
@@ -77,7 +50,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.title = "Kudos";
 			this.addChild(this._header);
 
-
 			var homeBtn:Button = new Button();
 			homeBtn.name = HivivaThemeConstants.HOME_BUTTON;
 			homeBtn.addEventListener(Event.TRIGGERED, homeBtnHandler);
@@ -85,43 +57,72 @@ package collaboRhythm.hiviva.view.screens.patient
 		}
 
 
-		private function getPatientBadges():void
+		private function getNumberDaysAdherence():void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_LOAD_BADGES_COMPLETE , loadPatientBadgesCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getPatientBadges();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_NUMBER_DAYS_ADHERENCE_COMPLETE, getNumberDaysAdherenceComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getNumberDaysAdherence();
+
+			this._remoteCallMade = true;
 		}
 
-		private function loadPatientBadgesCompleteHandler(e:LocalDataStoreEvent):void
+		private function getNumberDaysAdherenceComplete(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_LOAD_BADGES_COMPLETE , loadPatientBadgesCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_NUMBER_DAYS_ADHERENCE_COMPLETE, getNumberDaysAdherenceComplete);
 
-			var badgeCount:Number = e.data.badges.length;
-			for(var i:uint = 0 ; i < badgeCount ; i++)
+			this._NumberOfDaysAdhered = e.data.xmlResponse[0];
+			trace("PATIENT ADHERED FOR " + this._NumberOfDaysAdhered + " DAYS");
+
+			if(!isNaN(this._NumberOfDaysAdhered) && this._NumberOfDaysAdhered > 0)
 			{
-				if(e.data.badges[i].badge_attained == true)
-				{
-					this._badgesAwarded += 1;
-				}
-			}
-			if(this._badgesAwarded > 0)
-			{
-				drawBadges();
+				populateNewBadges();
+				drawAllBadges();
+				markAllNewBadgesAsRead();
 			}
 		}
 
-		private function drawBadges():void
+		private function populateNewBadges():void
+		{
+			this._newBadges = new <BadgeCell>[];
+
+			var twoDayBadge:BadgeCell;
+			var tenWeekBadge:BadgeCell;
+			var twentyFiveWeekBadge:BadgeCell;
+			var fiftyWeekBadge:BadgeCell;
+
+			if(this._NumberOfDaysAdhered > 2)
+			{
+				twoDayBadge = new BadgeCell();
+				twoDayBadge.badgeType = BadgeCell.TWO_DAY_TYPE;
+				this._newBadges.push(twoDayBadge);
+			}
+			if(this._NumberOfDaysAdhered > 70)
+			{
+				tenWeekBadge = new BadgeCell();
+				tenWeekBadge.badgeType = BadgeCell.TEN_WEEK_TYPE;
+				this._newBadges.push(tenWeekBadge);
+			}
+			if(this._NumberOfDaysAdhered > 175)
+			{
+				twentyFiveWeekBadge = new BadgeCell();
+				twentyFiveWeekBadge.badgeType = BadgeCell.TWENTY_FIVE_WEEK_TYPE;
+				this._newBadges.push(twentyFiveWeekBadge);
+			}
+			if(this._NumberOfDaysAdhered > 350)
+			{
+				fiftyWeekBadge = new BadgeCell();
+				fiftyWeekBadge.badgeType = BadgeCell.FIFTY_WEEK_TYPE;
+				this._newBadges.push(fiftyWeekBadge);
+			}
+		}
+
+		private function drawAllBadges():void
 		{
 			this._cellContainer = new ScrollContainer();
 
 			var badge:BadgeCell;
-			for (var i:int = 0; i < this._badgesAwarded; i++)
+			for (var i:int = 0; i < this._newBadges.length; i++)
 			{
-				badge = new BadgeCell();
-				badge.scale = this.dpiScale;
-				badge.badgeName = BADGE_LABELS[i];
-				badge.badgeIcon = BADGE_ICONS[i];
-				badge.dateRange = BADGE_DATES[i];
-
+				badge = this._newBadges[i];
 				this._cellContainer.addChild(badge);
 				badge.width = this.actualWidth;
 			}
@@ -132,13 +133,31 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._cellContainer.height = this.actualHeight - this._cellContainer.y - (this._scaledPadding * 2);
 			this._cellContainer.layout = new VerticalLayout();
 			this._cellContainer.validate();
-
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.clearDownBadgeAlerts();
 		}
 
+		private function markAllNewBadgesAsRead():void
+		{
+			var badgeGuids:Array = HivivaStartup.userVO.badges;
 
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE, markAlertMessageAsReadComplete);
+			for (var badgeCount:int = 0; badgeCount < badgeGuids.length; badgeCount++)
+			{
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.markAlertMessageAsRead(badgeGuids[badgeCount]);
+			}
+		}
 
-		private function homeBtnHandler():void
+		private function markAlertMessageAsReadComplete(e:RemoteDataStoreEvent):void
+		{
+			trace(e.data.xmlResponse);
+			this._markAsReadCount++;
+			if(this._markAsReadCount == HivivaStartup.userVO.badges.length)
+			{
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE, markAlertMessageAsReadComplete);
+				HivivaStartup.userVO.badges = [];
+			}
+		}
+
+		private function homeBtnHandler(e:Event):void
 		{
 			this.dispatchEventWith("navGoHome");
 		}

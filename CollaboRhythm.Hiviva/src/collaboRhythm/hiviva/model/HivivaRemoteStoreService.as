@@ -74,7 +74,6 @@ package collaboRhythm.hiviva.model
 
 		public function takeMedication(medicationData:XML):void
 		{
-
 			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_TAKE_PATIENT_MEDICATION);
 			urlRequest.data = medicationData.toXMLString();
 			urlRequest.contentType = "text/xml";
@@ -89,6 +88,24 @@ package collaboRhythm.hiviva.model
 		private function takeMedicationCompleteHandler(e:Event):void
 		{
 			this.dispatchEvent(new RemoteDataStoreEvent(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE));
+		}
+
+		public function getNumberDaysAdherence():void
+		{
+			var query:String = "userGuid=" + HivivaStartup.userVO.guid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_NUMBER_DAYS_ADHERENCE + query);
+			trace("getNumberDaysAdherence " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getNumberDaysAdherenceComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getNumberDaysAdherenceComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_NUMBER_DAYS_ADHERENCE_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
 		}
 
 		public function getServerDate():void
@@ -313,6 +330,42 @@ package collaboRhythm.hiviva.model
 		{
 			var xmlResponse:XML = new XML(e.target.data);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_MESSAGES_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
+		public function getUserAlertMessages():void
+		{
+			var query:String = "userGuid=" + HivivaStartup.userVO.guid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_USER_ALERT_MESSAGES + query);
+			trace("getUserAlertMessagesComplete " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getUserAlertMessagesComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getUserAlertMessagesComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
+		public function markAlertMessageAsRead(alertMessageGuid:String):void
+		{
+			var query:String = "alertMessageGuid=" + alertMessageGuid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_MARK_ALERT_MESSAGE_AS_READ + query);
+			trace("markAlertMessageAsRead " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, markAlertMessageAsReadComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function markAlertMessageAsReadComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE);
 			evt.data.xmlResponse = xmlResponse;
 			this.dispatchEvent(evt)
 		}

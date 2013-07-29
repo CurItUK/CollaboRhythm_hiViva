@@ -103,6 +103,20 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function getNumberDaysAdherence():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_NUMBER_DAYS_ADHERENCE_COMPLETE, getNumberDaysAdherenceComplete);
+			service.getNumberDaysAdherence();
+		}
+
+		private function getNumberDaysAdherenceComplete(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_NUMBER_DAYS_ADHERENCE_COMPLETE, getNumberDaysAdherenceComplete);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_NUMBER_DAYS_ADHERENCE_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function getHCP(appGuid:String):void
 		{
 			service.addEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
@@ -253,6 +267,34 @@ package collaboRhythm.hiviva.controller
 		{
 			service.removeEventListener(RemoteDataStoreEvent.GET_MESSAGES_COMPLETE , getMessagesHandler);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_MESSAGES_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function getUserAlertMessages():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE , getUserAlertMessagesHandler);
+			service.getUserAlertMessages();
+		}
+
+		private function getUserAlertMessagesHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE , getUserAlertMessagesHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function markAlertMessageAsRead(alertMessageGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE , markAlertMessageAsReadHandler);
+			service.markAlertMessageAsRead(alertMessageGuid);
+		}
+
+		private function markAlertMessageAsReadHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE , markAlertMessageAsReadHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE);
 			evt.data = e.data;
 			this.dispatchEvent(evt);
 		}

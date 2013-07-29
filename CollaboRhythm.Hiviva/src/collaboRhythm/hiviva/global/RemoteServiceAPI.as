@@ -11,6 +11,7 @@ package collaboRhythm.hiviva.global
 		public static const RS_DELETE_MEDICATION:String = 							"WSUserMedication.svc/DeleteUserMedication?";
 		public static const RS_GET_PATIENT_MEDICATION:String = 						"WSUserMedication.svc/GetUserMedication?";
 		public static const RS_TAKE_PATIENT_MEDICATION:String = 					"WSUserMedication.svc/TookMedication?";
+		public static const RS_GET_NUMBER_DAYS_ADHERENCE:String = 					"WSUserMedication.svc/GetNumberDaysAdherence?";
 		public static const RS_GET_USER_MEDICATION_HISTORY:String = 				"WSUserMedication.svc/GetHistoryUserMedicationTaken?";
 		public static const RS_GET_DAILY_MEDICATION_HISTORY:String = 				"WSUserMedication.svc/GetDailyHistoryOfMedicationTaken?";
 		public static const RS_GET_DAILY_MEDICATION_HISTORY_RANGE:String = 			"WSUserMedication.svc/GetDailyMedicationTakenBetweenDates?";
@@ -24,6 +25,8 @@ package collaboRhythm.hiviva.global
 		public static const RS_SEND_USER_MESSAGE:String = 							"WSMessage.svc/SendMessage?";
 		public static const RS_DELETE_USER_MESSAGE:String = 						"WSMessage.svc/DeleteMessage?";
 		public static const RS_MARK_MESSAGE_AS_READ:String = 						"WSMessage.svc/MarkMessageAsRead?";
+		public static const RS_GET_USER_ALERT_MESSAGES:String = 					"WSMessage.svc/GetUserAlertMessages?";
+		public static const RS_MARK_ALERT_MESSAGE_AS_READ:String = 					"WSMessage.svc/MarkAlertMessageAsRead?";
 
 		//Connections
 		public static const RS_GET_PATIENT:String = 								"WSHealthUser.svc/GetPatient?";

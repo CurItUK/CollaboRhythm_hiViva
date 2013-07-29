@@ -261,11 +261,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			trace(this._medicationData);
 			HivivaStartup.patientAdherenceVO.percentage = HivivaModifier.calculateDailyAdherence(this._medicationData.DCUserMedication.Schedule.DCMedicationSchedule);
 			trace("patientAdherenceVO " + HivivaStartup.patientAdherenceVO.percentage);
-			if(HivivaStartup.patientAdherenceVO.percentage == 100)
+			/*if(HivivaStartup.patientAdherenceVO.percentage == 100)
 			{
 				updateUserLocalAdherenceCount();
-			}
+			}*/
 		}
+/*
 
 		private function updateUserLocalAdherenceCount():void
 		{
@@ -341,6 +342,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				HivivaStartup.hivivaAppController.hivivaLocalStoreController.updatePatientBadges(badgeAttained);
 			}
 		}
+*/
 	}
 }
 

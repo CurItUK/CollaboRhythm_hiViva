@@ -14,6 +14,7 @@ package collaboRhythm.hiviva.global
 		public static const DELETE_PATIENT_MEDICATION_COMPLETE:String					= "deletePatientMedicationComplete";
 		public static const GET_PATIENT_MEDICATION_COMPLETE:String						= "getPatientMedicationComplete";
 		public static const TAKE_PATIENT_MEDICATION_COMPLETE:String						= "takePatientMedicationComplete";
+		public static const GET_NUMBER_DAYS_ADHERENCE_COMPLETE:String					= "getNumberDaysAdherenceComplete";
 		public static const GET_USER_MEDICATION_HISTORY_COMPLETE:String					= "getUserMedicationHistoryComplete";
 		public static const GET_DAILY_MEDICATION_HISTORY_COMPLETE:String				= "getDailyMedicationHistoryComplete";
 		public static const GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE:String			= "getDailyMedicationHistoryRangeComplete";
@@ -27,6 +28,8 @@ package collaboRhythm.hiviva.global
 		public static const SEND_USER_MESSAGE_COMPLETE:String							= "sendUserMessageComplete";
 		public static const DELETE_USER_MESSAGE_COMPLETE:String							= "deleteUserMessageComplete";
 		public static const MARK_MESSAGE_AS_READ_COMPLETE:String						= "markMessageAsReadComplete";
+		public static const GET_USER_ALERTS_COMPLETE:String								= "getUserAlertsComplete";
+		public static const MARK_ALERT_MESSAGE_AS_READ_COMPLETE:String					= "markAlertMessageAsReadComplete";
 
 		//Connections
 		public static const GET_HCP_COMPLETE:String										= "getHCPComplete";
