@@ -59,7 +59,7 @@ package collaboRhythm.hiviva.model
 
 		public function deleteMedication(medicationId:String):void
 		{
-			var query:String = "userMedicationGuid=" + medicationId;
+			var query:String = "userMedicationGuid=" + medicationId + "&userGuid=" + HivivaStartup.userVO.guid;
 			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_DELETE_MEDICATION + query);
 			trace("deleteMedication " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
