@@ -356,7 +356,7 @@ package collaboRhythm.hiviva.view
 
 		private function navigateToDirectProfileMenu(e:Event):void
 		{
-			if(e.data.patientProfile != null) _selectedHCPPatientProfile = e.data.patientProfile as XML;
+//			if(e.data.patientProfile != null) _selectedHCPPatientProfile = e.data.patientProfile as XML;
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
 			evt.message = e.data.profileMenu;
 
@@ -467,6 +467,11 @@ package collaboRhythm.hiviva.view
 
 			this._footerBtnGroup.asButtonGroup().touchable = true;
 			this._footerBtnGroup.asButtonGroup().visible = true;
+		}
+
+		public static function set selectedHCPPatientProfile(value:XML):void
+		{
+			_selectedHCPPatientProfile = value;
 		}
 
 		public static function get selectedHCPPatientProfile():XML

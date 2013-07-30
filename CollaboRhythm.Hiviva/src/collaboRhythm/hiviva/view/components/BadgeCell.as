@@ -15,9 +15,8 @@ package collaboRhythm.hiviva.view.components
 	{
 		private const IMAGE_SIZE:Number = 150;
 
-		protected var _gap:Number;
 		protected var _cellPadding:Number;
-		protected var _trophyPadding:Number;
+		protected var _textPaddingLeft:Number;
 
 		protected var _bg:Scale9Image;
 		protected var _seperator:Image;
@@ -42,21 +41,21 @@ package collaboRhythm.hiviva.view.components
 
 		override protected function draw():void
 		{
-			this._cellPadding = 15 * this._scale;
-			this._trophyPadding = 30 * this._scale;
+			this._cellPadding = 20 * this._scale;
+			this._textPaddingLeft = 35 * this._scale;
 
 			super.draw();
 
 			this._seperator.width = this.actualWidth;
 
-			this._trophy.x = this._trophyPadding;
+			this._trophy.x = this._cellPadding;
 			this._trophy.y = this._cellPadding;
 
-			this._badgeTextLabel.x = this._trophy.x + this._trophy.width + this._trophyPadding;
+			this._badgeTextLabel.x = this._trophy.x + this._trophy.width + this._textPaddingLeft;
 			this._badgeTextLabel.width = this.actualWidth - this._badgeTextLabel.x;
 			this._badgeTextLabel.validate();
 
-			this._badgeNameLabel.x = this._trophy.x + this._trophy.width + this._trophyPadding;
+			this._badgeNameLabel.x = this._trophy.x + this._trophy.width + this._textPaddingLeft;
 			this._badgeNameLabel.width = this.actualWidth - this._badgeNameLabel.x;
 			this._badgeNameLabel.validate();
 

@@ -35,6 +35,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
 
+		private var _parentScreen:String;
+
 		public function HivivaHCPAlertSettings()
 		{
 
@@ -175,7 +177,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			switch(button)
 			{
 				case "Cancel" :
-					this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+					backBtnHandler();
 					break;
 
 				case "Save" :
@@ -217,9 +219,16 @@ package collaboRhythm.hiviva.view.screens.hcp
 			showFormValidation("Your alert settings have been saved...");
 		}
 
-		private function backBtnHandler(e:starling.events.Event):void
+		private function backBtnHandler(e:starling.events.Event = null):void
 		{
-			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+			if(_parentScreen != null)
+			{
+				this.owner.showScreen(_parentScreen);
+			}
+			else
+			{
+				this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+			}
 		}
 
 		private function getUserDisplaySettings():void
@@ -244,5 +253,15 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 
  		}
+
+		public function get parentScreen():String
+		{
+			return _parentScreen;
+		}
+
+		public function set parentScreen(value:String):void
+		{
+			_parentScreen = value;
+		}
 	}
 }

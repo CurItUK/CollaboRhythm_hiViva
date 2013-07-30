@@ -28,8 +28,9 @@ package collaboRhythm.hiviva.global
 		public static const SEND_USER_MESSAGE_COMPLETE:String							= "sendUserMessageComplete";
 		public static const DELETE_USER_MESSAGE_COMPLETE:String							= "deleteUserMessageComplete";
 		public static const MARK_MESSAGE_AS_READ_COMPLETE:String						= "markMessageAsReadComplete";
-		public static const GET_USER_ALERTS_COMPLETE:String								= "getUserAlertsComplete";
+		public static const GET_PATIENT_BADGE_ALERTS_COMPLETE:String					= "getPatientBadgeAlertsComplete";
 		public static const MARK_ALERT_MESSAGE_AS_READ_COMPLETE:String					= "markAlertMessageAsReadComplete";
+		public static const GET_HCP_ALERTS_COMPLETE:String								= "getHCPAlertsComplete";
 
 		//Connections
 		public static const GET_HCP_COMPLETE:String										= "getHCPComplete";

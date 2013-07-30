@@ -334,20 +334,38 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt)
 		}
 
-		public function getUserAlertMessages():void
+		public function getPatientBadgeAlerts():void
 		{
 			var query:String = "userGuid=" + HivivaStartup.userVO.guid;
-			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_USER_ALERT_MESSAGES + query);
-			trace("getUserAlertMessagesComplete " + urlRequest.url);
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_PATIENT_BADGE_ALERTS + query);
+			trace("getPatientBadgeAlerts " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
-			urlLoader.addEventListener(Event.COMPLETE, getUserAlertMessagesComplete);
+			urlLoader.addEventListener(Event.COMPLETE, getPatientBadgeAlertsComplete);
 			urlLoader.load(urlRequest);
 		}
 
-		private function getUserAlertMessagesComplete(e:Event):void
+		private function getPatientBadgeAlertsComplete(e:Event):void
 		{
 			var xmlResponse:XML = new XML(e.target.data);
-			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_BADGE_ALERTS_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
+		public function getHCPAlerts():void
+		{
+			var query:String = "hcpUserGuid=" + HivivaStartup.userVO.guid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_HCP_ALERTS + query);
+			trace("getHCPAlerts " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getHCPAlertsComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getHCPAlertsComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_HCP_ALERTS_COMPLETE);
 			evt.data.xmlResponse = xmlResponse;
 			this.dispatchEvent(evt)
 		}

@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.model.vo.HCPConnectedPatientsVO;
 	import collaboRhythm.hiviva.model.vo.PatientAdherenceVO;
 	import collaboRhythm.hiviva.model.vo.ReportVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
@@ -105,6 +106,11 @@ package collaboRhythm.hiviva.view
 		public static function get patientAdherenceVO():PatientAdherenceVO
 		{
 			return hivivaAppController.hivivaLocalStoreController.service.patientAdherenceVO;
+		}
+
+		public static function get hcpConnectedPatientsVO():HCPConnectedPatientsVO
+		{
+			return hivivaAppController.hivivaLocalStoreController.service.hcpConnectedPatientsVO;
 		}
 	}
 }

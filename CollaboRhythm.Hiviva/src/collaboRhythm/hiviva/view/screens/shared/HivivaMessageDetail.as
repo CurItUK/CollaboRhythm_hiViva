@@ -10,12 +10,15 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.MessageInboxResultCell;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAlertSettings;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPPatientProfileScreen;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 
 
 	import feathers.controls.Screen;
+	import feathers.controls.ScreenNavigatorItem;
 	import feathers.core.PopUpManager;
 
 	import starling.display.DisplayObject;
@@ -123,6 +126,12 @@ package collaboRhythm.hiviva.view.screens.shared
 					this._options.labels = ["Ignore","Accept"];
 					break;
 				case MessageInboxResultCell.STATUS_ALERT_TYPE :
+					this._nameLabel.text = "Status Alert";
+					this._dateLabel.text = HivivaModifier.getPrettyStringFromIsoString(_messageData.SentDate);
+					this._messageLabel.text = String(_messageData.AlertMessage);
+
+					if(_messageData.Read == "false") markAlertAsRead();
+
 					this._options.labels = ["Go to patient","Edit Alerts"];
 					break;
 			}
@@ -142,6 +151,11 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.MARK_MESSAGE_AS_READ_COMPLETE, markMessageAsReadHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.markMessageAsRead(_messageData.MessageGuid);
+		}
+
+		private function markAlertAsRead():void
+		{
+			// TODO : Do remote call to mark alert as read
 		}
 
 		private function markMessageAsReadHandler(e:RemoteDataStoreEvent):void
@@ -179,15 +193,43 @@ package collaboRhythm.hiviva.view.screens.shared
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(_messageData.FromUserGuid);
 					break;
-//				case "Go to patient" :
-//
-//					break;
-//				case "Edit Alerts" :
-//
-//					break;
+				case "Go to patient" :
+					setSelectedHCPPatientProfile();
+					if(this.owner.hasScreen(HivivaScreens.HCP_PATIENT_PROFILE))
+					{
+						this.owner.removeScreen(HivivaScreens.HCP_PATIENT_PROFILE);
+					}
+					this.owner.addScreen(HivivaScreens.HCP_PATIENT_PROFILE, new ScreenNavigatorItem(HivivaHCPPatientProfileScreen, null, {parentScreen:this.owner.activeScreenID}));
+					this.owner.showScreen(HivivaScreens.HCP_PATIENT_PROFILE);
+
+					break;
+				case "Edit Alerts" :
+					if(this.owner.hasScreen(HivivaScreens.HCP_ALERT_SETTINGS))
+					{
+						this.owner.removeScreen(HivivaScreens.HCP_ALERT_SETTINGS);
+					}
+					this.owner.addScreen(HivivaScreens.HCP_ALERT_SETTINGS, new ScreenNavigatorItem(HivivaHCPAlertSettings, null, {parentScreen:this.owner.activeScreenID}));
+					this.owner.showScreen(HivivaScreens.HCP_ALERT_SETTINGS);
+					break;
 				default :
 					callBack();
 					break;
+			}
+		}
+
+		private function setSelectedHCPPatientProfile():void
+		{
+			var connectedPatients:Array = HivivaStartup.hcpConnectedPatientsVO.patients;
+			if(connectedPatients.length > 0)
+			{
+				for (var i:int = 0; i < connectedPatients.length; i++)
+				{
+					if(connectedPatients[i].guid == String(_messageData.UserGuid))
+					{
+						Main.selectedHCPPatientProfile = connectedPatients[i];
+						break;
+					}
+				}
 			}
 		}
 
@@ -214,6 +256,11 @@ package collaboRhythm.hiviva.view.screens.shared
 			if(e.data.xmlResponse.StatusCode == "1")
 			{
 				initStatusResponsePopup("Success! You are now connected to " + user + " (" + _messageData.FromAppId + ")", callBack);
+				if(HivivaStartup.userVO.type == "HCP")
+				{
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnectionsWithSummary();
+				}
 			}
 			else
 			{
@@ -245,6 +292,45 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			if(HivivaStartup.userVO.type == "HCP") dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
 			this.owner.showScreen(_parentScreen);
+		}
+
+		private function getApprovedConnectionsWithSummaryHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
+
+
+			var xmlData:XMLList = e.data.xmlResponse.DCConnectionSummary;
+			var loop:uint = xmlData.length();
+			var approvedPatient:XML;
+
+			HivivaStartup.hcpConnectedPatientsVO.patients = [];
+
+			if(loop > 0)
+			{
+				for(var i:uint = 0 ; i <loop ; i++)
+				{
+					approvedPatient = xmlData[i];
+					var establishedUser:Object = HivivaModifier.establishToFromId(approvedPatient);
+					var appGuid:String = establishedUser.appGuid;
+					var appId:String = establishedUser.appId;
+					var adherence:String = approvedPatient.Adherence;
+					var tolerability:String = approvedPatient.Tolerability;
+
+					var data:XML = new XML
+					(
+							<patient>
+								<name>{appId}</name>
+								<email>{appId}@domain.com</email>
+								<appid>{appId}</appid>
+								<guid>{appGuid}</guid>
+								<tolerability>{adherence}</tolerability>
+								<adherence>{tolerability}</adherence>
+								<picture>dummy.png</picture>
+							</patient>
+					);
+					HivivaStartup.hcpConnectedPatientsVO.patients.push(data);
+				}
+			}
 		}
 
 		public function get messageData():XML

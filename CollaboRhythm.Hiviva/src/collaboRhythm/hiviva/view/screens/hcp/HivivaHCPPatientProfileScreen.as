@@ -55,6 +55,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _viewLabel:Label;
 		private var _leftArrow:Button;
 		private var _rightArrow:Button;
+		private var _parentScreen:String;
 
 		private const IMAGE_SIZE:Number = 125;
 		private const PADDING:Number = 32;
@@ -250,7 +251,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function getDailyMedicationHistoryRange():void
 		{
 			var startDate:Date = new Date(this._currWeekBeginning.getFullYear(),this._currWeekBeginning.getMonth(),this._currWeekBeginning.getDate(),0,0,0,0);
-			startDate.date += 1;
 			var startIsoDate:String = HivivaModifier.getIsoStringFromDate(startDate);
 			var endDate:Date = new Date(this._currWeekBeginning.getFullYear(),this._currWeekBeginning.getMonth(),this._currWeekBeginning.getDate(),0,0,0,0);
 			endDate.date += 7;
@@ -297,7 +297,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function backBtnHandler(e:starling.events.Event):void
 		{
-
 			if (this.owner.hasScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN))
 			{
 				this.owner.removeScreen(HivivaScreens.HCP_PATIENT_MESSAGE_COMPOSE_SCREEN);
@@ -308,8 +307,15 @@ package collaboRhythm.hiviva.view.screens.hcp
 				this.owner.removeScreen(HivivaScreens.HCP_PATIENT_PROFILE_REPORT);
 			}
 
-			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
-			this.dispatchEventWith("navGoHome");
+			if(_parentScreen != null)
+			{
+				this.owner.showScreen(_parentScreen);
+			}
+			else
+			{
+				dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
+				this.dispatchEventWith("navGoHome");
+			}
 		}
 
 		private function reportAndMessageHandler(e:starling.events.Event):void
@@ -419,6 +425,16 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._photoHolder = null;
 
 			super.dispose();
+		}
+
+		public function get parentScreen():String
+		{
+			return _parentScreen;
+		}
+
+		public function set parentScreen(value:String):void
+		{
+			_parentScreen = value;
 		}
 	}
 }

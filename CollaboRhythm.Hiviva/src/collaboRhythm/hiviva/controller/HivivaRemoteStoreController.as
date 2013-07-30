@@ -271,16 +271,30 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
-		public function getUserAlertMessages():void
+		public function getPatientBadgeAlerts():void
 		{
-			service.addEventListener(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE , getUserAlertMessagesHandler);
-			service.getUserAlertMessages();
+			service.addEventListener(RemoteDataStoreEvent.GET_PATIENT_BADGE_ALERTS_COMPLETE , getPatientBadgeAlertsHandler);
+			service.getPatientBadgeAlerts();
 		}
 
-		private function getUserAlertMessagesHandler(e:RemoteDataStoreEvent):void
+		private function getPatientBadgeAlertsHandler(e:RemoteDataStoreEvent):void
 		{
-			service.removeEventListener(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE , getUserAlertMessagesHandler);
-			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE);
+			service.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_BADGE_ALERTS_COMPLETE , getPatientBadgeAlertsHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_PATIENT_BADGE_ALERTS_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function getHCPAlerts():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_HCP_ALERTS_COMPLETE , getHCPAlertsHandler);
+			service.getHCPAlerts();
+		}
+
+		private function getHCPAlertsHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_HCP_ALERTS_COMPLETE , getHCPAlertsHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_HCP_ALERTS_COMPLETE);
 			evt.data = e.data;
 			this.dispatchEvent(evt);
 		}

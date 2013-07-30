@@ -14,46 +14,25 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
-	import feathers.core.PopUpManager;
 	import feathers.layout.VerticalLayout;
-
-	import source.themes.HivivaTheme;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
 
-
 	public class HivivaHCPMessageInbox extends Screen
 	{
-
 		private var _header:HivivaHeader;
-		private var _messagesData:XML;
-		private var _messageCellContainer:ScrollContainer;
 		private var _composeBtn:TopNavButton;
 		private var _sentBtn:TopNavButton;
-		private var _deleteBtn:Button;
-		private var _messageCentre:Array;
-		private var _allReceivedMessages:XMLList;
+		private var _alerts:XMLList;
 		private var _remoteCallCount:int = 0;
 		private var _pendingConnections:XMLList;
-
-
-		private var _scaledPadding:Number;
-
-		private const PADDING:Number = 20;
 		private var _remoteCallMade:Boolean = false;
-
-		private var messagesXMLList:XMLList;
 		private var _deleteMessageButton:Button;
-
-
 		private var _messageCells:Vector.<MessageInboxResultCell> = new <MessageInboxResultCell>[];
-//		private var _alertCells:Vector.<AlertInboxResultCell> = new <AlertInboxResultCell>[];
 		private var _cellContainer:ScrollContainer;
-		private var _approveAlert:HivivaPopUp;
-		private var _alertGuidToAccept:String;
 
 		public function HivivaHCPMessageInbox()
 		{
@@ -92,11 +71,11 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._sentBtn = new TopNavButton();
 			this._sentBtn.hivivaImage = new Image(Assets.getTexture("MessageIconSentPng"));
-			this._sentBtn.addEventListener(starling.events.Event.TRIGGERED , sentBtnHandler);
+			this._sentBtn.addEventListener(Event.TRIGGERED , sentBtnHandler);
 
 			this._composeBtn = new TopNavButton();
 			this._composeBtn.hivivaImage = new Image(Assets.getTexture("MessageIconComposePng"));
-			this._composeBtn.addEventListener(starling.events.Event.TRIGGERED , composeBtnHandler);
+			this._composeBtn.addEventListener(Event.TRIGGERED , composeBtnHandler);
 
 			this._header.rightItems = new <DisplayObject>[this._sentBtn, this._composeBtn];
 
@@ -110,22 +89,20 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function getAllMessagesFromRemoteService():void
 		{
-			/*
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE, getUserReceivedMessagesHandler);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserReceivedMessages();
-*/
-			// TODO : get alerts
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_HCP_ALERTS_COMPLETE, getHCPAlertsHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getHCPAlerts();
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE, getPendingConnectionsHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPendingConnections();
+
 			this._remoteCallMade = true;
 		}
 
-		private function getUserReceivedMessagesHandler(e:RemoteDataStoreEvent):void
+		private function getHCPAlertsHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_RECEIVED_MESSAGES_COMPLETE, getUserReceivedMessagesHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_HCP_ALERTS_COMPLETE, getHCPAlertsHandler);
 
-			this._allReceivedMessages = e.data.xmlResponse.DCMessageRecord;
+			this._alerts = e.data.xmlResponse.DCAlertMessageRecord;
 			this._remoteCallCount++;
 			allDataLoadedCheck();
 		}
@@ -141,37 +118,34 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function allDataLoadedCheck():void
 		{
-//			if(this._remoteCallCount == 2)
-			if(this._remoteCallCount == 1)
+			if(this._remoteCallCount == 2)
+//			if(this._remoteCallCount == 1)
 			{
 				this._cellContainer = new ScrollContainer();
 				this._cellContainer.layout = new VerticalLayout();
 
-//				populateMessages();
-				populatePendingConnections();
+				if(this._alerts != null) populateAlerts();
+				if(this._pendingConnections != null) populatePendingConnections();
 				drawResults()
 			}
 		}
 
-		private function populateMessages():void
+		private function populateAlerts():void
 		{
-			var listCount:uint = this._allReceivedMessages.length();
-			var messageInboxResultCell:MessageInboxResultCell;
+			var listCount:uint = this._alerts.length();
+			var alert:MessageInboxResultCell;
 			if(listCount > 0)
 			{
 				for(var i:uint = 0 ; i < listCount ; i++)
 				{
-					messageInboxResultCell = new MessageInboxResultCell();
-
-					messageInboxResultCell.guid = this._allReceivedMessages[i].MessageGuid;
-					messageInboxResultCell.primaryText = this._allReceivedMessages[i].Message;
-					messageInboxResultCell.secondaryText = this._allReceivedMessages[i].Name;
-					messageInboxResultCell.dateText = this._allReceivedMessages[i].SentDate;
-					messageInboxResultCell.scale = this.dpiScale;
-					messageInboxResultCell.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
-					messageInboxResultCell.addEventListener(FeathersScreenEvent.MESSAGE_CB_SELECT, messageCheckBoxSelectedHandler);
-					this._cellContainer.addChild(messageInboxResultCell);
-					this._messageCells.push(messageInboxResultCell);
+					alert = new MessageInboxResultCell();
+					alert.messageType = MessageInboxResultCell.STATUS_ALERT_TYPE;
+					alert.guid = this._alerts[i].AlertMessageGuid;
+					alert.primaryText = this._alerts[i].AlertMessage;
+					alert.dateText = this._alerts[i].SentDate;
+					alert.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
+					this._cellContainer.addChild(alert);
+					this._messageCells.push(alert);
 				}
 			}
 		}
@@ -227,14 +201,14 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			var messageData:XML;
 			switch(messageType)
 			{
-				case MessageInboxResultCell.COMPOSED_MESSAGE_TYPE :
-					messageData = getMessageXMLByProperty(this._allReceivedMessages,"MessageGuid",targetCell.guid);
-					break;
+//				case MessageInboxResultCell.COMPOSED_MESSAGE_TYPE :
+//					messageData = getMessageXMLByProperty(this._alerts,"MessageGuid",targetCell.guid);
+//					break;
 				case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
 					messageData = getMessageXMLByProperty(this._pendingConnections,"FromUserGuid",targetCell.guid);
 					break;
 				case MessageInboxResultCell.STATUS_ALERT_TYPE :
-//					messageData = getMessageXMLByProperty(this._allReceivedMessages,"MessageGuid",targetCell.guid);
+					messageData = getMessageXMLByProperty(this._alerts,"AlertMessageGuid",targetCell.guid);
 					break;
 			}
 			var screenNavProperties:Object =
@@ -297,33 +271,45 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			return xmlData;
 		}
 
-
 		private function deleteMessageButtonHandler(e:Event):void
 		{
+			var selectedMessage:MessageInboxResultCell;
 			for (var i:int = 0; i < this._messageCells.length; i++)
 			{
-				if(this._messageCells[i].check.isSelected)
+				selectedMessage = this._messageCells[i];
+				if(selectedMessage.check.isSelected)
 				{
-					this._cellContainer.removeChild(this._messageCells[i], true);
-					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
-					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.deleteUserMessage(this._messageCells[i].guid);
+					switch(selectedMessage.messageType)
+					{
+						case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
+							// TODO : ignore request
+							break;
+						case MessageInboxResultCell.STATUS_ALERT_TYPE :
+							// TODO : mark alert as read
+							break;
+					}
+					this._cellContainer.removeChild(selectedMessage, true);
+//					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
+//					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.deleteUserMessage(selectedMessage.guid);
 				}
 			}
 			this._cellContainer.validate();
 		}
+/*
 
 		private function deleteUserMessageHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
 			trace('message deleted');
 		}
+*/
 
-		private function composeBtnHandler(e:starling.events.Event):void
+		private function composeBtnHandler(e:Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_MESSAGE_COMPOSE_SCREEN);
 		}
 
-		private function sentBtnHandler(e:starling.events.Event):void
+		private function sentBtnHandler(e:Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_MESSAGE_SENT_SCREEN);
 

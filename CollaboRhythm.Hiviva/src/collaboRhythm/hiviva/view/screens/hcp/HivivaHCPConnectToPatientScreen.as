@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.HivivaScreens;
 
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import feathers.controls.Button;
 
@@ -106,7 +107,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 				var approvedHCPList:XMLList  = xml.DCConnection;
 				for(var i:uint = 0 ; i <loop ; i++)
 				{
-					var establishedUser:Object = establishToFromId(approvedHCPList[i]);
+					var establishedUser:Object = HivivaModifier.establishToFromId(approvedHCPList[i]);
 					var appGuid:String = establishedUser.appGuid;
 					var appId:String = establishedUser.appId;
 					var userEstablishedConnection:Boolean = didCurrentUserEstablishConnection(approvedHCPList[i]);
@@ -130,23 +131,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			{
 				trace("No Approved Connections");
 			}
-		}
-
-		private function establishToFromId(idsToCompare:XML):Object
-		{
-			var whoEstablishConnection:Object = [];
-			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
-			{
-				whoEstablishConnection.appGuid = idsToCompare.ToUserGuid;
-				whoEstablishConnection.appId = idsToCompare.ToAppId;
-			} else
-			{
-				whoEstablishConnection.appGuid = idsToCompare.FromUserGuid;
-				whoEstablishConnection.appId = idsToCompare.FromAppId;
-			}
-
-			return whoEstablishConnection;
-
 		}
 
 		private function didCurrentUserEstablishConnection(idsToCompare:XML):Boolean

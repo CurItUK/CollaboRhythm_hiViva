@@ -6,7 +6,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.NotificationsEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaHeader;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
@@ -31,7 +33,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _connectToPatientBtn:BoxedButtons;
 		private var _patientsData:XML;
 		private var _patients:Array;
-		private var _filterdPatients:Array;
+//		private var _filterdPatients:Array;
 		private var _patientLabel:Label;
 		private var _remoteCallMade:Boolean = false;
 		private var _messagesButton:TopNavButton;
@@ -40,6 +42,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _patientCellYStart:Number;
 		private var _patientCellVSpace:Number;
 		private var _messageCount:uint = 0;
+
+		private var _pendingConnectionLoaded:Boolean = false;
+		private var _alertsLoaded:Boolean = false;
 
 		public function HivivaHCPHomesScreen()
 		{
@@ -68,8 +73,16 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			if(!this._remoteCallMade)
 			{
-				getApprovedConnections();
+				if(HivivaStartup.hcpConnectedPatientsVO.patients == null)
+				{
+					getApprovedConnections();
+				}
+				else
+				{
+					initResults();
+				}
 				getPendingConnections();
+				getHCPAlerts();
 			}
 		}
 
@@ -147,6 +160,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._remoteCallMade = true;
 		}
 
+		private function getHCPAlerts():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_HCP_ALERTS_COMPLETE, getHCPAlertsHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getHCPAlerts();
+
+			this._remoteCallMade = true;
+		}
+
 		private function getApprovedConnectionsWithSummaryHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
@@ -156,16 +177,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var loop:uint = xmlData.length();
 			var approvedPatient:XML;
 
-			this._filterdPatients = [];
+			HivivaStartup.hcpConnectedPatientsVO.patients = [];
 
 			if(loop > 0)
 			{
 				for(var i:uint = 0 ; i <loop ; i++)
 				{
 					approvedPatient = xmlData[i];
-					var establishedUser:Object = establishToFromId(approvedPatient);
+					var establishedUser:Object = HivivaModifier.establishToFromId(approvedPatient);
 					var appGuid:String = establishedUser.appGuid;
 					var appId:String = establishedUser.appId;
+					var adherence:String = approvedPatient.Adherence;
+					var tolerability:String = approvedPatient.Tolerability;
 
 					var data:XML = new XML
 					(
@@ -174,45 +197,31 @@ package collaboRhythm.hiviva.view.screens.hcp
 								<email>{appId}@domain.com</email>
 								<appid>{appId}</appid>
 								<guid>{appGuid}</guid>
-								<tolerability>{String(approvedPatient.Tolerability)}</tolerability>
-								<adherence>{String(approvedPatient.Adherence)}</adherence>
+								<tolerability>{adherence}</tolerability>
+								<adherence>{tolerability}</adherence>
 								<picture>dummy.png</picture>
 							</patient>
 					);
-					this._filterdPatients.push(data);
+					HivivaStartup.hcpConnectedPatientsVO.patients.push(data);
 				}
 				initResults();
 			}
-			else
-			{
-				initAlertText();
-			}
+		}
 
-			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
+		private function enableAutoHomePageMessageCheck():void
+		{
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE,
+					homePageTickHandler);
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.enableAutoHomePageMessageCheck();
-
 		}
 
 		private function homePageTickHandler(e:NotificationsEvent):void
 		{
 			this._messageCount = 0;
+			this._pendingConnectionLoaded = false;
+			this._alertsLoaded = false;
 			getPendingConnections();
-		}
-
-		private function establishToFromId(idsToCompare:XML):Object
-		{
-			var whoEstablishConnection:Object = [];
-			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
-			{
-				whoEstablishConnection.appGuid = idsToCompare.ToUserGuid;
-				whoEstablishConnection.appId = idsToCompare.ToAppId;
-			} else
-			{
-				whoEstablishConnection.appGuid = idsToCompare.FromUserGuid;
-				whoEstablishConnection.appId = idsToCompare.FromAppId;
-			}
-
-			return whoEstablishConnection;
+			getHCPAlerts();
 		}
 
 		private function getPendingConnectionsHandler(e:RemoteDataStoreEvent):void
@@ -222,16 +231,33 @@ package collaboRhythm.hiviva.view.screens.hcp
 			if(e.data.xmlResponse.children().length() > 0)
 			{
 				this._messageCount += e.data.xmlResponse.DCConnection.length();
-
-				if(this._messageCount > 0 )
-				{
-					this._messagesButton.visible = true;
-					this._messagesButton.subScript = String(this._messageCount);
-				}
 			}
+			this._pendingConnectionLoaded = true;
+			if(this._pendingConnectionLoaded && this._alertsLoaded) showNewMessages();
 		}
 
+		private function getHCPAlertsHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_HCP_ALERTS_COMPLETE, getHCPAlertsHandler);
 
+			if(e.data.xmlResponse.children().length() > 0)
+			{
+				this._messageCount += e.data.xmlResponse.DCAlertMessageRecord.length();
+			}
+			this._alertsLoaded = true;
+			if(this._pendingConnectionLoaded && this._alertsLoaded) showNewMessages();
+		}
+
+		private function showNewMessages():void
+		{
+			if (this._messageCount > 0)
+			{
+				this._messagesButton.visible = true;
+				this._messagesButton.subScript = String(this._messageCount);
+			}
+
+			enableAutoHomePageMessageCheck();
+		}
 
 		private function initAlertText():void
 		{
@@ -248,30 +274,38 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function initResults():void
 		{
-			this._patientCellContainer = new ScrollContainer();
-
-			var resultsLength:int = this._filterdPatients.length;
+			var resultsLength:int = HivivaStartup.hcpConnectedPatientsVO.patients.length;
 			var currItem:XML;
 			var resultCell:PatientResultCellHome;
 
-			for(var listCount:int = 0; listCount < resultsLength; listCount++)
+			if(resultsLength > 0)
 			{
-				currItem = this._filterdPatients[listCount];
+				this._patientCellContainer = new ScrollContainer();
 
-				resultCell = new PatientResultCellHome();
-				resultCell.addEventListener(FeathersScreenEvent.PATIENT_PROFILE_SELECTED, profileSelectedHandler);
-				resultCell.patientData = currItem;
-				resultCell.isResult = false;
-				this._patientCellContainer.addChild(resultCell);
+				for(var listCount:int = 0; listCount < resultsLength; listCount++)
+				{
+					currItem = HivivaStartup.hcpConnectedPatientsVO.patients[listCount];
+
+					resultCell = new PatientResultCellHome();
+					resultCell.addEventListener(FeathersScreenEvent.PATIENT_PROFILE_SELECTED, profileSelectedHandler);
+					resultCell.patientData = currItem;
+					resultCell.isResult = false;
+					this._patientCellContainer.addChild(resultCell);
+				}
+				addChild(this._patientCellContainer);
+				drawResults();
 			}
-			addChild(this._patientCellContainer);
-			drawResults();
+			else
+			{
+				initAlertText();
+			}
 		}
 
 		private function profileSelectedHandler(e:FeathersScreenEvent):void
 		{
 			trace("Profile Selected " + e.evtData.profile);
-			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_PATIENT_PROFILE , patientProfile:e.evtData.profile});
+			Main.selectedHCPPatientProfile = e.evtData.profile;
+			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_PATIENT_PROFILE});
 		}
 
 		private function drawResults():void
@@ -409,16 +443,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.disbaleAutoHomePageMessageCheck();
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
-		}
-
-		public function set patientsData(value:XML):void
-		{
-			this._patientsData = value;
-		}
-
-		public function get patientsData():XML
-		{
-			return this._patientsData;
 		}
 
 		public function set patients(value:Array):void

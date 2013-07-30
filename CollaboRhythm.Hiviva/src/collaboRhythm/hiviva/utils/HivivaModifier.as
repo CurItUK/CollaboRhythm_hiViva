@@ -16,6 +16,22 @@ package collaboRhythm.hiviva.utils
 		{
 		}
 
+		public static function establishToFromId(idsToCompare:XML):Object
+		{
+			var whoEstablishConnection:Object = [];
+			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
+			{
+				whoEstablishConnection.appGuid = idsToCompare.ToUserGuid;
+				whoEstablishConnection.appId = idsToCompare.ToAppId;
+			} else
+			{
+				whoEstablishConnection.appGuid = idsToCompare.FromUserGuid;
+				whoEstablishConnection.appId = idsToCompare.FromAppId;
+			}
+
+			return whoEstablishConnection;
+		}
+
 		public static function getBrandName(value:String):String
 		{
 			var startIndex:uint = value.indexOf("[");

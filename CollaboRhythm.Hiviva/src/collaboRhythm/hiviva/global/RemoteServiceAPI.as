@@ -25,8 +25,9 @@ package collaboRhythm.hiviva.global
 		public static const RS_SEND_USER_MESSAGE:String = 							"WSMessage.svc/SendMessage?";
 		public static const RS_DELETE_USER_MESSAGE:String = 						"WSMessage.svc/DeleteMessage?";
 		public static const RS_MARK_MESSAGE_AS_READ:String = 						"WSMessage.svc/MarkMessageAsRead?";
-		public static const RS_GET_USER_ALERT_MESSAGES:String = 					"WSMessage.svc/GetUserAlertMessages?";
+		public static const RS_GET_PATIENT_BADGE_ALERTS:String = 					"WSMessage.svc/GetUserAlertMessages?";
 		public static const RS_MARK_ALERT_MESSAGE_AS_READ:String = 					"WSMessage.svc/MarkAlertMessageAsRead?";
+		public static const RS_GET_HCP_ALERTS:String = 								"WSMessage.svc/GetAllAlertMessages?";
 
 		//Connections
 		public static const RS_GET_PATIENT:String = 								"WSHealthUser.svc/GetPatient?";

@@ -55,7 +55,6 @@ package collaboRhythm.hiviva.view.screens
 		{
 			var scaledPadding:Number = PADDING * this._scale,
 				gap:Number = scaledPadding * 0.5;
-				fullHeight:Number;
 
 			super.draw();
 
@@ -74,7 +73,6 @@ package collaboRhythm.hiviva.view.screens
 			this._patientName.width = this._bg.width - this._patientName.x;
 
 			this._adherenceTolerabilityLabel.validate();
-			this._adherenceTolerabilityLabel.width = 200;
 			this._adherenceTolerabilityLabel.x = this._bg.x + this._bg.width - this._adherenceTolerabilityLabel.width - gap;
 			this._adherenceTolerabilityLabel.y = this._patientName.y;
 

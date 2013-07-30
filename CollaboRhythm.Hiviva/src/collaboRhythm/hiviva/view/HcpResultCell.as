@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -173,6 +174,48 @@ package collaboRhythm.hiviva.view
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.CONNECTION_DELETE_COMPLETE , deleteConnectionCompleteHandler);
 			trace("Connection with id:" + hcpData.guid + " deleted.");
 			this.removeFromParent(true);
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnectionsWithSummary();
+		}
+
+		private function getApprovedConnectionsWithSummaryHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
+
+
+			var xmlData:XMLList = e.data.xmlResponse.DCConnectionSummary;
+			var loop:uint = xmlData.length();
+			var approvedPatient:XML;
+
+			HivivaStartup.hcpConnectedPatientsVO.patients = [];
+
+			if(loop > 0)
+			{
+				for(var i:uint = 0 ; i <loop ; i++)
+				{
+					approvedPatient = xmlData[i];
+					var establishedUser:Object = HivivaModifier.establishToFromId(approvedPatient);
+					var appGuid:String = establishedUser.appGuid;
+					var appId:String = establishedUser.appId;
+					var adherence:String = approvedPatient.Adherence;
+					var tolerability:String = approvedPatient.Tolerability;
+
+					var data:XML = new XML
+					(
+							<patient>
+								<name>{appId}</name>
+								<email>{appId}@domain.com</email>
+								<appid>{appId}</appid>
+								<guid>{appGuid}</guid>
+								<tolerability>{adherence}</tolerability>
+								<adherence>{tolerability}</adherence>
+								<picture>dummy.png</picture>
+							</patient>
+					);
+					HivivaStartup.hcpConnectedPatientsVO.patients.push(data);
+				}
+			}
 		}
 
 		private function doImageLoad(url:String):void

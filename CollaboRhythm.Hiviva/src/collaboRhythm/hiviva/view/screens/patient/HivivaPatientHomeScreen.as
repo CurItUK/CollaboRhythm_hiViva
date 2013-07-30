@@ -235,13 +235,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function checkForNewBadges():void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE , getUserAlertMessagesCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserAlertMessages();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_BADGE_ALERTS_COMPLETE , getPatientBadgeAlertsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientBadgeAlerts();
 		}
 
-		private function getUserAlertMessagesCompleteHandler(e:RemoteDataStoreEvent):void
+		private function getPatientBadgeAlertsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_ALERTS_COMPLETE , getUserAlertMessagesCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_BADGE_ALERTS_COMPLETE , getPatientBadgeAlertsCompleteHandler);
 
 			trace(e.data.xmlResponse);
 

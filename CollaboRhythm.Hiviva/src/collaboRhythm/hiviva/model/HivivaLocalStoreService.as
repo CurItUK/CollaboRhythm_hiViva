@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.model
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.model.vo.HCPConnectedPatientsVO;
 	import collaboRhythm.hiviva.model.vo.PatientAdherenceVO;
 	import collaboRhythm.hiviva.model.vo.ReportVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
@@ -32,12 +33,14 @@ package collaboRhythm.hiviva.model
 		private var _userVO:UserVO;
 		private var _reportVO:ReportVO;
 		private var _patientAdherenceVO:PatientAdherenceVO;
+		private var _hcpConnectedPatientsVO:HCPConnectedPatientsVO;
 
 		public function HivivaLocalStoreService()
 		{
 			this._userVO = new UserVO();
 			this._reportVO = new ReportVO();
 			this._patientAdherenceVO = new PatientAdherenceVO();
+			this._hcpConnectedPatientsVO = new HCPConnectedPatientsVO();
 		}
 
 		public function initDataLoad():void
@@ -1226,6 +1229,11 @@ package collaboRhythm.hiviva.model
 		public function get patientAdherenceVO():PatientAdherenceVO
 		{
 			return this._patientAdherenceVO;
+		}
+
+		public function get hcpConnectedPatientsVO():HCPConnectedPatientsVO
+		{
+			return this._hcpConnectedPatientsVO;
 		}
 
 	}
