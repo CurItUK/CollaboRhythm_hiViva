@@ -214,7 +214,7 @@ package collaboRhythm.hiviva.model
 
 		public function deleteConnection(fromGuid:String , toGuid:String):void
 		{
-			var query:String = "From=" + fromGuid + "&To=" + toGuid;
+			var query:String = "From=" + fromGuid + "&To=" + toGuid + "&deletedByGuid=" + HivivaStartup.userVO.guid;
 			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_CONNECTION_DELETE + query);
 			trace("deleteConnection " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
