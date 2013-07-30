@@ -206,11 +206,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 								<Enabled>{_tolerabilityCheck.isSelected ? 1 : 0}</Enabled>
 							</DCUserAlert>
 						</Alerts>
-					</DCUserAlerts>
+					</DCUserAlerts>;
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ADD_ALERT_SETTINGS_COMPLETE, addAlertSettingsCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addUserAlertSettings(settings);
-
 		}
 
 		private function addAlertSettingsCompleteHandler(e:RemoteDataStoreEvent):void

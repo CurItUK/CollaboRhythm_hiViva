@@ -85,6 +85,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._newBadges = new <BadgeCell>[];
 
 			var twoDayBadge:BadgeCell;
+			var oneWeekBadge:BadgeCell;
 			var tenWeekBadge:BadgeCell;
 			var twentyFiveWeekBadge:BadgeCell;
 			var fiftyWeekBadge:BadgeCell;
@@ -94,6 +95,12 @@ package collaboRhythm.hiviva.view.screens.patient
 				twoDayBadge = new BadgeCell();
 				twoDayBadge.badgeType = BadgeCell.TWO_DAY_TYPE;
 				this._newBadges.push(twoDayBadge);
+			}
+			if(this._NumberOfDaysAdhered > 7)
+			{
+				oneWeekBadge = new BadgeCell();
+				oneWeekBadge.badgeType = BadgeCell.ONE_WEEK_TYPE;
+				this._newBadges.push(oneWeekBadge);
 			}
 			if(this._NumberOfDaysAdhered > 70)
 			{
@@ -138,11 +145,13 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function markAllNewBadgesAsRead():void
 		{
 			var badgeGuids:Array = HivivaStartup.userVO.badges;
-
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE, markAlertMessageAsReadComplete);
-			for (var badgeCount:int = 0; badgeCount < badgeGuids.length; badgeCount++)
+			if(HivivaStartup.userVO.badges.length > 0)
 			{
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.markAlertMessageAsRead(badgeGuids[badgeCount]);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE, markAlertMessageAsReadComplete);
+				for (var badgeCount:int = 0; badgeCount < badgeGuids.length; badgeCount++)
+				{
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.markAlertMessageAsRead(badgeGuids[badgeCount]);
+				}
 			}
 		}
 

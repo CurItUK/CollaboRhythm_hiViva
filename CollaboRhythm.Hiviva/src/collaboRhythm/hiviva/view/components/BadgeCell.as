@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
+	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
 	import feathers.core.FeathersControl;
@@ -15,6 +16,8 @@ package collaboRhythm.hiviva.view.components
 		private const IMAGE_SIZE:Number = 150;
 
 		protected var _gap:Number;
+		protected var _cellPadding:Number;
+		protected var _trophyPadding:Number;
 
 		protected var _bg:Scale9Image;
 		protected var _seperator:Image;
@@ -27,6 +30,7 @@ package collaboRhythm.hiviva.view.components
 		private var _badgeType:String;
 
 		public static const TWO_DAY_TYPE:String = "twoDayType";
+		public static const ONE_WEEK_TYPE:String = "oneWeekType";
 		public static const TEN_WEEK_TYPE:String = "tenWeekType";
 		public static const TWENTY_FIVE_WEEK_TYPE:String = "twentyFiveWeekType";
 		public static const FIFTY_WEEK_TYPE:String = "fiftyWeekType";
@@ -38,28 +42,29 @@ package collaboRhythm.hiviva.view.components
 
 		override protected function draw():void
 		{
-			this._gap = 30 * this._scale;
+			this._cellPadding = 15 * this._scale;
+			this._trophyPadding = 30 * this._scale;
 
 			super.draw();
 
 			this._seperator.width = this.actualWidth;
 
-			this._trophy.x = this._gap;
-			this._trophy.y = this._gap;
+			this._trophy.x = this._trophyPadding;
+			this._trophy.y = this._cellPadding;
 
-			this._badgeTextLabel.x = this._trophy.x + this._trophy.width + this._gap;
-			this._badgeTextLabel.width = this.actualWidth - this._trophy.x;
+			this._badgeTextLabel.x = this._trophy.x + this._trophy.width + this._trophyPadding;
+			this._badgeTextLabel.width = this.actualWidth - this._badgeTextLabel.x;
 			this._badgeTextLabel.validate();
 
-			this._badgeNameLabel.x = this._trophy.x + this._trophy.width + this._gap;
-			this._badgeNameLabel.width = this.actualWidth - this._trophy.x;
+			this._badgeNameLabel.x = this._trophy.x + this._trophy.width + this._trophyPadding;
+			this._badgeNameLabel.width = this.actualWidth - this._badgeNameLabel.x;
 			this._badgeNameLabel.validate();
 
 			var textHeight:Number = this._badgeTextLabel.height + this._badgeNameLabel.height;
-			this._badgeTextLabel.y = this._gap + (this._trophy.height * 0.5) - (textHeight * 0.5);
+			this._badgeTextLabel.y = this._cellPadding + (this._trophy.height * 0.5) - (textHeight * 0.5);
 			this._badgeNameLabel.y = this._badgeTextLabel.y + this._badgeTextLabel.height;
 
-			setSizeInternal(this.actualWidth, this._trophy.height + (this._gap * 2), true);
+			setSizeInternal(this.actualWidth, this._trophy.height + (this._cellPadding * 2), true);
 		}
 
 		override protected function initialize():void
@@ -73,9 +78,14 @@ package collaboRhythm.hiviva.view.components
 			switch(this._badgeType)
 			{
 				case TWO_DAY_TYPE :
-					badgeIcon = Main.assets.getTexture("star1");
+					badgeIcon = Assets.getTexture('Star0Png');
 					badgeText = "Nice work.";
 					badgeName = "2 days adherence";
+					break;
+				case ONE_WEEK_TYPE :
+					badgeIcon = Main.assets.getTexture("star1");
+					badgeText = "Keep it up.";
+					badgeName = "1 week adherence";
 					break;
 				case TEN_WEEK_TYPE :
 					badgeIcon = Main.assets.getTexture("star2");

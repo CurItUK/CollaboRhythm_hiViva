@@ -9,6 +9,9 @@ package collaboRhythm.hiviva.view.media
 	public class Assets
 	{
 
+		[Embed(source="/assets/images/temp/star0.png")]
+		public static const Star0Png:Class;
+
 		[Embed(source="/assets/images/temp/clockFace.png")]
 		public static const ClockFacePng:Class;
 
