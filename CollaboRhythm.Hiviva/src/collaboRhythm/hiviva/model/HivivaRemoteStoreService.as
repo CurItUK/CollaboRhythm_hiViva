@@ -111,6 +111,7 @@ package collaboRhythm.hiviva.model
 		public function getServerDate():void
 		{
 			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_SERVER_DATE);
+//			var urlRequest:URLRequest = new URLRequest("http://flashdev1/test/currentdatetime.xml");
 			trace("getServerDate " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, getServerDateComplete);
