@@ -73,7 +73,6 @@ package collaboRhythm.hiviva.view.screens
 
 			this._seperator.width = Constants.STAGE_WIDTH;
 
-			this._primaryLabel.validate();
 			if(!this._isSent)
 			{
 				this._check.validate();
@@ -87,6 +86,7 @@ package collaboRhythm.hiviva.view.screens
 			}
 			this._primaryLabel.y = Constants.PADDING_TOP;
 			this._primaryLabel.width = Constants.STAGE_WIDTH - this._primaryLabel.x - Constants.PADDING_RIGHT - this._dateLabel.width - Constants.PADDING_LEFT;
+			this._primaryLabel.validate();
 			fullHeight = this._primaryLabel.y + this._primaryLabel.height + Constants.PADDING_BOTTOM;
 
 			this._dateLabel.validate();

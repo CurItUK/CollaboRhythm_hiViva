@@ -34,7 +34,7 @@ package collaboRhythm.hiviva.view.components
 		private const LINE_COLOURS:Array = [0x2e445e,0x0b88ec,0xc20315,0x697a8f,0xffffff,0x000000];
 		private const PLOT_GIRTH:int = 4;
 
-		private var _patientData:Array;
+//		private var _patientData:Array;
 		private var _scheduleHistoryData:XMLList;
 		private var _firstWeek:Date;
 		private var _weeks:Vector.<Date>;
@@ -292,12 +292,13 @@ package collaboRhythm.hiviva.view.components
 		private function getAppIdWithGuid(guid:String):String
 		{
 			var appId:String;
+			var patientData:Array = HivivaStartup.hcpConnectedPatientsVO.patients;
 
-			for (var i:int = 0; i < _patientData.length; i++)
+			for (var i:int = 0; i < patientData.length; i++)
 			{
-				if(_patientData[i].appGuid == guid)
+				if(patientData[i].guid == guid)
 				{
-					appId = _patientData[i].appId;
+					appId = patientData[i].appid;
 					break;
 				}
 			}
@@ -373,8 +374,21 @@ package collaboRhythm.hiviva.view.components
 			}
 			else
 			{
-				trace('all connected patients do not have medication history');
+				drawNoDataMessage();
 			}
+		}
+
+		private function drawNoDataMessage():void
+		{
+			var alertLabel:Label = new Label();
+			alertLabel.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
+			alertLabel.text = "No Medication history for your connected patients.";
+
+			this.addChild(alertLabel);
+			alertLabel.validate();
+
+			alertLabel.width = Constants.STAGE_WIDTH;
+			alertLabel.y = (this.actualHeight * 0.5) - (alertLabel.height * 0.5);
 		}
 
 		private function drawPlotPoints():void
@@ -510,7 +524,7 @@ package collaboRhythm.hiviva.view.components
 		{
 			_scheduleHistoryData = value;
 		}
-
+/*
 		public function get patientData():Array
 		{
 			return _patientData;
@@ -519,6 +533,6 @@ package collaboRhythm.hiviva.view.components
 		public function set patientData(value:Array):void
 		{
 			_patientData = value;
-		}
+		}*/
 	}
 }

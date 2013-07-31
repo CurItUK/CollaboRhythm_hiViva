@@ -259,9 +259,11 @@ package collaboRhythm.hiviva.model
 		private function getApprovedConnectionsWithSummaryHandler(e:Event):void
 		{
 			var xmlResponse:XML = new XML(e.target.data);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.setConnectedPatientsFromXml(xmlResponse);
+
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE);
 			evt.data.xmlResponse = xmlResponse;
-			this.dispatchEvent(evt)
+			this.dispatchEvent(evt);
 		}
 
 		public function getPendingConnections():void

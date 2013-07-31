@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.PatientAdherenceChart;
 
@@ -25,7 +26,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
 
-			if(!this._remoteCallMade) getApprovedConnections();
+			if(!this._remoteCallMade) getAllWeeklyMedicationHistory();
 		}
 
 		override protected function initialize():void
@@ -36,7 +37,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.addChild(this._header);
 		}
 
-		private function getApprovedConnections():void
+/*		private function getApprovedConnections():void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE, getApprovedConnectionsHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnections();
@@ -53,7 +54,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			{
 				for (var i:int = 0; i < xmlList.length(); i++)
 				{
-					this._patientData.push(establishToFromId(xmlList[i]));
+					this._patientData.push(HivivaModifier.establishToFromId(xmlList[i]));
 				}
 				getAllWeeklyMedicationHistory();
 			}
@@ -61,28 +62,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 			{
 				trace("no connected patients");
 			}
-		}
-
-		private function establishToFromId(idsToCompare:XML):Object
-		{
-			var whoEstablishConnection:Object = [];
-			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
-			{
-				whoEstablishConnection.appGuid = idsToCompare.ToUserGuid;
-				whoEstablishConnection.appId = idsToCompare.ToAppId;
-			} else
-			{
-				whoEstablishConnection.appGuid = idsToCompare.FromUserGuid;
-				whoEstablishConnection.appId = idsToCompare.FromAppId;
-			}
-
-			return whoEstablishConnection;
-		}
+		}*/
 
 		private function getAllWeeklyMedicationHistory():void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_ALL_WEEKLY_MEDICATION_HISTORY_COMPLETE, getAllWeeklyMedicationHistoryCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getAllWeeklyMedicationHistory(PatientAdherenceChart.TOTAL_WEEKS);
+			this._remoteCallMade = true;
 		}
 
 		private function getAllWeeklyMedicationHistoryCompleteHandler(e:RemoteDataStoreEvent):void
@@ -104,7 +90,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function drawAdherenceChart():void
 		{
 			var patientAdherenceChart:PatientAdherenceChart = new PatientAdherenceChart();
-			patientAdherenceChart.patientData = this._patientData;
+//			patientAdherenceChart.patientData = this._patientData;
 			patientAdherenceChart.scheduleHistoryData = this._scheduleHistoryData;
 			addChild(patientAdherenceChart);
 			patientAdherenceChart.y = Constants.HEADER_HEIGHT;

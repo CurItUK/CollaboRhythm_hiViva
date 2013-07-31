@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.model
 	import collaboRhythm.hiviva.model.vo.PatientAdherenceVO;
 	import collaboRhythm.hiviva.model.vo.ReportVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 
 	import flash.data.SQLConnection;
 	import flash.data.SQLResult;
@@ -195,6 +196,43 @@ package collaboRhythm.hiviva.model
 			reportSource.copyTo(reportDestination);
 
 
+		}
+
+		public function setConnectedPatientsFromXml(xmlResponse:XML):void
+		{
+			var xmlData:XMLList = xmlResponse.DCConnectionSummary;
+			var loop:uint = xmlData.length();
+			var approvedPatient:XML;
+
+			this._hcpConnectedPatientsVO.patients = [];
+
+			if(loop > 0)
+			{
+				for(var i:uint = 0 ; i <loop ; i++)
+				{
+					approvedPatient = xmlData[i];
+					var establishedUser:Object = HivivaModifier.establishToFromId(approvedPatient);
+					var appGuid:String = establishedUser.appGuid;
+					var appId:String = establishedUser.appId;
+					var adherence:String = approvedPatient.Adherence;
+					var tolerability:String = approvedPatient.Tolerability;
+
+					var data:XML = new XML
+					(
+							<patient>
+								<name>{appId}</name>
+								<email>{appId}@domain.com</email>
+								<appid>{appId}</appid>
+								<guid>{appGuid}</guid>
+								<tolerability>{adherence}</tolerability>
+								<adherence>{tolerability}</adherence>
+								<picture>dummy.png</picture>
+							</patient>
+					);
+					this._hcpConnectedPatientsVO.patients.push(data);
+				}
+			}
+			trace('connectedPatientsVO updated');
 		}
 
 		public function getGalleryImages():void
