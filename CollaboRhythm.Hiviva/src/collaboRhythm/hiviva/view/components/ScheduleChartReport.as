@@ -116,23 +116,25 @@ package collaboRhythm.hiviva.view.components
 				{
 					medicationSchedule = _patientData[j].Schedule.DCMedicationSchedule;
 					medicationScheduleLength = medicationSchedule.length();
-					earliestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[medicationScheduleLength - 1].DateTaken));
-					latestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[0].DateTaken));
-					for (var k:int = 0; k < medicationScheduleLength; k++)
+					if(medicationScheduleLength > 0)
 					{
-						if(daysItar.getTime() >= earliestSchedule.getTime() && daysItar.getTime() <= latestSchedule.getTime())
+						earliestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[medicationScheduleLength - 1].DateTaken));
+						latestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[0].DateTaken));
+						for (var k:int = 0; k < medicationScheduleLength; k++)
 						{
-							referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
-							if(daysItar.getTime() == referenceDate.getTime())
+							if(daysItar.getTime() >= earliestSchedule.getTime() && daysItar.getTime() <= latestSchedule.getTime())
 							{
-								valueData = this._dataCategory == "adherence" ? int(medicationSchedule[k].PercentTaken) : int(medicationSchedule[k].Tolerability);
+								referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
+								if(daysItar.getTime() == referenceDate.getTime())
+								{
+									valueData = this._dataCategory == "adherence" ? int(medicationSchedule[k].PercentTaken) : int(medicationSchedule[k].Tolerability);
+								}
+								// set valueData to Zero if within data range but missing
+								if(valueData == -1) valueData = 0;
 							}
-							// set valueData to Zero if within data range but missing
-							if(valueData == -1) valueData = 0;
+							if(this._lowestValue > valueData && valueData > -1) this._lowestValue = valueData;
 						}
-						if(this._lowestValue > valueData && valueData > -1) this._lowestValue = valueData;
 					}
-
 				}
 				this._valueData.push(valueData);
 				daysItar.date++;

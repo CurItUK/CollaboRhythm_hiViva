@@ -6,11 +6,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.Calendar;
+	import collaboRhythm.hiviva.view.screens.shared.ReportPreview;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
 	import feathers.controls.Label;
+	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TextInput;
 	import feathers.core.PopUpManager;
 
@@ -44,6 +46,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _previewAndSendBtn:Button;
 		private var _calendar:Calendar;
 		private var _activeCalendarInput:TextInput;
+		private var _emailLabel:Label;
+		private var _emailInput:TextInput;
 
 		private var _patientLabel:Label;
 		private var _selectedPatient:XML;
@@ -51,6 +55,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _pdfFile:File;
 		private var _stageWebView:StageWebView
 		private var _applicationController:HivivaAppController;
+		private var _settingsData:Object;
 
 
 		private var _pdfPopupContainer:HivivaPDFPopUp;
@@ -67,6 +72,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._content.validate();
 
+			// add calendar buttons post validate so scrollable area is correctly calculated
+			if(!_content.contains(this._startDateButton))
+			{
+				addCalendarButtons();
+			}
 		}
 
 		override protected function preValidateContent():void
@@ -84,15 +94,19 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._includeLabel.width = this._innerWidth;
 
-			this._adherenceCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
-			this._feelingCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
-			this._cd4Check.defaultLabelProperties.width = this._innerWidth * 0.9;
-			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth * 0.9;
+			this._adherenceCheck.defaultLabelProperties.width = this._innerWidth;
+			this._feelingCheck.defaultLabelProperties.width = this._innerWidth;
+			this._cd4Check.defaultLabelProperties.width = this._innerWidth;
+			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth;
+
+			this._emailLabel.width = this._innerWidth;
+			this._emailInput.width = this._innerWidth * 0.75;
 		}
 
 		override protected function postValidateContent():void
 		{
 			super.postValidateContent();
+			/*
 			this._patientLabel.width += this._componentGap;
 			this._startDateButton.x = this._startDateInput.width + this._componentGap;
 			this._startDateButton.y = this._startDateInput.y + this._startDateInput._input.y + (this._startDateInput._input.height * 0.5);
@@ -110,6 +124,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._cd4Check.y = this._feelingCheck.y + this._feelingCheck.height + this._componentGap;
 			this._viralLoadCheck.y = this._cd4Check.y + this._cd4Check.height + this._componentGap;
 			this._previewAndSendBtn.y = this._viralLoadCheck.y + this._viralLoadCheck.height + this._componentGap;
+			*/
+			this._previewAndSendBtn.x = (this.actualWidth * 0.5) - (this._previewAndSendBtn.width * 0.5);
 		}
 
 		override protected function initialize():void
@@ -126,12 +142,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			this._patientLabel = new Label();
-			this._patientLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._patientLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
 			this._patientLabel.text = "Patient: " + selectedPatient.name;
 			this._content.addChild(this._patientLabel);
 
 			this._reportDatesLabel = new Label();
-			this._reportDatesLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._reportDatesLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
 			this._reportDatesLabel.text = "Report dates";
 			this._content.addChild(this._reportDatesLabel);
 
@@ -141,25 +157,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._startDateInput);
 			this._startDateInput._input.isEnabled = false;
 
-			this._startDateButton = new Button();
-			this._startDateButton.addEventListener(Event.TRIGGERED, startDateCalendarHandler);
-			this._startDateButton.name = "calendar-button";
-			this._content.addChild(this._startDateButton);
-
 			this._finishDateInput = new LabelAndInput();
 			this._finishDateInput.scale = this.dpiScale;
 			this._finishDateInput.labelStructure = "left";
 			this._content.addChild(this._finishDateInput);
 			this._finishDateInput._input.isEnabled = false;
 
-			this._finishDateButton = new Button();
-			this._finishDateButton.addEventListener(Event.TRIGGERED, finishDateCalendarHandler);
-			this._finishDateButton.name = "calendar-button";
-			this._content.addChild(this._finishDateButton);
-
-
 			this._includeLabel = new Label();
-			this._includeLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._includeLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
 			this._includeLabel.text = "Include";
 			this._content.addChild(this._includeLabel);
 
@@ -183,13 +188,72 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._viralLoadCheck.label = "Viral load test results";
 			this._content.addChild(this._viralLoadCheck);
 
+			this._emailLabel = new Label();
+			this._emailLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
+			this._emailLabel.text = "Send report to";
+			this._content.addChild(this._emailLabel);
+
+			this._emailInput = new TextInput();
+			this._content.addChild(this._emailInput);
+
 			this._previewAndSendBtn = new Button();
 			this._previewAndSendBtn.label = "Preview and send";
 			this._previewAndSendBtn.addEventListener(Event.TRIGGERED, previewSendHandler);
 			this._content.addChild(this._previewAndSendBtn);
 
 			this._calendar = new Calendar();
-			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler)
+			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler);
+
+			_settingsData = HivivaStartup.reportVO.settingsData;
+			if(_settingsData == null)
+			{
+				populateDefaults();
+			}
+			else
+			{
+				prePopulateData();
+			}
+		}
+
+		private function populateDefaults():void
+		{
+			this._adherenceCheck.isSelected =
+			this._feelingCheck.isSelected =
+			this._cd4Check.isSelected =
+			this._viralLoadCheck.isSelected = true;
+			this._startDateInput._input.text = this._calendar.getMonthBefore();
+			this._finishDateInput._input.text = this._calendar.getCurrentDate();
+			this._emailInput.text = "";
+		}
+
+		private function prePopulateData():void
+		{
+			this._adherenceCheck.isSelected = _settingsData.adherenceIsChecked;
+			this._feelingCheck.isSelected = _settingsData.feelingIsChecked;
+			this._cd4Check.isSelected = _settingsData.cd4IsChecked;
+			this._viralLoadCheck.isSelected = _settingsData.viralLoadIsChecked;
+			this._startDateInput._input.text = _settingsData.startDate;
+			this._finishDateInput._input.text = _settingsData.endDate;
+			this._emailInput.text = _settingsData.emailAddress;
+		}
+
+		private function addCalendarButtons():void
+		{
+			this._startDateButton = new Button();
+			this._startDateButton.addEventListener(Event.TRIGGERED, startDateCalendarHandler);
+			this._startDateButton.name = "calendar-button";
+			this._content.addChild(this._startDateButton);
+			this._startDateButton.validate();
+			this._startDateButton.x = this._startDateInput.width + this._componentGap;
+			this._startDateButton.y = this._startDateInput.y + this._startDateInput._input.y + (this._startDateInput._input.height * 0.5) - (this._startDateButton.height * 0.5);
+
+			this._finishDateButton = new Button();
+			this._finishDateButton.addEventListener(Event.TRIGGERED, finishDateCalendarHandler);
+			this._finishDateButton.name = "calendar-button";
+			this._content.addChild(this._finishDateButton);
+			this._finishDateButton.validate();
+			this._finishDateButton.x = this._finishDateInput.width + this._componentGap;
+			this._finishDateButton.y = this._finishDateInput.y + this._finishDateInput._input.y + (this._finishDateInput._input.height * 0.5) - (this._finishDateButton.height * 0.5);
 		}
 
 
@@ -233,7 +297,24 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var formValidation:String = patientReportsCheck();
 			if(formValidation.length == 0)
 			{
-				displaySavedPDF();
+				HivivaStartup.reportVO.settingsData =
+				{
+					adherenceIsChecked:this._adherenceCheck.isSelected,
+					feelingIsChecked:this._feelingCheck.isSelected,
+					cd4IsChecked:this._cd4Check.isSelected,
+					viralLoadIsChecked:this._viralLoadCheck.isSelected,
+					startDate:this._startDateInput._input.text,
+					endDate:this._finishDateInput._input.text,
+					patientGuid:selectedPatient.guid,
+					patientAppId:selectedPatient.appid,
+					emailAddress:this._emailInput.text
+				};
+				if(this.owner.hasScreen(HivivaScreens.REPORT_PREVIEW))
+				{
+					this.owner.removeScreen(HivivaScreens.REPORT_PREVIEW);
+				}
+				this.owner.addScreen(HivivaScreens.REPORT_PREVIEW, new ScreenNavigatorItem(ReportPreview, null, {parentScreen:this.owner.activeScreenID}));
+				this.owner.showScreen(HivivaScreens.REPORT_PREVIEW);
 			}
 			else
 			{
@@ -253,8 +334,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 				var isValidDate:Boolean = validateDates();
 				if(!isValidDate)validationArray.push("Invalid date selection - start and end dates");
 			}
+			if(this._emailInput.text.length == 0) validationArray.push("Please enter a valid email address");
 
-			return validationArray.join("<br/>");
+			return validationArray.join("\n");
 		}
 
 		private function validateDates():Boolean

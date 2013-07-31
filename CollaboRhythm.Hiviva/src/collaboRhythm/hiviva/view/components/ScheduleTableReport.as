@@ -203,36 +203,46 @@ package collaboRhythm.hiviva.view.components
 					{
 						medicationSchedule = this._patientData[i].Schedule.DCMedicationSchedule as XMLList;
 						medicationScheduleLength = medicationSchedule.length();
-						earliestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[medicationScheduleLength - 1].DateTaken));
-						latestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[0].DateTaken));
-						range = HivivaModifier.getDaysDiff(latestSchedule, earliestSchedule) + 1;
-
-						scheduleValue = 0;
-						scheduleValueCount = 0;
-						currentSchedule = new Date(earliestSchedule.getFullYear(),earliestSchedule.getMonth(),earliestSchedule.getDate(),0,0,0,0);
-						for (var dayCount:int = 0; dayCount < range; dayCount++)
+						if(medicationScheduleLength > 0)
 						{
-							currValue = -1;
-							for (var j:int = 0; j < medicationScheduleLength; j++)
+							earliestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[medicationScheduleLength - 1].DateTaken));
+							latestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[0].DateTaken));
+							range = HivivaModifier.getDaysDiff(latestSchedule, earliestSchedule) + 1;
+
+							scheduleValue = 0;
+							scheduleValueCount = 0;
+							currentSchedule = new Date(earliestSchedule.getFullYear(),earliestSchedule.getMonth(),earliestSchedule.getDate(),0,0,0,0);
+							for (var dayCount:int = 0; dayCount < range; dayCount++)
 							{
-								referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[j].DateTaken));
-								if(currentSchedule.getTime() == referenceDate.getTime())
+								currValue = -1;
+								for (var j:int = 0; j < medicationScheduleLength; j++)
 								{
-									currValue = int(medicationSchedule[j].PercentTaken);
+									referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[j].DateTaken));
+									if(currentSchedule.getTime() == referenceDate.getTime())
+									{
+										currValue = int(medicationSchedule[j].PercentTaken);
+									}
 								}
+								// set value to Zero if within data range but missing
+								if(currValue == -1) currValue = 0;
+								scheduleValue += currValue;
+								scheduleValueCount++;
+								currentSchedule.date++;
 							}
-							// set value to Zero if within data range but missing
-							if(currValue == -1) currValue = 0;
-							scheduleValue += currValue;
-							scheduleValueCount++;
-							currentSchedule.date++;
+							value += scheduleValue;
+							valueCount += scheduleValueCount;
 						}
-						value += scheduleValue;
-						valueCount += scheduleValueCount;
 					}
 				}
-				overallAverage += (value / valueCount);
-				drawTableCell(String(Math.round(value / valueCount)), rowCount);
+				if(value > 0 && valueCount > 0)
+				{
+					overallAverage += (value / valueCount);
+					drawTableCell(String(Math.round(value / valueCount)), rowCount);
+				}
+				else
+				{
+					drawTableCell("0", rowCount);
+				}
 			}
 			drawTableCell(String(Math.round(overallAverage / realMedLength)), realMedLength);
 		}
