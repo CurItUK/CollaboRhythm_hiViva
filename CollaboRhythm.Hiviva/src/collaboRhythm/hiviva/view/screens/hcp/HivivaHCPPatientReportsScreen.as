@@ -106,25 +106,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function postValidateContent():void
 		{
 			super.postValidateContent();
-			/*
-			this._patientLabel.width += this._componentGap;
-			this._startDateButton.x = this._startDateInput.width + this._componentGap;
-			this._startDateButton.y = this._startDateInput.y + this._startDateInput._input.y + (this._startDateInput._input.height * 0.5);
-			this._startDateButton.y -= this._startDateButton.height * 0.5;
-
-			this._finishDateInput.y = this._startDateInput.y + this._startDateInput.height + this._componentGap;
-
-			this._finishDateButton.x = this._finishDateInput.width + this._componentGap;
-			this._finishDateButton.y = this._finishDateInput.y + this._finishDateInput._input.y + (this._finishDateInput._input.height * 0.5);
-			this._finishDateButton.y -= this._finishDateButton.height * 0.5;
-
-			this._includeLabel.y = this._finishDateInput.y + this._finishDateInput.height + this._componentGap;
-			this._adherenceCheck.y = this._includeLabel.y + this._includeLabel.height + this._componentGap;
-			this._feelingCheck.y = this._adherenceCheck.y + this._adherenceCheck.height + this._componentGap;
-			this._cd4Check.y = this._feelingCheck.y + this._feelingCheck.height + this._componentGap;
-			this._viralLoadCheck.y = this._cd4Check.y + this._cd4Check.height + this._componentGap;
-			this._previewAndSendBtn.y = this._viralLoadCheck.y + this._viralLoadCheck.height + this._componentGap;
-			*/
 			this._previewAndSendBtn.x = (this.actualWidth * 0.5) - (this._previewAndSendBtn.width * 0.5);
 		}
 
@@ -255,7 +236,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._finishDateButton.x = this._finishDateInput.width + this._componentGap;
 			this._finishDateButton.y = this._finishDateInput.y + this._finishDateInput._input.y + (this._finishDateInput._input.height * 0.5) - (this._finishDateButton.height * 0.5);
 		}
-
 
 		private function calendarButtonHandler(e:FeathersScreenEvent):void
 		{
