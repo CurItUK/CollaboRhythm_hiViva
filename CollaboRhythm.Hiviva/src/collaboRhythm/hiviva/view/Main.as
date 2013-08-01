@@ -73,6 +73,9 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 
+	import flash.desktop.NativeApplication;
+	import flash.events.Event;
+
 	import flash.filesystem.File;
 	import flash.system.System;
 
@@ -196,7 +199,7 @@ package collaboRhythm.hiviva.view
 			this._passwordPopUp.validate();
 		}
 
-		private function splashComplete(e:Event):void
+		private function splashComplete(e:starling.events.Event):void
 		{
 			trace("splashComplete ");
 			this._mainScreenNav.clearScreen();
@@ -239,13 +242,13 @@ package collaboRhythm.hiviva.view
 			this._settingsBtn = new Button();
 			this._settingsBtn.name = HivivaTheme.NONE_THEMED;
 			this._settingsBtn.defaultIcon = new Image(_assets.getTexture("top_nav_icon_01"));
-			this._settingsBtn.addEventListener(Event.TRIGGERED , settingsBtnHandler);
+			this._settingsBtn.addEventListener(starling.events.Event.TRIGGERED , settingsBtnHandler);
 			this._screenHolder.addChild(this._settingsBtn);
 			this._settingsBtn.width = (Constants.STAGE_WIDTH * 0.2);
 			this._settingsBtn.scaleY = this._settingsBtn.scaleX;
 		}
 
-		private function settingsBtnHandler(e:Event = null):void
+		private function settingsBtnHandler(e:starling.events.Event = null):void
 		{
 			var xLoc:Number = _settingsOpen ? 0 : Constants.SETTING_MENU_WIDTH;
 
@@ -354,7 +357,7 @@ package collaboRhythm.hiviva.view
 			this._footerBtnGroup.navigateToMessages();
 		}
 
-		private function navigateToDirectProfileMenu(e:Event):void
+		private function navigateToDirectProfileMenu(e:starling.events.Event):void
 		{
 //			if(e.data.patientProfile != null) _selectedHCPPatientProfile = e.data.patientProfile as XML;
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
@@ -363,7 +366,7 @@ package collaboRhythm.hiviva.view
 			settingsNavHandler(evt);
 		}
 
-		private function navGoSettings(e:Event):void
+		private function navGoSettings(e:starling.events.Event):void
 		{
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
 			evt.message = e.data.screen;

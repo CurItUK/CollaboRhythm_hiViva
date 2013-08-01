@@ -2,10 +2,13 @@ package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.NotificationsEvent;
 	import collaboRhythm.hiviva.model.vo.HCPConnectedPatientsVO;
 	import collaboRhythm.hiviva.model.vo.PatientAdherenceVO;
 	import collaboRhythm.hiviva.model.vo.ReportVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
+
+	import flash.desktop.NativeApplication;
 
 	import flash.display.Sprite;
 	import flash.display.Bitmap;
@@ -35,6 +38,7 @@ package collaboRhythm.hiviva.view
 		private var _starFW:Starling;
 		private var _assets:AssetManager;
 
+		private static var _hivivaStartup:HivivaStartup;
 		private static var _hivivaAppController:HivivaAppController;
 
 		public function HivivaStartup()
@@ -46,9 +50,25 @@ package collaboRhythm.hiviva.view
 		{
 			removeEventListener(flash.events.Event.ADDED_TO_STAGE, onAdded);
 
+			_hivivaStartup = this;
 			_hivivaAppController = new HivivaAppController();
 
+			NativeApplication.nativeApplication.addEventListener(flash.events.Event.ACTIVATE, activate);
+			NativeApplication.nativeApplication.addEventListener(flash.events.Event.DEACTIVATE, deActivate);
+
 			initStarling();
+		}
+
+		private function activate(e:flash.events.Event):void
+		{
+			_starFW.start();
+			this.dispatchEvent(new NotificationsEvent(NotificationsEvent.APPLICATION_ACTIVATE));
+		}
+
+		private function deActivate(e:flash.events.Event):void
+		{
+			_starFW.stop();
+			this.dispatchEvent(new NotificationsEvent(NotificationsEvent.APPLICATION_DEACTIVATE));
 		}
 
 		private function initStarling():void
@@ -86,6 +106,11 @@ package collaboRhythm.hiviva.view
 
 			var main:Main = Starling.current.root as Main;
 			main.initMain(this._assets , bgTexture);
+		}
+
+		public static function get hivivaStartup():HivivaStartup
+		{
+			return _hivivaStartup;
 		}
 
 		public static function get hivivaAppController():HivivaAppController

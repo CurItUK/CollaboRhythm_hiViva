@@ -44,9 +44,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	public class HivivaPatientHomeScreen extends Screen
 	{
-
-
-
 		private var _header:HivivaHeader;
 		private var _messagesButton:TopNavButton;
 		private var _badgesButton:TopNavButton;
@@ -61,8 +58,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private var IMAGE_SIZE:Number;
 		private var _usableHeight:Number;
-		private var _today:Date;
-		private var _remoteCallMade:Boolean = false;
+//		private var _today:Date;
+		private var _asynchronousCallMade:Boolean = false;
 		private var _remoteCallCount:int = 0;
 
 		private var _messageCount:uint = 0;
@@ -107,15 +104,27 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._homeImageInstructions.x =  (Constants.STAGE_WIDTH * 0.5) - (this._homeImageInstructions.width * 0.5);
 			this._homeImageInstructions.y =  (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._homeImageInstructions.height * 0.5);
 
-
-			if(this._today == null)
+			if (!this._asynchronousCallMade)
 			{
-				trace("this._today " + this._today);
-				this._today = new Date();
-				if(!this._remoteCallMade) getAllMessagesFromRemoteService();
+				enableAutoHomePageMessageCheck();
+				getAllMessagesFromRemoteService();
 				checkForNewBadges();
-				initHomePhoto();
+				getGalleryTimeStamp();
+				this._asynchronousCallMade = true;
 			}
+		}
+
+		private function updateVODataHandler(e:NotificationsEvent):void
+		{
+			if(HivivaStartup.hivivaAppController.hivivaNotificationsController.hasEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE))
+			{
+				HivivaStartup.hivivaAppController.hivivaNotificationsController.disableAutoHomePageMessageCheck();
+				HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
+			}
+
+			HivivaStartup.patientAdherenceVO.percentage = 0;
+			this._asynchronousCallMade = false;
+			this.draw();
 		}
 
 		override protected function initialize():void
@@ -161,6 +170,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._header.rightItems =  new <DisplayObject>[this._messagesButton, this._badgesButton];
 
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.UPDATE_VO_DATA, updateVODataHandler);
 		}
 
 		private function messagesButtonHandler(e:Event):void
@@ -182,8 +192,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE, getPendingConnectionsHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPendingConnections();
-
-			this._remoteCallMade = true;
 		}
 
 		private function getUserReceivedMessagesHandler(e:RemoteDataStoreEvent):void
@@ -263,16 +271,19 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
-		private function initHomePhoto():void
+		private function enableAutoHomePageMessageCheck():void
 		{
-			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE, homePageTickHandler);
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.enableAutoHomePageMessageCheck();
+		}
 
+		private function getGalleryTimeStamp():void
+		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE, getGalleryTimeStampHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getGalleryTimeStamp();
 		}
 
-		private function homePageTickHandler(e:NotificationsEvent):void
+		private function homePageTickHandler(e:NotificationsEvent = null):void
 		{
 			this._messageCount = 0;
 			getAllMessagesFromRemoteService();
@@ -283,7 +294,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE,getGalleryTimeStampHandler);
 
 			var timeStamp:String = e.data.timeStamp,
-				date:Date = new Date();
+				date:Date = new Date(),
+				serverDate:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(),HivivaStartup.userVO.serverDate.getMonth(),HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
 
 			try
 			{
@@ -291,7 +303,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				{
 					date = HivivaModifier.getAS3DatefromString(timeStamp);
 
-					this._dayDiff = HivivaModifier.getDaysDiff(this._today, date);
+					this._dayDiff = HivivaModifier.getDaysDiff(serverDate, date);
 
 					this._adherencePercent = HivivaStartup.patientAdherenceVO.percentage;
 
@@ -559,8 +571,10 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function closeDownApplicationNotifications():void
 		{
-			HivivaStartup.hivivaAppController.hivivaNotificationsController.disbaleAutoHomePageMessageCheck();
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.disableAutoHomePageMessageCheck();
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
+
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.UPDATE_VO_DATA, updateVODataHandler);
 		}
 	}
 }

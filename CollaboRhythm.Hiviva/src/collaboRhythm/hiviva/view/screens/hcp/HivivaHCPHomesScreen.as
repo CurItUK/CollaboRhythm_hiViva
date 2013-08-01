@@ -414,7 +414,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function closeDownApplicationNotifications():void
 		{
-			HivivaStartup.hivivaAppController.hivivaNotificationsController.disbaleAutoHomePageMessageCheck();
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.disableAutoHomePageMessageCheck();
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
 		}
 
