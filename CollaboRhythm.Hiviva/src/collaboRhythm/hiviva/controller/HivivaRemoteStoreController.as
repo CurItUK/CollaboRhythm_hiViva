@@ -1,12 +1,9 @@
 package collaboRhythm.hiviva.controller
 {
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
-	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaRemoteStoreService;
 
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
-
 
 	public class HivivaRemoteStoreController extends EventDispatcher
 	{

@@ -40,10 +40,7 @@ package collaboRhythm.hiviva.view.screens
 		private var _adherenceTolerabilityLabel:Label;
 		private var _viewProfileBtn:Button;
 
-
-
-
-		private const IMAGE_SIZE:Number = 100;
+		private const IMAGE_SIZE:Number = 80;
 		private const PADDING:Number = 32;
 
 		public function PatientResultCellHome()
@@ -69,12 +66,12 @@ package collaboRhythm.hiviva.view.screens
 			this._patientImageBg.y = this._bg.y + gap;
 
 			this._patientName.x = this._patientImageBg.x + this._patientImageBg.width + gap;
-			this._patientName.y = this._patientImageBg.y + gap;
+			this._patientName.y = this._patientImageBg.y + (this._patientImageBg.height * 0.5) - (this._patientName.height * 0.5);
 			this._patientName.width = this._bg.width - this._patientName.x;
 
 			this._adherenceTolerabilityLabel.validate();
 			this._adherenceTolerabilityLabel.x = this._bg.x + this._bg.width - this._adherenceTolerabilityLabel.width - gap;
-			this._adherenceTolerabilityLabel.y = this._patientName.y;
+			this._adherenceTolerabilityLabel.y = this._patientImageBg.y + (this._patientImageBg.height * 0.5) - (this._adherenceTolerabilityLabel.height * 0.5);
 
 			this._viewProfileBtn.validate();
 			this._viewProfileBtn.width = this._bg.width;
@@ -87,11 +84,17 @@ package collaboRhythm.hiviva.view.screens
 		override protected function initialize():void
 		{
 			super.initialize();
+
+			var adherence:String = patientData.adherence;
+			var tolerability:String = patientData.tolerability;
+			var historyExists:Boolean = (adherence > "-1" && tolerability > "-1");
+
 			var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("input_field"), new Rectangle(11,11,32,32));
 			this._bg = new Scale9Image(bgTexture, this._scale);
 			addChild(this._bg);
 
 			this._patientImageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
+			this._patientImageBg.alpha = 0;
 			this._patientImageBg.touchable = false;
 			addChild(this._patientImageBg);
 
@@ -101,12 +104,9 @@ package collaboRhythm.hiviva.view.screens
 
 			addChild(this._patientName);
 
-//			var avgTolerability:Number = HivivaModifier.calculateOverallTolerability(patientData.medicationHistory.history);
-//			var avgAdherence:Number = HivivaModifier.calculateOverallAdherence(patientData.medicationHistory.history);
 			this._adherenceTolerabilityLabel = new Label();
 			this._adherenceTolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
-			this._adherenceTolerabilityLabel.text = "Adherence: " + String(patientData.adherence) +  "%\n" +
-													"Tolerability: " + String(patientData.tolerability) + "%";
+			this._adherenceTolerabilityLabel.text = historyExists ? "Adherence: " + adherence + "%\n" + "Tolerability: " + tolerability + "%" : "No data exists \nfor this patient";
 
 			addChild(this._adherenceTolerabilityLabel);
 
@@ -115,7 +115,7 @@ package collaboRhythm.hiviva.view.screens
 			this._viewProfileBtn.alpha = 0;
 			this._viewProfileBtn.addEventListener(Event.TRIGGERED , patientCellSelectHandler);
 			addChild(this._viewProfileBtn);
-
+			this._viewProfileBtn.isEnabled = historyExists;
 		}
 
 		private function patientCellSelectHandler(e:Event):void
@@ -146,8 +146,8 @@ package collaboRhythm.hiviva.view.screens
 
 			this._photoHolder = new Image(Texture.fromBitmap(suitableBm));
 			this._photoHolder.touchable = false;
-			constrainToProportion(this._photoHolder, IMAGE_SIZE * this._scale);
-			// TODO : Check if if (img.height >= img.width) then position accordingly. right now its only Ypos
+			HivivaModifier.clipImage(this._photoHolder);
+			this._photoHolder.width = this._photoHolder.height = IMAGE_SIZE;
 			this._photoHolder.x = this._patientImageBg.x;
 			this._photoHolder.y = this._patientImageBg.y + (this._patientImageBg.height / 2) - (this._photoHolder.height / 2);
 			if (!contains(this._photoHolder)) addChild(this._photoHolder);

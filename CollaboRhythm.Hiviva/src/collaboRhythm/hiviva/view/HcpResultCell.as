@@ -1,14 +1,10 @@
 package collaboRhythm.hiviva.view
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
-	import feathers.controls.Radio;
 	import feathers.core.FeathersControl;
 	import feathers.display.Scale9Image;
 	import feathers.textures.Scale9Textures;
@@ -68,7 +64,7 @@ package collaboRhythm.hiviva.view
 		private var _hcpDelete:Button;
 		//public var _hcpSelect:Radio;
 
-		private const IMAGE_SIZE:Number = 100;
+		private const IMAGE_SIZE:Number = 80;
 		private const PADDING:Number = 32;
 
 		public function HcpResultCell()
@@ -126,6 +122,7 @@ package collaboRhythm.hiviva.view
 			addChild(this._bg);
 
 			this._hcpImageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
+			this._hcpImageBg.alpha = 0;
 			addChild(this._hcpImageBg);
 
 			this._hcpName = new Label();
@@ -199,8 +196,8 @@ package collaboRhythm.hiviva.view
 			var suitableBm:Bitmap = getSuitableBitmap(e.target.content as Bitmap);
 
 			this._photoHolder = new Image(Texture.fromBitmap(suitableBm));
-			constrainToProportion(this._photoHolder, IMAGE_SIZE * this._scale);
-			// TODO : Check if if (img.height >= img.width) then position accordingly. right now its only Ypos
+			HivivaModifier.clipImage(this._photoHolder);
+			this._photoHolder.width = this._photoHolder.height = IMAGE_SIZE;
 			this._photoHolder.x = this._hcpImageBg.x;
 			this._photoHolder.y = this._hcpImageBg.y + (this._hcpImageBg.height / 2) - (this._photoHolder.height / 2);
 			if (!contains(this._photoHolder)) addChild(this._photoHolder);

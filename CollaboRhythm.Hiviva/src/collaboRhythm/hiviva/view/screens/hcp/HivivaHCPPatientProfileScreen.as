@@ -107,6 +107,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function initPatientProfile():void
 		{
 			this._patientImageBg = new Quad(IMAGE_SIZE * this.dpiScale, IMAGE_SIZE * this.dpiScale, 0x000000);
+			this._patientImageBg.alpha = 0;
 			this.addChild(this._patientImageBg);
 
 			this._patientEmail = new Label();
@@ -359,8 +360,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._photoHolder = new Image(Texture.fromBitmap(suitableBm));
 			this._photoHolder.touchable = false;
-			constrainToProportion(this._photoHolder, IMAGE_SIZE * this.dpiScale);
-			// TODO : Check if if (img.height >= img.width) then position accordingly. right now its only Ypos
+			HivivaModifier.clipImage(this._photoHolder);
+			this._photoHolder.width = this._photoHolder.height = IMAGE_SIZE;
 			this._photoHolder.x = this._patientImageBg.x;
 			this._photoHolder.y = this._patientImageBg.y + (this._patientImageBg.height / 2) -
 					(this._photoHolder.height / 2);

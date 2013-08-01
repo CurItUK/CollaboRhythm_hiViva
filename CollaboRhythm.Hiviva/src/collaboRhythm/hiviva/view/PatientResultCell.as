@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view
 {
 	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -36,7 +37,7 @@ package collaboRhythm.hiviva.view
 		private var _patientDelete:Button;
 		public var _patientSelect:Radio;
 
-		private const IMAGE_SIZE:Number = 100;
+		private const IMAGE_SIZE:Number = 80;
 		private const PADDING:Number = 32;
 
 		public function PatientResultCell()
@@ -94,6 +95,7 @@ package collaboRhythm.hiviva.view
 			addChild(this._bg);
 
 			this._patientImageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
+			this._patientImageBg.alpha = 0;
 			addChild(this._patientImageBg);
 
 			this._patientName = new Label();
@@ -135,8 +137,8 @@ package collaboRhythm.hiviva.view
 			var suitableBm:Bitmap = getSuitableBitmap(e.target.content as Bitmap);
 
 			this._photoHolder = new Image(Texture.fromBitmap(suitableBm));
-			constrainToProportion(this._photoHolder, IMAGE_SIZE * this._scale);
-			// TODO : Check if if (img.height >= img.width) then position accordingly. right now its only Ypos
+			HivivaModifier.clipImage(this._photoHolder);
+			this._photoHolder.width = this._photoHolder.height = IMAGE_SIZE;
 			this._photoHolder.x = this._patientImageBg.x;
 			this._photoHolder.y = this._patientImageBg.y + (this._patientImageBg.height / 2) - (this._photoHolder.height / 2);
 			if (!contains(this._photoHolder)) addChild(this._photoHolder);

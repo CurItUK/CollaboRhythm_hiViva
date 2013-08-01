@@ -16,7 +16,7 @@ package collaboRhythm.hiviva.model
 	{
 		//private static const RS_BASE_URL:String = "http://McGoohan/PWS.Health.Service/Services/";
 		private static const RS_BASE_URL:String = "http://pwshealthtest.dev/services/";
-		//private static const RS_BASE_URL:String = "http://collaborythm.pharmiwebsolutions.com/services/";
+//		private static const RS_BASE_URL:String = "http://collaborythm.pharmiwebsolutions.com/services/";
 
 		public function HivivaRemoteStoreService()
 		{
@@ -234,13 +234,13 @@ package collaboRhythm.hiviva.model
 		public function getApprovedConnections():void
 		{
 			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_APPROVED_CONNECTIONS + "UserGuid=" + HivivaStartup.userVO.guid);
-			trace("getApprovedConections " + urlRequest.url);
+			trace("getApprovedConnections " + urlRequest.url);
 			var urlLoader:URLLoader = new URLLoader();
-			urlLoader.addEventListener(Event.COMPLETE, getApprovedConectionsHandler);
+			urlLoader.addEventListener(Event.COMPLETE, getApprovedConnectionsHandler);
 			urlLoader.load(urlRequest);
 		}
 
-		private function getApprovedConectionsHandler(e:Event):void
+		private function getApprovedConnectionsHandler(e:Event):void
 		{
 			var xmlResponse:XML = new XML(e.target.data);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE);

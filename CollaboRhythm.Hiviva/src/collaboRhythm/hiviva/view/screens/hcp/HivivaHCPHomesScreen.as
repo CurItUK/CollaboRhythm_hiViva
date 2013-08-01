@@ -83,6 +83,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 				}
 				getPendingConnections();
 				getHCPAlerts();
+				enableAutoHomePageMessageCheck();
 			}
 		}
 
@@ -183,8 +184,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function enableAutoHomePageMessageCheck():void
 		{
-			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE,
-					homePageTickHandler);
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE, homePageTickHandler);
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.enableAutoHomePageMessageCheck();
 		}
 
@@ -228,8 +228,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 				this._messagesButton.visible = true;
 				this._messagesButton.subScript = String(this._messageCount);
 			}
-
-			enableAutoHomePageMessageCheck();
 		}
 
 		private function initAlertText():void
