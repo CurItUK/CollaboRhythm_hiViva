@@ -23,6 +23,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import flash.net.URLLoader;
 	import flash.system.System;
+	import flash.text.SoftKeyboardType;
 	import flash.utils.Timer;
 
 	import mx.graphics.codec.JPEGEncoder;
@@ -250,6 +251,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._emailLabel);
 
 			this._emailInput = new TextInput();
+			this._emailInput.textEditorProperties.softKeyboardType = SoftKeyboardType.EMAIL;
 			this._content.addChild(this._emailInput);
 
 			this._previewAndSendBtn = new Button();

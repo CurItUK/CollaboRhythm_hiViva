@@ -296,7 +296,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function addAlertSettingsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			showFormValidation("Your alert settings have been saved...");
+			showFormValidation("Your alert settings have been saved");
 		}
 
 		private function backBtnHandler(e:starling.events.Event = null):void

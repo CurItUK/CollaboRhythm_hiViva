@@ -23,6 +23,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import flash.media.StageWebView;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.text.SoftKeyboardType;
 
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -175,6 +176,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._emailLabel);
 
 			this._emailInput = new TextInput();
+			this._emailInput.textEditorProperties.softKeyboardType = SoftKeyboardType.EMAIL;
 			this._content.addChild(this._emailInput);
 
 			this._previewAndSendBtn = new Button();
