@@ -74,7 +74,11 @@ package collaboRhythm.hiviva.controller
 		public function deActivate(e:NotificationsEvent = null):void
 		{
 			// to midnight
-			this._deactivatedDate = new Date(HivivaStartup.userVO.serverDate.getFullYear(),HivivaStartup.userVO.serverDate.getMonth(),HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
+			// incase deactivate triggered before server date has been retrieved for the first time
+			if(HivivaStartup.userVO.serverDate != null)
+			{
+				this._deactivatedDate = new Date(HivivaStartup.userVO.serverDate.getFullYear(),HivivaStartup.userVO.serverDate.getMonth(),HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
+			}
 		}
 
 		private function getServerDateComplete(e:RemoteDataStoreEvent):void

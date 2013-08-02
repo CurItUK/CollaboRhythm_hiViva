@@ -2174,6 +2174,7 @@ package source.themes
 			input.backgroundFocusedSkin = backgroundFocusedSkin;
 */
 
+
 			input.minWidth = input.minHeight = 88 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
 			input.padding = 25 * this.scale;
