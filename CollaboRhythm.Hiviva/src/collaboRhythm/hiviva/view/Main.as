@@ -448,6 +448,8 @@ package collaboRhythm.hiviva.view
 			this._screenHolder = null;
 
 			HivivaStartup.patientAdherenceVO.percentage = 0;
+			HivivaStartup.hcpConnectedPatientsVO.patients = [];
+			HivivaStartup.reportVO.settingsData = null;
 
 			System.gc();
 

@@ -50,6 +50,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _weekNavHolder:ScrollContainer;
 		private var _weekText:Label;
 		private var _currWeekBeginning:Date;
+		private var _latestWeekBeginning:Date;
+		private var _earliestWeekBeginning:Date;
 		private var _dataColumnsWidth:Number;
 		private var _patientAdherenceTable:PatientAdherenceTable;
 		private var _viewLabel:Label;
@@ -84,9 +86,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._patientProfileData = Main.selectedHCPPatientProfile;
 
-			var currentDate:Date = HivivaStartup.userVO.serverDate;
-			this._currWeekBeginning = new Date(currentDate.fullYear,currentDate.month,currentDate.date,currentDate.hours,currentDate.minutes,currentDate.seconds,currentDate.milliseconds);
-			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
+			setDates();
 
 			this._header = new HivivaHeader();
 			this._header.title = Main.selectedHCPPatientProfile.name;
@@ -102,6 +102,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 			initPatientProfile();
 
 			initTableAndNav();
+		}
+
+		private function setDates():void
+		{
+			var currentDate:Date = HivivaStartup.userVO.serverDate;
+			this._currWeekBeginning = new Date(currentDate.fullYear, currentDate.month, currentDate.date, 0,0,0,0);
+			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
+
+			this._latestWeekBeginning = new Date(this._currWeekBeginning.fullYear, this._currWeekBeginning.month, this._currWeekBeginning.date, 0,0,0,0);
+			this._earliestWeekBeginning = new Date(this._currWeekBeginning.fullYear, this._currWeekBeginning.month, this._currWeekBeginning.date, 0,0,0,0);
+			// 4 weeks
+			this._earliestWeekBeginning.date -= 28;
 		}
 
 		private function initPatientProfile():void
@@ -239,14 +251,20 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function leftArrowHandler(e:starling.events.Event):void
 		{
-			this._currWeekBeginning.date -= 7;
-			getDailyMedicationHistoryRange();
+			if(this._currWeekBeginning.getTime() > this._earliestWeekBeginning.getTime())
+			{
+				this._currWeekBeginning.date -= 7;
+				getDailyMedicationHistoryRange();
+			}
 		}
 
 		private function rightArrowHandler(e:starling.events.Event):void
 		{
-			this._currWeekBeginning.date += 7;
-			getDailyMedicationHistoryRange();
+			if(this._currWeekBeginning.getTime() < this._latestWeekBeginning.getTime())
+			{
+				this._currWeekBeginning.date += 7;
+				getDailyMedicationHistoryRange();
+			}
 		}
 
 		private function getDailyMedicationHistoryRange():void
@@ -283,7 +301,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 			else
 			{
-				// TODO : validation
+				// no validation as user cannot see this screen if there is no patient history
 				trace("no patient history");
 			}
 

@@ -224,12 +224,14 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._takeMedicationCellHolder.validate();
 			}
 
-			var takeMedicationCell:SelectMedicationCell = (DisplayObject(e.currentTarget).parent) as SelectMedicationCell;
+			writeAdherenceBySelectedCell((DisplayObject(e.currentTarget).parent) as SelectMedicationCell);
+		}
 
-			var dcUserMedication:XML = XML(this._medicationData.DCUserMedication.(UserMedicationGuid == takeMedicationCell.medicationGuid));
-			var dcUserSchedule:XML = XML(dcUserMedication.Schedule.DCMedicationSchedule.(MedicationScheduleID == takeMedicationCell.medicationScheduleId));
-			dcUserSchedule.Taken = !takeMedicationCell.checkBox.isSelected;
-			dcUserSchedule.Tolerability = this._feelingSlider.value;
+		private function writeAdherenceBySelectedCell(selectMedicationCell:SelectMedicationCell):void
+		{
+			var dcUserMedication:XML = XML(this._medicationData.DCUserMedication.(UserMedicationGuid == selectMedicationCell.medicationGuid));
+			var dcUserSchedule:XML = XML(dcUserMedication.Schedule.DCMedicationSchedule.(MedicationScheduleID == selectMedicationCell.medicationScheduleId));
+			dcUserSchedule.Taken = !selectMedicationCell.checkBox.isSelected;
 		}
 
 		private function drawResults():void
@@ -244,9 +246,20 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function submitButtonHandler(e:Event):void
 		{
+			writeTolerability();
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.takeMedication(this._medicationData);
+		}
+
+		private function writeTolerability():void
+		{
+			var allSchedules:XMLList = XMLList(this._medicationData.DCUserMedication.Schedule.DCMedicationSchedule);
+			var allSchedulesLength:int = allSchedules.length();
+			for (var scheduleCount:int = 0; scheduleCount < allSchedulesLength; scheduleCount++)
+			{
+				allSchedules[scheduleCount].Tolerability = this._feelingSlider.value;
+			}
 		}
 
 		private function takePatientMedicationCompleteHandler(e:RemoteDataStoreEvent):void
