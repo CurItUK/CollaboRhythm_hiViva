@@ -83,7 +83,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			super.initialize();
 
 			this._header = new HivivaHeader();
-			this._header.scale = this.dpiScale;
+//			this._header.scale = this.dpiScale;
 			addChild(this._header);
 
 			this._content = new ScrollContainer();

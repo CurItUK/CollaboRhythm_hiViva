@@ -1,26 +1,15 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
-	import collaboRhythm.hiviva.view.*;
-
-
 	import collaboRhythm.hiviva.global.HivivaScreens;
-
+	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.screens.shared.BaseScreen;
 
-	import feathers.controls.Header;
-	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ToggleSwitch;
-	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 
-
-
-	import starling.animation.Transitions;
 	import starling.display.Image;
-
 	import starling.events.Event;
-
 
 	public class HivivaPatientViewMedicationScreen extends BaseScreen
 	{

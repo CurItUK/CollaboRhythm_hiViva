@@ -1,9 +1,7 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;

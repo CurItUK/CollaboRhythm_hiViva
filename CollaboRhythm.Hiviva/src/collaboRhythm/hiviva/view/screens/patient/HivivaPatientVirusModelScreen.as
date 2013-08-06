@@ -76,6 +76,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function draw():void
 		{
 			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 			this._header.initTrueTitle();
 
 			this._virusSettingsBtn.validate();
