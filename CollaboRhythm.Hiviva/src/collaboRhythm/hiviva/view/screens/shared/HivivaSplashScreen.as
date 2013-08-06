@@ -110,7 +110,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function drawSplashBackground():void
 		{
-			var padding:Number = 15 * this.dpiScale;
+			var padding:Number = 15;
 
 			this._splashBg.width = this.actualWidth;
 			this._splashBg.height = this.actualHeight;
@@ -136,24 +136,20 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function initButtons():void
 		{
 			this._hcpButton = new Button();
-			this._hcpButton.defaultSkin = new Image(Main.assets.getTexture("splash_button_02"));
-			applySplashButtonProperties(this._hcpButton);
+			this._hcpButton.name = "splash-hcp-button";
 			this._hcpButton.label = "I’m a healthcare \nprofessional \nor carer";
 			this._hcpButton.addEventListener(Event.TRIGGERED , hcpButtonHandler);
 
 			this._patientButton = new Button();
-			this._patientButton.defaultSkin = new Image(Main.assets.getTexture("splash_button_01"));
+			this._patientButton.name = "splash-patient-button";
 			this._patientButton.label = "I am a patient";
 			this._patientButton.addEventListener(Event.TRIGGERED , patientButtonHandler);
-			applySplashButtonProperties(this._patientButton);
 
 			this._hcpButton.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			this._patientButton.horizontalAlign = Button.HORIZONTAL_ALIGN_RIGHT;
 
 			this.addChild(this._hcpButton);
 			this.addChild(this._patientButton);
-
-
 		}
 
 		private function drawButtons():void
@@ -163,30 +159,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._hcpButton.width = this._patientButton.width = this.actualWidth * 0.5;
 			this._hcpButton.x = this.actualWidth * 0.5;
 			this._hcpButton.y = this._patientButton.y = this._footer.y - this._hcpButton.height;
-		}
-
-
-
-
-		private function applySplashButtonProperties(button:Button):void
-		{
-			// TODO: create class in HivivaTheme
-			button.name = HivivaTheme.NONE_THEMED;
-
-			button.labelFactory = function():ITextRenderer
-			{
-				return new TextFieldTextRenderer();
-			};
-
-			button.defaultLabelProperties.embedFonts = true;
-			button.defaultLabelProperties.multiline = true;
-			button.defaultLabelProperties.textFormat = new TextFormat("ExoBold", Math.round(22 * this.dpiScale), 0xFFFFFF);
-			// offset y the height of the drop shadow (37px)
-			button.labelOffsetY = -18.5 * this.dpiScale;
-			button.defaultLabelProperties.width = 170 * this.dpiScale;
-
-			button.paddingLeft = button.paddingRight = 40 * this.dpiScale;
-			button.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
 		}
 
 		private function hcpButtonHandler(e:Event):void

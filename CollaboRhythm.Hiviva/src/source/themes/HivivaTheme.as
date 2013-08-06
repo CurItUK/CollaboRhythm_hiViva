@@ -337,6 +337,7 @@ package source.themes
 
 		protected var defaultButtonLabelBftf:BitmapFontTextFormat;
 		protected var sideNavGroupLabelBftf:BitmapFontTextFormat;
+		protected var splashButtonLabel:BitmapFontTextFormat;
 		protected var profileGroupLabelBftf:BitmapFontTextFormat;
 		protected var galleryButtonLabelBftf:BitmapFontTextFormat;
 		protected var backButtonLabelBftf:BitmapFontTextFormat;
@@ -366,6 +367,9 @@ package source.themes
 		protected var buttonSideNavTexture:Texture;
 
 		protected var buttonPatientProfileNavTexture:Scale9Textures;
+
+		protected var buttonSplash1SkinTexture:Texture;
+		protected var buttonSplash2SkinTexture:Texture;
 
 		protected var buttonHomeSkinTexture:Texture;
 
@@ -597,6 +601,7 @@ package source.themes
 			// buttons label formats
 			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.sideNavGroupLabelBftf = new BitmapFontTextFormat(this.normalWhiteBoldBitmapFont, 18 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR);
+			this.splashButtonLabel = new BitmapFontTextFormat(this.normalWhiteBoldBitmapFont, 22 * this.scale, Color.WHITE);
 			this.profileGroupLabelBftf = new BitmapFontTextFormat(this.normalWhiteRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
 			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.backButtonLabelBftf = new BitmapFontTextFormat(this.engravedLightestBoldBitmapFont, 24 * this.scale, Color.WHITE);
@@ -665,6 +670,9 @@ package source.themes
 			this.buttonPatientProfileNavTexture = new Scale9Textures(Main.assets.getTexture("patient-profile-nav-button"), new Rectangle(0,0,72,72));
 
 			this.buttonHomeSkinTexture = Main.assets.getTexture("footer_icon_1");
+
+			this.buttonSplash1SkinTexture = Main.assets.getTexture("splash_button_01");
+			this.buttonSplash2SkinTexture = Main.assets.getTexture("splash_button_02");
 
 			this.buttonBackSkinTexture = Main.assets.getTexture("back-button");
 
@@ -827,6 +835,8 @@ package source.themes
 			this.setInitializerForClass(Button, buttonInitializer);
 			this.setInitializerForClass(Button, borderButtonInitializer, HivivaThemeConstants.BORDER_BUTTON);
 			this.setInitializerForClass(Button, homeButtonInitializer, HivivaThemeConstants.HOME_BUTTON);
+			this.setInitializerForClass(Button, splashHCPButtonInitializer, "splash-hcp-button");
+			this.setInitializerForClass(Button, splashPatientButtonInitializer, "splash-patient-button");
 
 			this.setInitializerForClass(Button, backButtonInitializer, "back-button");
 			this.setInitializerForClass(Button, closeButtonInitializer, "close-button");
@@ -1298,6 +1308,66 @@ package source.themes
 
 			button.minWidth = skinWidth * this.scale;
 			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function splashHCPButtonInitializer(button:Button):void
+		{
+//			var skinWidth:Number = this.buttonHomeSkinTexture.width;
+//			var skinHeight:Number = this.buttonHomeSkinTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonSplash2SkinTexture;
+			skinSelector.imageProperties =
+			{
+//				width: skinWidth * this.scale,
+//				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.defaultLabelProperties.textFormat = this.splashButtonLabel;
+			// offset y the height of the drop shadow (37px)
+			button.labelOffsetY = -18.5 * this.scale;
+//			button.defaultLabelProperties.width = 170 * this.scale;
+
+			button.paddingLeft = button.paddingRight = 40 * this.scale;
+			button.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
+			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+
+			button.minWidth = 88 * this.scale;
+			button.minHeight = 88 * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function splashPatientButtonInitializer(button:Button):void
+		{
+//			var skinWidth:Number = this.buttonHomeSkinTexture.width;
+//			var skinHeight:Number = this.buttonHomeSkinTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonSplash1SkinTexture;
+			skinSelector.imageProperties =
+			{
+//				width: skinWidth * this.scale,
+//				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.defaultLabelProperties.textFormat = this.splashButtonLabel;
+			// offset y the height of the drop shadow (37px)
+			button.labelOffsetY = -18.5 * this.scale;
+//			button.defaultLabelProperties.width = 170 * this.scale;
+
+			button.paddingLeft = button.paddingRight = 40 * this.scale;
+			button.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
+			button.horizontalAlign = Button.HORIZONTAL_ALIGN_RIGHT;
+
+			button.minWidth = 88 * this.scale;
+			button.minHeight = 88 * this.scale;
 			button.minTouchWidth = 88 * this.scale;
 			button.minTouchHeight = 88 * this.scale;
 		}
