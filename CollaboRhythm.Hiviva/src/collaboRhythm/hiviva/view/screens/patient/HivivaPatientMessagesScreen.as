@@ -58,7 +58,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			super.draw();
 
 			this._header.paddingLeft = Constants.HEADER_HOMEBTN_PADDING;
-			this._header.width = this.actualWidth;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 			this._header.initTrueTitle();
 
 			this._deleteMessageButton.validate();
@@ -75,7 +76,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._header = new HivivaHeader();
 			this._header.title = "Messages";
-			this._header.scale = this.dpiScale;
 			addChild(this._header);
 
 			this._deleteMessageButton = new Button();

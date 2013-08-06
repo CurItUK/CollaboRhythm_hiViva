@@ -1,13 +1,10 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
-	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
-	import collaboRhythm.hiviva.global.HivivaThemeConstants;
-	import collaboRhythm.hiviva.view.*;
-
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.view.media.Assets;
+	import collaboRhythm.hiviva.view.*;
 
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
@@ -39,8 +36,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.draw();
 
-			this._header.width = this.actualWidth;
 			this._header.paddingLeft = Constants.HEADER_HOMEBTN_PADDING;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 			this._header.initTrueTitle();
 
 			drawMenuBtnGroup();
@@ -72,12 +70,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function initialize():void
 		{
 			super.initialize();
+
 			this._header = new HivivaHeader();
 			this._header.title = "HCP Profile";
 
 			this._homeBtn = new Button();
 			this._homeBtn.name = HivivaThemeConstants.HOME_BUTTON;
-			this._homeBtn.addEventListener(starling.events.Event.TRIGGERED , homeBtnHandler);
+			this._homeBtn.addEventListener(Event.TRIGGERED , homeBtnHandler);
 
 			this._header.leftItems =  new <DisplayObject>[this._homeBtn];
 
@@ -135,14 +134,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 				button.name = item.name;
 				button.label =  item.label;
-				button.addEventListener(starling.events.Event.TRIGGERED, hcpProfileBtnHandler)
+				button.addEventListener(Event.TRIGGERED, hcpProfileBtnHandler)
 			};
 			this._menuBtnGroup.direction = ButtonGroup.DIRECTION_VERTICAL;
 
 			this.addChild(this._menuBtnGroup);
 		}
 
-		private function hcpProfileBtnHandler(e:starling.events.Event):void
+		private function hcpProfileBtnHandler(e:Event):void
 		{
 			var btn:Button = e.target as Button;
 

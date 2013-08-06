@@ -1,16 +1,16 @@
 package collaboRhythm.hiviva.view.galleryscreens
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
 
 	import flash.events.FileListEvent;
-
 	import flash.filesystem.File;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	public class GalleryScreen extends ValidationScreen
@@ -20,8 +20,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 		private var _itemList:Vector.<GalleryItem>;
 		private var _imageTotal:int;
 		private var _imageCount:int;
-		private var _cancelButton:Button;
-		private var _submitButton:Button;
+		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
 
 		public function GalleryScreen()
@@ -31,20 +30,22 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 		override protected function draw():void
 		{
-			this._submitButton.validate();
-			this._cancelButton.validate();
-			this._cancelButton.x = (this.actualHeight * 0.02)
-			this._submitButton.y = this._cancelButton.y = this.actualHeight -
-					this._submitButton.height - (this.actualHeight * 0.02);
-			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + (this.actualHeight * 0.02);
-
-			this._customHeight = this.actualHeight - this._cancelButton.height - (this.actualHeight * 0.02);
 			super.draw();
+
+			this._content.height = this._cancelAndSave.y - this._content.y - this._componentGap;
+			this._content.validate();
+			// property here is for show / hide validation
+			this._contentHeight = this._content.height;
 		}
 
 		override protected function preValidateContent():void
 		{
 			super.preValidateContent();
+
+			this._cancelAndSave.width = this._innerWidth;
+			this._cancelAndSave.validate();
+			this._cancelAndSave.x = Constants.PADDING_LEFT;
+			this._cancelAndSave.y = Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._cancelAndSave.height;
 		}
 
 		override protected function postValidateContent():void
@@ -60,15 +61,10 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 			this._header.title = this._category + " gallery";
 
-			this._cancelButton = new Button();
-			this._cancelButton.label = "Cancel";
-			this._cancelButton.addEventListener(Event.TRIGGERED, cancelButtonClick);
-			addChild(this._cancelButton);
-
-			this._submitButton = new Button();
-			this._submitButton.label = "Save";
-			this._submitButton.addEventListener(Event.TRIGGERED, submitButtonClick);
-			addChild(this._submitButton);
+			this._cancelAndSave = new BoxedButtons();
+			this._cancelAndSave.labels = ["Cancel","Save"];
+			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
+			addChild(this._cancelAndSave);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -81,21 +77,32 @@ package collaboRhythm.hiviva.view.galleryscreens
 			getImagesFromDirectory();
 		}
 
-		private function cancelButtonClick(e:Event):void
+		private function cancelAndSaveHandler(e:Event):void
+		{
+			var button:String = e.data.button;
+
+			switch(button)
+			{
+				case "Cancel" :
+					backBtnHandler();
+					break;
+
+				case "Save" :
+					saveGalleryPhotos();
+					break;
+			}
+		}
+
+		private function backBtnHandler(e:Event = null):void
 		{
 			this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
 		}
 
-		private function backBtnHandler(e:Event):void
-		{
-			this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
-		}
-
-		private function submitButtonClick(e:Event):void
+		private function saveGalleryPhotos():void
 		{
 			GalleryData.galleryDataChanged = true;
 			GalleryData.setUrlsByCategory(this._category,_urls);
-			this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
+			backBtnHandler();
 		}
 
 		private function getImagesFromDirectory():void

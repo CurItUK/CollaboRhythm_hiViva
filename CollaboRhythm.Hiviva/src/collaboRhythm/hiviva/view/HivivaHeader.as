@@ -21,7 +21,6 @@ package collaboRhythm.hiviva.view
 		private var _fontSize:Number = 44;
 		private const VERTICAL_PADDING:Number = 20;
 		private const HORIZONTOL_PADDING:Number = 10;
-		public var bold : Boolean = false;
 
 		public function HivivaHeader()
 		{
@@ -52,10 +51,6 @@ package collaboRhythm.hiviva.view
 
 		public function initTrueTitle():void
 		{
-			if(bold){
-				this.boldHeader()
-				return;
-			}
 			var splitText:Array,
 				boldTextInd:int = this.title.indexOf("<font face='ExoBold'>");
 			if(this.title.length > 0)
@@ -74,17 +69,6 @@ package collaboRhythm.hiviva.view
 			}
 		}
 
-		public function boldHeader()
-		{
-			var splitText:Array,
-	        boldTextInd:int = this.title.indexOf("<font face='ExoBold'>");
-			if(this.title.length > 0)
-					{
-						this.title = "<font face='ExoBold'>" + this.title  + "</font> "
-						this.validate();
-					}
-
-		}
 		private function headerTitleFactory():ITextRenderer
 		{
 			var titleRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();

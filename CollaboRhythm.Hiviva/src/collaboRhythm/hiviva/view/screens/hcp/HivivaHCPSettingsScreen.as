@@ -34,11 +34,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._scaledPadding = (this.actualWidth * 0.04) * this.dpiScale;
 
-			this._header.width = this.actualWidth;
 			this._header.paddingLeft = Constants.HEADER_HOMEBTN_PADDING;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 			this._header.initTrueTitle();
-
-
 
 			this._instructions.validate();
 			this._instructions.y = this._header.height + this._scaledPadding;

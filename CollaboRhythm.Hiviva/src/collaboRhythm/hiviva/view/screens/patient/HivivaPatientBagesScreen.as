@@ -36,7 +36,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			super.draw();
 
 			this._header.paddingLeft = Constants.HEADER_HOMEBTN_PADDING;
-			this._header.width = this.actualWidth;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 			this._header.initTrueTitle();
 
 			if(!_remoteCallMade) getNumberDaysAdherence();

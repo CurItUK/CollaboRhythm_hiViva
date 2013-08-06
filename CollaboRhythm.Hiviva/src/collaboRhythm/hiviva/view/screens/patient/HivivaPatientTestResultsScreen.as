@@ -1,11 +1,13 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.components.Calendar;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
@@ -41,8 +43,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _viralLoad:LabelAndInput;
 		private var _date:LabelAndInput;
 		private var _dateButton:Button;
-		private var _cancelButton:Button;
-		private var _submitButton:Button;
+		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
 		private var _calendar:Calendar;
 
@@ -58,7 +59,10 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._dateButton.x = this._date.x + this._date._labelRight.x;
 			this._dateButton.y = this._date.y + this._date._labelRight.y - (this._dateButton.height * 0.5);
 
+			this._content.height = this._cancelAndSave.y - this._content.y - this._componentGap;
 			this._content.validate();
+			// property here is for show / hide validation
+			this._contentHeight = this._content.height;
 		}
 
 		override protected function preValidateContent():void
@@ -78,15 +82,10 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._date._labelRight.text = "";
 			labelAndInputDrawProperties(this._date);
 
-			this._submitButton.width = this._cancelButton.width = this._innerWidth * 0.25;
-		}
-
-		override protected function postValidateContent():void
-		{
-			super.postValidateContent();
-
-			this._submitButton.y = this._cancelButton.y = this._dateButton.y;
-			this._submitButton.x = this._cancelButton.x + this._cancelButton.width + this._componentGap;
+			this._cancelAndSave.width = this._innerWidth;
+			this._cancelAndSave.validate();
+			this._cancelAndSave.x = Constants.PADDING_LEFT;
+			this._cancelAndSave.y = Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._cancelAndSave.height;
 		}
 
 		override protected function initialize():void
@@ -119,15 +118,10 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._dateButton.name = "calendar-button";
 			this._content.addChild(this._dateButton);
 
-			this._cancelButton = new Button();
-			this._cancelButton.label = "Cancel";
-			this._cancelButton.addEventListener(Event.TRIGGERED, cancelButtonClick);
-			this._content.addChild(this._cancelButton);
-
-			this._submitButton = new Button();
-			this._submitButton.label = "Save";
-			this._submitButton.addEventListener(Event.TRIGGERED, submitButtonClick);
-			this._content.addChild(this._submitButton);
+			this._cancelAndSave = new BoxedButtons();
+			this._cancelAndSave.labels = ["Cancel","Save"];
+			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
+			addChild(this._cancelAndSave);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -161,17 +155,28 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._date._input.text = e.evtData.date;
 		}
 
-		private function cancelButtonClick(e:Event):void
+		private function cancelAndSaveHandler(e:Event):void
+		{
+			var button:String = e.data.button;
+
+			switch(button)
+			{
+				case "Cancel" :
+					backBtnHandler();
+					break;
+
+				case "Save" :
+					saveTestResults();
+					break;
+			}
+		}
+
+		private function backBtnHandler(e:Event = null):void
 		{
 			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 		}
 
-		private function backBtnHandler(e:Event):void
-		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
-		}
-
-		private function submitButtonClick(e:Event):void
+		private function saveTestResults():void
 		{
 			var formValidation:String = patientTestResultsCheck();
 			if(formValidation.length == 0)
@@ -212,8 +217,6 @@ package collaboRhythm.hiviva.view.screens.patient
 				showFormValidation(formValidation);
 			}
 		}
-
-
 
 		private function addTestResultsCompleteHandler(e:RemoteDataStoreEvent):void
 		{

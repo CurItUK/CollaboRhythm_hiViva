@@ -1,28 +1,15 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
-	import collaboRhythm.hiviva.view.*;
-	import collaboRhythm.hiviva.view.media.Assets;
-
-	import feathers.controls.Button;
-	import feathers.controls.ButtonGroup;
-	import feathers.controls.Header;
-	import feathers.controls.Screen;
-	import feathers.controls.ScrollText;
-	import feathers.data.ListCollection;
-	import feathers.display.TiledImage;
-	import feathers.events.FeathersEventType;
-	import feathers.layout.AnchorLayoutData;
-
 	import collaboRhythm.hiviva.view.HivivaHeader;
 
-	import starling.display.BlendMode;
+	import feathers.controls.Button;
+	import feathers.controls.Screen;
+	import feathers.controls.ScrollText;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
-	import starling.textures.TextureSmoothing;
 
 	public class HivivaHCPHelpDetailScreen extends Screen
 	{
@@ -43,7 +30,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._scaledPadding = (this.actualWidth * 0.04) * this.dpiScale;
 
-			this._header.width = this.actualWidth;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 			this._header.initTrueTitle();
 
 			this._scrollText.y = this._header.y + this._header.height;
@@ -56,6 +44,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function initialize():void
 		{
 			super.initialize();
+			
 			this._header = new HivivaHeader();
 			this._header.title = this._title;
 			addChild(this._header);
@@ -67,12 +56,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 		}
 
-		private function backBtnHandler(e:starling.events.Event):void
+		private function backBtnHandler(e:Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_HELP_SCREEN);
 		}

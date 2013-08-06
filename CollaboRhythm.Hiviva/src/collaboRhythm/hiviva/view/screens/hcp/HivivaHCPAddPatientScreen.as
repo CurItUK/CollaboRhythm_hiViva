@@ -6,10 +6,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.view.*;
 
 	import feathers.controls.Button;
-	import feathers.controls.Header;
 	import feathers.controls.Label;
-
-
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.TextInput;
@@ -17,22 +14,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import feathers.core.ToggleGroup;
 	import feathers.layout.VerticalLayout;
 
-	import flash.data.SQLConnection;
-	import flash.data.SQLResult;
-	import flash.data.SQLStatement;
-	import flash.events.SQLEvent;
-	import flash.events.SQLEvent;
-
-	import flash.filesystem.File;
-
-	import flash.text.TextFormat;
-
-	import mx.core.ByteArrayAsset;
-
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
-
 
 	public class HivivaHCPAddPatientScreen extends Screen
 	{
@@ -67,6 +50,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.draw();
 			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 			this._header.initTrueTitle();
 
 			drawHcpSearch();
@@ -75,6 +59,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function initialize():void
 		{
 			super.initialize();
+
 			this._header = new HivivaHeader();
 			this._header.title = "Add a patient";
 			addChild(this._header);
@@ -89,7 +74,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._hcpCellContainer = new ScrollContainer();
 		}
 
-		private function backBtnHandler(e:starling.events.Event = null):void
+		private function backBtnHandler(e:Event = null):void
 		{
 			if(contains(this._patientCellContainer))
 			{

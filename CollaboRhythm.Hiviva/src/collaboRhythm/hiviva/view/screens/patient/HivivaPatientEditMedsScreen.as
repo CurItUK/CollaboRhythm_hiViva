@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
@@ -57,10 +58,9 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.draw();
 
-			this._header.title = " ";
-			this._header.width = this.actualWidth;
-			this._header.initTrueTitle();
-
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
+			
 			this._horizontalPadding = (this.actualWidth * 0.04) * this.dpiScale;
 			this._verticalPadding = (this.actualHeight * 0.02) * this.dpiScale;
 			this._componentGap = (this.actualHeight * 0.04) * this.dpiScale;
@@ -79,7 +79,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			super.initialize();
 
 			this._header = new HivivaHeader();
-			this._header.scale = this.dpiScale;
+			this._header.title = " ";
 			addChild(this._header);
 
 			this._content = new ScrollContainer();

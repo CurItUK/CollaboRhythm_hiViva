@@ -1,25 +1,17 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
+	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
-	import collaboRhythm.hiviva.global.HivivaScreens;
-	import collaboRhythm.hiviva.view.HivivaStartup;
 
 	import feathers.controls.Button;
-	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
-	import feathers.controls.TextInput;
-
 	import feathers.core.ToggleGroup;
 	import feathers.layout.VerticalLayout;
 
-
-	import collaboRhythm.hiviva.view.HivivaHeader;
-
 	import starling.display.DisplayObject;
-
-
 	import starling.events.Event;
 
 	public class HivivaPatientConnectToHcpScreen extends Screen
@@ -43,8 +35,11 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function draw():void
 		{
 			super.draw();
-			this._header.width = this.actualWidth;
-			this._header.height = 110 * this.dpiScale;
+
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
+			this._header.initTrueTitle();
+
 			this._backButton.validate();
 
 			this._addConnectionButton.validate();
@@ -71,7 +66,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._addConnectionButton = new Button();
 			this._addConnectionButton.label = "Add a connection";
-			this._addConnectionButton.addEventListener(starling.events.Event.TRIGGERED, onAddConnection);
+			this._addConnectionButton.addEventListener(Event.TRIGGERED, onAddConnection);
 			addChild(this._addConnectionButton);
 
 			this._hcpCellContainer = new ScrollContainer();
@@ -89,7 +84,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 		}
 
-		private function onAddConnection(e:starling.events.Event):void
+		private function onAddConnection(e:Event):void
 		{
 			clearDownHCPList();
 			this.owner.showScreen(HivivaScreens.PATIENT_ADD_HCP);

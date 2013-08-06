@@ -51,15 +51,18 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._scaledPadding = (this.actualWidth * 0.04) * this.dpiScale;
 
-			this._header.width = this.actualWidth;
 			this._header.paddingLeft = Constants.HEADER_HOMEBTN_PADDING;
+			this._header.width = Constants.STAGE_WIDTH;
+			this._header.height = Constants.HEADER_HEIGHT;
 			this._header.initTrueTitle();
+
 			drawMenuBtnGroup();
 		}
 
 		override protected function initialize():void
 		{
 			super.initialize();
+
 			this._header = new HivivaHeader();
 			this._header.title = "Help";
 			addChild(this._header);

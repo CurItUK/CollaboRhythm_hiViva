@@ -1,5 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient.help
 {
+	import collaboRhythm.hiviva.global.Constants;
+
 	import feathers.controls.Screen;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 		import collaboRhythm.hiviva.global.HivivaScreens;
@@ -35,7 +37,8 @@ package collaboRhythm.hiviva.view.screens.patient.help
 
 					this._scaledPadding = (this.actualWidth * 0.04) * this.dpiScale;
 
-					this._header.width = this.actualWidth;
+					this._header.width = Constants.STAGE_WIDTH;
+					this._header.height = Constants.HEADER_HEIGHT;
 					this._header.initTrueTitle();
 
 				//	this._scrollText.y = this._header.y + this._header.height;

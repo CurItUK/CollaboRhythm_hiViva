@@ -18,7 +18,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _validationLabel:Label;
 		private var _closeValidationButton:Button;
 		protected var _isValidationActive:Boolean = false;
-		private var _contentHeight:Number;
+		protected var _contentHeight:Number;
 
 		public function ValidationScreen()
 		{

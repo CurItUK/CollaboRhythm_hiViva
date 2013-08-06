@@ -4,7 +4,6 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
-	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
@@ -12,29 +11,15 @@ package collaboRhythm.hiviva.view.screens.shared
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
-	import feathers.controls.text.TextFieldTextRenderer;
-	import feathers.core.ITextRenderer;
-
-	import flash.display.BlendMode;
 
 	import flash.events.TimerEvent;
-	import flash.text.TextFormat;
 	import flash.utils.Timer;
 
-	import source.themes.HivivaTheme;
-
-	import starling.animation.Transitions;
-
-	import starling.animation.Tween;
-	import starling.core.Starling;
-
 	import starling.display.Image;
-
 	import starling.events.Event;
 
 	public class HivivaSplashScreen extends Screen
 	{
-
 		//private var _appType:String;
 		private var _splashBg:Image;
 		private var _logo:Image;
@@ -144,9 +129,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._patientButton.name = "splash-patient-button";
 			this._patientButton.label = "I am a patient";
 			this._patientButton.addEventListener(Event.TRIGGERED , patientButtonHandler);
-
-			this._hcpButton.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			this._patientButton.horizontalAlign = Button.HORIZONTAL_ALIGN_RIGHT;
 
 			this.addChild(this._hcpButton);
 			this.addChild(this._patientButton);
@@ -282,7 +264,6 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			if(this._preCloseDownCount == 2) this.dispatchEventWith("complete");
 		}
-
 
 		override public function dispose():void
 		{
