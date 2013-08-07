@@ -239,7 +239,7 @@ package collaboRhythm.hiviva.view.components
 			this._tableHolder.addChild(horizontalLine);
 
 			// draw left line
-			var vertLineTexture:Texture = Assets.getTexture("VerticleLinePng");
+			var vertLineTexture:Texture = Main.assets.getTexture("verticle_line");
 			var verticalLine:Image = new Image(vertLineTexture);
 			verticalLine.height = _tableHeight;
 			verticalLine.x = _tableWidth;
@@ -265,7 +265,7 @@ package collaboRhythm.hiviva.view.components
 			var valueLabel:Label;
 			var horizLineTexture:Texture = Main.assets.getTexture("header_line");
 			var horizontalLine:Image;
-			var vertLineTexture:Texture = Assets.getTexture("VerticleLinePng");
+			var vertLineTexture:Texture = Main.assets.getTexture("verticle_line");
 			var verticalLine:Image;
 			var evenLighter:Quad;
 

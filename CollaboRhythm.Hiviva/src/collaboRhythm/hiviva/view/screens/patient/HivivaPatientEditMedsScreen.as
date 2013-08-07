@@ -259,7 +259,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.height = this._contentHeight - this._verticalPadding;
 
 
-			this._snakeyThing = new Image(Assets.getTexture(HivivaAssets.SNAKEY_THING));
+			this._snakeyThing = new Image(Main.assets.getTexture("snakey_thing"));
 			this._content.addChild(this._snakeyThing);
 
 			this._snakeyThing.width = this.actualWidth * 0.5;

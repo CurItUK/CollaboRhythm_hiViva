@@ -67,7 +67,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function initialize():void
 		{
-			this._pillBox = new Image(Assets.getTexture("PillboxPng"));
+			this._pillBox = new Image(Main.assets.getTexture("pillbox"));
 			addChild(this._pillBox);
 		}
 

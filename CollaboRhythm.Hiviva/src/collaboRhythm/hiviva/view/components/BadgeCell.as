@@ -77,7 +77,7 @@ package collaboRhythm.hiviva.view.components
 			switch(this._badgeType)
 			{
 				case TWO_DAY_TYPE :
-					badgeIcon = Assets.getTexture('Star0Png');
+					badgeIcon = Main.assets.getTexture("star0");
 					badgeText = "Nice work.";
 					badgeName = "2 days adherence";
 					break;

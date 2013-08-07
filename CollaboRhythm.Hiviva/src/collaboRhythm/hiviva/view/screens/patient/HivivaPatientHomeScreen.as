@@ -4,15 +4,12 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.NotificationsEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
-	import collaboRhythm.hiviva.view.*;
-
-	import collaboRhythm.hiviva.global.HivivaAssets;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.TopNavButton;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
@@ -31,15 +28,11 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
 	import flash.system.System;
-	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
-
-	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.filters.ColorMatrixFilter;
 	import starling.textures.Texture;
 
 	public class HivivaPatientHomeScreen extends Screen
@@ -48,15 +41,13 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _messagesButton:TopNavButton;
 		private var _badgesButton:TopNavButton;
 		private var _homeImageInstructions:Label;
-		private var _rim:Image;
-		private var _bg:Image;
-		private var _shine:Image;
-		private var _bgImageHolder:Sprite;
+		private var _lens:Image;
 		private var _lensImageHolder:Sprite;
 		private var _dayDiff:Number;
 		private var _adherencePercent:Number;
 
-		private var IMAGE_SIZE:Number;
+		private var IMAGE_SIZE:Number = Constants.STAGE_WIDTH;
+		private var LENS_SHADOW_RADIUS:Number = 40;
 		private var _usableHeight:Number;
 //		private var _today:Date;
 		private var _asynchronousCallMade:Boolean = false;
@@ -80,26 +71,12 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._usableHeight = Constants.STAGE_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT - Constants.HEADER_HEIGHT;
 
-			// 90% of stage width
-			IMAGE_SIZE = Constants.STAGE_WIDTH * 0.9;
+			this._lens.width = IMAGE_SIZE;
+			this._lens.scaleY = this._lens.scaleX;
+			this._lens.x = (Constants.STAGE_WIDTH * 0.5) - (this._lens.width * 0.5);
+			this._lens.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._lens.height * 0.5);
 
-
-			this._bg.width = IMAGE_SIZE;
-			this._bg.scaleY = this._bg.scaleX;
-			this._bg.x = (Constants.STAGE_WIDTH * 0.5) - (this._bg.width * 0.5);
-			this._bg.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._bg.height * 0.5);
-
-			this._rim.scaleX = this._bg.scaleX;
-			this._rim.scaleY = this._bg.scaleY;
-			this._rim.x = (Constants.STAGE_WIDTH * 0.5) - (this._rim.width * 0.5);
-			this._rim.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._rim.height * 0.5);
-
-			this._shine.scaleX = this._bg.scaleX;
-			this._shine.scaleY = this._bg.scaleY;
-			this._shine.x = (Constants.STAGE_WIDTH * 0.5) - (this._shine.width * 0.5);
-			this._shine.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._shine.height * 0.5);
-
-			this._homeImageInstructions.width = IMAGE_SIZE;
+			this._homeImageInstructions.width = IMAGE_SIZE - (LENS_SHADOW_RADIUS * 2);
 			this._homeImageInstructions.validate();
 			this._homeImageInstructions.x =  (Constants.STAGE_WIDTH * 0.5) - (this._homeImageInstructions.width * 0.5);
 			this._homeImageInstructions.y =  (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._homeImageInstructions.height * 0.5);
@@ -135,23 +112,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.title = " ";
 			addChild(this._header);
 
-			this._bgImageHolder = new Sprite();
-			addChild(this._bgImageHolder);
-
-			//this._rim = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_RIM));
-			this._rim = new Image(Main.assets.getTexture("home_lens_rim"));
-			addChild(this._rim);
-
-			//this._bg = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_BG));
-			this._bg = new Image(Main.assets.getTexture("home_lens_bg"));
-			addChild(this._bg);
-
 			this._lensImageHolder = new Sprite();
 			addChild(this._lensImageHolder);
 
-			//this._shine = new Image(Assets.getTexture(HivivaAssets.HOME_LENS_SHINE));
-			this._shine = new Image(Main.assets.getTexture("home_lens_shine"));
-			addChild(this._shine);
+			this._lens = new Image(Main.assets.getTexture("home_lens"));
+			addChild(this._lens);
 
 			this._homeImageInstructions = new Label();
 			this._homeImageInstructions.name = HivivaThemeConstants.HOME_LENS_LABEL;
@@ -376,7 +341,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var imageLoader:Loader = new Loader();
 
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
-			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
+			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url) , loaderContext);
 
 		}
@@ -390,7 +355,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			 drawBgHomeImage(sourceBm);
 
-			 drawLensHomeImage(sourceBm);
+//			 drawLensHomeImage(sourceBm);
 
 			//clean up
 			sourceBm.bitmapData.dispose();
@@ -410,7 +375,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		}
 
 
-		private function imageLoadFailed(e:flash.events.IOErrorEvent):void
+		private function imageLoadFailed(e:IOErrorEvent):void
 		{
 			trace("Image load failed.");
 		}
@@ -442,8 +407,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function drawBgHomeImage(sourceBm:Bitmap):void
 		{
-
-			trace("draw Bg Ho,e Image now  ")
 			var bgHolder:flash.display.Sprite = new flash.display.Sprite();
 
 			var bgBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
@@ -455,8 +418,24 @@ package collaboRhythm.hiviva.view.screens.patient
 			bgMask.graphics.beginFill(0x000000);
 			bgMask.graphics.drawRect((bgBm.width * 0.5) - (Constants.STAGE_WIDTH * 0.5),(bgBm.height * 0.5) - (this._usableHeight * 0.5),Constants.STAGE_WIDTH, this._usableHeight);
 			bgHolder.addChild(bgMask);
-
 			bgBm.mask = bgMask;
+
+			var circleBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
+			cropToFit(circleBm, Constants.STAGE_WIDTH, this._usableHeight);
+			bgHolder.addChild(circleBm);
+
+			var blurValue:int = int(20 - (0.2 * this._adherencePercent));
+			var blurFilter:BitmapFilter = new BlurFilter(blurValue, blurValue, BitmapFilterQuality.HIGH);
+			var myFilters:Array = [];
+			myFilters.push(blurFilter);
+			circleBm.filters = myFilters;
+
+			var circleMask:flash.display.Sprite = new flash.display.Sprite();
+			var circRad:Number = (IMAGE_SIZE * 0.5) - (LENS_SHADOW_RADIUS * 0.5);
+			circleMask.graphics.beginFill(0x000000);
+			circleMask.graphics.drawCircle(circleBm.width * 0.5, circleBm.height * 0.5, circRad);
+			bgHolder.addChild(circleMask);
+			circleBm.mask = circleMask;
 
 			var bmd:BitmapData = new BitmapData(bgHolder.width, bgHolder.height, true, 0x00000000);
 			bmd.draw(bgHolder, new Matrix(), null, null, null, true);
@@ -465,15 +444,21 @@ package collaboRhythm.hiviva.view.screens.patient
 			bgImage.touchable = false;
 			bgImage.x = (Constants.STAGE_WIDTH * 0.5) - (bgImage.width * 0.5);
 			bgImage.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (bgImage.height * 0.5);
-			this._bgImageHolder.addChild(bgImage);
+			this._lensImageHolder.addChild(bgImage);
 
-
+			//clean up
 			bgHolder.removeChild(bgBm);
 			bgHolder.removeChild(bgMask);
+			bgHolder.removeChild(circleBm);
+			bgHolder.removeChild(circleMask);
 
+			bgBm.bitmapData.dispose();
+			bgBm = null;
 			bgMask = null;
+			circleBm.bitmapData.dispose();
+			circleBm = null;
+			circleMask = null;
 			bgHolder = null;
-
 
 			bmd.dispose();
 			bmd = null;
@@ -481,26 +466,22 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function drawLensHomeImage(sourceBm:Bitmap):void
 		{
-
 			var circleHolder:flash.display.Sprite = new flash.display.Sprite();
 
 			var circleBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
 			cropToFit(circleBm, Constants.STAGE_WIDTH, this._usableHeight);
 			circleHolder.addChild(circleBm);
 
-			var blurValue:Number = Math.ceil((20 / 100) * this._adherencePercent);
-
-			var blurFilter:BitmapFilter = new flash.filters.BlurFilter(20 - blurValue, 20 - blurValue, BitmapFilterQuality.HIGH);
+			var blurValue:int = int(20 - (0.2 * this._adherencePercent));
+			var blurFilter:BitmapFilter = new BlurFilter(blurValue, blurValue, BitmapFilterQuality.HIGH);
 			var myFilters:Array = [];
 			myFilters.push(blurFilter);
-
 			circleBm.filters = myFilters;
 
 			var circleMask:flash.display.Sprite = new flash.display.Sprite();
 			circleMask.graphics.beginFill(0x000000);
 			circleMask.graphics.drawCircle(circleBm.width * 0.5, circleBm.height * 0.5, IMAGE_SIZE * 0.5);
 			circleHolder.addChild(circleMask);
-
 			circleBm.mask = circleMask;
 
 			var bmd:BitmapData = new BitmapData(circleHolder.width, circleHolder.height, true,  0x00000000);
@@ -544,29 +525,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			trace("HivivaPatientHomeScreenScreen dispose" );
 			closeDownApplicationNotifications();
 
+			this._lensImageHolder.dispose();
 
-			//this._bg.texture.base.dispose();
-			//this._bg.texture.dispose();
-			this._bg.dispose();
-			this._bg = null;
-
-			//this._rim.texture.base.dispose();
-			//this._rim.texture.dispose();
-			this._rim.dispose();
-			this._rim = null;
-
-			//this._shine.texture.base.dispose();
-			//this._shine.texture.dispose();
-			this._shine.dispose();
-			this._shine = null;
-
-			Assets.clearTexture(HivivaAssets.HOME_LENS_RIM);
-			Assets.clearTexture(HivivaAssets.HOME_LENS_BG);
-			Assets.clearTexture(HivivaAssets.HOME_LENS_SHINE);
+			this._lens.dispose();
+			this._lens = null;
 
 			super.dispose();
 			System.gc();
-
 		}
 
 		private function closeDownApplicationNotifications():void

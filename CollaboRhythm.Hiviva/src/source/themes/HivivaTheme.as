@@ -686,7 +686,7 @@ package source.themes
 
 			this.buttonCalendarDayCellSkinTexture = Main.assets.getTexture("calendar_day_cell");
 
-			this.buttonCalendarArrowsTexture = Assets.getTexture('ArrowPng');
+			this.buttonCalendarArrowsTexture = Main.assets.getTexture('calendar_arrow');
 
 			this.toggleSwitchTexture = Main.assets.getTexture("toggle_switch");
 
@@ -718,8 +718,8 @@ package source.themes
 
 			this.seperatorLineTexture = new Scale9Textures(Main.assets.getTexture("header_line"), new Rectangle(0,2,10,3));
 
-			this.radioUpIconTexture = Assets.getTexture("RadioBtnPng");
-			this.radioDownIconTexture = Assets.getTexture("RadioCheckedBtnPng");
+			this.radioUpIconTexture = Main.assets.getTexture("radiobtn");
+			this.radioDownIconTexture = Main.assets.getTexture("radiobtn_checked");
 
 			this.checkUpIconTexture = Main.assets.getTexture("tick_box");
 			this.checkDownIconTexture = Main.assets.getTexture("tick_box_active");

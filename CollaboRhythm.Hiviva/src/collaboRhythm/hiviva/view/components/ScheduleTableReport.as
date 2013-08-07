@@ -267,7 +267,7 @@ package collaboRhythm.hiviva.view.components
 		{
 			var horizLineTexture:Texture = Main.assets.getTexture("header_line");
 			var horizontalLine:Image;
-			var vertLineTexture:Texture = Assets.getTexture("VerticleLinePng");
+			var vertLineTexture:Texture = Main.assets.getTexture("verticle_line");
 			var verticalLine:Image;
 
 			var bg:Sprite = new Sprite();

@@ -218,7 +218,7 @@ package collaboRhythm.hiviva.view.components
 		}
 		private function initBottomAxisValuesAndLines():void
 		{
-			var vertLineTexture:Texture = Assets.getTexture("VerticleLinePng");
+			var vertLineTexture:Texture = Main.assets.getTexture("verticle_line");
 			var verticalLine:Image;
 			var bottomAxisValue:Label;
 			var evenLighter:Quad;

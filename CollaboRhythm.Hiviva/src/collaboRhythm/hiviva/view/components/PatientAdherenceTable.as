@@ -245,8 +245,8 @@ package collaboRhythm.hiviva.view.components
 			var percentTaken:Number;
 			var tolerability:Number;
 			var cell:Sprite;
-			var tickTexture:Texture = Assets.getTexture("TickPng");
-			var crossTexture:Texture = Assets.getTexture("CrossPng");
+			var tickTexture:Texture = Main.assets.getTexture("tick");
+			var crossTexture:Texture = Main.assets.getTexture("cross");
 
 			this._dailyTolerabilityData = [];
 
@@ -389,7 +389,7 @@ package collaboRhythm.hiviva.view.components
 
 		private function initVerticalLines():void
 		{
-			var vertLineTexture:Texture = Assets.getTexture("VerticleLinePng");
+			var vertLineTexture:Texture = Main.assets.getTexture("verticle_line");
 			var verticalLine:Image;
 			for (var dayCount:int = 0; dayCount < 8; dayCount++)
 			{

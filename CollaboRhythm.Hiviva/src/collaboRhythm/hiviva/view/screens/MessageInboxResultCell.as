@@ -147,11 +147,11 @@ package collaboRhythm.hiviva.view.screens
 					this.addChild(this._secondaryLabel);
 					break;
 				case CONNECTION_REQUEST_TYPE :
-					this._icon = new Image(Assets.getTexture("MessageIconReqPng"));
+					this._icon = new Image(Main.assets.getTexture("message_icon_req"));
 					this.addChild(this._icon);
 					break;
 				case STATUS_ALERT_TYPE :
-					this._icon = new Image(Assets.getTexture("MessageIconAlertPng"));
+					this._icon = new Image(Main.assets.getTexture("message_icon_alert"));
 					this.addChild(this._icon);
 					break;
 			}

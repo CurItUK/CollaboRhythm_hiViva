@@ -94,7 +94,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._requestsCheck.label = "New connection requests";
 			this._content.addChild(this._requestsCheck);
 
-			this._lessThanTexture = Assets.getTexture('ArrowPng');
+			this._lessThanTexture = Main.assets.getTexture('calendar_arrow');
 			initializeAdherenceRow();
 			initializeTolerabilityRow();
 

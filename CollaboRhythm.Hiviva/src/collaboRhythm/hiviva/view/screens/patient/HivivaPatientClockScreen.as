@@ -81,14 +81,14 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function initialize():void
 		{
 
-			this._clockFace = new Image(Assets.getTexture("ClockFacePng"));
+			this._clockFace = new Image(Main.assets.getTexture("clock_face"));
 			this._clockFace.touchable = false;
 			this.addChild(this._clockFace);
 
-			tabletHolder  = new Sprite()
-			this.addChild(tabletHolder)
+			tabletHolder  = new Sprite();
+			this.addChild(tabletHolder);
 
-			this._clockHand = new Image(Assets.getTexture("ClockFaceHandPng"));
+			this._clockHand = new Image(Main.assets.getTexture("clock_face_hand"));
 			this._clockHandHolder = new Sprite();
 			this._clockHandHolder.touchable = false;
 			this._clockHandHolder.addChild(this._clockHand);
@@ -158,14 +158,14 @@ package collaboRhythm.hiviva.view.screens.patient
 					holderCell.height = this._clockFace.height;
 					var tabletCell:Sprite = new Sprite();
 
-					var timeSegment:Image = new Image(Assets.getTexture("ClockFaceSegmentPng"));
+					var timeSegment:Image = new Image(Main.assets.getTexture("clock_segment"));
 					timeSegment.width = timeSegment.width * 0.96;
 					timeSegment.scaleY = timeSegment.scaleX;
 					timeSegment.smoothing = TextureSmoothing.TRILINEAR;
 					var tempRotation : Number = timeSegment.rotation - HivivaModifier.degreesToRadians(7.5);
-					timeSegment.visible = true
+					timeSegment.visible = true;
 
-					var tablet:Image = new Image(Main.assets.getTexture("tablet" + (i + 1)));
+					var tablet:Image = getTabletImage(i + 1);
 					this.tabletHolder.addChild(timeSegment);
 
 					tabletCell.addChild(tablet);
@@ -185,6 +185,23 @@ package collaboRhythm.hiviva.view.screens.patient
 					this.addChild(holderCell);
 				}
 			}
+		}
+
+		private function getTabletImage(medicationCount:int):Image
+		{
+			const tabletAssetCount:int = 10;
+			var tabletId:int;
+
+			if(medicationCount > tabletAssetCount)
+			{
+				tabletId = medicationCount - tabletAssetCount;
+			}
+			else
+			{
+				tabletId = medicationCount;
+			}
+
+			return new Image(Main.assets.getTexture("tablet" + tabletId));
 		}
 
 		public function set headerHeight(height:Number):void
