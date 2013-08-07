@@ -21,8 +21,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			var holder:Sprite = new Sprite();
 
-			var screenBase:TiledImage = new TiledImage(Main.assets.getTexture("screen_base"));//new TiledImage(hivivaAtlas.getTexture("screen_base"));
-
+			var screenBase:TiledImage = new TiledImage(Main.assets.getTexture("screen_base"));
 			screenBase.width = width;
 			screenBase.height = height;
 			screenBase.smoothing = TextureSmoothing.NONE;

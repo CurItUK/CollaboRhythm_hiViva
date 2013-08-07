@@ -518,6 +518,7 @@ package source.themes
 		{
 
 			this.primaryBackground = new TiledImage(this.primaryBackgroundTexture);
+			this.primaryBackground.smoothing = TextureSmoothing.NONE;
 
 			this.primaryBackground.width = root.stage.stageWidth;
 
