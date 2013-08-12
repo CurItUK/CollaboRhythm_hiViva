@@ -355,10 +355,11 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			 drawBgHomeImage(sourceBm);
 
-//			 drawLensHomeImage(sourceBm);
+			 drawLensHomeImage(sourceBm);
 
 			//clean up
 			sourceBm.bitmapData.dispose();
+			sourceBm.bitmapData = null;
 			sourceBm = null;
 			System.gc();
 
@@ -409,7 +410,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			var bgHolder:flash.display.Sprite = new flash.display.Sprite();
 
-			var bgBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
+			var bgBm:Bitmap = new Bitmap(sourceBm.bitmapData.clone(),"auto",true);
 			cropToFit(bgBm, Constants.STAGE_WIDTH, this._usableHeight);
 			//bgBm.alpha = 0.35;
 			bgHolder.addChild(bgBm);
@@ -419,23 +420,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			bgMask.graphics.drawRect((bgBm.width * 0.5) - (Constants.STAGE_WIDTH * 0.5),(bgBm.height * 0.5) - (this._usableHeight * 0.5),Constants.STAGE_WIDTH, this._usableHeight);
 			bgHolder.addChild(bgMask);
 			bgBm.mask = bgMask;
-
-			var circleBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
-			cropToFit(circleBm, Constants.STAGE_WIDTH, this._usableHeight);
-			bgHolder.addChild(circleBm);
-
-			var blurValue:int = int(20 - (0.2 * this._adherencePercent));
-			var blurFilter:BitmapFilter = new BlurFilter(blurValue, blurValue, BitmapFilterQuality.HIGH);
-			var myFilters:Array = [];
-			myFilters.push(blurFilter);
-			circleBm.filters = myFilters;
-
-			var circleMask:flash.display.Sprite = new flash.display.Sprite();
-			var circRad:Number = (IMAGE_SIZE * 0.5) - (LENS_SHADOW_RADIUS * 0.5);
-			circleMask.graphics.beginFill(0x000000);
-			circleMask.graphics.drawCircle(circleBm.width * 0.5, circleBm.height * 0.5, circRad);
-			bgHolder.addChild(circleMask);
-			circleBm.mask = circleMask;
 
 			var bmd:BitmapData = new BitmapData(bgHolder.width, bgHolder.height, true, 0x00000000);
 			bmd.draw(bgHolder, new Matrix(), null, null, null, true);
@@ -447,40 +431,37 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._lensImageHolder.addChild(bgImage);
 
 			//clean up
-			bgHolder.removeChild(bgBm);
-			bgHolder.removeChild(bgMask);
-			bgHolder.removeChild(circleBm);
-			bgHolder.removeChild(circleMask);
-
 			bgBm.bitmapData.dispose();
+			bgBm.bitmapData = null;
 			bgBm = null;
+
+			bgMask.graphics.clear();
 			bgMask = null;
-			circleBm.bitmapData.dispose();
-			circleBm = null;
-			circleMask = null;
-			bgHolder = null;
 
 			bmd.dispose();
 			bmd = null;
+
+			bgHolder = null;
 		}
 
 		private function drawLensHomeImage(sourceBm:Bitmap):void
 		{
 			var circleHolder:flash.display.Sprite = new flash.display.Sprite();
 
-			var circleBm:Bitmap = new Bitmap(sourceBm.bitmapData,"auto",true);
+			var circleBm:Bitmap = new Bitmap(sourceBm.bitmapData.clone(),"auto",true);
 			cropToFit(circleBm, Constants.STAGE_WIDTH, this._usableHeight);
 			circleHolder.addChild(circleBm);
 
-			var blurValue:int = int(20 - (0.2 * this._adherencePercent));
+			var blurValue:int = 20 - int(0.2 * this._adherencePercent);
 			var blurFilter:BitmapFilter = new BlurFilter(blurValue, blurValue, BitmapFilterQuality.HIGH);
 			var myFilters:Array = [];
 			myFilters.push(blurFilter);
 			circleBm.filters = myFilters;
 
 			var circleMask:flash.display.Sprite = new flash.display.Sprite();
+			var circleDiameter:Number = IMAGE_SIZE - (LENS_SHADOW_RADIUS * 2);
 			circleMask.graphics.beginFill(0x000000);
-			circleMask.graphics.drawCircle(circleBm.width * 0.5, circleBm.height * 0.5, IMAGE_SIZE * 0.5);
+			circleMask.graphics.drawCircle(circleBm.width * 0.5, circleBm.height * 0.5, circleDiameter * 0.5);
 			circleHolder.addChild(circleMask);
 			circleBm.mask = circleMask;
 
@@ -498,7 +479,18 @@ package collaboRhythm.hiviva.view.screens.patient
 			colorFilter.adjustSaturation(-1 + (this._adherencePercent / 100));
 			this._lensImageHolder.filter = colorFilter;*/
 
+			//clean up
+			circleBm.bitmapData.dispose();
+			circleBm.bitmapData = null;
+			circleBm = null;
+
+			circleMask.graphics.clear();
+			circleMask = null;
+
 			bmd.dispose();
+			bmd = null;
+
+			circleHolder = null;
 		}
 
 		private function cropToFit(img:Object, w:Number, h:Number):void
