@@ -1,28 +1,26 @@
 package collaboRhythm.hiviva.view
 {
 
-
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.components.HCPFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.IFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.PatientFooterBtnGroup;
+	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAddPatientScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAlertSettings;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAllPatientsAdherenceScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPConnectToPatientScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPDisplaySettings;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPEditProfile;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHelpScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHomesScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPPatientProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPSettingsScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPSideNavigationScreen;
-	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
-	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessages;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHelpScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_About_Screen;
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_Alerts_Screen;
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_Connect_To_Patient_Screen;
@@ -34,13 +32,13 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_Privacy_Screen;
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_Single_Patient_Information_Screen;
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_Wcidwh_Screen;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
+	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessages;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientAddHCP;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientBagesScreen;
-	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientAddMedsScreen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientBagesScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientConnectToHcpScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientEditMedsScreen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientSettingsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientHelpScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientHomeScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientHomepagePhotoScreen;
@@ -48,12 +46,13 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientMyDetailsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientProfileScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientReportsScreen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientSettingsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientSideNavScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientTakeMedsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientTestResultsScreen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientUserSignupScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientViewMedicationScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientVirusModelScreen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientUserSignupScreen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Connect_To_Care_Provider_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_DailyMedicines_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_GettingStarted_Screen;
@@ -73,9 +72,6 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 
-	import flash.desktop.NativeApplication;
-	import flash.events.Event;
-
 	import flash.filesystem.File;
 	import flash.system.System;
 
@@ -89,8 +85,6 @@ package collaboRhythm.hiviva.view
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
-	import feathers.core.PopUpManager;
 
 	public class Main extends Sprite
 	{
@@ -144,7 +138,7 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lighter-regular.png"),appDir.resolvePath("assets/fonts/engraved-lighter-regular.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-lighter-bold.png"),appDir.resolvePath("assets/fonts/raised-lighter-bold.fnt"));
 
-			this._preloader = new HivivaPreloaderWithBackground(0xF4E32C , 100 , 5 , this._bgTexture) ;
+			this._preloader = new HivivaPreloaderWithBackground(0xFFFFFFF , 100 , 5 , this._bgTexture) ;
 			this._preloader.init();
 			this._preloader.y = 0;
 			this._preloader.x = 0;
@@ -193,13 +187,13 @@ package collaboRhythm.hiviva.view
 
 			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete}));
 			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
-
+/*
 			this._passwordPopUp = new PasswordPopUp();
 			PopUpManager.addPopUp(this._passwordPopUp, true, true);
-			this._passwordPopUp.validate();
+			this._passwordPopUp.validate();*/
 		}
 
-		private function splashComplete(e:starling.events.Event):void
+		private function splashComplete(e:Event):void
 		{
 			trace("splashComplete ");
 			this._mainScreenNav.clearScreen();
@@ -242,13 +236,13 @@ package collaboRhythm.hiviva.view
 			this._settingsBtn = new Button();
 			this._settingsBtn.name = HivivaTheme.NONE_THEMED;
 			this._settingsBtn.defaultIcon = new Image(_assets.getTexture("top_nav_icon_01"));
-			this._settingsBtn.addEventListener(starling.events.Event.TRIGGERED , settingsBtnHandler);
+			this._settingsBtn.addEventListener(Event.TRIGGERED , settingsBtnHandler);
 			this._screenHolder.addChild(this._settingsBtn);
 			this._settingsBtn.width = (Constants.STAGE_WIDTH * 0.2);
 			this._settingsBtn.scaleY = this._settingsBtn.scaleX;
 		}
 
-		private function settingsBtnHandler(e:starling.events.Event = null):void
+		private function settingsBtnHandler(e:Event = null):void
 		{
 			var xLoc:Number = _settingsOpen ? 0 : Constants.SETTING_MENU_WIDTH;
 
@@ -357,7 +351,7 @@ package collaboRhythm.hiviva.view
 			this._footerBtnGroup.navigateToMessages();
 		}
 
-		private function navigateToDirectProfileMenu(e:starling.events.Event):void
+		private function navigateToDirectProfileMenu(e:Event):void
 		{
 //			if(e.data.patientProfile != null) _selectedHCPPatientProfile = e.data.patientProfile as XML;
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
@@ -366,7 +360,7 @@ package collaboRhythm.hiviva.view
 			settingsNavHandler(evt);
 		}
 
-		private function navGoSettings(e:starling.events.Event):void
+		private function navGoSettings(e:Event):void
 		{
 			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
 			evt.message = e.data.screen;

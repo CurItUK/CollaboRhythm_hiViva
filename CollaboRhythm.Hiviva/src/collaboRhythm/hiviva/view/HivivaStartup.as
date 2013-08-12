@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.model.vo.PatientAdherenceVO;
 	import collaboRhythm.hiviva.model.vo.ReportVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
+	import collaboRhythm.hiviva.view.media.Assets;
 
 	import flash.desktop.NativeApplication;
 

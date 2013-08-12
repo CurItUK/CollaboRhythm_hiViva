@@ -2,6 +2,17 @@ package collaboRhythm.hiviva.global
 {
 	public class HivivaThemeConstants
 	{
+		// ttf fonts
+
+		[Embed(source="/assets/fonts/exo-regular.ttf", fontName="ExoRegular", mimeType="application/x-font", embedAsCFF="false")]
+		public static const ExoRegularFont:Class;
+
+		[Embed(source="/assets/fonts/exo-bold.ttf", fontName="ExoBold", mimeType="application/x-font", embedAsCFF="false")]
+		public static const ExoBoldFont:Class;
+
+		[Embed(source="/assets/fonts/exo-light.ttf", fontName="ExoLight", mimeType="application/x-font", embedAsCFF="false")]
+		public static const ExoLightFont:Class;
+
 		// colours (not to be used with bitmap fonts with effects applied!)
 
 		public static const DARK_FONT_COLOUR:uint					= 0x293d54;

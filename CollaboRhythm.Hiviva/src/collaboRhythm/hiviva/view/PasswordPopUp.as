@@ -157,7 +157,7 @@ package collaboRhythm.hiviva.view
 			this.passController= HivivaPasswordManager.getInstance();
 
 			//	trace("THE PASSWORD IS :::::" + sample.)
-			//ToDo :  A singleton class needs to be created for password connection and db connection
+			//ToDo :  A singleton class needs to be created for password connection and db connection (WHY?)
 			if(  this._passwordInputField._input.text  !== passController.Pass){
 
 				  trace("incorrect password")

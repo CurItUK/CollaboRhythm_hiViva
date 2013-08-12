@@ -12,9 +12,6 @@ package collaboRhythm.hiviva.view.media
 		[Embed(source="/assets/images/temp/star0.png")]
 		public static const Star0Png:Class;
 
-		[Embed(source="/assets/images/temp/clockFace.png")]
-		public static const ClockFacePng:Class;
-
 		[Embed(source="/assets/images/temp/pillbox.png")]
 		public static const PillboxPng:Class;
 
@@ -29,12 +26,6 @@ package collaboRhythm.hiviva.view.media
 
 		//[Embed(source="/assets/images/temp/home_lens_shine.png")]
 		//public static const HomeLensShinePng:Class;
-
-		[Embed(source="/assets/images/temp/clockface_hand.png")]
-		public static const ClockFaceHandPng:Class;
-
-		[Embed(source="/assets/images/temp/clockSegment.png")]
-		public static const ClockFaceSegmentPng:Class;
 
 		/*
 		[Embed(source="/assets/images/temp/HCP_Adherance_chart.png")]

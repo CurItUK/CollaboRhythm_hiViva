@@ -838,6 +838,7 @@ package source.themes
 			this.setInitializerForClass(Button, homeButtonInitializer, HivivaThemeConstants.HOME_BUTTON);
 			this.setInitializerForClass(Button, splashHCPButtonInitializer, "splash-hcp-button");
 			this.setInitializerForClass(Button, splashPatientButtonInitializer, "splash-patient-button");
+			this.setInitializerForClass(Button, splashFooterButtonInitializer, "splash-footer-button");
 
 			this.setInitializerForClass(Button, backButtonInitializer, "back-button");
 			this.setInitializerForClass(Button, closeButtonInitializer, "close-button");
@@ -1366,6 +1367,25 @@ package source.themes
 			button.paddingLeft = button.paddingRight = 40 * this.scale;
 			button.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
 			button.horizontalAlign = Button.HORIZONTAL_ALIGN_RIGHT;
+
+			button.minWidth = 88 * this.scale;
+			button.minHeight = 88 * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function splashFooterButtonInitializer(button:Button):void
+		{
+			button.labelFactory = function():ITextRenderer
+			{
+				var labelRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+
+				//styles here
+				labelRenderer.embedFonts = true;
+				labelRenderer.textFormat = new TextFormat("ExoBold", 22 * scale, 0xFFFFFF, false, false, true);
+
+				return labelRenderer;
+			};
 
 			button.minWidth = 88 * this.scale;
 			button.minHeight = 88 * this.scale;
@@ -2246,9 +2266,9 @@ package source.themes
 */
 
 
-			input.minWidth = input.minHeight = 88 * this.scale;
+			input.minWidth = input.minHeight = 66 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
-			input.padding = 25 * this.scale;
+			input.padding = 15 * this.scale;
 			input.textEditorFactory = function():ITextEditor
 			{
 			    var editor:StageTextTextEditor = new StageTextTextEditor();
