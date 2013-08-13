@@ -267,9 +267,10 @@ package collaboRhythm.hiviva.view.components
 							if (columnData[i].id == rowData.id)
 							{
 								percentTaken = columnData[i].data.PercentTaken;
-								tolerability = columnData[i].data.Tolerability;
+//								tolerability = columnData[i].data.Tolerability;
 							}
 						}
+						tolerability = columnData[0].data.Tolerability;
 					}
 
 					cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
@@ -293,36 +294,19 @@ package collaboRhythm.hiviva.view.components
 		{
 			var rowData:Object = this._rowsData[this._rowsData.length - 1];
 			var cell:Sprite;
-			var medicationTolerability:Number = 0;
-			var medicationTolerabilityCount:int = 0;
 
 			for (var dayCount:int = 0; dayCount < 7; dayCount++)
 			{
-				if(this._dailyTolerabilityData.length > 0)
-				{
-					for (var tolCount:int = 0; tolCount < this._dailyTolerabilityData.length; tolCount++)
-					{
-						if(this._dailyTolerabilityData[tolCount].day == dayCount)
-						{
-							medicationTolerability += this._dailyTolerabilityData[tolCount].value;
-							medicationTolerabilityCount++;
-						}
-					}
+				cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
+				this._dataContainer.addChild(cell);
 
-					cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
-					this._dataContainer.addChild(cell);
-
-					var cellLabel:Label = new Label();
-					cellLabel.width = this._dataColumnsWidth;
-					cellLabel.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
-					cellLabel.text = String(int(medicationTolerability / medicationTolerabilityCount));
-					cell.addChild(cellLabel);
-					cellLabel.validate();
-					cellLabel.y = (cell.height * 0.5) - (cellLabel.height * 0.5);
-
-					medicationTolerability = 0;
-					medicationTolerabilityCount = 0;
-				}
+				var cellLabel:Label = new Label();
+				cellLabel.width = this._dataColumnsWidth;
+				cellLabel.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
+				cellLabel.text = String(this._dailyTolerabilityData[dayCount].value);
+				cell.addChild(cellLabel);
+				cellLabel.validate();
+				cellLabel.y = (cell.height * 0.5) - (cellLabel.height * 0.5);
 			}
 		}
 

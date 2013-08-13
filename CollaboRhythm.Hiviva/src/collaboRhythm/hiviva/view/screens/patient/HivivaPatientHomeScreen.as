@@ -135,7 +135,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._header.rightItems =  new <DisplayObject>[this._messagesButton, this._badgesButton];
 
-			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.UPDATE_VO_DATA, updateVODataHandler);
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.UPDATE_DAILY_VO_DATA, updateVODataHandler);
 		}
 
 		private function messagesButtonHandler(e:Event):void
@@ -531,7 +531,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.disableAutoHomePageMessageCheck();
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE , homePageTickHandler);
 
-			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.UPDATE_VO_DATA, updateVODataHandler);
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.UPDATE_DAILY_VO_DATA, updateVODataHandler);
 		}
 	}
 }

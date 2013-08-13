@@ -100,11 +100,11 @@ package collaboRhythm.hiviva.controller
 				var activateDate:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(),HivivaStartup.userVO.serverDate.getMonth(),HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
 				if (HivivaModifier.getDaysDiff(activateDate, this._deactivatedDate) > 0)
 				{
-					dispatchEvent(new NotificationsEvent(NotificationsEvent.UPDATE_VO_DATA));
+					dispatchEvent(new NotificationsEvent(NotificationsEvent.UPDATE_DAILY_VO_DATA));
 					trace("UPDATE_VO_DATA");
 				}
+				deActivate();
 			}
-			deActivate();
 		}
 	}
 }

@@ -224,14 +224,16 @@ package collaboRhythm.hiviva.model
 								<email>{appId}@domain.com</email>
 								<appid>{appId}</appid>
 								<guid>{appGuid}</guid>
-								<tolerability>{adherence}</tolerability>
-								<adherence>{tolerability}</adherence>
+								<tolerability>{tolerability}</tolerability>
+								<adherence>{adherence}</adherence>
 								<picture>dummy.png</picture>
 							</patient>
 					);
 					this._hcpConnectedPatientsVO.patients.push(data);
 				}
 			}
+
+			this._hcpConnectedPatientsVO.updated = true;
 			trace('connectedPatientsVO updated');
 		}
 

@@ -253,7 +253,15 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function addDisplaySettingsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE , addDisplaySettingsCompleteHandler);
-			showFormValidation("Your display settings have been saved...");
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnectionsWithSummary();
+		}
+
+		private function getApprovedConnectionsWithSummaryHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
+			showFormValidation("Your display settings have been updated...");
 		}
 
 		private function backBtnHandler(e:starling.events.Event):void
