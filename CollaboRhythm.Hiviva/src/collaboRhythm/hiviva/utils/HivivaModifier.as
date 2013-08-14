@@ -1,6 +1,5 @@
 package collaboRhythm.hiviva.utils
 {
-	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 
 	import flash.geom.Point;
@@ -14,6 +13,23 @@ package collaboRhythm.hiviva.utils
 
 		public function HivivaModifier()
 		{
+		}
+
+		public static function getAppIdWithGuid(guid:String):String
+		{
+			var appId:String;
+			var patientData:Array = HivivaStartup.hcpConnectedPatientsVO.patients;
+
+			for (var i:int = 0; i < patientData.length; i++)
+			{
+				if(patientData[i].guid == guid)
+				{
+					appId = patientData[i].appid;
+					break;
+				}
+			}
+
+			return appId;
 		}
 
 		public static function establishToFromId(idsToCompare:XML):Object

@@ -1,23 +1,21 @@
 package collaboRhythm.hiviva.view.screens.hcp.messages
 {
-	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.screens.MessageInboxResultCell;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaMessageDetail;
 
 	import feathers.controls.Button;
-
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
 	import feathers.layout.VerticalLayout;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	public class HivivaHCPMessageSent extends Screen
@@ -58,14 +56,14 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
 		}
 
-		private function backBtnHandler(e:starling.events.Event):void
+		private function backBtnHandler(e:Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_MESSAGE_INBOX_SCREEN)
 		}
@@ -104,7 +102,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					hcpSentMessage.isSent = true;
 					hcpSentMessage.guid = this._allSentMessages[i].MessageGuid;
 					hcpSentMessage.primaryText = this._allSentMessages[i].Message;
-//					hcpMessage.secondaryText = this._allSentMessages[i].Name;
+					hcpSentMessage.secondaryText = HivivaModifier.getAppIdWithGuid(this._allSentMessages[i].UserGuid);
 					hcpSentMessage.dateText = this._allSentMessages[i].SentDate;
 					hcpSentMessage.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
 					this._cellContainer.addChild(hcpSentMessage);
@@ -142,7 +140,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			}
 			var screenNavProperties:Object =
 			{
-				customHeight:Constants.STAGE_HEIGHT,
+//				customHeight:Constants.STAGE_HEIGHT,
 				messageData:messageData,
 				messageType:messageType,
 				parentScreen:this.owner.activeScreenID,
