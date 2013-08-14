@@ -15,16 +15,12 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
-
-
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.core.PopUpManager;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
-
 
 	public class HivivaMessageDetail extends Screen
 	{
@@ -93,7 +89,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
@@ -106,17 +102,17 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._messageLabel = new Label();
 
 			this._options = new BoxedButtons();
-			this._options.addEventListener(starling.events.Event.TRIGGERED, optionsHandler);
+			this._options.addEventListener(Event.TRIGGERED, optionsHandler);
 
 			switch(_messageType)
 			{
 				case MessageInboxResultCell.COMPOSED_MESSAGE_TYPE :
-					this._nameLabel.text = _messageData.Name;
+					this._nameLabel.text = HivivaModifier.getAppIdWithGuid(_messageData.UserGuid);
 					this._dateLabel.text = HivivaModifier.getPrettyStringFromIsoString(_messageData.SentDate);
 					this._messageLabel.text = _messageData.Message;
 					this._options.labels = ["Delete"];
 
-					if(_messageData.read == "false") markMessageAsRead();
+					if(_messageData.read == "false" && !_isSent) markMessageAsRead();
 
 					break;
 				case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
@@ -163,7 +159,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			trace("message marked as read");
 		}
 
-		private function optionsHandler(e:starling.events.Event):void
+		private function optionsHandler(e:Event):void
 		{
 			var button:String = e.data.button;
 /*
@@ -288,7 +284,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			backBtnHandler();
 		}
 
-		private function backBtnHandler(e:starling.events.Event = null):void
+		private function backBtnHandler(e:Event = null):void
 		{
 			if(HivivaStartup.userVO.type == "HCP") dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
 			this.owner.showScreen(_parentScreen);

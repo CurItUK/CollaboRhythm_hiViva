@@ -5,7 +5,6 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -289,23 +288,6 @@ package collaboRhythm.hiviva.view.components
 			this._firstWeek = tempDate;
 		}
 
-		private function getAppIdWithGuid(guid:String):String
-		{
-			var appId:String;
-			var patientData:Array = HivivaStartup.hcpConnectedPatientsVO.patients;
-
-			for (var i:int = 0; i < patientData.length; i++)
-			{
-				if(patientData[i].guid == guid)
-				{
-					appId = patientData[i].appid;
-					break;
-				}
-			}
-
-			return appId;
-		}
-
 		private function populatePatientAdherence():void
 		{
 			var weekItar:Date;
@@ -319,7 +301,7 @@ package collaboRhythm.hiviva.view.components
 			for (var i:int = 0; i < _scheduleHistoryData.length(); i++)
 			{
 				adherenceData = {};
-				adherenceData.patient = getAppIdWithGuid(_scheduleHistoryData[i].HealthUserGuid);
+				adherenceData.patient = HivivaModifier.getAppIdWithGuid(_scheduleHistoryData[i].HealthUserGuid);
 				adherenceData.adherence = [];
 
 				medicationSchedule = _scheduleHistoryData[i]..DCMedicationSchedule;
