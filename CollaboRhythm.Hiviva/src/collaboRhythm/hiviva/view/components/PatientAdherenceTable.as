@@ -266,6 +266,8 @@ package collaboRhythm.hiviva.view.components
 				{
 					percentTaken = -1;
 					tolerability = -1;
+
+					// establish adherence and tolerability values
 					if(currWeekDay.getTime() > rowData.startDate.getTime() && currWeekDay.getTime() < rowData.endDate.getTime())
 					{
 						columnData = _history[currWeekDay.getTime()];
@@ -280,6 +282,8 @@ package collaboRhythm.hiviva.view.components
 						}
 
 					}
+
+					// create adherence cell
 					cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
 					this._dataContainer.addChild(cell);
 					if(percentTaken > -1)
@@ -299,6 +303,8 @@ package collaboRhythm.hiviva.view.components
 						cellLabel.validate();
 						cellLabel.y = (cell.height * 0.5) - (cellLabel.height * 0.5);
 					}
+
+					// save tolerability value
 					this._dailyTolerabilityData.push({day: dayCount, value: tolerability});
 					currWeekDay.date++;
 				}
