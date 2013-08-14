@@ -222,7 +222,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._loginLabel.y = startY;
 
 			this._passwordInput = new TextInput();
-			this._passwordInput.addEventListener(feathers.events.FeathersEventType.FOCUS_IN, passwordInputFocusInHandler);
+			this._passwordInput.addEventListener(FeathersEventType.FOCUS_IN, passwordInputFocusInHandler);
 			this._passwordInput.textEditorProperties.displayAsPassword = true;
 			addChild(this._passwordInput);
 			this._passwordInput.width = Constants.STAGE_WIDTH * 0.5;
@@ -248,7 +248,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._passwordInput.text = '';
 		}
 
-		private function confirmButtonHandler(e:Event):void
+		private function confirmButtonHandler(e:Event = null):void
 		{
 			this._passController = HivivaPasswordManager.getInstance();
 
