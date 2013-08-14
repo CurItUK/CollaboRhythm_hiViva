@@ -421,6 +421,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.disableAutoHomePageMessageCheck();
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE , messageCheckHandler);
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.GLOBAL_TICK, updateVODataHandler);
+			HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.UPDATE_DAILY_VO_DATA, updateVODataHandler);
 		}
 
 		public function set patients(value:Array):void

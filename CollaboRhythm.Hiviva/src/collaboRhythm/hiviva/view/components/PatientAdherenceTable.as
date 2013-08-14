@@ -166,13 +166,15 @@ package collaboRhythm.hiviva.view.components
 					this._mainScrollContainer.addChild(medicationCell);
 					medicationCell.width = this._firstColumnWidth;
 
-					var endDate:Date = String(_medications[medCount].Stopped) == "true" ? HivivaModifier.getDateFromIsoString(_medications[medCount].EndDate) : HivivaStartup.userVO.serverDate;
+					var endDate:Date = HivivaModifier.getDateFromIsoString(_medications[medCount].EndDate);
+					var startDate:Date = HivivaModifier.getDateFromIsoString(_medications[medCount].StartDate);
+					var yesterday:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(), HivivaStartup.userVO.serverDate.getMonth(), HivivaStartup.userVO.serverDate.getDate() - 1,0,0,0,0);
 
 					medIds.push(medicationId);
 					this._rowsData.push({
 						id: medicationId,
-						startDate: HivivaModifier.getDateFromIsoString(_medications[medCount].StartDate),
-						endDate: endDate
+						startDate: new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate(),0,0,0,0),
+						endDate:  String(_medications[medCount].Stopped) == "true" ? new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),0,0,0,0) : yesterday
 					});
 				}
 			}
@@ -254,8 +256,8 @@ package collaboRhythm.hiviva.view.components
 			var cell:Sprite;
 			var tickTexture:Texture = Main.assets.getTexture("tick");
 			var crossTexture:Texture = Main.assets.getTexture("cross");
-			var tickCrossImage:Image;
-			var cellLabel:Label;
+			var isLargerThanStartDate:Boolean;
+			var isSmallerThanEndDate:Boolean;
 
 			this._dailyTolerabilityData = [];
 
@@ -264,11 +266,10 @@ package collaboRhythm.hiviva.view.components
 				rowData = this._rowsData[rowCount];
 				for (var dayCount:int = 0; dayCount < 7; dayCount++)
 				{
-					percentTaken = -1;
-					tolerability = -1;
-
+					isLargerThanStartDate = currWeekDay.getTime() >= rowData.startDate.getTime();
+					isSmallerThanEndDate = currWeekDay.getTime() <= rowData.endDate.getTime();
 					// establish adherence and tolerability values
-					if(currWeekDay.getTime() > rowData.startDate.getTime() && currWeekDay.getTime() < rowData.endDate.getTime())
+					if(isLargerThanStartDate && isSmallerThanEndDate)
 					{
 						columnData = _history[currWeekDay.getTime()];
 						if (columnData != null)
@@ -276,26 +277,42 @@ package collaboRhythm.hiviva.view.components
 							columnDataLength = columnData.length;
 							for (var i:int = 0; i < columnDataLength; i++)
 							{
-								percentTaken = (columnData[i].id == rowData.id) ? columnData[i].data.PercentTaken : 0;
+								if(columnData[i].id == rowData.id)
+								{
+									percentTaken = columnData[i].data.PercentTaken;
+									break;
+								}
 							}
 							tolerability = columnData[0].data.Tolerability;
 						}
-
+						else
+						{
+							// schedule was missed on this day
+							percentTaken = 0;
+							tolerability = -1;
+						}
+					}
+					else
+					{
+						// schedule did not exist on this day
+						percentTaken = -1;
+						tolerability = -1;
 					}
 
 					// create adherence cell
 					cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
 					this._dataContainer.addChild(cell);
+//					trace(percentTaken);
 					if(percentTaken > -1)
 					{
-						tickCrossImage = new Image(percentTaken == 100 ? tickTexture : crossTexture);
+						var tickCrossImage:Image = new Image(percentTaken == 100 ? tickTexture : crossTexture);
 						cell.addChild(tickCrossImage);
 						tickCrossImage.x = (cell.width * 0.5) - (tickCrossImage.width * 0.5);
 						tickCrossImage.y = (cell.height * 0.5) - (tickCrossImage.height * 0.5);
 					}
 					else
 					{
-						cellLabel = new Label();
+						var cellLabel:Label = new Label();
 						cellLabel.width = this._dataColumnsWidth;
 						cellLabel.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
 						cellLabel.text = "-";
@@ -317,13 +334,13 @@ package collaboRhythm.hiviva.view.components
 		{
 			var rowData:Object = this._rowsData[this._rowsData.length - 1];
 			var cell:Sprite;
-			var cellLabel:Label;
+
 			for (var dayCount:int = 0; dayCount < 7; dayCount++)
 			{
 				cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
 				this._dataContainer.addChild(cell);
 
-				cellLabel = new Label();
+				var cellLabel:Label = new Label();
 				cellLabel.width = this._dataColumnsWidth;
 				cellLabel.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
 				cellLabel.text = this._dailyTolerabilityData[dayCount].value > -1 ? String(this._dailyTolerabilityData[dayCount].value) : "-";
