@@ -319,6 +319,7 @@ package collaboRhythm.hiviva.view.components
 						referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
 						if(weekItar.getTime() == referenceDate.getTime())
 						{
+							trace(int(medicationSchedule[k].PercentTaken));
 							medicationAdherence += int(medicationSchedule[k].PercentTaken);
 							medicationCount++;
 						}

@@ -2,8 +2,8 @@ package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
 	import feathers.core.FeathersControl;
@@ -131,8 +131,17 @@ package collaboRhythm.hiviva.view.components
 					medicationCell.y = _totalHeight;
 					_totalHeight += medicationCell.height;
 
+					var endDate:Date = HivivaModifier.getDateFromIsoString(_patientData[cellCount].EndDate);
+					var startDate:Date = HivivaModifier.getDateFromIsoString(_patientData[cellCount].StartDate);
+					var yesterday:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(), HivivaStartup.userVO.serverDate.getMonth(), HivivaStartup.userVO.serverDate.getDate() - 1,0,0,0,0);
+
+					this._rowsData.push({
+						id: medicationId,
+						startDate: new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate(),0,0,0,0),
+						endDate:  String(_patientData[cellCount].Stopped) == "true" ? new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),0,0,0,0) : yesterday
+					});
+
 					medIds.push(medicationId);
-					this._rowsData.push({id: medicationId});
 				}
 			}
 
@@ -205,8 +214,8 @@ package collaboRhythm.hiviva.view.components
 						medicationScheduleLength = medicationSchedule.length();
 						if(medicationScheduleLength > 0)
 						{
-							earliestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[medicationScheduleLength - 1].DateTaken));
-							latestSchedule = HivivaModifier.getDateFromIsoString(String(medicationSchedule[0].DateTaken));
+							earliestSchedule = rowData.startDate;
+							latestSchedule = rowData.endDate;
 							range = HivivaModifier.getDaysDiff(latestSchedule, earliestSchedule) + 1;
 
 							scheduleValue = 0;

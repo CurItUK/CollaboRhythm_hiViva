@@ -170,12 +170,13 @@ package collaboRhythm.hiviva.view.components
 					var startDate:Date = HivivaModifier.getDateFromIsoString(_medications[medCount].StartDate);
 					var yesterday:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(), HivivaStartup.userVO.serverDate.getMonth(), HivivaStartup.userVO.serverDate.getDate() - 1,0,0,0,0);
 
-					medIds.push(medicationId);
 					this._rowsData.push({
 						id: medicationId,
 						startDate: new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate(),0,0,0,0),
 						endDate:  String(_medications[medCount].Stopped) == "true" ? new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),0,0,0,0) : yesterday
 					});
+
+					medIds.push(medicationId);
 				}
 			}
 			// tolerability row name
