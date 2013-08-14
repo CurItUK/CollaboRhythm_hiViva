@@ -274,11 +274,7 @@ package collaboRhythm.hiviva.view.components
 							columnDataLength = columnData.length;
 							for (var i:int = 0; i < columnDataLength; i++)
 							{
-								if (columnData[i].id == rowData.id)
-								{
-									percentTaken = columnData[i].data.PercentTaken;
-	//								tolerability = columnData[i].data.Tolerability;
-								}
+								percentTaken = (columnData[i].id == rowData.id) ? columnData[i].data.PercentTaken : 0;
 							}
 							tolerability = columnData[0].data.Tolerability;
 						}
