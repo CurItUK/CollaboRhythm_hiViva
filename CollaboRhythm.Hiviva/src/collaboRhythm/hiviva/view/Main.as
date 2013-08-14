@@ -98,7 +98,7 @@ package collaboRhythm.hiviva.view
 		private var _currMainScreenId:String;
 		private var _scaleFactor:Number;
 		private var _bgTexture:Texture ;
-		private var _passwordPopUp:PasswordPopUp;
+
         private var _preloader:HivivaPreloaderWithBackground;
 
 
@@ -397,10 +397,6 @@ package collaboRhythm.hiviva.view
 		{
 			this._settingsOpen = false;
 
-
-			this._passwordPopUp.dispose();
-			this._passwordPopUp = null;
-
 			this._mainScreenNav.removeChild(this._screenBackground);
 			this._screenBackground.dispose();
 			this._screenBackground = null;
@@ -443,6 +439,7 @@ package collaboRhythm.hiviva.view
 
 			HivivaStartup.patientAdherenceVO.percentage = 0;
 			HivivaStartup.hcpConnectedPatientsVO.patients = [];
+			HivivaStartup.hcpConnectedPatientsVO.changed = false;
 			HivivaStartup.reportVO.settingsData = null;
 
 			System.gc();
