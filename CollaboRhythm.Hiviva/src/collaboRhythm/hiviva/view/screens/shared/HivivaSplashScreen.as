@@ -13,6 +13,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
+	import feathers.events.FeathersEventType;
 
 	import flash.events.TimerEvent;
 	import flash.text.TextFormat;
@@ -221,8 +222,8 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._loginLabel.y = startY;
 
 			this._passwordInput = new TextInput();
+			this._passwordInput.addEventListener(feathers.events.FeathersEventType.FOCUS_IN, passwordInputFocusInHandler);
 			this._passwordInput.textEditorProperties.displayAsPassword = true;
-			this._passwordInput.textEditorProperties.color = 0xFFFFFF;
 			addChild(this._passwordInput);
 			this._passwordInput.width = Constants.STAGE_WIDTH * 0.5;
 			this._passwordInput.validate();
@@ -237,6 +238,14 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._loginButton.validate();
 			this._loginButton.x = (Constants.STAGE_WIDTH * 0.5) - (this._loginButton.width * 0.5);
 			this._loginButton.y = this._passwordInput.y + this._passwordInput.height + 20;
+
+			this._passwordInput.setFocus();
+		}
+
+		private function passwordInputFocusInHandler(e:Event):void
+		{
+			this._passwordInput.textEditorProperties.color = 0xFFFFFF;
+			this._passwordInput.text = '';
 		}
 
 		private function confirmButtonHandler(e:Event):void
@@ -279,6 +288,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			else
 			{
 				this._preCloseDownCount++;
+				checkToClose();
 			}
 		}
 
