@@ -233,7 +233,7 @@ package collaboRhythm.hiviva.model
 				}
 			}
 
-			this._hcpConnectedPatientsVO.updated = true;
+			this._hcpConnectedPatientsVO.changed = true;
 			trace('connectedPatientsVO updated');
 		}
 

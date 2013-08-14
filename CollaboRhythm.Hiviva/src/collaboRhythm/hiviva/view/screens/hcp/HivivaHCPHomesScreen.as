@@ -73,7 +73,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			if(!this._remoteCallMade)
 			{
-				if(HivivaStartup.hcpConnectedPatientsVO.updated)
+				if(!HivivaStartup.hcpConnectedPatientsVO.changed)
 				{
 					getApprovedConnectionsWithSummary();
 				}
@@ -89,8 +89,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function updateVODataHandler(e:NotificationsEvent = null):void
 		{
+			if(HivivaStartup.hivivaAppController.hivivaNotificationsController.hasEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE))
+			{
+				HivivaStartup.hivivaAppController.hivivaNotificationsController.disableAutoHomePageMessageCheck();
+				HivivaStartup.hivivaAppController.hivivaNotificationsController.removeEventListener(NotificationsEvent.HOMEPAGE_TICK_COMPLETE , messageCheckHandler);
+			}
+
 			this._remoteCallMade = false;
-			HivivaStartup.hcpConnectedPatientsVO.updated = true;
+			HivivaStartup.hcpConnectedPatientsVO.changed = false;
 			this.draw();
 		}
 
@@ -181,7 +187,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			drawApprovedConnectionsWithSummary();
 
-			HivivaStartup.hcpConnectedPatientsVO.updated = false;
+
 		}
 
 		private function enableAutoHomePageMessageCheck():void

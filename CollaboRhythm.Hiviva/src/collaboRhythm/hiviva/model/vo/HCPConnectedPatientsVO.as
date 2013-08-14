@@ -3,7 +3,7 @@ package collaboRhythm.hiviva.model.vo
 	public class HCPConnectedPatientsVO
 	{
 		private var _patients:Array;
-		private var _updated:Boolean = true;
+		private var _changed:Boolean = false;
 
 		public function HCPConnectedPatientsVO()
 		{
@@ -19,14 +19,14 @@ package collaboRhythm.hiviva.model.vo
 			_patients = value;
 		}
 
-		public function get updated():Boolean
+		public function get changed():Boolean
 		{
-			return _updated;
+			return _changed;
 		}
 
-		public function set updated(checked:Boolean):void
+		public function set changed(checked:Boolean):void
 		{
-			_updated = checked;
+			_changed = checked;
 		}
 	}
 }
