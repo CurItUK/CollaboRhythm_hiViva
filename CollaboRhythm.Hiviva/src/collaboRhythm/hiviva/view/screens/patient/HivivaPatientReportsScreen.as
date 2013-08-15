@@ -6,39 +6,57 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
-	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.components.Calendar;
-	import collaboRhythm.hiviva.view.components.ScheduleChartReport;
 	import collaboRhythm.hiviva.view.screens.shared.ReportPreview;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 
+	import feathers.controls.Button;
+	import feathers.controls.Check;
+	import feathers.controls.Label;
 	import feathers.controls.ScreenNavigatorItem;
-	import feathers.layout.AnchorLayout;
+	import feathers.controls.TextInput;
+	import feathers.core.PopUpManager;
 
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display3D.Context3D;
-
-	import flash.events.TimerEvent;
+	import flash.events.StageOrientationEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.geom.Point;
-
-	import flash.net.URLLoader;
-	import flash.system.System;
+	import flash.geom.Rectangle;
+	import flash.media.StageWebView;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.text.SoftKeyboardType;
+	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 
-	import mx.graphics.codec.JPEGEncoder;
+	import mx.collections.ArrayCollection;
+	import mx.events.ResizeEvent;
 
-	import mx.graphics.codec.PNGEncoder;
-
-	import org.alivepdf.images.ColorSpace;
+	import org.alivepdf.colors.RGBColor;
+	import org.alivepdf.data.Grid;
+	import org.alivepdf.data.GridColumn;
+	import org.alivepdf.fonts.CoreFont;
+	import org.alivepdf.fonts.FontFamily;
+	import org.alivepdf.fonts.IFont;
+	import org.alivepdf.layout.Align;
 	import org.alivepdf.layout.Mode;
+	import org.alivepdf.layout.Orientation;
 	import org.alivepdf.layout.Position;
 	import org.alivepdf.layout.Resize;
+	import org.alivepdf.layout.Size;
+	import org.alivepdf.layout.Unit;
+	import org.alivepdf.pdf.PDF;
+	import org.alivepdf.saving.Method;
 
 	import starling.core.RenderSupport;
-
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Stage;
+	import starling.events.Event;
 
 //	import com.diadraw.extensions.mail.MailExtensionEvent;
 //	import com.diadraw.extensions.mail.NativeMailWrapper;
@@ -46,67 +64,6 @@ package collaboRhythm.hiviva.view.screens.patient
 	//import org.bytearray.smtp.encoding.JPEGEncoder;
 	//import org.bytearray.smtp.encoding.PNGEnc;
 	//import org.bytearray.smtp.events.SMTPEvent;
-	import flash.utils.ByteArray;
-	import flash.display.BitmapData;
-	import flash.display.Bitmap;
-
-	import feathers.controls.Button;
-	import feathers.controls.Check;
-	import feathers.controls.Label;
-	import feathers.controls.PickerList;
-	import feathers.controls.Screen;
-	import feathers.controls.TextInput;
-	import feathers.core.PopUpManager;
-	import feathers.events.FeathersEventType;
-
-	import flash.display.Sprite;
-	import flash.events.StageOrientationEvent;
-	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
-	import flash.geom.Rectangle;
-	import flash.media.StageWebView;
-	import flash.net.URLRequest;
-	import flash.net.navigateToURL;
-	import flash.system.Capabilities;
-	import flash.utils.ByteArray;
-
-	import flash.data.SQLConnection;
-	import flash.data.SQLResult;
-	import flash.data.SQLStatement;
-	import flash.events.SQLEvent;
-
-	import mx.collections.ArrayCollection;
-	import mx.events.ResizeEvent;
-
-	import org.alivepdf.colors.RGBColor;
-
-	import org.alivepdf.data.Grid;
-
-	import org.alivepdf.data.GridColumn;
-	import org.alivepdf.drawing.Joint;
-
-	import org.alivepdf.fonts.CoreFont;
-
-	import org.alivepdf.fonts.FontFamily;
-
-	import org.alivepdf.fonts.IFont;
-	import org.alivepdf.layout.Align;
-
-	import org.alivepdf.layout.Orientation;
-	import org.alivepdf.layout.Size;
-	import org.alivepdf.layout.Unit;
-	import org.alivepdf.pdf.PDF;
-	import org.alivepdf.saving.Method;
-
-	import starling.core.Starling;
-	import starling.events.Event;
-
-	import flash.net.URLRequest;
- 	import flash.net.URLRequestMethod;
- 	import flash.net.URLVariables;
-
-
 	public class HivivaPatientReportsScreen extends ValidationScreen
 	{
 
@@ -149,7 +106,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _patientProfile:Array;
 		private var _medications:Array;
 		private var _reportChartTimer:Timer;
-		private var _reportChart:ScheduleChartReport;
+//		private var _reportChart:AdherenceChartReportOld;
 		private var _adherenceChartBd:BitmapData;
 		private var _tolerabilityChartBd:BitmapData;
 		private var _settingsData:Object;
@@ -256,7 +213,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._previewAndSendBtn = new Button();
 			this._previewAndSendBtn.label = "Preview and send";
-			this._previewAndSendBtn.addEventListener(starling.events.Event.TRIGGERED, previewSendHandler);
+			this._previewAndSendBtn.addEventListener(Event.TRIGGERED, previewSendHandler);
 			this._content.addChild(this._previewAndSendBtn);
 
 			this._calendar = new Calendar();
@@ -304,7 +261,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function addCalendarButtons():void
 		{
 			this._startDateButton = new Button();
-			this._startDateButton.addEventListener(starling.events.Event.TRIGGERED, startDateCalendarHandler);
+			this._startDateButton.addEventListener(Event.TRIGGERED, startDateCalendarHandler);
 			this._startDateButton.name = "calendar-button";
 			this._content.addChild(this._startDateButton);
 			this._startDateButton.validate();
@@ -312,7 +269,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._startDateButton.y = this._startDateInput.y + this._startDateInput._input.y + (this._startDateInput._input.height * 0.5) - (this._startDateButton.height * 0.5);
 
 			this._finishDateButton = new Button();
-			this._finishDateButton.addEventListener(starling.events.Event.TRIGGERED, finishDateCalendarHandler);
+			this._finishDateButton.addEventListener(Event.TRIGGERED, finishDateCalendarHandler);
 			this._finishDateButton.name = "calendar-button";
 			this._content.addChild(this._finishDateButton);
 			this._finishDateButton.validate();
@@ -331,7 +288,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		}
 
-		private function startDateCalendarHandler(e:starling.events.Event):void
+		private function startDateCalendarHandler(e:Event):void
 		{
 			this._activeCalendarInput = this._startDateInput._input;
 			this._calendar.cType = "start";
@@ -348,7 +305,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 
-		private function finishDateCalendarHandler(e:starling.events.Event):void
+		private function finishDateCalendarHandler(e:Event):void
 		{
 			this._activeCalendarInput = this._finishDateInput._input;
 			this._calendar.cType = "finish";
@@ -364,7 +321,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 
-		private function previewSendHandler(e:starling.events.Event):void
+		private function previewSendHandler(e:Event):void
 		{
 			// TODO : validate medications and schedule when we have data from remote database
 //			localStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
@@ -406,7 +363,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				showFormValidation(formValidation);
 			}
 		}
-
+/*
 		private function reportSettingsHandler(e:Event):void
 		{
 			_settingsData = e.data;
@@ -424,7 +381,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function patientXMLFileLoadHandler(e:flash.events.Event):void
 		{
 			_patientData = XML(e.target.data);
-		}
+		}*/
+/*
 
 		private function getPatientProfileHandler(e:LocalDataStoreEvent):void
 		{
@@ -441,6 +399,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				localStoreController.getMedicationList();
 			}
 		}
+*/
+/*
 
 		private function medicationsLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
@@ -465,6 +425,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				}
 			}
 		}
+*/
 
 		private function patientReportsCheck():String
 		{
@@ -502,7 +463,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				return true;
 			}
 		}
-
+/*
 		private function adherenceLoadCompleteHandler(e:LocalDataStoreEvent):void
 		{
 			localStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE, adherenceLoadCompleteHandler);
@@ -533,25 +494,13 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function displayHtmlReport():void
 		{
 
-
-
-			/*pdf = File.applicationStorageDirectory.resolvePath("patient_report.pdf");
-
-			var htmlString:String = "<!DOCTYPE HTML>" +
-			            "<html>" +
-						"<body>" +
-			            "<p>HTML TEST</p>" +
-			            "</body></html>";
-
-			//this._stageWebView.loadURL(pdf.nativePath);
-			this._stageWebView.loadString(htmlString);*/
-
 			drawAndSaveReportCharts();
 		}
 
+
 		private function drawAndSaveReportCharts():void
 		{
-			this._reportChart = new ScheduleChartReport();
+			this._reportChart = new AdherenceChartReportOld();
 			this._reportChart.dataCategory = "adherence";
 			this._reportChart.startDate = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text);
 			this._reportChart.endDate = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text);
@@ -578,12 +527,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._adherenceChartBd = copyToBitmap(this._reportChart, this.dpiScale);
 //			this._adherenceChartBd = __copyToBitmap(this._reportChart, this.dpiScale);
 
-			/*var bmd:BitmapData = new BitmapData(Constants.STAGE_WIDTH, Constants.STAGE_HEIGHT);
+			*/
+/*var bmd:BitmapData = new BitmapData(Constants.STAGE_WIDTH, Constants.STAGE_HEIGHT);
 			bmd.draw(Starling.current.nativeStage.stage);
 			var bm:Bitmap = new Bitmap(bmd);
 			bm.x = 10
 			bm.y = 10
-			Starling.current.nativeStage.stage.addChild(bm);*/
+			Starling.current.nativeStage.stage.addChild(bm);*//*
+
 
 			var pngenc:PNGEncoder = new PNGEncoder();
 			var byteArray:ByteArray = pngenc.encode(this._adherenceChartBd);
@@ -616,7 +567,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			removeChild(this._reportChart);
 			this._reportChart.dispose();
 
-			this._reportChart = new ScheduleChartReport();
+			this._reportChart = new AdherenceChartReportOld();
 			this._reportChart.dataCategory = "tolerability";
 			this._reportChart.startDate = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text);
 			this._reportChart.endDate = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text);
@@ -695,6 +646,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._stageWebView.addEventListener(flash.events.Event.COMPLETE, stageWebCompleteHandler);
 			this._stageWebView.loadURL(this._reportTemplateLocation);
 		}
+*/
 
 		private function __copyToBitmap(disp:DisplayObject, scl:Number=1.0):BitmapData
 		{
@@ -944,7 +896,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			fileStream.close();
 		}
 
-		private function closePopup(e:starling.events.Event):void
+		private function closePopup(e:Event):void
 		{
 
 			this._stageWebView.viewPort = null;
@@ -955,7 +907,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		}
 
-		private function mailBtnHandler(e:starling.events.Event):void
+		private function mailBtnHandler(e:Event):void
 		{
 			mSubject = "Test";
 			mBody= "Test body";

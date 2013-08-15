@@ -5,10 +5,11 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
+	import collaboRhythm.hiviva.view.components.AdherenceChartReport;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
-	import collaboRhythm.hiviva.view.components.ScheduleChartReport;
 	import collaboRhythm.hiviva.view.components.ScheduleTableReport;
 	import collaboRhythm.hiviva.view.components.TestTableReport;
+	import collaboRhythm.hiviva.view.components.TolerabilityChartReport;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -34,9 +35,9 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _testResultsCallMade:Boolean = false;
 		private var _filteredMedicationHistory:XMLList;
 		private var _filteredTestResults:XMLList;
-		private var _adherenceReportChart:ScheduleChartReport;
+		private var _adherenceReportChart:AdherenceChartReport;
 		private var _adherenceReportTable:ScheduleTableReport;
-		private var _tolerabilityReportChart:ScheduleChartReport;
+		private var _tolerabilityReportChart:TolerabilityChartReport;
 		private var _reportTable:TestTableReport;
 		private var _layoutApplied:Boolean = false;
 
@@ -81,13 +82,13 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			this._cancelAndSend = new BoxedButtons();
 			this._cancelAndSend.labels = ["Cancel","Send"];
-			this._cancelAndSend.addEventListener(starling.events.Event.TRIGGERED, cancelAndSendHandler);
+			this._cancelAndSend.addEventListener(Event.TRIGGERED, cancelAndSendHandler);
 			addChild(this._cancelAndSend);
 
 			getSettingsFromVO();
@@ -109,13 +110,13 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._patientAppId = settings.patientAppId;
 		}
 
-		private function backBtnHandler(e:starling.events.Event = null):void
+		private function backBtnHandler(e:Event = null):void
 		{
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV,true));
 			this.owner.showScreen(_parentScreen);
 		}
 
-		private function cancelAndSendHandler(e:starling.events.Event):void
+		private function cancelAndSendHandler(e:Event):void
 		{
 			var btn:String = e.data.button;
 			switch(btn)
@@ -139,13 +140,13 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			addMainText();
 
-			this._adherenceReportChart = new ScheduleChartReport();
+			this._adherenceReportChart = new AdherenceChartReport();
 			this._content.addChild(this._adherenceReportChart);
 
 			this._adherenceReportTable = new ScheduleTableReport();
 			this._content.addChild(this._adherenceReportTable);
 
-			this._tolerabilityReportChart = new ScheduleChartReport();
+			this._tolerabilityReportChart = new TolerabilityChartReport();
 			this._content.addChild(this._tolerabilityReportChart);
 
 			this._reportTable = new TestTableReport();
@@ -208,10 +209,10 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			if(this._adherenceIsChecked)
 			{
-				this._adherenceReportChart.dataCategory = "adherence";
+//				this._adherenceReportChart.dataCategory = "adherence";
 				this._adherenceReportChart.startDate = this._startDate;
 				this._adherenceReportChart.endDate = this._endDate;
-				this._adherenceReportChart.patientData = this._filteredMedicationHistory;
+				this._adherenceReportChart.medications = this._filteredMedicationHistory;
 				this._adherenceReportChart.width = Constants.INNER_WIDTH;
 				this._adherenceReportChart.height = this._content.height;
 				this._adherenceReportChart.validate();
@@ -225,10 +226,10 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			if(this._feelingIsChecked)
 			{
-				this._tolerabilityReportChart.dataCategory = "tolerability";
+//				this._tolerabilityReportChart.dataCategory = "tolerability";
 				this._tolerabilityReportChart.startDate = this._startDate;
 				this._tolerabilityReportChart.endDate = this._endDate;
-				this._tolerabilityReportChart.patientData = this._filteredMedicationHistory;
+				this._tolerabilityReportChart.medications = this._filteredMedicationHistory;
 				this._tolerabilityReportChart.width = Constants.INNER_WIDTH;
 				this._tolerabilityReportChart.height = this._content.height;
 				this._tolerabilityReportChart.validate();

@@ -267,6 +267,7 @@ package collaboRhythm.hiviva.view.components
 				rowData = this._rowsData[rowCount];
 				for (var dayCount:int = 0; dayCount < 7; dayCount++)
 				{
+					tolerability = 0;
 					isLargerThanStartDate = currWeekDay.getTime() >= rowData.startDate.getTime();
 					isSmallerThanEndDate = currWeekDay.getTime() <= rowData.endDate.getTime();
 					// establish adherence and tolerability values
@@ -281,10 +282,13 @@ package collaboRhythm.hiviva.view.components
 								if(columnData[i].id == rowData.id)
 								{
 									percentTaken = columnData[i].data.PercentTaken;
-									break;
+								}
+
+								if(tolerability < Number(columnData[i].data.Tolerability))
+								{
+									tolerability = Number(columnData[i].data.Tolerability);
 								}
 							}
-							tolerability = columnData[0].data.Tolerability;
 						}
 						else
 						{
