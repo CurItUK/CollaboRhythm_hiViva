@@ -28,8 +28,10 @@ package collaboRhythm.hiviva.view.components
 		private var _endDate:Date;
 		private var _dayTotal:Number;
 		private var _dailyTolerabilityData:Array;
+		private var _overallTolerabilityAverage:Number;
 		private var _lowestValue:Number;
 		private var _valueRange:Number;
+		private var _averageLabel:Label;
 
 		private const LINE_COLOURS:Array = [0x2e445e,0x0b88ec,0xc20315,0x697a8f,0xffffff,0x000000];
 
@@ -77,6 +79,7 @@ package collaboRhythm.hiviva.view.components
 
 			calculateTolerability();
 
+			initAverageLabel();
 			initChartTitleLabel();
 			initBackground();
 			initLeftAxisLabels();
@@ -84,6 +87,7 @@ package collaboRhythm.hiviva.view.components
 			initBottomAxisValuesAndLines();
 //			initBottomAxisLabels();
 			drawPlotPoints();
+			writeAverageLabel();
 			this.validate();
 		}
 
@@ -162,7 +166,7 @@ package collaboRhythm.hiviva.view.components
 			{
 				dayTime = daysItar.getTime();
 				tolerability = 0;
-				if (dayTime >= earliestSchedule && dayTime <= latestSchedule)
+				if (dayTime >= earliestSchedule && dayTime < latestSchedule)
 				{
 					columnData = _history[dayTime];
 					if (columnData != null)
@@ -200,14 +204,14 @@ package collaboRhythm.hiviva.view.components
 			var startAndEndDates:Object = {};
 			var prevStartDate:Date = new Date(0,0,0,0,0,0,0);
 			var prevEndDate:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(),HivivaStartup.userVO.serverDate.getMonth(),HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
-			var yesterday:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(),HivivaStartup.userVO.serverDate.getMonth(),HivivaStartup.userVO.serverDate.getDate() - 1,0,0,0,0);
+			var today:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(),HivivaStartup.userVO.serverDate.getMonth(),HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
 			var currStartDate:Date;
 			var currEndDate:Date;
 			for (var j:int = 0; j < _medications.length(); j++)
 			{
 				currStartDate = HivivaModifier.getDateFromIsoString(_medications[j].StartDate);
 				currEndDate = (String(_medications[j].Stopped)) ==
-						"true" ? HivivaModifier.getDateFromIsoString(_medications[j].EndDate) : yesterday;
+						"true" ? HivivaModifier.getDateFromIsoString(_medications[j].EndDate) : today;
 
 				if (prevStartDate.getTime() < currStartDate.getTime())
 				{
@@ -235,12 +239,18 @@ package collaboRhythm.hiviva.view.components
 			var currColour:uint = LINE_COLOURS[Math.round((Math.random()*LINE_COLOURS.length))];
 			var valueY:Number;
 
+			var validDataCount:int = 0;
+			this._overallTolerabilityAverage = 0;
+
 			plotLine.graphics.lineStyle(plotGirth,currColour);
 			for (var dayCount:int = 0; dayCount < _dayTotal; dayCount++)
 			{
 				value = this._dailyTolerabilityData[dayCount];
 				if(value > -1)
 				{
+					this._overallTolerabilityAverage += value;
+					validDataCount++;
+
 					valueY = (fullValueHeight / 100) * value;
 					plotLine.graphics.lineTo(this._chartStartX + (this._horizontalSegmentWidth * dayCount),plotStartY - valueY);
 					plotCircles.graphics.beginFill(currColour);
@@ -256,6 +266,27 @@ package collaboRhythm.hiviva.view.components
 			}
 			addChild(plotLine);
 			addChild(plotCircles);
+
+			this._overallTolerabilityAverage /= validDataCount;
+		}
+
+		private function initAverageLabel():void
+		{
+			_averageLabel = new Label();
+			_averageLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			_averageLabel.text = " \n ";
+			addChild(_averageLabel);
+			_averageLabel.x = this._rightPadding;
+			_averageLabel.y = this._chartStartY;
+			_averageLabel.width = this.actualWidth - (this._rightPadding * 2);
+			_averageLabel.validate();
+			// * 1.5 for padding
+			this._chartStartY += _averageLabel.height;
+		}
+
+		private function writeAverageLabel():void
+		{
+			_averageLabel.text = "Average Tolerability rating for this period : " + Math.round(this._overallTolerabilityAverage) + "%";
 		}
 
 		private function initChartTitleLabel():void

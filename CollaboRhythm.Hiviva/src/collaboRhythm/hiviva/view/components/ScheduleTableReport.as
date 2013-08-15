@@ -25,24 +25,6 @@ package collaboRhythm.hiviva.view.components
 		private var _rowsData:Array = [];
 		private var _cellPadding:Number;
 		private var _dataHolder:Sprite;
-		// adherence, tolerability
-		private var _dataCategory:String;
-		private var _startDate:Date;
-		private var _endDate:Date;
-		private var _dayTotal:Number;
-		private var _lowestValue:Number;
-		private var _valueData:Array = [];
-		private var _valueRange:Number;
-
-		private const LINE_COLOURS:Array = [0x2e445e,0x0b88ec,0xc20315,0x697a8f,0xffffff,0x000000];
-
-		private var _leftAxisSpace:Number;
-		private var _rightPadding:Number;
-		private var _vPadding:Number;
-		private var _chartWidth:Number;
-		private var _chartHeight:Number;
-		private var _chartStartX:Number;
-		private var _chartStartY:Number;
 		private var _columnWidth:Number;
 		private var _firstRowHeight:Number;
 
@@ -133,12 +115,12 @@ package collaboRhythm.hiviva.view.components
 
 					var endDate:Date = HivivaModifier.getDateFromIsoString(_patientData[cellCount].EndDate);
 					var startDate:Date = HivivaModifier.getDateFromIsoString(_patientData[cellCount].StartDate);
-					var yesterday:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(), HivivaStartup.userVO.serverDate.getMonth(), HivivaStartup.userVO.serverDate.getDate() - 1,0,0,0,0);
+					var today:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(), HivivaStartup.userVO.serverDate.getMonth(), HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
 
 					this._rowsData.push({
 						id: medicationId,
 						startDate: new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate(),0,0,0,0),
-						endDate:  String(_patientData[cellCount].Stopped) == "true" ? new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),0,0,0,0) : yesterday
+						endDate:  String(_patientData[cellCount].Stopped) == "true" ? new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),0,0,0,0) : today
 					});
 
 					medIds.push(medicationId);
@@ -216,7 +198,7 @@ package collaboRhythm.hiviva.view.components
 						{
 							earliestSchedule = rowData.startDate;
 							latestSchedule = rowData.endDate;
-							range = HivivaModifier.getDaysDiff(latestSchedule, earliestSchedule) + 1;
+							range = HivivaModifier.getDaysDiff(latestSchedule, earliestSchedule);
 
 							scheduleValue = 0;
 							scheduleValueCount = 0;
@@ -226,7 +208,7 @@ package collaboRhythm.hiviva.view.components
 								currValue = -1;
 								for (var j:int = 0; j < medicationScheduleLength; j++)
 								{
-									referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[j].DateTaken));
+									referenceDate = HivivaModifier.getDateFromIsoString(medicationSchedule[j].DateTaken);
 									if(currentSchedule.getTime() == referenceDate.getTime())
 									{
 										currValue = int(medicationSchedule[j].PercentTaken);
@@ -236,8 +218,13 @@ package collaboRhythm.hiviva.view.components
 								if(currValue == -1) currValue = 0;
 								scheduleValue += currValue;
 								scheduleValueCount++;
+
+//								trace(currentSchedule.toDateString() + " currValue = " + currValue);
+
 								currentSchedule.date++;
 							}
+
+//							trace(scheduleValue + " / " + scheduleValueCount);
 							value += scheduleValue;
 							valueCount += scheduleValueCount;
 						}
@@ -245,6 +232,7 @@ package collaboRhythm.hiviva.view.components
 				}
 				if(value > 0 && valueCount > 0)
 				{
+//					trace(value + " / " + valueCount);
 					overallAverage += (value / valueCount);
 					drawTableCell(String(Math.round(value / valueCount)), rowCount);
 				}
