@@ -164,7 +164,7 @@ package collaboRhythm.hiviva.view.components
 				dayTime = daysItar.getTime();
 				adherence = 0;
 				adherenceCount = 0;
-				if (dayTime >= earliestSchedule && dayTime <= latestSchedule)
+				if (dayTime >= earliestSchedule && dayTime < latestSchedule)
 				{
 					columnData = _history[dayTime];
 					if (columnData != null)
@@ -182,7 +182,7 @@ package collaboRhythm.hiviva.view.components
 //						adherence += 0;
 						adherenceCount++;
 					}
-					trace(adherence + " /= " + adherenceCount);
+//					trace(adherence + " /= " + adherenceCount);
 					adherence /= adherenceCount;
 					if (adherence < this._lowestValue) this._lowestValue = adherence;
 				}
@@ -202,14 +202,14 @@ package collaboRhythm.hiviva.view.components
 			var startAndEndDates:Object = {};
 			var prevStartDate:Date = new Date(0,0,0,0,0,0,0);
 			var prevEndDate:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(),HivivaStartup.userVO.serverDate.getMonth(),HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
-			var yesterday:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(),HivivaStartup.userVO.serverDate.getMonth(),HivivaStartup.userVO.serverDate.getDate() - 1,0,0,0,0);
+			var today:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(),HivivaStartup.userVO.serverDate.getMonth(),HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
 			var currStartDate:Date;
 			var currEndDate:Date;
 			for (var j:int = 0; j < _medications.length(); j++)
 			{
 				currStartDate = HivivaModifier.getDateFromIsoString(_medications[j].StartDate);
 				currEndDate = (String(_medications[j].Stopped)) ==
-						"true" ? HivivaModifier.getDateFromIsoString(_medications[j].EndDate) : yesterday;
+						"true" ? HivivaModifier.getDateFromIsoString(_medications[j].EndDate) : today;
 
 				if (prevStartDate.getTime() < currStartDate.getTime())
 				{

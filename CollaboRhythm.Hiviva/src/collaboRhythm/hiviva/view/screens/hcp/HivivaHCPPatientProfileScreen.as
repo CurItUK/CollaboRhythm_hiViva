@@ -9,6 +9,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
+	import collaboRhythm.hiviva.view.components.PatientAdherenceChart;
 	import collaboRhythm.hiviva.view.components.PatientAdherenceTable;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPPatientMessageCompose;
 
@@ -114,8 +115,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._latestWeekBeginning = new Date(this._currWeekBeginning.fullYear, this._currWeekBeginning.month, this._currWeekBeginning.date, 0,0,0,0);
 			this._earliestWeekBeginning = new Date(this._currWeekBeginning.fullYear, this._currWeekBeginning.month, this._currWeekBeginning.date, 0,0,0,0);
-			// 4 weeks
-			this._earliestWeekBeginning.date -= 28;
+
+			this._earliestWeekBeginning.date -= (7 * PatientAdherenceChart.TOTAL_WEEKS);
 		}
 
 		private function initPatientProfile():void

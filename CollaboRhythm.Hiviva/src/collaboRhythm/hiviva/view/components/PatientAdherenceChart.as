@@ -319,7 +319,7 @@ package collaboRhythm.hiviva.view.components
 						referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
 						if(weekItar.getTime() == referenceDate.getTime())
 						{
-							trace(int(medicationSchedule[k].PercentTaken));
+//							trace(int(medicationSchedule[k].PercentTaken));
 							medicationAdherence += int(medicationSchedule[k].PercentTaken);
 							medicationCount++;
 						}
@@ -329,7 +329,7 @@ package collaboRhythm.hiviva.view.components
 					if(!isNaN(patientAverage))
 					{
 						adherenceData.adherence.push(patientAverage);
-						if(isNaN(this._lowestAdherence) || this._lowestAdherence > patientAverage) this._lowestAdherence = patientAverage;
+						if((isNaN(this._lowestAdherence) || this._lowestAdherence > patientAverage) && patientAverage > -1) this._lowestAdherence = patientAverage;
 					}
 					else
 					{
@@ -339,16 +339,21 @@ package collaboRhythm.hiviva.view.components
 				trace(TOTAL_WEEKS + " weeks adherence for " + adherenceData.patient + " = " + adherenceData.adherence.join(','));
 				this._patientAdherence.push(adherenceData);
 			}
+
 			if(!isNaN(this._lowestAdherence))
 			{
-				if(this._lowestAdherence < 100)
+				if(this._lowestAdherence < 100 && this._lowestAdherence > 0)
 				{
 					// round down to the closest 10
 					this._lowestAdherence = Math.floor(this._lowestAdherence / 10) * 10;
 				}
-				else
+				if(this._lowestAdherence >= 100)
 				{
 					this._lowestAdherence = 90;
+				}
+				if(this._lowestAdherence <= 0)
+				{
+					this._lowestAdherence = 0;
 				}
 
 				this._adherenceRange = 100 - this._lowestAdherence;
@@ -404,7 +409,7 @@ package collaboRhythm.hiviva.view.components
 				for (var weekCount:int = 0; weekCount < TOTAL_WEEKS; weekCount++)
 				{
 					adherence = this._patientAdherence[patientCount].adherence[weekCount];
-					if(adherence > 0)
+					if(adherence > -1)
 					{
 						adherenceY = (fullAdherenceHeight / 100) * adherence;
 						plotLine.graphics.lineTo(this._chartStartX + (this._horizontalSegmentWidth * weekCount),plotStartY - adherenceY);

@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 
 	import collaboRhythm.hiviva.view.screens.MessageInboxResultCell;
@@ -176,7 +177,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					hcpMessage.read = this._allReceivedMessages[i].read == "true";
 					hcpMessage.guid = this._allReceivedMessages[i].MessageGuid;
 					hcpMessage.primaryText = this._allReceivedMessages[i].Message;
-//					hcpMessage.secondaryText = this._allReceivedMessages[i].Name;
+					hcpMessage.secondaryText = HivivaModifier.getAppIdWithGuid(this._allReceivedMessages[i].UserGuid);
 					hcpMessage.dateText = this._allReceivedMessages[i].SentDate;
 					hcpMessage.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
 					hcpMessage.addEventListener(FeathersScreenEvent.MESSAGE_CB_SELECT, messageCheckBoxSelectedHandler);
