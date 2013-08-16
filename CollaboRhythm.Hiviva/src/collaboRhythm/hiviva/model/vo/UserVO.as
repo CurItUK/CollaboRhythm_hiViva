@@ -50,11 +50,11 @@ package collaboRhythm.hiviva.model.vo
 
 		public function set serverDate(value:Date):void
 		{
-			_serverDate = new Date();
-			var timezoneOffset:Number = _serverDate.getTimezoneOffset();
-			_serverDate.setTime(value.getTime() + timezoneOffset);
-
-//			_serverDate = value;
+			_serverDate = value;
+//			var timezoneOffset:Number = _serverDate.getTimezoneOffset();
+//			_serverDate.minutes -= timezoneOffset;
+			trace("current time = " + _serverDate.toTimeString());
+			trace("current date = " + _serverDate.toDateString());
 		}
 
 		public function get badges():Array

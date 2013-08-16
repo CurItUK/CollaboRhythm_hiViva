@@ -414,9 +414,43 @@ package collaboRhythm.hiviva.utils
 			var splitAtPlus:Array = String(splitAtT[1]).split("+");
 			var timeArr:Array = String(splitAtPlus[0]).split(":");
 
-			var date:Date = new Date(int(dateArr[0]),int(dateArr[1])-1,int(dateArr[2]),int(timeArr[0]),int(timeArr[1]),int(timeArr[2]),null);
+			var rawDate:Date = new Date(int(dateArr[0]),int(dateArr[1])-1,int(dateArr[2]),int(timeArr[0]),int(timeArr[1]),int(timeArr[2]),null);
+			var noDSTDate:Date = removeDSTFromDate(rawDate);
+			var date:Date = convertToLocalTime(noDSTDate);
 
 			return date;
+		}
+
+		public static function removeDSTFromDate(dtDate:Date):Date
+		{
+			var lastSundayOfMarch:int = getDateOfLastSundayOfMonth(2);
+			var lastSundayOfOctober:int = getDateOfLastSundayOfMonth(9);
+			var startDSTDate:Date = new Date(dtDate.getFullYear(), 2, lastSundayOfMarch, 1,0,0,0);
+			var endDSTDate:Date = new Date(dtDate.getFullYear(), 9, lastSundayOfOctober, 1,0,0,0);
+
+			if(dtDate.getTime() > startDSTDate.getTime() && dtDate.getTime() < endDSTDate.getTime())
+			{
+				dtDate.hours -= 1;
+			}
+
+			return dtDate;
+		}
+
+		public static function getDateOfLastSundayOfMonth(month:int):int
+		{
+			var temp:Date = new Date();
+			// set to last day of march
+			temp.setMonth(month,31);
+			// round down to get the last sunday of the month
+			if(temp.day > 0) temp.date -= temp.day;
+
+			return temp.getDate();
+		}
+
+		public static function convertToLocalTime(dtDate:Date):Date
+		{
+			dtDate.setTime(dtDate.getTime() - (dtDate.getTimezoneOffset() * 60000));
+			return dtDate;
 		}
 
 		public static function getIsoStringFromDate(date:Date):String
