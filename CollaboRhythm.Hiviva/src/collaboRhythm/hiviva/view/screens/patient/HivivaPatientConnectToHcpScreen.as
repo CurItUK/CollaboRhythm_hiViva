@@ -3,7 +3,9 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 
 	import feathers.controls.Button;
 	import feathers.controls.Screen;
@@ -86,7 +88,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function onAddConnection(e:Event):void
 		{
-			clearDownHCPList();
+//			clearDownHCPList();
 			this.owner.showScreen(HivivaScreens.PATIENT_ADD_HCP);
 		}
 
@@ -104,30 +106,31 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			if(xml.children().length() > 0)
 			{
-				clearDownHCPList();
+				HivivaStartup.connectionsVO.users = [];
 				var loop:uint = xml.children().length();
 				var approvedHCPList:XMLList  = xml.DCConnection;
 				for(var i:uint = 0 ; i <loop ; i++)
 				{
-					var establishedUser:Object = establishToFromId(approvedHCPList[i]);
+					var establishedUser:Object = HivivaModifier.establishToFromId(approvedHCPList[i]);
 					var appGuid:String = establishedUser.appGuid;
 					var appId:String = establishedUser.appId;
-					var userEstablishedConnection:Boolean = didCurrentUserEstablishConnection(approvedHCPList[i]);
+					var userEstablishedConnection:Boolean = approvedHCPList[i].FromAppId == HivivaStartup.userVO.appId;
 
-					var hcpList:XMLList = new XMLList
+					var data:XML = new XML
 					(
-							<hcp>
+							<patient>
 								<name>{appId}</name>
 								<email>{appId}@domain.com</email>
 								<appid>{appId}</appid>
 								<guid>{appGuid}</guid>
 								<picture>dummy.png</picture>
 								<establishedConnection>{userEstablishedConnection}</establishedConnection>
-							</hcp>
+							</patient>
 					);
-					this._hcpFilteredList.push(hcpList);
+					HivivaStartup.connectionsVO.users.push(data);
 				}
 				initResults();
+				HivivaStartup.connectionsVO.changed = true;
 			}
 			else
 			{
@@ -135,31 +138,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
-		private function establishToFromId(idsToCompare:XML):Object
-		{
-			var whoEstablishConnection:Object = [];
-			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
-			{
-				whoEstablishConnection.appGuid = idsToCompare.ToUserGuid;
-				whoEstablishConnection.appId = idsToCompare.ToAppId;
-			} else
-			{
-				whoEstablishConnection.appGuid = idsToCompare.FromUserGuid;
-				whoEstablishConnection.appId = idsToCompare.FromAppId;
-			}
-
-			return whoEstablishConnection;
-
-		}
-
-		private function didCurrentUserEstablishConnection(idsToCompare:XML):Boolean
-		{
-			return idsToCompare.FromAppId == HivivaStartup.userVO.appId;
-		}
-
 		private function initResults():void
 		{
-
+			this._hcpFilteredList = HivivaStartup.connectionsVO.users;
 			var resultsLength:int = this._hcpFilteredList.length;
 			var currItem:XMLList;
 			var hcpCell:HcpResultCell;
@@ -206,9 +187,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._hcpCellContainer.validate();
 		}
-
-
-		private function  clearDownHCPList():void
+		/*private function  clearDownHCPList():void
 		{
 			this._hcpFilteredList = [];
 			if(!contains(this._hcpCellContainer))
@@ -221,7 +200,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._hcpCellRadioGroup.removeAllItems();
 				this._hcpCellContainer.removeChildren();
 			}
-		}
+		}*/
 	}
 }
 

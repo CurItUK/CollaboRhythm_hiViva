@@ -241,7 +241,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function populatePickerList():void
 		{
-			var patientsList:Array = HivivaStartup.hcpConnectedPatientsVO.patients;
+			var patientsList:Array = HivivaStartup.connectionsVO.users;
 			var loop:uint = patientsList.length;
 			var list:Array = [];
 			if(loop > 0)

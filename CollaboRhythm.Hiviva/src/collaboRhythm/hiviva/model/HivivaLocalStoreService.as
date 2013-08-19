@@ -2,7 +2,8 @@ package collaboRhythm.hiviva.model
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.model.vo.HCPConnectedPatientsVO;
+	import collaboRhythm.hiviva.model.vo.ConnectionsVO;
+	import collaboRhythm.hiviva.model.vo.GalleryDataVO;
 	import collaboRhythm.hiviva.model.vo.PatientAdherenceVO;
 	import collaboRhythm.hiviva.model.vo.ReportVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
@@ -34,14 +35,16 @@ package collaboRhythm.hiviva.model
 		private var _userVO:UserVO;
 		private var _reportVO:ReportVO;
 		private var _patientAdherenceVO:PatientAdherenceVO;
-		private var _hcpConnectedPatientsVO:HCPConnectedPatientsVO;
+		private var _connectionsVO:ConnectionsVO;
+		private var _galleryDataVO:GalleryDataVO;
 
 		public function HivivaLocalStoreService()
 		{
 			this._userVO = new UserVO();
 			this._reportVO = new ReportVO();
 			this._patientAdherenceVO = new PatientAdherenceVO();
-			this._hcpConnectedPatientsVO = new HCPConnectedPatientsVO();
+			this._connectionsVO = new ConnectionsVO();
+			this._galleryDataVO = new GalleryDataVO();
 		}
 
 		public function initDataLoad():void
@@ -204,7 +207,7 @@ package collaboRhythm.hiviva.model
 			var loop:uint = xmlData.length();
 			var approvedPatient:XML;
 
-			this._hcpConnectedPatientsVO.patients = [];
+			this._connectionsVO.users = [];
 
 			if(loop > 0)
 			{
@@ -229,12 +232,12 @@ package collaboRhythm.hiviva.model
 								<picture>dummy.png</picture>
 							</patient>
 					);
-					this._hcpConnectedPatientsVO.patients.push(data);
+					this._connectionsVO.users.push(data);
 				}
 			}
 
-			this._hcpConnectedPatientsVO.changed = true;
-			trace('connectedPatientsVO updated');
+			this._connectionsVO.changed = true;
+			trace('connectionsVO.users updated');
 		}
 
 		public function getGalleryImages():void
@@ -1271,9 +1274,14 @@ package collaboRhythm.hiviva.model
 			return this._patientAdherenceVO;
 		}
 
-		public function get hcpConnectedPatientsVO():HCPConnectedPatientsVO
+		public function get connectionsVO():ConnectionsVO
 		{
-			return this._hcpConnectedPatientsVO;
+			return this._connectionsVO;
+		}
+
+		public function get galleryDataVO():GalleryDataVO
+		{
+			return this._galleryDataVO;
 		}
 
 	}

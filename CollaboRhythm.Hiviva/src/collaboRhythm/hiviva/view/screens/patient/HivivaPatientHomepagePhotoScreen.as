@@ -7,8 +7,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
-	import collaboRhythm.hiviva.view.galleryscreens.GalleryData;
-	import collaboRhythm.hiviva.view.galleryscreens.GalleryScreen;
+	import collaboRhythm.hiviva.view.screens.patient.galleryscreens.GalleryScreen;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
@@ -112,7 +111,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-			if(!GalleryData.galleryDataChanged)
+			if(!HivivaStartup.galleryDataVO.galleryDataChanged)
 			{
 				trace("populate first time");
 				initImageData();
@@ -159,7 +158,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function compileAllImageData():Array
 		{
 			var allImageData:Array = [],
-				imageData:Array = GalleryData.ImageData,
+				imageData:Array = HivivaStartup.galleryDataVO.imageData,
 				categoryUrls:Array,
 				customImageExists:Boolean = this._photoContainer.saveTempImageAsMain();
 
@@ -239,7 +238,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initImageData():void
 		{
-			var category:String, imageData:Array = GalleryData.ImageData;
+			var category:String, imageData:Array = HivivaStartup.galleryDataVO.imageData;
 			if(imageData.length == 0)
 			{
 				for (var j:int = 0; j < GALLERY_CATEGORIES.length; j++)
@@ -265,7 +264,7 @@ package collaboRhythm.hiviva.view.screens.patient
 						urls.push(url);
 					}
 				}
-				GalleryData.setUrlsByCategory(category,urls);
+				HivivaStartup.galleryDataVO.setUrlsByCategory(category,urls);
 			}
 		}
 

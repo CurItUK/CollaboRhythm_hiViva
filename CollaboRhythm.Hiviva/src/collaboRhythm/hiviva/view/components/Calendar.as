@@ -113,7 +113,7 @@ package collaboRhythm.hiviva.view.components
 		{
 		if (startTime == null) { return "startTime empty."; }
 		if (endTime   == null) { return "endTime empty."; }
-		var aTms = Math.floor(endTime.valueOf() - startTime.valueOf());
+		var aTms:Number = Math.floor(endTime.valueOf() - startTime.valueOf());
 		return "Time taken:  "
 		    + String( int(aTms/(24*60*+60*1000))     ) + " days, "
 		    + String( int(aTms/(    60*60*1000)) %24 ) + " hours, "

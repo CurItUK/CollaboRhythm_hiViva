@@ -18,7 +18,7 @@ package collaboRhythm.hiviva.utils
 		public static function getAppIdWithGuid(guid:String):String
 		{
 			var appId:String;
-			var patientData:Array = HivivaStartup.hcpConnectedPatientsVO.patients;
+			var patientData:Array = HivivaStartup.connectionsVO.users;
 
 			for (var i:int = 0; i < patientData.length; i++)
 			{
@@ -301,8 +301,9 @@ package collaboRhythm.hiviva.utils
 
 		public static function getDateFromCalendarString(dateStr:String):Date
 		{
+			var currentDate:Date = HivivaStartup.userVO.serverDate;
 			var dateData:Array = dateStr.split('/');
-			return new Date(int(dateData[2]),int(dateData[0]) - 1,int(dateData[1]),0,0,0,0);
+			return new Date(int(dateData[2]),int(dateData[0]) - 1,int(dateData[1]),currentDate.getHours(),currentDate.getMinutes(),currentDate.getSeconds(),currentDate.getMilliseconds());
 		}
 
 		public static function getCalendarStringFromDate(date:Date):String
@@ -462,7 +463,7 @@ package collaboRhythm.hiviva.utils
 		public static function getIsoStringFromDate(dtDate:Date):String
 		{
 			// 2013-07-13T14:25:15
-			var rawDate = new Date(dtDate.getFullYear(),dtDate.getMonth(),dtDate.getDate(),dtDate.getHours(),dtDate.getMinutes(),dtDate.getSeconds(),dtDate.getMilliseconds());
+			var rawDate:Date = new Date(dtDate.getFullYear(),dtDate.getMonth(),dtDate.getDate(),dtDate.getHours(),dtDate.getMinutes(),dtDate.getSeconds(),dtDate.getMilliseconds());
 
 			var UTCDate:Date = convertToUTCTime(rawDate);
 			var DSTDate:Date = modifyDSTOfDate(UTCDate, 1);

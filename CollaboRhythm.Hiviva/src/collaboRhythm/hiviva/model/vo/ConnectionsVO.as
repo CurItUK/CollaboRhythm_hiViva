@@ -1,22 +1,22 @@
 package collaboRhythm.hiviva.model.vo
 {
-	public class HCPConnectedPatientsVO
+	public class ConnectionsVO
 	{
-		private var _patients:Array;
+		private var _users:Array;
 		private var _changed:Boolean = false;
 
-		public function HCPConnectedPatientsVO()
+		public function ConnectionsVO()
 		{
 		}
 
-		public function get patients():Array
+		public function get users():Array
 		{
-			return _patients;
+			return _users;
 		}
 
-		public function set patients(value:Array):void
+		public function set users(value:Array):void
 		{
-			_patients = value;
+			_users = value;
 		}
 
 		public function get changed():Boolean

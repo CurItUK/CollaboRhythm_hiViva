@@ -7,7 +7,6 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.components.HCPFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.IFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.PatientFooterBtnGroup;
-	import collaboRhythm.hiviva.view.galleryscreens.SportsGalleryScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAddPatientScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAlertSettings;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAllPatientsAdherenceScreen;
@@ -321,7 +320,6 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_PROFILE_SCREEN , new ScreenNavigatorItem(HivivaPatientProfileScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN, new ScreenNavigatorItem(HivivaPatientHomepagePhotoScreen));
-			this._settingsNav.addScreen(HivivaScreens.PATIENT_GALLERY_SCREEN, new ScreenNavigatorItem(SportsGalleryScreen));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN, new ScreenNavigatorItem(HivivaPatientTestResultsScreen));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN, new ScreenNavigatorItem(HivivaPatientConnectToHcpScreen));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_ADD_HCP, new ScreenNavigatorItem(HivivaPatientAddHCP));
@@ -438,8 +436,8 @@ package collaboRhythm.hiviva.view
 			this._screenHolder = null;
 
 			HivivaStartup.patientAdherenceVO.percentage = 0;
-			HivivaStartup.hcpConnectedPatientsVO.patients = [];
-			HivivaStartup.hcpConnectedPatientsVO.changed = false;
+			HivivaStartup.connectionsVO.users = [];
+			HivivaStartup.connectionsVO.changed = false;
 			HivivaStartup.reportVO.settingsData = null;
 
 			System.gc();

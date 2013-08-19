@@ -1,4 +1,4 @@
-package collaboRhythm.hiviva.view.galleryscreens
+package collaboRhythm.hiviva.view.screens.patient.galleryscreens
 {
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 

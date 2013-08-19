@@ -215,7 +215,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function setSelectedHCPPatientProfile():void
 		{
-			var connectedPatients:Array = HivivaStartup.hcpConnectedPatientsVO.patients;
+			var connectedPatients:Array = HivivaStartup.connectionsVO.users;
 			if(connectedPatients.length > 0)
 			{
 				for (var i:int = 0; i < connectedPatients.length; i++)

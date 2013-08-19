@@ -3,7 +3,8 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.NotificationsEvent;
-	import collaboRhythm.hiviva.model.vo.HCPConnectedPatientsVO;
+	import collaboRhythm.hiviva.model.vo.ConnectionsVO;
+	import collaboRhythm.hiviva.model.vo.GalleryDataVO;
 	import collaboRhythm.hiviva.model.vo.PatientAdherenceVO;
 	import collaboRhythm.hiviva.model.vo.ReportVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
@@ -134,9 +135,14 @@ package collaboRhythm.hiviva.view
 			return hivivaAppController.hivivaLocalStoreController.service.patientAdherenceVO;
 		}
 
-		public static function get hcpConnectedPatientsVO():HCPConnectedPatientsVO
+		public static function get connectionsVO():ConnectionsVO
 		{
-			return hivivaAppController.hivivaLocalStoreController.service.hcpConnectedPatientsVO;
+			return hivivaAppController.hivivaLocalStoreController.service.connectionsVO;
+		}
+
+		public static function get galleryDataVO():GalleryDataVO
+		{
+			return hivivaAppController.hivivaLocalStoreController.service.galleryDataVO;
 		}
 	}
 }

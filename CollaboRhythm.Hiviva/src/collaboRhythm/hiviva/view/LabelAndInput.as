@@ -41,7 +41,8 @@ package collaboRhythm.hiviva.view
 
 
 
-		public function setFocus(){
+		public function setFocus():void
+		{
 		//	this._input.addEventListener(Event.F)
 	     	this._input.addEventListener(TouchEvent.TOUCH  , onTouch )
 
@@ -109,7 +110,8 @@ package collaboRhythm.hiviva.view
 					this.__color = b ;
 				};
 
-		       public function drawColor (){
+		       public function drawColor ():void
+			   {
 				   if(this.__color != null )
 				 	this._input.textEditorProperties.color =  this.__color
 		//  this._input.validate();

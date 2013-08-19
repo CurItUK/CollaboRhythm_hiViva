@@ -87,6 +87,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				getAllMessagesFromRemoteService();
 				checkForNewBadges();
 				getGalleryTimeStamp();
+				getApprovedConnections();
 				this._asynchronousCallMade = true;
 			}
 		}
@@ -290,6 +291,51 @@ package collaboRhythm.hiviva.view.screens.patient
 				trace("date stamp not there");
 				this._homeImageInstructions.visible = true;
 				//TODO: delete all old image entries in sql
+			}
+		}
+
+		private function getApprovedConnections():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE, getApprovedHCPCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnections();
+		}
+
+		private function getApprovedHCPCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedHCPCompleteHandler);
+
+			var xml:XML = e.data.xmlResponse;
+
+			if(xml.children().length() > 0)
+			{
+				HivivaStartup.connectionsVO.users = [];
+				var loop:uint = xml.children().length();
+				var approvedHCPList:XMLList  = xml.DCConnection;
+				for(var i:uint = 0 ; i <loop ; i++)
+				{
+					var establishedUser:Object = HivivaModifier.establishToFromId(approvedHCPList[i]);
+					var appGuid:String = establishedUser.appGuid;
+					var appId:String = establishedUser.appId;
+					var userEstablishedConnection:Boolean = approvedHCPList[i].FromAppId == HivivaStartup.userVO.appId;
+
+					var data:XML = new XML
+					(
+							<patient>
+								<name>{appId}</name>
+								<email>{appId}@domain.com</email>
+								<appid>{appId}</appid>
+								<guid>{appGuid}</guid>
+								<picture>dummy.png</picture>
+								<establishedConnection>{userEstablishedConnection}</establishedConnection>
+							</patient>
+					);
+					HivivaStartup.connectionsVO.users.push(data);
+				}
+				HivivaStartup.connectionsVO.changed = true;
+			}
+			else
+			{
+				trace("No Approved Connections");
 			}
 		}
 

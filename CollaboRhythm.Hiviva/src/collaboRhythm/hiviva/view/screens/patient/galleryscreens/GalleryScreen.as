@@ -1,7 +1,8 @@
-package collaboRhythm.hiviva.view.galleryscreens
+package collaboRhythm.hiviva.view.screens.patient.galleryscreens
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
@@ -73,7 +74,7 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-			_urls = GalleryData.getUrlsByCategory(this._category);
+			_urls = HivivaStartup.galleryDataVO.getUrlsByCategory(this._category);
 			getImagesFromDirectory();
 		}
 
@@ -100,8 +101,8 @@ package collaboRhythm.hiviva.view.galleryscreens
 
 		private function saveGalleryPhotos():void
 		{
-			GalleryData.galleryDataChanged = true;
-			GalleryData.setUrlsByCategory(this._category,_urls);
+			HivivaStartup.galleryDataVO.galleryDataChanged = true;
+			HivivaStartup.galleryDataVO.setUrlsByCategory(this._category,_urls);
 			backBtnHandler();
 		}
 
@@ -122,27 +123,31 @@ package collaboRhythm.hiviva.view.galleryscreens
 				imageFile:File,
 				image:GalleryItem;
 
+//			files.sortOn("name");
 			for (var j:int = 0; j < files.length; j++)
 			{
 				file = files[j];
 				// file is a not a thumbnail, add it to imageFiles and remove it from thumbFiles
 				if (file.name.indexOf("-thumb") == -1)
 				{
-					imageFiles.push(files[j]);
+					imageFiles.push(file);
 				}
 				else
 				{
-					thumbFiles.push(files[j]);
+					thumbFiles.push(file);
 				}
 			}
+
+			imageFiles.sortOn("name");
+			thumbFiles.sortOn("name");
 
 			this._itemList = new <GalleryItem>[];
 			this._imageCount = 0;
 			this._imageTotal =  thumbFiles.length;
 			for(var i:int = 0; i < this._imageTotal; i++)
 			{
-				thumbFile = thumbFiles[i];
 				imageFile = imageFiles[i];
+				thumbFile = thumbFiles[i];
 
 				image = new GalleryItem();
 				image.id = i + 1;

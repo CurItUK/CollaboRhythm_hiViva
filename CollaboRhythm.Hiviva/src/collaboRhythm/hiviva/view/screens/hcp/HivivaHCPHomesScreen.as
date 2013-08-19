@@ -73,7 +73,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			if(!this._remoteCallMade)
 			{
-				if(!HivivaStartup.hcpConnectedPatientsVO.changed)
+				if(!HivivaStartup.connectionsVO.changed)
 				{
 					getApprovedConnectionsWithSummary();
 				}
@@ -96,7 +96,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 
 			this._remoteCallMade = false;
-			HivivaStartup.hcpConnectedPatientsVO.changed = false;
+			HivivaStartup.connectionsVO.changed = false;
 			this.draw();
 		}
 
@@ -253,7 +253,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function drawApprovedConnectionsWithSummary():void
 		{
-			var resultsLength:int = HivivaStartup.hcpConnectedPatientsVO.patients.length;
+			var resultsLength:int = HivivaStartup.connectionsVO.users.length;
 			var currItem:XML;
 			var resultCell:PatientResultCellHome;
 			this._patientCellContainer = new ScrollContainer();
@@ -262,7 +262,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			{
 				for(var listCount:int = 0; listCount < resultsLength; listCount++)
 				{
-					currItem = HivivaStartup.hcpConnectedPatientsVO.patients[listCount];
+					currItem = HivivaStartup.connectionsVO.users[listCount];
 
 					resultCell = new PatientResultCellHome();
 					resultCell.addEventListener(FeathersScreenEvent.PATIENT_PROFILE_SELECTED, profileSelectedHandler);
