@@ -414,14 +414,14 @@ package collaboRhythm.hiviva.utils
 			var splitAtPlus:Array = String(splitAtT[1]).split("+");
 			var timeArr:Array = String(splitAtPlus[0]).split(":");
 
-			var rawDate:Date = new Date(int(dateArr[0]),int(dateArr[1])-1,int(dateArr[2]),int(timeArr[0]),int(timeArr[1]),int(timeArr[2]),null);
-			var noDSTDate:Date = removeDSTFromDate(rawDate);
+			var rawDateFromIso:Date = new Date(int(dateArr[0]),int(dateArr[1])-1,int(dateArr[2]),int(timeArr[0]),int(timeArr[1]),int(timeArr[2]),null);
+			var noDSTDate:Date = modifyDSTOfDate(rawDateFromIso, -1);
 			var date:Date = convertToLocalTime(noDSTDate);
 
 			return date;
 		}
 
-		public static function removeDSTFromDate(dtDate:Date):Date
+		public static function modifyDSTOfDate(dtDate:Date, offsetHours:int):Date
 		{
 			var lastSundayOfMarch:int = getDateOfLastSundayOfMonth(2);
 			var lastSundayOfOctober:int = getDateOfLastSundayOfMonth(9);
@@ -430,7 +430,7 @@ package collaboRhythm.hiviva.utils
 
 			if(dtDate.getTime() > startDSTDate.getTime() && dtDate.getTime() < endDSTDate.getTime())
 			{
-				dtDate.hours -= 1;
+				dtDate.hours += offsetHours;
 			}
 
 			return dtDate;
@@ -442,7 +442,7 @@ package collaboRhythm.hiviva.utils
 			// set to last day of march
 			temp.setMonth(month,31);
 			// round down to get the last sunday of the month
-			if(temp.day > 0) temp.date -= temp.day;
+			if(temp.getDay() > 0) temp.date -= temp.getDay();
 
 			return temp.getDate();
 		}
@@ -453,18 +453,28 @@ package collaboRhythm.hiviva.utils
 			return dtDate;
 		}
 
-		public static function getIsoStringFromDate(date:Date):String
+		public static function convertToUTCTime(dtDate:Date):Date
+		{
+			dtDate.setTime(dtDate.getTime() + (dtDate.getTimezoneOffset() * 60000));
+			return dtDate;
+		}
+
+		public static function getIsoStringFromDate(dtDate:Date):String
 		{
 			// 2013-07-13T14:25:15
+			var rawDate = new Date(dtDate.getFullYear(),dtDate.getMonth(),dtDate.getDate(),dtDate.getHours(),dtDate.getMinutes(),dtDate.getSeconds(),dtDate.getMilliseconds());
 
-			var month:Number = date.getMonth() + 1;
-			var day:Number = date.getDate();
-			var hours:Number = date.getHours();
-			var mins:Number = date.getMinutes();
-			var secs:Number = date.getSeconds();
+			var UTCDate:Date = convertToUTCTime(rawDate);
+			var DSTDate:Date = modifyDSTOfDate(UTCDate, 1);
+
+			var month:Number = DSTDate.getMonth() + 1;
+			var day:Number = DSTDate.getDate();
+			var hours:Number = DSTDate.getHours();
+			var mins:Number = DSTDate.getMinutes();
+			var secs:Number = DSTDate.getSeconds();
 
 			var isoStr:String =
-			date.getFullYear() + "-" +
+			DSTDate.getFullYear() + "-" +
 			addPrecedingZero(month.toString()) + "-" +
 			addPrecedingZero(day.toString()) + "T" +
 			addPrecedingZero(hours.toString()) + ":" +
