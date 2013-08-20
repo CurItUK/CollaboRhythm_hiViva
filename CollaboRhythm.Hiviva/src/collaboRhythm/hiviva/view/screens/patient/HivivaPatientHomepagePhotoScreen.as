@@ -196,7 +196,17 @@ package collaboRhythm.hiviva.view.screens.patient
 				}
 			}
 //			trace("customImageExists = " + customImageExists);
-			if (customImageExists) allImageData.push(CUSTOM_HOME_IMAGE);
+			if (customImageExists)
+			{
+				if(Math.random() < 0.5)
+				{
+					allImageData.push(CUSTOM_HOME_IMAGE);
+				}
+				else
+				{
+					allImageData.unshift(CUSTOM_HOME_IMAGE);
+				}
+			}
 			// basic randomisation
 			allImageData.sort(
 					function(a:*, b:*):Number

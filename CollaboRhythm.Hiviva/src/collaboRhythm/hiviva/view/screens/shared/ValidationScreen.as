@@ -29,6 +29,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			super.draw();
 			if(isNaN(this._contentHeight)) this._contentHeight = this._content.height;
+			forceInstantHideValidation();
 		}
 
 		override protected function preValidateContent():void
@@ -140,6 +141,15 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._isValidationActive = false;
 			this._validationBg.visible = false;
+		}
+
+		protected function forceInstantHideValidation():void
+		{
+			this._validationBg.height = 1;
+			this._content.y = this._header.y + this._header.height;
+			this._content.height = this._contentHeight;
+			this._closeValidationButton.visible = false;
+			this._validationLabel.visible = false;
 		}
 
 		public override function dispose():void

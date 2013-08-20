@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view
 {
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 
 	import feathers.controls.Button;
@@ -33,31 +34,15 @@ package collaboRhythm.hiviva.view
 	public class ImageUploader extends FeathersControl
 	{
 		private var _scale:Number = 1;
-		public function set scale(value:Number):void
-		{
-			this._scale = value;
-		}
-		public function get scale():Number
-		{
-			return this._scale;
-		}
-
 		private var _fileName:String;
-		public function set fileName(value:String):void
-		{
-			this._fileName = value;
-		}
-		public function get fileName():String
-		{
-			return this._fileName;
-		}
-
 		private var _bg:Scale9Image;
 		private var _uploadButton:Button;
+		private var _trashButton:Button;
 		private var _imageBg:Quad;
 		private var _imageHolder:Image;
 		private var _dataSource:IDataInput;
 		private var _imagePromise:MediaPromise;
+		private var _outStream:FileStream;
 
 		private const IMAGE_SIZE:Number = 150;
 		private const PADDING:Number = 32;
@@ -81,11 +66,16 @@ package collaboRhythm.hiviva.view
 
 			this._bg.height = this._imageBg.y + this._imageBg.height + (scaledPadding * 0.5);
 
-			imageBgEnd = (this._imageBg.x + this._imageBg.width);
-			remainingCenterX = (this._bg.x + this._bg.width - imageBgEnd) / 2;
+//			imageBgEnd = (this._imageBg.x + this._imageBg.width);
+
+			this._trashButton.validate();
+			this._trashButton.x = this._bg.width - scaledPadding - this._trashButton.width;
+			this._trashButton.y = (this._bg.height / 2) - (this._trashButton.height / 2);
+
+//			remainingCenterX = (this._bg.x + this._bg.width - imageBgEnd - scaledPadding - this._trashButton.width) / 2;
 
 			this._uploadButton.validate();
-			this._uploadButton.x =  imageBgEnd + remainingCenterX - (this._uploadButton.width / 2);
+			this._uploadButton.x =  this._trashButton.x - scaledPadding - this._uploadButton.width;
 			this._uploadButton.y = (this._bg.height / 2) - (this._uploadButton.height / 2);
 
 			setSizeInternal(this._bg.width, this._bg.height, true);
@@ -108,6 +98,39 @@ package collaboRhythm.hiviva.view
 			this._uploadButton.label = "UPLOAD PHOTO   ";
 			this._uploadButton.addEventListener(starling.events.Event.TRIGGERED, uploadButtonHandler);
 			addChild(this._uploadButton);
+
+			this._trashButton = new Button();
+			this._trashButton.visible = false;
+			this._trashButton.name = "delete-cell-button";
+			this._trashButton.addEventListener(starling.events.Event.TRIGGERED, deleteImageData);
+			addChild(this._trashButton);
+		}
+
+		private function deleteImageData(e:starling.events.Event = null):void
+		{
+			if(this._imagePromise != null) this._imagePromise.close();
+			if(this._outStream != null) this._outStream.close();
+
+			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
+			if(temp.exists)
+			{
+				temp.deleteFile();
+			}
+
+			var main:File = File.applicationStorageDirectory.resolvePath(this._fileName);
+			if(main.exists)
+			{
+				main.deleteFile();
+			}
+
+			if(this._imageHolder != null)
+			{
+				this._imageHolder.texture.dispose();
+				this._imageHolder.dispose();
+				this._imageHolder = null;
+			}
+
+			this._trashButton.visible = false;
 		}
 
 		public function getMainImage():void
@@ -117,6 +140,7 @@ package collaboRhythm.hiviva.view
 			if (destination.exists)
 			{
 				loadImageFromUrl(destination.url);
+				this._trashButton.visible = true;
 			}
 		}
 
@@ -148,6 +172,8 @@ package collaboRhythm.hiviva.view
 		{
 			trace("Image selected...");
 
+			deleteImageData();
+
 			this._imagePromise = e.data;
 			this._dataSource = this._imagePromise.open();
 
@@ -178,13 +204,15 @@ package collaboRhythm.hiviva.view
 			loadImageFromBytes(imageBytes);
 
 			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
-			var outStream:FileStream = new FileStream();
+			this._outStream = new FileStream();
 			// open output file stream in WRITE mode
-			outStream.open(temp, FileMode.WRITE);
+			this._outStream.open(temp, FileMode.WRITE);
 			// write out the file
-			outStream.writeBytes(imageBytes, 0, imageBytes.length);
+			this._outStream.writeBytes(imageBytes, 0, imageBytes.length);
 			// close it
-			outStream.close();
+			this._outStream.close();
+
+			this._trashButton.visible = true;
 
 			// event for parent to know a new temp image has been saved and is available
 			dispatchEventWith("uploadedImageChanged");
@@ -262,6 +290,22 @@ package collaboRhythm.hiviva.view
 				img.width = size;
 				img.scaleY = img.scaleX;
 			}
+		}
+		public function set scale(value:Number):void
+		{
+			this._scale = value;
+		}
+		public function get scale():Number
+		{
+			return this._scale;
+		}
+		public function set fileName(value:String):void
+		{
+			this._fileName = value;
+		}
+		public function get fileName():String
+		{
+			return this._fileName;
 		}
 	}
 }
