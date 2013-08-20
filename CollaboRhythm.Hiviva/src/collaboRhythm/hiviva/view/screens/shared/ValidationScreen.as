@@ -150,6 +150,8 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._content.height = this._contentHeight;
 			this._closeValidationButton.visible = false;
 			this._validationLabel.visible = false;
+			this._isValidationActive = false;
+			this._validationBg.visible = false;
 		}
 
 		public override function dispose():void
