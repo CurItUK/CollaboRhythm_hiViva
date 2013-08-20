@@ -3,7 +3,7 @@ package collaboRhythm.hiviva.model.vo
 	public class GalleryDataVO
 	{
 		private var _imageData:Array = [];
-		private var _galleryDataChanged:Boolean = false;
+		private var _changed:Boolean = false;
 
 		public function GalleryDataVO()
 		{
@@ -48,14 +48,14 @@ package collaboRhythm.hiviva.model.vo
 			_imageData = value;
 		}
 
-		public function get galleryDataChanged():Boolean
+		public function get changed():Boolean
 		{
-			return _galleryDataChanged;
+			return _changed;
 		}
 
-		public function set galleryDataChanged(value:Boolean):void
+		public function set changed(value:Boolean):void
 		{
-			_galleryDataChanged = value;
+			_changed = value;
 		}
 	}
 }

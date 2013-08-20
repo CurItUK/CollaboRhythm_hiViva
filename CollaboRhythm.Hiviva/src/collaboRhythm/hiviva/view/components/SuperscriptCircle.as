@@ -1,22 +1,19 @@
 package collaboRhythm.hiviva.view.components
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
-
 	import feathers.core.FeathersControl;
 
 	import starling.display.Image;
 
 	public class SuperscriptCircle extends FeathersControl
 	{
-		private var _scale:Number;
+		private var _scale:Number = 1;
 		private var _img:Image;
 		private var _text:String;
-		private var _label:Label
+		private var _label:Label;
 
 		public function SuperscriptCircle()
 		{
@@ -30,6 +27,8 @@ package collaboRhythm.hiviva.view.components
 			this._label.validate();
 			this._label.x = (this._img.width * 0.5) - (this._label.width * 0.5);
 			this._label.y = (this._img.height * 0.5) - (this._label.height * 0.5);
+
+			setSizeInternal(this._img.width,this._img.height,false);
 		}
 
 		override protected function initialize():void

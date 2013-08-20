@@ -53,6 +53,7 @@ package source.themes
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
+	import collaboRhythm.hiviva.view.components.GalleryButton;
 	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
@@ -834,6 +835,7 @@ package source.themes
 
 			this.setInitializerForClass(Button, nothingInitializer, NONE_THEMED);
 			this.setInitializerForClass(Button, buttonInitializer);
+			this.setInitializerForClass(GalleryButton, buttonInitializer);
 			this.setInitializerForClass(Button, borderButtonInitializer, HivivaThemeConstants.BORDER_BUTTON);
 			this.setInitializerForClass(Button, homeButtonInitializer, HivivaThemeConstants.HOME_BUTTON);
 			this.setInitializerForClass(Button, splashHCPButtonInitializer, "splash-hcp-button");

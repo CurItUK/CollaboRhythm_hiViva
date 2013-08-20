@@ -185,6 +185,9 @@ package collaboRhythm.hiviva.view
 			outStream.writeBytes(imageBytes, 0, imageBytes.length);
 			// close it
 			outStream.close();
+
+			// event for parent to know a new temp image has been saved and is available
+			dispatchEventWith("uploadedImageChanged");
 		}
 
 		private function browseCanceled(e:flash.events.Event):void

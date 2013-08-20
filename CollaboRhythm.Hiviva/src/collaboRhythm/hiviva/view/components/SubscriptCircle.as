@@ -1,14 +1,9 @@
 package collaboRhythm.hiviva.view.components
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
-	import collaboRhythm.hiviva.view.media.Assets;
-
-	import feathers.controls.ImageLoader;
 
 	import feathers.controls.Label;
-
 	import feathers.core.FeathersControl;
 
 	import starling.display.Image;
