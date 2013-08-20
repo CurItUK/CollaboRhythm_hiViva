@@ -31,15 +31,15 @@ package collaboRhythm.hiviva.view.screens.patient.galleryscreens
 
 		override protected function draw():void
 		{
-			super.draw();
+			super.draw();/*
 
 			this._content.height = this._cancelAndSave.y - this._content.y - this._componentGap;
-			this._content.validate();
+			this._content.validate();*/
 			// property here is for show / hide validation
 			this._contentHeight = this._content.height;
 		}
 
-		override protected function preValidateContent():void
+/*		override protected function preValidateContent():void
 		{
 			super.preValidateContent();
 
@@ -47,7 +47,7 @@ package collaboRhythm.hiviva.view.screens.patient.galleryscreens
 			this._cancelAndSave.validate();
 			this._cancelAndSave.x = Constants.PADDING_LEFT;
 			this._cancelAndSave.y = Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._cancelAndSave.height;
-		}
+		}*/
 
 		override protected function postValidateContent():void
 		{
@@ -61,11 +61,13 @@ package collaboRhythm.hiviva.view.screens.patient.galleryscreens
 			super.initialize();
 
 			this._header.title = this._category + " gallery";
+/*
 
 			this._cancelAndSave = new BoxedButtons();
 			this._cancelAndSave.labels = ["Cancel","Save"];
 			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
 			addChild(this._cancelAndSave);
+*/
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -77,7 +79,7 @@ package collaboRhythm.hiviva.view.screens.patient.galleryscreens
 			_urls = HivivaStartup.galleryDataVO.getUrlsByCategory(this._category);
 			getImagesFromDirectory();
 		}
-
+/*
 		private function cancelAndSaveHandler(e:Event):void
 		{
 			var button:String = e.data.button;
@@ -104,6 +106,14 @@ package collaboRhythm.hiviva.view.screens.patient.galleryscreens
 			HivivaStartup.galleryDataVO.galleryDataChanged = true;
 			HivivaStartup.galleryDataVO.setUrlsByCategory(this._category,_urls);
 			backBtnHandler();
+		}
+*/
+
+		private function backBtnHandler(e:Event = null):void
+		{
+			HivivaStartup.galleryDataVO.changed = true;
+			HivivaStartup.galleryDataVO.setUrlsByCategory(this._category,_urls);
+			this.owner.showScreen(HivivaScreens.PATIENT_HOMEPAGE_PHOTO_SCREEN);
 		}
 
 		private function getImagesFromDirectory():void

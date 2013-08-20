@@ -42,8 +42,15 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.draw();
 			trace("HivivaPatientHomepagePhotoScreen draw");
-
-			this._content.height = this._cancelAndSave.y - this._content.y - this._componentGap;
+			if(HivivaStartup.galleryDataVO.changed)
+			{
+				this._cancelAndSave.visible = true;
+				this._content.height = this._cancelAndSave.y - this._content.y - this._componentGap;
+			}
+			else
+			{
+				this._cancelAndSave.visible = false;
+			}
 			this._content.validate();
 			// property here is for show / hide validation
 			this._contentHeight = this._content.height;
@@ -94,6 +101,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._uploadLabel);
 
 			this._photoContainer = new ImageUploader();
+			this._photoContainer.addEventListener("uploadedImageChanged", imageChangedHandler);
 //			this._photoContainer.scale = this.dpiScale;
 			this._photoContainer.fileName = CUSTOM_HOME_IMAGE;
 			this._content.addChild(this._photoContainer);
@@ -111,12 +119,18 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
-			if(!HivivaStartup.galleryDataVO.galleryDataChanged)
+			if(!HivivaStartup.galleryDataVO.changed)
 			{
 				trace("populate first time");
 				initImageData();
 				populateOldData();
 			}
+		}
+
+		private function imageChangedHandler(e:Event = null):void
+		{
+			HivivaStartup.galleryDataVO.changed = true;
+			draw();
 		}
 
 		private function cancelAndSaveHandler(e:Event):void
@@ -153,6 +167,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				showFormValidation("No Images were selected");
 			}
+			imageChangedHandler();
 		}
 
 		private function compileAllImageData():Array
