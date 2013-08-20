@@ -365,7 +365,8 @@ package collaboRhythm.hiviva.utils
 				right = 1;
 				bottom = 1 - (sizeRatio * 0.5);
 			}
-			else if (img.height < img.width)
+
+			if (img.height < img.width)
 			{
 				sizeDiff = (img.width - img.height );
 				sizeRatio = sizeDiff / img.width;
@@ -416,13 +417,13 @@ package collaboRhythm.hiviva.utils
 			var timeArr:Array = String(splitAtPlus[0]).split(":");
 
 			var rawDateFromIso:Date = new Date(int(dateArr[0]),int(dateArr[1])-1,int(dateArr[2]),int(timeArr[0]),int(timeArr[1]),int(timeArr[2]),null);
-			var noDSTDate:Date = modifyDSTOfDate(rawDateFromIso, -1);
+			var noDSTDate:Date = removeDSTFromDate(rawDateFromIso);
 			var date:Date = convertToLocalTime(noDSTDate);
 
 			return date;
 		}
 
-		public static function modifyDSTOfDate(dtDate:Date, offsetHours:int):Date
+		public static function removeDSTFromDate(dtDate:Date):Date
 		{
 			var lastSundayOfMarch:int = getDateOfLastSundayOfMonth(2);
 			var lastSundayOfOctober:int = getDateOfLastSundayOfMonth(9);
@@ -431,7 +432,22 @@ package collaboRhythm.hiviva.utils
 
 			if(dtDate.getTime() > startDSTDate.getTime() && dtDate.getTime() < endDSTDate.getTime())
 			{
-				dtDate.hours += offsetHours;
+				dtDate.hours -= 1;
+			}
+
+			return dtDate;
+		}
+
+		public static function addDSTToDate(dtDate:Date):Date
+		{
+			var lastSundayOfMarch:int = getDateOfLastSundayOfMonth(2);
+			var lastSundayOfOctober:int = getDateOfLastSundayOfMonth(9);
+			var startDSTDate:Date = new Date(dtDate.getFullYear(), 2, lastSundayOfMarch, 1,0,0,0);
+			var endDSTDate:Date = new Date(dtDate.getFullYear(), 9, lastSundayOfOctober, 1,0,0,0);
+
+			if(dtDate.getTime() > startDSTDate.getTime() && dtDate.getTime() < endDSTDate.getTime())
+			{
+				dtDate.hours += 1;
 			}
 
 			return dtDate;
@@ -466,7 +482,7 @@ package collaboRhythm.hiviva.utils
 			var rawDate:Date = new Date(dtDate.getFullYear(),dtDate.getMonth(),dtDate.getDate(),dtDate.getHours(),dtDate.getMinutes(),dtDate.getSeconds(),dtDate.getMilliseconds());
 
 			var UTCDate:Date = convertToUTCTime(rawDate);
-			var DSTDate:Date = modifyDSTOfDate(UTCDate, 1);
+			var DSTDate:Date = addDSTToDate(UTCDate);
 
 			var month:Number = DSTDate.getMonth() + 1;
 			var day:Number = DSTDate.getDate();
