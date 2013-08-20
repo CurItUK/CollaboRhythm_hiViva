@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="CollaboRhythm.NativeExtensions.PlayVideo.Android:jar">
-    <output-path>$PROJECT_DIR$/CollaboRhythm.NativeExtensions.PlayVideo.Android/bin</output-path>
-    <root id="archive" name="PlayVideo.jar" />
-  </artifact>
-</component>
