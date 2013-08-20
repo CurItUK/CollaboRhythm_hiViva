@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
+	import collaboRhythm.hiviva.view.components.GalleryButton;
 	import collaboRhythm.hiviva.view.screens.patient.galleryscreens.GalleryScreen;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
@@ -288,36 +289,17 @@ package collaboRhythm.hiviva.view.screens.patient
 			var category:String,
 				categoryCount:int,
 				categoryLength:int = GALLERY_CATEGORIES.length,
-				button:Button,
+				button:GalleryButton,
 				yPos:Number = 0;
+
 			for (categoryCount = 0; categoryCount < categoryLength; categoryCount++)
 			{
-				category = String(GALLERY_CATEGORIES[categoryCount]).toUpperCase();
-				button = new Button;
-				button.iconPosition = Button.ICON_POSITION_LEFT;
-				button.label = category;
+				category = GALLERY_CATEGORIES[categoryCount];
+
+				button = new GalleryButton();
+				button.category = category.toUpperCase();
+				button.imageSelectedCount = HivivaStartup.galleryDataVO.getUrlsByCategory(category).length;
 				button.addEventListener(Event.TRIGGERED, galleryBtnHandler);
-				switch(category)
-				{
-					case "SPORT" :
-						button.defaultIcon = new Image(Main.assets.getTexture("icon_sports"));
-						break;
-					case "MUSIC" :
-						button.defaultIcon = new Image(Main.assets.getTexture("icon_music"));
-						break;
-					case "CINEMA" :
-						button.defaultIcon = new Image(Main.assets.getTexture("icon_cinema"));
-						break;
-					case "HISTORY" :
-						button.defaultIcon = new Image(Main.assets.getTexture("icon_history"));
-						break;
-					case "TRAVEL" :
-						button.defaultIcon = new Image(Main.assets.getTexture("icon_travel"));
-						break;
-					case "ART" :
-						button.defaultIcon = new Image(Main.assets.getTexture("icon_art"));
-						break;
-				}
 				this._galleryBtnContainer.addChild(button);
 				button.width = (this._innerWidth * 0.5) - (this._componentGap * 0.5);
 				// two column layout
