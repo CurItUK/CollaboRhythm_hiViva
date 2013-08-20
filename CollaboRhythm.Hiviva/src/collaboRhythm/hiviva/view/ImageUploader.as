@@ -1,47 +1,38 @@
 package collaboRhythm.hiviva.view
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
-
 	import feathers.core.FeathersControl;
 	import feathers.display.Scale9Image;
 	import feathers.textures.Scale9Textures;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
-
 	import flash.events.MediaEvent;
-
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.geom.Matrix;
-
 	import flash.geom.Rectangle;
 	import flash.media.CameraRoll;
 	import flash.media.MediaPromise;
-	import flash.net.FileReference;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 	import flash.utils.IDataInput;
 
 	import starling.display.Image;
 	import starling.display.Quad;
-
 	import starling.events.Event;
 	import starling.textures.Texture;
 
 	public class ImageUploader extends FeathersControl
 	{
-		private var _scale:Number;
+		private var _scale:Number = 1;
 		public function set scale(value:Number):void
 		{
 			this._scale = value;
@@ -143,7 +134,7 @@ package collaboRhythm.hiviva.view
 			{
 				trace("Browsing for image...");
 				var mediaSource:CameraRoll = new CameraRoll();
-				mediaSource.addEventListener(flash.events.MediaEvent.SELECT, imageSelected);
+				mediaSource.addEventListener(MediaEvent.SELECT, imageSelected);
 				mediaSource.addEventListener(flash.events.Event.CANCEL, browseCanceled);
 				mediaSource.browseForImage();
 			}
@@ -184,9 +175,6 @@ package collaboRhythm.hiviva.view
 		    var imageBytes:ByteArray = new ByteArray();
 			this._dataSource.readBytes( imageBytes );
 
-			var imageLoader:Loader = new Loader();
-			imageLoader.loadBytes(imageBytes);
-
 			loadImageFromBytes(imageBytes);
 
 			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
@@ -208,7 +196,7 @@ package collaboRhythm.hiviva.view
 		{
 			var imageLoader:Loader = new Loader();
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
-			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
+			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url));
 		}
 
@@ -216,7 +204,7 @@ package collaboRhythm.hiviva.view
 		{
 			var imageLoader:Loader = new Loader();
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.INIT, imageLoaded);
-			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
+			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.loadBytes(imageBytes);
 		}
 

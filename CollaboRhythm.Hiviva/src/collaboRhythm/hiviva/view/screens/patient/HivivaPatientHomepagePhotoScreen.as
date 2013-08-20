@@ -94,7 +94,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._uploadLabel);
 
 			this._photoContainer = new ImageUploader();
-			this._photoContainer.scale = this.dpiScale;
+//			this._photoContainer.scale = this.dpiScale;
 			this._photoContainer.fileName = CUSTOM_HOME_IMAGE;
 			this._content.addChild(this._photoContainer);
 			this._photoContainer.getMainImage();
