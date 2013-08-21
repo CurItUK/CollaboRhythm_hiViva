@@ -267,7 +267,7 @@ package collaboRhythm.hiviva.model
 		{
 			this._galleryImageUrls = imageUrls;
 
-			if(this._galleryImageUrls.length > 0)
+//			if(this._galleryImageUrls.length > 0)
 			{
 				var dbFile:File = File.applicationStorageDirectory;
 				dbFile = dbFile.resolvePath("settings.sqlite");
@@ -276,7 +276,14 @@ package collaboRhythm.hiviva.model
 				this._sqConn.open(dbFile);
 
 				this._sqStatement = new SQLStatement();
-				this._sqStatement.addEventListener(SQLEvent.RESULT, deleteGalleryImagesHandler);
+				if(this._galleryImageUrls.length > 0)
+				{
+					this._sqStatement.addEventListener(SQLEvent.RESULT, deleteGalleryImagesHandler);
+				}
+				else
+				{
+					this._sqStatement.addEventListener(SQLEvent.RESULT, setGalleryImagesHandler);
+				}
 				this._sqStatement.text = "DELETE FROM homepage_photos";
 				this._sqStatement.sqlConnection = this._sqConn;
 				this._sqStatement.execute();

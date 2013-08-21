@@ -290,7 +290,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				trace("date stamp not there");
 				this._homeImageInstructions.visible = true;
-				//TODO: delete all old image entries in sql
 			}
 		}
 
@@ -343,38 +342,47 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
 
-			var imageUrls:Array = e.data.imageUrls;
-
-			var resultDataLength:int, chosenImageUrl:String, chosenImageInd:int, daysToImagesRatio:Number;
-
-			resultDataLength = imageUrls.length;
-			if(resultDataLength > 0)
+			var resultDataLength:int, chosenImageUrl:String, chosenImageInd:int, daysToImagesRatio:Number, imageUrls:Array;
+			if(e.data.imageUrls != null)
 			{
-				// start again if the dayDiff exceeds the amount of images
-				daysToImagesRatio = Math.floor(this._dayDiff / resultDataLength);
-				if(daysToImagesRatio >= 1)
+				imageUrls = e.data.imageUrls;
+				resultDataLength = imageUrls.length;
+				if(resultDataLength > 0)
 				{
-					chosenImageInd = this._dayDiff - (daysToImagesRatio * resultDataLength);
+					// start again if the dayDiff exceeds the amount of images
+					daysToImagesRatio = Math.floor(this._dayDiff / resultDataLength);
+					if(daysToImagesRatio >= 1)
+					{
+						chosenImageInd = this._dayDiff - (daysToImagesRatio * resultDataLength);
+					}
+					else
+					{
+						chosenImageInd = this._dayDiff;
+					}
+
+					chosenImageUrl = imageUrls[chosenImageInd].url;
+					if(chosenImageUrl == "homepageimage.jpg")
+					{
+						var appStoreDir:File = File.applicationStorageDirectory;
+						trace(appStoreDir.url + chosenImageUrl);
+						doImageLoad(appStoreDir.url + chosenImageUrl);
+					}
+					else
+					{
+						trace("media/stock_images/" + chosenImageUrl);
+						doImageLoad("media/stock_images/" + chosenImageUrl);
+					}
 				}
 				else
 				{
-					chosenImageInd = this._dayDiff;
+					trace("no images available");
+					this._homeImageInstructions.visible = true;
 				}
-
-				chosenImageUrl = imageUrls[chosenImageInd].url;
-				if(chosenImageUrl == "homepageimage.jpg")
-				{
-					var appStoreDir:File = File.applicationStorageDirectory;
-					trace(appStoreDir.url + chosenImageUrl);
-					doImageLoad(appStoreDir.url + chosenImageUrl);
-				}
-				else
-				{
-					trace("media/stock_images/" + chosenImageUrl);
-					doImageLoad("media/stock_images/" + chosenImageUrl);
-				}
-				//
-
+			}
+			else
+			{
+				trace("no images available");
+				this._homeImageInstructions.visible = true;
 			}
 		}
 

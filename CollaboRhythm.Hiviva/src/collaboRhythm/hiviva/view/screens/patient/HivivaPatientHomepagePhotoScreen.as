@@ -30,6 +30,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
 		private var _imageUrls:Array;
+		private var _customImageWasDeleted:Boolean = false;
 
 		private const GALLERY_CATEGORIES:Array = ["sport","music","cinema","history","travel","art"];
 		private const CUSTOM_HOME_IMAGE:String = "homepageimage.jpg";
@@ -51,6 +52,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			else
 			{
 				this._cancelAndSave.visible = false;
+				this._content.height = Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._verticalPadding - Constants.HEADER_HEIGHT;
 			}
 			this._content.validate();
 			// property here is for show / hide validation
@@ -128,8 +130,31 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
+		private function saveHomepagePhotos():void
+		{
+			var saveData:Array = compileAllImageData();
+//			trace(saveData.join(','));
+//			if(saveData.length > 0)
+			{
+				localStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_SAVE_COMPLETE,setGalleryImagesHandler);
+				localStoreController.setGalleryImages(saveData);
+			}
+			/*else
+			{
+				showFormValidation("No Images were selected");
+				// re instate custom image if all other images were deselected and custom image was deleted
+				if(this._customImageWasDeleted)
+				{
+					this._photoContainer.saveTempImageAsMain();
+					this._photoContainer.getMainImage();
+					this._customImageWasDeleted = false;
+				}
+			}*/
+		}
+
 		private function imageChangedHandler(e:Event = null):void
 		{
+			this._customImageWasDeleted = true;
 			HivivaStartup.galleryDataVO.changed = true;
 			draw();
 		}
@@ -152,23 +177,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function backBtnHandler(e:Event = null):void
 		{
+			HivivaStartup.galleryDataVO.changed = false;
 			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
-		}
-
-		private function saveHomepagePhotos():void
-		{
-			var saveData:Array = compileAllImageData();
-			trace(saveData.join(','));
-			if(saveData.length > 0)
-			{
-				localStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_SAVE_COMPLETE,setGalleryImagesHandler);
-				localStoreController.setGalleryImages(saveData);
-			}
-			else
-			{
-				showFormValidation("No Images were selected");
-			}
-			imageChangedHandler();
 		}
 
 		private function compileAllImageData():Array
@@ -223,7 +233,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			localStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_IMAGES_SAVE_COMPLETE,setGalleryImagesHandler);
 
-			var sqDate:String = HivivaModifier.getSQLStringFromDate(new Date());
+			var sqDate:String = HivivaModifier.getSQLStringFromDate(HivivaStartup.userVO.serverDate);
 
 			localStoreController.addEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_SAVE_COMPLETE,setGalleryTimeStampHandler);
 			localStoreController.setGalleryTimeStamp(sqDate);
@@ -232,6 +242,10 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function setGalleryTimeStampHandler(e:LocalDataStoreEvent):void
 		{
 			localStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_SAVE_COMPLETE,setGalleryTimeStampHandler);
+
+			HivivaStartup.galleryDataVO.changed = false;
+			draw();
+
 			showFormValidation("Your selection has been saved");
 		}
 

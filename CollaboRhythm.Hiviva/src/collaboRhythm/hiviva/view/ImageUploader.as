@@ -43,6 +43,7 @@ package collaboRhythm.hiviva.view
 		private var _dataSource:IDataInput;
 		private var _imagePromise:MediaPromise;
 		private var _outStream:FileStream;
+		private var _deleteTarget:File;
 
 		private const IMAGE_SIZE:Number = 150;
 		private const PADDING:Number = 32;
@@ -55,7 +56,6 @@ package collaboRhythm.hiviva.view
 		override protected function draw():void
 		{
 			var scaledPadding:Number = PADDING * this._scale;
-			var imageBgEnd:Number, remainingCenterX:Number;
 
 			super.draw();
 
@@ -66,13 +66,9 @@ package collaboRhythm.hiviva.view
 
 			this._bg.height = this._imageBg.y + this._imageBg.height + (scaledPadding * 0.5);
 
-//			imageBgEnd = (this._imageBg.x + this._imageBg.width);
-
 			this._trashButton.validate();
 			this._trashButton.x = this._bg.width - scaledPadding - this._trashButton.width;
 			this._trashButton.y = (this._bg.height / 2) - (this._trashButton.height / 2);
-
-//			remainingCenterX = (this._bg.x + this._bg.width - imageBgEnd - scaledPadding - this._trashButton.width) / 2;
 
 			this._uploadButton.validate();
 			this._uploadButton.x =  this._trashButton.x - scaledPadding - this._uploadButton.width;
@@ -104,6 +100,8 @@ package collaboRhythm.hiviva.view
 			this._trashButton.name = "delete-cell-button";
 			this._trashButton.addEventListener(starling.events.Event.TRIGGERED, deleteImageData);
 			addChild(this._trashButton);
+
+			this._deleteTarget = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
 		}
 
 		private function deleteImageData(e:starling.events.Event = null):void
@@ -111,16 +109,9 @@ package collaboRhythm.hiviva.view
 			if(this._imagePromise != null) this._imagePromise.close();
 			if(this._outStream != null) this._outStream.close();
 
-			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
-			if(temp.exists)
+			if(this._deleteTarget.exists)
 			{
-				temp.deleteFile();
-			}
-
-			var main:File = File.applicationStorageDirectory.resolvePath(this._fileName);
-			if(main.exists)
-			{
-				main.deleteFile();
+				this._deleteTarget.deleteFile();
 			}
 
 			if(this._imageHolder != null)
@@ -131,6 +122,7 @@ package collaboRhythm.hiviva.view
 			}
 
 			this._trashButton.visible = false;
+			dispatchEventWith("uploadedImageChanged");
 		}
 
 		public function getMainImage():void
@@ -141,6 +133,7 @@ package collaboRhythm.hiviva.view
 			{
 				loadImageFromUrl(destination.url);
 				this._trashButton.visible = true;
+				this._deleteTarget = destination;
 			}
 		}
 
@@ -148,7 +141,11 @@ package collaboRhythm.hiviva.view
 		{
 			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
 			var main:File = File.applicationStorageDirectory.resolvePath(this._fileName);
-			if(temp.exists) temp.moveTo(main,true);
+			if(temp.exists)
+			{
+				temp.moveTo(main,true);
+				this._deleteTarget = main;
+			}
 			return main.exists;
 		}
 
@@ -213,6 +210,7 @@ package collaboRhythm.hiviva.view
 			this._outStream.close();
 
 			this._trashButton.visible = true;
+			this._deleteTarget = temp;
 
 			// event for parent to know a new temp image has been saved and is available
 			dispatchEventWith("uploadedImageChanged");

@@ -28,7 +28,8 @@ package collaboRhythm.hiviva.view.components
 			var w:Number = this.actualWidth;
 			var h:Number = this.actualHeight;
 
-			this._leftPadding = this._rightPadding = w * 0.1;
+			this._leftPadding = w * 0.1;
+			this._rightPadding = w * 0.05;
 
 			this._defaultIcon.x = this._leftPadding;
 			this._defaultIcon.y = (h * 0.5) - (this._defaultIcon.height * 0.5);
@@ -75,6 +76,7 @@ package collaboRhythm.hiviva.view.components
 			if(_imageSelectedCount > 0)
 			{
 				this._superScript = new SuperscriptCircle();
+				this._superScript.scale = 5;
 				this._superScript.text = String(this._imageSelectedCount);
 				addChild(this._superScript);
 			}

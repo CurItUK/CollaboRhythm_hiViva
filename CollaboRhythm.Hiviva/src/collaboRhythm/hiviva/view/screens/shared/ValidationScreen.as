@@ -19,6 +19,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _closeValidationButton:Button;
 		protected var _isValidationActive:Boolean = false;
 		protected var _contentHeight:Number;
+		protected var _overlayBtn:Button;
 
 		public function ValidationScreen()
 		{
@@ -29,7 +30,6 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			super.draw();
 			if(isNaN(this._contentHeight)) this._contentHeight = this._content.height;
-			forceInstantHideValidation();
 		}
 
 		override protected function preValidateContent():void
@@ -67,12 +67,19 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._closeValidationButton = new Button();
 			this._closeValidationButton.name = "close-button";
 			this._closeValidationButton.visible = false;
-			this._closeValidationButton.addEventListener(Event.TRIGGERED, hideFormValidation);
+//			this._closeValidationButton.addEventListener(Event.TRIGGERED, hideFormValidation);
 			addChild(this._closeValidationButton);
 		}
 
 		public function showFormValidation(valStr:String):void
 		{
+			this._overlayBtn = new Button();
+			this._overlayBtn.addEventListener(Event.TRIGGERED, hideFormValidation);
+			this._overlayBtn.alpha = 0;
+			addChild(this._overlayBtn);
+			this._overlayBtn.width = actualWidth;
+			this._overlayBtn.height = actualHeight;
+
 			this._validationLabel.text = valStr;
 			this._validationLabel.validate();
 
@@ -110,6 +117,10 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		public function hideFormValidation(e:Event = null):void
 		{
+			this._overlayBtn.removeEventListener(Event.TRIGGERED, hideFormValidation);
+			removeChild(this._overlayBtn);
+			this._overlayBtn = null;
+
 			if(this._isValidationActive)
 			{
 				onShowFormValidationComplete();
@@ -139,17 +150,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			Starling.juggler.removeTweens(this._validationBg);
 			Starling.juggler.removeTweens(this._content);
 
-			this._isValidationActive = false;
-			this._validationBg.visible = false;
-		}
-
-		protected function forceInstantHideValidation():void
-		{
-			this._validationBg.height = 1;
-			this._content.y = this._header.y + this._header.height;
-			this._content.height = this._contentHeight;
-			this._closeValidationButton.visible = false;
-			this._validationLabel.visible = false;
 			this._isValidationActive = false;
 			this._validationBg.visible = false;
 		}
