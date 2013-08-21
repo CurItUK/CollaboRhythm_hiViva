@@ -1,27 +1,22 @@
 package collaboRhythm.hiviva.view.screens.hcp.help
 {
 	import collaboRhythm.hiviva.global.Constants;
-	import collaboRhythm.hiviva.view.screens.hcp.*;
-	import collaboRhythm.hiviva.view.screens.patient.*;
-	import feathers.controls.Screen;
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.*;
-	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.shared.HelpScreenManager;
+
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
-	import feathers.controls.Header;
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollText;
 	import feathers.data.ListCollection;
 	import feathers.display.TiledImage;
-	import feathers.events.FeathersEventType;
-	import feathers.layout.AnchorLayoutData;
-	import starling.textures.TextureSmoothing;
-	import starling.events.Event;
-	import starling.display.DisplayObject;
+
 	import starling.display.BlendMode;
+	import starling.display.DisplayObject;
+	import starling.events.Event;
+	import starling.textures.TextureSmoothing;
+
 	public class HivivaHCP_help_Wcidwh_Screen  extends Screen
 	{
 		private var _header:HivivaHeader;
@@ -47,11 +42,7 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 			this._header.initTrueTitle();
 
 			drawMenuBtnGroup();
-			//	this._scrollText.y = this._header.y + this._header.height;
-			//	this._scrollText.x = this._scaledPadding;
-			//	this._scrollText.width = this.actualWidth - (this._scaledPadding * 2);
-			//	this._scrollText.height = this.actualHeight - this._scrollText.y - this._scaledPadding;
-			//	this._scrollText.validate();
+
 		}
 		override protected function initialize():void
 		{
@@ -60,15 +51,11 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 			this._header.title = "What Can I Do \nwith HiVIVA" //this._title;
 			addChild(this._header);
 			this._tilesInBtns = new <TiledImage>[];
-			// 	this._scrollText.text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.\n\nNeque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\n\nAt vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.";
-			//	this._scrollText.text = "";
 			this._menuBtnGroup = new ButtonGroup();
 			this._menuBtnGroup.customButtonName = "patient-profile-nav-buttons";
 			this._menuBtnGroup.customFirstButtonName = "patient-profile-nav-buttons";
 			this._menuBtnGroup.customLastButtonName = "patient-profile-nav-buttons";
 			addChild(this._menuBtnGroup);
-			//	initProfileMenuButtons();
-			//	this.addChild(this._scrollText);
 
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
@@ -143,37 +130,19 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 			_title = value;
 		}
 
-
-		var temp : String
-		var __screen:HivivaPatientHelpScreen;
-
 		private function patientProfileBtnHandler(e:Event):void
 		{
 			var __arr : Array =  new Array();
 			var btn:Button = e.target as Button;
 
 			trace(btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons")));
-			// when refactoring to own class we can use a local instance instead of storing the identifier in btn.name
-			//	trace("THIS IS THE CASE   ::::: " + btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons")))
+
 			var _searchString : String = btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons"))
-			/*
-			 // if(this.owner.hasScreen(String(temp)))
-			 if(this.owner.hasScreen(getStr(_searchString)))
-			 {
-			 trace("this screen already exists ::::::::: ")
 
-			 //	  this.owner.removeScreen(String(temp));
-			 // 	 this.owner.showScreen(String(temp));
-			 this.owner.showScreen(getStr(_searchString));
-
-			 return;
-			 }
-			 */
 			var scrManager : HelpScreenManager =  new HelpScreenManager(e);
 			scrManager._sNav = this.owner;
-			var __exists : Boolean  = scrManager.setStatus(_searchString) ;
 
-			if(__exists)return;
+			if(scrManager.setStatus(_searchString))return;
 
 			switch(_searchString)
 			{
@@ -185,52 +154,22 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 					break;
 
 				case "hcphelpSinglePatientInformationScreen" :
-					/*
-					 var screenNavItem3:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help3_Screen);
-					 // temp = String(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
-					 this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN, screenNavItem3);
-					 this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
-					 // __arr.push(temp);
-					 */
+
 					scrManager.init( HivivaHCP_help_Single_Patient_Information_Screen)
 					scrManager.__addScreen(HivivaScreens.HCP_HELP_SINGLE_PATIENT_INFORMATION_SCREEN)
 					break;
 				case "hcphelpPatientInteractionScreen" :
-					/*	var screenNavItem4:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help4_Screen);
-					 // temp = String(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
-					 this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN, screenNavItem4);
-					 this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
-					 // __arr.push(temp);*/
+
 					scrManager.init( HivivaHCP_help_Patient_Interaction_Screen)
 					scrManager.__addScreen(HivivaScreens.HCP_HELP_PATIENT_INTERACTION_SCREEN)
 					break;
 
 				case "hcphelpGeneratereportsScreen" :
-					/*	var screenNavItem4:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatient_help_help4_Screen);
-					 // temp = String(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
-					 this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN, screenNavItem4);
-					 this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP4_SCREEN);
-					 // __arr.push(temp);*/
+
 					scrManager.init( HivivaHCP_help_Generate_Reports_Screen)
 					scrManager.__addScreen(HivivaScreens.HCP_HELP_GENERATE_REPORTS_SCREEN)
 					break;
-
-
 			}
-
-			/*
-			 //	temp = HivivaScreens.PATIENT_HELP_HELP3_SCREEN;
-			 //	  this.owner.addScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN, HivivaPatient_help_help3_Screen);
-			 //	this.owner.showScreen(HivivaScreens.PATIENT_HELP_HELP3_SCREEN);
-
-			 //if(this.owner.hasScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN))
-			 //	{			var screenNavItem:ScreenNavigatorItem = new ScreenNavigatorItem(HivivaPatientHelpDetailScreen, null, {title:btn.label});
-
-			 //				this.owner.removeScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
-			 //			}
-			 //	this.owner.addScreen(HivivaScreens.PATIENT_HELP_DETAIL_SCREEN, screenNavItem);
-			 //		this.owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
-			 */
 		}
 	}
 }
