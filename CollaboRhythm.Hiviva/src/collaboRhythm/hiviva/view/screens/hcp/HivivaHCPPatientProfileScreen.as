@@ -110,11 +110,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function setDates():void
 		{
 			var currentDate:Date = HivivaStartup.userVO.serverDate;
-			this._currWeekBeginning = new Date(currentDate.getFullYear,currentDate.getMonth,currentDate.getDate,currentDate.getHours(),currentDate.getMinutes(),currentDate.getSeconds(),currentDate.getMilliseconds());
+			this._currWeekBeginning = new Date(currentDate.getFullYear(),currentDate.getMonth(),currentDate.getDate(),currentDate.getHours(),currentDate.getMinutes(),currentDate.getSeconds(),currentDate.getMilliseconds());
 			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
 
-			this._latestWeekBeginning = new Date(currentDate.getFullYear,currentDate.getMonth,currentDate.getDate,currentDate.getHours(),currentDate.getMinutes(),currentDate.getSeconds(),currentDate.getMilliseconds());
-			this._earliestWeekBeginning = new Date(currentDate.getFullYear,currentDate.getMonth,currentDate.getDate,currentDate.getHours(),currentDate.getMinutes(),currentDate.getSeconds(),currentDate.getMilliseconds());
+			this._latestWeekBeginning = new Date(currentDate.getFullYear(),currentDate.getMonth(),currentDate.getDate(),currentDate.getHours(),currentDate.getMinutes(),currentDate.getSeconds(),currentDate.getMilliseconds());
+			this._earliestWeekBeginning = new Date(currentDate.getFullYear(),currentDate.getMonth(),currentDate.getDate(),currentDate.getHours(),currentDate.getMinutes(),currentDate.getSeconds(),currentDate.getMilliseconds());
 
 			this._earliestWeekBeginning.date -= (7 * PatientAdherenceChart.TOTAL_WEEKS);
 		}

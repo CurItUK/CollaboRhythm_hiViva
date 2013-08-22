@@ -426,7 +426,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 */
-
 		private function patientReportsCheck():String
 		{
 			var validationArray:Array = [];
@@ -436,32 +435,29 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			if(this._startDateInput._input.text.length != 0 && this._finishDateInput._input.text.length != 0)
 			{
-				var isValidDate:Boolean = validateDates();
-				if(!isValidDate)validationArray.push("Invalid date selection - start and end dates");
+				if(!isStartDateSmallerThanEndDate()) validationArray.push("Please select an end date that is\nlater than the start date");
+				if(!isDateRangeSmallerThanSixMonths()) validationArray.push("Please select an end date that is\nwithin 6 months of the start date");
 			}
-
 			if(this._emailInput.text.length == 0) validationArray.push("Please enter a valid email address");
 
-			return validationArray.join("\n");
+			return validationArray.join(",\n");
 		}
 
-		private function validateDates():Boolean
+		private function isStartDateSmallerThanEndDate():Boolean
 		{
-			var tempStart:Array = new Array();
-			var tempFinish:Array = new Array();
+			var startDate:Date = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text);
+			var endDate:Date = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text);
+			return (startDate.getTime() < endDate.getTime());
+		}
 
-			tempStart = this._startDateInput._input.text.split('/');
-			tempFinish = this._finishDateInput._input.text.split('/');
-
-			var startAdd:Number = tempStart[2]*1300 + tempStart[0]*100 + tempStart[1];
-			var endAdd:Number = tempFinish[2]*1300 + tempFinish[0]*100 + tempFinish[1];
-
-			if(startAdd > endAdd){
-				return false;
-			}
-			else{
-				return true;
-			}
+		private function isDateRangeSmallerThanSixMonths():Boolean
+		{
+			var startDate:Date = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text);
+			var endDate:Date = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text);
+			var monthRange:Number = endDate.getMonth() - startDate.getMonth();
+			var dateRange:Number = endDate.getDate() - startDate.getDate();
+			var isDateRangeSmallerThanSixMonths:Boolean = monthRange == 6 ? dateRange < 0 : monthRange < 6;
+			return isDateRangeSmallerThanSixMonths;
 		}
 /*
 		private function adherenceLoadCompleteHandler(e:LocalDataStoreEvent):void

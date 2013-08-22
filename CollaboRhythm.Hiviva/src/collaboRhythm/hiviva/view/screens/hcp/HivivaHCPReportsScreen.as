@@ -346,7 +346,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 		}
 
-
 		private function patientReportsCheck():String
 		{
 			var validationArray:Array = [];
@@ -356,20 +355,29 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			if(this._startDateInput._input.text.length != 0 && this._finishDateInput._input.text.length != 0)
 			{
-				var isValidDate:Boolean = validateDates();
-				if(!isValidDate) validationArray.push("Invalid date selection - start and end dates");
+				if(!isStartDateSmallerThanEndDate()) validationArray.push("Please select an end date that is\nlater than the start date");
+				if(!isDateRangeSmallerThanSixMonths()) validationArray.push("Please select an end date that is\nwithin 6 months of the start date");
 			}
 			if(this._emailInput.text.length == 0) validationArray.push("Please enter a valid email address");
 
-			return validationArray.join("\n");
+			return validationArray.join(",\n");
 		}
 
-		private function validateDates():Boolean
+		private function isStartDateSmallerThanEndDate():Boolean
 		{
-			var startAdd:Number = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text).getTime();
-			var endAdd:Number = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text).getTime();
+			var startDate:Date = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text);
+			var endDate:Date = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text);
+			return (startDate.getTime() < endDate.getTime());
+		}
 
-			return (startAdd < endAdd);
+		private function isDateRangeSmallerThanSixMonths():Boolean
+		{
+			var startDate:Date = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text);
+			var endDate:Date = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text);
+			var monthRange:Number = endDate.getMonth() - startDate.getMonth();
+			var dateRange:Number = endDate.getDate() - startDate.getDate();
+			var isDateRangeSmallerThanSixMonths:Boolean = monthRange == 6 ? dateRange < 0 : monthRange < 6;
+			return isDateRangeSmallerThanSixMonths;
 		}
 
 		private function displaySavedPDF():void

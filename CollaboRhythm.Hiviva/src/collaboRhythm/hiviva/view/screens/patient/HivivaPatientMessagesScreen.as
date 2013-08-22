@@ -290,6 +290,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			trace("messageDetailEventHandler");
 		}
+/*
 
 		private function approveConnectionHandler(e:RemoteDataStoreEvent):void
 		{
@@ -307,6 +308,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._cellContainer.validate();
 			}
 		}
+*/
 
 		private function getMessageXMLByProperty(xmlList:XMLList,property:String,value:String):XML
 		{
