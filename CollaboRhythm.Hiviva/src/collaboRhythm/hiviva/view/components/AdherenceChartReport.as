@@ -26,12 +26,11 @@ package collaboRhythm.hiviva.view.components
 		private var _history:Dictionary;
 		private var _startDate:Date;
 		private var _endDate:Date;
-		private var _dayTotal:Number;
 		private var _dailyAdherenceData:Array;
 		private var _lowestValue:Number;
 		private var _valueRange:Number;
 
-		private const LINE_COLOURS:Array = [0x2e445e,0x0b88ec,0xc20315,0x697a8f,0xffffff,0x000000];
+		private const LINE_COLOUR:uint = 0x4F81BC;
 
 		private var _leftAxisSpace:Number;
 		private var _rightPadding:Number;
@@ -40,8 +39,13 @@ package collaboRhythm.hiviva.view.components
 		private var _chartHeight:Number;
 		private var _chartStartX:Number;
 		private var _chartStartY:Number;
-		private var _horizontalSegmentWidth:Number;
 		private var _bottomAxisValueHeight:Number;
+		private var _daySegmentWidth:Number;
+		private var _dayRange:Number;
+		private var _dayBreakDownRatio:int;
+		private var PLOT_GIRTH:Number;
+		private var _xAxisSegmentWidth:Number;
+		private var _xAxisTotal:Number;
 
 		public function AdherenceChartReport()
 		{
@@ -69,8 +73,7 @@ package collaboRhythm.hiviva.view.components
 
 		public function drawChart():void
 		{
-			this._dayTotal = HivivaModifier.getDaysDiff(this._endDate,this._startDate) + 1;
-			this._horizontalSegmentWidth = this._chartWidth / (_dayTotal - 1);
+			calculateXAxisBreakDown();
 
 			// tiled background here to compensate for no transparency on the draw
 //			initTiledBackground();
@@ -85,6 +88,38 @@ package collaboRhythm.hiviva.view.components
 //			initBottomAxisLabels();
 			drawPlotPoints();
 			this.validate();
+		}
+
+		private function calculateXAxisBreakDown():void
+		{
+			this._dayRange = HivivaModifier.getDaysDiff(this._endDate, this._startDate) + 1;
+			this._daySegmentWidth = this._chartWidth / (_dayRange - 1);
+
+			if (this._dayRange <= 14)
+			{
+				// daily
+				this._dayBreakDownRatio = 1;
+			}
+			else if (this._dayRange > 14 && this._dayRange <= 28)
+			{
+				// every other daily
+				this._dayBreakDownRatio = 2;
+			}
+			else if (this._dayRange > 28 && this._dayRange <= 98)
+			{
+				// weekly
+				this._dayBreakDownRatio = 7;
+			}
+			else if (this._dayRange > 98 && this._dayRange <= 196)
+			{
+				// every other weekly
+				this._dayBreakDownRatio = 14;
+			}
+
+			this._xAxisTotal = this._dayRange / this._dayBreakDownRatio;
+			this._xAxisSegmentWidth = this._daySegmentWidth * this._dayBreakDownRatio;
+			PLOT_GIRTH = 5 - (5 * (this._dayRange / 100));
+			if(PLOT_GIRTH < 2) PLOT_GIRTH = 2;
 		}
 
 		private function initTiledBackground():void
@@ -159,7 +194,7 @@ package collaboRhythm.hiviva.view.components
 			var adherenceCount:int;
 			var daysItar:Date = new Date(this._startDate.getFullYear(),this._startDate.getMonth(),this._startDate.getDate(),0,0,0,0);
 
-			for (var dayCount:int = 0; dayCount < _dayTotal; dayCount++)
+			for (var dayCount:int = 0; dayCount < this._dayRange; dayCount++)
 			{
 				dayTime = daysItar.getTime();
 				adherence = 0;
@@ -233,27 +268,25 @@ package collaboRhythm.hiviva.view.components
 			var value:Number;
 			var plotLine:Shape = new Shape();
 			var plotCircles:Shape = new Shape();
-			var plotGirth:Number = 3;
-			var currColour:uint = LINE_COLOURS[Math.round((Math.random()*LINE_COLOURS.length))];
 			var valueY:Number;
 
-			plotLine.graphics.lineStyle(plotGirth,currColour);
-			for (var dayCount:int = 0; dayCount < _dayTotal; dayCount++)
+			plotLine.graphics.lineStyle(PLOT_GIRTH,LINE_COLOUR);
+			for (var dayCount:int = 0; dayCount < this._dayRange; dayCount++)
 			{
 				value = this._dailyAdherenceData[dayCount];
 				if(value > -1)
 				{
 					valueY = (fullValueHeight / 100) * value;
-					plotLine.graphics.lineTo(this._chartStartX + (this._horizontalSegmentWidth * dayCount),plotStartY - valueY);
-					plotCircles.graphics.beginFill(currColour);
-					plotCircles.graphics.drawCircle(this._chartStartX + (this._horizontalSegmentWidth * dayCount),plotStartY - valueY,plotGirth * 2);
+					plotLine.graphics.lineTo(this._chartStartX + (this._daySegmentWidth * dayCount),plotStartY - valueY);
+					plotCircles.graphics.beginFill(LINE_COLOUR);
+					plotCircles.graphics.drawCircle(this._chartStartX + (this._daySegmentWidth * dayCount),plotStartY - valueY,PLOT_GIRTH * 2);
 					plotCircles.graphics.endFill();
 				}
 				else
 				{
 					addChild(plotLine);
 					plotLine = new Shape();
-					plotLine.graphics.lineStyle(plotGirth,currColour);
+					plotLine.graphics.lineStyle(PLOT_GIRTH,LINE_COLOUR);
 				}
 			}
 			addChild(plotLine);
@@ -338,9 +371,9 @@ package collaboRhythm.hiviva.view.components
 			var evenLighter:Quad;
 			var xAxisPosition:Number;
 			var daysItar:Date = new Date(this._startDate.getFullYear(),this._startDate.getMonth(),this._startDate.getDate(),0,0,0,0);
-			for (var dayCount:int = 0; dayCount < _dayTotal; dayCount++)
+			for (var segmentCount:int = 0; segmentCount < _xAxisTotal; segmentCount++)
 			{
-				xAxisPosition = this._horizontalSegmentWidth * dayCount;
+				xAxisPosition = this._xAxisSegmentWidth * segmentCount;
 
 				bottomAxisValue = new Label();
 				bottomAxisValue.name = HivivaThemeConstants.CELL_SMALL_LABEL;
@@ -354,7 +387,8 @@ package collaboRhythm.hiviva.view.components
 				// + 4 for padding
 				bottomAxisValue.y = this._chartStartY + this._chartHeight + bottomAxisValue.width + 10;
 
-				daysItar.date++;
+//				daysItar.date++;
+				daysItar.date += this._dayBreakDownRatio;
 
 				verticalLine = new Image(vertLineTexture);
 				addChild(verticalLine);
@@ -362,13 +396,24 @@ package collaboRhythm.hiviva.view.components
 				verticalLine.y = this._chartStartY;
 				verticalLine.height = this._chartHeight;
 				// every even segment
-				if ((dayCount / 2).toString().indexOf('.') > -1 && dayCount < (_dayTotal - 1))
+				if ((segmentCount / 2).toString().indexOf('.') > -1)
 				{
-					evenLighter = new Quad(this._horizontalSegmentWidth, this._chartHeight, 0xffffff);
-					evenLighter.alpha = 0.2;
-					addChild(evenLighter);
-					evenLighter.x = this._chartStartX + xAxisPosition;
-					evenLighter.y = this._chartStartY;
+					if(segmentCount < (_xAxisTotal - 1))
+					{
+						evenLighter = new Quad(this._xAxisSegmentWidth, this._chartHeight, 0xffffff);
+						evenLighter.alpha = 0.2;
+						addChild(evenLighter);
+						evenLighter.x = this._chartStartX + xAxisPosition;
+						evenLighter.y = this._chartStartY;
+					}
+					else
+					{
+						evenLighter = new Quad(this._chartWidth - xAxisPosition, this._chartHeight, 0xffffff);
+						evenLighter.alpha = 0.2;
+						addChild(evenLighter);
+						evenLighter.x = this._chartStartX + xAxisPosition;
+						evenLighter.y = this._chartStartY;
+					}
 				}
 			}
 			this._bottomAxisValueHeight = bottomAxisValue.height;
