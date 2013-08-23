@@ -7,7 +7,7 @@ package collaboRhythm.hiviva.model.vo
 		private var _guid:String;
 		private var _type:String;
 		private var _serverDate:Date;
-		private var _badges:Array = [];
+		private var _badges:XMLList;
 
 		public function UserVO()
 		{
@@ -57,12 +57,12 @@ package collaboRhythm.hiviva.model.vo
 			trace("current date = " + _serverDate.toDateString());
 		}
 
-		public function get badges():Array
+		public function get badges():XMLList
 		{
 			return _badges;
 		}
 
-		public function set badges(value:Array):void
+		public function set badges(value:XMLList):void
 		{
 			_badges = value;
 		}

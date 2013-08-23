@@ -1154,6 +1154,7 @@ package source.themes
 		protected function medicineBrandnameLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.medicineBrandnameLabelBftf;
+			label.textRendererProperties.wordWrap = true;
 		}
 
 		protected function splashFooterLabelInitializer(label:Label):void

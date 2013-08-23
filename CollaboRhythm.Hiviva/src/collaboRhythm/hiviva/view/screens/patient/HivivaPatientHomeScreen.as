@@ -219,20 +219,23 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			trace(e.data.xmlResponse);
 
-			var badgesAwarded:XMLList = e.data.xmlResponse.DCAlertMessageRecord;
-			var badgesAwardedLength:int = badgesAwarded.length();
+			HivivaStartup.userVO.badges = e.data.xmlResponse.DCAlertMessageRecord;
+			var badgesAwardedLength:int = HivivaStartup.userVO.badges.length();
+			var newBadCount:int = 0;
 
 			if(badgesAwardedLength > 0)
 			{
-				this._badgesButton.visible = true;
-				this._badgesButton.subScript = String(badgesAwardedLength);
-
-				if(HivivaStartup.userVO.badges.length == 0)
+				for (var badgeCount:int = 0; badgeCount < badgesAwardedLength; badgeCount++)
 				{
-					for (var badgeCount:int = 0; badgeCount < badgesAwardedLength; badgeCount++)
+					if(HivivaStartup.userVO.badges[badgeCount].Read == "false")
 					{
-						HivivaStartup.userVO.badges.push(String(badgesAwarded[badgeCount].AlertMessageGuid));
+						newBadCount++;
 					}
+				}
+				if(newBadCount > 0)
+				{
+					this._badgesButton.visible = true;
+					this._badgesButton.subScript = String(newBadCount);
 				}
 			}
 		}
