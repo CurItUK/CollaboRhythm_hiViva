@@ -336,7 +336,7 @@ package collaboRhythm.hiviva.view.components
 						adherenceData.adherence.push(0);
 					}
 				}
-				trace(TOTAL_WEEKS + " weeks adherence for " + adherenceData.patient + " = " + adherenceData.adherence.join(','));
+//				trace(TOTAL_WEEKS + " weeks adherence for " + adherenceData.patient + " = " + adherenceData.adherence.join(','));
 				this._patientAdherence.push(adherenceData);
 			}
 

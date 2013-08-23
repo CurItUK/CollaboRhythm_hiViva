@@ -71,7 +71,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var endDate:Date;
 			var dateRange:String;
 			var alertDays:int;
-			var alertMessage:String
+			var alertMessage:String;
 			var badgeCell:BadgeCell;
 
 			for (var badgeCount:int = 0; badgeCount < badgesAwardedLength; badgeCount++)

@@ -374,10 +374,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			var startDate:Date = HivivaModifier.getDateFromCalendarString(this._startDateInput._input.text);
 			var endDate:Date = HivivaModifier.getDateFromCalendarString(this._finishDateInput._input.text);
-			var monthRange:Number = endDate.getMonth() - startDate.getMonth();
-			var dateRange:Number = endDate.getDate() - startDate.getDate();
-			var isDateRangeSmallerThanSixMonths:Boolean = monthRange == 6 ? dateRange < 0 : monthRange < 6;
-			return isDateRangeSmallerThanSixMonths;
+			endDate.month -= 6;
+			return startDate > endDate;
 		}
 
 		private function displaySavedPDF():void
