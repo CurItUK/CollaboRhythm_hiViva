@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view
 {
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 
 	import feathers.controls.Button;
@@ -9,7 +10,6 @@ package collaboRhythm.hiviva.view
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.BlendMode;
 	import flash.display.JPEGEncoderOptions;
 	import flash.display.Loader;
 	import flash.events.Event;
@@ -27,16 +27,14 @@ package collaboRhythm.hiviva.view
 	import flash.utils.ByteArray;
 	import flash.utils.IDataInput;
 
-	import jp.shichiseki.exif.ExifInfo;
+	import mx.graphics.codec.JPEGEncoder;
 
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.textures.Texture;
-	import starling.utils.deg2rad;
-	import starling.utils.rad2deg;
 
-	public class ImageUploader extends FeathersControl
+	public class ImageUploaderOld extends FeathersControl
 	{
 		private var _scale:Number = 1;
 		private var _fileName:String;
@@ -49,12 +47,14 @@ package collaboRhythm.hiviva.view
 		private var _imagePromise:MediaPromise;
 		private var _outStream:FileStream;
 		private var _deleteTarget:File;
-		private var _radiansOffset:Number;
+		private var _imageLoader:Loader;
+		private var _mainDestination:File;
+		private var _tempDestination:File;
 
 		private const IMAGE_SIZE:Number = 150;
 		private const PADDING:Number = 32;
 
-		public function ImageUploader()
+		public function ImageUploaderOld()
 		{
 			super();
 		}
@@ -107,7 +107,7 @@ package collaboRhythm.hiviva.view
 			this._trashButton.addEventListener(starling.events.Event.TRIGGERED, deleteImageData);
 			addChild(this._trashButton);
 
-			this._deleteTarget = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
+			this._deleteTarget = this._tempDestination;
 		}
 
 		private function deleteImageData(e:starling.events.Event = null):void
@@ -133,26 +133,22 @@ package collaboRhythm.hiviva.view
 
 		public function getMainImage():void
 		{
-			var destination:File = File.applicationStorageDirectory;
-			destination = destination.resolvePath(this._fileName);
-			if (destination.exists)
+			if (this._mainDestination.exists)
 			{
-				loadImageFromUrl(destination.url);
+				loadImageFromUrl(this._mainDestination.url);
 				this._trashButton.visible = true;
-				this._deleteTarget = destination;
+				this._deleteTarget = this._mainDestination;
 			}
 		}
 
 		public function saveTempImageAsMain():Boolean
 		{
-			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
-			var main:File = File.applicationStorageDirectory.resolvePath(this._fileName);
-			if(temp.exists)
+			if(this._tempDestination.exists)
 			{
-				temp.moveTo(main,true);
-				this._deleteTarget = main;
+				this._tempDestination.moveTo(this._mainDestination,true);
+				this._deleteTarget = this._mainDestination;
 			}
-			return main.exists;
+			return this._mainDestination.exists;
 		}
 
 		private function uploadButtonHandler(e:starling.events.Event):void
@@ -178,6 +174,36 @@ package collaboRhythm.hiviva.view
 			deleteImageData();
 
 			this._imagePromise = e.data;
+			var targetFile:File = this._imagePromise.file;
+
+			this._imageLoader = new Loader();
+			if (this._imagePromise.isAsync)
+			{
+				// display target image
+				this._imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded, false, 0, true);
+				this._imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed, false, 0, true);
+				this._imageLoader.loadFilePromise(this._imagePromise);
+
+
+				// save target image in temp location
+//				targetFile.addEventListener(flash.events.Event.COMPLETE, imageSaved, false, 0, true);
+//				targetFile.copyToAsync(this._tempDestination, true);
+			}
+			else
+			{
+				// display target image
+				this._imageLoader.loadFilePromise(this._imagePromise);
+				imageLoaded();
+
+				// save target image in temp location
+				targetFile.copyTo(this._tempDestination, true);
+				imageSaved();
+			}
+
+
+
+			// below solution doesn't work because AIR hijacks the image bytearray oreintation!
+			/*
 			this._dataSource = this._imagePromise.open();
 
 			if (this._imagePromise.isAsync)
@@ -190,7 +216,18 @@ package collaboRhythm.hiviva.view
 			{
 				trace( "Synchronous media promise." );
 				readMediaData();
-			}
+			}*/
+		}
+
+		private function imageSaved(e:flash.events.Event = null):void
+		{
+			trace("image saved to temp destination");
+
+			this._trashButton.visible = true;
+			this._deleteTarget = this._tempDestination;
+
+			// event for parent to know a new temp image has been saved and is available
+			dispatchEventWith("uploadedImageChanged");
 		}
 
 		private function onMediaLoaded( e:flash.events.Event ):void
@@ -201,44 +238,24 @@ package collaboRhythm.hiviva.view
 
 		private function readMediaData():void
 		{
-		    var loadedImageBytes:ByteArray = new ByteArray();
-			this._dataSource.readBytes( loadedImageBytes );
+		    var imageBytes:ByteArray = new ByteArray();
+			this._dataSource.readBytes( imageBytes );
 
-			setCorrectedRotationFromExifInfo(loadedImageBytes);
-			loadImageFromBytes(loadedImageBytes);
-		}
+			loadImageFromBytes(imageBytes);
 
-		private function setCorrectedRotationFromExifInfo(imageBytes:ByteArray):void
-		{
-			var exif:ExifInfo = new ExifInfo(imageBytes);
-			/*trace("exif =");
-			  trace(exif);
-			  trace("exif trace");
-			  trace(exif.ifds);
-			  trace(exif.ifds.primary);
-			  trace(exif.ifds.exif);
-			  trace(exif.ifds.gps);
-			  trace(exif.ifds.thumbnail);*/
+			this._outStream = new FileStream();
+			// open output file stream in WRITE mode
+			this._outStream.open(this._tempDestination, FileMode.WRITE);
+			// write out the file
+			this._outStream.writeBytes(imageBytes, 0, imageBytes.length);
+			// close it
+			this._outStream.close();
 
-			switch (exif.ifds.primary.Orientation)
-			{
-				case 3 :
-					trace("_orientation = 180");
-					_radiansOffset = deg2rad(180);
-					break;
-				case 6 :
-					trace("_orientation = 90");
-					_radiansOffset = deg2rad(90);
-					break;
-				case 8 :
-					trace("_orientation = 270");
-					_radiansOffset = deg2rad(270);
-					break;
-				default :
-					trace("_orientation = 0");
-					_radiansOffset = deg2rad(0);
-					break;
-			}
+			this._trashButton.visible = true;
+			this._deleteTarget = this._tempDestination;
+
+			// event for parent to know a new temp image has been saved and is available
+			dispatchEventWith("uploadedImageChanged");
 		}
 
 		private function browseCanceled(e:flash.events.Event):void
@@ -248,39 +265,40 @@ package collaboRhythm.hiviva.view
 
 		private function loadImageFromUrl(url:String):void
 		{
-			var imageLoader:Loader = new Loader();
-			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
-			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
-			imageLoader.load(new URLRequest(url));
+			this._imageLoader = new Loader();
+			this._imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
+			this._imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
+			this._imageLoader.load(new URLRequest(url));
 		}
 
 		private function loadImageFromBytes(imageBytes:ByteArray):void
 		{
-			var imageLoader:Loader = new Loader();
-			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
-			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
-			imageLoader.loadBytes(imageBytes);
+			this._imageLoader = new Loader();
+			this._imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.INIT, imageLoaded);
+			this._imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
+			this._imageLoader.loadBytes(imageBytes);
 		}
 
-		private function imageLoaded(e:flash.events.Event):void
+		private function imageLoaded(e:flash.events.Event = null):void
 		{
 			trace("Image loaded.");
-			var suitableBm:Bitmap = getSuitableBitmap(e.target.content as Bitmap);
-			var savableImageBytes:ByteArray = suitableBm.bitmapData.encode(new Rectangle(0,0,suitableBm.width,suitableBm.height), new JPEGEncoderOptions(100));
-			writeByteArrayToFile(savableImageBytes);
-			createPreviewFromBitmap(suitableBm);
-		}
 
-		private function createPreviewFromBitmap(suitableBm:Bitmap):void
-		{
+			var suitableBm:Bitmap = getSuitableBitmap(this._imageLoader.contentLoaderInfo.content as Bitmap);
 			this._imageHolder = new Image(Texture.fromBitmap(suitableBm));
 			HivivaModifier.clipImage(this._imageHolder);
 			this._imageHolder.width = this._imageHolder.height = IMAGE_SIZE * this._scale;
-//			constrainToProportion(this._imageHolder, IMAGE_SIZE * this._scale);
 			this._imageHolder.x = this._imageBg.x;
 			this._imageHolder.y = this._imageBg.y;
-//			this._imageHolder.rotation = _radiansOffset;
 			if (!contains(this._imageHolder)) addChild(this._imageHolder);
+
+
+			/*if (this._imagePromise.isAsync)
+			{
+				var targetFile:File = this._imagePromise.file;
+				// save target image in temp location
+				targetFile.addEventListener(flash.events.Event.COMPLETE, imageSaved, false, 0, true);
+				targetFile.copyToAsync(this._tempDestination, true);
+			}*/
 		}
 
 		private function imageLoadFailed(e:flash.events.Event):void
@@ -291,41 +309,22 @@ package collaboRhythm.hiviva.view
 		private function getSuitableBitmap(sourceBm:Bitmap):Bitmap
 		{
 			var bm:Bitmap;
-			var m:Matrix;
-			var bmd:BitmapData;
-
-			m = new Matrix();
 			// if source bitmap is larger than starling size limit of 2048x2048 than resize
 			if (sourceBm.width >= 2048 || sourceBm.height >= 2048)
 			{
 				// TODO: may need to remove size adjustment from bm! only adjust the data (needs formula)
 				constrainToProportion(sourceBm, 2040);
+				// copy source bitmap at adjusted size
+				var bmd:BitmapData = new BitmapData(sourceBm.width, sourceBm.height);
+				var m:Matrix = new Matrix();
 				m.scale(sourceBm.scaleX, sourceBm.scaleY);
+				bmd.draw(sourceBm, m, null, null, null, true);
+				bm = new Bitmap(bmd, 'auto', true);
 			}
-			m.rotate(_radiansOffset);
-			// offset to compensate for the rotate, (note : the x = height and y = width below intentionally)
-			switch(rad2deg(_radiansOffset))
+			else
 			{
-				case 180 :
-					m.translate(sourceBm.height, sourceBm.width);
-					bmd = new BitmapData(sourceBm.width, sourceBm.height);
-					break;
-				case 90 :
-					m.translate(sourceBm.height, 0);
-					bmd = new BitmapData(sourceBm.height, sourceBm.width);
-					break;
-				case 270 :
-					m.translate(0, sourceBm.width);
-					bmd = new BitmapData(sourceBm.height, sourceBm.width);
-					break;
-				default :
-					bmd = new BitmapData(sourceBm.width, sourceBm.height);
-					break;
+				bm = sourceBm;
 			}
-
-			// copy source bitmap at adjusted size
-			bmd.draw(sourceBm, m, null, BlendMode.NORMAL, null, true);
-			bm = new Bitmap(bmd, 'auto', true);
 			return bm;
 		}
 
@@ -342,28 +341,6 @@ package collaboRhythm.hiviva.view
 				img.scaleY = img.scaleX;
 			}
 		}
-
-		private function writeByteArrayToFile(imageBytes:ByteArray):void
-		{
-			trace('writeByteArrayToFile');
-			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
-			this._outStream = new FileStream();
-			// open output file stream in WRITE mode
-			this._outStream.open(temp, FileMode.WRITE);
-			// write out the file
-			trace('this._outStream.writeBytes()');
-			this._outStream.writeBytes(imageBytes, 0, imageBytes.length);
-			// close it
-			trace('this._outStream.close()');
-			this._outStream.close();
-
-			this._trashButton.visible = true;
-			this._deleteTarget = temp;
-
-			// event for parent to know a new temp image has been saved and is available
-			dispatchEventWith("uploadedImageChanged");
-		}
-
 		public function set scale(value:Number):void
 		{
 			this._scale = value;
@@ -375,6 +352,8 @@ package collaboRhythm.hiviva.view
 		public function set fileName(value:String):void
 		{
 			this._fileName = value;
+			this._mainDestination = File.applicationStorageDirectory.resolvePath(this._fileName);
+			this._tempDestination = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
 		}
 		public function get fileName():String
 		{
