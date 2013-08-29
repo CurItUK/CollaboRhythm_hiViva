@@ -138,7 +138,7 @@ package collaboRhythm.hiviva.view.components
 
 		private function calculateTolerability():void
 		{
-			extractHistory();
+			this._history = HivivaModifier.getChronilogicalDictionaryFromXmlList(this._medications);
 
 			this._lowestValue = 100;
 			this._dailyTolerabilityData = [];
@@ -162,29 +162,6 @@ package collaboRhythm.hiviva.view.components
 			this._valueRange = 100 - this._lowestValue;
 		}
 
-		private function extractHistory():void
-		{
-			_history = new Dictionary();
-			var medicationLength:int = this._medications.length();
-			var medicationSchedule:XMLList;
-			var medicationScheduleLength:int;
-			var referenceDate:Number;
-			var medicationId:String;
-			for (var i:int = 0; i < medicationLength; i++)
-			{
-				medicationSchedule = this._medications[i].Schedule.DCMedicationSchedule as XMLList;
-				medicationId = _medications[i].MedicationID;
-
-				medicationScheduleLength = medicationSchedule.length();
-				for (var j:int = 0; j < medicationScheduleLength; j++)
-				{
-					referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[j].DateTaken)).getTime();
-					if (_history[referenceDate] == undefined) _history[referenceDate] = [];
-					_history[referenceDate].push({id:medicationId,data:medicationSchedule[j]});
-				}
-			}
-		}
-
 		private function getUltimateStartAndEndDates():Object
 		{
 			var serverDate:Date = HivivaStartup.userVO.serverDate;
@@ -197,9 +174,9 @@ package collaboRhythm.hiviva.view.components
 			var currEndDate:Date;
 			for (var j:int = 0; j < _medications.length(); j++)
 			{
-				currStartDate = HivivaModifier.getDateFromIsoString(_medications[j].StartDate);
+				currStartDate = HivivaModifier.getDateFromIsoString(_medications[j].StartDate, false);
 				currEndDate = (String(_medications[j].Stopped)) ==
-						"true" ? HivivaModifier.getDateFromIsoString(_medications[j].EndDate) : today;
+						"true" ? HivivaModifier.getDateFromIsoString(_medications[j].EndDate, false) : today;
 
 				if (prevStartDate.getTime() <= currStartDate.getTime())
 				{
@@ -219,8 +196,8 @@ package collaboRhythm.hiviva.view.components
 			earliestSchedule.setTime(startAndEndDates.earliestSchedule);
 			var latestSchedule:Date = new Date();
 			latestSchedule.setTime(startAndEndDates.latestSchedule);
-			trace('ultimate start date = ' + earliestSchedule.toDateString());
-			trace('ultimate end date = ' + latestSchedule.toDateString());
+//			trace('ultimate start date = ' + earliestSchedule.toDateString());
+//			trace('ultimate end date = ' + latestSchedule.toDateString());
 
 			return startAndEndDates;
 		}
@@ -241,7 +218,7 @@ package collaboRhythm.hiviva.view.components
 				tolerability = 0;
 				if (dayTime >= earliestSchedule && dayTime < latestSchedule)
 				{
-					columnData = _history[dayTime];
+					columnData = _history[HivivaModifier.getIsoStringFromDate(daysItar,false)];
 					if (columnData != null)
 					{
 						columnDataLength = columnData.length;
@@ -270,7 +247,7 @@ package collaboRhythm.hiviva.view.components
 				this._dailyTolerabilityData.push(tolerability);
 				daysItar.date++;
 			}
-			trace(this._dailyTolerabilityData.join(','));
+//			trace(this._dailyTolerabilityData.join(','));
 		}
 
 		private function drawPlotPoints():void

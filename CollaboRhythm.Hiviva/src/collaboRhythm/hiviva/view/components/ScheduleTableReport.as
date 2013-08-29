@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 
@@ -113,8 +114,8 @@ package collaboRhythm.hiviva.view.components
 					medicationCell.y = _totalHeight;
 					_totalHeight += medicationCell.height;
 
-					var endDate:Date = HivivaModifier.getDateFromIsoString(_patientData[cellCount].EndDate);
-					var startDate:Date = HivivaModifier.getDateFromIsoString(_patientData[cellCount].StartDate);
+					var endDate:Date = HivivaModifier.getDateFromIsoString(_patientData[cellCount].EndDate, false);
+					var startDate:Date = HivivaModifier.getDateFromIsoString(_patientData[cellCount].StartDate, false);
 					var today:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(), HivivaStartup.userVO.serverDate.getMonth(), HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
 
 					this._rowsData.push({
@@ -178,7 +179,8 @@ package collaboRhythm.hiviva.view.components
 			var earliestSchedule:Date;
 			var latestSchedule:Date;
 			var currentSchedule:Date;
-			var referenceDate:Date;
+//			var referenceDate:Date;
+			var referenceDate:String;
 			var range:Number;
 
 			for (var rowCount:int = 0; rowCount < realMedLength; rowCount++)
@@ -208,8 +210,9 @@ package collaboRhythm.hiviva.view.components
 								currValue = -1;
 								for (var j:int = 0; j < medicationScheduleLength; j++)
 								{
-									referenceDate = HivivaModifier.getDateFromIsoString(medicationSchedule[j].DateTaken);
-									if(currentSchedule.getTime() == referenceDate.getTime())
+//									referenceDate = HivivaModifier.getDateFromIsoString(medicationSchedule[j].DateTaken);
+									referenceDate = String(medicationSchedule[j].DateTaken).split('+')[0];
+									if(HivivaModifier.getIsoStringFromDate(currentSchedule,false) == referenceDate)
 									{
 										currValue = int(medicationSchedule[j].PercentTaken);
 									}

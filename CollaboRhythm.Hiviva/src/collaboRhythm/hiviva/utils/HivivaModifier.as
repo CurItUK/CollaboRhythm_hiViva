@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.utils
 	import collaboRhythm.hiviva.view.HivivaStartup;
 
 	import flash.geom.Point;
+	import flash.utils.Dictionary;
 
 	import starling.display.Image;
 
@@ -313,7 +314,7 @@ package collaboRhythm.hiviva.utils
 
 		public static function getCalendarStringFromIsoString(isoStr:String):String
 		{
-			var date:Date = getDateFromIsoString(isoStr);
+			var date:Date = getDateFromIsoString(isoStr, false);
 			return getCalendarStringFromDate(date);
 		}
 
@@ -408,17 +409,25 @@ package collaboRhythm.hiviva.utils
 			return percentage;
 		}
 
-		public static function getDateFromIsoString(value:String):Date
+		public static function getDateFromIsoString(value:String, setToUTC:Boolean = true):Date
 		{
 			// 2013-07-13T14:25:15.9644542+01:00
+			var date:Date;
 			var splitAtT:Array = value.split("T");
 			var dateArr:Array = String(splitAtT[0]).split("-");
 			var splitAtPlus:Array = String(splitAtT[1]).split("+");
 			var timeArr:Array = String(splitAtPlus[0]).split(":");
-
 			var rawDateFromIso:Date = new Date(int(dateArr[0]),int(dateArr[1])-1,int(dateArr[2]),int(timeArr[0]),int(timeArr[1]),int(timeArr[2]),null);
-			var noDSTDate:Date = removeDSTFromDate(rawDateFromIso);
-			var date:Date = convertToLocalTime(noDSTDate);
+
+			if(setToUTC)
+			{
+				var noDSTDate:Date = removeDSTFromDate(rawDateFromIso);
+				date = convertToLocalTime(noDSTDate);
+			}
+			else
+			{
+				date = rawDateFromIso;
+			}
 
 			return date;
 		}
@@ -476,22 +485,31 @@ package collaboRhythm.hiviva.utils
 			return dtDate;
 		}
 
-		public static function getIsoStringFromDate(dtDate:Date):String
+		public static function getIsoStringFromDate(dtDate:Date, setToUTC:Boolean = true):String
 		{
 			// 2013-07-13T14:25:15
 			var rawDate:Date = new Date(dtDate.getFullYear(),dtDate.getMonth(),dtDate.getDate(),dtDate.getHours(),dtDate.getMinutes(),dtDate.getSeconds(),dtDate.getMilliseconds());
+			var targDate:Date;
 
-			var UTCDate:Date = convertToUTCTime(rawDate);
-			var DSTDate:Date = addDSTToDate(UTCDate);
+			if(setToUTC)
+			{
+				var UTCDate:Date = convertToUTCTime(rawDate);
+				var DSTDate:Date = addDSTToDate(UTCDate);
+				targDate = DSTDate;
+			}
+			else
+			{
+				targDate = rawDate;
+			}
 
-			var month:Number = DSTDate.getMonth() + 1;
-			var day:Number = DSTDate.getDate();
-			var hours:Number = DSTDate.getHours();
-			var mins:Number = DSTDate.getMinutes();
-			var secs:Number = DSTDate.getSeconds();
+			var month:Number = targDate.getMonth() + 1;
+			var day:Number = targDate.getDate();
+			var hours:Number = targDate.getHours();
+			var mins:Number = targDate.getMinutes();
+			var secs:Number = targDate.getSeconds();
 
 			var isoStr:String =
-			DSTDate.getFullYear() + "-" +
+			targDate.getFullYear() + "-" +
 			addPrecedingZero(month.toString()) + "-" +
 			addPrecedingZero(day.toString()) + "T" +
 			addPrecedingZero(hours.toString()) + ":" +
@@ -533,6 +551,34 @@ package collaboRhythm.hiviva.utils
 		{
 			var milliSecondsToDays:Number = 24 * 60 * + 60 * 1000;
 			return Math.round((futureDate.valueOf()) / milliSecondsToDays - (pastDate.valueOf()) / milliSecondsToDays);
+		}
+
+		public static function getChronilogicalDictionaryFromXmlList(medicationsXml:XMLList):Dictionary
+		{
+			var history:Dictionary = new Dictionary();
+
+			var medicationLength:int = medicationsXml.length();
+			var medicationSchedule:XMLList;
+			var medicationScheduleLength:int;
+//			var referenceDate:Date;
+			var referenceDate:String;
+			var medicationId:String;
+			for (var i:int = 0; i < medicationLength; i++)
+			{
+				medicationSchedule = medicationsXml[i].Schedule.DCMedicationSchedule as XMLList;
+				medicationId = medicationsXml[i].MedicationID;
+
+				medicationScheduleLength = medicationSchedule.length();
+				for (var j:int = 0; j < medicationScheduleLength; j++)
+				{
+//					referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[j].DateTaken),false);
+					referenceDate = String(medicationSchedule[j].DateTaken).split('+')[0];
+					if (history[referenceDate] == undefined) history[referenceDate] = [];
+					history[referenceDate].push({id:medicationId,data:medicationSchedule[j]});
+				}
+			}
+
+			return history;
 		}
 	}
 }

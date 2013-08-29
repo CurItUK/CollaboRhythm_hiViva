@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -136,7 +137,7 @@ package collaboRhythm.hiviva.view.components
 
 		private function calculateAdherence():void
 		{
-			extractHistory();
+			this._history = HivivaModifier.getChronilogicalDictionaryFromXmlList(this._medications);
 
 			this._lowestValue = 100;
 			this._dailyAdherenceData = [];
@@ -160,29 +161,6 @@ package collaboRhythm.hiviva.view.components
 			this._valueRange = 100 - this._lowestValue;
 		}
 
-		private function extractHistory():void
-		{
-			_history = new Dictionary();
-			var medicationLength:int = this._medications.length();
-			var medicationSchedule:XMLList;
-			var medicationScheduleLength:int;
-			var referenceDate:Number;
-			var medicationId:String;
-			for (var i:int = 0; i < medicationLength; i++)
-			{
-				medicationSchedule = this._medications[i].Schedule.DCMedicationSchedule as XMLList;
-				medicationId = _medications[i].MedicationID;
-
-				medicationScheduleLength = medicationSchedule.length();
-				for (var j:int = 0; j < medicationScheduleLength; j++)
-				{
-					referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[j].DateTaken)).getTime();
-					if (_history[referenceDate] == undefined) _history[referenceDate] = [];
-					_history[referenceDate].push({id:medicationId,data:medicationSchedule[j]});
-				}
-			}
-		}
-
 		private function populateAdherenceData(startAndEndDates:Object):void
 		{
 			var earliestSchedule:Number = startAndEndDates.earliestSchedule;
@@ -201,7 +179,7 @@ package collaboRhythm.hiviva.view.components
 				adherenceCount = 0;
 				if (dayTime >= earliestSchedule && dayTime < latestSchedule)
 				{
-					columnData = _history[dayTime];
+					columnData = _history[HivivaModifier.getIsoStringFromDate(daysItar,false)];
 					if (columnData != null)
 					{
 						columnDataLength = columnData.length;
@@ -230,7 +208,7 @@ package collaboRhythm.hiviva.view.components
 				this._dailyAdherenceData.push(adherence);
 				daysItar.date++;
 			}
-			trace(this._dailyAdherenceData.join(','));
+//			trace(this._dailyAdherenceData.join(','));
 		}
 
 		private function getUltimateStartAndEndDates():Object
@@ -245,9 +223,9 @@ package collaboRhythm.hiviva.view.components
 			var currEndDate:Date;
 			for (var j:int = 0; j < _medications.length(); j++)
 			{
-				currStartDate = HivivaModifier.getDateFromIsoString(_medications[j].StartDate);
+				currStartDate = HivivaModifier.getDateFromIsoString(_medications[j].StartDate, false);
 				currEndDate = (String(_medications[j].Stopped)) ==
-						"true" ? HivivaModifier.getDateFromIsoString(_medications[j].EndDate) : today;
+						"true" ? HivivaModifier.getDateFromIsoString(_medications[j].EndDate, false) : today;
 
 				if (prevStartDate.getTime() <= currStartDate.getTime())
 				{
@@ -267,8 +245,8 @@ package collaboRhythm.hiviva.view.components
 			earliestSchedule.setTime(startAndEndDates.earliestSchedule);
 			var latestSchedule:Date = new Date();
 			latestSchedule.setTime(startAndEndDates.latestSchedule);
-			trace('ultimate start date = ' + earliestSchedule.toDateString());
-			trace('ultimate end date = ' + latestSchedule.toDateString());
+//			trace('ultimate start date = ' + earliestSchedule.toDateString());
+//			trace('ultimate end date = ' + latestSchedule.toDateString());
 
 			return startAndEndDates;
 		}

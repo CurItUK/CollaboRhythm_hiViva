@@ -2,6 +2,8 @@ package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
@@ -59,29 +61,6 @@ package collaboRhythm.hiviva.view.components
 		override protected function initialize():void
 		{
 			super.initialize();
-		}
-
-		private function extractHistory():void
-		{
-			_history = new Dictionary();
-			var medicationLength:int = this._medications.length();
-			var medicationSchedule:XMLList;
-			var medicationScheduleLength:int;
-			var referenceDate:Number;
-			var medicationId:String;
-			for (var i:int = 0; i < medicationLength; i++)
-			{
-				medicationSchedule = this._medications[i].Schedule.DCMedicationSchedule as XMLList;
-				medicationId = _medications[i].MedicationID;
-
-				medicationScheduleLength = medicationSchedule.length();
-				for (var j:int = 0; j < medicationScheduleLength; j++)
-				{
-					referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[j].DateTaken)).getTime();
-					if (_history[referenceDate] == undefined) _history[referenceDate] = [];
-					_history[referenceDate].push({id:medicationId,data:medicationSchedule[j]});
-				}
-			}
 		}
 
 		public function drawTable():void
@@ -166,8 +145,8 @@ package collaboRhythm.hiviva.view.components
 					this._mainScrollContainer.addChild(medicationCell);
 					medicationCell.width = this._firstColumnWidth;
 
-					var endDate:Date = HivivaModifier.getDateFromIsoString(_medications[medCount].EndDate);
-					var startDate:Date = HivivaModifier.getDateFromIsoString(_medications[medCount].StartDate);
+					var endDate:Date = HivivaModifier.getDateFromIsoString(_medications[medCount].EndDate, false);
+					var startDate:Date = HivivaModifier.getDateFromIsoString(_medications[medCount].StartDate, false);
 					var today:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(), HivivaStartup.userVO.serverDate.getMonth(), HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
 
 					this._rowsData.push({
@@ -226,7 +205,7 @@ package collaboRhythm.hiviva.view.components
 		public function updateTableData():void
 		{
 			this._medications = _patientData.DCUserMedication as XMLList;
-			extractHistory();
+			this._history = HivivaModifier.getChronilogicalDictionaryFromXmlList(this._medications);
 
 			initTableContainer();
 
@@ -273,7 +252,7 @@ package collaboRhythm.hiviva.view.components
 					// establish adherence and tolerability values
 					if(isLargerThanStartDate && isSmallerThanEndDate)
 					{
-						columnData = _history[currWeekDay.getTime()];
+						columnData = _history[HivivaModifier.getIsoStringFromDate(currWeekDay,false)];
 						if (columnData != null)
 						{
 							columnDataLength = columnData.length;

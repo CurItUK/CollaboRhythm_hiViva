@@ -113,8 +113,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._currWeekBeginning = new Date(currentDate.getFullYear(),currentDate.getMonth(),currentDate.getDate(),currentDate.getHours(),currentDate.getMinutes(),currentDate.getSeconds(),currentDate.getMilliseconds());
 			HivivaModifier.floorToClosestMonday(this._currWeekBeginning);
 
-			this._latestWeekBeginning = new Date(currentDate.getFullYear(),currentDate.getMonth(),currentDate.getDate(),currentDate.getHours(),currentDate.getMinutes(),currentDate.getSeconds(),currentDate.getMilliseconds());
-			this._earliestWeekBeginning = new Date(currentDate.getFullYear(),currentDate.getMonth(),currentDate.getDate(),currentDate.getHours(),currentDate.getMinutes(),currentDate.getSeconds(),currentDate.getMilliseconds());
+			this._latestWeekBeginning = new Date(this._currWeekBeginning.getFullYear(),this._currWeekBeginning.getMonth(),this._currWeekBeginning.getDate(),0,0,0,0);
+			this._earliestWeekBeginning = new Date(this._currWeekBeginning.getFullYear(),this._currWeekBeginning.getMonth(),this._currWeekBeginning.getDate(),0,0,0,0);
 
 			this._earliestWeekBeginning.date -= (7 * PatientAdherenceChart.TOTAL_WEEKS);
 		}
@@ -272,24 +272,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function getDailyMedicationHistoryRange():void
 		{
-			var startDate:Date = new Date(this._currWeekBeginning.getFullYear(),
-					this._currWeekBeginning.getMonth(),
-					this._currWeekBeginning.getDate(),
-					this._currWeekBeginning.getHours(),
-					this._currWeekBeginning.getMinutes(),
-					this._currWeekBeginning.getSeconds(),
-					this._currWeekBeginning.getMilliseconds());
-			var startIsoDate:String = HivivaModifier.getIsoStringFromDate(startDate);
+			var startDate:Date = new Date(this._currWeekBeginning.getFullYear(), this._currWeekBeginning.getMonth(), this._currWeekBeginning.getDate(),0,0,0,0);
+			var startIsoDate:String = HivivaModifier.getIsoStringFromDate(startDate,false);
 
-			var endDate:Date = new Date(this._currWeekBeginning.getFullYear(),
-								this._currWeekBeginning.getMonth(),
-								this._currWeekBeginning.getDate(),
-								this._currWeekBeginning.getHours(),
-								this._currWeekBeginning.getMinutes(),
-								this._currWeekBeginning.getSeconds(),
-								this._currWeekBeginning.getMilliseconds());
+			var endDate:Date = new Date(this._currWeekBeginning.getFullYear(), this._currWeekBeginning.getMonth(), this._currWeekBeginning.getDate(),0,0,0,0);
 			endDate.date += 7;
-			var endIsoDate:String = HivivaModifier.getIsoStringFromDate(endDate);
+			var endIsoDate:String = HivivaModifier.getIsoStringFromDate(endDate,false);
 
 			// disable week navigation until we receive a response from database
 			this._weekNavHolder.touchable = false;

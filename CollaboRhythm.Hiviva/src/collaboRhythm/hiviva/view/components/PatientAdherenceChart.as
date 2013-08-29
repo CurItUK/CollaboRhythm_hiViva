@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 
@@ -296,7 +297,9 @@ package collaboRhythm.hiviva.view.components
 			var patientAverage:Number;
 			var adherenceData:Object;
 			var medicationSchedule:XMLList;
-			var referenceDate:Date;
+//			var referenceDate:Date;
+			var referenceDate:String;
+			var weekItarDate:String;
 
 			for (var i:int = 0; i < _scheduleHistoryData.length(); i++)
 			{
@@ -316,8 +319,9 @@ package collaboRhythm.hiviva.view.components
 
 					for (var k:int = 0; k < medicationSchedule.length(); k++)
 					{
-						referenceDate = HivivaModifier.getDateFromIsoString(String(medicationSchedule[k].DateTaken));
-						if(weekItar.getTime() == referenceDate.getTime())
+						referenceDate = String(medicationSchedule[k].DateTaken).split('+')[0];
+						weekItarDate = HivivaModifier.getIsoStringFromDate(weekItar,false);
+						if(weekItarDate == referenceDate)
 						{
 //							trace(int(medicationSchedule[k].PercentTaken));
 							medicationAdherence += int(medicationSchedule[k].PercentTaken);
@@ -336,7 +340,7 @@ package collaboRhythm.hiviva.view.components
 						adherenceData.adherence.push(0);
 					}
 				}
-//				trace(TOTAL_WEEKS + " weeks adherence for " + adherenceData.patient + " = " + adherenceData.adherence.join(','));
+				trace(TOTAL_WEEKS + " weeks adherence for " + adherenceData.patient + " = " + adherenceData.adherence.join(','));
 				this._patientAdherence.push(adherenceData);
 			}
 
