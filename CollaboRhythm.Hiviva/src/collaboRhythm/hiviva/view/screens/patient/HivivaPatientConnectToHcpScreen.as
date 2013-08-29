@@ -130,7 +130,6 @@ package collaboRhythm.hiviva.view.screens.patient
 					HivivaStartup.connectionsVO.users.push(data);
 				}
 				initResults();
-				HivivaStartup.connectionsVO.changed = true;
 			}
 			else
 			{

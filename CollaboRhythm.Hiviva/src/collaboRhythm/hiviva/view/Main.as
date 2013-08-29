@@ -437,7 +437,6 @@ package collaboRhythm.hiviva.view
 
 			HivivaStartup.patientAdherenceVO.percentage = 0;
 			HivivaStartup.connectionsVO.users = [];
-			HivivaStartup.connectionsVO.changed = false;
 			HivivaStartup.reportVO.settingsData = null;
 
 			System.gc();

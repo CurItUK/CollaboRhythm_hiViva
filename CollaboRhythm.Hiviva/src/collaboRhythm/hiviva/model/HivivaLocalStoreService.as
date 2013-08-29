@@ -236,7 +236,6 @@ package collaboRhythm.hiviva.model
 				}
 			}
 
-			this._connectionsVO.changed = true;
 			trace('connectionsVO.users updated');
 		}
 

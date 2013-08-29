@@ -252,11 +252,11 @@ package collaboRhythm.hiviva.view.screens.shared
 			if(e.data.xmlResponse.StatusCode == "1")
 			{
 				initStatusResponsePopup("Success! You are now connected to " + user + " (" + _messageData.FromAppId + ")", callBack);
-				if(HivivaStartup.userVO.type == "HCP")
+				/*if(HivivaStartup.userVO.type == "HCP")
 				{
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnectionsWithSummary();
-				}
+				}*/
 			}
 			else
 			{
@@ -290,10 +290,10 @@ package collaboRhythm.hiviva.view.screens.shared
 			this.owner.showScreen(_parentScreen);
 		}
 
-		private function getApprovedConnectionsWithSummaryHandler(e:RemoteDataStoreEvent):void
+		/*private function getApprovedConnectionsWithSummaryHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
-		}
+		}*/
 
 		public function get messageData():XML
 		{

@@ -73,14 +73,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			if(!this._remoteCallMade)
 			{
-				if(!HivivaStartup.connectionsVO.changed)
-				{
-					getApprovedConnectionsWithSummary();
-				}
-				else
-				{
-					drawApprovedConnectionsWithSummary();
-				}
+				getApprovedConnectionsWithSummary();
 				messageCheckHandler();
 				enableAutoHomePageMessageCheck();
 				this._remoteCallMade = true;
@@ -96,7 +89,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 
 			this._remoteCallMade = false;
-			HivivaStartup.connectionsVO.changed = false;
 			this.draw();
 		}
 
@@ -186,8 +178,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
 
 			drawApprovedConnectionsWithSummary();
-
-
 		}
 
 		private function enableAutoHomePageMessageCheck():void

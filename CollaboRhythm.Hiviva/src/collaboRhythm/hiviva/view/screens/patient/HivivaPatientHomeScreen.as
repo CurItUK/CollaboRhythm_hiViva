@@ -333,7 +333,6 @@ package collaboRhythm.hiviva.view.screens.patient
 					);
 					HivivaStartup.connectionsVO.users.push(data);
 				}
-				HivivaStartup.connectionsVO.changed = true;
 			}
 			else
 			{
