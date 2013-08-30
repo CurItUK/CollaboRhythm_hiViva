@@ -18,8 +18,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import feathers.data.ListCollection;
 	import feathers.layout.VerticalLayout;
 
-	import flash.events.Event;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
@@ -84,13 +82,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._submitButton = new Button();
 			this._submitButton.label = "Reset application";
-			this._submitButton.addEventListener(starling.events.Event.TRIGGERED, submitButtonClick);
+			this._submitButton.addEventListener(Event.TRIGGERED, submitButtonClick);
 			this.addChild(this._submitButton);
 
 			this._showUserFormButton = new Button();
 			this._showUserFormButton.label = "*";
 			this._showUserFormButton.alpha = 0;
-			this._showUserFormButton.addEventListener(starling.events.Event.TRIGGERED, showUserForm);
+			this._showUserFormButton.addEventListener(Event.TRIGGERED, showUserForm);
 
 			this._header.rightItems = new <DisplayObject>[_showUserFormButton];
 
@@ -99,12 +97,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._backButton = new Button();
 			this._backButton.name = "back-button";
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 		}
 
-		private function submitButtonClick(e:starling.events.Event = null):void
+		private function submitButtonClick(e:Event = null):void
 		{
 			removeButtonListeners();
 
@@ -140,20 +138,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._userForm.addChild(this._userFormAppIdInput);
 			this._userFormAppIdInput._labelLeft.text = "App Id";
 
-			this._userFormAppIdInput._input.addEventListener(flash.events.Event.PASTE, pasteInField);
-
 			this._userFormGuidInput = new LabelAndInput();
 			this._userFormGuidInput.labelStructure = "left";
 			this._userForm.addChild(this._userFormGuidInput);
 			this._userFormGuidInput._labelLeft.text = "Guid";
 
 			this._userFromSubmitButton = new Button();
-			this._userFromSubmitButton.addEventListener(starling.events.Event.TRIGGERED, userFormSubmitHandler);
+			this._userFromSubmitButton.addEventListener(Event.TRIGGERED, userFormSubmitHandler);
 			this._userFromSubmitButton.label = "Change User";
 			this._userForm.addChild(this._userFromSubmitButton);
 		}
 
-		private function showUserForm(e:starling.events.Event):void
+		private function showUserForm(e:Event):void
 		{
 			var usableWidth:Number = this.actualWidth - (this._scaledPadding * 2);
 
@@ -176,12 +172,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._userForm.visible = true;
 		}
 
-		private function pasteInField(e:flash.events.Event):void
-		{
-			trace("pasteInField");
-		}
-
-		private function userFormSubmitHandler(e:starling.events.Event):void
+		private function userFormSubmitHandler(e:Event):void
 		{
 			var userType:String = this._userTypePickerList.selectedItem.text;
 			var appId:String = this._userFormAppIdInput._input.text;
@@ -204,7 +195,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			this._closeAppPopup = new HivivaPopUp();
 			this._closeAppPopup.buttons = ["ok"];
-			this._closeAppPopup.addEventListener(starling.events.Event.TRIGGERED, okTriggered);
+			this._closeAppPopup.addEventListener(Event.TRIGGERED, okTriggered);
 			this._closeAppPopup.validate();
 			this._closeAppPopup.message = 'user has been changed, please close and relaunch the application';
 
@@ -215,13 +206,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._closeAppPopup.drawCloseButton();
 		}
 
-		private function okTriggered(e:starling.events.Event):void
+		private function okTriggered(e:Event):void
 		{
-			this._closeAppPopup.message = 'please exit the application and relaunch';
-			this._closeAppPopup.validate();
+
 		}
 
-		private function backBtnHandler(event:starling.events.Event):void
+		private function backBtnHandler(event:Event):void
 		{
 			removeButtonListeners();
 
@@ -230,9 +220,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function removeButtonListeners():void
 		{
-			this._backButton.removeEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
-			this._submitButton.removeEventListener(starling.events.Event.TRIGGERED, submitButtonClick);
-			this._userFromSubmitButton.removeEventListener(starling.events.Event.TRIGGERED, userFormSubmitHandler);
+			this._backButton.removeEventListener(Event.TRIGGERED, backBtnHandler);
+			this._submitButton.removeEventListener(Event.TRIGGERED, submitButtonClick);
+			this._userFromSubmitButton.removeEventListener(Event.TRIGGERED, userFormSubmitHandler);
 		}
 	}
 }
