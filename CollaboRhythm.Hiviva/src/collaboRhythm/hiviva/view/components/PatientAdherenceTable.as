@@ -205,7 +205,7 @@ package collaboRhythm.hiviva.view.components
 		public function updateTableData():void
 		{
 			this._medications = _patientData.DCUserMedication as XMLList;
-			this._history = HivivaModifier.getChronilogicalDictionaryFromXmlList(this._medications);
+			this._history = HivivaModifier.getChronologicalDictionaryFromXmlList(this._medications);
 
 			initTableContainer();
 

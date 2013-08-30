@@ -44,6 +44,7 @@ package collaboRhythm.hiviva.global
 
 
 		public static const APPLICATION_RESET_COMPLETE :String					= "applicationResetComplete";
+		public static const USER_CHANGE_COMPLETE :String						= "userChangeComplete";
 
 
 		public var message:String;

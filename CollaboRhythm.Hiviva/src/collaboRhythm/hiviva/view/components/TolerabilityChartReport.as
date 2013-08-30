@@ -138,13 +138,13 @@ package collaboRhythm.hiviva.view.components
 
 		private function calculateTolerability():void
 		{
-			this._history = HivivaModifier.getChronilogicalDictionaryFromXmlList(this._medications);
+			this._history = HivivaModifier.getChronologicalDictionaryFromXmlList(this._medications);
 
 			this._lowestValue = 100;
 			this._dailyTolerabilityData = [];
 
 			// get ultimate start and end dates
-			var startAndEndDates:Object = getUltimateStartAndEndDates();
+			var startAndEndDates:Object = HivivaModifier.getFinalStartAndEndDatesFromXmlList(this._medications);
 
 			populateTolerabilityData(startAndEndDates);
 //			trace(this._dailyTolerabilityData.join(","));
@@ -160,46 +160,6 @@ package collaboRhythm.hiviva.view.components
 				this._lowestValue = Math.floor(this._lowestValue / 10) * 10;
 			}
 			this._valueRange = 100 - this._lowestValue;
-		}
-
-		private function getUltimateStartAndEndDates():Object
-		{
-			var serverDate:Date = HivivaStartup.userVO.serverDate;
-			var startAndEndDates:Object = {};
-			var prevStartDate:Date = new Date(0,0,0,0,0,0,0);
-			// prevEndDate should start as tomorrow to ensure startAndEndDates.latestSchedule gets set
-			var prevEndDate:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate() + 1,serverDate.getHours(),serverDate.getMinutes(),serverDate.getSeconds(),serverDate.getMilliseconds());
-			var today:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate(),serverDate.getHours(),serverDate.getMinutes(),serverDate.getSeconds(),serverDate.getMilliseconds());
-			var currStartDate:Date;
-			var currEndDate:Date;
-			for (var j:int = 0; j < _medications.length(); j++)
-			{
-				currStartDate = HivivaModifier.getDateFromIsoString(_medications[j].StartDate, false);
-				currEndDate = (String(_medications[j].Stopped)) ==
-						"true" ? HivivaModifier.getDateFromIsoString(_medications[j].EndDate, false) : today;
-
-				if (prevStartDate.getTime() <= currStartDate.getTime())
-				{
-					startAndEndDates.earliestSchedule = prevStartDate.getTime();
-				}
-				if (prevEndDate.getTime() > currEndDate.getTime())
-				{
-					startAndEndDates.latestSchedule = prevEndDate.getTime();
-				}
-
-				prevStartDate = new Date(currStartDate.getFullYear(), currStartDate.getMonth(), currStartDate.getDate(),currStartDate.getHours(),currStartDate.getMinutes(),currStartDate.getSeconds(),currStartDate.getMilliseconds());
-				prevEndDate = new Date(currEndDate.getFullYear(), currEndDate.getMonth(), currEndDate.getDate(),currEndDate.getHours(),currEndDate.getMinutes(),currEndDate.getSeconds(),currEndDate.getMilliseconds());
-			}
-
-			// debug
-			var earliestSchedule:Date = new Date();
-			earliestSchedule.setTime(startAndEndDates.earliestSchedule);
-			var latestSchedule:Date = new Date();
-			latestSchedule.setTime(startAndEndDates.latestSchedule);
-//			trace('ultimate start date = ' + earliestSchedule.toDateString());
-//			trace('ultimate end date = ' + latestSchedule.toDateString());
-
-			return startAndEndDates;
 		}
 
 		private function populateTolerabilityData(startAndEndDates:Object):void

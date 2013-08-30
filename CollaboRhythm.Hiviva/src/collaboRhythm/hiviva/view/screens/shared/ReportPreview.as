@@ -55,13 +55,13 @@ package collaboRhythm.hiviva.view.screens.shared
 			if(!this._medicationHistoryCallMade && (this._adherenceIsChecked || this._feelingIsChecked))
 			{
 				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE, getDailyMedicationHistoryRangeCompleteHandler);
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getDailyMedicationHistoryRange(this._patientGuid, HivivaModifier.getIsoStringFromDate(this._startDate), HivivaModifier.getIsoStringFromDate(this._endDate));
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getDailyMedicationHistoryRange(this._patientGuid, HivivaModifier.getIsoStringFromDate(this._startDate,false), HivivaModifier.getIsoStringFromDate(this._endDate,false));
 			}
 
 			if(!this._testResultsCallMade && (this._cd4IsChecked || this._viralLoadIsChecked))
 			{
 				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_RESULTS_RANGE_COMPLETE, getPatientTestResultsRangeCompleteHandler);
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientTestResultsRange(this._patientGuid, HivivaModifier.getIsoStringFromDate(this._startDate), HivivaModifier.getIsoStringFromDate(this._endDate));
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientTestResultsRange(this._patientGuid, HivivaModifier.getIsoStringFromDate(this._startDate,false), HivivaModifier.getIsoStringFromDate(this._endDate,false));
 			}
 		}
 

@@ -93,7 +93,6 @@ package collaboRhythm.hiviva.view
 			_starFW.stage.stageHeight = stageHeight;
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			_starFW.start();
-
 		}
 
 		private function starlingRootCreatedHandler(e:starling.events.Event):void
