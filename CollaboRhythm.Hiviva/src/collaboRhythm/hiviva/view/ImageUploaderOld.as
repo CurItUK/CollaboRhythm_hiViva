@@ -103,7 +103,7 @@ package collaboRhythm.hiviva.view
 
 			this._trashButton = new Button();
 			this._trashButton.visible = false;
-			this._trashButton.name = "delete-cell-button";
+			this._trashButton.name = HivivaThemeConstants.DELETE_CELL_BUTTON;
 			this._trashButton.addEventListener(starling.events.Event.TRIGGERED, deleteImageData);
 			addChild(this._trashButton);
 

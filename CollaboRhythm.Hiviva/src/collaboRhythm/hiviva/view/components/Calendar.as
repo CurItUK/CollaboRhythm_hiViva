@@ -138,7 +138,7 @@ package collaboRhythm.hiviva.view.components
 			{
 
 				var cell:Button = new Button();
-				cell.name = "calendar-day-cell";
+				cell.name = HivivaThemeConstants.CALENDAR_DAY_CELL;
 				cell.isEnabled = false;
 				this.addChild(cell);
 				cell.validate();
@@ -161,11 +161,11 @@ package collaboRhythm.hiviva.view.components
 //			var arrowTexture:Texture = Assets.getTexture('ArrowPng');
 
 			_arrowLeft = new Button();
-			_arrowLeft.name = "calendar-arrows";
+			_arrowLeft.name = HivivaThemeConstants.CALENDAR_ARROWS;
 //			_arrowLeft.defaultSkin = new Image(arrowTexture);
 			_arrowRight = new Button();
 //			_arrowRight.defaultSkin = new Image(arrowTexture);
-			_arrowRight.name = "calendar-arrows";
+			_arrowRight.name = HivivaThemeConstants.CALENDAR_ARROWS;
 
 			this.addChild(_arrowLeft);
 			this.addChild(_arrowRight);
@@ -183,7 +183,7 @@ package collaboRhythm.hiviva.view.components
 
 
 			this._closeBtn = new Button();
-		    this._closeBtn.name = "close-button";
+		    this._closeBtn.name = HivivaThemeConstants.CLOSE_BUTTON;
 
 
 			this._closeBtn.addEventListener(starling.events.Event.TRIGGERED, closeBtnPressed);

@@ -78,7 +78,7 @@ package collaboRhythm.hiviva.view
 			initializeButtons();
 
 			this._closeButton = new Button();
-			this._closeButton.name = "close-button";
+			this._closeButton.name = HivivaThemeConstants.CLOSE_BUTTON;
 			this._closeButton.addEventListener(Event.TRIGGERED, buttonHandler);
 			addChild(this._closeButton);
 		}

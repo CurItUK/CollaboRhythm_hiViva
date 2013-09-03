@@ -58,7 +58,7 @@ package collaboRhythm.hiviva.view.components
 			this.addChild(this._doseDetailsLabel);
 
 			this._delete = new Button();
-			this._delete.name = "delete-cell-button";
+			this._delete.name = HivivaThemeConstants.DELETE_CELL_BUTTON;
 			this._delete.addEventListener(Event.TRIGGERED, deleteData);
 			addChild(this._delete);
 		}

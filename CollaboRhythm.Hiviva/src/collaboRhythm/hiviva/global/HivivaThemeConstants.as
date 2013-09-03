@@ -43,9 +43,19 @@ package collaboRhythm.hiviva.global
 		public static const CELL_SMALL_BOLD_LABEL:String			= "cell-small-bold-label";
 		public static const PATIENT_DATA_LIGHTER_LABEL:String		= "patient-data-lighter-label";
 
-		// buttons style names
+		// UI Objects style names
 
 		public static const BORDER_BUTTON:String					= "border-button";
 		public static const HOME_BUTTON:String						= "home-button";
+		public static const SPLASH_HCP_BUTTON:String				= "splash-hcp-button";
+		public static const SPLASH_PATIENT_BUTTON:String			= "splash-patient-button";
+		public static const SPLASH_FOOTER_BUTTON:String				= "splash-footer-button";
+		public static const BACK_BUTTON:String						= "back-button";
+		public static const CLOSE_BUTTON:String						= "close-button";
+		public static const DELETE_CELL_BUTTON:String				= "delete-cell-button";
+		public static const EDIT_CELL_BUTTON:String					= "edit-cell-button";
+		public static const CALENDAR_BUTTON:String					= "calendar-button";
+		public static const CALENDAR_DAY_CELL:String				= "calendar-day-cell";
+		public static const CALENDAR_ARROWS:String					= "calendar-arrows";
 	}
 }

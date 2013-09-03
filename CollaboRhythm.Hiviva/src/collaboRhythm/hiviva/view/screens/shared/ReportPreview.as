@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.shared
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
@@ -80,7 +81,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._header.title = "Report preview";
 
 			this._backButton = new Button();
-			this._backButton.name = "back-button";
+			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 

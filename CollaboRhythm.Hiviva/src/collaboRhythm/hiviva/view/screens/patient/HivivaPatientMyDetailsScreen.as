@@ -201,7 +201,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._agreeLabel);
 
 			this._backButton = new Button();
-			this._backButton.name = "back-button";
+			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 

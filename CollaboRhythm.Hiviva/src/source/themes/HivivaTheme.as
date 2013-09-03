@@ -838,17 +838,17 @@ package source.themes
 			this.setInitializerForClass(GalleryButton, buttonInitializer);
 			this.setInitializerForClass(Button, borderButtonInitializer, HivivaThemeConstants.BORDER_BUTTON);
 			this.setInitializerForClass(Button, homeButtonInitializer, HivivaThemeConstants.HOME_BUTTON);
-			this.setInitializerForClass(Button, splashHCPButtonInitializer, "splash-hcp-button");
-			this.setInitializerForClass(Button, splashPatientButtonInitializer, "splash-patient-button");
-			this.setInitializerForClass(Button, splashFooterButtonInitializer, "splash-footer-button");
+			this.setInitializerForClass(Button, splashHCPButtonInitializer, HivivaThemeConstants.SPLASH_HCP_BUTTON);
+			this.setInitializerForClass(Button, splashPatientButtonInitializer, HivivaThemeConstants.SPLASH_PATIENT_BUTTON);
+			this.setInitializerForClass(Button, splashFooterButtonInitializer, HivivaThemeConstants.SPLASH_FOOTER_BUTTON);
 
-			this.setInitializerForClass(Button, backButtonInitializer, "back-button");
-			this.setInitializerForClass(Button, closeButtonInitializer, "close-button");
-			this.setInitializerForClass(Button, deleteCellButtonInitializer, "delete-cell-button");
-			this.setInitializerForClass(Button, editCellButtonInitializer, "edit-cell-button");
-			this.setInitializerForClass(Button, calendarButtonInitializer, "calendar-button");
-			this.setInitializerForClass(Button, calendarDayCellButtonInitializer, "calendar-day-cell");
-			this.setInitializerForClass(Button, calendarArrowsButtonInitializer, "calendar-arrows");
+			this.setInitializerForClass(Button, backButtonInitializer, HivivaThemeConstants.BACK_BUTTON);
+			this.setInitializerForClass(Button, closeButtonInitializer, HivivaThemeConstants.CLOSE_BUTTON);
+			this.setInitializerForClass(Button, deleteCellButtonInitializer, HivivaThemeConstants.DELETE_CELL_BUTTON);
+			this.setInitializerForClass(Button, editCellButtonInitializer, HivivaThemeConstants.EDIT_CELL_BUTTON);
+			this.setInitializerForClass(Button, calendarButtonInitializer, HivivaThemeConstants.CALENDAR_BUTTON);
+			this.setInitializerForClass(Button, calendarDayCellButtonInitializer, HivivaThemeConstants.CALENDAR_DAY_CELL);
+			this.setInitializerForClass(Button, calendarArrowsButtonInitializer, HivivaThemeConstants.CALENDAR_ARROWS);
 
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");

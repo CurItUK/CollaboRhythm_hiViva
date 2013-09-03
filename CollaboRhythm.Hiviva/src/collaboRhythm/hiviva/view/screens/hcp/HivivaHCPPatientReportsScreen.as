@@ -118,7 +118,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.title = "Generate Reports";
 
 			this._backButton = new Button();
-			this._backButton.name = "back-button";
+			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
@@ -225,7 +225,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			this._startDateButton = new Button();
 			this._startDateButton.addEventListener(Event.TRIGGERED, startDateCalendarHandler);
-			this._startDateButton.name = "calendar-button";
+			this._startDateButton.name = HivivaThemeConstants.CALENDAR_BUTTON;
 			this._content.addChild(this._startDateButton);
 			this._startDateButton.validate();
 			this._startDateButton.x = this._startDateInput.width + this._componentGap;
@@ -233,7 +233,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._finishDateButton = new Button();
 			this._finishDateButton.addEventListener(Event.TRIGGERED, finishDateCalendarHandler);
-			this._finishDateButton.name = "calendar-button";
+			this._finishDateButton.name = HivivaThemeConstants.CALENDAR_BUTTON;
 			this._content.addChild(this._finishDateButton);
 			this._finishDateButton.validate();
 			this._finishDateButton.x = this._finishDateInput.width + this._componentGap;

@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view
 {
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 
@@ -138,7 +139,7 @@ package collaboRhythm.hiviva.view
 			//addChild(this._hcpSelect);
 
 			this._hcpDelete = new Button();
-			this._hcpDelete.name = "delete-cell-button";
+			this._hcpDelete.name = HivivaThemeConstants.DELETE_CELL_BUTTON;
 			this._hcpDelete.addEventListener(Event.TRIGGERED, onHcpDelete);
 			addChild(this._hcpDelete);
 		}

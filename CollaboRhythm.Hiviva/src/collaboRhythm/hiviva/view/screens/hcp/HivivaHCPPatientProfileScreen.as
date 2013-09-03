@@ -96,7 +96,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.addChild(this._header);
 
 			this._backButton = new Button();
-			this._backButton.name = "back-button";
+			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 
@@ -189,12 +189,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._weekNavHolder.addChild(_viewLabel);
 
 			_leftArrow = new Button();
-			_leftArrow.name = "calendar-arrows";
+			_leftArrow.name = HivivaThemeConstants.CALENDAR_ARROWS;
 			_leftArrow.addEventListener(starling.events.Event.TRIGGERED, leftArrowHandler);
 			this._weekNavHolder.addChild(_leftArrow);
 
 			_rightArrow = new Button();
-			_rightArrow.name = "calendar-arrows";
+			_rightArrow.name = HivivaThemeConstants.CALENDAR_ARROWS;
 			_rightArrow.addEventListener(starling.events.Event.TRIGGERED, rightArrowHandler);
 			this._weekNavHolder.addChild(_rightArrow);
 			this._rightArrow.scaleX = -1;

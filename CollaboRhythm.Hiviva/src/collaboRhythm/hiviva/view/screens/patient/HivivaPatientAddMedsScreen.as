@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RXNORMEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.RXNORM_DrugSearch;
@@ -78,7 +79,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.title = "Add a medicine";
 
 			this._backButton = new Button();
-			this._backButton.name = "back-button";
+			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
 

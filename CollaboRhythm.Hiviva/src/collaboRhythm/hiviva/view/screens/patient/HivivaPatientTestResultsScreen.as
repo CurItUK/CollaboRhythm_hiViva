@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
@@ -115,7 +116,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._dateButton = new Button();
 			this._dateButton.addEventListener(Event.TRIGGERED, dateCalendarHandler);
-			this._dateButton.name = "calendar-button";
+			this._dateButton.name = HivivaThemeConstants.CALENDAR_BUTTON;
 			this._content.addChild(this._dateButton);
 
 			this._cancelAndSave = new BoxedButtons();
@@ -124,7 +125,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._cancelAndSave);
 
 			this._backButton = new Button();
-			this._backButton.name = "back-button";
+			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 

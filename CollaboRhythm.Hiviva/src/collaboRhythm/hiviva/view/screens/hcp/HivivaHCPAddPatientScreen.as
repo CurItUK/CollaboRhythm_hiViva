@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 
@@ -65,7 +66,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			addChild(this._header);
 
 			this._backButton = new Button();
-			this._backButton.name = "back-button";
+			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 

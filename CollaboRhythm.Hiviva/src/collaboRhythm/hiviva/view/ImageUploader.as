@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view
 {
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 
 	import feathers.controls.Button;
@@ -103,7 +104,7 @@ package collaboRhythm.hiviva.view
 
 			this._trashButton = new Button();
 			this._trashButton.visible = false;
-			this._trashButton.name = "delete-cell-button";
+			this._trashButton.name = HivivaThemeConstants.DELETE_CELL_BUTTON;
 			this._trashButton.addEventListener(starling.events.Event.TRIGGERED, deleteImageData);
 			addChild(this._trashButton);
 
@@ -133,8 +134,7 @@ package collaboRhythm.hiviva.view
 
 		public function getMainImage():void
 		{
-			var destination:File = File.applicationStorageDirectory;
-			destination = destination.resolvePath(this._fileName);
+			var destination:File = File.applicationStorageDirectory.resolvePath(this._fileName);
 			if (destination.exists)
 			{
 				loadImageFromUrl(destination.url);
@@ -249,7 +249,7 @@ package collaboRhythm.hiviva.view
 		private function loadImageFromUrl(url:String):void
 		{
 			var imageLoader:Loader = new Loader();
-			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoadedFromUrl);
 			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url));
 		}
@@ -257,14 +257,20 @@ package collaboRhythm.hiviva.view
 		private function loadImageFromBytes(imageBytes:ByteArray):void
 		{
 			var imageLoader:Loader = new Loader();
-			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoadedFromBytes);
 			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.loadBytes(imageBytes);
 		}
 
-		private function imageLoaded(e:flash.events.Event):void
+		private function imageLoadedFromUrl(e:flash.events.Event):void
 		{
-			trace("Image loaded.");
+			trace("Image loaded from url.");
+			createPreviewFromBitmap(e.target.content as Bitmap);
+		}
+
+		private function imageLoadedFromBytes(e:flash.events.Event):void
+		{
+			trace("Image loaded from bytes.");
 			var suitableBm:Bitmap = getSuitableBitmap(e.target.content as Bitmap);
 			var savableImageBytes:ByteArray = suitableBm.bitmapData.encode(new Rectangle(0,0,suitableBm.width,suitableBm.height), new JPEGEncoderOptions(100));
 			writeByteArrayToFile(savableImageBytes);
@@ -291,10 +297,9 @@ package collaboRhythm.hiviva.view
 		private function getSuitableBitmap(sourceBm:Bitmap):Bitmap
 		{
 			var bm:Bitmap;
-			var m:Matrix;
 			var bmd:BitmapData;
+			var m:Matrix = new Matrix();
 
-			m = new Matrix();
 			// if source bitmap is larger than starling size limit of 2048x2048 than resize
 			if (sourceBm.width >= 2048 || sourceBm.height >= 2048)
 			{

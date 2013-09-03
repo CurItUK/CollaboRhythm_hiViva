@@ -262,7 +262,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			this._startDateButton = new Button();
 			this._startDateButton.addEventListener(Event.TRIGGERED, startDateCalendarHandler);
-			this._startDateButton.name = "calendar-button";
+			this._startDateButton.name = HivivaThemeConstants.CALENDAR_BUTTON;
 			this._content.addChild(this._startDateButton);
 			this._startDateButton.validate();
 			this._startDateButton.x = this._startDateInput.width + this._componentGap;
@@ -270,7 +270,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._finishDateButton = new Button();
 			this._finishDateButton.addEventListener(Event.TRIGGERED, finishDateCalendarHandler);
-			this._finishDateButton.name = "calendar-button";
+			this._finishDateButton.name = HivivaThemeConstants.CALENDAR_BUTTON;
 			this._content.addChild(this._finishDateButton);
 			this._finishDateButton.validate();
 			this._finishDateButton.x = this._finishDateInput.width + this._componentGap;

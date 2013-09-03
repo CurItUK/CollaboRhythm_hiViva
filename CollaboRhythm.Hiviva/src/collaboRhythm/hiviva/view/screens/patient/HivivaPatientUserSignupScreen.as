@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.*;
 
 
@@ -133,7 +134,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._submitButton);
 
 			this._backButton = new Button();
-			this._backButton.name = "back-button";
+			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 

@@ -94,12 +94,12 @@ package collaboRhythm.hiviva.view.screens.shared
 			addChild(this._footer);
 
 			this._termsButton = new Button();
-			this._termsButton.name = "splash-footer-button";
+			this._termsButton.name = HivivaThemeConstants.SPLASH_FOOTER_BUTTON;
 			this._termsButton.label = "Terms of Use";
 			addChild(this._termsButton);
 
 			this._privacyButton = new Button();
-			this._privacyButton.name = "splash-footer-button";
+			this._privacyButton.name = HivivaThemeConstants.SPLASH_FOOTER_BUTTON;
 			this._privacyButton.label = "Privacy Policy";
 			addChild(this._privacyButton);
 		}
@@ -132,12 +132,12 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function initButtons():void
 		{
 			this._hcpButton = new Button();
-			this._hcpButton.name = "splash-hcp-button";
+			this._hcpButton.name = HivivaThemeConstants.SPLASH_HCP_BUTTON;
 			this._hcpButton.label = "I’m a healthcare \nprofessional \nor carer";
 			this._hcpButton.addEventListener(Event.TRIGGERED , hcpButtonHandler);
 
 			this._patientButton = new Button();
-			this._patientButton.name = "splash-patient-button";
+			this._patientButton.name = HivivaThemeConstants.SPLASH_PATIENT_BUTTON;
 			this._patientButton.label = "I am a patient";
 			this._patientButton.addEventListener(Event.TRIGGERED , patientButtonHandler);
 

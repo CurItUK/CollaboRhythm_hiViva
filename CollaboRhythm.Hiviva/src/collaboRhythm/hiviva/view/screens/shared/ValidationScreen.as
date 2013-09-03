@@ -65,7 +65,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			addChild(this._validationLabel);
 
 			this._closeValidationButton = new Button();
-			this._closeValidationButton.name = "close-button";
+			this._closeValidationButton.name = HivivaThemeConstants.CLOSE_BUTTON;
 			this._closeValidationButton.visible = false;
 //			this._closeValidationButton.addEventListener(Event.TRIGGERED, hideFormValidation);
 			addChild(this._closeValidationButton);
