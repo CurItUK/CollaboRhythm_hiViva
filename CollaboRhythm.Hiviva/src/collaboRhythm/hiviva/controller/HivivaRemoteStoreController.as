@@ -170,6 +170,20 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function ignoreConnection(fromGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.CONNECTION_IGNORE_COMPLETE , ignoreConnectionHandler);
+			service.ignoreConnection(fromGuid);
+		}
+
+		private function ignoreConnectionHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.CONNECTION_IGNORE_COMPLETE , ignoreConnectionHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.CONNECTION_IGNORE_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function deleteConnection(fromGuid:String , toGuid:String):void
 		{
 			service.addEventListener(RemoteDataStoreEvent.CONNECTION_DELETE_COMPLETE , deleteConnectionHandler);
@@ -306,6 +320,20 @@ package collaboRhythm.hiviva.controller
 		{
 			service.removeEventListener(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE , markAlertMessageAsReadHandler);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function deleteAlertMessage(alertMessageGuid:String):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.DELETE_ALERT_MESSAGE_COMPLETE , deleteAlertMessageHandler);
+			service.deleteAlertMessage(alertMessageGuid);
+		}
+
+		private function deleteAlertMessageHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.DELETE_ALERT_MESSAGE_COMPLETE , deleteAlertMessageHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.DELETE_ALERT_MESSAGE_COMPLETE);
 			evt.data = e.data;
 			this.dispatchEvent(evt);
 		}

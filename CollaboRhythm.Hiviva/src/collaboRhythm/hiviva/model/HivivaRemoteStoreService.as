@@ -213,6 +213,24 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt)
 		}
 
+		public function ignoreConnection(fromGuid:String):void
+		{
+			var query:String = "From=" + fromGuid + "&To=" + HivivaStartup.userVO.guid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_CONNECTION_IGNORE + query);
+			trace("ignoreConnection " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, ignoreConnectionHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function ignoreConnectionHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.CONNECTION_IGNORE_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
 		public function deleteConnection(fromGuid:String , toGuid:String):void
 		{
 			var query:String = "From=" + fromGuid + "&To=" + toGuid + "&deletedByGuid=" + HivivaStartup.userVO.guid;
@@ -387,6 +405,24 @@ package collaboRhythm.hiviva.model
 		{
 			var xmlResponse:XML = new XML(e.target.data);
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
+		public function deleteAlertMessage(alertMessageGuid:String):void
+		{
+			var query:String = "alertMessageGuid=" + alertMessageGuid;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_DELETE_ALERT_MESSAGE + query);
+			trace("deleteAlertMessage " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, deleteAlertMessageComplete);
+			urlLoader.load(urlRequest);
+		}
+
+		private function deleteAlertMessageComplete(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.DELETE_ALERT_MESSAGE_COMPLETE);
 			evt.data.xmlResponse = xmlResponse;
 			this.dispatchEvent(evt)
 		}

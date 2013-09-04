@@ -8,7 +8,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.components.AdherenceChartReport;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
-	import collaboRhythm.hiviva.view.components.ScheduleTableReport;
+	import collaboRhythm.hiviva.view.components.AdherenceTableReport;
 	import collaboRhythm.hiviva.view.components.TestTableReport;
 	import collaboRhythm.hiviva.view.components.TolerabilityChartReport;
 
@@ -37,7 +37,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _filteredMedicationHistory:XMLList;
 		private var _filteredTestResults:XMLList;
 		private var _adherenceReportChart:AdherenceChartReport;
-		private var _adherenceReportTable:ScheduleTableReport;
+		private var _adherenceReportTable:AdherenceTableReport;
 		private var _tolerabilityReportChart:TolerabilityChartReport;
 		private var _reportTable:TestTableReport;
 		private var _layoutApplied:Boolean = false;
@@ -144,7 +144,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._adherenceReportChart = new AdherenceChartReport();
 			this._content.addChild(this._adherenceReportChart);
 
-			this._adherenceReportTable = new ScheduleTableReport();
+			this._adherenceReportTable = new AdherenceTableReport();
 			this._content.addChild(this._adherenceReportTable);
 
 			this._tolerabilityReportChart = new TolerabilityChartReport();
@@ -219,7 +219,9 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._adherenceReportChart.validate();
 				this._adherenceReportChart.drawChart();
 
-				this._adherenceReportTable.patientData = this._filteredMedicationHistory;
+				this._adherenceReportTable.startDate = this._startDate;
+				this._adherenceReportTable.endDate = this._endDate;
+				this._adherenceReportTable.medications = this._filteredMedicationHistory;
 				this._adherenceReportTable.width = Constants.INNER_WIDTH;
 				this._adherenceReportTable.validate();
 				this._adherenceReportTable.drawTable();

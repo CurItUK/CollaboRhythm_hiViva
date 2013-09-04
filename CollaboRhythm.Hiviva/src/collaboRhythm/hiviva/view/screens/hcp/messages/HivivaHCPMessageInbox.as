@@ -142,8 +142,9 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					alert.messageType = MessageInboxResultCell.STATUS_ALERT_TYPE;
 					alert.guid = this._alerts[i].AlertMessageGuid;
 					alert.primaryText = this._alerts[i].AlertMessage;
-					alert.dateText = this._alerts[i].SentDate;
-					alert.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
+					alert.dateText = this._alerts[i].AlertDate;
+					alert.addEventListener(FeathersScreenEvent.MESSAGE_READ, messageSelectedHandler);
+					alert.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageCheckBoxSelectedHandler);
 					this._cellContainer.addChild(alert);
 					this._messageCells.push(alert);
 				}
@@ -164,7 +165,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					connectionRequest.primaryText = "Patient (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
 //					hcpMessage.secondaryText = this._allReceivedMessages[i].Name;
 					connectionRequest.dateText = this._pendingConnections[i].SentDate;
-					connectionRequest.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageSelectedHandler);
+					connectionRequest.addEventListener(FeathersScreenEvent.MESSAGE_READ, messageSelectedHandler);
+					connectionRequest.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageCheckBoxSelectedHandler);
 					this._cellContainer.addChild(connectionRequest);
 					this._messageCells.push(connectionRequest);
 				}
@@ -177,7 +179,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this.addChild(this._cellContainer);
 			this._cellContainer.width = Constants.STAGE_WIDTH;
 			this._cellContainer.y = Constants.HEADER_HEIGHT;
-			this._cellContainer.height = Constants.STAGE_HEIGHT - this._cellContainer.y - this._deleteMessageButton.height - Constants.PADDING_BOTTOM;
+			this._cellContainer.height = this._deleteMessageButton.y - this._cellContainer.y - Constants.PADDING_BOTTOM;
 
 			for (var i:int = 0; i < this._messageCells.length; i++)
 			{
@@ -231,7 +233,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			trace("messageDetailEventHandler");
 		}
 
-		private function messageCheckBoxSelectedHandler():void
+		private function messageCheckBoxSelectedHandler(e:FeathersScreenEvent):void
 		{
 			trace("messageCheckBoxSelectedHandler");
 			var msgCount:uint = this._messageCells.length;
@@ -282,27 +284,33 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					switch(selectedMessage.messageType)
 					{
 						case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
-							// TODO : ignore request
+							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_IGNORE_COMPLETE, ignoreConnectionHandler);
+							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.ignoreConnection(getMessageXMLByProperty(this._pendingConnections,"FromUserGuid",selectedMessage.guid).FromUserGuid);
 							break;
 						case MessageInboxResultCell.STATUS_ALERT_TYPE :
-							// TODO : mark alert as read
+							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.DELETE_ALERT_MESSAGE_COMPLETE, deleteAlertMessageHandler);
+							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.deleteAlertMessage(getMessageXMLByProperty(this._alerts,"AlertMessageGuid",selectedMessage.guid));
 							break;
 					}
 					this._cellContainer.removeChild(selectedMessage, true);
-//					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
-//					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.deleteUserMessage(selectedMessage.guid);
+					selectedMessage.check.isSelected = false;
 				}
 			}
 			this._cellContainer.validate();
 		}
-/*
 
-		private function deleteUserMessageHandler(e:RemoteDataStoreEvent):void
+		private function ignoreConnectionHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
-			trace('message deleted');
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.CONNECTION_IGNORE_COMPLETE, ignoreConnectionHandler);
+			trace("request ignored : " + e.data.xmlResponse.Message);
 		}
-*/
+
+		private function deleteAlertMessageHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.DELETE_ALERT_MESSAGE_COMPLETE, deleteAlertMessageHandler);
+			trace("alert message deleted : " + e.data.xmlResponse.Message);
+		}
+
 
 		private function composeBtnHandler(e:Event):void
 		{

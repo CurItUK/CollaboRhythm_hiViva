@@ -123,7 +123,7 @@ package collaboRhythm.hiviva.view.screens.shared
 					break;
 				case MessageInboxResultCell.STATUS_ALERT_TYPE :
 					this._nameLabel.text = "Status Alert";
-					this._dateLabel.text = HivivaModifier.getPrettyStringFromIsoString(_messageData.SentDate);
+					this._dateLabel.text = HivivaModifier.getPrettyStringFromIsoString(_messageData.AlertDate);
 					this._messageLabel.text = String(_messageData.AlertMessage);
 
 					if(_messageData.Read == "false") markAlertAsRead();
@@ -151,12 +151,20 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function markAlertAsRead():void
 		{
-			// TODO : Do remote call to mark alert as read
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE, markAlertMessageAsReadComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.markAlertMessageAsRead(_messageData.AlertMessageGuid);
 		}
 
 		private function markMessageAsReadHandler(e:RemoteDataStoreEvent):void
 		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.MARK_MESSAGE_AS_READ_COMPLETE, markMessageAsReadHandler);
 			trace("message marked as read");
+		}
+
+		private function markAlertMessageAsReadComplete(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE, markAlertMessageAsReadComplete);
+			trace("alert marked as read");
 		}
 
 		private function optionsHandler(e:Event):void
@@ -182,9 +190,10 @@ package collaboRhythm.hiviva.view.screens.shared
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.DELETE_USER_MESSAGE_COMPLETE, deleteUserMessageHandler);
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.deleteUserMessage(_messageData.MessageGuid);
 					break;
-//				case "Ignore" :
-//
-//					break;
+				case "Ignore" :
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_IGNORE_COMPLETE, ignoreConnectionHandler);
+					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.ignoreConnection(_messageData.FromUserGuid);
+					break;
 				case "Accept" :
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(_messageData.FromUserGuid);
@@ -257,6 +266,22 @@ package collaboRhythm.hiviva.view.screens.shared
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnectionsWithSummary();
 				}*/
+			}
+			else
+			{
+				initStatusResponsePopup("Error! " + e.data.xmlResponse.Message, callBack);
+			}
+		}
+
+		private function ignoreConnectionHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.CONNECTION_IGNORE_COMPLETE, ignoreConnectionHandler);
+
+			var user:String = HivivaStartup.userVO.type == "HCP" ? "patient" : "care provider";
+
+			if(e.data.xmlResponse.StatusCode == "1")
+			{
+				initStatusResponsePopup("You have ignored the connection request from " + user + " (" + _messageData.FromAppId + ")", callBack);
 			}
 			else
 			{

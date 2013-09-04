@@ -67,50 +67,34 @@ package collaboRhythm.hiviva.view.screens
 		{
 			var fullHeight:Number;
 
-			_selected = false;
-			trace("drawing");
 			super.draw();
 
 			this._seperator.width = Constants.STAGE_WIDTH;
 
-			if(!this._isSent)
-			{
-				this._check.validate();
-				this._check.x = Constants.PADDING_LEFT;
+			this._check.validate();
+			this._check.x = Constants.PADDING_LEFT;
 
-				this._primaryLabel.x = this._check.x + this._check.width + Constants.PADDING_LEFT;
-			}
-			else
-			{
-				this._primaryLabel.x = Constants.PADDING_LEFT;
-			}
+			this._primaryLabel.x = this._check.x + this._check.width + Constants.PADDING_LEFT;
+
 			this._primaryLabel.y = Constants.PADDING_TOP;
-			this._primaryLabel.width = Constants.STAGE_WIDTH - this._primaryLabel.x - Constants.PADDING_RIGHT - this._dateLabel.width - Constants.PADDING_LEFT;
+			this._primaryLabel.width = Constants.STAGE_WIDTH - this._primaryLabel.x - Constants.PADDING_RIGHT - this._dateLabel.width - Constants.PADDING_LEFT - this._icon.width;
 			this._primaryLabel.validate();
-			fullHeight = this._primaryLabel.y + this._primaryLabel.height + Constants.PADDING_BOTTOM;
+
+			this._secondaryLabel.validate();
+			this._secondaryLabel.y = this._primaryLabel.y + this._primaryLabel.height;
+			this._secondaryLabel.x = this._primaryLabel.x;
+			this._secondaryLabel.width = this._primaryLabel.width;
+			fullHeight = this._secondaryLabel.y + this._secondaryLabel.height + Constants.PADDING_BOTTOM;
 
 			this._dateLabel.validate();
 			this._dateLabel.x = Constants.STAGE_WIDTH - Constants.PADDING_RIGHT - this._dateLabel.width;
 
-			switch(this._messageType)
-			{
-				case COMPOSED_MESSAGE_TYPE :
-					this._secondaryLabel.validate();
-					this._secondaryLabel.y = this._primaryLabel.y + this._primaryLabel.height;
-					this._secondaryLabel.x = this._primaryLabel.x;
-					this._secondaryLabel.width = this._primaryLabel.width;
-					fullHeight += this._secondaryLabel.height;
-					if(!this._read) this._bg.height = fullHeight;
-					break;
-				case CONNECTION_REQUEST_TYPE :
-				case STATUS_ALERT_TYPE :
-					this._primaryLabel.width -= this._icon.width;
-					this._icon.x = this._primaryLabel.x + this._primaryLabel.width;
-					this._icon.y = (fullHeight * 0.5) - (this._icon.height * 0.5);
-					break;
-			}
+			this._icon.x = this._primaryLabel.x + this._primaryLabel.width;
+			this._icon.y = (fullHeight * 0.5) - (this._icon.height * 0.5);
 
-			if(!this._isSent) this._check.y = (fullHeight * 0.5) - (this._check.height * 0.5);
+			this._bg.height = fullHeight;
+
+			this._check.y = (fullHeight * 0.5) - (this._check.height * 0.5);
 			this._dateLabel.y = (fullHeight * 0.5) - (this._dateLabel.height * 0.5);
 
 			this._viewMessageBtn.x =  this._primaryLabel.x;
@@ -124,77 +108,84 @@ package collaboRhythm.hiviva.view.screens
 		{
 			super.initialize();
 			this._seperator = new Image(Main.assets.getTexture("header_line"));
-			addChild(this._seperator);
 
-			if(this._messageType == COMPOSED_MESSAGE_TYPE && !this._read)
-			{
-				this._bg = new Quad(Constants.STAGE_WIDTH,100,0xFFFFFF);
-				this._bg.alpha = 0.2;
-				addChild(this._bg);
-			}
+			this._bg = new Quad(Constants.STAGE_WIDTH,100,0xFFFFFF);
+			this._bg.alpha = 0.2;
 
 			this._primaryLabel = new Label();
-			if(this._messageType == CONNECTION_REQUEST_TYPE || (this._messageType == COMPOSED_MESSAGE_TYPE && !this._read)) this._primaryLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._primaryLabel.nameList.add(HivivaThemeConstants.BODY_BOLD_LABEL);
 			this._primaryLabel.text = _primaryText;
-			this.addChild(this._primaryLabel);
 
-			switch(this._messageType)
-			{
-				case COMPOSED_MESSAGE_TYPE :
-					this._secondaryLabel = new Label();
-					this._secondaryLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
-					this._secondaryLabel.text = _secondaryText;
-					this.addChild(this._secondaryLabel);
-					break;
-				case CONNECTION_REQUEST_TYPE :
-					this._icon = new Image(Main.assets.getTexture("message_icon_req"));
-					this.addChild(this._icon);
-					break;
-				case STATUS_ALERT_TYPE :
-					this._icon = new Image(Main.assets.getTexture("message_icon_alert"));
-					this.addChild(this._icon);
-					break;
-			}
+			this._secondaryLabel = new Label();
+			this._secondaryLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
+			this._secondaryLabel.text = _secondaryText;
+
+			this._icon = new Image(Texture.empty());
 
 			this._dateLabel = new Label();
 			this._dateLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
 			this._dateLabel.text = _dateText;
-			this.addChild(this._dateLabel);
 
-			if(!this._isSent)
-			{
-				this._check = new Check();
-				this.addChild(this._check);
-				this._check.addEventListener(Event.TRIGGERED , checkBoxSelectHandler);
-			}
+			this._check = new Check();
+			this._check.addEventListener(Event.TRIGGERED , checkBoxSelectHandler);
 
 			this._viewMessageBtn = new Button();
 			this._viewMessageBtn.label = "";
 			this._viewMessageBtn.alpha = 0;
 			this._viewMessageBtn.addEventListener(Event.TRIGGERED , messageCellSelectHandler);
+
+			initializeMessageType();
+
+			addChild(this._seperator);
+			addChild(this._bg);
+			addChild(this._primaryLabel);
+			addChild(this._secondaryLabel);
+			addChild(this._icon);
+			addChild(this._dateLabel);
+			addChild(this._check);
 			addChild(this._viewMessageBtn);
+		}
+
+		private function initializeMessageType():void
+		{
+			if(this._messageType == COMPOSED_MESSAGE_TYPE)
+			{
+
+			}
+			if(this._messageType == CONNECTION_REQUEST_TYPE)
+			{
+				this._icon = new Image(Main.assets.getTexture("message_icon_req"));
+				this._bg.visible = false;
+				this._primaryLabel.nameList.remove(HivivaThemeConstants.BODY_BOLD_LABEL);
+			}
+			if(this._messageType == STATUS_ALERT_TYPE)
+			{
+				this._icon = new Image(Main.assets.getTexture("message_icon_alert"));
+			}
+			if(this._isSent)
+			{
+				this._check.visible = false;
+				this._bg.visible = false;
+				this._primaryLabel.nameList.remove(HivivaThemeConstants.BODY_BOLD_LABEL);
+			}
+			if(this._read)
+			{
+				this._bg.visible = false;
+				this._primaryLabel.nameList.remove(HivivaThemeConstants.BODY_BOLD_LABEL);
+			}
 		}
 
 		private function messageCellSelectHandler(e:Event):void
 		{
-			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.MESSAGE_SELECT);
+			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.MESSAGE_READ);
 			this.dispatchEvent(evt);
 		}
 
 		private function checkBoxSelectHandler(e:Event):void
 		{
-		//	_selected ? !_selected : _selected;
-			if(_selected)
-			{
-				_selected = false;
-			}
-			else
-			{
-
-				_selected = true;
-			}
-			trace("SELECTED VALUE " + _selected)
-			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.MESSAGE_CB_SELECT);
+			this._selected = !this._selected;
+			trace("SELECTED VALUE " + _selected);
+			var evt:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.MESSAGE_SELECT);
 			this.dispatchEvent(evt);
 		}
 

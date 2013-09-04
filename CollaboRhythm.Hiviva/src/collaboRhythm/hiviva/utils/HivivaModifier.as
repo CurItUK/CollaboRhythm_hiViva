@@ -420,8 +420,8 @@ package collaboRhythm.hiviva.utils
 
 			if(setToUTC)
 			{
-				var noDSTDate:Date = removeDSTFromDate(rawDateFromIso);
-				date = convertToLocalTime(noDSTDate);
+				var noUKDSTDate:Date = removeUKDSTFromDate(rawDateFromIso);
+				date = convertToLocalTime(noUKDSTDate);
 			}
 			else
 			{
@@ -431,7 +431,7 @@ package collaboRhythm.hiviva.utils
 			return date;
 		}
 
-		public static function removeDSTFromDate(dtDate:Date):Date
+		public static function removeUKDSTFromDate(dtDate:Date):Date
 		{
 			var lastSundayOfMarch:int = getDateOfLastSundayOfMonth(2);
 			var lastSundayOfOctober:int = getDateOfLastSundayOfMonth(9);
@@ -446,7 +446,7 @@ package collaboRhythm.hiviva.utils
 			return dtDate;
 		}
 
-		public static function addDSTToDate(dtDate:Date):Date
+		public static function addUKDSTToDate(dtDate:Date):Date
 		{
 			var lastSundayOfMarch:int = getDateOfLastSundayOfMonth(2);
 			var lastSundayOfOctober:int = getDateOfLastSundayOfMonth(9);
@@ -475,12 +475,16 @@ package collaboRhythm.hiviva.utils
 		public static function convertToLocalTime(dtDate:Date):Date
 		{
 			dtDate.setTime(dtDate.getTime() - (dtDate.getTimezoneOffset() * 60000));
+			// add locale DST according to device OS
+			if(dtDate.toTimeString().indexOf("+") > -1) dtDate.hours += 1;
 			return dtDate;
 		}
 
 		public static function convertToUTCTime(dtDate:Date):Date
 		{
 			dtDate.setTime(dtDate.getTime() + (dtDate.getTimezoneOffset() * 60000));
+			// remove locale DST according to device OS
+			if(dtDate.toTimeString().indexOf("+") > -1) dtDate.hours -= 1;
 			return dtDate;
 		}
 
@@ -493,7 +497,7 @@ package collaboRhythm.hiviva.utils
 			if(setToUTC)
 			{
 				var UTCDate:Date = convertToUTCTime(rawDate);
-				var DSTDate:Date = addDSTToDate(UTCDate);
+				var DSTDate:Date = addUKDSTToDate(UTCDate);
 				targDate = DSTDate;
 			}
 			else

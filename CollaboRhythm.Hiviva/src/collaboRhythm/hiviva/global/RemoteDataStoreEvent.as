@@ -30,6 +30,7 @@ package collaboRhythm.hiviva.global
 		public static const MARK_MESSAGE_AS_READ_COMPLETE:String						= "markMessageAsReadComplete";
 		public static const GET_PATIENT_BADGE_ALERTS_COMPLETE:String					= "getPatientBadgeAlertsComplete";
 		public static const MARK_ALERT_MESSAGE_AS_READ_COMPLETE:String					= "markAlertMessageAsReadComplete";
+		public static const DELETE_ALERT_MESSAGE_COMPLETE:String						= "deleteAlertMessageComplete";
 		public static const GET_HCP_ALERTS_COMPLETE:String								= "getHCPAlertsComplete";
 
 		//Connections
@@ -40,6 +41,7 @@ package collaboRhythm.hiviva.global
 		public static const GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE:String		= "getApprovedConnectionsWithSummaryComplete";
 		public static const GET_PENDING_CONNECTIONS_COMPLETE:String						= "getPendingConnectionsComplete";
 		public static const CONNECTION_APPROVE_COMPLETE:String							= "connectionApproveComplete";
+		public static const CONNECTION_IGNORE_COMPLETE:String							= "connectionIgnoreComplete";
 		public static const CONNECTION_DELETE_COMPLETE:String							= "connectionDeleteComplete";
 
 		//Test results

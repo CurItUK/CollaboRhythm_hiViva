@@ -18,10 +18,12 @@ package collaboRhythm.hiviva.view.components
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 
-	public class ScheduleTableReport extends FeathersControl
+	public class AdherenceTableReport extends FeathersControl
 	{
 		private var _history:Dictionary;
-		private var _patientData:XMLList;
+		private var _startDate:Date;
+		private var _endDate:Date;
+		private var _medications:XMLList;
 		private var _totalHeight:Number;
 		private var _rowsData:Array = [];
 		private var _cellPadding:Number;
@@ -29,7 +31,7 @@ package collaboRhythm.hiviva.view.components
 		private var _columnWidth:Number;
 		private var _firstRowHeight:Number;
 
-		public function ScheduleTableReport()
+		public function AdherenceTableReport()
 		{
 			super();
 		}
@@ -48,10 +50,14 @@ package collaboRhythm.hiviva.view.components
 		
 		public function drawTable():void
 		{
+			this._history = HivivaModifier.getChronologicalDictionaryFromXmlList(this._medications);
+
 			initFirstRow();
 			initMedicineNamesColumn();
+
 			recordRowHeights();
-			populateTableCells();
+			populateAdherence();
+//			populateTableCells();
 			initTableBackground();
 
 			this.setSizeInternal(this.actualWidth,_totalHeight,true);
@@ -85,14 +91,14 @@ package collaboRhythm.hiviva.view.components
 
 			_totalHeight = _firstRowHeight;
 			// names column
-			var medicationCount:uint = _patientData.length();
+			var medicationCount:uint = _medications.length();
 			var medicationCell:MedicationCell;
 			var medicationId:String;
 			var medIds:Array = [];
 			var medExists:Boolean;
 			for (var cellCount:int = 0; cellCount < medicationCount; cellCount++)
 			{
-				medicationId = _patientData[cellCount].MedicationID;
+				medicationId = _medications[cellCount].MedicationID;
 				medExists = false;
 				for (var i:int = 0; i < medIds.length; i++)
 				{
@@ -105,8 +111,8 @@ package collaboRhythm.hiviva.view.components
 				if(!medExists)
 				{
 					medicationCell = new MedicationCell();
-					medicationCell.brandName = HivivaModifier.getBrandName(_patientData[cellCount].MedicationName);
-					medicationCell.genericName = HivivaModifier.getGenericName(_patientData[cellCount].MedicationName);
+					medicationCell.brandName = HivivaModifier.getBrandName(_medications[cellCount].MedicationName);
+					medicationCell.genericName = HivivaModifier.getGenericName(_medications[cellCount].MedicationName);
 
 					_dataHolder.addChild(medicationCell);
 					medicationCell.width = this._columnWidth;
@@ -114,14 +120,14 @@ package collaboRhythm.hiviva.view.components
 					medicationCell.y = _totalHeight;
 					_totalHeight += medicationCell.height;
 
-					var endDate:Date = HivivaModifier.getDateFromIsoString(_patientData[cellCount].EndDate, false);
-					var startDate:Date = HivivaModifier.getDateFromIsoString(_patientData[cellCount].StartDate, false);
+					var endDate:Date = HivivaModifier.getDateFromIsoString(_medications[cellCount].EndDate, false);
+					var startDate:Date = HivivaModifier.getDateFromIsoString(_medications[cellCount].StartDate, false);
 					var today:Date = new Date(HivivaStartup.userVO.serverDate.getFullYear(), HivivaStartup.userVO.serverDate.getMonth(), HivivaStartup.userVO.serverDate.getDate(),0,0,0,0);
 
 					this._rowsData.push({
 						id: medicationId,
 						startDate: new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate(),0,0,0,0),
-						endDate:  String(_patientData[cellCount].Stopped) == "true" ? new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),0,0,0,0) : today
+						endDate:  String(_medications[cellCount].Stopped) == "true" ? new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),0,0,0,0) : today
 					});
 
 					medIds.push(medicationId);
@@ -162,89 +168,87 @@ package collaboRhythm.hiviva.view.components
 			rowData.cellHeight += (this._cellPadding * 2);
 		}
 
-		private function populateTableCells():void
+		private function populateAdherence():void
 		{
-			var realMedLength:int = this._rowsData.length - 1;
+			const medicationLength:int = this._rowsData.length - 1;
+
 			var rowData:Object;
-			var valueCount:int;
-			var value:Number;
 			var scheduleValue:Number;
 			var scheduleValueCount:int;
-			var currValue:Number;
-			var medicationLength:int = this._patientData.length();
-			var medicationSchedule:XMLList;
-			var medicationScheduleLength:int;
 			var overallAverage:Number = 0;
+			var currDay:Date = new Date(this._startDate.getFullYear(),this._startDate.getMonth(),this._startDate.getDate(),0,0,0,0);
+			var percentTaken:Number;
+			var range:Number = HivivaModifier.getDaysDiff(this._endDate, this._startDate);
 
-			var earliestSchedule:Date;
-			var latestSchedule:Date;
-			var currentSchedule:Date;
-//			var referenceDate:Date;
-			var referenceDate:String;
-			var range:Number;
-
-			for (var rowCount:int = 0; rowCount < realMedLength; rowCount++)
+			for (var rowCount:int = 0; rowCount < medicationLength; rowCount++)
 			{
 				rowData = this._rowsData[rowCount];
-
-				value = 0;
-				valueCount = 0;
-
-				for (var i:int = 0; i < medicationLength; i++)
+				scheduleValue = 0;
+				scheduleValueCount = 0;
+				for (var dayCount:int = 0; dayCount < range; dayCount++)
 				{
-					if(String(_patientData[i].MedicationID) == rowData.id)
+					percentTaken = extractAdherence(currDay, rowData);
+					if(percentTaken > -1)
 					{
-						medicationSchedule = this._patientData[i].Schedule.DCMedicationSchedule as XMLList;
-						medicationScheduleLength = medicationSchedule.length();
-						if(medicationScheduleLength > 0)
-						{
-							earliestSchedule = rowData.startDate;
-							latestSchedule = rowData.endDate;
-							range = HivivaModifier.getDaysDiff(latestSchedule, earliestSchedule);
-
-							scheduleValue = 0;
-							scheduleValueCount = 0;
-							currentSchedule = new Date(earliestSchedule.getFullYear(),earliestSchedule.getMonth(),earliestSchedule.getDate(),0,0,0,0);
-							for (var dayCount:int = 0; dayCount < range; dayCount++)
-							{
-								currValue = -1;
-								for (var j:int = 0; j < medicationScheduleLength; j++)
-								{
-//									referenceDate = HivivaModifier.getDateFromIsoString(medicationSchedule[j].DateTaken);
-									referenceDate = String(medicationSchedule[j].DateTaken).split('+')[0];
-									if(HivivaModifier.getIsoStringFromDate(currentSchedule,false) == referenceDate)
-									{
-										currValue = int(medicationSchedule[j].PercentTaken);
-									}
-								}
-								// set value to Zero if within data range but missing
-								if(currValue == -1) currValue = 0;
-								scheduleValue += currValue;
-								scheduleValueCount++;
-
-//								trace(currentSchedule.toDateString() + " currValue = " + currValue);
-
-								currentSchedule.date++;
-							}
-
-//							trace(scheduleValue + " / " + scheduleValueCount);
-							value += scheduleValue;
-							valueCount += scheduleValueCount;
-						}
+						scheduleValue += percentTaken;
+						scheduleValueCount++;
 					}
+//					trace(currDay.toDateString() + " percentTaken = " + percentTaken);
+					currDay.date++;
 				}
-				if(value > 0 && valueCount > 0)
+
+				if(scheduleValue > 0)
 				{
-//					trace(value + " / " + valueCount);
-					overallAverage += (value / valueCount);
-					drawTableCell(String(Math.round(value / valueCount)), rowCount);
+//					trace(scheduleValue + " / " + scheduleValueCount);
+					overallAverage += (scheduleValue / scheduleValueCount);
+					drawTableCell(String(Math.round(scheduleValue / scheduleValueCount)), rowCount);
 				}
 				else
 				{
 					drawTableCell("0", rowCount);
 				}
+
+				currDay = new Date(this._startDate.getFullYear(),this._startDate.getMonth(),this._startDate.getDate(),0,0,0,0);
 			}
-			drawTableCell(String(Math.round(overallAverage / realMedLength)), realMedLength);
+
+			drawTableCell(String(Math.round(overallAverage / medicationLength)), medicationLength);
+		}
+
+		private function extractAdherence(currDay:Date, rowData:Object):Number
+		{
+			var percentTaken:Number;
+			var columnData:Array;
+			var columnDataLength:int;
+			var isLargerThanStartDate:Boolean = currDay.getTime() >= rowData.startDate.getTime();
+			var isSmallerThanEndDate:Boolean = currDay.getTime() < rowData.endDate.getTime();
+
+			if (isLargerThanStartDate && isSmallerThanEndDate)
+			{
+				columnData = _history[HivivaModifier.getIsoStringFromDate(currDay, false)];
+				if (columnData != null)
+				{
+					columnDataLength = columnData.length;
+					for (var i:int = 0; i < columnDataLength; i++)
+					{
+						if (columnData[i].id == rowData.id)
+						{
+							percentTaken = columnData[i].data.PercentTaken;
+							break;
+						}
+					}
+				}
+				else
+				{
+					// schedule was missed on this day
+					percentTaken = 0;
+				}
+			}
+			else
+			{
+				// schedule did not exist on this day
+				percentTaken = -1;
+			}
+			return percentTaken;
 		}
 
 		private function drawTableCell(value:String, rowDataId:int):void
@@ -305,14 +309,34 @@ package collaboRhythm.hiviva.view.components
 			}
 		}
 
-		public function get patientData():XMLList
+		public function get medications():XMLList
 		{
-			return _patientData;
+			return _medications;
 		}
 
-		public function set patientData(value:XMLList):void
+		public function set medications(value:XMLList):void
 		{
-			_patientData = value;
+			_medications = value;
+		}
+
+		public function get startDate():Date
+		{
+			return _startDate;
+		}
+
+		public function set startDate(value:Date):void
+		{
+			_startDate = value;
+		}
+
+		public function get endDate():Date
+		{
+			return _endDate;
+		}
+
+		public function set endDate(value:Date):void
+		{
+			_endDate = value;
 		}
 	}
 }

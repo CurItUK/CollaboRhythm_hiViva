@@ -32,6 +32,7 @@ package collaboRhythm.hiviva.view.components
 		private var _valueRange:Number;
 
 		private const LINE_COLOUR:uint = 0x4F81BC;
+		private var PLOT_GIRTH:Number;
 
 		private var _leftAxisSpace:Number;
 		private var _rightPadding:Number;
@@ -44,7 +45,6 @@ package collaboRhythm.hiviva.view.components
 		private var _daySegmentWidth:Number;
 		private var _dayRange:Number;
 		private var _dayBreakDownRatio:int;
-		private var PLOT_GIRTH:Number;
 		private var _xAxisSegmentWidth:Number;
 		private var _xAxisTotal:Number;
 
