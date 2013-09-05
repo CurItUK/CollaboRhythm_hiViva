@@ -85,10 +85,6 @@ package collaboRhythm.hiviva.view.screens
 		{
 			super.initialize();
 
-			var adherence:String = patientData.adherence;
-			var tolerability:String = patientData.tolerability;
-			var historyExists:Boolean = (adherence > "-1" && tolerability > "-1");
-
 			var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("input_field"), new Rectangle(11,11,32,32));
 			this._bg = new Scale9Image(bgTexture, this._scale);
 			addChild(this._bg);
@@ -101,21 +97,47 @@ package collaboRhythm.hiviva.view.screens
 			this._patientName = new Label();
 			this._patientName.name = "";
 			this._patientName.text = patientData.name;
-
 			addChild(this._patientName);
 
 			this._adherenceTolerabilityLabel = new Label();
 			this._adherenceTolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
-			this._adherenceTolerabilityLabel.text = historyExists ? "Adherence: " + adherence + "%\n" + "Tolerability: " + tolerability + "%" : "No data exists \nfor this patient";
-
+			this._adherenceTolerabilityLabel.text = HivivaModifier.getSummaryStringFromPatientData(patientData);
 			addChild(this._adherenceTolerabilityLabel);
 
 			this._viewProfileBtn = new Button();
 			this._viewProfileBtn.label = "";
 			this._viewProfileBtn.alpha = 0;
 			this._viewProfileBtn.addEventListener(Event.TRIGGERED , patientCellSelectHandler);
+			// disable if patient has no medication history
+			this._viewProfileBtn.isEnabled = this._adherenceTolerabilityLabel.text.indexOf("Adherence:") > -1;
 			addChild(this._viewProfileBtn);
-			this._viewProfileBtn.isEnabled = historyExists;
+		}
+
+		private function getSummaryStringFromPatientData(patientData:XML):String
+		{
+			var summaryStr:String;
+
+			var adherence:String = patientData.adherence;
+			var tolerability:String = patientData.tolerability;
+
+			// if patient has no medication history
+			if (adherence == "-1" && tolerability == "-1")
+			{
+				summaryStr = "No data exists \nfor this patient";
+			}
+
+			// if patient has missed recording their schedule within the predefined history
+			if (adherence > "-1" && tolerability == "-1")
+			{
+				summaryStr = "Adherence: " + adherence + "%\n" + "Tolerability: None";
+			}
+
+			if (adherence > "-1" && tolerability > "-1")
+			{
+				summaryStr = "Adherence: " + adherence + "%\n" + "Tolerability: " + tolerability + "%";
+			}
+
+			return summaryStr;
 		}
 
 		private function patientCellSelectHandler(e:Event):void

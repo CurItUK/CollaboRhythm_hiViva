@@ -33,7 +33,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _instructionsLabel:Label;
 		private var _requestsCheck:Check;
 
-		private var _lessThanTexture:Texture
+		private var _lessThanTexture:Texture;
 
 		private var _adherenceRow:FeathersControl;
 		private var _adherenceCheck:Check;
@@ -93,6 +93,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._requestsCheck.isSelected = true;
 			this._requestsCheck.label = "New connection requests";
 			this._content.addChild(this._requestsCheck);
+			this._requestsCheck.visible = false;
 
 			this._lessThanTexture = Main.assets.getTexture('calendar_arrow');
 			initializeAdherenceRow();
@@ -248,7 +249,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 								<DCUserAlert>
 									<UserAlertId>1</UserAlertId>
 									<Value>-1</Value>
-									<Enabled>{_requestsCheck.isSelected ? 1 : 0}</Enabled>
+									<Enabled>1</Enabled>
 								</DCUserAlert>
 								<DCUserAlert>
 									<UserAlertId>2</UserAlertId>

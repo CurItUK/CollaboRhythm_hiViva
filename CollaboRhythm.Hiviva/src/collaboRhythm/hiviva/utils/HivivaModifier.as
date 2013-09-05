@@ -16,6 +16,33 @@ package collaboRhythm.hiviva.utils
 		{
 		}
 
+		public static function getSummaryStringFromPatientData(patientData:XML):String
+		{
+			var summaryStr:String;
+
+			var adherence:String = patientData.adherence;
+			var tolerability:String = patientData.tolerability;
+
+			// if patient has no medication history
+			if (adherence == "-1" && tolerability == "-1")
+			{
+				summaryStr = "No data exists \nfor this patient";
+			}
+
+			// if patient has missed recording their schedule within the predefined history
+			if (adherence > "-1" && tolerability == "-1")
+			{
+				summaryStr = "Adherence: " + adherence + "%\n" + "Tolerability: None";
+			}
+
+			if (adherence > "-1" && tolerability > "-1")
+			{
+				summaryStr = "Adherence: " + adherence + "%\n" + "Tolerability: " + tolerability + "%";
+			}
+
+			return summaryStr;
+		}
+
 		public static function getAppIdWithGuid(guid:String):String
 		{
 			var appId:String;
@@ -522,9 +549,9 @@ package collaboRhythm.hiviva.utils
 			return isoStr;
 		}
 
-		public static function getPrettyStringFromIsoString(value:String, getTimeForToday:Boolean = true):String
+		public static function getPrettyStringFromIsoString(value:String, setToUTC:Boolean = false, getTimeForToday:Boolean = true):String
 		{
-			var date:Date = getDateFromIsoString(value);
+			var date:Date = getDateFromIsoString(value, setToUTC);
 			var prettyStr:String = getPrettyStringFromDate(date, getTimeForToday);
 
 			return prettyStr;

@@ -46,7 +46,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _patientProfileData:XML;
 		private var _patientHistoryData:XML;
 		private var _adherenceLabel:Label;
-		private var _tolerabilityLabel:Label;
+//		private var _tolerabilityLabel:Label;
 		private var _reportAndMessage:BoxedButtons;
 		private var _weekNavHolder:ScrollContainer;
 		private var _weekText:Label;
@@ -131,13 +131,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._adherenceLabel = new Label();
 			this._adherenceLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
-			this._adherenceLabel.text = "Overall adherence:  " + Main.selectedHCPPatientProfile.adherence + "%";
+//			this._adherenceLabel.text = "Overall adherence:  " + Main.selectedHCPPatientProfile.adherence + "%";
+			this._adherenceLabel.text = HivivaModifier.getSummaryStringFromPatientData(Main.selectedHCPPatientProfile);
 			this.addChild(this._adherenceLabel);
 
-			this._tolerabilityLabel = new Label();
-			this._tolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
-			this._tolerabilityLabel.text = "Overall tolerability:  " + Main.selectedHCPPatientProfile.tolerability + "%";
-			this.addChild(this._tolerabilityLabel);
+//			this._tolerabilityLabel = new Label();
+//			this._tolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+//			this._tolerabilityLabel.text = "Overall tolerability:  " + Main.selectedHCPPatientProfile.tolerability + "%";
+//			this.addChild(this._tolerabilityLabel);
 
 			this._reportAndMessage = new BoxedButtons();
 			this._reportAndMessage.addEventListener(starling.events.Event.TRIGGERED, reportAndMessageHandler);
@@ -165,10 +166,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._adherenceLabel.x = this._patientEmail.x;
 			this._adherenceLabel.y = this._patientImageBg.y + (this._patientImageBg.height * 0.5) - (this._adherenceLabel.height * 0.5);
 
-			this._tolerabilityLabel.width = innerWidth - this._tolerabilityLabel.x;
-			this._tolerabilityLabel.validate();
-			this._tolerabilityLabel.x = this._patientEmail.x;
-			this._tolerabilityLabel.y = this._patientImageBg.y + this._patientImageBg.height - this._tolerabilityLabel.height;
+//			this._tolerabilityLabel.width = innerWidth - this._tolerabilityLabel.x;
+//			this._tolerabilityLabel.validate();
+//			this._tolerabilityLabel.x = this._patientEmail.x;
+//			this._tolerabilityLabel.y = this._patientImageBg.y + this._patientImageBg.height - this._tolerabilityLabel.height;
 
 			this._reportAndMessage.width = innerWidth;
 			this._reportAndMessage.validate();
