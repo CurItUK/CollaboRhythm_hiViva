@@ -47,8 +47,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._sideBtnGroup.dataProvider = new ListCollection(
 				[
 					{ width: btnWidth, height: btnHeight, name: "profile", label: "PROFILE" },
-					{ width: btnWidth, height: btnHeight, name: "help", label: "HELP"},
-					{ width: btnWidth, height: btnHeight, name: "resources", label: "RESOURCES"}
+					{ width: btnWidth, height: btnHeight, name: "help", label: "HELP"}
 
 
 				]
@@ -67,9 +66,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 						img = new Image(Main.assets.getTexture("side_nav_icon_01"));
 						break;
 					case "help" :
-						img = new Image(Main.assets.getTexture("side_nav_icon_02"));
-						break;
-					case "resources" :
 						img = new Image(Main.assets.getTexture("side_nav_icon_02"));
 						break;
 				}
@@ -96,9 +92,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 					break;
 				case "help" :
 					navAwayEvent.message = HivivaScreens.HCP_HELP_SCREEN;
-					break;
-				case "resources" :
-					navAwayEvent.message = HivivaScreens.RESOURCES_SCREEN;
 					break;
 			}
 
