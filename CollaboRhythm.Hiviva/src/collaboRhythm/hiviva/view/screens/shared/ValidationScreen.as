@@ -117,12 +117,14 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		public function hideFormValidation(e:Event = null):void
 		{
-			this._overlayBtn.removeEventListener(Event.TRIGGERED, hideFormValidation);
-			removeChild(this._overlayBtn);
-			this._overlayBtn = null;
-
 			if(this._isValidationActive)
 			{
+				if(this._overlayBtn != null)
+				{
+					this._overlayBtn.removeEventListener(Event.TRIGGERED, hideFormValidation);
+					removeChild(this._overlayBtn);
+					this._overlayBtn = null;
+				}
 				onShowFormValidationComplete();
 
 				const TIME:Number = 0.2;

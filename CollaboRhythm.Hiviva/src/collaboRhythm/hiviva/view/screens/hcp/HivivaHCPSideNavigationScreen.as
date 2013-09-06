@@ -47,8 +47,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._sideBtnGroup.dataProvider = new ListCollection(
 				[
 					{ width: btnWidth, height: btnHeight, name: "profile", label: "PROFILE" },
-					{ width: btnWidth, height: btnHeight, name: "help", label: "HELP"},
-					{ width: btnWidth, height: btnHeight, name: "resources", label: "RESOURCES"}
+					{ width: btnWidth, height: btnHeight, name: "help", label: "HELP"}
+//					{ width: btnWidth, height: btnHeight, name: "resources", label: "RESOURCES"}
 
 
 				]

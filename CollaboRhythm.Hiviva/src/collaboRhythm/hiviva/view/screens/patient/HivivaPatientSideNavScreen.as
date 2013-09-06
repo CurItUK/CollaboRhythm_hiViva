@@ -46,8 +46,8 @@ package collaboRhythm.hiviva.view.screens.patient
 					{ width: btnWidth, height: btnHeight, name: "profile", label: "PROFILE" },
 					{ width: btnWidth, height: btnHeight, name: "help", label: "HELP"},
 					{ width: btnWidth, height: btnHeight, name: "messages", label: "MESSAGES"},
-					{ width: btnWidth, height: btnHeight, name: "kudos", label: "KUDOS"},
-					{ width: btnWidth, height: btnHeight, name: "resources", label: "RESOURCES"}
+					{ width: btnWidth, height: btnHeight, name: "kudos", label: "KUDOS"}
+//					{ width: btnWidth, height: btnHeight, name: "resources", label: "RESOURCES"}
 				]
 			);
 			this._sideBtnGroup.buttonInitializer = function(button:Button, item:Object):void

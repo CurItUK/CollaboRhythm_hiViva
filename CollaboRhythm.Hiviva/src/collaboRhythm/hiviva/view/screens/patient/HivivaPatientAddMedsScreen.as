@@ -132,7 +132,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 			else
 			{
-				hideFormValidation();
+//				hideFormValidation();
 
 				if(this._medicationContainer != null)
 				{
