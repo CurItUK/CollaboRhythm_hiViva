@@ -64,6 +64,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_TakeMedicine_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_TestResults_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Virus_Model_Screen;
+	import collaboRhythm.hiviva.view.screens.shared.HivivaResourceScreen;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaSplashScreen;
 	import collaboRhythm.hiviva.view.screens.shared.MainBackground;
 
@@ -313,6 +314,7 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.HCP_HELP_PATIENT_INTERACTION_SCREEN, new ScreenNavigatorItem(HivivaHCP_help_Patient_Interaction_Screen , {navGoHome:goBackToMainScreen }));
 			this._settingsNav.addScreen(HivivaScreens.HCP_HELP_GENERATE_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaHCP_help_Generate_Reports_Screen , {navGoHome:goBackToMainScreen }));
 			this._settingsNav.addScreen(HivivaScreens.HCP_HELP_ALERTS_SCREEN, new ScreenNavigatorItem(HivivaHCP_help_Alerts_Screen , {navGoHome:goBackToMainScreen }));
+			this._settingsNav.addScreen(HivivaScreens.RESOURCES_SCREEN, new ScreenNavigatorItem(HivivaResourceScreen, {navGoHome:goBackToMainScreen}));
   		}
 
 		private function initPatientSettingsNavigator():void
@@ -342,6 +344,7 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_MESSAGES_SCREEN, new ScreenNavigatorItem(HivivaPatientMessagesScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_EDIT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientSettingsScreen, {navGoHome:goBackToMainScreen , navFromReset:resetApplication}));
+			this._settingsNav.addScreen(HivivaScreens.RESOURCES_SCREEN, new ScreenNavigatorItem(HivivaResourceScreen, {navGoHome:goBackToMainScreen}));
 		}
 
 		private function navGoToMessages():void
