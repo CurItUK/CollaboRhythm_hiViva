@@ -1,10 +1,8 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.view.Main;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
@@ -13,7 +11,6 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import starling.display.Image;
 	import starling.events.Event;
-
 
 	public class HivivaPatientSideNavScreen extends Screen
 	{
@@ -49,7 +46,8 @@ package collaboRhythm.hiviva.view.screens.patient
 					{ width: btnWidth, height: btnHeight, name: "profile", label: "PROFILE" },
 					{ width: btnWidth, height: btnHeight, name: "help", label: "HELP"},
 					{ width: btnWidth, height: btnHeight, name: "messages", label: "MESSAGES"},
-					{ width: btnWidth, height: btnHeight, name: "kudos", label: "KUDOS"}
+					{ width: btnWidth, height: btnHeight, name: "kudos", label: "KUDOS"},
+					{ width: btnWidth, height: btnHeight, name: "resources", label: "RESOURCES"}
 				]
 			);
 			this._sideBtnGroup.buttonInitializer = function(button:Button, item:Object):void
@@ -72,6 +70,9 @@ package collaboRhythm.hiviva.view.screens.patient
 						img = new Image(Main.assets.getTexture("side_nav_icon_03"));
 						break;
 					case "kudos" :
+						img = new Image(Main.assets.getTexture("side_nav_icon_04"));
+						break;
+					case "resources" :
 						img = new Image(Main.assets.getTexture("side_nav_icon_04"));
 						break;
 				}
@@ -104,6 +105,9 @@ package collaboRhythm.hiviva.view.screens.patient
 					break;
 				case "kudos" :
 					navAwayEvent.message = HivivaScreens.PATIENT_BADGES_SCREEN;
+					break;
+				case "resources" :
+					navAwayEvent.message = HivivaScreens.RESOURCES_SCREEN;
 					break;
 			}
 
