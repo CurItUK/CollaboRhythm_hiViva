@@ -21,8 +21,8 @@ package collaboRhythm.hiviva.utils
 				trace("PDFReportMailer Message Version: " + String(Message.service.version));
 				trace("PDFReportMailer Mail Supported: " + String(Message.isMailSupported));
 
-				Message.service.addEventListener(MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR , messageErrorHandler);
-				Message.service.addEventListener(MessageEvent.MESSAGE_MAIL_COMPOSE , messageComposeHandler);
+				//Message.service.addEventListener(MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR , messageErrorHandler);
+				//Message.service.addEventListener(MessageEvent.MESSAGE_MAIL_COMPOSE , messageComposeHandler);
 
 			}
 			catch (e:Error)
