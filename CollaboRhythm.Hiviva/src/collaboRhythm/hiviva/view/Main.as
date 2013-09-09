@@ -94,6 +94,7 @@ package collaboRhythm.hiviva.view
 		private var _settingsNav:ScreenNavigator;
 		private var _footerBtnGroup:IFooterBtnGroup;
 		private var _settingsBtn:Button;
+		private var _settingBounceCount:int;
 		private var _settingsOpen:Boolean = false;
 		private var _currMainScreenId:String;
 		private var _scaleFactor:Number;
@@ -240,6 +241,39 @@ package collaboRhythm.hiviva.view
 			this._screenHolder.addChild(this._settingsBtn);
 			this._settingsBtn.width = (Constants.STAGE_WIDTH * 0.2);
 			this._settingsBtn.scaleY = this._settingsBtn.scaleX;
+
+			startSettingBtnBounce();
+		}
+
+		private function startSettingBtnBounce():void
+		{
+			const startBounceX:Number = (Constants.STAGE_WIDTH * 0.05);
+			this._settingBounceCount = 0;
+			var bounceTween:Tween = new Tween(this._settingsBtn , 1 , Transitions.EASE_OUT_BOUNCE);
+			var initialTween:Tween = new Tween(this._settingsBtn , 0.5 , Transitions.EASE_OUT);
+
+			/*bounceTween.onComplete = function():void
+			{
+				Starling.juggler.remove(bounceTween);
+				_settingBounceCount++;
+				// bounced three times
+				if(_settingBounceCount < 3)
+				{
+					initialTween.animate("x", startBounceX);
+					Starling.juggler.add(initialTween);
+				}
+			};
+
+			initialTween.onComplete = function():void
+			{
+				Starling.juggler.remove(initialTween);
+
+				bounceTween.animate("x", 0);
+				Starling.juggler.add(bounceTween);
+			};
+
+			initialTween.animate("x", startBounceX);
+			Starling.juggler.add(initialTween);*/
 		}
 
 		private function settingsBtnHandler(e:Event = null):void

@@ -266,7 +266,15 @@ package collaboRhythm.hiviva.view.components
 
 		private function writeAverageLabel():void
 		{
-			_averageLabel.text = "Average Tolerability rating for this period : " + Math.round(this._overallTolerabilityAverage) + "%";
+			if(isNaN(this._overallTolerabilityAverage))
+			{
+				_averageLabel.text = "There is no Tolerability for this period";
+			}
+			else
+			{
+				_averageLabel.text = "Average Tolerability rating for this period : " + Math.round(this._overallTolerabilityAverage) + "%";
+			}
+
 		}
 
 		private function initChartTitleLabel():void

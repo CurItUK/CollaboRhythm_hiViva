@@ -615,9 +615,11 @@ package collaboRhythm.hiviva.utils
 		{
 			var serverDate:Date = HivivaStartup.userVO.serverDate;
 			var startAndEndDates:Object = {};
-			var prevStartDate:Date = new Date(0,0,0,0,0,0,0);
-			// prevEndDate should start as yesterday to ensure startAndEndDates.latestSchedule gets set
-			var prevEndDate:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate() - 1,serverDate.getHours(),serverDate.getMinutes(),serverDate.getSeconds(),serverDate.getMilliseconds());
+//			var prevStartDate:Date = new Date(0,0,0,0,0,0,0);
+//			prevEndDate should start as yesterday to ensure startAndEndDates.latestSchedule gets set
+//			var prevEndDate:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate() - 1,serverDate.getHours(),serverDate.getMinutes(),serverDate.getSeconds(),serverDate.getMilliseconds());
+			var prevStartDate:Date;
+			var prevEndDate:Date;
 			var today:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate(),serverDate.getHours(),serverDate.getMinutes(),serverDate.getSeconds(),serverDate.getMilliseconds());
 			var currStartDate:Date;
 			var currEndDate:Date;
@@ -627,6 +629,9 @@ package collaboRhythm.hiviva.utils
 				currEndDate = (String(medicationsXml[j].Stopped)) ==
 						"true" ? HivivaModifier.getDateFromIsoString(medicationsXml[j].EndDate, false) : today;
 
+				if(prevStartDate == null) prevStartDate = new Date(currStartDate.getTime());
+				if(prevEndDate == null) prevEndDate = new Date(currEndDate.getTime());
+
 				if (prevStartDate.getTime() < currStartDate.getTime())
 				{
 					startAndEndDates.earliestSchedule = prevStartDate.getTime();
@@ -635,6 +640,7 @@ package collaboRhythm.hiviva.utils
 				{
 					startAndEndDates.earliestSchedule = currStartDate.getTime();
 				}
+
 				if (prevEndDate.getTime() > currEndDate.getTime())
 				{
 					startAndEndDates.latestSchedule = prevEndDate.getTime();
@@ -649,12 +655,12 @@ package collaboRhythm.hiviva.utils
 			}
 
 			// debug
-			/*var earliestSchedule:Date = new Date();
+			var earliestSchedule:Date = new Date();
 			earliestSchedule.setTime(startAndEndDates.earliestSchedule);
 			var latestSchedule:Date = new Date();
 			latestSchedule.setTime(startAndEndDates.latestSchedule);
 			trace('ultimate start date = ' + earliestSchedule.toDateString());
-			trace('ultimate end date = ' + latestSchedule.toDateString());*/
+			trace('ultimate end date = ' + latestSchedule.toDateString());
 
 			return startAndEndDates;
 		}
