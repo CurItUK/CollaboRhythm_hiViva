@@ -26,6 +26,9 @@ package collaboRhythm.hiviva.global
 		public static const HOMEPAGE_MESSAGE_CHECK_TIME:Number 				= 20000;   //20 seconds
 		public static const GLOBAL_CHECK_DATETIME:Number 					= 600000;  //10 minutes
 
+		public static const DISTRIQT_ANE_DEVELOPER_LIC:String				= "d388a3da05b0c1c0c98a78fd86340859a1499cabIV0Xb7nTsBupZSNRoqJvlee+vhpkvQ/VmmMqR++6gN5TgdEPmFJFcSpBXmEXfcspu/SrLRpAHc3nD/SUpYCWhg==";
+
+
 
 
 	}

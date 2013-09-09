@@ -99,6 +99,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function getSettingsFromVO():void
 		{
+			trace("ReportPreview getSettingsFromVO ")  ;
 			var settings:Object = HivivaStartup.reportVO.settingsData;
 			this._adherenceIsChecked = settings.adherenceIsChecked;
 			this._feelingIsChecked = settings.feelingIsChecked;
@@ -130,6 +131,8 @@ package collaboRhythm.hiviva.view.screens.shared
 					break;
 			}
 		}
+
+
 
 		private function applyLayout():void
 		{
@@ -256,6 +259,11 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._reportTable.drawTestTable();
 
 			this._content.validate();
+		}
+
+		private function sendPDFInit():void
+		{
+
 		}
 
 		public function get parentScreen():String
