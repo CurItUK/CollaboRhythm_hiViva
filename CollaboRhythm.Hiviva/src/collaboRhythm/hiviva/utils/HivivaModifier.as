@@ -620,14 +620,14 @@ package collaboRhythm.hiviva.utils
 //			var prevEndDate:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate() - 1,serverDate.getHours(),serverDate.getMinutes(),serverDate.getSeconds(),serverDate.getMilliseconds());
 			var prevStartDate:Date;
 			var prevEndDate:Date;
-			var today:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate(),serverDate.getHours(),serverDate.getMinutes(),serverDate.getSeconds(),serverDate.getMilliseconds());
+			var yesterday:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate() - 1,serverDate.getHours(),serverDate.getMinutes(),serverDate.getSeconds(),serverDate.getMilliseconds());
 			var currStartDate:Date;
 			var currEndDate:Date;
 			for (var j:int = 0; j < medicationsXml.length(); j++)
 			{
 				currStartDate = HivivaModifier.getDateFromIsoString(medicationsXml[j].StartDate, false);
 				currEndDate = (String(medicationsXml[j].Stopped)) ==
-						"true" ? HivivaModifier.getDateFromIsoString(medicationsXml[j].EndDate, false) : today;
+						"true" ? HivivaModifier.getDateFromIsoString(medicationsXml[j].EndDate, false) : yesterday;
 
 				if(prevStartDate == null) prevStartDate = new Date(currStartDate.getTime());
 				if(prevEndDate == null) prevEndDate = new Date(currEndDate.getTime());

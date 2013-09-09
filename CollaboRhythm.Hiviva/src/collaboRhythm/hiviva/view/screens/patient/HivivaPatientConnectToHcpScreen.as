@@ -73,6 +73,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._addConnectionButton);
 
 			this._hcpCellContainer = new ScrollContainer();
+			addChild(this._hcpCellContainer);
 
 		}
 
