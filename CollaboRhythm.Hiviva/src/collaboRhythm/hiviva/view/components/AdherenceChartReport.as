@@ -175,11 +175,19 @@ package collaboRhythm.hiviva.view.components
 			for (var dayCount:int = 0; dayCount < this._dayRange; dayCount++)
 			{
 				dayTime = daysItar.getTime();
+				var dayStr:String = HivivaModifier.getIsoStringFromDate(daysItar,false);
 				adherence = 0;
 				adherenceCount = 0;
+
+				var tempDate:Date = new Date();
+				tempDate.setTime(earliestSchedule);
+				trace(dayStr + " >= " + HivivaModifier.getIsoStringFromDate(tempDate,false) + " ? " + (dayTime >= earliestSchedule));
+				tempDate.setTime(latestSchedule);
+				trace(dayStr + " < " + HivivaModifier.getIsoStringFromDate(tempDate,false) + " ? " + (dayTime < latestSchedule));
+
 				if (dayTime >= earliestSchedule && dayTime < latestSchedule)
 				{
-					columnData = _history[HivivaModifier.getIsoStringFromDate(daysItar,false)];
+					columnData = _history[dayStr];
 					if (columnData != null)
 					{
 						columnDataLength = columnData.length;

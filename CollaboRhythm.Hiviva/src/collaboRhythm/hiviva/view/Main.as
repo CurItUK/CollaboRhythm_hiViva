@@ -249,10 +249,19 @@ package collaboRhythm.hiviva.view
 		{
 			const startBounceX:Number = (Constants.STAGE_WIDTH * 0.05);
 			this._settingBounceCount = 0;
-			var bounceTween:Tween = new Tween(this._settingsBtn , 1 , Transitions.EASE_OUT_BOUNCE);
-			var initialTween:Tween = new Tween(this._settingsBtn , 0.5 , Transitions.EASE_OUT);
 
-			/*bounceTween.onComplete = function():void
+			var bounceTween:Tween = new Tween(this._settingsBtn , 1 , Transitions.EASE_OUT_BOUNCE);
+			bounceTween.animate("x", 0);
+
+			var initialTween:Tween = new Tween(this._settingsBtn , 0.5 , Transitions.EASE_OUT);
+			initialTween.animate("x", startBounceX);
+//			initialTween.nextTween = bounceTween;
+//			initialTween.repeatCount = 3;
+//			initialTween.repeatDelay = 2;
+
+
+
+			bounceTween.onComplete = function():void
 			{
 				Starling.juggler.remove(bounceTween);
 				_settingBounceCount++;
@@ -272,8 +281,7 @@ package collaboRhythm.hiviva.view
 				Starling.juggler.add(bounceTween);
 			};
 
-			initialTween.animate("x", startBounceX);
-			Starling.juggler.add(initialTween);*/
+			Starling.juggler.add(initialTween);
 		}
 
 		private function settingsBtnHandler(e:Event = null):void
