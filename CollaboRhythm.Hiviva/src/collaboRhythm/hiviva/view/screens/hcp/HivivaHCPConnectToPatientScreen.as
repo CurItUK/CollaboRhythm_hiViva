@@ -29,7 +29,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _patientFilteredList:Array = [];
 
 		private var _patientCellContainer:ScrollContainer;
-		private var _patientCellRadioGroup:ToggleGroup;
+//		private var _patientCellRadioGroup:ToggleGroup;
 		private var _deletePopupContainer:HivivaPopUp;
 		private var _selectedPatientCellForDelete:PatientResultCell;
 
@@ -194,12 +194,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientFilteredList = [];
 			if(!contains(this._patientCellContainer))
 			{
-				this._patientCellRadioGroup = new ToggleGroup();
+//				this._patientCellRadioGroup = new ToggleGroup();
 				addChild(this._patientCellContainer);
 			}
 			else
 			{
-				this._patientCellRadioGroup.removeAllItems();
+//				this._patientCellRadioGroup.removeAllItems();
 				this._patientCellContainer.removeChildren();
 			}
 		}
