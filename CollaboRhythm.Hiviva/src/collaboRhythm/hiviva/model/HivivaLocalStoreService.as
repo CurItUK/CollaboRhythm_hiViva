@@ -367,6 +367,50 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt);
 		}
 
+		public function getViewedSettingsAnimation():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.addEventListener(SQLEvent.RESULT, getViewedSettingsAnimationHandler);
+			this._sqStatement.text = "SELECT viewed_settings_animation FROM app_settings";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+		}
+
+		private function getViewedSettingsAnimationHandler(e:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_LOAD_COMPLETE);
+			evt.data.settingsAnimationIsViewed = result[0].viewed_settings_animation;
+			this.dispatchEvent(evt);
+		}
+
+		public function setViewedSettingsAnimation():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.addEventListener(SQLEvent.RESULT, setViewedSettingsAnimationHandler);
+			this._sqStatement.text = "UPDATE app_settings SET viewed_settings_animation='true'";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.execute();
+		}
+
+		private function setViewedSettingsAnimationHandler(e:SQLEvent):void
+		{
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
 		public function getMedicationList():void
 		{
 			var dbFile:File = File.applicationStorageDirectory;

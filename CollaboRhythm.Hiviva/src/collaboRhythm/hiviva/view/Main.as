@@ -4,6 +4,8 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.components.HCPFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.IFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.PatientFooterBtnGroup;
@@ -94,7 +96,7 @@ package collaboRhythm.hiviva.view
 		private var _settingsNav:ScreenNavigator;
 		private var _footerBtnGroup:IFooterBtnGroup;
 		private var _settingsBtn:Button;
-		private var _settingBounceCount:int;
+		private var _settingBounceCount:int = 0;
 		private var _settingsOpen:Boolean = false;
 		private var _currMainScreenId:String;
 		private var _scaleFactor:Number;
@@ -242,46 +244,58 @@ package collaboRhythm.hiviva.view
 			this._settingsBtn.width = (Constants.STAGE_WIDTH * 0.2);
 			this._settingsBtn.scaleY = this._settingsBtn.scaleX;
 
-			startSettingBtnBounce();
+//			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_LOAD_COMPLETE, getViewedSettingsAnimationHandler);
+//			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getViewedSettingsAnimation();
+		}
+
+		private function getViewedSettingsAnimationHandler(e:LocalDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_LOAD_COMPLETE, getViewedSettingsAnimationHandler);
+			var settingsAnimationIsViewed:Boolean = e.data.settingsAnimationIsViewed == "true";
+			if(!settingsAnimationIsViewed)
+			{
+				startSettingBtnBounce();
+			}
+			else
+			{
+				trace("settings button has already animated");
+			}
 		}
 
 		private function startSettingBtnBounce():void
 		{
-			/*const startBounceX:Number = (Constants.STAGE_WIDTH * 0.05);
-			this._settingBounceCount = 0;
+			const startBounceX:Number = (Constants.STAGE_WIDTH * 0.05);
 
-			var bounceTween:Tween = new Tween(this._settingsBtn , 1 , Transitions.EASE_OUT_BOUNCE);
-			bounceTween.animate("x", 0);
-
-			var initialTween:Tween = new Tween(this._settingsBtn , 0.5 , Transitions.EASE_OUT);
-			initialTween.animate("x", startBounceX);
-//			initialTween.nextTween = bounceTween;
-//			initialTween.repeatCount = 3;
-//			initialTween.repeatDelay = 2;
-
-
-
-			bounceTween.onComplete = function():void
+			if(this._settingBounceCount < 3)
 			{
-				Starling.juggler.remove(bounceTween);
-				_settingBounceCount++;
-				// bounced three times
-				if(_settingBounceCount < 3)
-				{
-					initialTween.animate("x", startBounceX);
-					Starling.juggler.add(initialTween);
-				}
-			};
-
-			initialTween.onComplete = function():void
+				Starling.juggler.tween(this._settingsBtn, 0.5, {
+					transition : Transitions.EASE_OUT,
+					delay : 2,
+					x : startBounceX,
+					onComplete : doSettingBtnBounce
+				});
+			}
+			else
 			{
-				Starling.juggler.remove(initialTween);
+				HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_SAVE_COMPLETE, setViewedSettingsAnimationHandler);
+				HivivaStartup.hivivaAppController.hivivaLocalStoreController.setViewedSettingsAnimation();
+			}
+		}
 
-				bounceTween.animate("x", 0);
-				Starling.juggler.add(bounceTween);
-			};
+		private function doSettingBtnBounce():void
+		{
+			this._settingBounceCount++;
+			Starling.juggler.tween(this._settingsBtn, 1, {
+				transition : Transitions.EASE_OUT_BOUNCE,
+				x : 0,
+				onComplete : startSettingBtnBounce
+			});
+		}
 
-			Starling.juggler.add(initialTween);*/
+		private function setViewedSettingsAnimationHandler(e:LocalDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_SAVE_COMPLETE, setViewedSettingsAnimationHandler);
+			trace("settings button will not animate again");
 		}
 
 		private function settingsBtnHandler(e:Event = null):void

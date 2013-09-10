@@ -57,7 +57,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _badgesAwarded:Number = 0;
 
 
-		public function HivivaPatientHomeScreenScreen():void
+		public function HivivaPatientHomeScreen():void
 		{
 
 		}

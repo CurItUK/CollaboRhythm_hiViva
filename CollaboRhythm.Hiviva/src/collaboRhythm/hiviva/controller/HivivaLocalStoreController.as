@@ -100,7 +100,7 @@ package collaboRhythm.hiviva.controller
 		public function getGalleryTimeStamp():void
 		{
 			service.addEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_LOAD_COMPLETE,getGalleryTimeStampHandler);
-			service.getGalleryTimeStamp()
+			service.getGalleryTimeStamp();
 		}
 
 		private function getGalleryTimeStampHandler(e:LocalDataStoreEvent):void
@@ -121,6 +121,33 @@ package collaboRhythm.hiviva.controller
 		{
 			service.removeEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_SAVE_COMPLETE,setGalleryTimeStampHandler);
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.GALLERY_TIMESTAMP_SAVE_COMPLETE);
+			this.dispatchEvent(evt);
+		}
+
+		public function getViewedSettingsAnimation():void
+		{
+			service.addEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_LOAD_COMPLETE,getViewedSettingsAnimationHandler);
+			service.getViewedSettingsAnimation();
+		}
+
+		private function getViewedSettingsAnimationHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_LOAD_COMPLETE,getViewedSettingsAnimationHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_LOAD_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function setViewedSettingsAnimation():void
+		{
+			service.addEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_SAVE_COMPLETE,setViewedSettingsAnimationHandler);
+			service.setViewedSettingsAnimation();
+		}
+
+		private function setViewedSettingsAnimationHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_SAVE_COMPLETE,setViewedSettingsAnimationHandler);
+			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_SAVE_COMPLETE);
 			this.dispatchEvent(evt);
 		}
 
