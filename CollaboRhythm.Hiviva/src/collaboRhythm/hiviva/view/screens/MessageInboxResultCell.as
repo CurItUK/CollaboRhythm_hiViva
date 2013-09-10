@@ -232,7 +232,7 @@ package collaboRhythm.hiviva.view.screens
 
 		public function set dateText(value:String):void
 		{
-			_dateText = HivivaModifier.getPrettyStringFromIsoString(value);
+			_dateText = HivivaModifier.getPrettyStringFromIsoString(value,true);
 		}
 
 		public function get check():Check
