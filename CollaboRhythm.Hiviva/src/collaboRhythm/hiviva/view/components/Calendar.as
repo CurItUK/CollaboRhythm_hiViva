@@ -98,7 +98,7 @@ package collaboRhythm.hiviva.view.components
 			this._yearValue = _currentDate.fullYear;
 			this._cMonth = _currentDate.getMonth();
 			this._monthValue = _currentDate.getMonth();
-			this._cDay = _currentDate.date;
+			this._cDay = _currentDate.date - 1;
 			// trace("CYEAR " + _cYear + " CMONTH " + _cMonth + " CDAY " + _cDay)
 		}
 
@@ -106,6 +106,9 @@ package collaboRhythm.hiviva.view.components
 		public function getCurrentDate():String
 		{
 			setCurrentDate();
+			/*var yesterday:Date = new Date();
+			yesterday.setTime(_currentDate.getTime());
+			yesterday.date -= 1;*/
 			return HivivaModifier.getCalendarStringFromDate(_currentDate);
 		}
 

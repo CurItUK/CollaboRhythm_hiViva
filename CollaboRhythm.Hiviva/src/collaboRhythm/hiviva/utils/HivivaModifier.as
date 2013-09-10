@@ -620,14 +620,18 @@ package collaboRhythm.hiviva.utils
 //			var prevEndDate:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate() - 1,serverDate.getHours(),serverDate.getMinutes(),serverDate.getSeconds(),serverDate.getMilliseconds());
 			var prevStartDate:Date;
 			var prevEndDate:Date;
-			var yesterday:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate() - 1,serverDate.getHours(),serverDate.getMinutes(),serverDate.getSeconds(),serverDate.getMilliseconds());
+//			var today:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate(),serverDate.getHours(),serverDate.getMinutes(),serverDate.getSeconds(),serverDate.getMilliseconds());
+			var today:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate(),0,0,0,0);
 			var currStartDate:Date;
 			var currEndDate:Date;
 			for (var j:int = 0; j < medicationsXml.length(); j++)
 			{
 				currStartDate = HivivaModifier.getDateFromIsoString(medicationsXml[j].StartDate, false);
 				currEndDate = (String(medicationsXml[j].Stopped)) ==
-						"true" ? HivivaModifier.getDateFromIsoString(medicationsXml[j].EndDate, false) : yesterday;
+						"true" ? HivivaModifier.getDateFromIsoString(medicationsXml[j].EndDate, false) : today;
+
+				currStartDate.setHours(0,0,0,0);
+				currEndDate.setHours(0,0,0,0);
 
 				if(prevStartDate == null) prevStartDate = new Date(currStartDate.getTime());
 				if(prevEndDate == null) prevEndDate = new Date(currEndDate.getTime());
@@ -650,17 +654,17 @@ package collaboRhythm.hiviva.utils
 					startAndEndDates.latestSchedule = currEndDate.getTime();
 				}
 
-				prevStartDate = new Date(currStartDate.getFullYear(), currStartDate.getMonth(), currStartDate.getDate(),currStartDate.getHours(),currStartDate.getMinutes(),currStartDate.getSeconds(),currStartDate.getMilliseconds());
-				prevEndDate = new Date(currEndDate.getFullYear(), currEndDate.getMonth(), currEndDate.getDate(),currStartDate.getHours(),currStartDate.getMinutes(),currStartDate.getSeconds(),currStartDate.getMilliseconds());
+				prevStartDate = new Date(currStartDate.getFullYear(), currStartDate.getMonth(), currStartDate.getDate(),0,0,0,0);
+				prevEndDate = new Date(currEndDate.getFullYear(), currEndDate.getMonth(), currEndDate.getDate(),0,0,0,0);
 			}
 
 			// debug
-			var earliestSchedule:Date = new Date();
+			/*var earliestSchedule:Date = new Date();
 			earliestSchedule.setTime(startAndEndDates.earliestSchedule);
 			var latestSchedule:Date = new Date();
 			latestSchedule.setTime(startAndEndDates.latestSchedule);
 			trace('ultimate start date = ' + earliestSchedule.toDateString());
-			trace('ultimate end date = ' + latestSchedule.toDateString());
+			trace('ultimate end date = ' + latestSchedule.toDateString());*/
 
 			return startAndEndDates;
 		}

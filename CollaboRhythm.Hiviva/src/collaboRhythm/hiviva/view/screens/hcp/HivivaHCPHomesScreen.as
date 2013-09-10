@@ -30,6 +30,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	{
 		private var _header:HivivaHeader;
 		private var _patientCellContainer:ScrollContainer;
+		private var _alertLabel:Label;
 		private var _connectToPatientBtn:BoxedButtons;
 		private var _patientsData:XML;
 		private var _patients:Array;
@@ -230,15 +231,21 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function initAlertText():void
 		{
-			var alertLabel:Label = new Label();
-			alertLabel.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
-			alertLabel.text = "Connect to a patient to get started.";
+			if(_alertLabel != null)
+			{
+				if(contains(_alertLabel)) removeChild(_alertLabel);
+				_alertLabel.text = "";
+				_alertLabel = null;
+			}
+			this._alertLabel = new Label();
+			_alertLabel.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
+			_alertLabel.text = "Connect to a patient to get started.";
 
-			this.addChild(alertLabel);
-			alertLabel.validate();
+			this.addChild(_alertLabel);
+			_alertLabel.validate();
 
-			alertLabel.width = Constants.STAGE_WIDTH;
-			alertLabel.y = this._patientCellYStart + (this._patientCellVSpace * 0.5) - (alertLabel.height * 0.5);
+			_alertLabel.width = Constants.STAGE_WIDTH;
+			_alertLabel.y = this._patientCellYStart + (this._patientCellVSpace * 0.5) - (_alertLabel.height * 0.5);
 		}
 
 		private function drawApprovedConnectionsWithSummary():void
@@ -246,6 +253,14 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var resultsLength:int = HivivaStartup.connectionsVO.users.length;
 			var currItem:XML;
 			var resultCell:PatientResultCellHome;
+
+			if(_patientCellContainer != null)
+			{
+				if(contains(_patientCellContainer)) removeChild(_patientCellContainer);
+				_patientCellContainer.removeChildren(0,-1,true);
+				_patientCellContainer = null;
+			}
+
 			this._patientCellContainer = new ScrollContainer();
 
 			if(resultsLength > 0)
