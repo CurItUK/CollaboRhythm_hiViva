@@ -179,11 +179,12 @@ package collaboRhythm.hiviva.view.components
 				adherence = 0;
 				adherenceCount = 0;
 
-				var tempDate:Date = new Date();
+				// debug
+				/*var tempDate:Date = new Date();
 				tempDate.setTime(earliestSchedule);
 				trace(dayStr + " >= " + HivivaModifier.getIsoStringFromDate(tempDate,false) + " ? " + (dayTime >= earliestSchedule));
 				tempDate.setTime(latestSchedule);
-				trace(dayStr + " < " + HivivaModifier.getIsoStringFromDate(tempDate,false) + " ? " + (dayTime < latestSchedule));
+				trace(dayStr + " < " + HivivaModifier.getIsoStringFromDate(tempDate,false) + " ? " + (dayTime < latestSchedule));*/
 
 				if (dayTime >= earliestSchedule && dayTime < latestSchedule)
 				{

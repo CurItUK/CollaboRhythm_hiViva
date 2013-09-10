@@ -659,12 +659,12 @@ package collaboRhythm.hiviva.utils
 			}
 
 			// debug
-			var earliestSchedule:Date = new Date();
+			/*var earliestSchedule:Date = new Date();
 			earliestSchedule.setTime(startAndEndDates.earliestSchedule);
 			var latestSchedule:Date = new Date();
 			latestSchedule.setTime(startAndEndDates.latestSchedule);
 			trace('ultimate start date = ' + earliestSchedule.toDateString());
-			trace('ultimate end date = ' + latestSchedule.toDateString());
+			trace('ultimate end date = ' + latestSchedule.toDateString());*/
 
 			return startAndEndDates;
 		}
