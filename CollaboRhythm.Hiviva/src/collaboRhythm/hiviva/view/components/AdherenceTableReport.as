@@ -178,7 +178,8 @@ package collaboRhythm.hiviva.view.components
 			var overallAverage:Number = 0;
 			var currDay:Date = new Date(this._startDate.getFullYear(),this._startDate.getMonth(),this._startDate.getDate(),0,0,0,0);
 			var percentTaken:Number;
-			var range:Number = HivivaModifier.getDaysDiff(this._endDate, this._startDate);
+			// +1 to include the the endDate too
+			var range:Number = HivivaModifier.getDaysDiff(this._endDate, this._startDate) + 1;
 
 			for (var rowCount:int = 0; rowCount < medicationLength; rowCount++)
 			{
@@ -193,13 +194,13 @@ package collaboRhythm.hiviva.view.components
 						scheduleValue += percentTaken;
 						scheduleValueCount++;
 					}
-//					trace(currDay.toDateString() + " percentTaken = " + percentTaken);
+					trace(currDay.toDateString() + " percentTaken = " + percentTaken);
 					currDay.date++;
 				}
 
 				if(scheduleValue > 0)
 				{
-//					trace(scheduleValue + " / " + scheduleValueCount);
+					trace(scheduleValue + " / " + scheduleValueCount);
 					overallAverage += (scheduleValue / scheduleValueCount);
 					drawTableCell(String(Math.round(scheduleValue / scheduleValueCount)), rowCount);
 				}

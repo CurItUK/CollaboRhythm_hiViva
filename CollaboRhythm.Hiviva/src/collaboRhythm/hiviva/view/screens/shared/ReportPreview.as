@@ -41,6 +41,9 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _tolerabilityReportChart:TolerabilityChartReport;
 		private var _reportTable:TestTableReport;
 		private var _layoutApplied:Boolean = false;
+		private var _bodyLabel:Label;
+		private var _noMedicationHistory:Boolean = false;
+		private var _noTestResults:Boolean = false;
 
 		public function ReportPreview()
 		{
@@ -132,8 +135,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			}
 		}
 
-
-
 		private function applyLayout():void
 		{
 //			this._contentLayout.gap = 0;
@@ -142,7 +143,8 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._content.y = Constants.HEADER_HEIGHT + Constants.PADDING_TOP;
 			this._content.height = this._cancelAndSend.y - this._content.y - Constants.PADDING_BOTTOM;
 
-			addMainText();
+			_bodyLabel = new Label();
+			this._content.addChild(_bodyLabel);
 
 			this._adherenceReportChart = new AdherenceChartReport();
 			this._content.addChild(this._adherenceReportChart);
@@ -159,37 +161,24 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._layoutApplied = true;
 		}
 
-		private function addMainText():void
-		{
-			var mainLabel:Label = new Label();
-			mainLabel.text = 	"From: " + HivivaStartup.userVO.appId + "\n\n" +
-							 	"To: " + this._emailAddress + "\n\n" +
-							 	"Date: " + HivivaModifier.getCalendarStringFromDate(HivivaStartup.userVO.serverDate) + "\n\n" +
-								"Subject: Patient Report\n\n" +
-								"Please find below details of patient (" + this._patientAppId + ") record of their HIV tracking via the HiVIVA application.\n\n" +
-								"This covers the time period between: " + HivivaModifier.getCalendarStringFromDate(this._startDate) + " - " + HivivaModifier.getCalendarStringFromDate(this._endDate);
-
-			this._content.addChild(mainLabel);
-			mainLabel.x = Constants.PADDING_LEFT;
-			mainLabel.width = Constants.INNER_WIDTH;
-			mainLabel.validate();
-		}
-
 		private function getDailyMedicationHistoryRangeCompleteHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE, getDailyMedicationHistoryRangeCompleteHandler);
 
 			this._filteredMedicationHistory = e.data.xmlResponse.DCUserMedication;
-			if(this._filteredMedicationHistory.length() > 0)
+			// only if there is Schedule.DCMedicationSchedule in xmlresponse to avoid a blank table
+			if(this._filteredMedicationHistory.Schedule.DCMedicationSchedule.length() > 0)
 			{
 				prepareSelectedMedicalData();
 			}
 			else
 			{
 				trace("Medical history data requested but this patient has no medical history");
+				_noMedicationHistory = true;
 			}
 
 			this._medicationHistoryCallMade = true;
+			if(this._medicationHistoryCallMade && this._testResultsCallMade) initBodyLabel();
 		}
 
 		private function getPatientTestResultsRangeCompleteHandler(e:RemoteDataStoreEvent):void
@@ -204,9 +193,11 @@ package collaboRhythm.hiviva.view.screens.shared
 			else
 			{
 				trace("Test result data requested but this patient has no test result history");
+				_noTestResults = true;
 			}
 
 			this._testResultsCallMade = true;
+			if(this._medicationHistoryCallMade && this._testResultsCallMade) initBodyLabel();
 		}
 
 		private function prepareSelectedMedicalData():void
@@ -258,6 +249,27 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._reportTable.validate();
 			this._reportTable.drawTestTable();
 
+			this._content.validate();
+		}
+
+		private function initBodyLabel():void
+		{
+			if(_noMedicationHistory && _noTestResults)
+			{
+				_bodyLabel.text = "No Data found for this patient within the selected date range";
+			}
+			else
+			{
+				_bodyLabel.text = 	"From: " + HivivaStartup.userVO.appId + "\n\n" +
+								 	"To: " + this._emailAddress + "\n\n" +
+								 	"Date: " + HivivaModifier.getCalendarStringFromDate(HivivaStartup.userVO.serverDate) + "\n\n" +
+									"Subject: Patient Report\n\n" +
+									"Please find below details of patient (" + this._patientAppId + ") record of their HIV tracking via the HiVIVA application.\n\n" +
+									"This covers the time period between: " + HivivaModifier.getCalendarStringFromDate(this._startDate) + " - " + HivivaModifier.getCalendarStringFromDate(this._endDate);
+			}
+
+			_bodyLabel.x = Constants.PADDING_LEFT;
+			_bodyLabel.width = Constants.INNER_WIDTH;
 			this._content.validate();
 		}
 

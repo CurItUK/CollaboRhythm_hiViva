@@ -53,7 +53,7 @@ package collaboRhythm.hiviva.view.components
 		private var monthsList:Array;
 		private var arrowGap:uint;
 		private var _month:Label;
-		private var _currentDate:Date;
+		private var _currentDate:Date = new Date();
 		private var _calendarType:String;
 
 		private var now:Date;
@@ -63,7 +63,8 @@ package collaboRhythm.hiviva.view.components
 		public function Calendar()
 		{
 			super();
-			_currentDate = HivivaStartup.userVO.serverDate;
+			_currentDate.setTime(HivivaStartup.userVO.serverDate.getTime());
+			_currentDate.date -= 1;
 		}
 
 		override protected function draw():void
@@ -98,7 +99,7 @@ package collaboRhythm.hiviva.view.components
 			this._yearValue = _currentDate.fullYear;
 			this._cMonth = _currentDate.getMonth();
 			this._monthValue = _currentDate.getMonth();
-			this._cDay = _currentDate.date - 1;
+			this._cDay = _currentDate.date;
 			// trace("CYEAR " + _cYear + " CMONTH " + _cMonth + " CDAY " + _cDay)
 		}
 
@@ -106,9 +107,6 @@ package collaboRhythm.hiviva.view.components
 		public function getCurrentDate():String
 		{
 			setCurrentDate();
-			/*var yesterday:Date = new Date();
-			yesterday.setTime(_currentDate.getTime());
-			yesterday.date -= 1;*/
 			return HivivaModifier.getCalendarStringFromDate(_currentDate);
 		}
 
