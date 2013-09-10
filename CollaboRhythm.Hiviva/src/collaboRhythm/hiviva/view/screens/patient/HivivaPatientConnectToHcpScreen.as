@@ -73,24 +73,18 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._addConnectionButton);
 
 			this._hcpCellContainer = new ScrollContainer();
-			addChild(this._hcpCellContainer);
 
 		}
 
 		private function backBtnHandler(e:Event = null):void
 		{
-			if(contains(this._hcpCellContainer))
-			{
-				this._hcpCellRadioGroup.removeAllItems();
-				this._hcpCellContainer.removeChildren();
-			}
-
+			clearDownPatientList();
 			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 		}
 
 		private function onAddConnection(e:Event):void
 		{
-//			clearDownHCPList();
+			clearDownPatientList();
 			this.owner.showScreen(HivivaScreens.PATIENT_ADD_HCP);
 		}
 
@@ -108,6 +102,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			if(xml.children().length() > 0)
 			{
+				clearDownPatientList();
 				HivivaStartup.connectionsVO.users = [];
 				var loop:uint = xml.children().length();
 				var approvedHCPList:XMLList  = xml.DCConnection;
@@ -188,39 +183,19 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._hcpCellContainer.validate();
 		}
-		/*private function  clearDownHCPList():void
+		private function clearDownPatientList():void
 		{
 			this._hcpFilteredList = [];
 			if(!contains(this._hcpCellContainer))
 			{
-				this._hcpCellRadioGroup = new ToggleGroup();
+//				this._hcpCellRadioGroup = new ToggleGroup();
 				addChild(this._hcpCellContainer);
 			}
 			else
 			{
-				this._hcpCellRadioGroup.removeAllItems();
+//				this._hcpCellRadioGroup.removeAllItems();
 				this._hcpCellContainer.removeChildren();
 			}
-		}*/
+		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
