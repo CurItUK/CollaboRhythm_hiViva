@@ -167,6 +167,7 @@ package collaboRhythm.hiviva.view.components
 			var earliestSchedule:Number = startAndEndDates.earliestSchedule;
 			var latestSchedule:Number = startAndEndDates.latestSchedule;
 			var dayTime:Number;
+			var dayStr:String;
 			var columnData:Array;
 			var columnDataLength:int;
 			var tolerability:Number;
@@ -175,10 +176,11 @@ package collaboRhythm.hiviva.view.components
 			for (var dayCount:int = 0; dayCount < this._dayRange; dayCount++)
 			{
 				dayTime = daysItar.getTime();
+				dayStr = HivivaModifier.getIsoStringFromDate(daysItar,false);
 				tolerability = 0;
 				if (dayTime >= earliestSchedule && dayTime < latestSchedule)
 				{
-					columnData = _history[HivivaModifier.getIsoStringFromDate(daysItar,false)];
+					columnData = _history[dayStr];
 					if (columnData != null)
 					{
 						columnDataLength = columnData.length;

@@ -247,7 +247,7 @@ package collaboRhythm.hiviva.view
 
 		private function startSettingBtnBounce():void
 		{
-			const startBounceX:Number = (Constants.STAGE_WIDTH * 0.05);
+			/*const startBounceX:Number = (Constants.STAGE_WIDTH * 0.05);
 			this._settingBounceCount = 0;
 
 			var bounceTween:Tween = new Tween(this._settingsBtn , 1 , Transitions.EASE_OUT_BOUNCE);
@@ -281,7 +281,7 @@ package collaboRhythm.hiviva.view
 				Starling.juggler.add(bounceTween);
 			};
 
-			Starling.juggler.add(initialTween);
+			Starling.juggler.add(initialTween);*/
 		}
 
 		private function settingsBtnHandler(e:Event = null):void
