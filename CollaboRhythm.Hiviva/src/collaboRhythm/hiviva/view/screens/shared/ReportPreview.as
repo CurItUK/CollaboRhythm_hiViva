@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.PDFReportMailer;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.components.AdherenceChartReport;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
@@ -44,6 +45,8 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _bodyLabel:Label;
 		private var _noMedicationHistory:Boolean = false;
 		private var _noTestResults:Boolean = false;
+
+		private var _PDFReportMailer:PDFReportMailer;
 
 		public function ReportPreview()
 		{
@@ -130,7 +133,7 @@ package collaboRhythm.hiviva.view.screens.shared
 					backBtnHandler();
 					break;
 				case "Send" :
-					// send
+					sendPDFInit();
 					break;
 			}
 		}
@@ -275,7 +278,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function sendPDFInit():void
 		{
-
+			this._PDFReportMailer = new PDFReportMailer();
 		}
 
 		public function get parentScreen():String

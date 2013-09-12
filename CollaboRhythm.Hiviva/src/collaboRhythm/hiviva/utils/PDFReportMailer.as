@@ -9,7 +9,13 @@ package collaboRhythm.hiviva.utils
 	{
 		public function PDFReportMailer()
 		{
-			initPDFMailer();
+			initPDFCreator();
+			//initPDFMailer();
+		}
+
+		private function initPDFCreator():void
+		{
+
 		}
 
 		private function initPDFMailer():void
@@ -34,12 +40,12 @@ package collaboRhythm.hiviva.utils
 
 		private function messageComposeHandler(event:MessageEvent):void
 		{
-			
+
 		}
 
 		private function messageErrorHandler(event:MessageEvent):void
 		{
-			                                
+
 		}
 	}
 }
