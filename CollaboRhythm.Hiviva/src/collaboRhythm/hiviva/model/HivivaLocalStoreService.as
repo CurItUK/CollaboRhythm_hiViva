@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.model
 	import collaboRhythm.hiviva.model.vo.GalleryDataVO;
 	import collaboRhythm.hiviva.model.vo.PatientAdherenceVO;
 	import collaboRhythm.hiviva.model.vo.ReportVO;
+	import collaboRhythm.hiviva.model.vo.UserAuthenticationVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 
@@ -37,6 +38,7 @@ package collaboRhythm.hiviva.model
 		private var _patientAdherenceVO:PatientAdherenceVO;
 		private var _connectionsVO:ConnectionsVO;
 		private var _galleryDataVO:GalleryDataVO;
+		private var _userAuthenticationVO:UserAuthenticationVO;
 
 		public function HivivaLocalStoreService()
 		{
@@ -45,6 +47,7 @@ package collaboRhythm.hiviva.model
 			this._patientAdherenceVO = new PatientAdherenceVO();
 			this._connectionsVO = new ConnectionsVO();
 			this._galleryDataVO = new GalleryDataVO();
+			this._userAuthenticationVO = new UserAuthenticationVO();
 		}
 
 		public function initDataLoad():void
@@ -191,6 +194,7 @@ package collaboRhythm.hiviva.model
 			sourceFile.copyTo(destination);
 
 			this._userVO.type = Constants.APP_FIRST_TIME_USE;
+			this._userAuthenticationVO.enabled = false;
 
 			// move reports template to application storage directory for future writable access
 
@@ -1334,5 +1338,14 @@ package collaboRhythm.hiviva.model
 			return this._galleryDataVO;
 		}
 
+		public function get userAuthenticationVO():UserAuthenticationVO
+		{
+			return _userAuthenticationVO;
+		}
+
+		public function set userAuthenticationVO(value:UserAuthenticationVO):void
+		{
+			_userAuthenticationVO = value;
+		}
 	}
 }

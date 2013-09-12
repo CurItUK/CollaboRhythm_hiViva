@@ -141,7 +141,8 @@ package collaboRhythm.hiviva.view.screens.patient
 					{name: "medicines", label: "Daily medicines"},
 					{name: "results", label: "Test results"},
 					{name: "connect", label: "Connect to care provider"},
-					{name: "settings", label: "Application settings"}
+					{name: "settings", label: "Application settings"},
+					{name: "passcode", label: "Passcode lock"}
 
 				]
 			);
@@ -205,6 +206,9 @@ package collaboRhythm.hiviva.view.screens.patient
 					break;
 				case "results" :
 					this.owner.showScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN);
+					break;
+				case "passcode" :
+					this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_LOCK_SCREEN);
 					break;
 				case "connect" :
 					this.owner.showScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN);

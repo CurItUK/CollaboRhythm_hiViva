@@ -527,6 +527,8 @@ package collaboRhythm.hiviva.controller
 			service.clearDownBadgeAlerts();
 		}
 
+
+
 		public function get service():HivivaLocalStoreService
 		{
 			return _hivivaLocalStoreService;
