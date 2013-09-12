@@ -61,6 +61,7 @@ package collaboRhythm.hiviva.global
 
 		public static const PATIENT_PASSCODE_RECOVER_QUESTION_SCREEN:String	  		 = "patientPasscodeRecoverQuestion";
 		public static const PATIENT_PASSCODE_RECOVER_UPDATE_SCREEN:String	  		 = "patientPasscodeRecoverUpdate";
+		public static const PATIENT_PASSCODE_LOCK_SCREEN:String	  					 = "patientPasscodeLock";
 
 
 
@@ -83,10 +84,6 @@ package collaboRhythm.hiviva.global
 
 		public static const HCP_HELP_DAILY_MEDICINES : String       			   = "hcp_help_daily_medicines";
 		public static const HCP_HELP_ALERTS_SCREEN : String         			   = "hcp_help_alerts_screen";
-
-
-
-
 
 
 		public static const HCP_HOME_SCREEN:String									= "hcpHomeScreen";

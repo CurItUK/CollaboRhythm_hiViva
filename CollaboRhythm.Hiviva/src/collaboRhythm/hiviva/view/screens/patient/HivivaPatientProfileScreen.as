@@ -208,7 +208,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					this.owner.showScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN);
 					break;
 				case "passcode" :
-					this.owner.showScreen(HivivaScreens.PATIENT_TEST_RESULTS_SCREEN);
+					this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_LOCK_SCREEN);
 					break;
 				case "connect" :
 					this.owner.showScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN);
