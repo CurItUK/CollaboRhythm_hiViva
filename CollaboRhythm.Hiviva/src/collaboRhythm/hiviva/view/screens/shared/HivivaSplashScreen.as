@@ -16,6 +16,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	import flash.events.TimerEvent;
 	import flash.system.System;
+	import flash.utils.Timer;
 
 	import starling.display.Image;
 	import starling.events.Event;
@@ -33,7 +34,6 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _patientButton:Button;
 		private var _userType:String;
 		private var _preCloseDownCount:int = 0;
-		private var _passController:HivivaPasswordManager;
 		private var _loginLabel:Label;
 		private var _passwordInput:TextInput;
 		private var _loginButton:Button;
@@ -195,51 +195,50 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function initDefaultSplash():void
 		{
 			initLogin();
-			/*var timer:Timer = new Timer(SPLASH_TIMEOUT , 1);
-			timer.addEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
-			timer.start();*/
 		}
 
-		private function timerCompleteHandler(e:TimerEvent):void
-		{
-			/*var timer:Timer = e.currentTarget as Timer;
-			timer.removeEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
-			timer = null;
-			closeDownScreen();*/
-		}
+
 
 		private function initLogin():void
 		{
-			var startY:Number = (Constants.STAGE_HEIGHT * 0.33) - (this._logo.height * 0.5) + this._logo.height + 20;
 
-			this._loginLabel = new Label();
-			this._loginLabel.name = HivivaThemeConstants.SPLASH_FOOTER_LABEL;
-			this._loginLabel.text = "Please enter password to login";
-			addChild(this._loginLabel);
-			this._loginLabel.width = Constants.STAGE_WIDTH;
-			this._loginLabel.validate();
-			this._loginLabel.y = startY;
+			if(HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userAuthenticationVO.enabled)
+			{
+				var startY:Number = (Constants.STAGE_HEIGHT * 0.33) - (this._logo.height * 0.5) + this._logo.height + 20;
 
-			this._passwordInput = new TextInput();
-			this._passwordInput.addEventListener(FeathersEventType.FOCUS_IN, passwordInputFocusInHandler);
-			this._passwordInput.textEditorProperties.displayAsPassword = true;
-			addChild(this._passwordInput);
-			this._passwordInput.width = Constants.STAGE_WIDTH * 0.5;
-			this._passwordInput.validate();
-			this._passwordInput.x = (Constants.STAGE_WIDTH * 0.5) - (this._passwordInput.width * 0.5);
-			this._passwordInput.y = this._loginLabel.y + this._loginLabel.height + 20;
+				this._loginLabel = new Label();
+				this._loginLabel.name = HivivaThemeConstants.SPLASH_FOOTER_LABEL;
+				this._loginLabel.text = "Please enter password to login";
+				addChild(this._loginLabel);
+				this._loginLabel.width = Constants.STAGE_WIDTH;
+				this._loginLabel.validate();
+				this._loginLabel.y = startY;
 
-			this._loginButton = new Button();
-			this._loginButton.label = "Sign in";
-			this._loginButton.addEventListener(Event.TRIGGERED, confirmButtonHandler);
-			addChild(this._loginButton);
-			this._loginButton.width = Constants.STAGE_WIDTH * 0.35;
-			this._loginButton.validate();
-			this._loginButton.x = (Constants.STAGE_WIDTH * 0.5) - (this._loginButton.width * 0.5);
-			this._loginButton.y = this._passwordInput.y + this._passwordInput.height + 20;
+				this._passwordInput = new TextInput();
+				this._passwordInput.addEventListener(FeathersEventType.FOCUS_IN, passwordInputFocusInHandler);
+				this._passwordInput.textEditorProperties.displayAsPassword = true;
+				addChild(this._passwordInput);
+				this._passwordInput.width = Constants.STAGE_WIDTH * 0.5;
+				this._passwordInput.validate();
+				this._passwordInput.x = (Constants.STAGE_WIDTH * 0.5) - (this._passwordInput.width * 0.5);
+				this._passwordInput.y = this._loginLabel.y + this._loginLabel.height + 20;
 
-			this._passwordInput.setFocus();
+				this._loginButton = new Button();
+				this._loginButton.label = "Sign in";
+				this._loginButton.addEventListener(Event.TRIGGERED, confirmButtonHandler);
+				addChild(this._loginButton);
+				this._loginButton.width = Constants.STAGE_WIDTH * 0.35;
+				this._loginButton.validate();
+				this._loginButton.x = (Constants.STAGE_WIDTH * 0.5) - (this._loginButton.width * 0.5);
+				this._loginButton.y = this._passwordInput.y + this._passwordInput.height + 20;
+
+				this._passwordInput.setFocus();
+			} else
+			{
+				closeDownScreenWithTimer();
+			}
 		}
+
 
 		private function passwordInputFocusInHandler(e:Event):void
 		{
@@ -247,19 +246,24 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._passwordInput.text = '';
 		}
 
+		private function closeDownScreenWithTimer():void
+		{
+			var timer:Timer = new Timer(SPLASH_TIMEOUT , 1);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
+			timer.start();
+		}
+
+		private function timerCompleteHandler(e:TimerEvent):void
+		{
+			var timer:Timer = e.currentTarget as Timer;
+			 timer.removeEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
+			 timer = null;
+			closeDownScreen();
+		}
+
 		private function confirmButtonHandler(e:Event = null):void
 		{
-			this._passController = HivivaPasswordManager.getInstance();
-
-			//	trace("THE PASSWORD IS :::::" + sample.)
-			//ToDo :  A singleton class needs to be created for password connection and db connection (WHY?)
-			if(this._passwordInput.text  !== this._passController.Pass)
-			{
-				trace("incorrect password");
-				this._passwordInput.textEditorProperties.color = 0xFF0000;
-				return;
-			}
-
+			//TODO Password Validation
 			closeDownScreen();
 		}
 
@@ -271,8 +275,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function getServerDate():void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_SERVER_DATE_COMPLETE,
-					getServerDateComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_SERVER_DATE_COMPLETE, getServerDateComplete);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getServerDate();
 		}
 
@@ -280,8 +283,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			if (HivivaStartup.userVO.type == Constants.APP_TYPE_PATIENT)
 			{
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE,
-						getPatientMedicationListComplete);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
 			}
 			else
@@ -293,8 +295,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function getServerDateComplete(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_SERVER_DATE_COMPLETE,
-					getServerDateComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_SERVER_DATE_COMPLETE,getServerDateComplete);
 
 			if(e.data.xmlResponse.children().length() > 0)
 			{
