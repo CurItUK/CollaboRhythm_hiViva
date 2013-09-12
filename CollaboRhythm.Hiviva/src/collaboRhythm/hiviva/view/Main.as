@@ -68,6 +68,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Virus_Model_Screen;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaResourceScreen;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaSplashScreen;
+	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeLock;
 	import collaboRhythm.hiviva.view.screens.shared.MainBackground;
 
 	import feathers.controls.Button;
@@ -196,10 +197,7 @@ package collaboRhythm.hiviva.view
 
 			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete} , {backgroundTexture:Texture.fromTexture(this._splashBgTexture)}));
 			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
-/*
-			this._passwordPopUp = new PasswordPopUp();
-			PopUpManager.addPopUp(this._passwordPopUp, true, true);
-			this._passwordPopUp.validate();*/
+
 		}
 
 		private function splashComplete(e:Event):void
@@ -417,6 +415,7 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_EDIT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientSettingsScreen, {navGoHome:goBackToMainScreen , navFromReset:resetApplication}));
 			this._settingsNav.addScreen(HivivaScreens.RESOURCES_SCREEN, new ScreenNavigatorItem(HivivaResourceScreen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_LOCK_SCREEN, new ScreenNavigatorItem(InchPasscodeLock));
 		}
 
 		private function navGoToMessages():void
