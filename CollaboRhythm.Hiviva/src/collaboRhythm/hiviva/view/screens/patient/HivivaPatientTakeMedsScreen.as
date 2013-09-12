@@ -279,6 +279,13 @@ package collaboRhythm.hiviva.view.screens.patient
 				updateUserLocalAdherenceCount();
 			}*/
 		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
+			super.dispose();
+		}
 /*
 
 		private function updateUserLocalAdherenceCount():void

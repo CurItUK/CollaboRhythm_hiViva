@@ -82,6 +82,7 @@ package collaboRhythm.hiviva.view
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -100,7 +101,7 @@ package collaboRhythm.hiviva.view
 		private var _settingsOpen:Boolean = false;
 		private var _currMainScreenId:String;
 		private var _scaleFactor:Number;
-		private var _bgTexture:Texture ;
+		private var _splashBgTexture:Texture ;
 
         private var _preloader:HivivaPreloaderWithBackground;
 
@@ -119,7 +120,7 @@ package collaboRhythm.hiviva.view
 		public function initMain(assetManager:AssetManager , bgTexture:Texture):void
 		{
 			_assets = assetManager;
-			this._bgTexture = bgTexture;
+			this._splashBgTexture = bgTexture;
 			initAssetManagement();
 		}
 
@@ -129,8 +130,13 @@ package collaboRhythm.hiviva.view
 
 			// texture Atlas
 //			_assets.enqueue(appDir.resolvePath("assets/images/atlas/homePagePhoto.atf"),appDir.resolvePath("assets/images/atlas/homePagePhoto.xml"));
+			_assets.enqueue(appDir.resolvePath("assets/images/main_bg.jpg"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/hivivaBaseImages.png"),appDir.resolvePath("assets/images/atlas/hivivaBaseImages.xml"));
 			// fonts
+			// blue theme
+			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-white-bold.png"),appDir.resolvePath("assets/fonts/raised-white-bold.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-white-regular.png"),appDir.resolvePath("assets/fonts/raised-white-regular.fnt"));
+			// grey theme
 			_assets.enqueue(appDir.resolvePath("assets/fonts/normal-white-regular.png"),appDir.resolvePath("assets/fonts/normal-white-regular.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/normal-white-bold.png"),appDir.resolvePath("assets/fonts/normal-white-bold.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-dark-bold.png"),appDir.resolvePath("assets/fonts/engraved-dark-bold.fnt"));
@@ -141,7 +147,7 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lighter-regular.png"),appDir.resolvePath("assets/fonts/engraved-lighter-regular.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-lighter-bold.png"),appDir.resolvePath("assets/fonts/raised-lighter-bold.fnt"));
 
-			this._preloader = new HivivaPreloaderWithBackground(0xFFFFFFF , 100 , 5 , this._bgTexture) ;
+			this._preloader = new HivivaPreloaderWithBackground(0xFFFFFFF , 100 , 5 , Texture.fromTexture(this._splashBgTexture));
 			this._preloader.init();
 			this._preloader.y = 0;
 			this._preloader.x = 0;
@@ -188,7 +194,7 @@ package collaboRhythm.hiviva.view
 			this.addChild(this._screenHolder);
 			this._screenHolder.addChild(this._mainScreenNav);
 
-			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete}));
+			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete} , {backgroundTexture:Texture.fromTexture(this._splashBgTexture)}));
 			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 /*
 			this._passwordPopUp = new PasswordPopUp();
@@ -201,6 +207,8 @@ package collaboRhythm.hiviva.view
 			trace("splashComplete ");
 			this._mainScreenNav.clearScreen();
 			this._mainScreenNav.removeScreen(HivivaScreens.SPLASH_SCREEN);
+			this._splashBgTexture.base.dispose();
+			this._splashBgTexture.dispose();
 
 			addEventListener(FeathersScreenEvent.HIDE_MAIN_NAV, hideMainNav);
 			addEventListener(FeathersScreenEvent.SHOW_MAIN_NAV, showMainNav);
@@ -230,8 +238,16 @@ package collaboRhythm.hiviva.view
 		protected function drawScreenBackground():void
 		{
 			this._screenBackground = new MainBackground();
-			this._screenBackground.draw(Constants.STAGE_WIDTH , Constants.STAGE_HEIGHT, true);
+			this._screenBackground.addEventListener(Event.ADDED_TO_STAGE, screenBackgroundAddedHandler);
 			this._mainScreenNav.addChildAt(this._screenBackground , 0);
+		}
+
+		private function screenBackgroundAddedHandler(e:Event):void
+		{
+//			trace("this._screenBackground added");
+//			var bgType:String = this._screenBackground.parent == this._mainScreenNav ? MainBackground.BG_BLUE_TYPE : MainBackground.BG_GREY_TYPE;
+//			this._screenBackground.draw(Constants.STAGE_WIDTH , Constants.STAGE_HEIGHT, bgType);
+			this._screenBackground.draw();
 		}
 
 		private function drawSettingsBtn():void

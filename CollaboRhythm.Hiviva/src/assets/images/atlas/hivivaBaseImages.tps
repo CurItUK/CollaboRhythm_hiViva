@@ -70,7 +70,7 @@
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
-            <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
+            <enum type="AlgorithmSettings::AlgorithmId">Basic</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
@@ -207,7 +207,6 @@
             <filename>../temp/side_nav_icon_03.png</filename>
             <filename>../temp/side_nav_icon_04.png</filename>
             <filename>../temp/snakey_thing.png</filename>
-            <filename>../temp/splash_bg.jpg</filename>
             <filename>../temp/splash_button_01.png</filename>
             <filename>../temp/splash_button_02.png</filename>
             <filename>../temp/star1.png</filename>

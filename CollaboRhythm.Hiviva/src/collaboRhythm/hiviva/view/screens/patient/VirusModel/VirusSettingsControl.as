@@ -238,13 +238,6 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 
 		}
 
-		private function drawBackground():void
-		{
-			this._screenBackground = new MainBackground();
-			this._screenBackground.draw(Constants.STAGE_WIDTH, this.actualHeight, false);
-			this.addChildAt(this._screenBackground, 0);
-		}
-
 		private function adheranceSliderChangeHandler(e:Event):void
 		{
 			this._adheranceResultLabel.text = this._adheranceSlider.value.toString();

@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="CollaboRhythm.Hiviva - Emulator (iPhone Retina)" type="FlashRunConfigurationType" factoryName="Flash App" singleton="true">
+  <configuration default="false" name="CollaboRhythm.Hiviva - Emulator (iPhone Retina)" type="FlashRunConfigurationType" factoryName="Flash App">
     <option name="BCName" value="CollaboRhythm.Hiviva" />
     <option name="IOSSimulatorSdkPath" value="" />
     <option name="adlOptions" value="" />

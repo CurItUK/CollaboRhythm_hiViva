@@ -6,7 +6,6 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
-	import collaboRhythm.hiviva.view.LabelAndInput;
 	import collaboRhythm.hiviva.view.Main;
 
 	import feathers.controls.Button;
@@ -16,12 +15,11 @@ package collaboRhythm.hiviva.view.screens.shared
 	import feathers.events.FeathersEventType;
 
 	import flash.events.TimerEvent;
-	import flash.text.TextFormat;
-	import flash.text.TextFormatAlign;
-	import flash.utils.Timer;
+	import flash.system.System;
 
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.textures.Texture;
 
 	public class HivivaSplashScreen extends Screen
 	{
@@ -39,6 +37,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _loginLabel:Label;
 		private var _passwordInput:TextInput;
 		private var _loginButton:Button;
+		private var _backgroundTexture:Texture;
 
 		private var _starlingMain:Main;
 
@@ -78,7 +77,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function initSplashBackground():void
 		{
-			this._splashBg = new Image(Main.assets.getTexture("splash_bg"));
+			this._splashBg = new Image(_backgroundTexture);
 			this._splashBg.touchable = false;
 			addChild(this._splashBg);
 
@@ -340,12 +339,24 @@ package collaboRhythm.hiviva.view.screens.shared
 		override public function dispose():void
 		{
 			trace("HivivaSplashScreen dispose called");
-			Main.assets.removeTexture("splash_bg");
 			Main.assets.removeTexture("logo");
 			Main.assets.removeTexture("splash_button_01");
 			Main.assets.removeTexture("splash_button_02");
+			_backgroundTexture.base.dispose();
+			_backgroundTexture.dispose();
 			super.dispose();
+
+			System.gc();
 		}
 
+		public function get backgroundTexture():Texture
+		{
+			return _backgroundTexture;
+		}
+
+		public function set backgroundTexture(value:Texture):void
+		{
+			_backgroundTexture = value;
+		}
 	}
 }

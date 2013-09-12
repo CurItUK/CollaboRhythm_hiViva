@@ -19,6 +19,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import feathers.display.TiledImage;
 
+	import flash.geom.Point;
+
 
 	import starling.animation.Transitions;
 
@@ -101,20 +103,30 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.addChild(this._virusHolder);
 
 			this._panelBackground = new MainBackground();
-			this._panelBackground.draw(Constants.STAGE_WIDTH,Constants.STAGE_HEIGHT,false);
+//			this._panelBackground.draw(Constants.STAGE_WIDTH,Constants.STAGE_HEIGHT,MainBackground.BG_BLUE_TYPE);
+			this._panelBackground.draw();
 			addChild(this._panelBackground);
 
-			var headerBackground:MainBackground = new MainBackground();
-			headerBackground.draw(Constants.STAGE_WIDTH,Constants.HEADER_HEIGHT,false);
-			addChild(headerBackground);
+			/*var headerBackground:MainBackground = new MainBackground();
+			headerBackground.draw(Constants.STAGE_WIDTH,Constants.HEADER_HEIGHT,MainBackground.BG_BLUE_TYPE);
+			addChild(headerBackground);*/
 
-			this._topGrad = new TiledImage(Main.assets.getTexture("top_gradient"));
+			var clipRatio:Number = Constants.HEADER_HEIGHT / Constants.STAGE_HEIGHT;
+			var headerBg:Image = new Image(Main.assets.getTexture("main_bg"));
+			headerBg.setTexCoords(0,new Point(0,0));
+			headerBg.setTexCoords(1,new Point(1,0));
+			headerBg.setTexCoords(2,new Point(0,clipRatio));
+			headerBg.setTexCoords(3,new Point(1,clipRatio));
+			addChild(headerBg);
+			headerBg.height = Constants.HEADER_HEIGHT;
+
+			/*this._topGrad = new TiledImage(Main.assets.getTexture("top_gradient"));
 			this._topGrad.touchable = false;
 			this._topGrad.width = Constants.STAGE_WIDTH;
 			this._topGrad.smoothing = TextureSmoothing.NONE;
 			this._topGrad.blendMode = BlendMode.MULTIPLY;
 			//topGrad.flatten();
-			addChild(this._topGrad);
+			addChild(this._topGrad);*/
 
 			this._header = new HivivaHeader();
 			this._header.title = "Virus Model";

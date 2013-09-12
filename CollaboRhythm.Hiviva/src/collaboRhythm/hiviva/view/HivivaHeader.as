@@ -1,6 +1,6 @@
 package collaboRhythm.hiviva.view
 {
-
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 
 	import feathers.controls.Header;
 	import feathers.controls.text.TextFieldTextRenderer;
@@ -8,11 +8,9 @@ package collaboRhythm.hiviva.view
 
 	import flash.text.TextFormat;
 
-
-
 	import starling.display.Image;
-
 	import starling.filters.BlurFilter;
+	import starling.utils.deg2rad;
 
 	public class HivivaHeader extends Header
 	{
@@ -76,8 +74,10 @@ package collaboRhythm.hiviva.view
 			//styles here
 			titleRenderer.embedFonts = true;
 			titleRenderer.isHTML = true;
-			titleRenderer.textFormat = new TextFormat("ExoLight", Math.round(this._fontSize * this._scale), 0x293d54);
-			titleRenderer.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+//			titleRenderer.textFormat = new TextFormat("ExoLight", Math.round(this._fontSize * this._scale), 0x293d54);
+//			titleRenderer.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
+			titleRenderer.textFormat = new TextFormat("ExoLight", Math.round(this._fontSize * this._scale), HivivaThemeConstants.WHITE_FONT_COLOUR);
+			titleRenderer.filter = BlurFilter.createDropShadow(2,deg2rad(90),0x000000,0.3,0);
 
 			return titleRenderer;
 		}

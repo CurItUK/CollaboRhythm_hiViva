@@ -178,7 +178,7 @@ package collaboRhythm.hiviva.view
 		private function _onComplete(event:Event):void
 		{
 
-            event.stopImmediatePropagation()
+            event.stopImmediatePropagation();
 			this.dispose();
 		}
 	}

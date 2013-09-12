@@ -14,12 +14,14 @@ package collaboRhythm.hiviva.global
 		public static const ExoLightFont:Class;
 
 		// colours (not to be used with bitmap fonts with effects applied!)
-
+		// grey theme
 		public static const DARK_FONT_COLOUR:uint					= 0x293d54;
 		public static const MEDIUM_FONT_COLOUR:uint					= 0x495c72;
 		public static const LIGHT_FONT_COLOUR:uint					= 0x607895;
 		public static const LIGHTER_FONT_COLOUR:uint				= 0xb9c4cd;
 		public static const LIGHTEST_FONT_COLOUR:uint				= 0xdee4e9;
+		// blue theme
+		public static const WHITE_FONT_COLOUR:uint					= 0xeff6f9;
 
 		// labels style names
 

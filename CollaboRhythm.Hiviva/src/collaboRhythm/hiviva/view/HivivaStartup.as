@@ -37,6 +37,7 @@ package collaboRhythm.hiviva.view
 		[Embed(source="/assets/images/temp/splash_bg.jpg")]
 		public static const _Background:Class;
 
+		private var _background:Bitmap;
 		private var _starFW:Starling;
 		private var _assets:AssetManager;
 
@@ -51,6 +52,12 @@ package collaboRhythm.hiviva.view
 		private function onAdded(e:flash.events.Event):void
 		{
 			removeEventListener(flash.events.Event.ADDED_TO_STAGE, onAdded);
+
+			_background =  new _Background();
+			_background.smoothing = true;
+			_background.width = Constants.STAGE_WIDTH;
+			_background.height = Constants.STAGE_HEIGHT;
+			addChild(_background);
 
 			_hivivaStartup = this;
 			_hivivaAppController = new HivivaAppController();
@@ -101,12 +108,13 @@ package collaboRhythm.hiviva.view
 
 			this._assets = new AssetManager();
 
-			var background:Bitmap =  new _Background();
-			background.smoothing = true;
-			var bgTexture:Texture = Texture.fromBitmap(background,  false, false, 1);
-
+			var bgTexture:Texture = Texture.fromBitmap(_background,  false, false, 1);
 			var main:Main = Starling.current.root as Main;
 			main.initMain(this._assets , bgTexture);
+
+			removeChild(_background);
+			_background.bitmapData.dispose();
+			_background = null;
 		}
 
 		public static function get hivivaStartup():HivivaStartup
