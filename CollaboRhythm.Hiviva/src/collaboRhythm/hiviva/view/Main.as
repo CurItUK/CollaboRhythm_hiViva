@@ -131,12 +131,12 @@ package collaboRhythm.hiviva.view
 
 			// texture Atlas
 //			_assets.enqueue(appDir.resolvePath("assets/images/atlas/homePagePhoto.atf"),appDir.resolvePath("assets/images/atlas/homePagePhoto.xml"));
-			_assets.enqueue(appDir.resolvePath("assets/images/main_bg.jpg"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/hivivaBaseImages.png"),appDir.resolvePath("assets/images/atlas/hivivaBaseImages.xml"));
 			// fonts
 			// blue theme
-			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-white-bold.png"),appDir.resolvePath("assets/fonts/raised-white-bold.fnt"));
-			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-white-regular.png"),appDir.resolvePath("assets/fonts/raised-white-regular.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-raised-white-bold.png"),appDir.resolvePath("assets/fontsv2/v2-raised-white-bold.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-raised-white-regular.png"),appDir.resolvePath("assets/fontsv2/v2-raised-white-regular.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-engraved-lighter-bold.png"),appDir.resolvePath("assets/fontsv2/v2-engraved-lighter-bold.fnt"));
 			// grey theme
 			_assets.enqueue(appDir.resolvePath("assets/fonts/normal-white-regular.png"),appDir.resolvePath("assets/fonts/normal-white-regular.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/normal-white-bold.png"),appDir.resolvePath("assets/fonts/normal-white-bold.fnt"));
@@ -147,6 +147,17 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lightest-bold.png"),appDir.resolvePath("assets/fonts/engraved-lightest-bold.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lighter-regular.png"),appDir.resolvePath("assets/fonts/engraved-lighter-regular.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-lighter-bold.png"),appDir.resolvePath("assets/fonts/raised-lighter-bold.fnt"));
+			// standalone assets
+			// blue theme
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/main_bg.jpg"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_verticle_line.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_base.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_active.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_1.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_2.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_3.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_4.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_5.png"));
 
 			this._preloader = new HivivaPreloaderWithBackground(0xFFFFFFF , 100 , 5 , Texture.fromTexture(this._splashBgTexture));
 			this._preloader.init();

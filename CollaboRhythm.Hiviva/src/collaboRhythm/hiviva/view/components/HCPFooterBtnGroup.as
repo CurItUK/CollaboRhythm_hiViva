@@ -62,7 +62,8 @@ package collaboRhythm.hiviva.view.components
 				switch(item.name)
 				{
 					case "home" :
-						img = new Image(Main.assets.getTexture("footer_icon_1"));
+//						img = new Image(Main.assets.getTexture("footer_icon_1"));
+						img = new Image(Main.assets.getTexture("v2_footer_icon_1"));
 						button.isSelected = true;
 						_currFooterBtn = button;
 						_mainScreenNav.showScreen(HivivaScreens.HCP_HOME_SCREEN);
@@ -71,7 +72,8 @@ package collaboRhythm.hiviva.view.components
 						img = new Image(Main.assets.getTexture("footer_icon_6"));
 						break;
 					case "reports" :
-						img = new Image(Main.assets.getTexture("footer_icon_5"));
+//						img = new Image(Main.assets.getTexture("footer_icon_5"));
+						img = new Image(Main.assets.getTexture("v2_footer_icon_5"));
 						break;
 					case "messages" :
 						img = new Image(Main.assets.getTexture("footer_icon_7"));
