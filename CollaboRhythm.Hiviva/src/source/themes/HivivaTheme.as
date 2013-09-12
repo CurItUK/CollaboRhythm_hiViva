@@ -591,12 +591,12 @@ package source.themes
 			this.subHeaderBftf = new BitmapFontTextFormat(this.raisedWhiteBoldBitmapFont,30 * this.scale,Color.WHITE);
 //			this.bodyBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);  (replaced for blue theme)
 			this.bodyBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR);
-			this.bodySmallerBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 18 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
+			this.bodySmallerBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 18 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR);
 //			this.bodySmallerBoldBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 18 * this.scale, Color.WHITE);  (replaced for blue theme)
 			this.bodySmallerBoldBftf = new BitmapFontTextFormat(this.raisedWhiteBoldBitmapFont, 18 * this.scale, Color.WHITE);
 //			this.bodyBoldBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE);  (replaced for blue theme)
 			this.bodyBoldBftf = new BitmapFontTextFormat(this.raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE);
-			this.bodyCenteredBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR,TextFormatAlign.CENTER);
+			this.bodyCenteredBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR,TextFormatAlign.CENTER);
 //			this.bodyBoldCenteredBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);  (replaced for blue theme)
 			this.bodyBoldCenteredBftf = new BitmapFontTextFormat(this.raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 //			this.inputLabelLeftBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE);  (replaced for blue theme)
