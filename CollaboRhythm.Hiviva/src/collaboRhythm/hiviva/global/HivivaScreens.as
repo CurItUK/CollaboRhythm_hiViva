@@ -57,7 +57,10 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_HELP_VIRUS_MODEL_SCREEN:String	   = "patient_help_virus_model_Screen";
 		public static const PATIENT_HELP_PULL_REPORTS_SCREEN:String	   = "patient_help_pull_reports_Screen";
 
+		//Passcode lock screens
 
+		public static const PATIENT_PASSCODE_RECOVER1_SCREEN:String	   = "patientPasscodeRecover1";
+		public static const PATIENT_PASSCODE_RECOVER2_SCREEN:String	   = "patientPasscodeRecover2";
 
 
 
