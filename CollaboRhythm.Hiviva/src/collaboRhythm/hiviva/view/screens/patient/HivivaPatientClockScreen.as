@@ -218,6 +218,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			trace("HivivaPatientClockScreen dispose");
 
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+
 			this._clockTimer.stop();
 			this._clockTimer.removeEventListener(TimerEvent.TIMER, timerTickHandler);
 			this._clockTimer = null;

@@ -61,22 +61,27 @@ package collaboRhythm.hiviva.view.components
 				switch(item.name)
 				{
 					case "home" :
-						img = new Image(Main.assets..getTexture("footer_icon_1"));
+//						img = new Image(Main.assets..getTexture("footer_icon_1"));
+						img = new Image(Main.assets..getTexture("v2_footer_icon_1"));
 						button.isSelected = true;
 						_currFooterBtn = button;
 						_mainScreenNav.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
 						break;
 					case "clock" :
-						img = new Image(Main.assets..getTexture("footer_icon_2"));
+//						img = new Image(Main.assets..getTexture("footer_icon_2"));
+						img = new Image(Main.assets..getTexture("v2_footer_icon_2"));
 						break;
 					case "takemeds" :
-						img = new Image(Main.assets..getTexture("footer_icon_3"));
+//						img = new Image(Main.assets..getTexture("footer_icon_3"));
+						img = new Image(Main.assets..getTexture("v2_footer_icon_3"));
 						break;
 					case "virus" :
-						img = new Image(Main.assets..getTexture("footer_icon_4"));
+//						img = new Image(Main.assets..getTexture("footer_icon_4"));
+						img = new Image(Main.assets..getTexture("v2_footer_icon_4"));
 						break;
 					case "report" :
-						img = new Image(Main.assets..getTexture("footer_icon_5"));
+//						img = new Image(Main.assets..getTexture("footer_icon_5"));
+						img = new Image(Main.assets..getTexture("v2_footer_icon_5"));
 						break;
 				}
 

@@ -194,13 +194,13 @@ package collaboRhythm.hiviva.view.components
 						scheduleValue += percentTaken;
 						scheduleValueCount++;
 					}
-					trace(currDay.toDateString() + " percentTaken = " + percentTaken);
+//					trace(currDay.toDateString() + " percentTaken = " + percentTaken);
 					currDay.date++;
 				}
 
 				if(scheduleValue > 0)
 				{
-					trace(scheduleValue + " / " + scheduleValueCount);
+					trace("drug " + rowData.id + " : " + scheduleValue + " / " + scheduleValueCount);
 					overallAverage += (scheduleValue / scheduleValueCount);
 					drawTableCell(String(Math.round(scheduleValue / scheduleValueCount)), rowCount);
 				}
@@ -249,6 +249,7 @@ package collaboRhythm.hiviva.view.components
 				// schedule did not exist on this day
 				percentTaken = -1;
 			}
+			if(isNaN(percentTaken)) percentTaken = -1;
 			return percentTaken;
 		}
 

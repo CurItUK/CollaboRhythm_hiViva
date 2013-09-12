@@ -314,8 +314,9 @@ package source.themes
 		protected var engravedLighterBoldBitmapFont:BitmapFont;
 		protected var engravedLightestBoldBitmapFont:BitmapFont;
 		protected var raisedLighterBoldBitmapFont:BitmapFont;
-		protected var raisedWhiteBoldBitmapFont:BitmapFont;
-		protected var raisedWhiteRegularBitmapFont:BitmapFont;
+		protected var v2raisedWhiteBoldBitmapFont:BitmapFont;
+		protected var v2raisedWhiteRegularBitmapFont:BitmapFont;
+		protected var v2EngravedLighterBoldBitmapFont:BitmapFont;
 		// bitmap font text formats
 
 		protected var headerBoldBftf:BitmapFontTextFormat;
@@ -582,45 +583,51 @@ package source.themes
 			this.engravedLightestBoldBitmapFont = TextField.getBitmapFont("engraved-lightest-bold");
 			this.raisedLighterBoldBitmapFont = TextField.getBitmapFont("raised-lighter-bold");
 			// blue theme
-			this.raisedWhiteBoldBitmapFont = TextField.getBitmapFont("raised-white-bold");
-			this.raisedWhiteRegularBitmapFont = TextField.getBitmapFont("raised-white-regular");
+			this.v2raisedWhiteBoldBitmapFont = TextField.getBitmapFont("v2-raised-white-bold");
+			this.v2raisedWhiteRegularBitmapFont = TextField.getBitmapFont("v2-raised-white-regular");
+			this.v2EngravedLighterBoldBitmapFont = TextField.getBitmapFont("v2-engraved-lighter-bold");
 
 			// Bitmap Font TextFormats
 			this.headerBoldBftf = new BitmapFontTextFormat(this.engravedDarkBoldBitmapFont,44 * this.scale,Color.WHITE);
-//			this.subHeaderBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE); (replaced for blue theme)
-			this.subHeaderBftf = new BitmapFontTextFormat(this.raisedWhiteBoldBitmapFont,30 * this.scale,Color.WHITE);
-//			this.bodyBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);  (replaced for blue theme)
+			this.subHeaderBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont,30 * this.scale,Color.WHITE);
 			this.bodyBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR);
 			this.bodySmallerBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 18 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR);
-//			this.bodySmallerBoldBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 18 * this.scale, Color.WHITE);  (replaced for blue theme)
-			this.bodySmallerBoldBftf = new BitmapFontTextFormat(this.raisedWhiteBoldBitmapFont, 18 * this.scale, Color.WHITE);
-//			this.bodyBoldBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE);  (replaced for blue theme)
-			this.bodyBoldBftf = new BitmapFontTextFormat(this.raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE);
+			this.bodySmallerBoldBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 18 * this.scale, Color.WHITE);
+			this.bodyBoldBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.bodyCenteredBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR,TextFormatAlign.CENTER);
-//			this.bodyBoldCenteredBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);  (replaced for blue theme)
-			this.bodyBoldCenteredBftf = new BitmapFontTextFormat(this.raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
-//			this.inputLabelLeftBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE);  (replaced for blue theme)
-			this.inputLabelLeftBftf = new BitmapFontTextFormat(this.raisedWhiteBoldBitmapFont,30 * this.scale,Color.WHITE);
+			this.bodyBoldCenteredBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			this.inputLabelLeftBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont,30 * this.scale,Color.WHITE);
 			this.homeLensLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR,TextFormatAlign.CENTER);
 			this.validationLabelBftf = new BitmapFontTextFormat(this.engravedLighterRegularBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
-//			this.medicineBrandnameLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 30 * this.scale, Color.WHITE);  (replaced for blue theme)
-			this.medicineBrandnameLabelBftf = new BitmapFontTextFormat(this.raisedWhiteBoldBitmapFont, 30 * this.scale, Color.WHITE);
+			this.medicineBrandnameLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 30 * this.scale, Color.WHITE);
 			this.splashFooterLabelBftf = new BitmapFontTextFormat(this.raisedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.calendarMonthLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 40 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR,TextFormatAlign.CENTER);
-//			this.feelingSliderLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 20 * this.scale, Color.WHITE,TextFormatAlign.CENTER);  (replaced for blue theme)
-			this.feelingSliderLabelBftf = new BitmapFontTextFormat(this.raisedWhiteBoldBitmapFont, 20 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			this.feelingSliderLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 20 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.appIdLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.LIGHT_FONT_COLOUR,TextFormatAlign.CENTER);
 			this.instructionsLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 20 * this.scale, HivivaThemeConstants.LIGHT_FONT_COLOUR);
 			this.calendarDaysLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.superscriptLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 14 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.patientDataLighterLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			// buttons label formats
-			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
+			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.sideNavGroupLabelBftf = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 18 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR);
 			this.splashButtonLabel = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 22 * this.scale, Color.WHITE);
 			this.profileGroupLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
-			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
+			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.backButtonLabelBftf = new BitmapFontTextFormat(this.engravedLightestBoldBitmapFont, 24 * this.scale, Color.WHITE);
+
+			// Bitmap Font TextFormats (replaced for blue theme)
+//			this.subHeaderBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE);
+//			this.bodyBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
+//			this.bodySmallerBoldBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 18 * this.scale, Color.WHITE);
+//			this.bodyBoldBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE);
+//			this.bodyBoldCenteredBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+//			this.inputLabelLeftBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE);
+//			this.medicineBrandnameLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 30 * this.scale, Color.WHITE);
+//			this.feelingSliderLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 20 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			// buttons label formats
+//			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
+//			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
@@ -678,14 +685,17 @@ package source.themes
 
 
 
-			this.buttonFooterTexture = Main.assets.getTexture("footer_icon_base");
-			this.buttonFooterActiveTexture = Main.assets.getTexture("footer_icon_active");
+//			this.buttonFooterTexture = Main.assets.getTexture("footer_icon_base");
+			this.buttonFooterTexture = Main.assets.getTexture("v2_footer_icon_base");
+//			this.buttonFooterActiveTexture = Main.assets.getTexture("footer_icon_active");
+			this.buttonFooterActiveTexture = Main.assets.getTexture("v2_footer_icon_active");
 
 			this.buttonSideNavTexture = Main.assets.getTexture("side_nav_base");
 
 			this.buttonPatientProfileNavTexture = new Scale9Textures(Main.assets.getTexture("patient-profile-nav-button"), new Rectangle(0,0,72,72));
 
-			this.buttonHomeSkinTexture = Main.assets.getTexture("footer_icon_1");
+//			this.buttonHomeSkinTexture = Main.assets.getTexture("footer_icon_1");
+			this.buttonHomeSkinTexture = Main.assets.getTexture("v2_footer_icon_1");
 
 			this.buttonSplash1SkinTexture = Main.assets.getTexture("splash_button_01");
 			this.buttonSplash2SkinTexture = Main.assets.getTexture("splash_button_02");
@@ -2293,7 +2303,7 @@ package source.themes
 			    var editor:StageTextTextEditor = new StageTextTextEditor();
 			    editor.fontFamily = "Helvetica Neue,Helvetica";
 			    editor.fontSize = 25 * scale;
-			    editor.color = 0x283c53;
+			    editor.color = HivivaThemeConstants.WHITE_FONT_COLOUR;
 			    return editor;
 			};
 			/*

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <font>
-  <info face="raised-white-bold" size="44" bold="0" italic="0" charset="" unicode="1" stretchH="100" smooth="1" aa="1" padding="2,2,2,2" spacing="1,1" outline="0"/>
+  <info face="v2-raised-white-bold" size="44" bold="0" italic="0" charset="" unicode="1" stretchH="100" smooth="1" aa="1" padding="2,2,2,2" spacing="1,1" outline="0"/>
   <common lineHeight="57" base="44" scaleW="512" scaleH="512" pages="1" packed="0" alphaChnl="1" redChnl="0" greenChnl="0" blueChnl="0"/>
   <pages>
-    <page id="0" file="raised-white-bold.png" />
+    <page id="0" file="v2-raised-white-bold.png" />
   </pages>
   <chars count="191">
     <char id="13" x="504" y="46" width="7" height="5" xoffset="-3" yoffset="54" xadvance="33" page="0" chnl="15" />
