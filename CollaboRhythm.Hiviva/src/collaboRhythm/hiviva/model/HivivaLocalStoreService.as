@@ -128,7 +128,11 @@ package collaboRhythm.hiviva.model
 				this._userVO.appId= result[0].app_id;
 				this._userVO.guid= result[0].guid;
 			}
+
+			getUserAuthenticationDetails();
 		}
+
+
 
 		private function sqlResultHandler(e:SQLEvent):void
 		{
@@ -1337,6 +1341,38 @@ package collaboRhythm.hiviva.model
 		{
 			userAuthenticationVO.enabled = true;
 			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE));
+		}
+
+		private function getUserAuthenticationDetails():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "SELECT * FROM user_authentication";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, userAuthenticationHandler);
+			this._sqStatement.execute();
+		}
+
+		private function userAuthenticationHandler(event:SQLEvent):void
+		{
+			var result:Array = this._sqStatement.getResult().data;
+
+			if(result[0].enabled == true)
+			{
+				userAuthenticationVO.enabled = true;
+				userAuthenticationVO.passcode = result[0].passcode;
+				userAuthenticationVO.answer = result[0].secret_answer;
+
+			} else
+			{
+				userAuthenticationVO.enabled = false;
+			}
+
 		}
 
 		public function get userVO():UserVO

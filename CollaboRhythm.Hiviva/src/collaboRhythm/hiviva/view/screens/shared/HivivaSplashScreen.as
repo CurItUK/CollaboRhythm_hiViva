@@ -263,8 +263,12 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function confirmButtonHandler(e:Event = null):void
 		{
-			//TODO Password Validation
-			closeDownScreen();
+			var passcode:String = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userAuthenticationVO.passcode;
+			if(this._passwordInput.text == passcode)
+			{
+				closeDownScreen();
+			}
+
 		}
 
 		private function closeDownScreen():void
