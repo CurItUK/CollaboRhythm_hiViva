@@ -178,8 +178,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			if(testResults.children().length() > 0)
 			{
-				this._cd4Count = Number(Math.floor(testResults[0].Result));
-				this._viralLoad = Number(Math.floor(testResults[1].Result));
+				this._viralLoad = Number(Math.floor(testResults[0].Result));
+				this._cd4Count = Number(Math.floor(testResults[1].Result));
 			}
 			else
 			{

@@ -220,8 +220,8 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this._resteBtn = new Button();
 			this._resteBtn.name = HivivaThemeConstants.BORDER_BUTTON;
 			this._resteBtn.label = "RESET";
-//			this._resteBtn.defaultIcon = new Image(Main.assets.getTexture("vs_reset_icon"));
-			this._resteBtn.defaultIcon = new Image(Main.assets.getTexture("v2_vs_reset_icon"));
+			this._resteBtn.defaultIcon = new Image(Main.assets.getTexture("vs_reset_icon"));
+//			this._resteBtn.defaultIcon = new Image(Main.assets.getTexture("v2_vs_reset_icon"));
 			this._resteBtn.iconPosition = Button.ICON_POSITION_LEFT;
 			this._resteBtn.addEventListener(Event.TRIGGERED , resetBtnHandler);
 			this.addChild(this._resteBtn);
@@ -229,8 +229,8 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this._minimiseBtn = new Button();
 			this._minimiseBtn.name = HivivaThemeConstants.BORDER_BUTTON;
 			this._minimiseBtn.label = "MINIMISE";
-//			this._minimiseBtn.defaultIcon = new Image(Main.assets.getTexture("vs_minimize_icon"));
-			this._minimiseBtn.defaultIcon = new Image(Main.assets.getTexture("v2_vs_minimize_icon"));
+			this._minimiseBtn.defaultIcon = new Image(Main.assets.getTexture("vs_minimize_icon"));
+//			this._minimiseBtn.defaultIcon = new Image(Main.assets.getTexture("v2_vs_minimize_icon"));
 			this._minimiseBtn.iconPosition = Button.ICON_POSITION_LEFT;
 			this._minimiseBtn.addEventListener(Event.TRIGGERED , minimiseBtnHandler);
 			this.addChild(this._minimiseBtn);

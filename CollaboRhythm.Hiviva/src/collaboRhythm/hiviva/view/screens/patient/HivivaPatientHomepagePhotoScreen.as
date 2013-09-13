@@ -82,7 +82,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			super.initialize();
 			trace("HivivaPatientHomepagePhotoScreen initialize");
 
-			this._header.title = "Homepage Photo";
+			this._header.title = "Homepage photo";
 
 			this._instructions = new Label();
 			this._instructions.text = 	"The clarity of this image will adjust to " +

@@ -137,7 +137,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			var lc:ListCollection = new ListCollection(
 				[
-					{name: "photo", label: "Home page photo"},
+					{name: "photo", label: "Homepage photo"},
 					{name: "medicines", label: "Daily medicines"},
 					{name: "results", label: "Test results"},
 					{name: "connect", label: "Connect to care provider"},
