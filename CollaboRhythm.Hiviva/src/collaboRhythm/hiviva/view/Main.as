@@ -158,6 +158,16 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_3.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_4.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_5.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_top_nav_icon_01.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_virus_settings_button.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_minimize_icon.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_reset_icon.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_clock_icon.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_pillbox_icon.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_toggle_switch.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_toggle_track.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_feeling_slider_track.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_pillbox.png"));
 
 			this._preloader = new HivivaPreloaderWithBackground(0xFFFFFFF , 100 , 5 , Texture.fromTexture(this._splashBgTexture));
 			this._preloader.init();
@@ -263,7 +273,8 @@ package collaboRhythm.hiviva.view
 		{
 			this._settingsBtn = new Button();
 			this._settingsBtn.name = HivivaTheme.NONE_THEMED;
-			this._settingsBtn.defaultIcon = new Image(_assets.getTexture("top_nav_icon_01"));
+//			this._settingsBtn.defaultIcon = new Image(_assets.getTexture("top_nav_icon_01"));
+			this._settingsBtn.defaultIcon = new Image(_assets.getTexture("v2_top_nav_icon_01"));
 			this._settingsBtn.addEventListener(Event.TRIGGERED , settingsBtnHandler);
 			this._screenHolder.addChild(this._settingsBtn);
 			this._settingsBtn.width = (Constants.STAGE_WIDTH * 0.2);

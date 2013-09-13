@@ -62,7 +62,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._clockFace.width = IMAGE_SIZE;
 			this._clockFace.scaleY = this._clockFace.scaleX;
 			this._clockFace.x = (this.actualWidth * 0.5) - (this._clockFace.width * 0.5);
-			this._clockFace.y = (this._usableHeight * 0.5) + headerHeight - (this._clockFace.height * 0.5);
+			this._clockFace.y = headerHeight + (this._usableHeight * 0.5) - (this._clockFace.height * 0.5);
 
 			this._clockHandHolder.width = this._clockFace.width;
 			this._clockHandHolder.scaleY = this._clockHandHolder.scaleX;

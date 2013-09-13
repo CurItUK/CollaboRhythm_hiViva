@@ -80,13 +80,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._viralLoadCheck.defaultLabelProperties.width = this._innerWidth;
 
 			this._emailLabel.width = this._innerWidth;
-			this._emailInput.width = this._innerWidth * 0.75;
+			this._emailInput.width = this._innerWidth;
 		}
 
 		override protected function postValidateContent():void
 		{
 			super.postValidateContent();
-			this._previewAndSendBtn.x = (this._innerWidth * 0.5) - (this._previewAndSendBtn.width * 0.5);
+			this._previewAndSendBtn.x = (this._content.width * 0.5) - (this._previewAndSendBtn.width * 0.5);
 		}
 
 		override protected function initialize():void

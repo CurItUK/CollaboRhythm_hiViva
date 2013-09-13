@@ -2,10 +2,10 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
-
 	import collaboRhythm.hiviva.view.screens.patient.VirusModel.TCellView;
 	import collaboRhythm.hiviva.view.screens.patient.VirusModel.VirusSettingsControl;
 	import collaboRhythm.hiviva.view.screens.patient.VirusModel.VirusSimulation;
@@ -14,31 +14,20 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import feathers.controls.Button;
 	import feathers.controls.ImageLoader;
-
 	import feathers.controls.Screen;
-
 	import feathers.display.TiledImage;
 
 	import flash.geom.Point;
 
-
 	import starling.animation.Transitions;
-
 	import starling.animation.Tween;
 	import starling.core.Starling;
-
 	import starling.display.BlendMode;
-
-	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-
-
 	import starling.events.Event;
 	import starling.textures.Texture;
-	import starling.textures.TextureSmoothing;
-
 
 	public class HivivaPatientVirusModelScreen extends Screen
 	{
@@ -150,7 +139,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			_panelBackground.addChild(this._virusBgShadow);
 
 			this._virusSettingsBtn = new Button();
-			this._virusSettingsBtn.defaultIcon = new Image(Main.assets.getTexture("vs_slider_icon"));
+//			this._virusSettingsBtn.defaultIcon = new Image(Main.assets.getTexture("vs_slider_icon"));
+			this._virusSettingsBtn.name = HivivaThemeConstants.VIRUS_SETTINGS_BUTTON;
 			this._virusSettingsBtn.addEventListener(Event.TRIGGERED , virusSettingsBtnHandler);
 			this.addChild(this._virusSettingsBtn);
 
@@ -158,6 +148,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function getPatientAdherenceTestResults():void
 		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getAdherence();
 

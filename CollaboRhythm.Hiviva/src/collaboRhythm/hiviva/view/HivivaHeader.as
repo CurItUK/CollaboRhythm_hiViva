@@ -14,7 +14,7 @@ package collaboRhythm.hiviva.view
 
 	public class HivivaHeader extends Header
 	{
-		private var _headerLine:Image;
+//		private var _headerLine:Image;
 		private var _scale:Number = 1;
 		private var _fontSize:Number = 44;
 		private const VERTICAL_PADDING:Number = 20;
@@ -31,8 +31,8 @@ package collaboRhythm.hiviva.view
 		{
 			super.draw();
 
-			this._headerLine.width = this.actualWidth;
-			this._headerLine.y = this.actualHeight - 1;
+//			this._headerLine.width = this.actualWidth;
+//			this._headerLine.y = this.actualHeight - 1;
 		}
 
 		override protected function initialize():void
@@ -42,8 +42,8 @@ package collaboRhythm.hiviva.view
 			this.paddingLeft = this.paddingRight = HORIZONTOL_PADDING * this._scale;
 			this.paddingBottom = this.paddingTop = VERTICAL_PADDING * this._scale;
 
-			this._headerLine = new Image(Main.assets.getTexture("header_line"));
-			addChild(this._headerLine);
+//			this._headerLine = new Image(Main.assets.getTexture("header_line"));
+//			addChild(this._headerLine);
 		}
 
 

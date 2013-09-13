@@ -392,6 +392,8 @@ package source.themes
 
 		protected var buttonCalendarArrowsTexture:Texture;
 
+		protected var buttonVirusSettingsTexture:Texture;
+
 		protected var toggleSwitchTexture:Texture;
 
 		protected var toggleTrackTexture:Scale9Textures;
@@ -714,13 +716,19 @@ package source.themes
 
 			this.buttonCalendarArrowsTexture = Main.assets.getTexture('calendar_arrow');
 
-			this.toggleSwitchTexture = Main.assets.getTexture("toggle_switch");
+			// new asset
+			this.buttonVirusSettingsTexture = Main.assets.getTexture('v2_virus_settings_button');
 
-			this.toggleTrackTexture = new Scale9Textures(Main.assets.getTexture("toggle_track"), new Rectangle(27,27,55,3));
+//			this.toggleSwitchTexture = Main.assets.getTexture("toggle_switch");
+			this.toggleSwitchTexture = Main.assets.getTexture("v2_toggle_switch");
+
+//			this.toggleTrackTexture = new Scale9Textures(Main.assets.getTexture("toggle_track"), new Rectangle(27,27,55,3));
+			this.toggleTrackTexture = new Scale9Textures(Main.assets.getTexture("v2_toggle_track"), new Rectangle(34,27,56,17));
 
 			this.inputFieldSkinTexture = new Scale9Textures(Main.assets.getTexture("input_field"), new Rectangle(11,11,32,32));
 
-			this.feelingSliderTrackSkinTextures = new Scale9Textures(Main.assets.getTexture("feeling_slider_track"), new Rectangle(50,46,386,2));
+//			this.feelingSliderTrackSkinTextures = new Scale9Textures(Main.assets.getTexture("feeling_slider_track"), new Rectangle(50,46,386,2));
+			this.feelingSliderTrackSkinTextures = new Scale9Textures(Main.assets.getTexture("v2_feeling_slider_track"), new Rectangle(50,46,386,2));
 			this.feelingSliderSwitchSkinTextures = Main.assets.getTexture("feeling_slider_switch");
 
 
@@ -873,6 +881,7 @@ package source.themes
 			this.setInitializerForClass(Button, calendarButtonInitializer, HivivaThemeConstants.CALENDAR_BUTTON);
 			this.setInitializerForClass(Button, calendarDayCellButtonInitializer, HivivaThemeConstants.CALENDAR_DAY_CELL);
 			this.setInitializerForClass(Button, calendarArrowsButtonInitializer, HivivaThemeConstants.CALENDAR_ARROWS);
+			this.setInitializerForClass(Button, virusSettingsButtonInitializer, HivivaThemeConstants.VIRUS_SETTINGS_BUTTON);
 
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
@@ -1526,8 +1535,8 @@ package source.themes
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.minWidth = 88 * this.scale;
-			button.minHeight = 88 * this.scale;
+			button.minWidth = 66 * this.scale;
+			button.minHeight = 66 * this.scale;
 			button.minTouchWidth = 88 * this.scale;
 			button.minTouchHeight = 88 * this.scale;
 		}
@@ -1573,6 +1582,27 @@ package source.themes
 			var skinHeight:Number = this.buttonCalendarArrowsTexture.height;
 			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
 			skinSelector.defaultValue = this.buttonCalendarArrowsTexture;
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.minWidth = skinWidth * this.scale;
+			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function virusSettingsButtonInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.buttonVirusSettingsTexture.width;
+			var skinHeight:Number = this.buttonVirusSettingsTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonVirusSettingsTexture;
 			skinSelector.imageProperties =
 			{
 				width: skinWidth * this.scale,

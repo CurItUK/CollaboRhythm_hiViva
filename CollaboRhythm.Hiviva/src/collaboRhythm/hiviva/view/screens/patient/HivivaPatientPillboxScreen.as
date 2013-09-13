@@ -52,7 +52,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._pillBox.scaleY = this._pillBox.scaleX;
 
 			this._pillBox.x = (this.actualWidth * 0.5) - (this._pillBox.width * 0.5);
-			this._pillBox.y = (this._usableHeight * 0.5) + headerHeight - (this._pillBox.height * 0.5);
+			this._pillBox.y = headerHeight + (this._usableHeight * 0.5) - (this._pillBox.height * 0.5);
 
 			this._pillboxYCellSpacing = this._pillBox.height / 8;
 
@@ -67,7 +67,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override protected function initialize():void
 		{
-			this._pillBox = new Image(Main.assets.getTexture("pillbox"));
+//			this._pillBox = new Image(Main.assets.getTexture("pillbox"));
+			this._pillBox = new Image(Main.assets.getTexture("v2_pillbox"));
 			addChild(this._pillBox);
 		}
 
