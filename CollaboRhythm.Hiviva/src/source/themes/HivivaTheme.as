@@ -611,11 +611,11 @@ package source.themes
 			this.superscriptLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 14 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.patientDataLighterLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			// buttons label formats
-			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
+//			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.sideNavGroupLabelBftf = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 18 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR);
 			this.splashButtonLabel = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 22 * this.scale, Color.WHITE);
 			this.profileGroupLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
-			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
+//			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.backButtonLabelBftf = new BitmapFontTextFormat(this.engravedLightestBoldBitmapFont, 24 * this.scale, Color.WHITE);
 
 			// Bitmap Font TextFormats (replaced for blue theme)
@@ -628,8 +628,8 @@ package source.themes
 //			this.medicineBrandnameLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 30 * this.scale, Color.WHITE);
 //			this.feelingSliderLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 20 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			// buttons label formats
-//			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
-//			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
+			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
+			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;

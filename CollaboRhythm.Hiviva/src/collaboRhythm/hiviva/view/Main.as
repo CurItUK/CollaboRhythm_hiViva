@@ -137,7 +137,7 @@ package collaboRhythm.hiviva.view
 			// blue theme
 			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-raised-white-bold.png"),appDir.resolvePath("assets/fontsv2/v2-raised-white-bold.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-raised-white-regular.png"),appDir.resolvePath("assets/fontsv2/v2-raised-white-regular.fnt"));
-			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-engraved-lighter-bold.png"),appDir.resolvePath("assets/fontsv2/v2-engraved-lighter-bold.fnt"));
+//			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-engraved-lighter-bold.png"),appDir.resolvePath("assets/fontsv2/v2-engraved-lighter-bold.fnt"));
 			// grey theme
 			_assets.enqueue(appDir.resolvePath("assets/fonts/normal-white-regular.png"),appDir.resolvePath("assets/fonts/normal-white-regular.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/normal-white-bold.png"),appDir.resolvePath("assets/fonts/normal-white-bold.fnt"));
@@ -162,8 +162,8 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_top_nav_icon_01.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_virus_settings_button.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_minimize_icon.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_reset_icon.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_clock_icon.png"));
+//			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_reset_icon.png"));
+//			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_clock_icon.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_pillbox_icon.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_toggle_switch.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_toggle_track.png"));
