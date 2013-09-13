@@ -427,6 +427,7 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_EDIT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientSettingsScreen, {navGoHome:goBackToMainScreen , navFromReset:resetApplication}));
 			this._settingsNav.addScreen(HivivaScreens.RESOURCES_SCREEN, new ScreenNavigatorItem(HivivaResourceScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_LOCK_SCREEN, new ScreenNavigatorItem(InchPasscodeLock));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_SETUP_SCREEN, new ScreenNavigatorItem(InchPasscodeLock));
 		}
 
 		private function navGoToMessages():void
