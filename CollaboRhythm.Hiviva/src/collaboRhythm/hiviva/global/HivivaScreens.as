@@ -62,6 +62,8 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_PASSCODE_RECOVER_QUESTION_SCREEN:String	  		 = "patientPasscodeRecoverQuestion";
 		public static const PATIENT_PASSCODE_RECOVER_UPDATE_SCREEN:String	  		 = "patientPasscodeRecoverUpdate";
 		public static const PATIENT_PASSCODE_LOCK_SCREEN:String	  					 = "patientPasscodeLock";
+		public static const PATIENT_PASSCODE_SETUP_SCREEN:String 					 = "patientPasscodeSetup";
+
 
 
 

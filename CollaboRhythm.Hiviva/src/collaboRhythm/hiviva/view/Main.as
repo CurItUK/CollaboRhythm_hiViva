@@ -69,6 +69,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.shared.HivivaResourceScreen;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaSplashScreen;
 	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeLock;
+	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeSetup;
 	import collaboRhythm.hiviva.view.screens.shared.MainBackground;
 
 	import feathers.controls.Button;
@@ -438,6 +439,7 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_EDIT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientSettingsScreen, {navGoHome:goBackToMainScreen , navFromReset:resetApplication}));
 			this._settingsNav.addScreen(HivivaScreens.RESOURCES_SCREEN, new ScreenNavigatorItem(HivivaResourceScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_LOCK_SCREEN, new ScreenNavigatorItem(InchPasscodeLock));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_SETUP_SCREEN, new ScreenNavigatorItem(InchPasscodeSetup));
 		}
 
 		private function navGoToMessages():void

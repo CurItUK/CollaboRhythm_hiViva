@@ -15,7 +15,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	import starling.events.Event;
 
-	public class InchPasscodeLock extends Screen
+	public class InchPasscodeSetup extends Screen
 	{
 		private var _header:HivivaHeader;
 		private var _backButton:Button;
@@ -25,7 +25,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _passcodeEnabled:Boolean;
 
 
-		public function InchPasscodeLock()
+		public function InchPasscodeSetup()
 		{
 
 		}
