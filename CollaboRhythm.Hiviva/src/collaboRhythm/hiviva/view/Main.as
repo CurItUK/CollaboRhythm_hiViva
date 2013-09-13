@@ -35,6 +35,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_Wcidwh_Screen;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessages;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaHCPMyDetailsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientAddHCP;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientAddMedsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientBagesScreen;
@@ -161,9 +162,9 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_5.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_top_nav_icon_01.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_virus_settings_button.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_minimize_icon.png"));
+//			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_minimize_icon.png"));
 //			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_reset_icon.png"));
-//			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_clock_icon.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_clock_icon.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_pillbox_icon.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_toggle_switch.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_toggle_track.png"));
@@ -388,7 +389,8 @@ package collaboRhythm.hiviva.view
 		{
 			this._settingsNav.addScreen(HivivaScreens.HCP_PROFILE_SCREEN, new ScreenNavigatorItem(HivivaHCPProfileScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.HCP_HELP_SCREEN, new ScreenNavigatorItem(HivivaHCPHelpScreen, {navGoHome:goBackToMainScreen}));
-			this._settingsNav.addScreen(HivivaScreens.HCP_EDIT_PROFILE, new ScreenNavigatorItem(HivivaHCPEditProfile));
+//			this._settingsNav.addScreen(HivivaScreens.HCP_EDIT_PROFILE, new ScreenNavigatorItem(HivivaHCPEditProfile));
+			this._settingsNav.addScreen(HivivaScreens.HCP_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaHCPMyDetailsScreen));
 			this._settingsNav.addScreen(HivivaScreens.HCP_DISPLAY_SETTINGS, new ScreenNavigatorItem(HivivaHCPDisplaySettings));
 			this._settingsNav.addScreen(HivivaScreens.HCP_ALERT_SETTINGS, new ScreenNavigatorItem(HivivaHCPAlertSettings));
 			this._settingsNav.addScreen(HivivaScreens.HCP_CONNECT_PATIENT, new ScreenNavigatorItem(HivivaHCPConnectToPatientScreen));
