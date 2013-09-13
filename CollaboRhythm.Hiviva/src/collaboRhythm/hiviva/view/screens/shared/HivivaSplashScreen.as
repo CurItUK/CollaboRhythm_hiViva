@@ -246,10 +246,6 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._passwordInput.setFocus();
 
 
-
-
-
-
 			} else
 			{
 				closeDownScreenWithTimer();

@@ -69,6 +69,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.shared.HivivaResourceScreen;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaSplashScreen;
 	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeLock;
+	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeRecoverQuestion;
 	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeSetup;
 	import collaboRhythm.hiviva.view.screens.shared.MainBackground;
 
@@ -217,9 +218,11 @@ package collaboRhythm.hiviva.view
 			this.addChild(this._screenHolder);
 			this._screenHolder.addChild(this._mainScreenNav);
 
-			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete} , {backgroundTexture:Texture.fromTexture(this._splashBgTexture)}));
-			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
+			drawScreenBackground();
 
+			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete} , {backgroundTexture:Texture.fromTexture(this._splashBgTexture)}));
+			this._mainScreenNav.addScreen(HivivaScreens.PATIENT_PASSCODE_RECOVER_QUESTION_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverQuestion));
+			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 		}
 
 		private function splashComplete(e:Event):void
@@ -233,7 +236,7 @@ package collaboRhythm.hiviva.view
 			addEventListener(FeathersScreenEvent.HIDE_MAIN_NAV, hideMainNav);
 			addEventListener(FeathersScreenEvent.SHOW_MAIN_NAV, showMainNav);
 
-			drawScreenBackground();
+
 			drawSettingsBtn();
 
 			this._settingsNav = new ScreenNavigator();
