@@ -1313,6 +1313,11 @@ package collaboRhythm.hiviva.model
 			this._sqStatement.execute();
 		}
 
+		public function enableDisablePasscode(b:Boolean):void
+		{
+
+		}
+
 		public function get userVO():UserVO
 		{
 			return this._userVO;
@@ -1347,5 +1352,7 @@ package collaboRhythm.hiviva.model
 		{
 			_userAuthenticationVO = value;
 		}
+
+
 	}
 }

@@ -527,12 +527,24 @@ package collaboRhythm.hiviva.controller
 			service.clearDownBadgeAlerts();
 		}
 
+		public function enableDisablePasscode(b:Boolean):void
+		{
+			service.addEventListener(LocalDataStoreEvent.PASSCODE_TOGGLE_COMPLETE , passcodeToggleCompleteHandler);
+			service.enableDisablePasscode(b);
+		}
+
+		private function passcodeToggleCompleteHandler(event:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PASSCODE_TOGGLE_COMPLETE , passcodeToggleCompleteHandler);
+		}
+
 
 
 		public function get service():HivivaLocalStoreService
 		{
 			return _hivivaLocalStoreService;
 		}
+
 
 	}
 }

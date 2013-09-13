@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaHeader;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 
@@ -21,6 +22,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private var _enableDisablePasscodeBtn:Button;
 		private var _changePassCodeBtn:Button;
+		private var _passcodeEnabled:Boolean;
 
 
 		public function InchPasscodeLock()
@@ -64,8 +66,11 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function initPasscode():void
 		{
+			this._passcodeEnabled = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userAuthenticationVO.enabled;
+
 			this._enableDisablePasscodeBtn = new Button();
 			this._enableDisablePasscodeBtn.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._enableDisablePasscodeBtn.addEventListener(Event.TRIGGERED , enableDisableBtnHandler);
 			this.addChild(this._enableDisablePasscodeBtn);
 			this._enableDisablePasscodeBtn.validate();
 			this._enableDisablePasscodeBtn.width = Constants.STAGE_WIDTH * 0.8;
@@ -83,7 +88,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._changePassCodeBtn.y = this._enableDisablePasscodeBtn.y + this._enableDisablePasscodeBtn.height + 30;
 			this._changePassCodeBtn.x = Constants.STAGE_WIDTH/2 - this._changePassCodeBtn.width/2;
 
-			if(HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userAuthenticationVO.enabled)
+			if(this._passcodeEnabled)
 			{
 				this._enableDisablePasscodeBtn.label = "Turn passcode lock Off";
 			} else
@@ -91,12 +96,17 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._enableDisablePasscodeBtn.label = "Turn passcode lock On";
 			}
 
+		}
 
+		private function enableDisableBtnHandler(event:Event):void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PASSCODE_TOGGLE_COMPLETE , passcodeToggleCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.enableDisablePasscode(!this._passcodeEnabled);
+		}
 
-
-
-
-
+		private function passcodeToggleCompleteHandler(event:LocalDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PASSCODE_TOGGLE_COMPLETE , passcodeToggleCompleteHandler);
 		}
 
 	}
