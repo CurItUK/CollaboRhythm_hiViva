@@ -47,6 +47,7 @@ package collaboRhythm.hiviva.global
 		public static const VIEWED_SETTINGS_ANIMATION_LOAD_COMPLETE :String		= "viewedSettingsAnimationLoadComplete";
 		public static const VIEWED_SETTINGS_ANIMATION_SAVE_COMPLETE :String		= "viewedSettingsAnimationSaveComplete";
 		public static const PASSCODE_TOGGLE_COMPLETE :String					= "passcodeToggleComplete";
+		public static const PASSCODE_SAVE_DETAILS_COMPLETE :String				= "passcodeSaveDetailsComplete";
 
 
 		public var message:String;
