@@ -16,7 +16,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import starling.events.Event;
 	import starling.textures.Texture;
 
-	public class HivivaPatientMyDetailsScreen extends ValidationScreen
+	public class HivivaHCPMyDetailsScreen extends ValidationScreen
 	{
 		private var _instructionsText:Label;
 //		private var _nameInputIns:Label;
@@ -41,7 +41,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private const USER_PROFILE_IMAGE:String = "userprofileimage.jpg";
 
 
-		public function HivivaPatientMyDetailsScreen()
+		public function HivivaHCPMyDetailsScreen()
 		{
 
 		}
@@ -231,7 +231,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			switch(button)
 			{
 				case "Cancel" :
-					this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+					this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 					hideFormValidation();
 					break;
 				case "Save" :
@@ -251,7 +251,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function backBtnHandler(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 			hideFormValidation();
 		}
 
