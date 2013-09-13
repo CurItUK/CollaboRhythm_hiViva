@@ -40,6 +40,7 @@ package collaboRhythm.hiviva.view.components
 			this._passcodeInput2 = new TextInput();
 			this.addChild(this._passcodeInput2);
 			this._passcodeInput2.validate();
+			trace("this._passcodeInput2 " + this._passcodeInput2.height)
 			this._passcodeInput2.width = Constants.PASSCODE_INPUT;
 			this._passcodeInput2.x = 206;
 
@@ -54,6 +55,23 @@ package collaboRhythm.hiviva.view.components
 			this._passcodeInput4.validate();
 			this._passcodeInput4.width = Constants.PASSCODE_INPUT;
 			this._passcodeInput4.x = 462;
+		}
+
+		public function areFieldsEmpty():Boolean
+		{
+			var validate:Boolean = false;
+			if(this._passcodeInput1.text == "" || this._passcodeInput2.text == "" || this._passcodeInput3.text == "" || this._passcodeInput4.text == "")
+			{
+				validate = true;
+			}
+			return validate;
+		}
+
+		public function inputsToPasscode():String
+		{
+			var passcode:String = this._passcodeInput1.text + this._passcodeInput2.text + this._passcodeInput3.text + this._passcodeInput4.text;
+
+			return passcode;
 		}
 	}
 }

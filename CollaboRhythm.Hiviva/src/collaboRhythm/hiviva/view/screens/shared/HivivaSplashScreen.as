@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.shared
 {
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
@@ -38,6 +39,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _passwordInput:TextInput;
 		private var _loginButton:Button;
 		private var _backgroundTexture:Texture;
+		private var _forgotPasscodeBtn:Button;
 
 		private var _starlingMain:Main;
 
@@ -223,6 +225,15 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._passwordInput.x = (Constants.STAGE_WIDTH * 0.5) - (this._passwordInput.width * 0.5);
 				this._passwordInput.y = this._loginLabel.y + this._loginLabel.height + 20;
 
+				this._forgotPasscodeBtn = new Button();
+				this._forgotPasscodeBtn.name = HivivaThemeConstants.SPLASH_FOOTER_BUTTON;
+				this._forgotPasscodeBtn.label = "Forgotten your passcode?";
+				this._forgotPasscodeBtn.addEventListener(Event.TRIGGERED, forgotBtnHandler);
+				addChild(this._forgotPasscodeBtn);
+				this._forgotPasscodeBtn.width = Constants.STAGE_WIDTH;
+				this._forgotPasscodeBtn.validate();
+				this._forgotPasscodeBtn.y = this._passwordInput.y + this._passwordInput.height +3;
+
 				this._loginButton = new Button();
 				this._loginButton.label = "Sign in";
 				this._loginButton.addEventListener(Event.TRIGGERED, confirmButtonHandler);
@@ -230,13 +241,24 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._loginButton.width = Constants.STAGE_WIDTH * 0.35;
 				this._loginButton.validate();
 				this._loginButton.x = (Constants.STAGE_WIDTH * 0.5) - (this._loginButton.width * 0.5);
-				this._loginButton.y = this._passwordInput.y + this._passwordInput.height + 20;
+				this._loginButton.y = this._forgotPasscodeBtn.y + this._forgotPasscodeBtn.height + 2;
 
 				this._passwordInput.setFocus();
+
+
+
+
+
+
 			} else
 			{
 				closeDownScreenWithTimer();
 			}
+		}
+
+		private function forgotBtnHandler(event:Event):void
+		{
+			this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_RECOVER_QUESTION_SCREEN);
 		}
 
 
@@ -263,8 +285,12 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function confirmButtonHandler(e:Event = null):void
 		{
-			//TODO Password Validation
-			closeDownScreen();
+			var passcode:String = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userAuthenticationVO.passcode;
+			if(this._passwordInput.text == passcode)
+			{
+				closeDownScreen();
+			}
+
 		}
 
 		private function closeDownScreen():void
