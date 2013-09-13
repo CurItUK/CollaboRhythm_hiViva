@@ -538,12 +538,25 @@ package collaboRhythm.hiviva.controller
 			service.removeEventListener(LocalDataStoreEvent.PASSCODE_TOGGLE_COMPLETE , passcodeToggleCompleteHandler);
 		}
 
+		public function savePasscodeDetails(passcode:String, answer:String):void
+		{
+			service.addEventListener(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE , passcodeSaveCompleteHandler);
+			service.savePasscodeDetails(passcode , answer);
+		}
+
+		private function passcodeSaveCompleteHandler(event:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE , passcodeSaveCompleteHandler);
+			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE));
+		}
+
 
 
 		public function get service():HivivaLocalStoreService
 		{
 			return _hivivaLocalStoreService;
 		}
+
 
 
 	}

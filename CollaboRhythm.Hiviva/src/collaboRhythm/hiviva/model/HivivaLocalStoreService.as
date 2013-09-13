@@ -1318,6 +1318,27 @@ package collaboRhythm.hiviva.model
 
 		}
 
+		public function savePasscodeDetails(passcode:String, answer:String):void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "UPDATE user_authentication SET enabled='" + true + "' , passcode='" + passcode + "' , secret_answer='" + answer + "'" ;
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, savePasscodeDetailsCompleteHandler);
+			this._sqStatement.execute();
+		}
+
+		private function savePasscodeDetailsCompleteHandler(e:SQLEvent):void
+		{
+			userAuthenticationVO.enabled = true;
+			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE));
+		}
+
 		public function get userVO():UserVO
 		{
 			return this._userVO;
@@ -1352,6 +1373,7 @@ package collaboRhythm.hiviva.model
 		{
 			_userAuthenticationVO = value;
 		}
+
 
 
 	}
