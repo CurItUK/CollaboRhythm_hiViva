@@ -11,6 +11,7 @@ package collaboRhythm.hiviva.global
 		public static const PADDING_BOTTOM:int 								= 30;
 		public static const PADDING_LEFT:int 								= 20;
 		public static const PASSCODE_INPUT:int 								= 100;
+		public static const PASSCODE_SPACING:int 							= 78;
 		public static const FOOTER_BTNGROUP_HEIGHT:int 						= 135;
 		public static const HEADER_HEIGHT:int 								= 100;
 		public static const HEADER_HOMEBTN_PADDING:int 						= 35;
