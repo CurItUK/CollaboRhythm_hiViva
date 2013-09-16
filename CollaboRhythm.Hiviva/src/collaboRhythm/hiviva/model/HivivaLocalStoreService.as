@@ -1365,6 +1365,27 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE));
 		}
 
+		public function disablePasscodeDetails():void
+		{
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "UPDATE user_authentication SET enabled=false";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, disablePasscodeDetailsCompleteHandler);
+			this._sqStatement.execute();
+		}
+
+		private function disablePasscodeDetailsCompleteHandler(e:SQLEvent):void
+		{
+			userAuthenticationVO.enabled = false;
+			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE));
+		}
+
 
 		private function getUserAuthenticationDetails():void
 		{

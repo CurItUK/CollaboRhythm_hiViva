@@ -69,6 +69,8 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Virus_Model_Screen;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaResourceScreen;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaSplashScreen;
+	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeChange;
+	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeChangeConfirm;
 	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeLock;
 	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeRecoverQuestion;
 	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeRecoverUpdate;
@@ -447,6 +449,8 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.RESOURCES_SCREEN, new ScreenNavigatorItem(HivivaResourceScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_LOCK_SCREEN, new ScreenNavigatorItem(InchPasscodeLock));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_SETUP_SCREEN, new ScreenNavigatorItem(InchPasscodeSetup));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_CHANGE_CONFIRM_SCREEN, new ScreenNavigatorItem(InchPasscodeChangeConfirm));
+			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_CHANGE_SCREEN, new ScreenNavigatorItem(InchPasscodeChange));
 		}
 
 		private function navGoToMessages():void

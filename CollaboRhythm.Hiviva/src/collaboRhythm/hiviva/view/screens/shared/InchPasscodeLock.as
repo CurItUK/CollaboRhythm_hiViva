@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.model.vo.UserAuthenticationVO;
 	import collaboRhythm.hiviva.view.HivivaHeader;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 
@@ -23,11 +24,12 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _enableDisablePasscodeBtn:Button;
 		private var _changePassCodeBtn:Button;
 		private var _passcodeEnabled:Boolean;
+		private var _userAuthenticationVO:UserAuthenticationVO;
 
 
 		public function InchPasscodeLock()
 		{
-
+			this._userAuthenticationVO = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userAuthenticationVO;
 		}
 
 		override protected function initialize():void
@@ -61,7 +63,6 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function backBtnHandler(e:Event):void
 		{
 			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
-
 		}
 
 		private function initPasscode():void
@@ -79,32 +80,71 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._changePassCodeBtn = new Button();
 			this._changePassCodeBtn.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._changePassCodeBtn.addEventListener(Event.TRIGGERED , changePasscodeBtnHandler);
 			this.addChild(this._changePassCodeBtn);
 			this._changePassCodeBtn.label = "Change passcode";
 			this._changePassCodeBtn.validate();
-			this._changePassCodeBtn.isEnabled = false;
-			this._changePassCodeBtn.alpha = 0.3;
+
+
 			this._changePassCodeBtn.width = Constants.STAGE_WIDTH * 0.8;
 			this._changePassCodeBtn.y = this._enableDisablePasscodeBtn.y + this._enableDisablePasscodeBtn.height + 30;
 			this._changePassCodeBtn.x = Constants.STAGE_WIDTH/2 - this._changePassCodeBtn.width/2;
 
-			if(this._passcodeEnabled)
-			{
-				this._enableDisablePasscodeBtn.label = "Turn passcode lock Off";
-			} else
-			{
-				this._enableDisablePasscodeBtn.label = "Turn passcode lock On";
-			}
+			enableDisablePasscodeBtn();
+
+		}
+
+		private function changePasscodeBtnHandler(event:Event):void
+		{
+
+			this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_CHANGE_CONFIRM_SCREEN);
 
 		}
 
 		private function enableDisableBtnHandler(event:Event):void
 		{
-			if(!this._passcodeEnabled)
+			if(!this._userAuthenticationVO.enabled)
 			{
 				this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_SETUP_SCREEN);
+			} else
+			{
+				disablePasscode();
 			}
 		}
+
+		private function disablePasscode():void
+		{
+			trace("disablePasscode")  ;
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE , passcodeDisableCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.disablePasscodeDetails();
+
+		}
+
+		private function passcodeDisableCompleteHandler(event:LocalDataStoreEvent):void
+		{
+			trace("passcodeDisableCompleteHandler")   ;
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE , passcodeDisableCompleteHandler);
+			this._userAuthenticationVO.enabled = false;
+			enableDisablePasscodeBtn()
+
+		}
+
+
+		private function enableDisablePasscodeBtn():void
+		{
+			if(this._userAuthenticationVO.enabled)
+			{
+				this._enableDisablePasscodeBtn.label = "Turn passcode lock Off";
+				this._changePassCodeBtn.isEnabled = true;
+			}
+			else
+			{
+				this._enableDisablePasscodeBtn.label = "Turn passcode lock On";
+				this._changePassCodeBtn.alpha = 0.3;
+				this._changePassCodeBtn.isEnabled = false;
+			}
+		}
+
 
 
 
