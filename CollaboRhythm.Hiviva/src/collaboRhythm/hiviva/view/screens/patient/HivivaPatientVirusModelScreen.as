@@ -288,6 +288,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._virusBg.height = 615;
 
 			this._virusHolder.addChild(this._virusBg);
+			initVirusSimulation();
 		}
 
 		private function virusBgLoadComplete(e:Event):void
