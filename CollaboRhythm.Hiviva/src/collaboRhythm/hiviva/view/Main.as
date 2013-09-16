@@ -144,6 +144,7 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-raised-white-bold.png"),appDir.resolvePath("assets/fontsv2/v2-raised-white-bold.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-raised-white-regular.png"),appDir.resolvePath("assets/fontsv2/v2-raised-white-regular.fnt"));
 //			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-engraved-lighter-bold.png"),appDir.resolvePath("assets/fontsv2/v2-engraved-lighter-bold.fnt"));
+			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-engraved-medark-bold.png"),appDir.resolvePath("assets/fontsv2/v2-engraved-medark-bold.fnt"));
 			// grey theme
 			_assets.enqueue(appDir.resolvePath("assets/fonts/normal-white-regular.png"),appDir.resolvePath("assets/fonts/normal-white-regular.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/normal-white-bold.png"),appDir.resolvePath("assets/fonts/normal-white-bold.fnt"));
@@ -165,6 +166,8 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_3.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_4.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_5.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_6.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_7.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_top_nav_icon_01.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_virus_settings_button.png"));
 //			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_minimize_icon.png"));
@@ -175,6 +178,23 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_toggle_track.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_feeling_slider_track.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_pillbox.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_back-button.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_calendar_arrow.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_calendar-button.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_clock_face.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_feeling_slider_cloud.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_feeling_slider_sun.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_fixed_base.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_art.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_cinema.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_history.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_music.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_sports.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_travel.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_upload.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_brand_ring.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_cd4.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_virus.png"));
 
 			this._preloader = new HivivaPreloaderWithBackground(0xFFFFFFF , 100 , 5 , Texture.fromTexture(this._splashBgTexture));
 			this._preloader.init();

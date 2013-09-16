@@ -50,136 +50,74 @@ package source.themes
 
 {
 
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.components.GalleryButton;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Button;
-
 	import feathers.controls.ButtonGroup;
-
 	import feathers.controls.Callout;
-
 	import feathers.controls.Check;
-
 	import feathers.controls.GroupedList;
-
 	import feathers.controls.Header;
-
 	import feathers.controls.ImageLoader;
-
 	import feathers.controls.Label;
-
-	import feathers.controls.List;
-
 	import feathers.controls.PageIndicator;
-
 	import feathers.controls.PickerList;
-
 	import feathers.controls.ProgressBar;
-
 	import feathers.controls.Radio;
-
 	import feathers.controls.Screen;
-
 	import feathers.controls.ScrollText;
-
 	import feathers.controls.Scroller;
-
 	import feathers.controls.SimpleScrollBar;
-
 	import feathers.controls.Slider;
-
 	import feathers.controls.TabBar;
-
 	import feathers.controls.TextInput;
-
 	import feathers.controls.ToggleSwitch;
-
 	import feathers.controls.popups.CalloutPopUpContentManager;
-
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
-
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
-
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
-
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
-
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.text.BitmapFontTextRenderer;
-
 	import feathers.controls.text.StageTextTextEditor;
-
 	import feathers.controls.text.TextFieldTextRenderer;
-
 	import feathers.core.DisplayListWatcher;
-
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
-
 	import feathers.core.PopUpManager;
-
 	import feathers.display.Scale3Image;
-
 	import feathers.display.Scale9Image;
-
 	import feathers.display.TiledImage;
-
 	import feathers.layout.VerticalLayout;
-
 	import feathers.skins.ImageStateValueSelector;
-
 	import feathers.skins.Scale9ImageStateValueSelector;
-
 	import feathers.skins.StandardIcons;
-
 	import feathers.system.DeviceCapabilities;
 	import feathers.text.BitmapFontTextFormat;
-
 	import feathers.textures.Scale3Textures;
-
 	import feathers.textures.Scale9Textures;
 
-
 	import flash.display.BitmapData;
-	import flash.filters.DropShadowFilter;
-
 	import flash.geom.Rectangle;
-	import flash.text.Font;
-
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 
-
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
-
 	import starling.display.DisplayObjectContainer;
-
 	import starling.display.Image;
-
 	import starling.display.Quad;
-
 	import starling.events.Event;
-
 	import starling.events.ResizeEvent;
-	import starling.filters.BlurFilter;
-	import starling.text.BitmapFont;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
-
 	import starling.textures.Texture;
-
 	import starling.textures.TextureAtlas;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.Color;
-	import starling.utils.deg2rad;
-
 
 	public class HivivaTheme extends DisplayListWatcher
 
@@ -317,6 +255,7 @@ package source.themes
 		protected var v2raisedWhiteBoldBitmapFont:BitmapFont;
 		protected var v2raisedWhiteRegularBitmapFont:BitmapFont;
 		protected var v2EngravedLighterBoldBitmapFont:BitmapFont;
+		protected var v2EngravedMedarkBoldBitmapFont:BitmapFont;
 		// bitmap font text formats
 
 		protected var headerBoldBftf:BitmapFontTextFormat;
@@ -588,17 +527,18 @@ package source.themes
 			this.v2raisedWhiteBoldBitmapFont = TextField.getBitmapFont("v2-raised-white-bold");
 			this.v2raisedWhiteRegularBitmapFont = TextField.getBitmapFont("v2-raised-white-regular");
 			this.v2EngravedLighterBoldBitmapFont = TextField.getBitmapFont("v2-engraved-lighter-bold");
+			this.v2EngravedMedarkBoldBitmapFont = TextField.getBitmapFont("v2-engraved-medark-bold");
 
 			// Bitmap Font TextFormats
-			this.headerBoldBftf = new BitmapFontTextFormat(this.engravedDarkBoldBitmapFont,44 * this.scale,Color.WHITE);
-			this.subHeaderBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont,30 * this.scale,Color.WHITE);
+			this.headerBoldBftf = new BitmapFontTextFormat(this.engravedDarkBoldBitmapFont, 44 * this.scale,Color.WHITE);
+			this.subHeaderBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 30 * this.scale,Color.WHITE);
 			this.bodyBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR);
 			this.bodySmallerBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 18 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR);
 			this.bodySmallerBoldBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 18 * this.scale, Color.WHITE);
 			this.bodyBoldBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.bodyCenteredBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR,TextFormatAlign.CENTER);
 			this.bodyBoldCenteredBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
-			this.inputLabelLeftBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont,30 * this.scale,Color.WHITE);
+			this.inputLabelLeftBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 30 * this.scale,Color.WHITE);
 			this.homeLensLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR,TextFormatAlign.CENTER);
 			this.validationLabelBftf = new BitmapFontTextFormat(this.engravedLighterRegularBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.medicineBrandnameLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 30 * this.scale, Color.WHITE);
@@ -612,11 +552,13 @@ package source.themes
 			this.patientDataLighterLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			// buttons label formats
 //			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
+			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedMedarkBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.sideNavGroupLabelBftf = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 18 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR);
 			this.splashButtonLabel = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 22 * this.scale, Color.WHITE);
 			this.profileGroupLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
 //			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
-			this.backButtonLabelBftf = new BitmapFontTextFormat(this.engravedLightestBoldBitmapFont, 24 * this.scale, Color.WHITE);
+			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedMedarkBoldBitmapFont, 24 * this.scale, Color.WHITE);
+			this.backButtonLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE);
 
 			// Bitmap Font TextFormats (replaced for blue theme)
 //			this.subHeaderBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont,30 * this.scale,Color.WHITE);
@@ -628,8 +570,9 @@ package source.themes
 //			this.medicineBrandnameLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 30 * this.scale, Color.WHITE);
 //			this.feelingSliderLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 20 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			// buttons label formats
-			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
-			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
+//			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
+//			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
+//			this.backButtonLabelBftf = new BitmapFontTextFormat(this.engravedLightestBoldBitmapFont, 24 * this.scale, Color.WHITE);
 
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
@@ -659,7 +602,8 @@ package source.themes
 
 
 			//this.primaryBackgroundTexture = this.atlas.getTexture("primary-background");
-			this.primaryBackgroundTexture = Main.assets.getTexture("fixed_base");
+//			this.primaryBackgroundTexture = Main.assets.getTexture("fixed_base");
+			this.primaryBackgroundTexture = Main.assets.getTexture("v2_fixed_base");
 
 
 			const backgroundSkinTexture:Texture = this.atlas.getTexture("background-skin");
@@ -702,7 +646,8 @@ package source.themes
 			this.buttonSplash1SkinTexture = Main.assets.getTexture("splash_button_01");
 			this.buttonSplash2SkinTexture = Main.assets.getTexture("splash_button_02");
 
-			this.buttonBackSkinTexture = Main.assets.getTexture("back-button");
+//			this.buttonBackSkinTexture = Main.assets.getTexture("back-button");
+			this.buttonBackSkinTexture = Main.assets.getTexture("v2_back-button");
 
 			this.buttonCloseSkinTexture = Main.assets.getTexture("close_button");
 
@@ -710,11 +655,13 @@ package source.themes
 
 			this.buttonEditCellSkinTexture = Main.assets.getTexture("edit_icon");
 
-			this.buttonCalendarSkinTexture = Main.assets.getTexture("calendar-button");
+//			this.buttonCalendarSkinTexture = Main.assets.getTexture("calendar-button");
+			this.buttonCalendarSkinTexture = Main.assets.getTexture("v2_calendar-button");
 
 			this.buttonCalendarDayCellSkinTexture = Main.assets.getTexture("calendar_day_cell");
 
-			this.buttonCalendarArrowsTexture = Main.assets.getTexture('calendar_arrow');
+//			this.buttonCalendarArrowsTexture = Main.assets.getTexture('calendar_arrow');
+			this.buttonCalendarArrowsTexture = Main.assets.getTexture('v2_calendar_arrow');
 
 			// new asset
 			this.buttonVirusSettingsTexture = Main.assets.getTexture('v2_virus_settings_button');

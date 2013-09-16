@@ -96,7 +96,8 @@ package collaboRhythm.hiviva.view
 			addChild(this._imageBg);
 
 			this._uploadButton = new Button();
-			this._uploadButton.defaultIcon = new Image(Main.assets.getTexture("icon_upload"));
+//			this._uploadButton.defaultIcon = new Image(Main.assets.getTexture("icon_upload"));
+			this._uploadButton.defaultIcon = new Image(Main.assets.getTexture("v2_icon_upload"));
 			this._uploadButton.iconPosition = Button.ICON_POSITION_LEFT;
 			this._uploadButton.label = "UPLOAD PHOTO   ";
 			this._uploadButton.addEventListener(starling.events.Event.TRIGGERED, uploadButtonHandler);

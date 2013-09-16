@@ -43,7 +43,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _panelBackground:MainBackground;
 		private var _pseudoBackgroundPos:Number;
 		private var _topGrad:TiledImage;
-		private var _virusBg:ImageLoader;
+//		private var _virusBg:ImageLoader;
+		private var _virusBg:TiledImage;
 		private var _hivSimulation:VirusSimulation;
 		private var _tcells:Array = [];
 		private var _freeTcells:Array = [];
@@ -278,9 +279,14 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function drawVirusModelBg():void
 		{
-			this._virusBg = new ImageLoader();
+			/*this._virusBg = new ImageLoader();
 			this._virusBg.addEventListener( Event.COMPLETE, virusBgLoadComplete );
-			this._virusBg.source = "/assets/images/temp/vs_background.png";
+			this._virusBg.source = "/assets/images/temp/vs_background.png";*/
+
+			this._virusBg = new TiledImage(Main.assets.getTexture("v2_fixed_base"));
+			this._virusBg.width = Constants.STAGE_WIDTH;
+			this._virusBg.height = 615;
+
 			this._virusHolder.addChild(this._virusBg);
 		}
 
@@ -291,7 +297,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initVirusSimulation():void
 		{
-			this._virusTexture = Main.assets.getTexture("vs_virus");
+//			this._virusTexture = Main.assets.getTexture("vs_virus");
+			this._virusTexture = Main.assets.getTexture("v2_vs_virus");
 			this._hivSimulation = new VirusSimulation();
 			this._hivSimulation.updateSimulationData(this._adherence , this._cd4Count ,  this._viralLoad);
 
@@ -302,7 +309,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function placeTCells():void
 		{
-			var tCellTexture:Texture = Main.assets.getTexture("vs_cd4");
+//			var tCellTexture:Texture = Main.assets.getTexture("vs_cd4");
+			var tCellTexture:Texture = Main.assets.getTexture("v2_vs_cd4");
 			for (var tcellnum:int = 1; tcellnum <= this._hivSimulation.numTCells; tcellnum++)
 			{
 
@@ -364,7 +372,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function placeMedications():void
 		{
-			var medTexture:Texture = Main.assets.getTexture("vs_brand_ring");
+//			var medTexture:Texture = Main.assets.getTexture("vs_brand_ring");
+			var medTexture:Texture = Main.assets.getTexture("v2_vs_brand_ring");
 			for (var tcellnum:int = 0; tcellnum < this._tcells.length; tcellnum++)
 			{
 				var tCellView:TCellView = this._tcells[tcellnum];

@@ -52,22 +52,28 @@ package collaboRhythm.hiviva.view.components
 			switch(this._category)
 			{
 				case "SPORT" :
-					this._defaultIcon = new Image(Main.assets.getTexture("icon_sports"));
+//					this._defaultIcon = new Image(Main.assets.getTexture("icon_sports"));
+					this._defaultIcon = new Image(Main.assets.getTexture("v2_icon_sports"));
 					break;
 				case "MUSIC" :
-					this._defaultIcon = new Image(Main.assets.getTexture("icon_music"));
+//					this._defaultIcon = new Image(Main.assets.getTexture("icon_music"));
+					this._defaultIcon = new Image(Main.assets.getTexture("v2_icon_music"));
 					break;
 				case "CINEMA" :
-					this._defaultIcon = new Image(Main.assets.getTexture("icon_cinema"));
+//					this._defaultIcon = new Image(Main.assets.getTexture("icon_cinema"));
+					this._defaultIcon = new Image(Main.assets.getTexture("v2_icon_cinema"));
 					break;
 				case "HISTORY" :
-					this._defaultIcon = new Image(Main.assets.getTexture("icon_history"));
+//					this._defaultIcon = new Image(Main.assets.getTexture("icon_history"));
+					this._defaultIcon = new Image(Main.assets.getTexture("v2_icon_history"));
 					break;
 				case "TRAVEL" :
-					this._defaultIcon = new Image(Main.assets.getTexture("icon_travel"));
+//					this._defaultIcon = new Image(Main.assets.getTexture("icon_travel"));
+					this._defaultIcon = new Image(Main.assets.getTexture("v2_icon_travel"));
 					break;
 				case "ART" :
-					this._defaultIcon = new Image(Main.assets.getTexture("icon_art"));
+//					this._defaultIcon = new Image(Main.assets.getTexture("icon_art"));
+					this._defaultIcon = new Image(Main.assets.getTexture("v2_icon_art"));
 					break;
 			}
 

@@ -81,7 +81,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function initialize():void
 		{
 
-			this._clockFace = new Image(Main.assets.getTexture("clock_face"));
+//			this._clockFace = new Image(Main.assets.getTexture("clock_face"));
+			this._clockFace = new Image(Main.assets.getTexture("v2_clock_face"));
 			this._clockFace.touchable = false;
 			this.addChild(this._clockFace);
 

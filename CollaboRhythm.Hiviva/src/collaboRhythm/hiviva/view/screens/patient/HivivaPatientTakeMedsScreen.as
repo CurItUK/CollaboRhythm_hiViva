@@ -117,10 +117,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._feelingSlider.liveDragging = false;
 			this._content.addChild(this._feelingSlider);
 
-			this._feelingSliderLeftImage = new Image(Main.assets.getTexture("feeling_slider_cloud"));
+//			this._feelingSliderLeftImage = new Image(Main.assets.getTexture("feeling_slider_cloud"));
+			this._feelingSliderLeftImage = new Image(Main.assets.getTexture("v2_feeling_slider_cloud"));
 			this._content.addChild(this._feelingSliderLeftImage);
 
-			this._feelingSliderRightImage = new Image(Main.assets.getTexture("feeling_slider_sun"));
+//			this._feelingSliderRightImage = new Image(Main.assets.getTexture("feeling_slider_sun"));
+			this._feelingSliderRightImage = new Image(Main.assets.getTexture("v2_feeling_slider_sun"));
 			this._content.addChild(this._feelingSliderRightImage);
 
 			this._feelingSliderLeftLabel = new Label();

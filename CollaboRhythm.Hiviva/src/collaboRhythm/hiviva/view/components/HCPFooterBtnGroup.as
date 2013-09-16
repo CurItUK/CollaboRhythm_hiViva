@@ -69,14 +69,16 @@ package collaboRhythm.hiviva.view.components
 						_mainScreenNav.showScreen(HivivaScreens.HCP_HOME_SCREEN);
 						break;
 					case "adherence" :
-						img = new Image(Main.assets.getTexture("footer_icon_6"));
+//						img = new Image(Main.assets.getTexture("footer_icon_6"));
+						img = new Image(Main.assets.getTexture("v2_footer_icon_6"));
 						break;
 					case "reports" :
 //						img = new Image(Main.assets.getTexture("footer_icon_5"));
 						img = new Image(Main.assets.getTexture("v2_footer_icon_5"));
 						break;
 					case "messages" :
-						img = new Image(Main.assets.getTexture("footer_icon_7"));
+//						img = new Image(Main.assets.getTexture("footer_icon_7"));
+						img = new Image(Main.assets.getTexture("v2_footer_icon_7"));
 						break;
 				}
 

@@ -129,7 +129,7 @@ package collaboRhythm.hiviva.view.screens.patient.galleryscreens
 			bm.bitmapData.dispose();
 			bm = null;
 
-			this._tint = new Quad(this._photo.width, this._photo.height, 0x0073ff);
+			this._tint = new Quad(this._photo.width, this._photo.height, 0xFFFFFF);
 			this._tint.alpha = this._isActive ? 1 : 0;
 
 			addChild(this._tint);
