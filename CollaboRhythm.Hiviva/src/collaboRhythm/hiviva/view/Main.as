@@ -289,8 +289,8 @@ package collaboRhythm.hiviva.view
 			this._settingsBtn.width = (Constants.STAGE_WIDTH * 0.2);
 			this._settingsBtn.scaleY = this._settingsBtn.scaleX;
 
-//			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_LOAD_COMPLETE, getViewedSettingsAnimationHandler);
-//			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getViewedSettingsAnimation();
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_LOAD_COMPLETE, getViewedSettingsAnimationHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getViewedSettingsAnimation();
 		}
 
 		private function getViewedSettingsAnimationHandler(e:LocalDataStoreEvent):void
