@@ -94,6 +94,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._answerInput = new TextInput();
 			this._content.addChild(this._answerInput);
+			this._answerInput.text = "Enter answer"
 			this._answerInput.validate();
 			this._answerInput.width = this._innerWidth;
 			this._answerInput.y = this._answerTitle.y + this._answerTitle.height + 20;
@@ -124,12 +125,28 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function allowChangePasscode():void
 		{
-
+			   trace("Show password screen");
 		}
 
 		private function validateContent():String
 		{
+			var validationArray:Array = [];
+			if(answerCheckSearch(this._answerInput.text)) validationArray.push("Incorrect answer");
 
+			return validationArray.join(",\n");
+		}
+
+		private function answerCheckSearch(answer:String):Boolean
+		{
+			var answerIncorrect:Boolean = false;
+			trace(answer.search(this._userAuthenticationVO.answer))
+			if(answer.toLocaleLowerCase().search(this._userAuthenticationVO.answer.toLocaleLowerCase()) == -1)
+			{
+
+				answerIncorrect = true;
+			}
+
+			return answerIncorrect;
 		}
 	}
 }
