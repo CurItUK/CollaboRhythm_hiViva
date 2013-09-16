@@ -93,10 +93,6 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			enableDisablePasscodeBtn();
 
-
-			var preloader:PreloaderSpinner = new PreloaderSpinner();
-			this.addChild(preloader)   ;
-
 		}
 
 		private function changePasscodeBtnHandler(event:Event):void

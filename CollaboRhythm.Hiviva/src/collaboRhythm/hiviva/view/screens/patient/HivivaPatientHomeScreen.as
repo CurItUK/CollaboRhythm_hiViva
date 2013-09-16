@@ -9,6 +9,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
+	import collaboRhythm.hiviva.view.components.PreloaderSpinner;
 	import collaboRhythm.hiviva.view.components.TopNavButton;
 
 	import feathers.controls.Label;
@@ -55,6 +56,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private var _messageCount:uint = 0;
 		private var _badgesAwarded:Number = 0;
+		private var _preloader:PreloaderSpinner;
 
 
 		public function HivivaPatientHomeScreen():void
@@ -81,6 +83,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._homeImageInstructions.x =  (Constants.STAGE_WIDTH * 0.5) - (this._homeImageInstructions.width * 0.5);
 			this._homeImageInstructions.y =  (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._homeImageInstructions.height * 0.5);
 
+			initHomeScreenPreloader();
+
 			if (!this._asynchronousCallMade)
 			{
 				enableAutoHomePageMessageCheck();
@@ -90,6 +94,14 @@ package collaboRhythm.hiviva.view.screens.patient
 				getApprovedConnections();
 				this._asynchronousCallMade = true;
 			}
+		}
+
+		private function initHomeScreenPreloader():void
+		{
+			this._preloader = new PreloaderSpinner();
+			this.addChild(this._preloader) ;
+			this._preloader.y = this._header.height + 30;
+			this._preloader.x = this.actualWidth - this._preloader.width - 30;
 		}
 
 		private function updateVODataHandler(e:NotificationsEvent):void
@@ -135,6 +147,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._badgesButton.addEventListener(Event.TRIGGERED , rewardsButtonHandler);
 
 			this._header.rightItems =  new <DisplayObject>[this._messagesButton, this._badgesButton];
+
 
 			HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.UPDATE_DAILY_VO_DATA, updateVODataHandler);
 		}

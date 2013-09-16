@@ -15,20 +15,31 @@ package collaboRhythm.hiviva.view.components
 	{
 
 		private var _preloader:MovieClip;
+		private var _textureAnim:TextureAtlas
 
 		public function PreloaderSpinner()
 		{
-			addEventListener(Event.ADDED_TO_STAGE, init);
+			this.addEventListener(Event.ADDED_TO_STAGE, init);
+
 		}
 
 		private function init(event:Event):void
 		{
-
-			var textureAnim:TextureAtlas =  Main.assets.getTextureAtlas("ApplePreloader");
-			this._preloader = new MovieClip(textureAnim.getTextures("preloader") , 60);
+			trace("PreloaderSpinner init")  ;
+			this.removeEventListener(Event.ADDED_TO_STAGE, init);
+			this._textureAnim =  Main.assets.getTextureAtlas("ApplePreloader");
+			this._preloader = new MovieClip(this._textureAnim.getTextures("preloader") , 60);
 			this.addChild(this._preloader);
-
 			Starling.juggler.add(this._preloader);
+
+		}
+
+		public function disposePreloader():void
+		{
+			trace("disposePreloader")  ;
+			Starling.juggler.remove(this._preloader);
+			this.removeChild(this._preloader);
+			this._preloader = null;
 		}
 	}
 }
