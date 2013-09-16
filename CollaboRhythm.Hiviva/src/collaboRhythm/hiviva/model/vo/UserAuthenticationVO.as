@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.model.vo
 		private var _enabled:Boolean;
 		private var _passcode:String;
 		private var _answer:String;
+		private var _questionId:uint;
 
 
 		public function UserAuthenticationVO()
@@ -41,6 +42,16 @@ package collaboRhythm.hiviva.model.vo
 		public function set answer(value:String):void
 		{
 			_answer = value;
+		}
+
+		public function get questionId():uint
+		{
+			return _questionId;
+		}
+
+		public function set questionId(value:uint):void
+		{
+			_questionId = value;
 		}
 	}
 }

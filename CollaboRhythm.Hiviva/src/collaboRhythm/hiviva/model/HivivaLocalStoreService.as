@@ -1322,7 +1322,7 @@ package collaboRhythm.hiviva.model
 
 		}
 
-		public function savePasscodeDetails(passcode:String, answer:String):void
+		public function savePasscodeDetails(passcode:String, answer:String ,  questionId:uint):void
 		{
 			var dbFile:File = File.applicationStorageDirectory;
 			dbFile = dbFile.resolvePath("settings.sqlite");
@@ -1331,7 +1331,7 @@ package collaboRhythm.hiviva.model
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "UPDATE user_authentication SET enabled='" + true + "' , passcode='" + passcode + "' , secret_answer='" + answer + "'" ;
+			this._sqStatement.text = "UPDATE user_authentication SET enabled='" + true + "' , passcode='" + passcode + "' , secret_answer='" + answer + "' , question_id='" + questionId + "'" ;
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, savePasscodeDetailsCompleteHandler);
 			this._sqStatement.execute();
@@ -1367,6 +1367,7 @@ package collaboRhythm.hiviva.model
 				userAuthenticationVO.enabled = true;
 				userAuthenticationVO.passcode = result[0].passcode;
 				userAuthenticationVO.answer = result[0].secret_answer;
+				userAuthenticationVO.questionId = result[0].question_id;
 
 			} else
 			{

@@ -24,17 +24,10 @@ package collaboRhythm.hiviva.view.screens.shared
 	{
 
 		private var _backButton:Button;
-
 		private var _passcodeInstruction1:Label;
 		private var _enterPasscodeTitle:Label;
-
 		private var _passcodeFieldGenerator1:PasscodeFieldGenerator;
 		private var _passcodeFieldGenerator2:PasscodeFieldGenerator;
-
-
-
-
-
 		private var _reEnterPasscodeTitle:Label;
 		private var _passcodeRecoveryTitle:Label;
 		private var _passcodeInstruction2:Label;
@@ -44,10 +37,6 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _answerInput:TextInput;
 		private var _passcodeInstruction3:Label;
 		private var _enterBtn:Button;
-
-
-
-
 
 		public function InchPasscodeSetup()
 		{
@@ -74,9 +63,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			super.draw();
 			this._content.validate();
 			this._contentHeight = this._content.height;
-
-
-
 		}
 
 		private function backBtnHandler(e:Event):void
@@ -146,7 +132,6 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._answerInput = new TextInput();
 			this._content.addChild(this._answerInput);
-
 			this._answerInput.text = "Enter answer";
 			this._answerInput.validate();
 			this._answerInput.width = this._innerWidth;
@@ -221,7 +206,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function enterBtnHandler(event:Event):void
 		{
-			var formValidation:String = valdateContent();
+			var formValidation:String = validateContent();
 			if (formValidation.length == 0)
 			{
 				savePasscode();
@@ -232,11 +217,9 @@ package collaboRhythm.hiviva.view.screens.shared
 			}
 		}
 
-		private function valdateContent():String
+		private function validateContent():String
 		{
 			var validationArray:Array = [];
-
-
 
 			if(this._passcodeFieldGenerator1.areFieldsEmpty() || this._passcodeFieldGenerator2.areFieldsEmpty()) validationArray.push("Please enter a passcode");
 			if(this._passcodeFieldGenerator1.inputsToPasscode() != this._passcodeFieldGenerator2.inputsToPasscode()) validationArray.push("Passcodes do not match");
@@ -251,7 +234,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function savePasscode():void
 		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE , passcodeSaveCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.savePasscodeDetails(this._passcodeFieldGenerator1.inputsToPasscode() , this._answerInput.text);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.savePasscodeDetails(this._passcodeFieldGenerator1.inputsToPasscode() , this._answerInput.text , this._questions.selectedIndex);
 		}
 
 		private function passcodeSaveCompleteHandler(event:LocalDataStoreEvent):void
