@@ -8,6 +8,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaHeader;
+	import collaboRhythm.hiviva.view.HivivaPopUp;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
@@ -17,7 +18,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import feathers.controls.Label;
 
 	import feathers.controls.Screen;
+	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
+	import feathers.core.PopUpManager;
 	import feathers.layout.VerticalLayout;
 
 	import starling.display.DisplayObject;
@@ -46,6 +49,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private var _pendingConnectionLoaded:Boolean = false;
 		private var _alertsLoaded:Boolean = false;
+		private var _userSignupPopupContent:HivivaPopUp;
 
 		public function HivivaHCPHomesScreen()
 		{
@@ -151,7 +155,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			if (firstName.length == 0 && lastName.length == 0)
 			{
-				//do popup
+				initSignupProcess();
 			}
 		}
 
@@ -383,18 +387,17 @@ package collaboRhythm.hiviva.view.screens.hcp
 			drawResults();
 
 		}
+		*/
 
-		private function initPatientSignupProcess():void
+		private function initSignupProcess():void
 		{
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV, true));
 
-			this.owner.addScreen(HivivaScreens.HCP_EDIT_PROFILE, new ScreenNavigatorItem(HivivaHCPEditProfile));
+			this.owner.addScreen(HivivaScreens.HCP_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaHCPMyDetailsScreen));
 
 			this._userSignupPopupContent = new HivivaPopUp();
-			this._userSignupPopupContent.scale = this.dpiScale;
-			this._userSignupPopupContent.confirmLabel = "Sign up";
-			this._userSignupPopupContent.addEventListener(starling.events.Event.COMPLETE, userSignupScreen);
-			this._userSignupPopupContent.addEventListener(starling.events.Event.CLOSE, userSignupScreen);
+			this._userSignupPopupContent.buttons = ["Sign up"];
+			this._userSignupPopupContent.addEventListener(starling.events.Event.TRIGGERED, userSignupScreen);
 			this._userSignupPopupContent.width = Constants.STAGE_WIDTH * 0.75;
 			this._userSignupPopupContent.validate();
 			this._userSignupPopupContent.message = "You will need to create an account in order to connect to a patient";
@@ -408,16 +411,18 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function userSignupScreen(e:starling.events.Event):void
 		{
-			this.owner.showScreen(HivivaScreens.HCP_EDIT_PROFILE);
-			this._userSignupPopupContent.removeEventListener(starling.events.Event.COMPLETE, userSignupScreen);
-			this._userSignupPopupContent.removeEventListener(starling.events.Event.CLOSE, userSignupScreen);
+			this.owner.showScreen(HivivaScreens.HCP_MY_DETAILS_SCREEN);
 			PopUpManager.removePopUp(this._userSignupPopupContent);
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV, true));
 		}
-		*/
 		override public function dispose():void
 		{
 			closeDownApplicationNotifications();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_HCP_ALERTS_COMPLETE, getHCPAlertsHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE, getPendingConnectionsHandler);
+			if(this._userSignupPopupContent != null) this._userSignupPopupContent.removeEventListener(starling.events.Event.TRIGGERED, userSignupScreen);
 			super.dispose();
 		}
 

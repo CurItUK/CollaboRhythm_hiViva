@@ -68,6 +68,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.initialize();
 
+			this._isThisFromHome = this.owner.hasScreen(HivivaScreens.HCP_HOME_SCREEN);
+
 			this._header.title = "Edit profile";
 
 			this._instructionsText = new Label();
@@ -99,10 +101,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._cancelAndSave = new BoxedButtons();
 			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
 			this._cancelAndSave.scale = this.dpiScale;
-			this._cancelAndSave.labels = ["Cancel", "Save"];
+			this._cancelAndSave.labels = this._isThisFromHome ? ["Save"] : ["Cancel", "Save"];
 			this._content.addChild(this._cancelAndSave);
 
 			this._backButton = new Button();
+			this._backButton.visible = !this._isThisFromHome;
 			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
@@ -110,8 +113,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			populateOldData();
-
-			this._isThisFromHome = this.owner.hasScreen(HivivaScreens.HCP_HOME_SCREEN);
 		}
 
 		private function cancelAndSaveHandler(e:Event):void
@@ -146,25 +147,23 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function HCPMyDetailsCheck():String
 		{
-			var validString:String = "";
+			var validationArray:Array = [];
 
-			if(this._firstNameInput._input.text.length == 0) validString += "Please enter a first name...";
-			if(this._lastNameInput._input.text.length == 0) validString += "Please enter a last name...";
+			if(this._firstNameInput._input.text.length == 0) validationArray.push("Please enter a first name");
+			if(this._lastNameInput._input.text.length == 0) validationArray.push("Please enter a last name");
 
-			return validString;
+			return validationArray.join(",\n");
 		}
 
 		private function saveUser():void
 		{
-			var appId:String = HivivaStartup.userVO.appId;
 			var guid:String = HivivaStartup.userVO.guid;
 			var firstName:String = this._firstNameInput._input.text;
 			var lastName:String = this._lastNameInput._input.text;
 
 			var user:XML =
 					<DCHealthUser>
-						<AppId>{appId}</AppId>
-						<AppGuid>{guid}</AppGuid>
+						<UserGuid>{guid}</UserGuid>
 						<FirstName>{firstName}</FirstName>
 						<LastName>{lastName}</LastName>
 					</DCHealthUser>;
@@ -176,7 +175,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function saveUserCompleteHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.SAVE_USER_COMPLETE, saveUserCompleteHandler);
-			trace("user profile saved");
+			showFormValidation("User profile saved");
 
 			if(this._isThisFromHome)
 			{

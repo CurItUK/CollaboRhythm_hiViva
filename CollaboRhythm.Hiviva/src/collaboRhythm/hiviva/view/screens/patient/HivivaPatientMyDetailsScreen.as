@@ -142,25 +142,23 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function patientMyDetailsCheck():String
 		{
-			var validString:String = "";
+			var validationArray:Array = [];
 
-			if(this._firstNameInput._input.text.length == 0) validString += "Please enter a first name...";
-			if(this._lastNameInput._input.text.length == 0) validString += "Please enter a last name...";
+			if(this._firstNameInput._input.text.length == 0) validationArray.push("Please enter a first name");
+			if(this._lastNameInput._input.text.length == 0) validationArray.push("Please enter a last name");
 
-			return validString;
+			return validationArray.join(",\n");
 		}
 
 		private function saveUser():void
 		{
-			var appId:String = HivivaStartup.userVO.appId;
 			var guid:String = HivivaStartup.userVO.guid;
 			var firstName:String = this._firstNameInput._input.text;
 			var lastName:String = this._lastNameInput._input.text;
 
 			var user:XML =
 					<DCHealthUser>
-						<AppId>{appId}</AppId>
-						<AppGuid>{guid}</AppGuid>
+						<UserGuid>{guid}</UserGuid>
 						<FirstName>{firstName}</FirstName>
 						<LastName>{lastName}</LastName>
 					</DCHealthUser>;
@@ -172,7 +170,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function saveUserCompleteHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.SAVE_USER_COMPLETE, saveUserCompleteHandler);
-			trace("user profile saved");
+			showFormValidation("User profile saved");
 		}
 
 		private function populateOldData():void
