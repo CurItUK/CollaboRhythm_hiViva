@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.model.vo.UserAuthenticationVO;
 	import collaboRhythm.hiviva.view.HivivaHeader;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.components.PasscodeFieldGenerator;
@@ -37,10 +38,11 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _answerInput:TextInput;
 		private var _passcodeInstruction3:Label;
 		private var _enterBtn:Button;
+		private var _userAuthenticationVO:UserAuthenticationVO;
 
 		public function InchPasscodeSetup()
 		{
-
+			this._userAuthenticationVO = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userAuthenticationVO;
 		}
 
 		override protected function initialize():void
@@ -240,7 +242,10 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function passcodeSaveCompleteHandler(event:LocalDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE , passcodeSaveCompleteHandler);
+			this._userAuthenticationVO.enabled = true;
+			this._userAuthenticationVO.passcode =   this._passcodeFieldGenerator1.inputsToPasscode();
 			showFormValidation("Passcode saved OK");
+
 		}
 
 	}

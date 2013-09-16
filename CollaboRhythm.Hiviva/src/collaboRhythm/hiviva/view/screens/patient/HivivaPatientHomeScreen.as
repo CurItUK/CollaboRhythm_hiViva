@@ -83,7 +83,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._homeImageInstructions.x =  (Constants.STAGE_WIDTH * 0.5) - (this._homeImageInstructions.width * 0.5);
 			this._homeImageInstructions.y =  (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._homeImageInstructions.height * 0.5);
 
-			initHomeScreenPreloader();
+
 
 			if (!this._asynchronousCallMade)
 			{
