@@ -138,6 +138,7 @@ package collaboRhythm.hiviva.view
 			// texture Atlas
 //			_assets.enqueue(appDir.resolvePath("assets/images/atlas/homePagePhoto.atf"),appDir.resolvePath("assets/images/atlas/homePagePhoto.xml"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/hivivaBaseImages.png"),appDir.resolvePath("assets/images/atlas/hivivaBaseImages.xml"));
+			_assets.enqueue(appDir.resolvePath("assets/images/atlas/ApplePreloader.png"),appDir.resolvePath("assets/images/atlas/ApplePreloader.xml"));
 			// fonts
 			// blue theme
 			_assets.enqueue(appDir.resolvePath("assets/fontsv2/v2-raised-white-bold.png"),appDir.resolvePath("assets/fontsv2/v2-raised-white-bold.fnt"));
