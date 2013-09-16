@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.model.vo.UserAuthenticationVO;
 	import collaboRhythm.hiviva.view.HivivaHeader;
 	import collaboRhythm.hiviva.view.HivivaStartup;
+	import collaboRhythm.hiviva.view.components.PreloaderSpinner;
 
 	import feathers.controls.Button;
 
@@ -91,6 +92,10 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._changePassCodeBtn.x = Constants.STAGE_WIDTH/2 - this._changePassCodeBtn.width/2;
 
 			enableDisablePasscodeBtn();
+
+
+			var preloader:PreloaderSpinner = new PreloaderSpinner();
+			this.addChild(preloader)   ;
 
 		}
 

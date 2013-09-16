@@ -8,6 +8,8 @@ package collaboRhythm.hiviva.view.components
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.textures.Texture;
+	import starling.textures.TextureAtlas;
 
 	public class PreloaderSpinner extends Sprite
 	{
@@ -21,7 +23,9 @@ package collaboRhythm.hiviva.view.components
 
 		private function init(event:Event):void
 		{
-			this._preloader = MovieClip(Main.assets.getTextures("ApplePreloader"));
+
+			var textureAnim:TextureAtlas =  Main.assets.getTextureAtlas("ApplePreloader");
+			this._preloader = new MovieClip(textureAnim.getTextures("preloader") , 60);
 			this.addChild(this._preloader);
 
 			Starling.juggler.add(this._preloader);
