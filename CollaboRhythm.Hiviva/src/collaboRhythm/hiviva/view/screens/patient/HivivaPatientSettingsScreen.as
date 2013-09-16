@@ -19,6 +19,8 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.data.ListCollection;
 	import feathers.layout.VerticalLayout;
 
+	import flash.desktop.NativeApplication;
+
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
@@ -195,7 +197,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function appIdGuidSaveHandler(e:LocalDataStoreEvent):void
 		{
 			this._closeAppPopup = new HivivaPopUp();
-			this._closeAppPopup.buttons = ["ok"];
+			this._closeAppPopup.buttons = ["Ok"];
 			this._closeAppPopup.addEventListener(Event.TRIGGERED, okTriggered);
 			this._closeAppPopup.validate();
 			this._closeAppPopup.message = 'user has been changed, please close and relaunch the application';
@@ -209,7 +211,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function okTriggered(e:Event):void
 		{
-
+			var btn:String = e.data.button as String;
+			switch(btn)
+			{
+				case "Ok" :
+				case "Close" :
+					break;
+			}
 		}
 
 		private function backBtnHandler(event:Event):void

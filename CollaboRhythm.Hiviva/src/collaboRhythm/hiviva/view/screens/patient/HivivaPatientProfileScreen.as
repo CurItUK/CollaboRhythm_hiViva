@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
@@ -33,6 +34,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _appIdLabel:Label;
 		private var _appId:Label;
 		private var _userIsSignedUp:Boolean;
+		private var _remoteCallMade:Boolean;
 
 		public function HivivaPatientProfileScreen()
 		{
@@ -46,22 +48,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.paddingLeft = Constants.HEADER_HOMEBTN_PADDING;
 			this._header.initTrueTitle();
 
-			drawMenuBtnGroup();
-
-			this._appIdLabel.validate();
-			this._appIdLabel.x = Constants.PADDING_LEFT;
-			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + Constants.PADDING_TOP;
-
-			this._appId.validate();
-			this._appId.x = this.actualWidth - Constants.PADDING_RIGHT - this._appId.width;
-			this._appId.y = this._appIdLabel.y;
-
-			/*
 			this._userSignupPopupContent.width = this.actualWidth * 0.75;
 			this._userSignupPopupContent.validate();
-			*/
 
-
+			if(!this._remoteCallMade)
+			{
+				userSignupCheck();
+			}
 		}
 
 		override protected function initialize():void
@@ -85,59 +78,49 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._menuBtnGroup);
 
 			this._appIdLabel = new Label();
+			this._appIdLabel.visible = false;
 			this._appIdLabel.name = HivivaThemeConstants.APPID_LABEL;
 			this._appIdLabel.text = "Your app ID";
 			addChild(this._appIdLabel);
 
 			this._appId = new Label();
+			this._appId.visible = false;
 			this._appId.name = HivivaThemeConstants.APPID_LABEL;
 			this._appId.text = HivivaStartup.userVO.appId;
 			addChild(this._appId);
 
-			initProfileMenuButtons();
-
-			/*
 			this._userSignupPopupContent = new HivivaPopUp();
 			this._userSignupPopupContent.scale = this.dpiScale;
 			this._userSignupPopupContent.message = "You will need to create an account in order to connect to a care provider";
-			this._userSignupPopupContent.confirmLabel = "Sign up";
-			this._userSignupPopupContent.addEventListener(Event.COMPLETE, userSignupScreen);
-			this._userSignupPopupContent.addEventListener(Event.CLOSE, closePopup);
-
-			userSignupCheck();
-			*/
+			this._userSignupPopupContent.buttons = ["Sign up"];
+			this._userSignupPopupContent.addEventListener(Event.TRIGGERED, userSignupPopupHandler);
 		}
 
-		/*
 		private function userSignupCheck():void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getPatientProfile();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE , getPatientCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatient(HivivaStartup.userVO.appId);
+			this._remoteCallMade = true;
 		}
 
-		private function getPatientProfileHandler(e:LocalDataStoreEvent):void
+		private function getPatientCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_PROFILE_LOAD_COMPLETE, getPatientProfileHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE , getPatientCompleteHandler);
 
-			var patientProfile:Array = e.data.patientProfile;
+			var firstName:String = e.data.xmlResponse.FirstName;
+			var lastName:String = e.data.xmlResponse.LastName;
 
-			try
-			{
-				this._userIsSignedUp = patientProfile != null;
-			}
-			catch(e:Error)
-			{
-				this._userIsSignedUp = false;
-			}
+			this._userIsSignedUp = (firstName.length > 0 && lastName.length > 0);
+
 			trace("this._userIsSignedUp = " + this._userIsSignedUp);
+			initProfileMenuButtons();
 		}
-		*/
 
 			private function initProfileMenuButtons():void
 		{
 			var lc:ListCollection = new ListCollection(
 				[
-					{name: "details", label: "Edit profile"},
+//					{name: "details", label: "Edit profile"},
 					{name: "photo", label: "Homepage photo"},
 					{name: "medicines", label: "Daily medicines"},
 					{name: "results", label: "Test results"},
@@ -148,7 +131,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				]
 			);
 
-			if (this._userIsSignedUp) lc.addItemAt({name: "details", label: "My details"}, 0);
+			if (this._userIsSignedUp) lc.addItemAt({name: "details", label: "Edit profile"}, 0);
 
 			this._menuBtnGroup.dataProvider = lc;
 			this._menuBtnGroup.buttonInitializer = patientProfileBtnInitializer;
@@ -170,6 +153,20 @@ package collaboRhythm.hiviva.view.screens.patient
 				img.width = this.actualWidth;
 				img.height = patternHeight;
 			}
+			drawAppid();
+		}
+
+		private function drawAppid():void
+		{
+			this._appIdLabel.validate();
+			this._appIdLabel.x = Constants.PADDING_LEFT;
+			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + Constants.PADDING_TOP;
+			this._appIdLabel.visible = true;
+
+			this._appId.validate();
+			this._appId.x = this.actualWidth - Constants.PADDING_RIGHT - this._appId.width;
+			this._appId.y = this._appIdLabel.y;
+			this._appId.visible = true;
 		}
 
 		private function patientProfileBtnInitializer(button:Button, item:Object):void
@@ -212,8 +209,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_LOCK_SCREEN);
 					break;
 				case "connect" :
-					this.owner.showScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN);
-					/*
+//					this.owner.showScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN);
 					if (this._userIsSignedUp)
 					{
 						this.owner.showScreen(HivivaScreens.PATIENT_CONNECT_TO_HCP_SCREEN);
@@ -222,7 +218,6 @@ package collaboRhythm.hiviva.view.screens.patient
 					{
 						showSignupPopup();
 					}
-					*/
 					break;
 			}
 		}
@@ -232,8 +227,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.dispatchEventWith("navGoHome");
 		}
 
-
-		/*
 		private function showSignupPopup():void
 		{
 			PopUpManager.addPopUp(this._userSignupPopupContent,true,true);
@@ -243,18 +236,18 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._userSignupPopupContent.drawCloseButton();
 		}
 
-		private function userSignupScreen(e:Event):void
+		private function userSignupPopupHandler(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
-			PopUpManager.removePopUp(this._userSignupPopupContent);
-			trace("open PATIENT_USER_SIGNUP_SCREEN");
+			var btn:String = e.data.button as String;
+			switch(btn)
+			{
+				case "Sign up" :
+					this.owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
+				case "Close" :
+					PopUpManager.removePopUp(this._userSignupPopupContent);
+					break;
+			}
 		}
-
-		private function closePopup(e:Event):void
-		{
-			PopUpManager.removePopUp(this._userSignupPopupContent);
-		}
-		*/
 
 		override public function dispose():void
 		{

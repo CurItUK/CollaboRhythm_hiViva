@@ -77,6 +77,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 				getApprovedConnectionsWithSummary();
 				messageCheckHandler();
 				enableAutoHomePageMessageCheck();
+				checkHCPSignupStatus();
 				this._remoteCallMade = true;
 			}
 		}
@@ -135,27 +136,25 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.dispatchEventWith("mainToSubNav" , false , {profileMenu:HivivaScreens.HCP_CONNECT_PATIENT});
 		}
 
-		/*
 		private function checkHCPSignupStatus():void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.HCP_PROFILE_LOAD_COMPLETE, getHcpProfileHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getHcpProfile();
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getHCP(HivivaStartup.userVO.appId);
 		}
 
-		private function getHcpProfileHandler(e:LocalDataStoreEvent):void
+		private function getHCPCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.HCP_PROFILE_LOAD_COMPLETE, getHcpProfileHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
 
-			if(e.data.hcpProfile != null)
+			var firstName:String = e.data.xmlResponse.FirstName;
+			var lastName:String = e.data.xmlResponse.LastName;
+
+			if (firstName.length == 0 && lastName.length == 0)
 			{
-				getHcpConnections();
-			}
-			else
-			{
-				initPatientSignupProcess();
+				//do popup
 			}
 		}
-		*/
+
 		private function getApprovedConnectionsWithSummary():void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);

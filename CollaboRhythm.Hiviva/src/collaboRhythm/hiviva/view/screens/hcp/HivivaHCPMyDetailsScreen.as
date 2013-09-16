@@ -1,5 +1,6 @@
-package collaboRhythm.hiviva.view.screens.patient
+package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
@@ -13,7 +14,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
-	public class HivivaPatientMyDetailsScreen extends ValidationScreen
+	public class HivivaHCPMyDetailsScreen extends ValidationScreen
 	{
 		private var _instructionsText:Label;
 		private var _firstNameInput:LabelAndInput;
@@ -22,11 +23,12 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _photoContainer:ImageUploader;
 		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
+		private var _isThisFromHome:Boolean;
 
 		private const USER_PROFILE_IMAGE:String = "userprofileimage.jpg";
 
 
-		public function HivivaPatientMyDetailsScreen()
+		public function HivivaHCPMyDetailsScreen()
 		{
 
 		}
@@ -108,6 +110,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			populateOldData();
+
+			this._isThisFromHome = this.owner.hasScreen(HivivaScreens.HCP_HOME_SCREEN);
 		}
 
 		private function cancelAndSaveHandler(e:Event):void
@@ -116,11 +120,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			switch(button)
 			{
 				case "Cancel" :
-					this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+					this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 					hideFormValidation();
 					break;
 				case "Save" :
-					var formValidation:String = patientMyDetailsCheck();
+					var formValidation:String = HCPMyDetailsCheck();
 					if(formValidation.length == 0)
 					{
 						saveUser();
@@ -136,11 +140,11 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function backBtnHandler(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 			hideFormValidation();
 		}
 
-		private function patientMyDetailsCheck():String
+		private function HCPMyDetailsCheck():String
 		{
 			var validString:String = "";
 
@@ -173,19 +177,25 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.SAVE_USER_COMPLETE, saveUserCompleteHandler);
 			trace("user profile saved");
+
+			if(this._isThisFromHome)
+			{
+				dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV, true));
+				this.owner.showScreen(HivivaScreens.HCP_HOME_SCREEN);
+			}
 		}
 
 		private function populateOldData():void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE , getPatientCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatient(HivivaStartup.userVO.appId);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getHCP(HivivaStartup.userVO.appId);
 
 			this._photoContainer.getMainImage();
 		}
 
-		private function getPatientCompleteHandler(e:RemoteDataStoreEvent):void
+		private function getHCPCompleteHandler(e:RemoteDataStoreEvent):void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE , getPatientCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
 
 			this._firstNameInput._input.text = e.data.xmlResponse.FirstName;
 			this._lastNameInput._input.text = e.data.xmlResponse.LastName;
@@ -194,7 +204,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		public override function dispose():void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.SAVE_USER_COMPLETE, saveUserCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE , getPatientCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
 			super.dispose();
 		}
 	}

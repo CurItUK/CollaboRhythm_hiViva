@@ -15,8 +15,8 @@ package collaboRhythm.hiviva.model
 	public class HivivaRemoteStoreService extends EventDispatcher
 	{
 		//private static const RS_BASE_URL:String = "http://McGoohan/PWS.Health.Service/Services/";
-//		private static const RS_BASE_URL:String = "http://pwshealthtest.dev/services/";
-		private static const RS_BASE_URL:String = "http://collaborythm.pharmiwebsolutions.com/services/";
+		private static const RS_BASE_URL:String = "http://pwshealthtest.dev/services/";
+//		private static const RS_BASE_URL:String = "http://collaborythm.pharmiwebsolutions.com/services/";
 
 		public function HivivaRemoteStoreService()
 		{
@@ -39,6 +39,27 @@ package collaboRhythm.hiviva.model
 			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.CREATE_USER_COMPLETE);
 			evt.data.appid = xmlResponse.AppId;
 			evt.data.guid = xmlResponse.AppGuid;
+			this.dispatchEvent(evt)
+		}
+
+		public function saveUser(user:XML):void
+		{
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_SAVE_USER);
+			urlRequest.data = user.toXMLString();
+			urlRequest.contentType = "text/xml";
+			urlRequest.method = URLRequestMethod.POST;
+
+			trace("saveUser " + urlRequest.url);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, saveUserCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function saveUserCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.SAVE_USER_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
 			this.dispatchEvent(evt)
 		}
 

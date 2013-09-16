@@ -195,8 +195,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function appIdGuidSaveHandler(e:LocalDataStoreEvent):void
 		{
 			this._closeAppPopup = new HivivaPopUp();
-			this._closeAppPopup.buttons = ["ok"];
-			this._closeAppPopup.addEventListener(Event.TRIGGERED, okTriggered);
+			this._closeAppPopup.buttons = ["Ok"];
+			this._closeAppPopup.addEventListener(Event.TRIGGERED, closeAppPopupHandler);
 			this._closeAppPopup.validate();
 			this._closeAppPopup.message = 'user has been changed, please close and relaunch the application';
 
@@ -207,9 +207,16 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._closeAppPopup.drawCloseButton();
 		}
 
-		private function okTriggered(e:Event):void
+		private function closeAppPopupHandler(e:Event):void
 		{
-
+			var btn:String = e.data.button as String;
+			switch(btn)
+			{
+				case "Ok":
+					break;
+				case "Close":
+					break;
+			}
 		}
 
 		private function backBtnHandler(event:Event):void

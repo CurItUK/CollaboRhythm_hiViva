@@ -35,7 +35,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_Wcidwh_Screen;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessages;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaHCPMyDetailsScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMyDetailsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientAddHCP;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientAddMedsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientBagesScreen;
