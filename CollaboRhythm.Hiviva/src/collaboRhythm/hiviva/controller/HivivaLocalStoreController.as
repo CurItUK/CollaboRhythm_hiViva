@@ -550,6 +550,17 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE));
 		}
 
+		public function updatePasscodeDetails(passcode:String):void
+		{
+			service.addEventListener(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE , passcodeUpdateCompleteHandler);
+			service.updatePasscodeDetails(passcode);
+		}
+
+		private function passcodeUpdateCompleteHandler(event:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE , passcodeUpdateCompleteHandler);
+			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE));
+		}
 
 
 		public function get service():HivivaLocalStoreService

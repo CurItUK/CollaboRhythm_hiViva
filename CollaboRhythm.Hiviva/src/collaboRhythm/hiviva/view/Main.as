@@ -71,6 +71,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.shared.HivivaSplashScreen;
 	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeLock;
 	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeRecoverQuestion;
+	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeRecoverUpdate;
 	import collaboRhythm.hiviva.view.screens.shared.InchPasscodeSetup;
 	import collaboRhythm.hiviva.view.screens.shared.MainBackground;
 
@@ -223,6 +224,7 @@ package collaboRhythm.hiviva.view
 
 			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete} , {backgroundTexture:Texture.fromTexture(this._splashBgTexture)}));
 			this._mainScreenNav.addScreen(HivivaScreens.PATIENT_PASSCODE_RECOVER_QUESTION_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverQuestion));
+			this._mainScreenNav.addScreen(HivivaScreens.PATIENT_PASSCODE_RECOVER_UPDATE_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverUpdate));
 			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 		}
 
