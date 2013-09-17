@@ -120,7 +120,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 					{name: "display", label: "Display settings"},
 					{name: "alerts", label: "Alerts"},
 					{name: "connect", label: "Connect to a patient"},
-					{name: "resetsettings", label: "Application settings"}
+					{name: "resetsettings", label: "Application settings"},
+					{name: "passcode", label: "Passcode lock"}
 				]
 			);
 			this._menuBtnGroup.buttonInitializer = function(button:Button, item:Object):void
@@ -163,6 +164,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 					break;
 				case "resetsettings" :
 					this.owner.showScreen(HivivaScreens.HCP_RESET_SETTINGS);
+				break;
+
+				case "passcode" :
+					this.owner.showScreen(HivivaScreens.PASSCODE_LOCK_SCREEN);
 				break;
 			}
 		}

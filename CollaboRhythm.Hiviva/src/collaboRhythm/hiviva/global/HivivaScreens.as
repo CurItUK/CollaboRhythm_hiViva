@@ -59,12 +59,12 @@ package collaboRhythm.hiviva.global
 
 		//Passcode lock screens
 
-		public static const PATIENT_PASSCODE_RECOVER_QUESTION_SCREEN:String	  		 = "patientPasscodeRecoverQuestion";
-		public static const PATIENT_PASSCODE_RECOVER_UPDATE_SCREEN:String	  		 = "patientPasscodeRecoverUpdate";
-		public static const PATIENT_PASSCODE_LOCK_SCREEN:String	  					 = "patientPasscodeLock";
-		public static const PATIENT_PASSCODE_SETUP_SCREEN:String 					 = "patientPasscodeSetup";
-		public static const PATIENT_PASSCODE_CHANGE_CONFIRM_SCREEN:String 			 = "patientPasscodeChangeConfirm";
-		public static const PATIENT_PASSCODE_CHANGE_SCREEN:String 					 = "patientPasscodeChange";
+		public static const PASSCODE_RECOVER_QUESTION_SCREEN:String	  				 = "passcodeRecoverQuestion";
+		public static const PASSCODE_RECOVER_UPDATE_SCREEN:String	  				 = "passcodeRecoverUpdate";
+		public static const PASSCODE_LOCK_SCREEN:String	  							 = "passcodeLock";
+		public static const PASSCODE_SETUP_SCREEN:String 							 = "passcodeSetup";
+		public static const PASSCODE_CHANGE_CONFIRM_SCREEN:String 					 = "passcodeChangeConfirm";
+		public static const PASSCODE_CHANGE_SCREEN:String 							 = "passcodeChange";
 
 
 

@@ -254,7 +254,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function forgotBtnHandler(event:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_RECOVER_QUESTION_SCREEN);
+			this.owner.showScreen(HivivaScreens.PASSCODE_RECOVER_QUESTION_SCREEN);
 		}
 
 

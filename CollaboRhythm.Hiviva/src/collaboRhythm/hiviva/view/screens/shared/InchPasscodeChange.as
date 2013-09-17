@@ -57,7 +57,16 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function backBtnHandler(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			var userType:String = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userVO.type;
+			if(userType == "HCP")
+			{
+				this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+			}
+			else
+			{
+				this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			}
+
 		}
 
 		private function initPasswordUpdate():void

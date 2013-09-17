@@ -28,6 +28,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _userAuthenticationVO:UserAuthenticationVO;
 
 
+
 		public function InchPasscodeLock()
 		{
 			this._userAuthenticationVO = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userAuthenticationVO;
@@ -63,7 +64,16 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function backBtnHandler(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			var userType:String = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userVO.type;
+			if(userType == "HCP")
+			{
+				this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+			}
+			else
+			{
+				this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			}
+
 		}
 
 		private function initPasscode():void
@@ -97,16 +107,14 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function changePasscodeBtnHandler(event:Event):void
 		{
-
-			this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_CHANGE_CONFIRM_SCREEN);
-
+			this.owner.showScreen(HivivaScreens.PASSCODE_CHANGE_CONFIRM_SCREEN);
 		}
 
 		private function enableDisableBtnHandler(event:Event):void
 		{
 			if(!this._userAuthenticationVO.enabled)
 			{
-				this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_SETUP_SCREEN);
+				this.owner.showScreen(HivivaScreens.PASSCODE_SETUP_SCREEN);
 			} else
 			{
 				disablePasscode();
@@ -118,7 +126,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			trace("disablePasscode")  ;
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE , passcodeDisableCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.disablePasscodeDetails();
-
 		}
 
 		private function passcodeDisableCompleteHandler(event:LocalDataStoreEvent):void
@@ -127,7 +134,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE , passcodeDisableCompleteHandler);
 			this._userAuthenticationVO.enabled = false;
 			enableDisablePasscodeBtn()
-
 		}
 
 
@@ -145,9 +151,6 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._changePassCodeBtn.isEnabled = false;
 			}
 		}
-
-
-
 
 	}
 }

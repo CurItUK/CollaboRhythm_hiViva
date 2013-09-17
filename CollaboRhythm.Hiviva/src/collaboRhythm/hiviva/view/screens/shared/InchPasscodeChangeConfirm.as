@@ -57,7 +57,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function backBtnHandler(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_LOCK_SCREEN);
+			this.owner.showScreen(HivivaScreens.PASSCODE_LOCK_SCREEN);
 		}
 
 		private function initPasswordUpdate():void
@@ -104,7 +104,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function allowChangePasscode():void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_CHANGE_SCREEN);
+			this.owner.showScreen(HivivaScreens.PASSCODE_CHANGE_SCREEN);
 		}
 
 		private function validateContent():String

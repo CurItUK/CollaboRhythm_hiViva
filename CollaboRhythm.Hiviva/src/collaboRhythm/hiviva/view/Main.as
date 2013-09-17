@@ -246,8 +246,8 @@ package collaboRhythm.hiviva.view
 			drawScreenBackground();
 
 			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete} , {backgroundTexture:Texture.fromTexture(this._splashBgTexture)}));
-			this._mainScreenNav.addScreen(HivivaScreens.PATIENT_PASSCODE_RECOVER_QUESTION_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverQuestion));
-			this._mainScreenNav.addScreen(HivivaScreens.PATIENT_PASSCODE_RECOVER_UPDATE_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverUpdate));
+			this._mainScreenNav.addScreen(HivivaScreens.PASSCODE_RECOVER_QUESTION_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverQuestion));
+			this._mainScreenNav.addScreen(HivivaScreens.PASSCODE_RECOVER_UPDATE_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverUpdate));
 			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 		}
 
@@ -438,6 +438,10 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.HCP_HELP_GENERATE_REPORTS_SCREEN, new ScreenNavigatorItem(HivivaHCP_help_Generate_Reports_Screen , {navGoHome:goBackToMainScreen }));
 			this._settingsNav.addScreen(HivivaScreens.HCP_HELP_ALERTS_SCREEN, new ScreenNavigatorItem(HivivaHCP_help_Alerts_Screen , {navGoHome:goBackToMainScreen }));
 			this._settingsNav.addScreen(HivivaScreens.RESOURCES_SCREEN, new ScreenNavigatorItem(HivivaResourceScreen, {navGoHome:goBackToMainScreen}));
+			this._settingsNav.addScreen(HivivaScreens.PASSCODE_LOCK_SCREEN, new ScreenNavigatorItem(InchPasscodeLock));
+			this._settingsNav.addScreen(HivivaScreens.PASSCODE_SETUP_SCREEN, new ScreenNavigatorItem(InchPasscodeSetup));
+			this._settingsNav.addScreen(HivivaScreens.PASSCODE_CHANGE_CONFIRM_SCREEN, new ScreenNavigatorItem(InchPasscodeChangeConfirm));
+			this._settingsNav.addScreen(HivivaScreens.PASSCODE_CHANGE_SCREEN, new ScreenNavigatorItem(InchPasscodeChange));
   		}
 
 		private function initPatientSettingsNavigator():void
@@ -468,10 +472,10 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_BADGES_SCREEN, new ScreenNavigatorItem(HivivaPatientBagesScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_EDIT_SETTINGS_SCREEN, new ScreenNavigatorItem(HivivaPatientSettingsScreen, {navGoHome:goBackToMainScreen , navFromReset:resetApplication}));
 			this._settingsNav.addScreen(HivivaScreens.RESOURCES_SCREEN, new ScreenNavigatorItem(HivivaResourceScreen, {navGoHome:goBackToMainScreen}));
-			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_LOCK_SCREEN, new ScreenNavigatorItem(InchPasscodeLock));
-			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_SETUP_SCREEN, new ScreenNavigatorItem(InchPasscodeSetup));
-			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_CHANGE_CONFIRM_SCREEN, new ScreenNavigatorItem(InchPasscodeChangeConfirm));
-			this._settingsNav.addScreen(HivivaScreens.PATIENT_PASSCODE_CHANGE_SCREEN, new ScreenNavigatorItem(InchPasscodeChange));
+			this._settingsNav.addScreen(HivivaScreens.PASSCODE_LOCK_SCREEN, new ScreenNavigatorItem(InchPasscodeLock));
+			this._settingsNav.addScreen(HivivaScreens.PASSCODE_SETUP_SCREEN, new ScreenNavigatorItem(InchPasscodeSetup));
+			this._settingsNav.addScreen(HivivaScreens.PASSCODE_CHANGE_CONFIRM_SCREEN, new ScreenNavigatorItem(InchPasscodeChangeConfirm));
+			this._settingsNav.addScreen(HivivaScreens.PASSCODE_CHANGE_SCREEN, new ScreenNavigatorItem(InchPasscodeChange));
 		}
 
 		private function navGoToMessages():void

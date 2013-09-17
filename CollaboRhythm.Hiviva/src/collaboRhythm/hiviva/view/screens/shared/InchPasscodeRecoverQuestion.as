@@ -125,7 +125,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function allowChangePasscode():void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PASSCODE_RECOVER_UPDATE_SCREEN);
+			this.owner.showScreen(HivivaScreens.PASSCODE_RECOVER_UPDATE_SCREEN);
 		}
 
 		private function validateContent():String
