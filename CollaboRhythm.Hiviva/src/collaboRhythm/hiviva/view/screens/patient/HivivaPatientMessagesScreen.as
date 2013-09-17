@@ -167,17 +167,19 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			var listCount:uint = this._allReceivedMessages.length();
 			var hcpMessage:MessageInboxResultCell;
+			var fullName:String;
 			if(listCount > 0)
 			{
 
 				for(var i:uint = 0 ; i < listCount ; i++)
 				{
+					fullName = this._allReceivedMessages[i].FromFirstName + " " + this._allReceivedMessages[i].FromLastName;
 					hcpMessage = new MessageInboxResultCell();
 					hcpMessage.messageType = MessageInboxResultCell.COMPOSED_MESSAGE_TYPE;
 					hcpMessage.read = this._allReceivedMessages[i].read == "true";
 					hcpMessage.guid = this._allReceivedMessages[i].MessageGuid;
 					hcpMessage.primaryText = this._allReceivedMessages[i].Message;
-					hcpMessage.secondaryText = HivivaModifier.getAppIdWithGuid(this._allReceivedMessages[i].UserGuid);
+					hcpMessage.secondaryText = fullName + " (" + HivivaModifier.getAppIdWithGuid(this._allReceivedMessages[i].UserGuid) + ")";
 					hcpMessage.dateText = this._allReceivedMessages[i].SentDate;
 					hcpMessage.addEventListener(FeathersScreenEvent.MESSAGE_READ, messageSelectedHandler);
 					hcpMessage.addEventListener(FeathersScreenEvent.MESSAGE_SELECT, messageCheckBoxSelectedHandler);
@@ -192,14 +194,16 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			var listCount:uint = this._pendingConnections.length();
 			var connectionRequest:MessageInboxResultCell;
+			var fullName:String;
 			if(listCount > 0)
 			{
 				for(var i:uint = 0 ; i < listCount ; i++)
 				{
+					fullName = this._pendingConnections[i].FromFirstName + " " + this._pendingConnections[i].FromLastName;
 					connectionRequest = new MessageInboxResultCell();
 					connectionRequest.messageType = MessageInboxResultCell.CONNECTION_REQUEST_TYPE;
 					connectionRequest.guid = this._pendingConnections[i].FromUserGuid;
-					connectionRequest.primaryText = "Care provider (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
+					connectionRequest.primaryText = fullName + " (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
 //					hcpMessage.secondaryText = this._allReceivedMessages[i].Name;
 					connectionRequest.dateText = this._pendingConnections[i].SentDate;
 					connectionRequest.addEventListener(FeathersScreenEvent.MESSAGE_READ, messageSelectedHandler);

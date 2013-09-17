@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
@@ -48,6 +49,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		protected var _customHeight:Number = 0;
 		protected var _contentHeight:Number;
+		private var _isThisFromHome:Boolean;
 
 		public function HivivaPatientEditMedsScreen()
 		{
@@ -78,6 +80,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			super.initialize();
 
+			this._isThisFromHome = this.owner.hasScreen(HivivaScreens.PATIENT_HOME_SCREEN);
+
 			this._header = new HivivaHeader();
 			this._header.title = " ";
 			addChild(this._header);
@@ -92,11 +96,21 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
+
+			if(this._isThisFromHome) dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV, true));
 		}
 
 		private function backBtnHandler(e:Event):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			if(this._isThisFromHome)
+			{
+				dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV, true));
+				this.owner.showScreen(HivivaScreens.PATIENT_HOME_SCREEN);
+			}
+			else
+			{
+				this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			}
 		}
 
 		private function checkMedicationsExist():void

@@ -32,6 +32,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _endDate:Date;
 		private var _patientGuid:String;
 		private var _patientAppId:String;
+		private var _patientFullName:String;
 		private var _emailAddress:String;
 		private var _medicationHistoryCallMade:Boolean = false;
 		private var _testResultsCallMade:Boolean = false;
@@ -116,6 +117,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._emailAddress = settings.emailAddress;
 			this._patientGuid = settings.patientGuid;
 			this._patientAppId = settings.patientAppId;
+			this._patientFullName = settings.patientFullName;
 		}
 
 		private function backBtnHandler(e:Event = null):void
@@ -263,11 +265,11 @@ package collaboRhythm.hiviva.view.screens.shared
 			}
 			else
 			{
-				_bodyLabel.text = 	"From: " + HivivaStartup.userVO.appId + "\n\n" +
+				_bodyLabel.text = 	"From: " + (HivivaStartup.userVO.fullName.length > 0 ? HivivaStartup.userVO.fullName + " " : " ") + "(" + HivivaStartup.userVO.appId + ")\n\n" +
 								 	"To: " + this._emailAddress + "\n\n" +
 								 	"Date: " + HivivaModifier.getCalendarStringFromDate(HivivaStartup.userVO.serverDate) + "\n\n" +
 									"Subject: Patient Report\n\n" +
-									"Please find below details of patient (" + this._patientAppId + ") record of their HIV tracking via the HiVIVA application.\n\n" +
+									"Please find below details of " + this._patientFullName + "'s (" + this._patientAppId + ") record of their HIV tracking via the HiVIVA application.\n\n" +
 									"This covers the time period between: " + HivivaModifier.getCalendarStringFromDate(this._startDate) + " - " + HivivaModifier.getCalendarStringFromDate(this._endDate);
 			}
 

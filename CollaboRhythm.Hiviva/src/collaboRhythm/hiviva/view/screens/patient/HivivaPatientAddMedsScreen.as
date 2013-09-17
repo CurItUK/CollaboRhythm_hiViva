@@ -68,6 +68,11 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._searchButton.y = this._medicationSearchInput.y + (this._medicationSearchInput.height * 0.5) - (this._searchButton.height * 0.5);
 			this._searchButton.x = this._medicationSearchInput.width + this._componentGap;
+
+			this._continueBtn.width = this._innerWidth * 0.3;
+			this._continueBtn.validate();
+			this._continueBtn.y = this.actualHeight - this._continueBtn.height - this._verticalPadding;
+			this._continueBtn.x = this._horizontalPadding;
 			// scroll not needed for this screen
 			killContentScroll();
 		}
@@ -92,6 +97,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._searchButton.label = "SEARCH";
 			this._searchButton.addEventListener(starling.events.Event.TRIGGERED, searchBtnHandler);
 			this._content.addChild(this._searchButton);
+
+			this._continueBtn = new Button();
+			this._continueBtn.name = HivivaThemeConstants.BORDER_BUTTON;
+			this._continueBtn.label = "Continue";
+			this._continueBtn.visible = false;
+			this._continueBtn.addEventListener(Event.TRIGGERED, continueBtnHandler);
+			this.addChild(this._continueBtn);
 		}
 
 		private function backBtnHandler(e:starling.events.Event):void
@@ -170,7 +182,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._selectedMedicationId = 0;
 			this._medicationContainer.validate();
 
-			if(this._continueBtn == null) addContinueButton();
+//			if(this._continueBtn == null) addContinueButton();
+			this._continueBtn.visible = true;
 
 			var usableScrollHeight:Number = this.actualHeight - this._medicationContainer.y -
 										this._verticalPadding - this._continueBtn.height - this._componentGap;
@@ -188,6 +201,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._continueBtn.label = "Continue";
 			this._continueBtn.addEventListener(Event.TRIGGERED, continueBtnHandler);
 			this.addChild(this._continueBtn);
+			this._continueBtn.width = this._innerWidth * 0.3;
 			this._continueBtn.validate();
 			this._continueBtn.y = this.actualHeight - this._continueBtn.height - this._verticalPadding;
 			this._continueBtn.x = this._horizontalPadding;

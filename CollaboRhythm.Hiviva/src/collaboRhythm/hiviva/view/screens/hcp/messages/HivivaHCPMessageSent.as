@@ -71,8 +71,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 		private function getMessagesFromRemoteService():void
 		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_HCP_SENT_MESSAGES_COMPLETE,
-					getHCPSentMessagesHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_HCP_SENT_MESSAGES_COMPLETE, getHCPSentMessagesHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getHCPSentMessages();
 			this._remoteCallMade = true;
 		}
@@ -93,17 +92,18 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 		{
 			var listCount:uint = this._allSentMessages.length();
 			var hcpSentMessage:MessageInboxResultCell;
+			var fullName:String;
 			if(listCount > 0)
 			{
-
 				for(var i:uint = 0 ; i < listCount ; i++)
 				{
+					fullName = this._allSentMessages[i].ToFirstName + " " + this._allSentMessages[i].ToLastName;
 					hcpSentMessage = new MessageInboxResultCell();
 					hcpSentMessage.messageType = MessageInboxResultCell.COMPOSED_MESSAGE_TYPE;
 					hcpSentMessage.isSent = true;
 					hcpSentMessage.guid = this._allSentMessages[i].MessageGuid;
 					hcpSentMessage.primaryText = this._allSentMessages[i].Message;
-					hcpSentMessage.secondaryText = HivivaModifier.getAppIdWithGuid(this._allSentMessages[i].UserGuid);
+					hcpSentMessage.secondaryText = fullName + " (" + HivivaModifier.getAppIdWithGuid(this._allSentMessages[i].UserGuid) + ")";
 					hcpSentMessage.dateText = this._allSentMessages[i].SentDate;
 					hcpSentMessage.addEventListener(FeathersScreenEvent.MESSAGE_READ, messageSelectedHandler);
 					this._cellContainer.addChild(hcpSentMessage);

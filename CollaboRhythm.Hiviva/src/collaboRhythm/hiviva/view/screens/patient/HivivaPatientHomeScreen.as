@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
@@ -14,6 +15,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
+	import feathers.controls.ScreenNavigatorItem;
+	import feathers.core.PopUpManager;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -57,6 +60,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _messageCount:uint = 0;
 		private var _badgesAwarded:Number = 0;
 		private var _preloader:PreloaderSpinner;
+		private var _userMedSchedPopup:HivivaPopUp;
 
 
 		public function HivivaPatientHomeScreen():void
@@ -92,6 +96,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				checkForNewBadges();
 				getGalleryTimeStamp();
 				getApprovedConnections();
+				checkMedicationScheduleExist();
 				this._asynchronousCallMade = true;
 			}
 		}
@@ -102,6 +107,61 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.addChild(this._preloader) ;
 			this._preloader.y = this._header.height + 30;
 			this._preloader.x = this.actualWidth - this._preloader.width - 30;
+		}
+
+		private function checkMedicationScheduleExist():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
+		}
+
+		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+
+			var medicationData:XML = e.data.xmlResponse;
+
+			if(medicationData.children().length() == 0)
+			{
+				if(!this.owner.hasScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN)) this.owner.addScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientEditMedsScreen));
+				if(!this.owner.hasScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN)) this.owner.addScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientAddMedsScreen));
+				initAddMedicationPopup();
+			}
+			else
+			{
+				// remove screen if returning from edit meds screen
+				if(this.owner.hasScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN)) this.owner.removeScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
+				if(this.owner.hasScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN)) this.owner.removeScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN);
+			}
+		}
+
+		private function initAddMedicationPopup():void
+		{
+			this._userMedSchedPopup = new HivivaPopUp();
+			this._userMedSchedPopup.buttons = ["Enter medicines","Do later"];
+			this._userMedSchedPopup.addEventListener(Event.TRIGGERED, userMedSchedPopupHandler);
+			this._userMedSchedPopup.width = Constants.STAGE_WIDTH * 0.75;
+			this._userMedSchedPopup.validate();
+			this._userMedSchedPopup.message = "You will need to input your daily medicines to begin";
+
+			PopUpManager.addPopUp(this._userMedSchedPopup,true,true);
+			this._userMedSchedPopup.validate();
+			PopUpManager.centerPopUp(this._userMedSchedPopup);
+
+			this._userMedSchedPopup.drawCloseButton();
+		}
+
+		private function userMedSchedPopupHandler(e:Event):void
+		{
+			var btn:String = e.data.button as String;
+			switch(btn)
+			{
+				case "Enter medicines" :
+					this.owner.showScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
+				case "Do later" :
+				case "Close" :
+					PopUpManager.removePopUp(this._userMedSchedPopup);
+			}
 		}
 
 		private function updateVODataHandler(e:NotificationsEvent):void
@@ -137,12 +197,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			addChild(this._homeImageInstructions);
 
 			this._messagesButton = new TopNavButton();
-			this._messagesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_02"));
+//			this._messagesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_02"));
+			this._messagesButton.hivivaImage = new Image(Main.assets.getTexture("v2_top_nav_icon_02"));
 			this._messagesButton.visible = false;
 			this._messagesButton.addEventListener(Event.TRIGGERED , messagesButtonHandler);
 
 			this._badgesButton = new TopNavButton();
-			this._badgesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_03"));
+//			this._badgesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_03"));
+			this._badgesButton.hivivaImage = new Image(Main.assets.getTexture("v2_top_nav_icon_03"));
 			this._badgesButton.visible = false;
 			this._badgesButton.addEventListener(Event.TRIGGERED , rewardsButtonHandler);
 

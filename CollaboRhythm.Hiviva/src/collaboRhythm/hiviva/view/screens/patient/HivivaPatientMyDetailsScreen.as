@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
@@ -165,12 +166,21 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.SAVE_USER_COMPLETE, saveUserCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.saveUser(user);
+
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.APP_FULLNAME_SAVE_COMPLETE, saveUserFullnameHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.saveUserFullname(firstName + " " + lastName);
 		}
 
 		private function saveUserCompleteHandler(e:RemoteDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.SAVE_USER_COMPLETE, saveUserCompleteHandler);
 			showFormValidation("User profile saved");
+		}
+
+		private function saveUserFullnameHandler(e:LocalDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_FULLNAME_SAVE_COMPLETE, saveUserFullnameHandler);
+			trace("HivivaStartup.userVO.fullName = " + HivivaStartup.userVO.fullName);
 		}
 
 		private function populateOldData():void

@@ -5,7 +5,6 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
-	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.components.HCPFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.IFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.PatientFooterBtnGroup;
@@ -14,9 +13,9 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAllPatientsAdherenceScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPConnectToPatientScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPDisplaySettings;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPEditProfile;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHelpScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPHomesScreen;
+	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMyDetailsScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPPatientProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPProfileScreen;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPReportsScreen;
@@ -35,7 +34,6 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.hcp.help.HivivaHCP_help_Wcidwh_Screen;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessageCompose;
 	import collaboRhythm.hiviva.view.screens.hcp.messages.HivivaHCPMessages;
-	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPMyDetailsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientAddHCP;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientAddMedsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientBagesScreen;
@@ -89,7 +87,6 @@ package collaboRhythm.hiviva.view
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
-	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -169,6 +166,13 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_6.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_7.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_top_nav_icon_01.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_top_nav_icon_02.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_top_nav_icon_03.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_icon_01.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_icon_02.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_icon_03.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_icon_04.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_icon_05.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_virus_settings_button.png"));
 //			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_minimize_icon.png"));
 //			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_reset_icon.png"));
@@ -195,6 +199,7 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_brand_ring.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_cd4.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_virus.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_profile_img.png"));
 
 			this._preloader = new HivivaPreloaderWithBackground(0xFFFFFFF , 100 , 5 , Texture.fromTexture(this._splashBgTexture));
 			this._preloader.init();
@@ -580,6 +585,9 @@ package collaboRhythm.hiviva.view
 
 		private function hideMainNav(e:FeathersScreenEvent):void
 		{
+			this._settingsOpen = true;
+			settingsBtnHandler();
+
 			this._settingsBtn.touchable = false;
 			this._settingsBtn.visible = false;
 
@@ -589,6 +597,9 @@ package collaboRhythm.hiviva.view
 
 		private function showMainNav(e:FeathersScreenEvent):void
 		{
+			this._settingsOpen = true;
+			settingsBtnHandler();
+
 			this._settingsBtn.touchable = true;
 			this._settingsBtn.visible = true;
 

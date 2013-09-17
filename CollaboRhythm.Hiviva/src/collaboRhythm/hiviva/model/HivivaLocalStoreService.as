@@ -127,6 +127,7 @@ package collaboRhythm.hiviva.model
 				this._userVO.type = result[0].profile_type;
 				this._userVO.appId= result[0].app_id;
 				this._userVO.guid= result[0].guid;
+				this._userVO.fullName= result[0].fullname;
 			}
 
 			getUserAuthenticationDetails();
@@ -139,11 +140,12 @@ package collaboRhythm.hiviva.model
 			trace("sqlResultHandler " + e);
 		}
 
-		public function setTypeAppIdGuidId(appId:String , guid:String , type:String):void
+		public function saveUser(appId:String , guid:String , type:String, fullName:String):void
 		{
 			this._userVO.type = type;
 			this._userVO.appId= appId;
 			this._userVO.guid= guid;
+			this._userVO.fullName= fullName;
 
 
 			var dbFile:File = File.applicationStorageDirectory;
@@ -153,12 +155,32 @@ package collaboRhythm.hiviva.model
 			this._sqConn.open(dbFile);
 
 			this._sqStatement = new SQLStatement();
-			this._sqStatement.text = "UPDATE app_settings SET profile_type='" + type + "' , app_id='" + appId + "' , guid='" + guid + "'";
+			this._sqStatement.text = "UPDATE app_settings SET profile_type='" + type + "' , app_id='" + appId + "' , guid='" + guid + "' , fullname='" + fullName + "'";
 			this._sqStatement.sqlConnection = this._sqConn;
 			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
 			this._sqStatement.execute();
 
 			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE));
+		}
+
+		public function saveUserFullname(fullName:String):void
+		{
+			this._userVO.fullName= fullName;
+
+
+			var dbFile:File = File.applicationStorageDirectory;
+			dbFile = dbFile.resolvePath("settings.sqlite");
+
+			this._sqConn = new SQLConnection();
+			this._sqConn.open(dbFile);
+
+			this._sqStatement = new SQLStatement();
+			this._sqStatement.text = "UPDATE app_settings SET fullname='" + fullName + "'";
+			this._sqStatement.sqlConnection = this._sqConn;
+			this._sqStatement.addEventListener(SQLEvent.RESULT, sqlResultHandler);
+			this._sqStatement.execute();
+
+			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.APP_FULLNAME_SAVE_COMPLETE));
 		}
 
 		public function getAppId():void
@@ -227,12 +249,13 @@ package collaboRhythm.hiviva.model
 					var appId:String = establishedUser.appId;
 					var adherence:String = approvedPatient.Adherence;
 					var tolerability:String = approvedPatient.Tolerability;
+					var fullName:String = establishedUser.fullName;
 
 					var data:XML = new XML
 					(
 							<patient>
-								<name>{appId}</name>
-								<email>{appId}@domain.com</email>
+								<name>{fullName}</name>
+								<email>{appId}</email>
 								<appid>{appId}</appid>
 								<guid>{appGuid}</guid>
 								<tolerability>{tolerability}</tolerability>

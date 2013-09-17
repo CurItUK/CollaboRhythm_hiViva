@@ -8,6 +8,7 @@ package collaboRhythm.hiviva.model.vo
 		private var _type:String;
 		private var _serverDate:Date;
 		private var _badges:XMLList;
+		private var _fullName:String;
 
 		public function UserVO()
 		{
@@ -65,6 +66,16 @@ package collaboRhythm.hiviva.model.vo
 		public function set badges(value:XMLList):void
 		{
 			_badges = value;
+		}
+
+		public function get fullName():String
+		{
+			return _fullName;
+		}
+
+		public function set fullName(value:String):void
+		{
+			_fullName = value;
 		}
 	}
 }

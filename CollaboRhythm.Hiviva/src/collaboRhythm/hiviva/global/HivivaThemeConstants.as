@@ -44,6 +44,7 @@ package collaboRhythm.hiviva.global
 		public static const CELL_SMALL_LABEL:String					= "cell-small-label";
 		public static const CELL_SMALL_BOLD_LABEL:String			= "cell-small-bold-label";
 		public static const PATIENT_DATA_LIGHTER_LABEL:String		= "patient-data-lighter-label";
+		public static const POPUP_LABEL:String						= "popup-label";
 
 		// UI Objects style names
 

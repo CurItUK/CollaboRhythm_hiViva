@@ -286,6 +286,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._virusBg = new TiledImage(Main.assets.getTexture("v2_fixed_base"));
 			this._virusBg.width = Constants.STAGE_WIDTH;
 			this._virusBg.height = 615;
+			this._virusBg.flatten();
 
 			this._virusHolder.addChild(this._virusBg);
 			initVirusSimulation();

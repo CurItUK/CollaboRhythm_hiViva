@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.global
 
 	public class LocalDataStoreEvent extends Event
 	{
+		public static const APP_FULLNAME_SAVE_COMPLETE:String							= "appFullnameSaveComplete";
 		public static const APP_ID_SAVE_COMPLETE:String							= "appIdSaveComplete";
 		public static const APP_ID_LOAD_COMPLETE:String							= "appIdLoadComplete";
 		public static const GALLERY_TIMESTAMP_LOAD_COMPLETE:String				= "galleryTimeStampLoadComplete";

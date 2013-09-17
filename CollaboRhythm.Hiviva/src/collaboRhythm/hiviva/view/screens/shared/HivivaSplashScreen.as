@@ -180,7 +180,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			trace("initSplashBackground user created " + e.data.appid);
 
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE , appIdGuidSaveHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.setTypeAppIdGuid(e.data.appid , e.data.guid , this._userType);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.saveUser(e.data.appid , e.data.guid , this._userType);
 		}
 
 		private function appIdGuidSaveHandler(e:LocalDataStoreEvent):void

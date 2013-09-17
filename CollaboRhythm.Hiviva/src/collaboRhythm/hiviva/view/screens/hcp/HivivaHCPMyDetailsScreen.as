@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
+	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
@@ -101,11 +102,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._cancelAndSave = new BoxedButtons();
 			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
 			this._cancelAndSave.scale = this.dpiScale;
-			this._cancelAndSave.labels = this._isThisFromHome ? ["Save"] : ["Cancel", "Save"];
+			this._cancelAndSave.labels = ["Cancel", "Save"];
 			this._content.addChild(this._cancelAndSave);
 
 			this._backButton = new Button();
-			this._backButton.visible = !this._isThisFromHome;
 			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
@@ -113,6 +113,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			populateOldData();
+
+			if(this._isThisFromHome) dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV, true));
 		}
 
 		private function cancelAndSaveHandler(e:Event):void
@@ -121,8 +123,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			switch(button)
 			{
 				case "Cancel" :
-					this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
-					hideFormValidation();
+					backBtnHandler();
 					break;
 				case "Save" :
 					var formValidation:String = HCPMyDetailsCheck();
@@ -139,9 +140,17 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 		}
 
-		private function backBtnHandler(e:Event):void
+		private function backBtnHandler(e:Event = null):void
 		{
-			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+			if(this._isThisFromHome)
+			{
+				dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV, true));
+				this.owner.showScreen(HivivaScreens.HCP_HOME_SCREEN);
+			}
+			else
+			{
+				this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+			}
 			hideFormValidation();
 		}
 
@@ -170,6 +179,9 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.SAVE_USER_COMPLETE, saveUserCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.saveUser(user);
+
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.APP_FULLNAME_SAVE_COMPLETE, saveUserFullnameHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.saveUserFullname(firstName + " " + lastName);
 		}
 
 		private function saveUserCompleteHandler(e:RemoteDataStoreEvent):void
@@ -182,6 +194,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 				dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_MAIN_NAV, true));
 				this.owner.showScreen(HivivaScreens.HCP_HOME_SCREEN);
 			}
+		}
+
+		private function saveUserFullnameHandler(e:LocalDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_FULLNAME_SAVE_COMPLETE, saveUserFullnameHandler);
+			trace("HivivaStartup.userVO.fullName = " + HivivaStartup.userVO.fullName);
 		}
 
 		private function populateOldData():void

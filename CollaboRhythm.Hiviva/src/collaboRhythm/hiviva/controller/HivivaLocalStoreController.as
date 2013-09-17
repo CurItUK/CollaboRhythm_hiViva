@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.controller
 {
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.HivivaLocalStoreService;
+	import collaboRhythm.hiviva.view.HivivaStartup;
 
 	import flash.events.EventDispatcher;
 
@@ -16,16 +17,28 @@ package collaboRhythm.hiviva.controller
 			trace("HivivaLocalStoreController construct");
 		}
 
-		public function setTypeAppIdGuid(appId:String , guid:String , type:String):void
+		public function saveUser(appId:String , guid:String , type:String, fullName:String=""):void
 		{
 			service.addEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE, setTypeAppIdGuidHandler);
-			service.setTypeAppIdGuidId(appId , guid , type);
+			service.saveUser(appId , guid , type, fullName);
 		}
 
 		private function setTypeAppIdGuidHandler(e:LocalDataStoreEvent):void
 		{
 			service.removeEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE, setTypeAppIdGuidHandler);
 			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE));
+		}
+
+		public function saveUserFullname(fullName:String):void
+		{
+			service.addEventListener(LocalDataStoreEvent.APP_FULLNAME_SAVE_COMPLETE, saveUserFullnameHandler);
+			service.saveUserFullname(fullName);
+		}
+
+		private function saveUserFullnameHandler(e:LocalDataStoreEvent):void
+		{
+			service.removeEventListener(LocalDataStoreEvent.APP_FULLNAME_SAVE_COMPLETE, saveUserFullnameHandler);
+			this.dispatchEvent(new LocalDataStoreEvent(LocalDataStoreEvent.APP_FULLNAME_SAVE_COMPLETE));
 		}
 
 		public function getAppId():void

@@ -56,9 +56,9 @@ package collaboRhythm.hiviva.view
 			*/
 			drawButtons();
 
-			fullHeight = _btnVector[0].y + _btnVector[0].height + scaledGap + scaledPadding;
+			fullHeight = (scaledPadding * 4) + this._label.height + _btnVector[0].height + scaledGap;
 
-			//this._bg.height = this.height = fullHeight;
+			this._bg.height = fullHeight;
 			setSizeInternal(WIDTH, fullHeight, true);
 		}
 
@@ -71,7 +71,7 @@ package collaboRhythm.hiviva.view
 			addChild(this._bg);
 
 			this._label = new Label();
-			this._label.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
+			this._label.name = HivivaThemeConstants.POPUP_LABEL;
 			this._label.text = this._message;
 			addChild(this._label);
 
@@ -113,13 +113,27 @@ package collaboRhythm.hiviva.view
 				btn.width = btn.width < minButtonWidth ? minButtonWidth : btn.width;
 				btn.y = btnsStartY;
 				btnsWidth += btn.width + gap;
+				btn.validate();
 			}
+			btnsWidth -= gap;
 
-			for (i = 0; i < _btnVector.length; i++)
+			if(_btnVector.length > 1)
 			{
-				btn = _btnVector[i];
-				btn.x = (WIDTH * 0.5) - (btnsWidth * 0.5);
-				btn.x += (btn.width * i) + gap;
+				for (i = 0; i < _btnVector.length; i++)
+				{
+					btn = _btnVector[i];
+					btn.x = (WIDTH * 0.5) - (btnsWidth * 0.5);
+					if(i > 0)
+					{
+						btn.x += (_btnVector[i-1].width * i);
+					}
+					btn.x += gap
+				}
+			}
+			else if (_btnVector.length == 1)
+			{
+				btn = _btnVector[0];
+				btn.x = (WIDTH * 0.5) - (btn.width * 0.5);
 			}
 		}
 

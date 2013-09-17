@@ -144,6 +144,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var appGuid:String = e.data.xmlResponse.AppGuid;
 			var appId:String = e.data.xmlResponse.AppId;
+			var fullName:String = e.data.xmlResponse.FirstName + " " + e.data.xmlResponse.LastName;
 
 			if(e.data.xmlResponse.AppGuid != "00000000-0000-0000-0000-000000000000")
 			{
@@ -151,8 +152,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				var hcpList:XMLList = new XMLList
 				(
 						<hcp>
-							<name>{appId}</name>
-							<email>{appId}@domain.com</email>
+							<name>{fullName}</name>
+							<email>{appId}</email>
 							<appid>{appId}</appid>
 							<guid>{appGuid}</guid>
 							<picture>dummy.png</picture>
@@ -271,7 +272,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					break;
 
 				case "5" :
-					msg = "Pending connection already exists.";
+					msg = "A request to this user has already been sent";
 					break;
 			}
 

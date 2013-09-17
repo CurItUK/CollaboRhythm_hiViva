@@ -67,10 +67,12 @@ package collaboRhythm.hiviva.utils
 			{
 				whoEstablishConnection.appGuid = idsToCompare.ToUserGuid;
 				whoEstablishConnection.appId = idsToCompare.ToAppId;
+				whoEstablishConnection.fullName = idsToCompare.ToFirstName + " " + idsToCompare.ToLastName;
 			} else
 			{
 				whoEstablishConnection.appGuid = idsToCompare.FromUserGuid;
 				whoEstablishConnection.appId = idsToCompare.FromAppId;
+				whoEstablishConnection.fullName = idsToCompare.FromFirstName + " " + idsToCompare.FromLastName;
 			}
 
 			return whoEstablishConnection;

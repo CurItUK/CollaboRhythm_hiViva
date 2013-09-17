@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaHeader;
 	import collaboRhythm.hiviva.view.HivivaPopUp;
 	import collaboRhythm.hiviva.view.HivivaStartup;
@@ -33,7 +34,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _scaledPadding:Number;
 		private var _userTypePickerList:PickerList;
 		private var _userFormAppIdInput:LabelAndInput;
-		private var _userFormGuidInput:LabelAndInput;
+//		private var _userFormGuidInput:LabelAndInput;
 		private var _userForm:ScrollContainer;
 		private var _closeAppPopup:HivivaPopUp;
 
@@ -139,10 +140,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._userForm.addChild(this._userFormAppIdInput);
 			this._userFormAppIdInput._labelLeft.text = "App Id";
 
-			this._userFormGuidInput = new LabelAndInput();
-			this._userFormGuidInput.labelStructure = "left";
-			this._userForm.addChild(this._userFormGuidInput);
-			this._userFormGuidInput._labelLeft.text = "Guid";
+//			this._userFormGuidInput = new LabelAndInput();
+//			this._userFormGuidInput.labelStructure = "left";
+//			this._userForm.addChild(this._userFormGuidInput);
+//			this._userFormGuidInput._labelLeft.text = "Guid";
 
 			this._userFromSubmitButton = new Button();
 			this._userFromSubmitButton.addEventListener(Event.TRIGGERED, userFormSubmitHandler);
@@ -159,8 +160,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._userFormAppIdInput.width = usableWidth;
 			this._userFormAppIdInput._input.width = usableWidth * 0.75;
 
-			this._userFormGuidInput.width = usableWidth;
-			this._userFormGuidInput._input.width = usableWidth * 0.75;
+//			this._userFormGuidInput.width = usableWidth;
+//			this._userFormGuidInput._input.width = usableWidth * 0.75;
 
 			var userFormLayout:VerticalLayout = new VerticalLayout();
 			userFormLayout.gap = this._scaledPadding;
@@ -177,28 +178,87 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			var userType:String = this._userTypePickerList.selectedItem.text;
 			var appId:String = this._userFormAppIdInput._input.text;
-			var guid:String = this._userFormGuidInput._input.text;
+//			var guid:String = this._userFormGuidInput._input.text;
 
 			var userTypeIsValid:Boolean = userType == "Patient" || userType == "HCP";
 			var appIdIsValid:Boolean = appId.length > 0;
-			var guidIsValid:Boolean = guid.length > 0;
+//			var guidIsValid:Boolean = guid.length > 0;
 
-			if(userTypeIsValid && appIdIsValid && guidIsValid)
+			if(userTypeIsValid && appIdIsValid/* && guidIsValid*/)
 			{
 				removeButtonListeners();
 
+				switch(userType)
+				{
+					case "Patient" :
+						HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE, getPatientCompleteHandler);
+						HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatient(appId);
+						break;
+					case "HCP" :
+						HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE, getHCPCompleteHandler);
+						HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getHCP(appId);
+						break;
+				}
+			}
+		}
+
+		private function getPatientCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE, getPatientCompleteHandler);
+
+			if(e.data.xmlResponse.AppGuid != "00000000-0000-0000-0000-000000000000")
+			{
+				var appId:String = e.data.xmlResponse.AppId;
+				var guid:String = e.data.xmlResponse.AppGuid;
+				var fullName:String = e.data.xmlResponse.FirstName + " " + e.data.xmlResponse.LastName;
+
 				HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE , appIdGuidSaveHandler);
-				HivivaStartup.hivivaAppController.hivivaLocalStoreController.setTypeAppIdGuid(appId,guid,userType);
+				HivivaStartup.hivivaAppController.hivivaLocalStoreController.saveUser(appId,guid,"Patient",fullName);
+			}
+			else
+			{
+				this._closeAppPopup = new HivivaPopUp();
+				this._closeAppPopup.addEventListener(Event.TRIGGERED, closePopup);
+				this._closeAppPopup.message = 'user not found, please check the app id';
+				showPopup();
+			}
+		}
+
+		private function getHCPCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE, getHCPCompleteHandler);
+
+			if(e.data.xmlResponse.AppGuid != "00000000-0000-0000-0000-000000000000")
+			{
+				var appId:String = e.data.xmlResponse.AppId;
+				var guid:String = e.data.xmlResponse.AppGuid;
+				var fullName:String = e.data.xmlResponse.FirstName + " " + e.data.xmlResponse.LastName;
+
+				HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE , appIdGuidSaveHandler);
+				HivivaStartup.hivivaAppController.hivivaLocalStoreController.saveUser(appId,guid,"HCP",fullName);
+			}
+			else
+			{
+				this._closeAppPopup = new HivivaPopUp();
+				this._closeAppPopup.addEventListener(Event.TRIGGERED, closePopup);
+				this._closeAppPopup.message = 'user not found, please check the app id';
+				showPopup();
 			}
 		}
 
 		private function appIdGuidSaveHandler(e:LocalDataStoreEvent):void
 		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE , appIdGuidSaveHandler);
+
 			this._closeAppPopup = new HivivaPopUp();
-			this._closeAppPopup.buttons = ["Ok"];
-			this._closeAppPopup.addEventListener(Event.TRIGGERED, closeAppPopupHandler);
-			this._closeAppPopup.validate();
 			this._closeAppPopup.message = 'user has been changed, please close and relaunch the application';
+			showPopup();
+		}
+
+		private function showPopup():void
+		{
+			this._closeAppPopup.buttons = ["Ok"];
+			this._closeAppPopup.validate();
 
 			PopUpManager.addPopUp(this._closeAppPopup,true,true);
 			this._closeAppPopup.validate();
@@ -207,16 +267,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._closeAppPopup.drawCloseButton();
 		}
 
-		private function closeAppPopupHandler(e:Event):void
+		private function closePopup(e:Event):void
 		{
-			var btn:String = e.data.button as String;
-			switch(btn)
-			{
-				case "Ok":
-					break;
-				case "Close":
-					break;
-			}
+			this._closeAppPopup.removeEventListener(Event.TRIGGERED, closePopup);
+			PopUpManager.removePopUp(_closeAppPopup, true);
 		}
 
 		private function backBtnHandler(event:Event):void

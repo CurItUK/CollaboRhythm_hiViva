@@ -111,13 +111,14 @@ package collaboRhythm.hiviva.view.screens.patient
 					var establishedUser:Object = HivivaModifier.establishToFromId(approvedHCPList[i]);
 					var appGuid:String = establishedUser.appGuid;
 					var appId:String = establishedUser.appId;
+					var fullName:String = establishedUser.fullName;
 					var userEstablishedConnection:Boolean = approvedHCPList[i].FromAppId == HivivaStartup.userVO.appId;
 
 					var data:XML = new XML
 					(
 							<patient>
-								<name>{appId}</name>
-								<email>{appId}@domain.com</email>
+								<name>{fullName}</name>
+								<email>{appId}</email>
 								<appid>{appId}</appid>
 								<guid>{appGuid}</guid>
 								<picture>dummy.png</picture>

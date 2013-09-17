@@ -61,19 +61,23 @@ package collaboRhythm.hiviva.view.screens.patient
 				switch(item.name)
 				{
 					case "profile" :
-						img = new Image(Main.assets.getTexture("side_nav_icon_01"));
+//						img = new Image(Main.assets.getTexture("side_nav_icon_01"));
+						img = new Image(Main.assets.getTexture("v2_side_nav_icon_01"));
 						break;
 					case "help" :
-						img = new Image(Main.assets.getTexture("side_nav_icon_02"));
+//						img = new Image(Main.assets.getTexture("side_nav_icon_02"));
+						img = new Image(Main.assets.getTexture("v2_side_nav_icon_02"));
 						break;
 					case "messages" :
-						img = new Image(Main.assets.getTexture("side_nav_icon_03"));
+//						img = new Image(Main.assets.getTexture("side_nav_icon_03"));
+						img = new Image(Main.assets.getTexture("v2_side_nav_icon_03"));
 						break;
 					case "kudos" :
-						img = new Image(Main.assets.getTexture("side_nav_icon_04"));
+//						img = new Image(Main.assets.getTexture("side_nav_icon_04"));
+						img = new Image(Main.assets.getTexture("v2_side_nav_icon_04"));
 						break;
 					case "resources" :
-						img = new Image(Main.assets.getTexture("side_nav_icon_04"));
+						img = new Image(Main.assets.getTexture("v2_side_nav_icon_05"));
 						break;
 				}
 

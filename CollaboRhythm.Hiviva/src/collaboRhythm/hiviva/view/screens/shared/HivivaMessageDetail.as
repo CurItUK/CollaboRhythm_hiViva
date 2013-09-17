@@ -39,6 +39,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _hPadding:Number;
 		private var _isSent:Boolean;
 		private var _statusResponse:HivivaPopUp;
+		private var _fullName:String;
 
 		public function HivivaMessageDetail()
 		{
@@ -107,7 +108,8 @@ package collaboRhythm.hiviva.view.screens.shared
 			switch(_messageType)
 			{
 				case MessageInboxResultCell.COMPOSED_MESSAGE_TYPE :
-					this._nameLabel.text = HivivaModifier.getAppIdWithGuid(_messageData.UserGuid);
+					this._fullName = _messageData.FromFirstName + " " + _messageData.FromLastName;
+					this._nameLabel.text = this._fullName + " (" + HivivaModifier.getAppIdWithGuid(_messageData.UserGuid) + ")";
 					this._dateLabel.text = HivivaModifier.getPrettyStringFromIsoString(_messageData.SentDate,true);
 					this._messageLabel.text = _messageData.Message;
 					this._options.labels = ["Delete"];
@@ -116,7 +118,8 @@ package collaboRhythm.hiviva.view.screens.shared
 
 					break;
 				case MessageInboxResultCell.CONNECTION_REQUEST_TYPE :
-					this._nameLabel.text = _messageData.FromAppId;
+					this._fullName = _messageData.FromFirstName + " " + _messageData.FromLastName;
+					this._nameLabel.text = this._fullName + " (" + _messageData.FromAppId + ")";
 					this._dateLabel.text = HivivaModifier.getPrettyStringFromIsoString(_messageData.SentDate,true);
 					this._messageLabel.text = user + " (" + _messageData.FromAppId + ") has requested to connect";
 					this._options.labels = ["Ignore","Accept"];
