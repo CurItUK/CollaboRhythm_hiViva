@@ -34,6 +34,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this.addChild(this._holder);
 			this._holder.x = -this._holder.width / 2;
 			this._holder.y = -this._holder.height / 2;
+			trace("init virus View")
 
 		}
 
