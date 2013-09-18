@@ -50,6 +50,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		protected var _customHeight:Number = 0;
 		protected var _contentHeight:Number;
 		private var _isThisFromHome:Boolean;
+		private var _medicationData:XML;
 
 		public function HivivaPatientEditMedsScreen()
 		{
@@ -124,7 +125,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 			trace("medicationsLoadCompleteHandler " + e.data.xmlResponse);
 
+			this._medicationData =  e.data.xmlResponse;
 			var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication;
+
 			var medicationSchedule:XMLList;
 
 			if(medicationsXML.length() > 0)
@@ -164,12 +167,15 @@ package collaboRhythm.hiviva.view.screens.patient
 					this._medications.push(medObj);
 				}
 				initializeShowMedications();
+				updateUserDailyAdherence();
 			}
 			else
 			{
 				initializeEnterRegimen();
 			}
 		}
+
+
 
 		private function initializeShowMedications():void
 		{
@@ -255,6 +261,12 @@ package collaboRhythm.hiviva.view.screens.patient
 				editMedicationCell.width = this.actualWidth;
 				editMedicationCell.validate();
 			}
+		}
+
+		private function updateUserDailyAdherence():void
+		{
+			HivivaStartup.patientAdherenceVO.percentage = HivivaModifier.calculateDailyAdherence(this._medicationData.DCUserMedication.Schedule.DCMedicationSchedule);
+			trace("patientAdherenceVO " + HivivaStartup.patientAdherenceVO.percentage);
 		}
 
 		private function initializeEnterRegimen():void
