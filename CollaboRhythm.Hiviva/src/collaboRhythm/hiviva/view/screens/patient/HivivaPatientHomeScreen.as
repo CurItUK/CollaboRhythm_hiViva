@@ -101,14 +101,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
-		private function initHomeScreenPreloader():void
-		{
-			this._preloader = new PreloaderSpinner();
-			this.addChild(this._preloader) ;
-			this._preloader.y = this._header.height + 30;
-			this._preloader.x = this.actualWidth - this._preloader.width - 30;
-		}
-
 		private function checkMedicationScheduleExist():void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
@@ -463,10 +455,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
+
+
 		private function doImageLoad(url:String):void
 		{
 
-
+			initHomeScreenPreloader()
 			var loaderContext:LoaderContext = new LoaderContext();
 			loaderContext.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
 			var imageLoader:Loader = new Loader();
@@ -475,6 +469,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url) , loaderContext);
 
+		}
+
+		private function initHomeScreenPreloader():void
+		{
+			this._preloader = new PreloaderSpinner();
+			this.addChild(this._preloader) ;
+			this._preloader.y = this._header.height + 30;
+			this._preloader.x = this.actualWidth - this._preloader.width - 30;
 		}
 
 		private function imageLoaded(e:flash.events.Event):void
@@ -603,7 +605,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			bgImage.touchable = false;
 			bgImage.x = (Constants.STAGE_WIDTH * 0.5) - (bgImage.width * 0.5);
 			bgImage.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (bgImage.height * 0.5);
+			bgImage.addEventListener(Event.ADDED_TO_STAGE, removePreloder);
 			this._lensImageHolder.addChild(bgImage);
+
+
+
+
 
 /*		var colorFilter:ColorMatrixFilter = new ColorMatrixFilter();
 			trace("colorFilter.adjustSaturation = " + (-1 + (this._adherencePercent / 100)));
@@ -624,6 +631,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			circleHolder = null;
 		}
 
+		private function removePreloder(event:Event):void
+		{
+			this._preloader.disposePreloader();
+			this.removeChild(this._preloader);
+		}
+
 		private function cropToFit(img:Object, w:Number, h:Number):void
 		{
 			if (img.height >= img.width)
@@ -639,9 +652,6 @@ package collaboRhythm.hiviva.view.screens.patient
 				img.scaleX = img.scaleY;
 			}
 		}
-
-
-
 
 		override public function dispose():void
 		{
