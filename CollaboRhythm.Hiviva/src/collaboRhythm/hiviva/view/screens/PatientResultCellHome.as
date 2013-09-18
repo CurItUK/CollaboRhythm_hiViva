@@ -95,8 +95,7 @@ package collaboRhythm.hiviva.view.screens
 			addChild(this._patientImageBg);
 
 			this._patientName = new Label();
-			this._patientName.name = "";
-			this._patientName.text = patientData.name;
+			this._patientName.text = patientData.name + "\n" + patientData.appid;
 			addChild(this._patientName);
 
 			this._adherenceTolerabilityLabel = new Label();

@@ -60,12 +60,12 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._hcpName = new Label();
 			this._hcpName.name = HivivaThemeConstants.SUBHEADER_LABEL;
-			this._hcpName.text = "From : " + HivivaStartup.userVO.appId;
+			this._hcpName.text = "From : " + HivivaStartup.userVO.fullName + " (" + HivivaStartup.userVO.appId + ")";
 			this._content.addChild(this._hcpName);
 
 			this._patientName = new Label();
 			this._patientName.name = HivivaThemeConstants.SUBHEADER_LABEL;
-			this._patientName.text = "To : " + selectedPatient.name;
+			this._patientName.text = "To : " + selectedPatient.name + " (" + selectedPatient.appid + ")";
 			this._content.addChild(this._patientName);
 
 			this._selectMessage = new Label();

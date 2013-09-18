@@ -44,7 +44,9 @@ package collaboRhythm.hiviva.view
 		private var _bg:Scale9Image;
 		private var _uploadButton:Button;
 		private var _trashButton:Button;
-		private var _imageBg:Quad;
+//		private var _imageBg:Quad;
+		private var _defaultImageHolder:Image;
+		private var _defaultImage:String;
 		private var _imageHolder:Image;
 		private var _dataSource:IDataInput;
 		private var _imagePromise:MediaPromise;
@@ -68,10 +70,10 @@ package collaboRhythm.hiviva.view
 
 			this._bg.width = this.actualWidth;
 
-			this._imageBg.x = this._bg.x + (scaledPadding * 0.5);
-			this._imageBg.y = this._bg.y + (scaledPadding * 0.5);
+			this._defaultImageHolder.x = this._bg.x + (scaledPadding * 0.5);
+			this._defaultImageHolder.y = this._bg.y + (scaledPadding * 0.5);
 
-			this._bg.height = this._imageBg.y + this._imageBg.height + (scaledPadding * 0.5);
+			this._bg.height = this._defaultImageHolder.y + this._defaultImageHolder.height + (scaledPadding * 0.5);
 
 			this._trashButton.validate();
 			this._trashButton.x = this._bg.width - scaledPadding - this._trashButton.width;
@@ -92,8 +94,12 @@ package collaboRhythm.hiviva.view
 			this._bg = new Scale9Image(bgTexture, this._scale);
 			addChild(this._bg);
 
-			this._imageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
-			addChild(this._imageBg);
+//			this._imageBg = new Quad(IMAGE_SIZE * this._scale, IMAGE_SIZE * this._scale, 0x000000);
+
+			this._defaultImageHolder = new Image(Main.assets.getTexture(_defaultImage));
+			addChild(this._defaultImageHolder);
+			HivivaModifier.clipImage(this._defaultImageHolder);
+			this._defaultImageHolder.width = this._defaultImageHolder.height = IMAGE_SIZE;
 
 			this._uploadButton = new Button();
 //			this._uploadButton.defaultIcon = new Image(Main.assets.getTexture("icon_upload"));
@@ -284,8 +290,8 @@ package collaboRhythm.hiviva.view
 			HivivaModifier.clipImage(this._imageHolder);
 			this._imageHolder.width = this._imageHolder.height = IMAGE_SIZE * this._scale;
 //			constrainToProportion(this._imageHolder, IMAGE_SIZE * this._scale);
-			this._imageHolder.x = this._imageBg.x;
-			this._imageHolder.y = this._imageBg.y;
+			this._imageHolder.x = this._defaultImageHolder.x;
+			this._imageHolder.y = this._defaultImageHolder.y;
 //			this._imageHolder.rotation = _radiansOffset;
 			if (!contains(this._imageHolder)) addChild(this._imageHolder);
 		}
@@ -385,6 +391,16 @@ package collaboRhythm.hiviva.view
 		public function get fileName():String
 		{
 			return this._fileName;
+		}
+
+		public function get defaultImage():String
+		{
+			return _defaultImage;
+		}
+
+		public function set defaultImage(value:String):void
+		{
+			_defaultImage = value;
 		}
 	}
 }

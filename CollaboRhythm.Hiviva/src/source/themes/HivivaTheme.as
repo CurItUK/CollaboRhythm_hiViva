@@ -194,9 +194,9 @@ package source.themes
 		protected static function popUpOverlayFactory():DisplayObject
 		{
 
-			const quad:Quad = new Quad(100, 100, 0x1a1a1a);
+			const quad:Quad = new Quad(100, 100, 0x002b50);
 
-			quad.alpha = 0.85;
+			quad.alpha = 0.9;
 
 			return quad;
 
@@ -262,6 +262,7 @@ package source.themes
 		protected var subHeaderBftf:BitmapFontTextFormat;
 		protected var bodyBftf:BitmapFontTextFormat;
 		protected var popupBftf:BitmapFontTextFormat;
+		protected var pickerListBftf:BitmapFontTextFormat;
 		protected var bodySmallerBftf:BitmapFontTextFormat;
 		protected var bodySmallerBoldBftf:BitmapFontTextFormat;
 		protected var bodyBoldBftf:BitmapFontTextFormat;
@@ -552,10 +553,11 @@ package source.themes
 			this.superscriptLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 14 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.patientDataLighterLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.popupBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR,TextFormatAlign.CENTER);
+			this.pickerListBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR,TextFormatAlign.CENTER);
 			// buttons label formats
 //			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedMedarkBoldBitmapFont, 24 * this.scale, Color.WHITE);
-			this.sideNavGroupLabelBftf = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 18 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR);
+			this.sideNavGroupLabelBftf = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 18 * this.scale, 0x2194ff);
 			this.splashButtonLabel = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 22 * this.scale, Color.WHITE);
 			this.profileGroupLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
 //			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
@@ -577,6 +579,7 @@ package source.themes
 //			this.defaultButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 //			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.engravedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE);
 //			this.backButtonLabelBftf = new BitmapFontTextFormat(this.engravedLightestBoldBitmapFont, 24 * this.scale, Color.WHITE);
+//			this.sideNavGroupLabelBftf = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 18 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR);
 
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
@@ -640,7 +643,8 @@ package source.themes
 //			this.buttonFooterActiveTexture = Main.assets.getTexture("footer_icon_active");
 			this.buttonFooterActiveTexture = Main.assets.getTexture("v2_footer_icon_active");
 
-			this.buttonSideNavTexture = Main.assets.getTexture("side_nav_base");
+//			this.buttonSideNavTexture = Main.assets.getTexture("side_nav_base");
+			this.buttonSideNavTexture = Main.assets.getTexture("v2_side_nav_base");
 
 			this.buttonPatientProfileNavTexture = new Scale9Textures(Main.assets.getTexture("patient-profile-nav-button"), new Rectangle(0,0,72,72));
 
@@ -653,11 +657,14 @@ package source.themes
 //			this.buttonBackSkinTexture = Main.assets.getTexture("back-button");
 			this.buttonBackSkinTexture = Main.assets.getTexture("v2_back-button");
 
-			this.buttonCloseSkinTexture = Main.assets.getTexture("close_button");
+//			this.buttonCloseSkinTexture = Main.assets.getTexture("close_button");
+			this.buttonCloseSkinTexture = Main.assets.getTexture("v2_close_button");
 
-			this.buttonDeleteCellSkinTexture = Main.assets.getTexture("delete_icon");
+//			this.buttonDeleteCellSkinTexture = Main.assets.getTexture("delete_icon");
+			this.buttonDeleteCellSkinTexture = Main.assets.getTexture("v2_delete_icon");
 
-			this.buttonEditCellSkinTexture = Main.assets.getTexture("edit_icon");
+//			this.buttonEditCellSkinTexture = Main.assets.getTexture("edit_icon");
+			this.buttonEditCellSkinTexture = Main.assets.getTexture("v2_edit_icon");
 
 //			this.buttonCalendarSkinTexture = Main.assets.getTexture("calendar-button");
 			this.buttonCalendarSkinTexture = Main.assets.getTexture("v2_calendar-button");
@@ -1278,7 +1285,7 @@ package source.themes
 
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			
+
 
 			button.defaultLabelProperties.textFormat = this.defaultButtonLabelBftf;
 
@@ -1523,7 +1530,7 @@ package source.themes
 			button.disabledLabelProperties.textFormat = new TextFormat("ExoBold", 30 * this.scale, 0xaeaeae);
 			button.disabledLabelProperties.filter = BlurFilter.createDropShadow(1,-1.5,0xFFFFFF,0.5,0);
 */
-			
+
 
 			button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont,30, 0x454545);
 			button.disabledLabelProperties.textFormat = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont,30, 0xaeaeae);
@@ -1634,7 +1641,7 @@ package source.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			
+
 
 			button.defaultLabelProperties.textFormat = this.sideNavGroupLabelBftf;
 
@@ -1659,7 +1666,7 @@ package source.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			
+
 
 			button.defaultLabelProperties.textFormat = this.profileGroupLabelBftf;
 
@@ -1856,12 +1863,15 @@ package source.themes
 
 		protected function pickerListItemRendererInitializer(renderer:BaseDefaultItemRenderer):void
 		{
-			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
-			skinSelector.defaultValue = this.seperatorLineTexture;
+//			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
+//			skinSelector.defaultValue = this.seperatorLineTexture;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = Main.assets.getTexture("v2_menulist");
+			skinSelector.setValueForState(Main.assets.getTexture("v2_menulist_o"), Button.STATE_DOWN, false);
 			skinSelector.imageProperties =
 			{
-				width: 88 * this.scale,
-				height: 88 * this.scale,
+				width: 561 * this.scale,
+				height: 99 * this.scale,
 				textureScale: this.scale
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
@@ -1883,7 +1893,7 @@ package source.themes
 */
 
 
-			renderer.defaultLabelProperties.textFormat = this.popupBftf;
+			renderer.defaultLabelProperties.textFormat = this.pickerListBftf;
 
 //			renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
 
@@ -1892,13 +1902,13 @@ package source.themes
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 
-			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
+//			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
 
 			renderer.paddingLeft = 32 * this.scale;
 
 			renderer.paddingRight = 24 * this.scale;
 
-			renderer.gap = 12 * this.scale;
+//			renderer.gap = 12 * this.scale;
 
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
 
@@ -2388,63 +2398,31 @@ package source.themes
 
 			if (DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-
 				list.popUpContentManager = new CalloutPopUpContentManager();
-
 			}
-
 			else
 			{
-
 				const centerStage:VerticalCenteredPopUpContentManager = new VerticalCenteredPopUpContentManager();
-
-				centerStage.marginTop = centerStage.marginRight = centerStage.marginBottom =
-
-						centerStage.marginLeft = 24 * this.scale;
-
+				centerStage.marginTop = centerStage.marginRight = centerStage.marginBottom = centerStage.marginLeft = 24 * this.scale;
 				list.popUpContentManager = centerStage;
-
 			}
 
-
 			const layout:VerticalLayout = new VerticalLayout();
-
 			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
-
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-
 			layout.useVirtualLayout = true;
-
 			layout.gap = 0;
-
-			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-
-					layout.paddingLeft = 0;
-
+			layout.paddingTop = layout.paddingRight = layout.paddingBottom = layout.paddingLeft = 0;
 			list.listProperties.layout = layout;
-
 			list.listProperties.@scrollerProperties.verticalScrollPolicy = Scroller.SCROLL_POLICY_ON;
-
 
 			if (DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-
 				list.listProperties.minWidth = 560 * this.scale;
-
 				list.listProperties.maxHeight = 528 * this.scale;
-
 			}
-
 			else
 			{
-
-				const backgroundSkin:TiledImage = new TiledImage(Main.assets.getTexture("screen_base"));
-
-				backgroundSkin.width = 20 * this.scale;
-
-				backgroundSkin.height = 20 * this.scale;
-
-				list.listProperties.backgroundSkin = backgroundSkin;
 
 				/*list.listProperties.paddingTop = list.listProperties.paddingRight =
 
@@ -2452,6 +2430,12 @@ package source.themes
 
 			}
 
+
+
+			/*const backgroundSkin:TiledImage = new TiledImage(Main.assets.getTexture("screen_base"));
+			backgroundSkin.width = 20 * this.scale;
+			backgroundSkin.height = 20 * this.scale;
+			list.listProperties.backgroundSkin = backgroundSkin;*/
 
 			list.listProperties.itemRendererName = COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER;
 

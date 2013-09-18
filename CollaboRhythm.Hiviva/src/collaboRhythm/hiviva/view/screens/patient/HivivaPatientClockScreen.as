@@ -159,7 +159,8 @@ package collaboRhythm.hiviva.view.screens.patient
 					holderCell.height = this._clockFace.height;
 					var tabletCell:Sprite = new Sprite();
 
-					var timeSegment:Image = new Image(Main.assets.getTexture("clock_segment"));
+//					var timeSegment:Image = new Image(Main.assets.getTexture("clock_segment"));
+					var timeSegment:Image = new Image(Main.assets.getTexture("v2_clock_segment"));
 					timeSegment.width = timeSegment.width * 0.96;
 					timeSegment.scaleY = timeSegment.scaleX;
 					timeSegment.smoothing = TextureSmoothing.TRILINEAR;

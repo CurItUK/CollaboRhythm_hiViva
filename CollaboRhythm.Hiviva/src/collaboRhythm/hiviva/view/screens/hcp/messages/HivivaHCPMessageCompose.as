@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaPopUp;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
@@ -104,7 +105,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._hcpName = new Label();
 			this._hcpName.name = HivivaThemeConstants.SUBHEADER_LABEL;
-			this._hcpName.text = "From : " + HivivaStartup.userVO.appId;
+			this._hcpName.text = "From : " + HivivaStartup.userVO.fullName + " (" + HivivaStartup.userVO.appId + ")";
 			this._content.addChild(this._hcpName);
 
 			this._patientName = new Label();
@@ -164,8 +165,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 				for(var i:uint = 0 ; i <loop ; i++)
 				{
 
-					var establishedUser:Object = establishToFromId(approvedHCPList[i]);
-					var patientObj:Object = {userAppId:establishedUser.appId , userGuid:establishedUser.appGuid};
+					var establishedUser:Object = HivivaModifier.establishToFromId(approvedHCPList[i]);
+					var patientObj:Object = {userAppId:establishedUser.appId , userGuid:establishedUser.appGuid, name:establishedUser.fullName + " (" + establishedUser.appId + ")"};
 					this._patientConnections.push(patientObj);
 				}
 				populateConnectionsPickerlist();
@@ -178,23 +179,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 
 			this._remoteCallCount++;
 			allDataLoadedCheck();
-		}
-
-		private function establishToFromId(idsToCompare:XML):Object
-		{
-			var whoEstablishConnection:Object = [];
-			if(idsToCompare.FromAppId == HivivaStartup.userVO.appId)
-			{
-				whoEstablishConnection.appGuid = (idsToCompare.ToUserGuid).toString();
-				whoEstablishConnection.appId = (idsToCompare.ToAppId).toString();
-			} else
-			{
-				whoEstablishConnection.appGuid = (idsToCompare.FromUserGuid).toString();
-				whoEstablishConnection.appId = (idsToCompare.FromAppId).toString();
-			}
-
-			return whoEstablishConnection;
-
 		}
 
 		private function allDataLoadedCheck():void
@@ -230,8 +214,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this._patientPickerList.prompt = "Select patient";
 			this._patientPickerList.isEnabled = true;
 			this._patientPickerList.selectedIndex = -1;
-			this._patientPickerList.listProperties.@itemRendererProperties.labelField = "userAppId";
-			this._patientPickerList.labelField = "userAppId";
+			this._patientPickerList.listProperties.@itemRendererProperties.labelField = "name";
+			this._patientPickerList.labelField = "name";
 			this._patientPickerList.addEventListener( Event.CHANGE, pickerListonChangeHandler );
 		}
 
@@ -284,23 +268,6 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			{
 				showFormValidation("There was a problem sending the message, your message has not been sent");
 			}
-		}
-
-		private function initAlertText():void
-		{
-
-			var alertLabel:Label = new Label();
-			alertLabel.text = "Connect to a patient to get started.";
-
-			this.addChild(alertLabel);
-			alertLabel.validate();
-			alertLabel.x = this._innerWidth / 2 - alertLabel.width / 2;
-			alertLabel.y = alertLabel.height * 4;
-		}
-
-		private function initPatientSelectList():void
-		{
-
 		}
 
 		private function patientSelectedHandler(e:starling.events.Event):void

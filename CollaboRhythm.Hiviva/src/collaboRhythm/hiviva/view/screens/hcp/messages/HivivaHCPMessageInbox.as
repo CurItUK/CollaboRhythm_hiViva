@@ -70,11 +70,13 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 			this.addChild(this._deleteMessageButton);
 
 			this._sentBtn = new TopNavButton();
-			this._sentBtn.hivivaImage = new Image(Main.assets.getTexture("message_icon_sent"));
+//			this._sentBtn.hivivaImage = new Image(Main.assets.getTexture("message_icon_sent"));
+			this._sentBtn.hivivaImage = new Image(Main.assets.getTexture("v2_message_icon_sent"));
 			this._sentBtn.addEventListener(Event.TRIGGERED , sentBtnHandler);
 
 			this._composeBtn = new TopNavButton();
-			this._composeBtn.hivivaImage = new Image(Main.assets.getTexture("message_icon_compose"));
+//			this._composeBtn.hivivaImage = new Image(Main.assets.getTexture("message_icon_compose"));
+			this._composeBtn.hivivaImage = new Image(Main.assets.getTexture("v2_message_icon_compose"));
 			this._composeBtn.addEventListener(Event.TRIGGERED , composeBtnHandler);
 
 			this._header.rightItems = new <DisplayObject>[this._sentBtn, this._composeBtn];

@@ -104,6 +104,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._uploadLabel);
 
 			this._photoContainer = new ImageUploader();
+			this._photoContainer.defaultImage = "v2_profile_img";
 			this._photoContainer.addEventListener("uploadedImageChanged", imageChangedHandler);
 //			this._photoContainer.scale = this.dpiScale;
 			this._photoContainer.fileName = CUSTOM_HOME_IMAGE;

@@ -37,6 +37,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.filters.BlurFilter;
 	import starling.textures.Texture;
 
 	public class HivivaPatientHomeScreen extends Screen
@@ -479,14 +480,11 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function imageLoaded(e:flash.events.Event):void
 		{
-
-
-
 			var sourceBm:Bitmap = e.target.content as Bitmap;
 
-			 drawBgHomeImage(sourceBm);
+			drawBgHomeImage(sourceBm);
 
-			 drawLensHomeImage(sourceBm);
+			drawLensHomeImage(sourceBm);
 
 			//clean up
 			sourceBm.bitmapData.dispose();
@@ -584,7 +582,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			circleHolder.addChild(circleBm);
 
 			var blurValue:int = 20 - int(0.2 * this._adherencePercent);
-			var blurFilter:BitmapFilter = new BlurFilter(blurValue, blurValue, BitmapFilterQuality.HIGH);
+			var blurFilter:BitmapFilter = new flash.filters.BlurFilter(blurValue, blurValue, BitmapFilterQuality.HIGH);
 			var myFilters:Array = [];
 			myFilters.push(blurFilter);
 			circleBm.filters = myFilters;

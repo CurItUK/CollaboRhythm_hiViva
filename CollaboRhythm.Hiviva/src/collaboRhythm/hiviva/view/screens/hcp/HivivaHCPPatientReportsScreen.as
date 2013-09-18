@@ -290,6 +290,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 					endDate:this._finishDateInput._input.text,
 					patientGuid:selectedPatient.guid,
 					patientAppId:selectedPatient.appid,
+					patientFullName:selectedPatient.name,
 					emailAddress:this._emailInput.text
 				};
 				if(this.owner.hasScreen(HivivaScreens.REPORT_PREVIEW))

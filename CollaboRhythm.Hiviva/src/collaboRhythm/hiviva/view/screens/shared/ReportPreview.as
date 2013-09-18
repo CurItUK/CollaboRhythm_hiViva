@@ -269,7 +269,7 @@ package collaboRhythm.hiviva.view.screens.shared
 								 	"To: " + this._emailAddress + "\n\n" +
 								 	"Date: " + HivivaModifier.getCalendarStringFromDate(HivivaStartup.userVO.serverDate) + "\n\n" +
 									"Subject: Patient Report\n\n" +
-									"Please find below details of " + this._patientFullName + "'s (" + this._patientAppId + ") record of their HIV tracking via the HiVIVA application.\n\n" +
+									"Please find below details of " + (HivivaStartup.userVO.fullName.length > 0 ? this._patientFullName : "patient") + " (" + this._patientAppId + ") record of their HIV tracking via the HiVIVA application.\n\n" +
 									"This covers the time period between: " + HivivaModifier.getCalendarStringFromDate(this._startDate) + " - " + HivivaModifier.getCalendarStringFromDate(this._endDate);
 			}
 

@@ -94,6 +94,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._photoTitle);
 
 			this._photoContainer = new ImageUploader();
+			this._photoContainer.defaultImage = "v2_profile_img";
 //			this._photoContainer.scale = this.dpiScale;
 			this._photoContainer.fileName = USER_PROFILE_IMAGE;
 			this._content.addChild(this._photoContainer);

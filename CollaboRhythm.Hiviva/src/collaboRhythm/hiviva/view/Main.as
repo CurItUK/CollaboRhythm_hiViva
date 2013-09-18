@@ -135,6 +135,7 @@ package collaboRhythm.hiviva.view
 			// texture Atlas
 //			_assets.enqueue(appDir.resolvePath("assets/images/atlas/homePagePhoto.atf"),appDir.resolvePath("assets/images/atlas/homePagePhoto.xml"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/hivivaBaseImages.png"),appDir.resolvePath("assets/images/atlas/hivivaBaseImages.xml"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/atlas/v2_hivivaBaseImages.png"),appDir.resolvePath("assets/imagesv2/atlas/v2_hivivaBaseImages.xml"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/ApplePreloader.png"),appDir.resolvePath("assets/images/atlas/ApplePreloader.xml"));
 			// fonts
 			// blue theme
@@ -155,7 +156,7 @@ package collaboRhythm.hiviva.view
 			// standalone assets
 			// blue theme
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/main_bg.jpg"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_verticle_line.png"));
+			/*_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_verticle_line.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_base.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_active.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_1.png"));
@@ -200,6 +201,26 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_cd4.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_virus.png"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_profile_img.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_message_icon_sent.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_message_icon_compose.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_edit_icon.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_delete_icon.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_close_button.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_base.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_pill_icon_tick.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, (see pickerlist in theme)
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_bottom.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, (see pickerlist in theme)
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_bottom_o.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_o.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_top.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_top_o.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_top_o.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_lessthan.png"));
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_adduser.png"));// NEEDS ADDING WHERE? ASK ANDY
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_home_password_panel.png"));// NEEDS ADDING WHERE? SEE LATEST SCREENS
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_home_lens_bg.png"));// NEEDS ADDING WHERE? SEE LATEST SCREENS
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_clock_segment.png"));// NEEDS ADDING WHERE? SEE LATEST SCREENS
+			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_button_list_arrows.png"));// NEEDS ADDING WHERE? PICKER LIST BUTTON*/
 
 			this._preloader = new HivivaPreloaderWithBackground(0xFFFFFFF , 100 , 5 , Texture.fromTexture(this._splashBgTexture));
 			this._preloader.init();

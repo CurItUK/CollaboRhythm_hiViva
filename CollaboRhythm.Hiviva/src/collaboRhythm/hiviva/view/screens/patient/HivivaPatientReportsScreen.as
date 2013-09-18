@@ -264,6 +264,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					endDate:this._finishDateInput._input.text,
 					patientGuid:HivivaStartup.userVO.guid,
 					patientAppId:HivivaStartup.userVO.appId,
+					patientFullName:HivivaStartup.userVO.fullName,
 					emailAddress:this._emailInput.text
 				};
 				if(this.owner.hasScreen(HivivaScreens.REPORT_PREVIEW))

@@ -248,7 +248,15 @@ package collaboRhythm.hiviva.view.screens.hcp
 			{
 				for (var listCount:int = 0; listCount < loop; listCount++)
 				{
-					var patientObj:Object = {fullName:String(patientsList[listCount].fullName) , appid: String(patientsList[listCount].appid) , guid: String(patientsList[listCount].guid)};
+					var name:String = patientsList[listCount].name + " (" + patientsList[listCount].appid + ")";
+					var appid:String = patientsList[listCount].appid;
+					var guid:String = patientsList[listCount].guid;
+
+					var patientObj:Object = {
+						name:name,
+						appid:appid,
+						guid:guid
+					};
 					list.push(patientObj);
 				}
 
@@ -258,8 +266,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 				this._patientPickerList.prompt = "Select patient";
 				this._patientPickerList.isEnabled = true;
 				this._patientPickerList.selectedIndex = -1;
-				this._patientPickerList.listProperties.@itemRendererProperties.labelField = "fullName";
-				this._patientPickerList.labelField = "fullName";
+				this._patientPickerList.listProperties.@itemRendererProperties.labelField = "name";
+				this._patientPickerList.labelField = "name";
 			}
 			else
 			{
