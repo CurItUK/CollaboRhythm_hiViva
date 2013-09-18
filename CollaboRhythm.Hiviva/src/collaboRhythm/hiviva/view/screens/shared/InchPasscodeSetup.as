@@ -5,27 +5,18 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.vo.UserAuthenticationVO;
-	import collaboRhythm.hiviva.view.HivivaHeader;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.components.PasscodeFieldGenerator;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.PickerList;
-
-	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
-	import feathers.controls.text.BitmapFontTextRenderer;
-	import feathers.core.ITextRenderer;
 	import feathers.data.ListCollection;
-	import feathers.text.BitmapFontTextFormat;
+	import feathers.events.FeathersEventType;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
-	import starling.text.BitmapFont;
-	import starling.text.TextField;
-	import starling.utils.Color;
 
 	public class InchPasscodeSetup extends ValidationScreen
 	{
@@ -149,7 +140,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._answerInput = new TextInput();
 			this._content.addChild(this._answerInput);
-			this._answerInput.prompt = "Enter answer";
+			this._answerInput.text = "Enter answer";
 			this._answerInput.validate();
 			this._answerInput.width = this._innerWidth;
 			this._answerInput.y = this._answerTitle.y + this._answerTitle.height + 20;
@@ -170,6 +161,8 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._enterBtn.validate();
 			this._enterBtn.y = this._passcodeInstruction3.y + this._passcodeInstruction3.height + 40;
 		}
+
+
 
 		private function initSetupPasscodeInputs():void
 		{
@@ -209,7 +202,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._questions.labelField = "text";
 			this._questions.prompt = "Select a question";
 			this._questions.selectedIndex = -1;
-			this._questions.addEventListener(starling.events.Event.CHANGE , questionsListSelectedHandler);
+			this._questions.addEventListener(Event.CHANGE , questionsListSelectedHandler);
 			this._content.addChild(this._questions);
 			this._questions.width = this._innerWidth;
 			this._questions.validate();
