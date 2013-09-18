@@ -276,10 +276,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			trace(this._medicationData);
 			HivivaStartup.patientAdherenceVO.percentage = HivivaModifier.calculateDailyAdherence(this._medicationData.DCUserMedication.Schedule.DCMedicationSchedule);
 			trace("patientAdherenceVO " + HivivaStartup.patientAdherenceVO.percentage);
-			/*if(HivivaStartup.patientAdherenceVO.percentage == 100)
-			{
-				updateUserLocalAdherenceCount();
-			}*/
+
 		}
 
 		override public function dispose():void
@@ -288,83 +285,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
 			super.dispose();
 		}
-/*
 
-		private function updateUserLocalAdherenceCount():void
-		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_LOAD_KUDOS_COMPLETE , kudosLoadCompleteHandler);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getPatientKudosData();
-		}
-
-		private function kudosLoadCompleteHandler(e:LocalDataStoreEvent):void
-		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_LOAD_KUDOS_COMPLETE , kudosLoadCompleteHandler);
-			var currentTakeMedDate:String = this._medicationData.DCUserMedication.Schedule.DCMedicationSchedule[0].DateTaken;
-
-			if(e.data.kudos[0].medication_take_date == "0")
-			{
-				trace("First time: Medication Take");
-				HivivaStartup.hivivaAppController.hivivaLocalStoreController.savePatientKudosData(currentTakeMedDate , String(1));
-			}
-			else
-			{
-				var storedTakeMedDate:Date = HivivaModifier.getDateFromIsoString(e.data.kudos[0].medication_take_date);
-				var takeMedDate:Date = HivivaModifier.getDateFromIsoString(this._medicationData.DCUserMedication.Schedule.DCMedicationSchedule[0].DateTaken);
-				var daysDifference:Number = HivivaModifier.getDaysDiffence(takeMedDate , storedTakeMedDate);
-
-				trace(daysDifference);
-				if(daysDifference == 0)
-				{
-					trace("KUDOS: Do nothing dates same");
-					return;
-				}
-				else if(daysDifference == 1)
-				{
-					trace("KUDOS: add 1 to count");
-					this._patientKudosCount = Number(e.data.kudos[0].count) + 1;
-				}
-				else if(daysDifference > 1)
-				{
-					trace("KUDOS: reset count to 1");
-					this._patientKudosCount = 1;
-				}
-
-				HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.PATIENT_SAVE_KUDOS_COMPLETE , patientKudosSaveCompleteHandler);
-				HivivaStartup.hivivaAppController.hivivaLocalStoreController.savePatientKudosData(currentTakeMedDate , String(this._patientKudosCount));
-			}
-		}
-
-		private function patientKudosSaveCompleteHandler(e:LocalDataStoreEvent):void
-		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PATIENT_SAVE_KUDOS_COMPLETE , patientKudosSaveCompleteHandler);
-
-			var badgeAttained:uint = 0 ;
-
-			switch (this._patientKudosCount)
-			{
-				case 7 :
-					badgeAttained = 1;
-					break;
-
-				case 70 :
-					badgeAttained = 2;
-					break;
-
-				case 175 :
-					badgeAttained = 3;
-					break;
-
-				case 350 :
-					badgeAttained = 4;
-					break;
-			}
-
-			if(badgeAttained > 0)
-			{
-				HivivaStartup.hivivaAppController.hivivaLocalStoreController.updatePatientBadges(badgeAttained);
-			}
-		}
-*/
 	}
 }
 

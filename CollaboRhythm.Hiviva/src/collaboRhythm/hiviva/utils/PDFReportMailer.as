@@ -1,10 +1,5 @@
 package collaboRhythm.hiviva.utils
 {
-	import collaboRhythm.hiviva.global.Constants;
-
-	import com.distriqt.extension.message.Message;
-	import com.distriqt.extension.message.events.MessageEvent;
-
 	public class PDFReportMailer
 	{
 		public function PDFReportMailer()
@@ -18,10 +13,12 @@ package collaboRhythm.hiviva.utils
 
 		}
 
+		/*
 		private function initPDFMailer():void
 		{
 			try
 			{
+
 				Message.init(Constants.DISTRIQT_ANE_DEVELOPER_LIC);
 				trace("PDFReportMailer Message Supported: " + String(Message.isSupported));
 				trace("PDFReportMailer Message Version: " + String(Message.service.version));
@@ -47,5 +44,6 @@ package collaboRhythm.hiviva.utils
 		{
 
 		}
+		*/
 	}
 }
