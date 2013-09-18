@@ -15,11 +15,17 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
+	import feathers.controls.text.BitmapFontTextRenderer;
+	import feathers.core.ITextRenderer;
 	import feathers.data.ListCollection;
+	import feathers.text.BitmapFontTextFormat;
 
 	import starling.display.DisplayObject;
 
 	import starling.events.Event;
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
+	import starling.utils.Color;
 
 	public class InchPasscodeSetup extends ValidationScreen
 	{
@@ -143,7 +149,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._answerInput = new TextInput();
 			this._content.addChild(this._answerInput);
-			this._answerInput.text = "Enter answer";
+			this._answerInput.prompt = "Enter answer";
 			this._answerInput.validate();
 			this._answerInput.width = this._innerWidth;
 			this._answerInput.y = this._answerTitle.y + this._answerTitle.height + 20;
