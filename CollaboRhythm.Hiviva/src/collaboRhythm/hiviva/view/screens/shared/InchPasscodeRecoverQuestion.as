@@ -9,6 +9,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.TextInput;
+	import feathers.events.FeathersEventType;
 
 	import starling.display.DisplayObject;
 
@@ -95,6 +96,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._answerInput = new TextInput();
 			this._content.addChild(this._answerInput);
 			this._answerInput.text = "Enter answer"
+			this._answerInput.addEventListener(FeathersEventType.FOCUS_IN , onEnterInputHandler);
 			this._answerInput.validate();
 			this._answerInput.width = this._innerWidth;
 			this._answerInput.y = this._answerTitle.y + this._answerTitle.height + 20;
@@ -121,6 +123,12 @@ package collaboRhythm.hiviva.view.screens.shared
 			{
 				showFormValidation(formValidation);
 			}
+		}
+
+		private function onEnterInputHandler(event:Event):void
+		{
+			this._answerInput.removeEventListener(FeathersEventType.FOCUS_IN , onEnterInputHandler);
+			this._answerInput.text = "";
 		}
 
 		private function allowChangePasscode():void

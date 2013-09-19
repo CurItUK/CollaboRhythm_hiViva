@@ -29,6 +29,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.events.SQLEvent;
 
 	import flash.filesystem.File;
+	import flash.text.SoftKeyboardType;
 	import flash.text.TextFormat;
 
 	import source.themes.HivivaTheme;
@@ -72,10 +73,12 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._cd4Count._labelLeft.text = "CD4 Count:";
 			this._cd4Count._labelRight.text = "Cells/mm3";
+			this._cd4Count._input.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
 			labelAndInputDrawProperties(this._cd4Count);
 
 			this._viralLoad._labelLeft.text = "Viral load:";
 			this._viralLoad._labelRight.text = "Copies/ML";
+			this._viralLoad._input.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
 			labelAndInputDrawProperties(this._viralLoad);
 
 			this._date._labelLeft.textRendererProperties.multiline = true;
