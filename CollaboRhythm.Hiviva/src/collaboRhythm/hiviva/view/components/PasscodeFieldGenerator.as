@@ -5,6 +5,8 @@ package collaboRhythm.hiviva.view.components
 	import feathers.controls.TextInput;
 	import feathers.core.FeathersControl;
 
+	import flash.text.SoftKeyboardType;
+
 	public class PasscodeFieldGenerator extends FeathersControl
 	{
 
@@ -34,6 +36,8 @@ package collaboRhythm.hiviva.view.components
 			this._passcodeInput1 = new TextInput();
 			this._passcodeInput1.maxChars = 1;
 			this._passcodeInput1.restrict = "0-9";
+			this._passcodeInput1.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
+			this._passcodeInput1.displayAsPassword = true;
 			this.addChild(this._passcodeInput1);
 			this._passcodeInput1.validate();
 			this._passcodeInput1.width = Constants.PASSCODE_INPUT;
@@ -41,7 +45,9 @@ package collaboRhythm.hiviva.view.components
 
 			this._passcodeInput2 = new TextInput();
 			this._passcodeInput2.maxChars = 1;
+			this._passcodeInput2.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
 			this._passcodeInput2.restrict = "0-9";
+			this._passcodeInput2.displayAsPassword = true;
 			this.addChild(this._passcodeInput2);
 			this._passcodeInput2.validate();
 			trace("this._passcodeInput2 " + this._passcodeInput2.height)
@@ -49,8 +55,10 @@ package collaboRhythm.hiviva.view.components
 			this._passcodeInput2.x = 206;
 
 			this._passcodeInput3 = new TextInput();
+			this._passcodeInput3.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
 			this._passcodeInput3.maxChars = 1;
 			this._passcodeInput3.restrict = "0-9";
+			this._passcodeInput3.displayAsPassword = true;
 			this.addChild(this._passcodeInput3);
 			this._passcodeInput3.validate();
 			this._passcodeInput3.width = Constants.PASSCODE_INPUT;
@@ -59,6 +67,8 @@ package collaboRhythm.hiviva.view.components
 			this._passcodeInput4 = new TextInput();
 			this._passcodeInput4.maxChars = 1;
 			this._passcodeInput4.restrict = "0-9";
+			this._passcodeInput4.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
+			this._passcodeInput4.displayAsPassword = true;
 			this.addChild(this._passcodeInput4);
 			this._passcodeInput4.validate();
 			this._passcodeInput4.width = Constants.PASSCODE_INPUT;

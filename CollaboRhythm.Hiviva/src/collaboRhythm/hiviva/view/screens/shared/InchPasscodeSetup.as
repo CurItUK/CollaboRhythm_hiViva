@@ -140,6 +140,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._answerInput = new TextInput();
 			this._content.addChild(this._answerInput);
+			this._answerInput.addEventListener(FeathersEventType.FOCUS_IN , onEnterInputHandler);
 			this._answerInput.text = "Enter answer";
 			this._answerInput.validate();
 			this._answerInput.width = this._innerWidth;
@@ -162,7 +163,11 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._enterBtn.y = this._passcodeInstruction3.y + this._passcodeInstruction3.height + 40;
 		}
 
-
+		private function onEnterInputHandler(event:Event):void
+		{
+			this._answerInput.removeEventListener(FeathersEventType.FOCUS_IN , onEnterInputHandler);
+			this._answerInput.text = "";
+		}
 
 		private function initSetupPasscodeInputs():void
 		{
