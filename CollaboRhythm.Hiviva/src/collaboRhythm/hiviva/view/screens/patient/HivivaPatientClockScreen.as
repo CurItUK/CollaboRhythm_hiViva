@@ -170,10 +170,35 @@ package collaboRhythm.hiviva.view.screens.patient
 					var tablet:Image = getTabletImage(i + 1);
 					this.tabletHolder.addChild(timeSegment);
 
+
+
+
 					tabletCell.addChild(tablet);
+
+					/*
+					if(this._medicationResponse.DCUserMedication[i].Schedule.DCMedicationSchedule[j].Taken == "true")
+					{
+						var takenTick:Image = new Image(Main.assets.getTexture("v2_pill_icon_tick"));
+						tabletCell.addChild(takenTick);
+
+					}
+					*/
 
 					tablet.y = -tablet.width/2;
 					tablet.x = clockHandSpacing + (i * tablet.width) + 10;
+
+					/*
+					if(takenTick != null)
+					{
+						takenTick.y = tablet.y + takenTick.height/2;
+						takenTick.x = tablet.x + takenTick.width/2;
+
+					}
+					*/
+
+
+
+
 					holderCell.addChild(tabletCell);
 
 					holderCell.x = this._clockCenterX;
@@ -181,6 +206,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 					timeSegment.rotation =  holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * time) - HivivaModifier.degreesToRadians(90);
 					timeSegment.rotation += tempRotation
+
+					//if(takenTick!= null) takenTick.rotation =  -(holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * time) - HivivaModifier.degreesToRadians(90));
 					timeSegment.x = holderCell.x
 					timeSegment.y = holderCell.y
 
