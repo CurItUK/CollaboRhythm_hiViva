@@ -81,7 +81,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._passcodeEnabled = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userAuthenticationVO.enabled;
 
 			this._enableDisablePasscodeBtn = new Button();
-			this._enableDisablePasscodeBtn.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._enableDisablePasscodeBtn.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._enableDisablePasscodeBtn.addEventListener(Event.TRIGGERED , enableDisableBtnHandler);
 			this.addChild(this._enableDisablePasscodeBtn);
 			this._enableDisablePasscodeBtn.validate();
@@ -90,7 +90,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._enableDisablePasscodeBtn.x = Constants.STAGE_WIDTH/2 - this._enableDisablePasscodeBtn.width/2;
 
 			this._changePassCodeBtn = new Button();
-			this._changePassCodeBtn.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._changePassCodeBtn.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._changePassCodeBtn.addEventListener(Event.TRIGGERED , changePasscodeBtnHandler);
 			this.addChild(this._changePassCodeBtn);
 			this._changePassCodeBtn.label = "Change passcode";

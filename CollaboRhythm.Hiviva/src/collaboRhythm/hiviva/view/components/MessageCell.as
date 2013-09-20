@@ -86,7 +86,7 @@ package collaboRhythm.hiviva.view.components
 		//	addChild(this._messageImage);
 
 			this._messageNameLabel = new Label();
-			this._messageNameLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._messageNameLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._messageNameLabel.text = this._messageName;
 			this.addChild(this._messageNameLabel);
 

@@ -88,8 +88,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._homeImageInstructions.x =  (Constants.STAGE_WIDTH * 0.5) - (this._homeImageInstructions.width * 0.5);
 			this._homeImageInstructions.y =  (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._homeImageInstructions.height * 0.5);
 
-
-
 			if (!this._asynchronousCallMade)
 			{
 				enableAutoHomePageMessageCheck();
@@ -467,7 +465,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var imageLoader:Loader = new Loader();
 
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
-			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url) , loaderContext);
 
 		}
@@ -507,7 +505,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		}
 
 
-		private function imageLoadFailed(e:IOErrorEvent):void
+		private function imageLoadFailed(e:flash.events.IOErrorEvent):void
 		{
 			trace("Image load failed.");
 		}

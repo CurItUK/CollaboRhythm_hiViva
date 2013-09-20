@@ -100,7 +100,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._scheduleDoseList.y = this._seperator.y + (this._componentGap * 3);
 
 			this._takeLabel = new Label();
-			this._takeLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			this._takeLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			this._takeLabel.text = "Take";
 			this._content.addChild(this._takeLabel);
 			this._takeLabel.validate();

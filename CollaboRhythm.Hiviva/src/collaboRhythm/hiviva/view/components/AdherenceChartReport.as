@@ -31,7 +31,8 @@ package collaboRhythm.hiviva.view.components
 		private var _lowestValue:Number;
 		private var _valueRange:Number;
 
-		private const LINE_COLOUR:uint = 0x4F81BC;
+//		private const LINE_COLOUR:uint = 0x4F81BC;
+		private const LINE_COLOUR:uint = 0xFFFFFF;
 		private var PLOT_GIRTH:Number;
 
 		private var _leftAxisSpace:Number;
@@ -77,7 +78,6 @@ package collaboRhythm.hiviva.view.components
 			calculateXAxisBreakDown();
 
 			// tiled background here to compensate for no transparency on the draw
-//			initTiledBackground();
 
 			calculateAdherence();
 
@@ -89,6 +89,7 @@ package collaboRhythm.hiviva.view.components
 //			initBottomAxisLabels();
 			drawPlotPoints();
 			this.validate();
+			initTiledBackground();
 		}
 
 		private function calculateXAxisBreakDown():void
@@ -126,13 +127,14 @@ package collaboRhythm.hiviva.view.components
 		private function initTiledBackground():void
 		{
 			var screenBase:TiledImage = new TiledImage(Main.assets.getTexture("screen_base"));
-
-			screenBase.width = this.actualWidth;
-			screenBase.height = this.actualHeight;
+			screenBase.x = this._chartStartX;
+			screenBase.y = this._chartStartY;
+			screenBase.width = this._chartWidth;
+			screenBase.height = this._chartHeight;
 			screenBase.smoothing = TextureSmoothing.NONE;
 			screenBase.touchable = false;
 			//screenBase.flatten();
-			addChild(screenBase);
+			addChildAt(screenBase,0);
 		}
 
 		private function calculateAdherence():void
@@ -256,7 +258,7 @@ package collaboRhythm.hiviva.view.components
 		private function initChartTitleLabel():void
 		{
 			var chartTitleLabel:Label = new Label();
-			chartTitleLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			chartTitleLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			chartTitleLabel.text = "Overall Adherence";
 			addChild(chartTitleLabel);
 			chartTitleLabel.x = this._chartStartX;
@@ -280,7 +282,7 @@ package collaboRhythm.hiviva.view.components
 		private function initLeftAxisLabels():void
 		{
 			var leftAxisTop:Label = new Label();
-			leftAxisTop.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			leftAxisTop.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			leftAxisTop.text = "100%";
 			addChild(leftAxisTop);
 			leftAxisTop.width = this._leftAxisSpace;
@@ -289,7 +291,7 @@ package collaboRhythm.hiviva.view.components
 			leftAxisTop.y = this._chartStartY - (leftAxisTop.height * 0.5);
 
 			var leftAxisBottom:Label = new Label();
-			leftAxisBottom.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			leftAxisBottom.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			leftAxisBottom.text = this._lowestValue + "%";
 			addChild(leftAxisBottom);
 			leftAxisBottom.width = this._leftAxisSpace;
@@ -298,7 +300,7 @@ package collaboRhythm.hiviva.view.components
 			leftAxisBottom.y = this._chartStartY + this._chartHeight - (leftAxisBottom.height * 0.5);
 
 			var leftAxisLabel:Label = new Label();
-			leftAxisLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			leftAxisLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			leftAxisLabel.text = "Adherence";
 			addChild(leftAxisLabel);
 			leftAxisLabel.width = 400;
@@ -336,7 +338,7 @@ package collaboRhythm.hiviva.view.components
 				xAxisPosition = this._xAxisSegmentWidth * segmentCount;
 
 				bottomAxisValue = new Label();
-				bottomAxisValue.name = HivivaThemeConstants.CELL_SMALL_LABEL;
+				bottomAxisValue.name = HivivaThemeConstants.CELL_SMALL_WHITE_LABEL;
 				/*bottomAxisValue.text = HivivaModifier.isoDateToPrettyString((daysItar.getMonth() + 1).toString()) + "/" +
 						HivivaModifier.addPrecedingZero(daysItar.getDate().toString());*/
 				bottomAxisValue.text = HivivaModifier.getPrettyStringFromDate(daysItar,false);
@@ -382,7 +384,7 @@ package collaboRhythm.hiviva.view.components
 		private function initBottomAxisLabels():void
 		{
 			var bottomAxisLabel:Label = new Label();
-			bottomAxisLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			bottomAxisLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			bottomAxisLabel.text = "Week commencing (2013)";
 			addChild(bottomAxisLabel);
 			bottomAxisLabel.x = this._chartStartX;

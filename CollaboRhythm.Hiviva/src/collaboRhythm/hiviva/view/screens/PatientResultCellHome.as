@@ -99,7 +99,7 @@ package collaboRhythm.hiviva.view.screens
 			addChild(this._patientName);
 
 			this._adherenceTolerabilityLabel = new Label();
-			this._adherenceTolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._adherenceTolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._adherenceTolerabilityLabel.text = HivivaModifier.getSummaryStringFromPatientData(patientData);
 			addChild(this._adherenceTolerabilityLabel);
 
@@ -155,7 +155,7 @@ package collaboRhythm.hiviva.view.screens
 		{
 			var imageLoader:Loader = new Loader();
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
-			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url));
 		}
 
@@ -174,7 +174,7 @@ package collaboRhythm.hiviva.view.screens
 			if (!contains(this._photoHolder)) addChild(this._photoHolder);
 		}
 
-		private function imageLoadFailed(e:Event):void
+		private function imageLoadFailed(e:flash.events.IOErrorEvent):void
 		{
 			trace("Image load failed.");
 		}

@@ -109,7 +109,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			initSetupPasscodeReInputs();
 
 			this._passcodeRecoveryTitle = new Label();
-			this._passcodeRecoveryTitle.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._passcodeRecoveryTitle.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._content.addChild(this._passcodeRecoveryTitle);
 			this._passcodeRecoveryTitle.validate();
 			this._passcodeRecoveryTitle.text = "Passcode recovery";
@@ -155,7 +155,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._passcodeInstruction3.validate();
 
 			this._enterBtn = new Button();
-			this._enterBtn.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._enterBtn.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._enterBtn.label = "Enter";
 			this._enterBtn.addEventListener(Event.TRIGGERED , enterBtnHandler);
 			this._content.addChild(this._enterBtn);

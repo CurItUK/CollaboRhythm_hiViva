@@ -146,7 +146,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this.addChild(this._adheranceLabel);
 
 			this._adheranceResultLabel = new Label();
-			this._adheranceResultLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._adheranceResultLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._adheranceResultLabel.text = "0";
 			this.addChild(this._adheranceResultLabel);
 
@@ -171,7 +171,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this.addChild(this._viralLoadLabel);
 
 			this._viralLoadResultLabel = new Label();
-			this._viralLoadResultLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._viralLoadResultLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._viralLoadResultLabel.text = "0";
 			this.addChild(this._viralLoadResultLabel);
 
@@ -196,7 +196,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this.addChild(this._CD4CountLabel);
 
 			this._CD4CountResultLabel = new Label();
-			this._CD4CountResultLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._CD4CountResultLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._CD4CountResultLabel.text = "0";
 
 			this.addChild(this._CD4CountResultLabel);

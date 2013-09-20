@@ -260,18 +260,23 @@ package source.themes
 
 		protected var headerBoldBftf:BitmapFontTextFormat;
 		protected var subHeaderBftf:BitmapFontTextFormat;
-		protected var bodyBftf:BitmapFontTextFormat;
+		protected var bodyWhiteBftf:BitmapFontTextFormat;
+		protected var bodyDarkBftf:BitmapFontTextFormat;
 		protected var popupBftf:BitmapFontTextFormat;
 		protected var pickerListBftf:BitmapFontTextFormat;
-		protected var bodySmallerBftf:BitmapFontTextFormat;
+		protected var bodySmallerWhiteBftf:BitmapFontTextFormat;
+		protected var bodySmallerDarkBftf:BitmapFontTextFormat;
 		protected var bodySmallerBoldBftf:BitmapFontTextFormat;
-		protected var bodyBoldBftf:BitmapFontTextFormat;
 		protected var bodyCenteredBftf:BitmapFontTextFormat;
-		protected var bodyBoldCenteredBftf:BitmapFontTextFormat;
+		protected var bodyBoldWhiteBftf:BitmapFontTextFormat;
+		protected var bodyBoldDarkBftf:BitmapFontTextFormat;
+		protected var bodyBoldWhiteCenteredBftf:BitmapFontTextFormat;
+		protected var bodyBoldDarkCenteredBftf:BitmapFontTextFormat;
 		protected var inputLabelLeftBftf:BitmapFontTextFormat;
 		protected var homeLensLabelBftf:BitmapFontTextFormat;
 		protected var validationLabelBftf:BitmapFontTextFormat;
-		protected var medicineBrandnameLabelBftf:BitmapFontTextFormat;
+		protected var medicineBrandnameWhiteLabelBftf:BitmapFontTextFormat;
+		protected var medicineBrandnameDarkLabelBftf:BitmapFontTextFormat;
 		protected var splashFooterLabelBftf:BitmapFontTextFormat;
 		protected var calendarMonthLabelBftf:BitmapFontTextFormat;
 		protected var feelingSliderLabelBftf:BitmapFontTextFormat;
@@ -534,16 +539,22 @@ package source.themes
 			// Bitmap Font TextFormats
 			this.headerBoldBftf = new BitmapFontTextFormat(this.engravedDarkBoldBitmapFont, 44 * this.scale,Color.WHITE);
 			this.subHeaderBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 30 * this.scale,Color.WHITE);
-			this.bodyBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR);
-			this.bodySmallerBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 18 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR);
+			this.bodyWhiteBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR);
+			this.bodyDarkBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
+			this.bodySmallerWhiteBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 18 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR);
+			this.bodySmallerDarkBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 18 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR);
 			this.bodySmallerBoldBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 18 * this.scale, Color.WHITE);
-			this.bodyBoldBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE);
 			this.bodyCenteredBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR,TextFormatAlign.CENTER);
-			this.bodyBoldCenteredBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			this.bodyBoldWhiteBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE);
+			this.bodyBoldDarkBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE);
+			this.bodyBoldWhiteCenteredBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			this.bodyBoldDarkCenteredBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+
 			this.inputLabelLeftBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 30 * this.scale,Color.WHITE);
 			this.homeLensLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.MEDIUM_FONT_COLOUR,TextFormatAlign.CENTER);
 			this.validationLabelBftf = new BitmapFontTextFormat(this.engravedLighterRegularBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
-			this.medicineBrandnameLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 30 * this.scale, Color.WHITE);
+			this.medicineBrandnameWhiteLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 30 * this.scale, Color.WHITE);
+			this.medicineBrandnameDarkLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 30 * this.scale, Color.WHITE);
 			this.splashFooterLabelBftf = new BitmapFontTextFormat(this.raisedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.calendarMonthLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 40 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR,TextFormatAlign.CENTER);
 			this.feelingSliderLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 20 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
@@ -798,16 +809,20 @@ package source.themes
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 
 			this.setInitializerForClass(Label, labelInitializer);
+			this.setInitializerForClass(Label, bodyDarkLabelInitializer, HivivaThemeConstants.BODY_DARK_LABEL);
 			this.setInitializerForClass(Label, popupLabelInitializer, HivivaThemeConstants.POPUP_LABEL);
 			this.setInitializerForClass(Label, subHeaderLabelInitializer, HivivaThemeConstants.SUBHEADER_LABEL);
-			this.setInitializerForClass(Label, bodyBoldLabelInitializer, HivivaThemeConstants.BODY_BOLD_LABEL);
+			this.setInitializerForClass(Label, bodyBoldWhiteLabelInitializer, HivivaThemeConstants.BODY_BOLD_WHITE_LABEL);
+			this.setInitializerForClass(Label, bodyBoldDarkLabelInitializer, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
 			this.setInitializerForClass(Label, bodyCenteredLabelInitializer, HivivaThemeConstants.BODY_CENTERED_LABEL);
-			this.setInitializerForClass(Label, bodyBoldCenteredLabelInitializer, HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL);
+			this.setInitializerForClass(Label, bodyBoldWhiteCenteredLabelInitializer, HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL);
+			this.setInitializerForClass(Label, bodyBoldDarkCenteredLabelInitializer, HivivaThemeConstants.BODY_BOLD_DARK_CENTERED_LABEL);
 			this.setInitializerForClass(Label, inputLabelLeftInitializer, HivivaThemeConstants.INPUT_LABEL_LEFT);
 			this.setInitializerForClass(Label, inputLabelRightInitializer, HivivaThemeConstants.INPUT_LABEL_RIGHT);
 			this.setInitializerForClass(Label, homeLensLabelInitializer, HivivaThemeConstants.HOME_LENS_LABEL);
 			this.setInitializerForClass(Label, validationLabelInitializer, HivivaThemeConstants.VALIDATION_LABEL);
-			this.setInitializerForClass(Label, medicineBrandnameLabelInitializer, HivivaThemeConstants.MEDICINE_BRANDNAME_LABEL);
+			this.setInitializerForClass(Label, medicineBrandnameWhiteLabelInitializer, HivivaThemeConstants.MEDICINE_BRANDNAME_WHITE_LABEL);
+			this.setInitializerForClass(Label, medicineBrandnameDarkLabelInitializer, HivivaThemeConstants.MEDICINE_BRANDNAME_DARK_LABEL);
 			this.setInitializerForClass(Label, splashFooterLabelInitializer, HivivaThemeConstants.SPLASH_FOOTER_LABEL);
 			this.setInitializerForClass(Label, calenderMonthLabelInitializer, HivivaThemeConstants.CALENDAR_MONTH_LABEL);
 			this.setInitializerForClass(Label, feelingSliderLabelInitializer, HivivaThemeConstants.FEELING_SLIDER_LABEL);
@@ -815,7 +830,8 @@ package source.themes
 			this.setInitializerForClass(Label, instructionsLabelInitializer, HivivaThemeConstants.INSTRUCTIONS_LABEL);
 			this.setInitializerForClass(Label, calendarDaysLabelInitializer, HivivaThemeConstants.CALENDAR_DAYS_LABEL);
 			this.setInitializerForClass(Label, superscriptLabelInitializer, HivivaThemeConstants.SUPERSCRIPT_LABEL);
-			this.setInitializerForClass(Label, cellSmallLabelInitializer, HivivaThemeConstants.CELL_SMALL_LABEL);
+			this.setInitializerForClass(Label, cellSmallWhiteLabelInitializer, HivivaThemeConstants.CELL_SMALL_WHITE_LABEL);
+			this.setInitializerForClass(Label, cellSmallDarkLabelInitializer, HivivaThemeConstants.CELL_SMALL_DARK_LABEL);
 			this.setInitializerForClass(Label, cellSmallBoldLabelInitializer, HivivaThemeConstants.CELL_SMALL_BOLD_LABEL);
 			this.setInitializerForClass(Label, patientDataLightLabelInitializer, HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL);
 
@@ -1094,7 +1110,13 @@ package source.themes
 
 		protected function labelInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.bodyBftf;
+			label.textRendererProperties.textFormat = this.bodyWhiteBftf;
+			label.textRendererProperties.wordWrap = true;
+		}
+
+		protected function bodyDarkLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.bodyDarkBftf;
 			label.textRendererProperties.wordWrap = true;
 		}
 
@@ -1109,9 +1131,15 @@ package source.themes
 			label.textRendererProperties.textFormat = this.subHeaderBftf;
 		}
 
-		protected function bodyBoldLabelInitializer(label:Label):void
+		protected function bodyBoldWhiteLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.bodyBoldBftf;
+			label.textRendererProperties.textFormat = this.bodyBoldWhiteBftf;
+			label.textRendererProperties.wordWrap = true;
+		}
+
+		protected function bodyBoldDarkLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.bodyBoldDarkBftf;
 			label.textRendererProperties.wordWrap = true;
 		}
 
@@ -1121,9 +1149,14 @@ package source.themes
 			label.textRendererProperties.wordWrap = true;
 		}
 
-		protected function bodyBoldCenteredLabelInitializer(label:Label):void
+		protected function bodyBoldDarkCenteredLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.bodyBoldCenteredBftf;
+			label.textRendererProperties.textFormat = this.bodyBoldDarkCenteredBftf;
+		}
+
+		protected function bodyBoldWhiteCenteredLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.bodyBoldWhiteCenteredBftf;
 		}
 
 		protected function inputLabelLeftInitializer(label:Label):void
@@ -1134,7 +1167,7 @@ package source.themes
 
 		protected function inputLabelRightInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.bodyBftf;
+			label.textRendererProperties.textFormat = this.bodyWhiteBftf;
 		}
 
 		protected function homeLensLabelInitializer(label:Label):void
@@ -1149,9 +1182,15 @@ package source.themes
 			label.textRendererProperties.wordWrap = true;
 		}
 
-		protected function medicineBrandnameLabelInitializer(label:Label):void
+		protected function medicineBrandnameWhiteLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.medicineBrandnameLabelBftf;
+			label.textRendererProperties.textFormat = this.medicineBrandnameWhiteLabelBftf;
+			label.textRendererProperties.wordWrap = true;
+		}
+
+		protected function medicineBrandnameDarkLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.medicineBrandnameDarkLabelBftf;
 			label.textRendererProperties.wordWrap = true;
 		}
 
@@ -1191,9 +1230,14 @@ package source.themes
 		{
 			label.textRendererProperties.textFormat = this.superscriptLabelBftf;
 		}
-		protected function cellSmallLabelInitializer(label:Label):void
+		protected function cellSmallWhiteLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.bodySmallerBftf;
+			label.textRendererProperties.textFormat = this.bodySmallerWhiteBftf;
+			label.textRendererProperties.wordWrap = true;
+		}
+		protected function cellSmallDarkLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.bodySmallerDarkBftf;
 			label.textRendererProperties.wordWrap = true;
 		}
 		protected function cellSmallBoldLabelInitializer(label:Label):void
@@ -1840,7 +1884,7 @@ package source.themes
 
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-			renderer.defaultLabelProperties.textFormat = this.bodyBftf;
+			renderer.defaultLabelProperties.textFormat = this.bodyWhiteBftf;
 			//renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
 			//renderer.defaultSelectedLabelProperties.textFormat = this.largeDarkTextFormat;
 
@@ -2144,7 +2188,7 @@ package source.themes
 
 			radio.stateToIconFunction = iconSelector.updateValue;
 
-			radio.defaultLabelProperties.textFormat = this.bodyBftf;
+			radio.defaultLabelProperties.textFormat = this.bodyWhiteBftf;
 			radio.defaultLabelProperties.wordWrap = true;
 			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			radio.gap = 12 * this.scale;
@@ -2193,7 +2237,7 @@ package source.themes
 			};
 
 			check.stateToIconFunction = iconSelector.updateValue;
-			check.defaultLabelProperties.textFormat = this.bodyBftf;
+			check.defaultLabelProperties.textFormat = this.bodyWhiteBftf;
 			check.defaultLabelProperties.wordWrap = true;
 
 			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;

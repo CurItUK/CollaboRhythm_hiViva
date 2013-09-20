@@ -181,7 +181,7 @@ package collaboRhythm.hiviva.view
 			{
 				// display target image
 				this._imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded, false, 0, true);
-				this._imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed, false, 0, true);
+				this._imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed, false, 0, true);
 				this._imageLoader.loadFilePromise(this._imagePromise);
 
 
@@ -267,7 +267,7 @@ package collaboRhythm.hiviva.view
 		{
 			this._imageLoader = new Loader();
 			this._imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
-			this._imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
+			this._imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
 			this._imageLoader.load(new URLRequest(url));
 		}
 
@@ -275,7 +275,7 @@ package collaboRhythm.hiviva.view
 		{
 			this._imageLoader = new Loader();
 			this._imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.INIT, imageLoaded);
-			this._imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
+			this._imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
 			this._imageLoader.loadBytes(imageBytes);
 		}
 
@@ -301,7 +301,7 @@ package collaboRhythm.hiviva.view
 			}*/
 		}
 
-		private function imageLoadFailed(e:flash.events.Event):void
+		private function imageLoadFailed(e:flash.events.IOErrorEvent):void
 		{
 			trace("Image load failed.");
 		}

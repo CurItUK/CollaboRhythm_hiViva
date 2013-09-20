@@ -1,22 +1,14 @@
 package collaboRhythm.hiviva.view.components
 {
-	import collaboRhythm.hiviva.global.HivivaAssets;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.view.Main;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
-
 	import feathers.core.FeathersControl;
 	import feathers.display.Scale9Image;
-	import feathers.textures.Scale9Textures;
-
-	import flash.geom.Rectangle;
 
 	import starling.display.Image;
-
 	import starling.display.Quad;
-	import starling.textures.Texture;
 
 	public class MedicationCell extends FeathersControl
 	{
@@ -35,9 +27,14 @@ package collaboRhythm.hiviva.view.components
 		protected var _genericNameLabel:Label;
 		protected var _genericName:String;
 
+		protected var _theme:String;
+		public static const WHITE_THEME:String = "whiteTheme";
+		public static const DARK_THEME:String = "darkTheme";
 
-		public function MedicationCell()
+
+		public function MedicationCell(theme:String = MedicationCell.WHITE_THEME)
 		{
+			_theme = theme;
 			super();
 		}
 
@@ -86,13 +83,27 @@ package collaboRhythm.hiviva.view.components
 			addChild(this._pillImageBg);
 
 			this._brandNameLabel = new Label();
-			this._brandNameLabel.name = HivivaThemeConstants.MEDICINE_BRANDNAME_LABEL;
+//			this._brandNameLabel.name = HivivaThemeConstants.MEDICINE_BRANDNAME_LABEL;
 			this._brandNameLabel.text = this._brandName;
-			this.addChild(this._brandNameLabel);
 
 			this._genericNameLabel = new Label();
-			this._genericNameLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
+//			this._genericNameLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
 			this._genericNameLabel.text = this._genericName;
+
+			switch(_theme)
+			{
+				case MedicationCell.WHITE_THEME :
+					this._brandNameLabel.name = HivivaThemeConstants.MEDICINE_BRANDNAME_WHITE_LABEL;
+					this._genericNameLabel.name = HivivaThemeConstants.CELL_SMALL_WHITE_LABEL;
+					break;
+				case MedicationCell.DARK_THEME :
+					this._brandNameLabel.name = HivivaThemeConstants.MEDICINE_BRANDNAME_DARK_LABEL;
+					this._genericNameLabel.name = HivivaThemeConstants.CELL_SMALL_DARK_LABEL;
+					break;
+			}
+
+
+			this.addChild(this._brandNameLabel);
 			this.addChild(this._genericNameLabel);
 
 		}

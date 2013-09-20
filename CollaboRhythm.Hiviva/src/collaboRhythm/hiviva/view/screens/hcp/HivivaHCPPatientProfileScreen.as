@@ -130,7 +130,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.addChild(this._patientEmail);
 
 			this._adherenceLabel = new Label();
-			this._adherenceLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._adherenceLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 //			this._adherenceLabel.text = "Overall adherence:  " + Main.selectedHCPPatientProfile.adherence + "%";
 			this._adherenceLabel.text = HivivaModifier.getSummaryStringFromPatientData(Main.selectedHCPPatientProfile);
 			this.addChild(this._adherenceLabel);
@@ -185,7 +185,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			addChild(this._weekNavHolder);
 
 			_viewLabel = new Label();
-			_viewLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			_viewLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			_viewLabel.text = "View:";
 			this._weekNavHolder.addChild(_viewLabel);
 
@@ -371,7 +371,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			var imageLoader:Loader = new Loader();
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
-			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url));
 		}
 
@@ -391,7 +391,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			if (!contains(this._photoHolder)) addChild(this._photoHolder);
 		}
 
-		private function imageLoadFailed(e:flash.events.Event):void
+		private function imageLoadFailed(e:flash.events.IOErrorEvent):void
 		{
 			trace("Image load failed.");
 		}

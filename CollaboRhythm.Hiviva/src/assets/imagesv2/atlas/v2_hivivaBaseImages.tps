@@ -171,8 +171,6 @@
             <filename>../temp/v2_side_nav_icon_03.png</filename>
             <filename>../temp/v2_side_nav_icon_04.png</filename>
             <filename>../temp/v2_side_nav_icon_05.png</filename>
-            <filename>../temp/v2_top_nav_icon_02.png</filename>
-            <filename>../temp/v2_top_nav_icon_03.png</filename>
             <filename>../temp/v2_calendar_arrow.png</filename>
             <filename>../temp/v2_calendar-button.png</filename>
             <filename>../temp/v2_feeling_slider_cloud.png</filename>
@@ -213,6 +211,8 @@
             <filename>../temp/v2_button_list_arrows.png</filename>
             <filename>../temp/v2_clock_segment.png</filename>
             <filename>../temp/v2_home_lens_bg.png</filename>
+            <filename>../temp/v2_top_nav_icon_03.png</filename>
+            <filename>../temp/v2_top_nav_icon_02.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

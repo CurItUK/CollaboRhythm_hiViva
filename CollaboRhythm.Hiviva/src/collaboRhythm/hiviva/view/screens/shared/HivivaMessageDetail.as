@@ -98,7 +98,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._nameLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
 
 			this._dateLabel = new Label();
-			this._dateLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
+			this._dateLabel.name = HivivaThemeConstants.CELL_SMALL_WHITE_LABEL;
 
 			this._messageLabel = new Label();
 

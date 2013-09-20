@@ -17,9 +17,9 @@ package collaboRhythm.hiviva.view.components
 		private var _delete:Button;
 		private var _medicationId:String;
 
-		public function EditMedicationCell()
+		public function EditMedicationCell(theme:String = MedicationCell.WHITE_THEME)
 		{
-			super();
+			super(theme);
 		}
 
 		override protected function draw():void

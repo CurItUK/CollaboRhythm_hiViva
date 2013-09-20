@@ -3,7 +3,6 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 
@@ -56,6 +55,7 @@ package collaboRhythm.hiviva.view.components
 		private var _isLegendActive:Boolean = false;
 		private var _legendInactiveX:Number;
 		private var _legendActiveX:Number;
+		private var _greyBg:TiledImage;
 
 		public function PatientAdherenceChart()
 		{
@@ -102,12 +102,26 @@ package collaboRhythm.hiviva.view.components
 			drawBottomAxisLabels();
 			drawPlotPoints();
 			drawLegend();
+			initGreyBg();
+		}
+
+		private function initGreyBg():void
+		{
+			_greyBg = new TiledImage(Main.assets.getTexture("screen_base"));
+			_greyBg.x = this._chartStartX;
+			_greyBg.y = this._chartStartY;
+			_greyBg.width = this._chartWidth;
+			_greyBg.height = this._chartHeight;
+			_greyBg.smoothing = TextureSmoothing.NONE;
+			_greyBg.touchable = false;
+			//_greyBg.flatten();
+			addChildAt(_greyBg,0);
 		}
 
 		private function drawBottomAxisLabels():void
 		{
 			var bottomAxisLabel:Label = new Label();
-			bottomAxisLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			bottomAxisLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			bottomAxisLabel.text = "Week commencing (" + this._firstWeek.getFullYear() + ")";
 			addChild(bottomAxisLabel);
 			bottomAxisLabel.x = this._chartStartX;
@@ -191,7 +205,7 @@ package collaboRhythm.hiviva.view.components
 		private function drawPatientNumberLabel():void
 		{
 			var patientNumberLabel:Label = new Label();
-			patientNumberLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			patientNumberLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			patientNumberLabel.text = _scheduleHistoryData.length() + " patient" + ((_scheduleHistoryData.length() > 1) ? "s" : "");
 			addChild(patientNumberLabel);
 			patientNumberLabel.x = this._chartStartX;
@@ -214,7 +228,7 @@ package collaboRhythm.hiviva.view.components
 		private function drawLeftAxisLabels():void
 		{
 			var leftAxisTop:Label = new Label();
-			leftAxisTop.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			leftAxisTop.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			leftAxisTop.text = "100%";
 			addChild(leftAxisTop);
 			leftAxisTop.width = this._leftAxisSpace;
@@ -223,7 +237,7 @@ package collaboRhythm.hiviva.view.components
 			leftAxisTop.y = this._chartStartY - (leftAxisTop.height * 0.5);
 
 			var leftAxisBottom:Label = new Label();
-			leftAxisBottom.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			leftAxisBottom.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			leftAxisBottom.text = this._lowestAdherence + "%";
 			addChild(leftAxisBottom);
 			leftAxisBottom.width = this._leftAxisSpace;
@@ -232,7 +246,7 @@ package collaboRhythm.hiviva.view.components
 			leftAxisBottom.y = this._chartStartY + this._chartHeight - (leftAxisBottom.height * 0.5);
 
 			var leftAxisLabel:Label = new Label();
-			leftAxisLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			leftAxisLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 			leftAxisLabel.text = "Adherence";
 			addChild(leftAxisLabel);
 			leftAxisLabel.width = 400;
@@ -516,15 +530,5 @@ package collaboRhythm.hiviva.view.components
 		{
 			_scheduleHistoryData = value;
 		}
-/*
-		public function get patientData():Array
-		{
-			return _patientData;
-		}
-
-		public function set patientData(value:Array):void
-		{
-			_patientData = value;
-		}*/
 	}
 }

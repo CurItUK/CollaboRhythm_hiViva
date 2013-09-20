@@ -8,6 +8,7 @@ package collaboRhythm.hiviva.view.components
 
 	import feathers.controls.Label;
 	import feathers.core.FeathersControl;
+	import feathers.display.TiledImage;
 
 	import flash.utils.Dictionary;
 
@@ -17,6 +18,7 @@ package collaboRhythm.hiviva.view.components
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.textures.Texture;
+	import starling.textures.TextureSmoothing;
 
 	public class AdherenceTableReport extends FeathersControl
 	{
@@ -30,6 +32,8 @@ package collaboRhythm.hiviva.view.components
 		private var _dataHolder:Sprite;
 		private var _columnWidth:Number;
 		private var _firstRowHeight:Number;
+		private var _greyBg:TiledImage;
+		private var _bg:Sprite;
 
 		public function AdherenceTableReport()
 		{
@@ -70,7 +74,7 @@ package collaboRhythm.hiviva.view.components
 			addChild(firstRowHolder);
 
 			var firstRowLabel:Label = new Label();
-			firstRowLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			firstRowLabel.name = HivivaThemeConstants.BODY_BOLD_DARK_LABEL;
 			firstRowLabel.text = "Adherence for this period (%)";
 			firstRowHolder.addChild(firstRowLabel);
 			firstRowLabel.x = this._columnWidth + this._cellPadding; // MedicationCell gap * 2
@@ -110,7 +114,7 @@ package collaboRhythm.hiviva.view.components
 				}
 				if(!medExists)
 				{
-					medicationCell = new MedicationCell();
+					medicationCell = new MedicationCell(MedicationCell.DARK_THEME);
 					medicationCell.brandName = HivivaModifier.getBrandName(_medications[cellCount].MedicationName);
 					medicationCell.genericName = HivivaModifier.getGenericName(_medications[cellCount].MedicationName);
 
@@ -136,7 +140,7 @@ package collaboRhythm.hiviva.view.components
 
 			// average row name
 			var averageRowLabel:Label = new Label();
-			averageRowLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			averageRowLabel.name = HivivaThemeConstants.BODY_BOLD_DARK_LABEL;
 			averageRowLabel.text = "Average";
 			_dataHolder.addChild(averageRowLabel);
 //			averageRowLabel.textRendererProperties.textFormat = new BitmapFontTextFormat(TextField.getBitmapFont("engraved-lighter-bold"), 24, Color.WHITE);
@@ -261,7 +265,7 @@ package collaboRhythm.hiviva.view.components
 
 			valueLabel = new Label();
 			valueLabel.text = value + "%";
-			valueLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			valueLabel.name = HivivaThemeConstants.BODY_BOLD_DARK_CENTERED_LABEL;
 			addChild(valueLabel);
 			valueLabel.width = this._columnWidth - (this._cellPadding * 2);
 			valueLabel.validate();
@@ -276,13 +280,19 @@ package collaboRhythm.hiviva.view.components
 			var vertLineTexture:Texture = Main.assets.getTexture("verticle_line");
 			var verticalLine:Image;
 
-			var bg:Sprite = new Sprite();
-			addChildAt(bg, 0);
+			_bg = new Sprite();
+			addChildAt(_bg, 0);
 
-			var tableBg:Quad = new Quad(this.actualWidth, _totalHeight, 0x4c5f76);
+			_greyBg = new TiledImage(Main.assets.getTexture("screen_base"));
+			_greyBg.width = this.actualWidth;
+			_greyBg.height = this._totalHeight;
+			_greyBg.smoothing = TextureSmoothing.NONE;
+			_greyBg.touchable = false;
+			_bg.addChild(_greyBg);
+
+			var tableBg:Quad = new Quad(this.actualWidth, this._totalHeight, 0x4c5f76);
 			tableBg.alpha = 0.25;
-			tableBg.blendMode = BlendMode.MULTIPLY;
-			bg.addChild(tableBg);
+			_bg.addChild(tableBg);
 
 			var light:Quad;
 			for (var i:int = 0; i < this._rowsData.length; i++)
@@ -291,7 +301,7 @@ package collaboRhythm.hiviva.view.components
 				{
 					light = new Quad(this.actualWidth, this._rowsData[i].cellHeight, 0xffffff);
 					light.alpha = 0.2;
-					bg.addChild(light);
+					_bg.addChild(light);
 					light.y = this._rowsData[i].y;
 				}
 

@@ -114,7 +114,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.addChild(_connectToPatientBtn);
 
 			this._messagesButton = new TopNavButton();
-			this._messagesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_02"));
+//			this._messagesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_02"));
+			this._messagesButton.hivivaImage = new Image(Main.assets.getTexture("v2_top_nav_icon_02"));
 			this._messagesButton.visible = false;
 			this._messagesButton.addEventListener(Event.TRIGGERED , messagesButtonHandler);
 

@@ -97,12 +97,12 @@ package collaboRhythm.hiviva.view.components
 			addChild(this._trophy);
 
 			this._textLabel = new Label();
-			this._textLabel.name = HivivaThemeConstants.MEDICINE_BRANDNAME_LABEL;
+			this._textLabel.name = HivivaThemeConstants.MEDICINE_BRANDNAME_WHITE_LABEL;
 			this._textLabel.text = _text;
 			this.addChild(this._textLabel);
 
 			this._dateRangeLabel = new Label();
-			this._dateRangeLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
+			this._dateRangeLabel.name = HivivaThemeConstants.CELL_SMALL_WHITE_LABEL;
 			this._dateRangeLabel.text = _dateRange;
 			this.addChild(this._dateRangeLabel);
 

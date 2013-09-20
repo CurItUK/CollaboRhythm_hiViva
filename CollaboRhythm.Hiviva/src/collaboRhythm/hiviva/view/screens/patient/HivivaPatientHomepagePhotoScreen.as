@@ -91,7 +91,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._instructions);
 
 			this._categoryMenuLabel = new Label();
-			this._categoryMenuLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._categoryMenuLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._categoryMenuLabel.text = "App image categories";
 			this._content.addChild(this._categoryMenuLabel);
 
@@ -99,7 +99,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.addChild(this._galleryBtnContainer);
 
 			this._uploadLabel = new Label();
-			this._uploadLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._uploadLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._uploadLabel.text = "Select your own image";
 			this._content.addChild(this._uploadLabel);
 

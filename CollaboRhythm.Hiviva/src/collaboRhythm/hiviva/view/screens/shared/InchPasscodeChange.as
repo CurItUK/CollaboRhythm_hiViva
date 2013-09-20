@@ -91,7 +91,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			initSetupPasscodeReInputs();
 
 			this._enterBtn = new Button();
-			this._enterBtn.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._enterBtn.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._enterBtn.label = "Enter";
 			this._enterBtn.addEventListener(Event.TRIGGERED , enterBtnHandler);
 			this._content.addChild(this._enterBtn);

@@ -113,17 +113,17 @@ package collaboRhythm.hiviva.view.screens
 			this._bg.alpha = 0.2;
 
 			this._primaryLabel = new Label();
-			this._primaryLabel.nameList.add(HivivaThemeConstants.BODY_BOLD_LABEL);
+			this._primaryLabel.nameList.add(HivivaThemeConstants.BODY_BOLD_WHITE_LABEL);
 			this._primaryLabel.text = _primaryText;
 
 			this._secondaryLabel = new Label();
-			this._secondaryLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
+			this._secondaryLabel.name = HivivaThemeConstants.CELL_SMALL_WHITE_LABEL;
 			this._secondaryLabel.text = _secondaryText;
 
 			this._icon = new Image(Texture.empty());
 
 			this._dateLabel = new Label();
-			this._dateLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
+			this._dateLabel.name = HivivaThemeConstants.CELL_SMALL_WHITE_LABEL;
 			this._dateLabel.text = _dateText;
 
 			this._check = new Check();
@@ -156,7 +156,7 @@ package collaboRhythm.hiviva.view.screens
 			{
 				this._icon = new Image(Main.assets.getTexture("message_icon_req"));
 				this._bg.visible = false;
-				this._primaryLabel.nameList.remove(HivivaThemeConstants.BODY_BOLD_LABEL);
+				this._primaryLabel.nameList.remove(HivivaThemeConstants.BODY_BOLD_WHITE_LABEL);
 			}
 			if(this._messageType == STATUS_ALERT_TYPE)
 			{
@@ -166,12 +166,12 @@ package collaboRhythm.hiviva.view.screens
 			{
 				this._check.visible = false;
 				this._bg.visible = false;
-				this._primaryLabel.nameList.remove(HivivaThemeConstants.BODY_BOLD_LABEL);
+				this._primaryLabel.nameList.remove(HivivaThemeConstants.BODY_BOLD_WHITE_LABEL);
 			}
 			if(this._read)
 			{
 				this._bg.visible = false;
-				this._primaryLabel.nameList.remove(HivivaThemeConstants.BODY_BOLD_LABEL);
+				this._primaryLabel.nameList.remove(HivivaThemeConstants.BODY_BOLD_WHITE_LABEL);
 			}
 		}
 

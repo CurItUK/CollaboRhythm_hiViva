@@ -71,7 +71,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function initPasswordRecovery():void
 		{
 			this._questionsTitle = new Label();
-			this._questionsTitle.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._questionsTitle.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._content.addChild(this._questionsTitle);
 			this._questionsTitle.width = Constants.STAGE_WIDTH;
 			this._questionsTitle.text = "Question";
@@ -86,7 +86,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._question.x = 20;
 
 			this._answerTitle = new Label();
-			this._answerTitle.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._answerTitle.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._content.addChild(this._answerTitle);
 			this._answerTitle.width = Constants.STAGE_WIDTH;
 			this._answerTitle.text = "Answer";
@@ -103,7 +103,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._answerInput.validate();
 
 			this._enterBtn = new Button();
-			this._enterBtn.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._enterBtn.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._enterBtn.label = "Enter";
 			this._enterBtn.addEventListener(Event.TRIGGERED , enterBtnHandler);
 			this._content.addChild(this._enterBtn);

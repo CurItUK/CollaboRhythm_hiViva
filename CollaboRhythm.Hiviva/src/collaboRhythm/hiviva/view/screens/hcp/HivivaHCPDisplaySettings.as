@@ -92,7 +92,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._subHeaderLabel);
 
 			this._instructionsLabel = new Label();
-			this._instructionsLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._instructionsLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._instructionsLabel.text = "Order my patients by:";
 			this._content.addChild(this._instructionsLabel);
 
@@ -121,7 +121,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._descendingRadio);
 
 			this._fromInstructionsLabel = new Label();
-			this._fromInstructionsLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			this._fromInstructionsLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._fromInstructionsLabel.text = "Show patient data from:";
 			this._content.addChild(this._fromInstructionsLabel);
 

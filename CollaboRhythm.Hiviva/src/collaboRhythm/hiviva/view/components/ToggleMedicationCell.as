@@ -15,9 +15,9 @@ package collaboRhythm.hiviva.view.components
 //		private var _isChanged:Boolean;
 		private var _medicationId:int;
 
-		public function ToggleMedicationCell()
+		public function ToggleMedicationCell(theme:String = MedicationCell.WHITE_THEME)
 		{
-			super();
+			super(theme);
 		}
 
 		override protected function draw():void

@@ -9,6 +9,7 @@ package collaboRhythm.hiviva.view.components
 	import feathers.controls.Label;
 
 	import feathers.core.FeathersControl;
+	import feathers.display.TiledImage;
 
 	import starling.display.BlendMode;
 	import starling.display.Image;
@@ -16,6 +17,7 @@ package collaboRhythm.hiviva.view.components
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.textures.Texture;
+	import starling.textures.TextureSmoothing;
 
 	public class TestTableReport extends FeathersControl
 	{
@@ -34,6 +36,7 @@ package collaboRhythm.hiviva.view.components
 		private var _fullColumnWidth:Number;
 		private var _fullCellHeight:Number;
 		private var _tableHolder:Sprite;
+		private var _greyBg:TiledImage;
 
 		public static const DATA_ALL:String = "all";
 		public static const DATA_CD4:String = "Cd4 count";
@@ -77,7 +80,21 @@ package collaboRhythm.hiviva.view.components
 			initBackground();
 
 			this.setSizeInternal(this._tableWidth, this._tableStartY + this._tableHeight, true);
+			initGreyBg();
 			this.validate();
+		}
+
+		private function initGreyBg():void
+		{
+			_greyBg = new TiledImage(Main.assets.getTexture("screen_base"));
+			_greyBg.x = this._tableStartX;
+			_greyBg.y = this._tableStartY;
+			_greyBg.width = this.actualWidth;
+			_greyBg.height = this._tableHeight;
+			_greyBg.smoothing = TextureSmoothing.NONE;
+			_greyBg.touchable = false;
+			//_greyBg.flatten();
+			addChildAt(_greyBg,0);
 		}
 
 		private function setupTestDataObject():void
@@ -182,7 +199,7 @@ package collaboRhythm.hiviva.view.components
 		private function initTableTitleLabel():void
 		{
 			var tableTitleLabel:Label = new Label();
-			tableTitleLabel.name = HivivaThemeConstants.BODY_BOLD_CENTERED_LABEL;
+			tableTitleLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_CENTERED_LABEL;
 //			tableTitleLabel.text = "Overall " + (this._dataCategory == "adherence" ? "Adherence" : "Tolerability");
 			tableTitleLabel.text = "Test Results";
 			this._tableHolder.addChild(tableTitleLabel);
@@ -199,7 +216,7 @@ package collaboRhythm.hiviva.view.components
 
 			// use the height of this label to establish row heights
 			var sampleLabel:Label = new Label();
-			sampleLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
+			sampleLabel.name = HivivaThemeConstants.BODY_BOLD_DARK_LABEL;
 			sampleLabel.text = " ";
 			this._tableHolder.addChild(sampleLabel);
 			sampleLabel.validate();
@@ -210,23 +227,23 @@ package collaboRhythm.hiviva.view.components
 
 			this._tableHolder.removeChild(sampleLabel);
 
-			drawTableCell("Date", 0, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_LABEL);
+			drawTableCell("Date", 0, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
 			drawValues(_testData.dates, 0);
 
 			switch(this._dataCategory)
 			{
 				case DATA_ALL :
-					drawTableCell("CD4 count", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_LABEL);
+					drawTableCell("CD4 count", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
 					drawValues(_testData.cd4s, _fullColumnWidth);
-					drawTableCell("Viral Load", _fullColumnWidth * 2, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_LABEL);
+					drawTableCell("Viral Load", _fullColumnWidth * 2, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
 					drawValues(_testData.viralLoads, _fullColumnWidth * 2);
 					break;
 				case DATA_CD4 :
-					drawTableCell("CD4 count", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_LABEL);
+					drawTableCell("CD4 count", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
 					drawValues(_testData.cd4s, _fullColumnWidth);
 					break;
 				case DATA_VIRAL_LOAD :
-					drawTableCell("Viral Load", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_LABEL);
+					drawTableCell("Viral Load", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
 					drawValues(_testData.viralLoads, _fullColumnWidth);
 					break;
 			}
@@ -256,7 +273,7 @@ package collaboRhythm.hiviva.view.components
 				yPos = this._tableStartY + (_fullCellHeight * (i + 1));
 				value = data[i];
 
-				drawTableCell(value, xPos, yPos, i % 2 == 0);
+				drawTableCell(value, xPos, yPos, i % 2 == 0, HivivaThemeConstants.BODY_DARK_LABEL);
 			}
 		}
 

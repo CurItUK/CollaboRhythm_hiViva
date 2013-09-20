@@ -2,15 +2,13 @@ package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
 	import feathers.controls.ScrollContainer;
 	import feathers.core.FeathersControl;
+	import feathers.display.TiledImage;
 	import feathers.layout.VerticalLayout;
 	import feathers.text.BitmapFontTextFormat;
 
@@ -23,6 +21,7 @@ package collaboRhythm.hiviva.view.components
 	import starling.display.Sprite;
 	import starling.text.TextField;
 	import starling.textures.Texture;
+	import starling.textures.TextureSmoothing;
 	import starling.utils.Color;
 
 	public class PatientAdherenceTable extends FeathersControl
@@ -44,6 +43,7 @@ package collaboRhythm.hiviva.view.components
 		private var _patientData:XML;
 		private var _scale:Number = 1;
 		private var _wholeTableBg:Sprite;
+		private var _greyBg:TiledImage;
 
 		public function PatientAdherenceTable()
 		{
@@ -67,6 +67,17 @@ package collaboRhythm.hiviva.view.components
 		{
 			initDayRow();
 			initDayRowBg();
+		}
+
+		private function initGreyBg():void
+		{
+			_greyBg = new TiledImage(Main.assets.getTexture("screen_base"));
+			_greyBg.width = this.actualWidth;
+			_greyBg.height = this._firstRowHeight + this._mainScrollContainer.height;
+			_greyBg.smoothing = TextureSmoothing.NONE;
+			_greyBg.touchable = false;
+			//_greyBg.flatten();
+			addChildAt(_greyBg,0);
 		}
 
 		private function initDayRow():void
@@ -138,7 +149,7 @@ package collaboRhythm.hiviva.view.components
 				}
 				if(!medExists)
 				{
-					medicationCell = new MedicationCell();
+					medicationCell = new MedicationCell(MedicationCell.DARK_THEME);
 					medicationCell.scale = this._scale;
 					medicationCell.brandName = HivivaModifier.getBrandName(_medications[medCount].MedicationName);
 					medicationCell.genericName = HivivaModifier.getGenericName(_medications[medCount].MedicationName);
@@ -222,6 +233,7 @@ package collaboRhythm.hiviva.view.components
 				initTableBgColours();
 				initVerticalLines();
 			}
+			initGreyBg()
 		}
 
 		private function populateAdherence():void

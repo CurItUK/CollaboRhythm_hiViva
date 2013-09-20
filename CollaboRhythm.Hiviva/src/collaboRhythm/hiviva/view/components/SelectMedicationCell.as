@@ -16,9 +16,9 @@ package collaboRhythm.hiviva.view.components
 		private var _medicationScheduleId:int;
 		private var _medicationGuid:String;
 
-		public function SelectMedicationCell()
+		public function SelectMedicationCell(theme:String = MedicationCell.WHITE_THEME)
 		{
-			super();
+			super(theme);
 		}
 
 		override protected function draw():void
