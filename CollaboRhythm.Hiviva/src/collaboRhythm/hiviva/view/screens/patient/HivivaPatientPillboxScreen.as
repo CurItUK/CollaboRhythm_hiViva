@@ -3,14 +3,10 @@ package collaboRhythm.hiviva.view.screens.patient
 
 
 	import collaboRhythm.hiviva.global.Constants;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.components.SuperscriptCircle;
-	import collaboRhythm.hiviva.view.media.Assets;
-
-	import feathers.controls.Label;
 
 	import feathers.controls.Screen;
 
@@ -85,9 +81,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 			trace("medicationsLoadCompleteHandler " + e.data.xmlResponse);
 
-			//_amMedication
-			//_pmMedication
-
 			this._medicationResponse = e.data.xmlResponse;
 
 			var medicationsCount:Number = this._medicationResponse.DCUserMedication.length();
@@ -124,47 +117,6 @@ package collaboRhythm.hiviva.view.screens.patient
 				buildPMPillData();
 			}
 
-			trace("_amMedication " + _amMedication);
-			trace("_pmMedication " + _pmMedication);
-
-
-
-
-			//var medicationsXML:XMLList = e.data.xmlResponse.DCUserMedication.Schedule.DCMedicationSchedule;
-
-
-			/*
-			if(medicationsXML.length() >0)
-			{
-
-				var loop:uint = medicationsXML.length();
-				for(var i:uint = 0 ; i < loop ; i++)
-				{
-					if (medicationsXML[i].Time >= 0 && medicationsXML[i].Time <= 11)
-					{
-						_amMedication.push(medicationsXML[i]);
-					}
-					else if (medicationsXML[i].Time >= 12 && medicationsXML[i].Time <= 23)
-					{
-						_pmMedication.push(medicationsXML[i]);
-					}
-				}
-				if(_amMedication.length > 0) buildTabletAMCells();
-				if(_pmMedication.length > 0) buildTabletPMCells();
-			}
-
-			*/
-
-
-			//this._medicationResponse = e.data.xmlResponse;
-
-			/*
-			if(e.data.xmlResponse.DCUserMedication.length() > 0)
-			{
-				buildAMMedications();
-			}
-			*/
-
 		}
 
 		private function buildAMPillData():void
@@ -187,6 +139,21 @@ package collaboRhythm.hiviva.view.screens.patient
 					tablet.y = this._amTableYloc + this._pillboxYCellSpacing * j;
 					tabletCount.x = tablet.x + tablet.width/3;
 					tabletCount.y = tablet.y - tablet.height/2;
+
+					var tickCell:Sprite = new Sprite();
+					var takenTick:Image = new Image(Main.assets.getTexture("v2_pill_icon_tick"));
+
+					/*
+					tickCell.addChild(takenTick);
+					takenTick.y = -takenTick.width/2;
+					takenTick.x = -takenTick.height/2;
+
+					this.addChild(tickCell);
+
+					tickCell.x = tablet.x ;
+					tickCell.y = tablet.y ;
+					*/
+
 				}
 			}
 		}
@@ -215,113 +182,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
-		/*
-		private function buildAMMedications():void
-		{
-			var daysLoop:uint = 7;
-
-			for(var j:uint=0  ; j <daysLoop ; j++)
-			{
-				var medLoop:uint = this._medicationResponse.DCUserMedication.length();
-				for(var i:uint = 0 ; i < medLoop ; i++)
-				{
-
-					var scheduleLoop:uint = this._medicationResponse.DCUserMedication[i].Schedule.DCMedicationSchedule.length();
-					var amTabletCount:Number = 0;
-					var amTabletCount:Number = 0;
-					for(var k:uint = 0 ; k < scheduleLoop ; k++)
-					{
-						var tabCount:Number = Number(this._medicationResponse.DCUserMedication[i].Schedule.DCMedicationSchedule[k].Count);
-						amTabletCount += tabCount;
-					}
-
-					var tablet:Image = new Image(Main.assets.getTexture("tablet" + (i+1)));
-					this.addChild(tablet);
-
-					tablet.x = this._amTableXloc + (i * tablet.width) + 10;
-					tablet.y = this._amTableYloc + this._pillboxYCellSpacing * j;
-
-
-
-					var tabletCount:SuperscriptCircle = new SuperscriptCircle();
-					tabletCount.text = String(amTabletCount);
-					tabletCount.x = tablet.x + tablet.width/3;
-					tabletCount.y = tablet.y - tablet.height/2;
-
-					this.addChild(tabletCount);
-
-
-
-				}
-			}
-		}
-		*/
-
-		private function buildTabletAMCells():void
-		{
-			trace("buildTabletAMCells " + _amMedication.length);
-			var daysLoop:uint = 7;
-
-			for(var j:uint=0  ; j <daysLoop ; j++)
-			{
-				var loop:uint = _amMedication.length;
-				if (loop > 0)
-				{
-					var tabletColorCount:uint = 1;
-					for (var i:uint = 0; i < loop; i++)
-					{
-						var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
-						var tabletCount:SuperscriptCircle = new SuperscriptCircle();
-						tabletCount.text = _amMedication[i].Count;
-						tabletColorCount++;
-						if (tabletColorCount > 4)
-						{
-							tabletColorCount = 1;
-						}
-						this.addChild(tablet);
-						this.addChild(tabletCount);
-						tablet.x = this._amTableXloc + (i * tablet.width) + 10;
-						tablet.y = this._amTableYloc + this._pillboxYCellSpacing * j;
-						tabletCount.x = tablet.x + tablet.width/3;
-						tabletCount.y = tablet.y - tablet.height/2;
-					}
-					tabletColorCount = 1;
-				}
-			}
-		}
-
-		private function buildTabletPMCells():void
-		{
-			trace("buildTabletAMCells " + _pmMedication.length);
-			var daysLoop:uint = 7;
-
-			for(var j:uint=0  ; j <daysLoop ; j++)
-			{
-				var loop:uint = _pmMedication.length;
-				if (loop > 0)
-				{
-					var tabletColorCount:uint = 1;
-					for (var i:uint = 0; i < loop; i++)
-					{
-						var tablet:Image = new Image(Main.assets.getTexture("tablet" + tabletColorCount));
-						var tabletCount:SuperscriptCircle = new SuperscriptCircle();
-						tabletCount.text = _pmMedication[i].Count;
-						tabletColorCount++;
-						if (tabletColorCount > 4)
-						{
-							tabletColorCount = 1;
-						}
-						this.addChild(tablet);
-						this.addChild(tabletCount);
-						tablet.x = this._pmTableXloc + (i * tablet.width) + 10;
-						tablet.y = this._pmTableYloc + this._pillboxYCellSpacing * j;
-						tabletCount.x = tablet.x + tablet.width/3;
-						tabletCount.y = tablet.y - tablet.height/2;
-					}
-					tabletColorCount = 1;
-				}
-			}
-		}
 
 		public function get headerHeight():Number
 		{
