@@ -15,6 +15,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Screen;
 
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 
 	import flash.utils.Timer;
 
@@ -159,6 +160,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					holderCell.height = this._clockFace.height;
 					var tabletCell:Sprite = new Sprite();
 
+
 //					var timeSegment:Image = new Image(Main.assets.getTexture("clock_segment"));
 					var timeSegment:Image = new Image(Main.assets.getTexture("v2_clock_segment"));
 					timeSegment.width = timeSegment.width * 0.96;
@@ -170,48 +172,37 @@ package collaboRhythm.hiviva.view.screens.patient
 					var tablet:Image = getTabletImage(i + 1);
 					this.tabletHolder.addChild(timeSegment);
 
-
-
-
 					tabletCell.addChild(tablet);
-
-					/*
-					if(this._medicationResponse.DCUserMedication[i].Schedule.DCMedicationSchedule[j].Taken == "true")
-					{
-						var takenTick:Image = new Image(Main.assets.getTexture("v2_pill_icon_tick"));
-						tabletCell.addChild(takenTick);
-
-					}
-					*/
 
 					tablet.y = -tablet.width/2;
 					tablet.x = clockHandSpacing + (i * tablet.width) + 10;
 
-					/*
-					if(takenTick != null)
-					{
-						takenTick.y = tablet.y + takenTick.height/2;
-						takenTick.x = tablet.x + takenTick.width/2;
+					var tickCell:Sprite = new Sprite();
+					var takenTick:Image = new Image(Main.assets.getTexture("v2_pill_icon_tick"));
 
-					}
-					*/
-
-
+					tickCell.addChild(takenTick);
+					takenTick.y = -takenTick.width/2;
+					takenTick.x = -takenTick.height/2;
+					tabletCell.addChild(tickCell);
+					tickCell.x =  tablet.x + tablet.width/2;
 
 
 					holderCell.addChild(tabletCell);
-
 					holderCell.x = this._clockCenterX;
 					holderCell.y = this._clockCenterY;
 
 					timeSegment.rotation =  holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * time) - HivivaModifier.degreesToRadians(90);
 					timeSegment.rotation += tempRotation
 
-					//if(takenTick!= null) takenTick.rotation =  -(holderCell.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * time) - HivivaModifier.degreesToRadians(90));
+					tickCell.rotation = -holderCell.rotation;
+
 					timeSegment.x = holderCell.x
 					timeSegment.y = holderCell.y
 
 					this.addChild(holderCell);
+
+					if(this._medicationResponse.DCUserMedication[i].Schedule.DCMedicationSchedule[j].Taken == "false") tickCell.visible = false;
+
 				}
 			}
 		}
