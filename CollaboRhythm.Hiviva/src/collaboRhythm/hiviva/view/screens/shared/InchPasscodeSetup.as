@@ -58,7 +58,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._header.leftItems = new <DisplayObject>[_backButton];
 		}
 
-
 		override protected function draw():void
 		{
 			super.draw();
@@ -71,7 +70,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			super.preValidateContent();
 			this._cancelAndSave.width = this._innerWidth;
 			this._passcodeInstruction2.width = this._innerWidth;
-
 		}
 
 		private function backBtnHandler(e:Event):void
