@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.model.vo.UserAuthenticationVO;
 	import collaboRhythm.hiviva.view.HivivaStartup;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.components.PasscodeFieldGenerator;
 
 	import feathers.controls.Button;
@@ -36,6 +37,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _passcodeInstruction3:Label;
 		private var _enterBtn:Button;
 		private var _userAuthenticationVO:UserAuthenticationVO;
+		private var _cancelAndSave:BoxedButtons;
 
 		public function InchPasscodeSetup()
 		{
@@ -64,6 +66,14 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._contentHeight = this._content.height;
 		}
 
+		override protected function preValidateContent():void
+		{
+			super.preValidateContent();
+			this._cancelAndSave.width = this._innerWidth;
+			this._passcodeInstruction2.width = this._innerWidth;
+
+		}
+
 		private function backBtnHandler(e:Event):void
 		{
 			var userType:String = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userVO.type;
@@ -75,7 +85,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			{
 				this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 			}
-
 		}
 
 		private function initPasscodeSetup():void
@@ -154,13 +163,15 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._passcodeInstruction3.y = this._answerInput.y + this._answerInput.height + 20;
 			this._passcodeInstruction3.validate();
 
-			this._enterBtn = new Button();
-			this._enterBtn.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
-			this._enterBtn.label = "Enter";
-			this._enterBtn.addEventListener(Event.TRIGGERED , enterBtnHandler);
-			this._content.addChild(this._enterBtn);
-			this._enterBtn.validate();
-			this._enterBtn.y = this._passcodeInstruction3.y + this._passcodeInstruction3.height + 40;
+			this._cancelAndSave = new BoxedButtons();
+			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
+			this._cancelAndSave.scale = this.dpiScale;
+			this._cancelAndSave.labels = ["Cancel", "Save"];
+			this._content.addChild(this._cancelAndSave);
+
+			this._cancelAndSave.width = this._innerWidth;
+			this._cancelAndSave.validate();
+			this._cancelAndSave.y = this.actualHeight - this._cancelAndSave.height - 50;
 		}
 
 		private function onEnterInputHandler(event:Event):void
@@ -219,16 +230,36 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		}
 
-		private function enterBtnHandler(event:Event):void
+
+		private function cancelAndSaveHandler(e:Event):void
 		{
-			var formValidation:String = validateContent();
-			if (formValidation.length == 0)
+
+			var userType:String = HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userVO.type;
+
+			var button:String = e.data.button;
+			switch(button)
 			{
-				savePasscode();
-			}
-			else
-			{
-				showFormValidation(formValidation);
+				case "Cancel" :
+					if(userType == "HCP")
+					{
+						this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+					}
+					else
+					{
+						this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+					}
+					break;
+				case "Save" :
+					var formValidation:String = validateContent();
+					if (formValidation.length == 0)
+					{
+						savePasscode();
+					}
+					else
+					{
+						showFormValidation(formValidation);
+					}
+					break;
 			}
 		}
 

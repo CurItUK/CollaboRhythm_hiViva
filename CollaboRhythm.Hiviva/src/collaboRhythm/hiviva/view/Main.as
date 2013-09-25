@@ -497,7 +497,7 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_ADD_HCP, new ScreenNavigatorItem(HivivaPatientAddHCP));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientEditMedsScreen));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientAddMedsScreen));
-			this._settingsNav.addScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN, new ScreenNavigatorItem(HivivaPatientUserSignupScreen));
+			//this._settingsNav.addScreen(HivivaScreens.PATIENT_USER_SIGNUP_SCREEN, new ScreenNavigatorItem(HivivaPatientUserSignupScreen));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_SCREEN, new ScreenNavigatorItem(HivivaPatientHelpScreen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_GETTINGSTARTED_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_GettingStarted_Screen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_DAILY_MEDICINES_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_DailyMedicines_Screen, {navGoHome:goBackToMainScreen}));

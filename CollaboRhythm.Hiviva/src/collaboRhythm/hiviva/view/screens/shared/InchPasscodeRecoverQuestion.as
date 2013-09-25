@@ -5,6 +5,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.model.vo.UserAuthenticationVO;
 	import collaboRhythm.hiviva.view.HivivaStartup;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -24,6 +25,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _answerInput:TextInput;
 		private var _userAuthenticationVO:UserAuthenticationVO;
 		private var _enterBtn:Button;
+		private var _cancelAndSave:BoxedButtons;
 
 		private var questions:Array =
 			[
@@ -61,6 +63,13 @@ package collaboRhythm.hiviva.view.screens.shared
 			super.draw();
 			this._content.validate();
 			this._contentHeight = this._content.height;
+		}
+
+		override protected function preValidateContent():void
+		{
+			super.preValidateContent();
+			this._cancelAndSave.width = this._innerWidth;
+
 		}
 
 		private function backBtnHandler(e:Event):void
@@ -102,28 +111,41 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._answerInput.y = this._answerTitle.y + this._answerTitle.height + 20;
 			this._answerInput.validate();
 
-			this._enterBtn = new Button();
-			this._enterBtn.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
-			this._enterBtn.label = "Enter";
-			this._enterBtn.addEventListener(Event.TRIGGERED , enterBtnHandler);
-			this._content.addChild(this._enterBtn);
-			this._enterBtn.validate();
-			this._enterBtn.y = this.actualHeight - this._enterBtn.height - 50;
+			this._cancelAndSave = new BoxedButtons();
+			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
+			this._cancelAndSave.scale = this.dpiScale;
+			this._cancelAndSave.labels = ["Cancel", "Save"];
+			this._content.addChild(this._cancelAndSave);
+
+			this._cancelAndSave.width = this._innerWidth;
+			this._cancelAndSave.validate();
+			this._cancelAndSave.y = this.actualHeight - this._cancelAndSave.height - 50;
 
 		}
 
-		private function enterBtnHandler(event:Event):void
+
+		private function cancelAndSaveHandler(e:Event):void
 		{
-			var formValidation:String = validateContent();
-			if (formValidation.length == 0)
+			var button:String = e.data.button;
+			switch(button)
 			{
-				allowChangePasscode();
-			}
-			else
-			{
-				showFormValidation(formValidation);
+				case "Cancel" :
+					this.owner.showScreen(HivivaScreens.SPLASH_SCREEN);
+					break;
+				case "Save" :
+					var formValidation:String = validateContent();
+					if (formValidation.length == 0)
+					{
+						allowChangePasscode();
+					}
+					else
+					{
+						showFormValidation(formValidation);
+					}
+					break;
 			}
 		}
+
 
 		private function onEnterInputHandler(event:Event):void
 		{
