@@ -17,7 +17,10 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	import flash.events.TimerEvent;
 	import flash.system.System;
+	import flash.text.SoftKeyboardType;
 	import flash.utils.Timer;
+
+	import flashx.textLayout.formats.TextAlign;
 
 	import starling.display.Image;
 	import starling.events.Event;
@@ -219,6 +222,10 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._passwordInput = new TextInput();
 				this._passwordInput.addEventListener(FeathersEventType.FOCUS_IN, passwordInputFocusInHandler);
 				this._passwordInput.textEditorProperties.displayAsPassword = true;
+				this._passwordInput.textEditorProperties.maxChars = 4;
+				this._passwordInput.textEditorProperties.restrict = "0-9";
+				this._passwordInput.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
+				this._passwordInput.textEditorProperties.textAlign = TextAlign.CENTER;
 				addChild(this._passwordInput);
 				this._passwordInput.width = Constants.STAGE_WIDTH * 0.5;
 				this._passwordInput.validate();
@@ -285,8 +292,10 @@ package collaboRhythm.hiviva.view.screens.shared
 			if(this._passwordInput.text == passcode)
 			{
 				closeDownScreen();
+			} else
+			{
+				this._passwordInput.textEditorProperties.color = 0xff0000;
 			}
-
 		}
 
 		private function closeDownScreen():void

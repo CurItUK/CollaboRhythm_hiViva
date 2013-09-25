@@ -7,13 +7,11 @@ package collaboRhythm.hiviva.view.components
 
 	import flash.text.SoftKeyboardType;
 
+	import flashx.textLayout.formats.TextAlign;
+
 	public class PasscodeFieldGenerator extends FeathersControl
 	{
-
-		private var _passcodeInput1:TextInput;
-		private var _passcodeInput2:TextInput;
-		private var _passcodeInput3:TextInput;
-		private var _passcodeInput4:TextInput;
+		private var _passwordInput:TextInput;
 
 		public function PasscodeFieldGenerator()
 		{
@@ -33,52 +31,23 @@ package collaboRhythm.hiviva.view.components
 
 		private function initInputFields():void
 		{
-			this._passcodeInput1 = new TextInput();
-			this._passcodeInput1.maxChars = 1;
-			this._passcodeInput1.restrict = "0-9";
-			this._passcodeInput1.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
-			this._passcodeInput1.displayAsPassword = true;
-			this.addChild(this._passcodeInput1);
-			this._passcodeInput1.validate();
-			this._passcodeInput1.width = Constants.PASSCODE_INPUT;
-			this._passcodeInput1.x = 78;
 
-			this._passcodeInput2 = new TextInput();
-			this._passcodeInput2.maxChars = 1;
-			this._passcodeInput2.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
-			this._passcodeInput2.restrict = "0-9";
-			this._passcodeInput2.displayAsPassword = true;
-			this.addChild(this._passcodeInput2);
-			this._passcodeInput2.validate();
-			trace("this._passcodeInput2 " + this._passcodeInput2.height)
-			this._passcodeInput2.width = Constants.PASSCODE_INPUT;
-			this._passcodeInput2.x = 206;
-
-			this._passcodeInput3 = new TextInput();
-			this._passcodeInput3.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
-			this._passcodeInput3.maxChars = 1;
-			this._passcodeInput3.restrict = "0-9";
-			this._passcodeInput3.displayAsPassword = true;
-			this.addChild(this._passcodeInput3);
-			this._passcodeInput3.validate();
-			this._passcodeInput3.width = Constants.PASSCODE_INPUT;
-			this._passcodeInput3.x = 334;
-
-			this._passcodeInput4 = new TextInput();
-			this._passcodeInput4.maxChars = 1;
-			this._passcodeInput4.restrict = "0-9";
-			this._passcodeInput4.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
-			this._passcodeInput4.displayAsPassword = true;
-			this.addChild(this._passcodeInput4);
-			this._passcodeInput4.validate();
-			this._passcodeInput4.width = Constants.PASSCODE_INPUT;
-			this._passcodeInput4.x = 462;
+			this._passwordInput = new TextInput();
+			this._passwordInput.textEditorProperties.displayAsPassword = true;
+			this._passwordInput.textEditorProperties.maxChars = 4;
+			this._passwordInput.textEditorProperties.restrict = "0-9";
+			this._passwordInput.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
+			this._passwordInput.textEditorProperties.textAlign = TextAlign.CENTER;
+			addChild(this._passwordInput);
+			this._passwordInput.width = Constants.STAGE_WIDTH * 0.5;
+			this._passwordInput.validate();
+			this._passwordInput.x = (Constants.STAGE_WIDTH * 0.5) - (this._passwordInput.width * 0.5);
 		}
 
 		public function areFieldsEmpty():Boolean
 		{
 			var validate:Boolean = false;
-			if(this._passcodeInput1.text == "" || this._passcodeInput2.text == "" || this._passcodeInput3.text == "" || this._passcodeInput4.text == "")
+			if(this._passwordInput.text == "")
 			{
 				validate = true;
 			}
@@ -87,9 +56,7 @@ package collaboRhythm.hiviva.view.components
 
 		public function inputsToPasscode():String
 		{
-			var passcode:String = this._passcodeInput1.text + this._passcodeInput2.text + this._passcodeInput3.text + this._passcodeInput4.text;
-
-			return passcode;
+			return this._passwordInput.text;
 		}
 	}
 }
