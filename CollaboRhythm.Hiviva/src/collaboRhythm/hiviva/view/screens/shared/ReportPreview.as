@@ -10,6 +10,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.view.components.AdherenceChartReport;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.components.AdherenceTableReport;
+	import collaboRhythm.hiviva.view.components.PreloaderSpinner;
 	import collaboRhythm.hiviva.view.components.TestTableReport;
 	import collaboRhythm.hiviva.view.components.TolerabilityChartReport;
 
@@ -46,6 +47,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _bodyLabel:Label;
 		private var _noMedicationHistory:Boolean = false;
 		private var _noTestResults:Boolean = false;
+		private var _preloader:PreloaderSpinner;
 
 		private var _PDFReportMailer:PDFReportMailer;
 
@@ -79,6 +81,9 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._cancelAndSend.width = Constants.INNER_WIDTH;
 			this._cancelAndSend.validate();
 			this._cancelAndSend.y = Constants.STAGE_HEIGHT - Constants.PADDING_BOTTOM - this._cancelAndSend.height;
+
+			this._preloader.y = Constants.STAGE_HEIGHT/2 - this._preloader.height/2;
+			this._preloader.x = Constants.INNER_WIDTH/2 - this._preloader.width/2;
 		}
 
 		override protected function initialize():void
@@ -102,6 +107,21 @@ package collaboRhythm.hiviva.view.screens.shared
 			getSettingsFromVO();
 
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
+
+			initHomeScreenPreloader();
+		}
+
+		private function initHomeScreenPreloader():void
+		{
+			this._preloader = new PreloaderSpinner();
+			this.addChild(this._preloader) ;
+
+		}
+
+		private function removePreloder():void
+		{
+			this._preloader.disposePreloader();
+			this.removeChild(this._preloader);
 		}
 
 		private function getSettingsFromVO():void
@@ -276,6 +296,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			_bodyLabel.x = Constants.PADDING_LEFT;
 			_bodyLabel.width = Constants.INNER_WIDTH;
 			this._content.validate();
+			removePreloder();
 		}
 
 		private function sendPDFInit():void

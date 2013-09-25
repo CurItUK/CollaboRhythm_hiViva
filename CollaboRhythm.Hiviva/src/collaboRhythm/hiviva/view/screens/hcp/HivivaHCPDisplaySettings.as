@@ -67,6 +67,10 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._instructionsLabel.width = this._innerWidth;
 			this._fromInstructionsLabel.width = this._innerWidth;
 
+			this._ascendingRadio.width =  this._innerWidth/2;
+			this._descendingRadio..width =  this._innerWidth/2;
+
+
 			this._cancelAndSave.width = this._innerWidth;
 			this._cancelAndSave.validate();
 			this._cancelAndSave.x = Constants.PADDING_LEFT;
@@ -111,12 +115,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._orderByGroup = new ToggleGroup();
 
 			this._ascendingRadio = new Radio();
-			this._ascendingRadio.label = "Ascending";
+			this._ascendingRadio.label = "Low to High";
 			this._orderByGroup.addItem(this._ascendingRadio);
 			this._content.addChild(this._ascendingRadio);
 
 			this._descendingRadio = new Radio();
-			this._descendingRadio.label = "Descending";
+			this._descendingRadio.label = "High to Low";
 			this._orderByGroup.addItem(this._descendingRadio);
 			this._content.addChild(this._descendingRadio);
 
