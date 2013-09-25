@@ -198,5 +198,11 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._hcpCellContainer.removeChildren();
 			}
 		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedHCPCompleteHandler);
+			super.dispose();
+		}
 	}
 }

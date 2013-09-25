@@ -359,5 +359,11 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			this.owner.showScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN);
 		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			super.dispose();
+		}
 	}
 }

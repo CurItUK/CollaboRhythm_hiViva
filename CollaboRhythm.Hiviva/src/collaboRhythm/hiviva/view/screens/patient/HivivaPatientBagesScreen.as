@@ -112,5 +112,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.dispatchEventWith("navGoHome");
 		}
 
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.MARK_ALERT_MESSAGE_AS_READ_COMPLETE, markAlertMessageAsReadComplete);
+			super.dispose();
+		}
+
+
+
 	}
 }
