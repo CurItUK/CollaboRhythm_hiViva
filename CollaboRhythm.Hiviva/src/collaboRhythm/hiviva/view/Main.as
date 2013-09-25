@@ -80,6 +80,7 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.Button;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.core.PopUpManager;
 
 	import flash.filesystem.File;
 	import flash.system.System;
@@ -114,6 +115,7 @@ package collaboRhythm.hiviva.view
 		private var _splashFirstRun:Boolean = true;
 		private var _splashScreenNav:ScreenNavigator;
 		private var _splashNavBg:MainBackground;
+		private var _popupManagerHolder:Sprite;
 
 		private static var _selectedHCPPatientProfile:XML;
 		private static var _assets:AssetManager;
@@ -278,12 +280,18 @@ package collaboRhythm.hiviva.view
 			this._settingsNav = new ScreenNavigator();
 			this.addChild(this._settingsNav);
 
+			this._popupManagerHolder = new Sprite();
+			this.addChild(this._popupManagerHolder);
+			PopUpManager.root = this._popupManagerHolder;
+
 			this._splashScreenNav = new ScreenNavigator();
 			this.addChild(this._splashScreenNav);
 
 			this._splashNavBg = new MainBackground();
 			this._splashNavBg.draw();
 			this._splashScreenNav.addChildAt(this._splashNavBg , 0);
+
+
 
 			this._splashScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete} , {backgroundTexture:Texture.fromTexture(this._splashBgTexture)}));
 			this._splashScreenNav.addScreen(HivivaScreens.PASSCODE_RECOVER_QUESTION_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverQuestion));
@@ -663,6 +671,16 @@ package collaboRhythm.hiviva.view
 		public static function get footerBtnGroupHeight():Number
 		{
 			return _footerBtnGroupHeight;
+		}
+
+		public function get popupManagerHolder():Sprite
+		{
+			return _popupManagerHolder;
+		}
+
+		public function set popupManagerHolder(value:Sprite):void
+		{
+			_popupManagerHolder = value;
 		}
 	}
 }

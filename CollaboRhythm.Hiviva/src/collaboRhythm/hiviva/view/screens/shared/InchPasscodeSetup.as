@@ -286,6 +286,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.PASSCODE_SAVE_DETAILS_COMPLETE , passcodeSaveCompleteHandler);
 			this._userAuthenticationVO.enabled = true;
 			this._userAuthenticationVO.passcode =   this._passcodeFieldGenerator1.inputsToPasscode();
+			this._userAuthenticationVO.answer = this._answerInput.text;
 			showFormValidation("Passcode saved OK");
 
 		}
