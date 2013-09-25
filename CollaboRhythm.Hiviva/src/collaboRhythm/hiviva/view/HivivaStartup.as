@@ -62,9 +62,6 @@ package collaboRhythm.hiviva.view
 			_hivivaStartup = this;
 			_hivivaAppController = new HivivaAppController();
 
-			NativeApplication.nativeApplication.addEventListener(flash.events.Event.ACTIVATE, activate);
-			NativeApplication.nativeApplication.addEventListener(flash.events.Event.DEACTIVATE, deActivate);
-
 			initStarling();
 		}
 
@@ -115,6 +112,9 @@ package collaboRhythm.hiviva.view
 			removeChild(_background);
 			_background.bitmapData.dispose();
 			_background = null;
+
+			NativeApplication.nativeApplication.addEventListener(flash.events.Event.ACTIVATE, activate);
+			NativeApplication.nativeApplication.addEventListener(flash.events.Event.DEACTIVATE, deActivate);
 		}
 
 		public static function get hivivaStartup():HivivaStartup

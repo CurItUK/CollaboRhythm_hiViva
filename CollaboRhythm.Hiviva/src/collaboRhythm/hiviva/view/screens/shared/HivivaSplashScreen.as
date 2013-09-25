@@ -362,14 +362,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		override public function dispose():void
 		{
 			trace("HivivaSplashScreen dispose called");
-			Main.assets.removeTexture("logo");
-			Main.assets.removeTexture("splash_button_01");
-			Main.assets.removeTexture("splash_button_02");
-			_backgroundTexture.base.dispose();
-			_backgroundTexture.dispose();
 			super.dispose();
-
-			System.gc();
 		}
 
 		public function get backgroundTexture():Texture

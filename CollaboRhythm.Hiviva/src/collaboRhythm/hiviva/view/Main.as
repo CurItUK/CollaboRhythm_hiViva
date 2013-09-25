@@ -1,10 +1,12 @@
 package collaboRhythm.hiviva.view
 {
 
+	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
+	import collaboRhythm.hiviva.global.NotificationsEvent;
 	import collaboRhythm.hiviva.view.components.HCPFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.IFooterBtnGroup;
 	import collaboRhythm.hiviva.view.components.PatientFooterBtnGroup;
@@ -106,16 +108,18 @@ package collaboRhythm.hiviva.view
 		private var _currMainScreenId:String;
 		private var _scaleFactor:Number;
 		private var _splashBgTexture:Texture ;
-
-        private var _preloader:HivivaPreloaderWithBackground;
-
-
+	    private var _preloader:HivivaPreloaderWithBackground;
 		private var _patientSideNavScreen:HivivaPatientSideNavScreen;
 		private var _hcpSideNavScreen:HivivaHCPSideNavigationScreen;
+		private var _splashFirstRun:Boolean = true;
+		private var _splashScreenNav:ScreenNavigator;
+		private var _splashNavBg:MainBackground;
 
 		private static var _selectedHCPPatientProfile:XML;
 		private static var _assets:AssetManager;
 		private static var _footerBtnGroupHeight:Number;
+
+
 
 		public function Main()
 		{
@@ -271,58 +275,71 @@ package collaboRhythm.hiviva.view
 
 			drawScreenBackground();
 
-			this._mainScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete} , {backgroundTexture:Texture.fromTexture(this._splashBgTexture)}));
-			this._mainScreenNav.addScreen(HivivaScreens.PASSCODE_RECOVER_QUESTION_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverQuestion));
-			this._mainScreenNav.addScreen(HivivaScreens.PASSCODE_RECOVER_UPDATE_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverUpdate));
-			this._mainScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
+			this._settingsNav = new ScreenNavigator();
+			this.addChild(this._settingsNav);
+
+			this._splashScreenNav = new ScreenNavigator();
+			this.addChild(this._splashScreenNav);
+
+			this._splashNavBg = new MainBackground();
+			this._splashNavBg.draw();
+			this._splashScreenNav.addChildAt(this._splashNavBg , 0);
+
+			this._splashScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete} , {backgroundTexture:Texture.fromTexture(this._splashBgTexture)}));
+			this._splashScreenNav.addScreen(HivivaScreens.PASSCODE_RECOVER_QUESTION_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverQuestion));
+			this._splashScreenNav.addScreen(HivivaScreens.PASSCODE_RECOVER_UPDATE_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverUpdate));
+			this._splashScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
+
 		}
 
 		private function splashComplete(e:Event):void
 		{
-			trace("splashComplete ");
-			this._mainScreenNav.clearScreen();
-			this._mainScreenNav.removeScreen(HivivaScreens.SPLASH_SCREEN);
-			this._splashBgTexture.base.dispose();
-			this._splashBgTexture.dispose();
 
-			addEventListener(FeathersScreenEvent.HIDE_MAIN_NAV, hideMainNav);
-			addEventListener(FeathersScreenEvent.SHOW_MAIN_NAV, showMainNav);
+			this._splashScreenNav.clearScreen();
+			this._splashScreenNav.removeChild(this._splashNavBg);
+			this._splashNavBg.dispose();
 
-
-			drawSettingsBtn();
-
-			this._settingsNav = new ScreenNavigator();
-			this.addChild(this._settingsNav);
-
-			switch(HivivaStartup.userVO.type)
+			if(_splashFirstRun)
 			{
-				case Constants.APP_TYPE_HCP :
-					initHCPSettingsNavigator();
-					initFooterMenu(HCPFooterBtnGroup);
-					initHCPNavigator();
-					break;
+				addEventListener(FeathersScreenEvent.HIDE_MAIN_NAV, hideMainNav);
+				addEventListener(FeathersScreenEvent.SHOW_MAIN_NAV, showMainNav);
 
-				case Constants.APP_TYPE_PATIENT :
-					initPatientSettingsNavigator();
-					initFooterMenu(PatientFooterBtnGroup);
-					initPatientNavigator();
-					break;
+				HivivaStartup.hivivaAppController.hivivaNotificationsController.addEventListener(NotificationsEvent.ACTIAVTE_PASSCODE , initPasscodeFromActivate);
+
+				drawSettingsBtn();
+
+				switch(HivivaStartup.userVO.type)
+				{
+					case Constants.APP_TYPE_HCP :
+						initHCPSettingsNavigator();
+						initFooterMenu(HCPFooterBtnGroup);
+						initHCPNavigator();
+						break;
+
+					case Constants.APP_TYPE_PATIENT :
+						initPatientSettingsNavigator();
+						initFooterMenu(PatientFooterBtnGroup);
+						initPatientNavigator();
+						break;
+				}
+				_splashFirstRun = false;
 			}
+		}
+
+		private function initPasscodeFromActivate(event:NotificationsEvent):void
+		{
+
+			this._splashNavBg = new MainBackground();
+			this._splashNavBg.draw();
+			this._splashScreenNav.addChildAt(this._splashNavBg , 0);
+			this._splashScreenNav.showScreen(HivivaScreens.SPLASH_SCREEN);
 		}
 
 		protected function drawScreenBackground():void
 		{
 			this._screenBackground = new MainBackground();
-			this._screenBackground.addEventListener(Event.ADDED_TO_STAGE, screenBackgroundAddedHandler);
-			this._mainScreenNav.addChildAt(this._screenBackground , 0);
-		}
-
-		private function screenBackgroundAddedHandler(e:Event):void
-		{
-//			trace("this._screenBackground added");
-//			var bgType:String = this._screenBackground.parent == this._mainScreenNav ? MainBackground.BG_BLUE_TYPE : MainBackground.BG_GREY_TYPE;
-//			this._screenBackground.draw(Constants.STAGE_WIDTH , Constants.STAGE_HEIGHT, bgType);
 			this._screenBackground.draw();
+			this._mainScreenNav.addChildAt(this._screenBackground , 0);
 		}
 
 		private function drawSettingsBtn():void

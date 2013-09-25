@@ -62,7 +62,18 @@ package collaboRhythm.hiviva.controller
 
 		public function activate(e:NotificationsEvent):void
 		{
+			trace("Application activate");
+			initPasswordScreen();
 			getServerDate();
+		}
+
+		private function initPasswordScreen():void
+		{
+			trace("Show Password Screen from De-activted if enabled");
+			if(HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userAuthenticationVO.enabled)
+			{
+				this.dispatchEvent(new NotificationsEvent(NotificationsEvent.ACTIAVTE_PASSCODE));
+			}
 		}
 
 		private function getServerDate():void
@@ -73,6 +84,7 @@ package collaboRhythm.hiviva.controller
 
 		public function deActivate(e:NotificationsEvent = null):void
 		{
+			trace("Application deActivate");
 			// to midnight
 			// incase deactivate triggered before server date has been retrieved for the first time
 			if(HivivaStartup.userVO.serverDate != null)

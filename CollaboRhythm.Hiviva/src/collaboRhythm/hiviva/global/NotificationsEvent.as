@@ -10,6 +10,7 @@ package collaboRhythm.hiviva.global
 		public static const UPDATE_DAILY_VO_DATA:String				= "updateDailyVOData";
 		public static const APPLICATION_ACTIVATE:String				= "applicationActivate";
 		public static const APPLICATION_DEACTIVATE:String			= "applicationDeactivate";
+		public static const ACTIAVTE_PASSCODE:String				= "applicationDeactivate";
 
 
 
