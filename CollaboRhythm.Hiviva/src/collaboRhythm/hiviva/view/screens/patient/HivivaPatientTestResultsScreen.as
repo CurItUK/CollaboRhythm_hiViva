@@ -277,5 +277,12 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._date._input.text = "";
 			}
 		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE, getPatientLatestTestResultsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ADD_TEST_RESULTS_COMPLETE , addTestResultsCompleteHandler);
+			super.dispose();
+		}
 	}
 }

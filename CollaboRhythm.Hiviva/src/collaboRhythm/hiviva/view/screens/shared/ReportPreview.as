@@ -292,5 +292,12 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			_parentScreen = value;
 		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE, getDailyMedicationHistoryRangeCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_RESULTS_RANGE_COMPLETE, getPatientTestResultsRangeCompleteHandler);
+			super.dispose();
+		}
 	}
 }

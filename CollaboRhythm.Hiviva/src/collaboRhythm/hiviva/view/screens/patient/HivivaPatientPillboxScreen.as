@@ -198,6 +198,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			trace("HivivaPatientPillboxScreen dispose");
 			this._pillBox.dispose();
 			this._pillBox = null;
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 
 			super.dispose();
 		}

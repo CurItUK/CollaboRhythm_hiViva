@@ -385,6 +385,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		public override function dispose():void
 		{
 			trace("HivivaPatientVirusModelScreen dispose");
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.ADHERENCE_LOAD_COMPLETE , adherenceLoadCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_LATEST_RESULTS_COMPLETE, getPatientLatestTestResultsCompleteHandler);
 			super.dispose();
 		}
 	}

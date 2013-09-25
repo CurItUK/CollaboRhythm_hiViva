@@ -290,5 +290,11 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			this._medicationResult = value;
 		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE , addMedicationCompleteHandler);
+			super.dispose();
+		}
 	}
 }

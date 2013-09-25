@@ -277,5 +277,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._submitButton.removeEventListener(Event.TRIGGERED, submitButtonClick);
 			this._userFromSubmitButton.removeEventListener(Event.TRIGGERED, userFormSubmitHandler);
 		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APPLICATION_RESET_COMPLETE , resetApplicationHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE, getPatientCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE, getHCPCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_ID_SAVE_COMPLETE , appIdGuidSaveHandler);
+			super.dispose();
+		}
 	}
 }

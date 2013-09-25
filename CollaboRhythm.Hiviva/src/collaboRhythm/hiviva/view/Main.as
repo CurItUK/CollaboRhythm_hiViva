@@ -52,7 +52,6 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientSideNavScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientTakeMedsScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientTestResultsScreen;
-	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientUserSignupScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientViewMedicationScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientVirusModelScreen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Connect_To_Care_Provider_Screen;

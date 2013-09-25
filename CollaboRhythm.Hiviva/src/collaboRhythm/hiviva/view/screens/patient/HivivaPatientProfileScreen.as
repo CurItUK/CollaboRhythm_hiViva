@@ -251,6 +251,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		override public function dispose():void
 		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE , getPatientCompleteHandler);
 			super.dispose();
 			this.removeChild(this._menuBtnGroup);
 			this._menuBtnGroup.dispose();
