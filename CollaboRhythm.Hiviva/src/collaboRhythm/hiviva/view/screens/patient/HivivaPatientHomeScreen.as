@@ -24,9 +24,12 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.events.IOErrorEvent;
 	import flash.events.TimerEvent;
 	import flash.filesystem.File;
-	import flash.filters.BitmapFilter;
-	import flash.filters.BitmapFilterQuality;
-	import flash.filters.BlurFilter;
+
+	import starling.display.BlendMode;
+
+//	import flash.filters.BitmapFilter;
+	//import flash.filters.BitmapFilterQuality;
+	//import flash.filters.BlurFilter;
 	import flash.geom.Matrix;
 	import flash.net.URLRequest;
 	import flash.system.ImageDecodingPolicy;
@@ -38,6 +41,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.filters.BlurFilter;
+	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 
 	public class HivivaPatientHomeScreen extends Screen
@@ -454,8 +458,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
-
-
 		private function doImageLoad(url:String):void
 		{
 
@@ -464,9 +466,35 @@ package collaboRhythm.hiviva.view.screens.patient
 			loaderContext.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
 			var imageLoader:Loader = new Loader();
 
-			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
+			//imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, galleryImageLoadCompleteHandler);
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url) , loaderContext);
+		}
+
+		private function galleryImageLoadCompleteHandler(e:flash.events.Event):void
+		{
+
+			var sourceBm:Bitmap = e.target.content as Bitmap;
+			var blurValue:int = 20 - int(0.2 * this._adherencePercent);
+			var rendertexture:RenderTexture = new RenderTexture(Constants.STAGE_WIDTH, this._usableHeight);
+			var canvas:Image = new Image(Texture.fromBitmap(sourceBm));
+			cropToFit(canvas, Constants.STAGE_WIDTH, this._usableHeight);
+			rendertexture.draw(canvas);
+
+			var galleryImage:Image = new Image(rendertexture);
+			galleryImage.addEventListener(Event.ADDED_TO_STAGE, removePreloder);
+			galleryImage.filter = new BlurFilter(blurValue, blurValue);
+			galleryImage.blendMode = BlendMode.NORMAL;
+
+			var homeLensMask:Image = new Image(Main.assets.getTexture("v2_homePageMask"));
+			homeLensMask.blendMode = BlendMode.ERASE;
+
+			rendertexture.draw(galleryImage);
+			rendertexture.draw(homeLensMask);
+
+			this._lensImageHolder.addChild(galleryImage);
+			this._lensImageHolder.y =(this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._lensImageHolder.height * 0.5);
 
 		}
 
@@ -478,30 +506,10 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._preloader.x = this.actualWidth - this._preloader.width - 30;
 		}
 
-		private function imageLoaded(e:flash.events.Event):void
+		private function removePreloder(event:Event):void
 		{
-			var sourceBm:Bitmap = e.target.content as Bitmap;
-
-			drawBgHomeImage(sourceBm);
-
-			drawLensHomeImage(sourceBm);
-
-			//clean up
-			sourceBm.bitmapData.dispose();
-			sourceBm.bitmapData = null;
-			sourceBm = null;
-			System.gc();
-
-			/*var suitableBm:Bitmap = getSuitableBitmap(sourceBm);
-			this._imageHolder = new Image(Texture.fromBitmap(suitableBm));
-			sourceBm.bitmapData.dispose();
-			suitableBm.bitmapData.dispose();
-
-			constrainToProportion(this._imageHolder, IMAGE_SIZE);
-			// TODO : Check if if (img.height >= img.width) then position accordingly. right now its only Ypos
-			this._imageHolder.x = this._imageBg.x;
-			this._imageHolder.y = this._imageBg.y + (this._imageBg.height / 2) - (this._imageHolder.height / 2);
-			if (!contains(this._imageHolder)) addChild(this._imageHolder);*/
+			this._preloader.disposePreloader();
+			this.removeChild(this._preloader);
 		}
 
 
@@ -509,129 +517,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			trace("Image load failed.");
 		}
-/*
-		private function imageLoaded(e:flash.events.Event):void
-				{
-					var imageLoader:LoaderInfo = e.target as LoaderInfo;
 
-					var bm:Bitmap = imageLoader.content as Bitmap;
-					bm.scaleX = bm.scaleY = 0.3;
-					trace("Image loaded.");
-
-					//this._photo = new Image(getStarlingCompatibleTexture(e.target.content));
-					this._photo = new Image(Texture.fromBitmap(bm));
-					bm.bitmapData.dispose();
-					bm = null;
-
-					this._tint = new Quad(this._photo.width, this._photo.height, 0x0073ff);
-					this._tint.alpha = this._isActive ? 1 : 0;
-
-					addChild(this._tint);
-					addChild(this._photo);
-
-					dispatchEventWith(Event.COMPLETE, false, {id:this._id});
-				}
-*/
-
-
-
-		private function drawBgHomeImage(sourceBm:Bitmap):void
-		{
-			var bgHolder:flash.display.Sprite = new flash.display.Sprite();
-
-			var bgBm:Bitmap = new Bitmap(sourceBm.bitmapData.clone(),"auto",true);
-			cropToFit(bgBm, Constants.STAGE_WIDTH, this._usableHeight);
-			//bgBm.alpha = 0.35;
-			bgHolder.addChild(bgBm);
-
-			var bgMask:flash.display.Sprite = new flash.display.Sprite();
-			bgMask.graphics.beginFill(0x000000);
-			bgMask.graphics.drawRect((bgBm.width * 0.5) - (Constants.STAGE_WIDTH * 0.5),(bgBm.height * 0.5) - (this._usableHeight * 0.5),Constants.STAGE_WIDTH, this._usableHeight);
-			bgHolder.addChild(bgMask);
-			bgBm.mask = bgMask;
-
-			var bmd:BitmapData = new BitmapData(bgHolder.width, bgHolder.height, true, 0x00000000);
-			bmd.draw(bgHolder, new Matrix(), null, null, null, true);
-
-			var bgImage:Image = new Image(Texture.fromBitmapData(bmd));
-			bgImage.touchable = false;
-			bgImage.x = (Constants.STAGE_WIDTH * 0.5) - (bgImage.width * 0.5);
-			bgImage.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (bgImage.height * 0.5);
-			this._lensImageHolder.addChild(bgImage);
-
-			//clean up
-			bgBm.bitmapData.dispose();
-			bgBm.bitmapData = null;
-			bgBm = null;
-
-			bgMask.graphics.clear();
-			bgMask = null;
-
-			bmd.dispose();
-			bmd = null;
-
-			bgHolder = null;
-		}
-
-		private function drawLensHomeImage(sourceBm:Bitmap):void
-		{
-			var circleHolder:flash.display.Sprite = new flash.display.Sprite();
-
-			var circleBm:Bitmap = new Bitmap(sourceBm.bitmapData.clone(),"auto",true);
-			cropToFit(circleBm, Constants.STAGE_WIDTH, this._usableHeight);
-			circleHolder.addChild(circleBm);
-
-			var blurValue:int = 20 - int(0.2 * this._adherencePercent);
-			var blurFilter:BitmapFilter = new flash.filters.BlurFilter(blurValue, blurValue, BitmapFilterQuality.HIGH);
-			var myFilters:Array = [];
-			myFilters.push(blurFilter);
-			circleBm.filters = myFilters;
-
-			var circleMask:flash.display.Sprite = new flash.display.Sprite();
-			var circleDiameter:Number = IMAGE_SIZE - (LENS_SHADOW_RADIUS * 2);
-			circleMask.graphics.beginFill(0x000000);
-			circleMask.graphics.drawCircle(circleBm.width * 0.5, circleBm.height * 0.5, circleDiameter * 0.5);
-			circleHolder.addChild(circleMask);
-			circleBm.mask = circleMask;
-
-			var bmd:BitmapData = new BitmapData(circleHolder.width, circleHolder.height, true,  0x00000000);
-			bmd.draw(circleHolder, new Matrix(), null, null, null, true);
-
- 			var bgImage:Image = new Image(Texture.fromBitmapData(bmd));
-			bgImage.touchable = false;
-			bgImage.x = (Constants.STAGE_WIDTH * 0.5) - (bgImage.width * 0.5);
-			bgImage.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (bgImage.height * 0.5);
-			bgImage.addEventListener(Event.ADDED_TO_STAGE, removePreloder);
-			this._lensImageHolder.addChild(bgImage);
-
-
-
-
-
-/*		var colorFilter:ColorMatrixFilter = new ColorMatrixFilter();
-			trace("colorFilter.adjustSaturation = " + (-1 + (this._adherencePercent / 100)));
-			colorFilter.adjustSaturation(-1 + (this._adherencePercent / 100));
-			this._lensImageHolder.filter = colorFilter;*/
-
-			//clean up
-			circleBm.bitmapData.dispose();
-			circleBm.bitmapData = null;
-			circleBm = null;
-
-			circleMask.graphics.clear();
-			circleMask = null;
-
-			bmd.dispose();
-			bmd = null;
-
-			circleHolder = null;
-		}
-
-		private function removePreloder(event:Event):void
-		{
-			this._preloader.disposePreloader();
-			this.removeChild(this._preloader);
-		}
 
 		private function cropToFit(img:Object, w:Number, h:Number):void
 		{

@@ -213,6 +213,7 @@
             <filename>../temp/v2_home_lens_bg.png</filename>
             <filename>../temp/v2_top_nav_icon_03.png</filename>
             <filename>../temp/v2_top_nav_icon_02.png</filename>
+            <filename>../temp/v2_homePageMask.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
