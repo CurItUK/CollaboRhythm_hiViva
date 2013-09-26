@@ -115,10 +115,9 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			this._preloader = new PreloaderSpinner();
 			this.addChild(this._preloader) ;
-
 		}
 
-		private function removePreloder():void
+		private function removePreloader():void
 		{
 			this._preloader.disposePreloader();
 			this.removeChild(this._preloader);
@@ -296,7 +295,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			_bodyLabel.x = Constants.PADDING_LEFT;
 			_bodyLabel.width = Constants.INNER_WIDTH;
 			this._content.validate();
-			removePreloder();
+			removePreloader();
 		}
 
 		private function sendPDFInit():void

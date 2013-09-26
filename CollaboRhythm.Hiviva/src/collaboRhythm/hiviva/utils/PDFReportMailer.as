@@ -1,49 +1,75 @@
 package collaboRhythm.hiviva.utils
 {
+	import com.distriqt.extension.message.Message;
+	import com.distriqt.extension.message.MessageAttachment;
+
+	import flash.events.Event;
+
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
+	import flash.utils.ByteArray;
+
+	import org.alivepdf.layout.Orientation;
+	import org.alivepdf.layout.Size;
+	import org.alivepdf.layout.Unit;
+	import org.alivepdf.pdf.PDF;
+	import org.alivepdf.saving.Method;
+
 	public class PDFReportMailer
 	{
+
+		private var _pdfReport:PDF;
+		private var _reportFile:File;
+
 		public function PDFReportMailer()
 		{
-			initPDFCreator();
-			//initPDFMailer();
+			createAndSavePDF();
 		}
 
-		private function initPDFCreator():void
+		private function createAndSavePDF():void
 		{
+			this._pdfReport = new PDF( Orientation.PORTRAIT, Unit.MM, Size.A4 );
+			this._pdfReport.addPage();
 
+			var msg:String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lobortis elit ";
+			this._pdfReport.writeText(12,msg);
+
+			var fileStream:FileStream = new FileStream();
+			this._reportFile = File.applicationStorageDirectory.resolvePath("report.pdf");
+			fileStream.addEventListener(Event.CLOSE, fileSaveCompleteHandler);
+			fileStream.openAsync( this._reportFile, FileMode.WRITE);
+			var bytes:ByteArray = this._pdfReport.save( Method.LOCAL );
+			fileStream.writeBytes(bytes);
+			fileStream.close();
 		}
 
-		/*
-		private function initPDFMailer():void
+		private function fileSaveCompleteHandler(event:Event):void
 		{
-			try
+			mailPDFFile(this._reportFile.nativePath);
+		}
+
+		private function mailPDFFile(filePath:String):void
+		{
+			if (Message.isMailSupported)
 			{
 
-				Message.init(Constants.DISTRIQT_ANE_DEVELOPER_LIC);
-				trace("PDFReportMailer Message Supported: " + String(Message.isSupported));
-				trace("PDFReportMailer Message Version: " + String(Message.service.version));
-				trace("PDFReportMailer Mail Supported: " + String(Message.isMailSupported));
+				var email:String = "barry@pharmiweb.com";
 
-				Message.service.addEventListener(MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR , messageErrorHandler);
-				Message.service.addEventListener(MessageEvent.MESSAGE_MAIL_COMPOSE , messageComposeHandler);
-
+				Message.service.sendMailWithOptions(
+						"Patient Report",
+						"Patient Report",
+						String(email),
+						"",
+						"",
+						[
+							new MessageAttachment( filePath,  "application/pdf" )
+						],
+						false
+				);
 			}
-			catch (e:Error)
-			{
-				trace("PDFReportMailer " + e.message);
-			}
-
 		}
 
-		private function messageComposeHandler(event:MessageEvent):void
-		{
 
-		}
-
-		private function messageErrorHandler(event:MessageEvent):void
-		{
-
-		}
-		*/
 	}
 }
