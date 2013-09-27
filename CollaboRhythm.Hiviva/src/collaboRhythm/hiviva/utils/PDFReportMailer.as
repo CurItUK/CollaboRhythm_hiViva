@@ -22,8 +22,13 @@ package collaboRhythm.hiviva.utils
 		private var _pdfReport:PDF;
 		private var _reportFile:File;
 
-		public function PDFReportMailer()
+		private var _emailAddress:String;
+		private var _bodyText:String;
+
+		public function PDFReportMailer(emailAddress:String , bodyText:String)
 		{
+			this._emailAddress = emailAddress;
+			this._bodyText = bodyText;
 			createAndSavePDF();
 		}
 
@@ -32,8 +37,7 @@ package collaboRhythm.hiviva.utils
 			this._pdfReport = new PDF( Orientation.PORTRAIT, Unit.MM, Size.A4 );
 			this._pdfReport.addPage();
 
-			var msg:String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lobortis elit ";
-			this._pdfReport.writeText(12,msg);
+			this._pdfReport.writeText(12,this._bodyText);
 
 			var fileStream:FileStream = new FileStream();
 			this._reportFile = File.applicationStorageDirectory.resolvePath("report.pdf");
@@ -54,7 +58,7 @@ package collaboRhythm.hiviva.utils
 			if (Message.isMailSupported)
 			{
 
-				var email:String = "barry@pharmiweb.com";
+				var email:String = this._emailAddress;
 
 				Message.service.sendMailWithOptions(
 						"Patient Report",

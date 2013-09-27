@@ -20,7 +20,7 @@
         <option name="playerPath" value="FlashPlayerDebugger.exe" />
       </LauncherParameters>
     </option>
-    <option name="mobileRunTarget" value="iOSDevice" />
+    <option name="mobileRunTarget" value="Emulator" />
     <option name="moduleName" value="CollaboRhythm.Hiviva" />
     <option name="overriddenMainClass" value="" />
     <option name="overriddenOutputFileName" value="" />
