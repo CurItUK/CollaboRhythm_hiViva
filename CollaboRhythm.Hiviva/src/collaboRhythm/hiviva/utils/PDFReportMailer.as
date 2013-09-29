@@ -3,6 +3,12 @@ package collaboRhythm.hiviva.utils
 	import com.distriqt.extension.message.Message;
 	import com.distriqt.extension.message.MessageAttachment;
 
+	import feathers.core.FeathersControl;
+
+	import flash.display.Bitmap;
+
+	import flash.display.BitmapData;
+
 	import flash.events.Event;
 
 	import flash.filesystem.File;
@@ -16,6 +22,10 @@ package collaboRhythm.hiviva.utils
 	import org.alivepdf.pdf.PDF;
 	import org.alivepdf.saving.Method;
 
+	import starling.core.RenderSupport;
+	import starling.core.Starling;
+
+
 	public class PDFReportMailer
 	{
 
@@ -24,11 +34,13 @@ package collaboRhythm.hiviva.utils
 
 		private var _emailAddress:String;
 		private var _bodyText:String;
+		private var _displayObject:FeathersControl;
 
-		public function PDFReportMailer(emailAddress:String , bodyText:String)
+		public function PDFReportMailer(emailAddress:String , bodyText:String , displayReport:FeathersControl)
 		{
 			this._emailAddress = emailAddress;
 			this._bodyText = bodyText;
+			this._displayObject = displayReport;
 			createAndSavePDF();
 		}
 
@@ -37,7 +49,21 @@ package collaboRhythm.hiviva.utils
 			this._pdfReport = new PDF( Orientation.PORTRAIT, Unit.MM, Size.A4 );
 			this._pdfReport.addPage();
 
-			this._pdfReport.writeText(12,this._bodyText);
+			trace("createAndSavePDF " +  Starling.current.nativeStage.width , Starling.current.nativeStage.width)
+
+			var bmd:BitmapData = new BitmapData(500 , 500 , true , 0x00000000);
+
+			Starling.context.clear();
+
+			Starling.context.drawToBitmapData(bmd) ;
+
+			var bp:Bitmap = new Bitmap(bmd);
+
+			this._pdfReport.addImage(bp);
+
+
+			this._pdfReport.addCell( 200, 20,this._bodyText)
+			//this._pdfReport.writeText(12,this._bodyText);
 
 			var fileStream:FileStream = new FileStream();
 			this._reportFile = File.applicationStorageDirectory.resolvePath("report.pdf");

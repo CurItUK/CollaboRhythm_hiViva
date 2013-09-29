@@ -478,7 +478,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var sourceBm:Bitmap = e.target.content as Bitmap;
 			var blurValue:int = 20 - int(0.2 * this._adherencePercent);
 			var rendertexture:RenderTexture = new RenderTexture(Constants.STAGE_WIDTH, this._usableHeight);
-			var canvas:Image = new Image(Texture.fromBitmap(sourceBm));
+			var canvas:Image = new Image(Texture.fromBitmap(sourceBm , false));
 			cropToFit(canvas, Constants.STAGE_WIDTH, this._usableHeight);
 			rendertexture.draw(canvas);
 

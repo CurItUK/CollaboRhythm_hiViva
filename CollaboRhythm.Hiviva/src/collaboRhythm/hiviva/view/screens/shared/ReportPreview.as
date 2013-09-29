@@ -300,7 +300,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function sendPDFInit():void
 		{
-			this._PDFReportMailer = new PDFReportMailer(this._emailAddress , _bodyLabel.text);
+			this._PDFReportMailer = new PDFReportMailer(this._emailAddress , _bodyLabel.text , this._adherenceReportChart);
 		}
 
 		public function get parentScreen():String
