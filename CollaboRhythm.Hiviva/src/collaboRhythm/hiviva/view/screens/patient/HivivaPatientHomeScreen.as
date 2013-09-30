@@ -501,27 +501,30 @@ package collaboRhythm.hiviva.view.screens.patient
 			sourceBm = null;
 
 
-
 			cropToFit(canvas, Constants.STAGE_WIDTH, this._usableHeight);
 			canvas.x = (Constants.STAGE_WIDTH / 2) - (canvas.width / 2);
-			this._renderTexture.draw(canvas);
-
-
 
 			var galleryImage:Image = new Image(this._renderTexture);
 			galleryImage.addEventListener(Event.ADDED_TO_STAGE, removePreloder);
-			galleryImage.filter = new BlurFilter(blurValue, blurValue);
-			galleryImage.blendMode = BlendMode.NORMAL;
 
+			if(this._adherencePercent != 100)
+			{
+				galleryImage.filter = new BlurFilter(blurValue, blurValue);
+				galleryImage.blendMode = BlendMode.NORMAL;
+			}
 
 			var homeLensMask:Image = new Image(Main.assets.getTexture("v2_homePageMask"));
 			homeLensMask.blendMode = BlendMode.ERASE;
 
-
-			this._renderTexture.draw(galleryImage);
-			this._renderTexture.draw(homeLensMask);
-
-
+			this._renderTexture.drawBundled
+			(
+					function():void
+					{
+						_renderTexture.draw(canvas);
+						_renderTexture.draw(galleryImage);
+						_renderTexture.draw(homeLensMask);
+					}
+			)
 
 
 			this._lensImageHolder.addChild(galleryImage);

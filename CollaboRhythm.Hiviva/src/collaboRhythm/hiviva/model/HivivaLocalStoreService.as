@@ -89,11 +89,11 @@ package collaboRhythm.hiviva.model
 		private function dataFileCloseHandler(e:SQLEvent):void
 		{
 			this._sqConn = null;
-			var sourceFile:File = File.applicationDirectory.resolvePath("resources/settings.sqlite");
+			var sourceFile:File = File.applicationDirectory.resolvePath("app_resources/settings.sqlite");
 			var destination:File = File.applicationStorageDirectory.resolvePath("settings.sqlite");
 			sourceFile.copyTo(destination , true);
 
-			var reportSource:File = File.applicationDirectory.resolvePath("resources/report_template");
+			var reportSource:File = File.applicationDirectory.resolvePath("app_resources/report_template");
 			var reportDestination:File = File.applicationStorageDirectory.resolvePath("report_template");
 			reportSource.copyTo(reportDestination , true);
 
@@ -212,7 +212,7 @@ package collaboRhythm.hiviva.model
 			trace("create local user settings file");
 
 			var sourceFile:File = File.applicationDirectory;
-			sourceFile = sourceFile.resolvePath("resources/settings.sqlite");
+			sourceFile = sourceFile.resolvePath("app_resources/settings.sqlite");
 
 			var destination:File = File.applicationStorageDirectory;
 			destination = destination.resolvePath("settings.sqlite");
@@ -224,7 +224,7 @@ package collaboRhythm.hiviva.model
 
 			// move reports template to application storage directory for future writable access
 
-			var reportSource:File = File.applicationDirectory.resolvePath("resources/report_template");
+			var reportSource:File = File.applicationDirectory.resolvePath("app_resources/report_template");
 			var reportDestination:File = File.applicationStorageDirectory.resolvePath("report_template");
 			reportSource.copyTo(reportDestination);
 
