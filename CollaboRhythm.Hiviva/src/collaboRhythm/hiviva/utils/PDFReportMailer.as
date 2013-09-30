@@ -1,5 +1,7 @@
 package collaboRhythm.hiviva.utils
 {
+	import collaboRhythm.hiviva.view.HivivaStartup;
+
 	import com.distriqt.extension.message.Message;
 	import com.distriqt.extension.message.MessageAttachment;
 
@@ -23,6 +25,7 @@ package collaboRhythm.hiviva.utils
 	import org.alivepdf.saving.Method;
 
 	import starling.core.RenderSupport;
+	import starling.core.Starling;
 	import starling.core.Starling;
 
 
@@ -49,15 +52,25 @@ package collaboRhythm.hiviva.utils
 			this._pdfReport = new PDF( Orientation.PORTRAIT, Unit.MM, Size.A4 );
 			this._pdfReport.addPage();
 
-			trace("createAndSavePDF " +  Starling.current.nativeStage.width , Starling.current.nativeStage.width)
+			trace("createAndSavePDF " +   HivivaStartup.hivivaStartup.starFW.stage.height , HivivaStartup.hivivaStartup.starFW.stage.width)
 
-			var bmd:BitmapData = new BitmapData(500 , 500 , true , 0x00000000);
 
-			Starling.context.clear();
 
-			Starling.context.drawToBitmapData(bmd) ;
 
-			var bp:Bitmap = new Bitmap(bmd);
+
+
+
+
+			var support:RenderSupport = new RenderSupport();
+			RenderSupport.clear(0xff00ff , 1.0);
+			support.setOrthographicProjection(0,0,640, 2000);
+			HivivaStartup.hivivaStartup.starFW.stage.render(support, 1.0);
+			support.finishQuadBatch();
+
+			var result:BitmapData = new BitmapData(HivivaStartup.hivivaStartup.starFW.stage.width, 2000, true);
+			HivivaStartup.hivivaStartup.starFW.context.drawToBitmapData(result);
+
+			var bp:Bitmap = new Bitmap(result);
 
 			this._pdfReport.addImage(bp);
 

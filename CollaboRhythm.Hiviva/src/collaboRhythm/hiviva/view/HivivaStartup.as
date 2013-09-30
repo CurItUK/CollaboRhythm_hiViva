@@ -151,5 +151,15 @@ package collaboRhythm.hiviva.view
 		{
 			return hivivaAppController.hivivaLocalStoreController.service.galleryDataVO;
 		}
+
+		public function get starFW():Starling
+		{
+			return _starFW;
+		}
+
+		public function set starFW(value:Starling):void
+		{
+			_starFW = value;
+		}
 	}
 }
