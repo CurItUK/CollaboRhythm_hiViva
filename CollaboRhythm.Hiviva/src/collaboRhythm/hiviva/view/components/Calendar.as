@@ -13,6 +13,7 @@ package collaboRhythm.hiviva.view.components
 
 	import feathers.display.Scale3Image;
 	import feathers.textures.Scale3Textures;
+	import feathers.textures.Scale3Textures;
 
 	import source.themes.HivivaTheme;
 
@@ -264,8 +265,16 @@ package collaboRhythm.hiviva.view.components
 		
 		private function createDayNameLabels():void
 		{
-			var startx:Number = this._allDayCells[0].x;
 			this._cellWidth = this._allDayCells[0].width;
+
+			var startx:Number = this._allDayCells[0].x;
+
+			var bg:Scale3Image = new Scale3Image(new Scale3Textures(Main.assets.getTexture("v2_calendar_topbar"),1,3));
+			bg.x = startx;
+
+			bg.width = this._cellWidth * 7;
+			addChild(bg);
+
 			for (var i:uint = 0 ; i < 7; i++)
 			{
 				var days:Label = new Label();
@@ -278,8 +287,8 @@ package collaboRhythm.hiviva.view.components
 				
 				days.x = startx + (this._cellWidth * i);
 				days.y = DAY_CELL_START_Y - days.height;
-
 			}
+			bg.y = days.y;
 		}
 		
 		private function populateDayCellsWithData():void
