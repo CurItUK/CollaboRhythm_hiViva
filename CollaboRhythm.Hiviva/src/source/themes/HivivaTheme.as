@@ -709,7 +709,7 @@ package source.themes
 			this.tabSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-selected-skin"),TAB_SCALE9_GRID);
 
 
-			this.pickerListButtonIconTexture = this.atlas.getTexture("picker-list-icon");
+			this.pickerListButtonIconTexture = Main.assets.getTexture("v2_button_list_arrows");
 
 			this.pickerListItemSelectedIconTexture = this.atlas.getTexture("picker-list-item-selected-icon");
 
@@ -1311,7 +1311,7 @@ package source.themes
 			button.defaultLabelProperties.textFormat = this.defaultButtonLabelBftf;
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
-			button.paddingLeft = button.paddingRight = 16 * this.scale;
+			button.paddingLeft = button.paddingRight = 32 * this.scale;
 			button.gap = 12 * this.scale;
 			button.minWidth = button.minHeight = 88 * this.scale;
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
@@ -1829,11 +1829,11 @@ package source.themes
 
 		}
 
-
 		protected function pickerListButtonInitializer(button:Button):void
 		{
 
-			this.buttonInitializer(button);
+			this.borderButtonInitializer(button);
+			button.defaultLabelProperties.wordWrap = true;
 
 
 			const defaultIcon:Image = new Image(this.pickerListButtonIconTexture);
@@ -1992,6 +1992,7 @@ package source.themes
 
 
 			renderer.defaultLabelProperties.textFormat = this.pickerListBftf;
+			renderer.defaultLabelProperties.wordWrap = true;
 
 //			renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
 

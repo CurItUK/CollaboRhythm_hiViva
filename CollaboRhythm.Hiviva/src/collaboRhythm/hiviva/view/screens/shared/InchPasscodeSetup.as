@@ -199,7 +199,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		private function initQuestionsList():void
 		{
 			this._questions = new PickerList();
-			this._questions.customButtonName = HivivaThemeConstants.BORDER_BUTTON;
+
 			var passcodeQuestions:ListCollection = new ListCollection
 			(
 					[
