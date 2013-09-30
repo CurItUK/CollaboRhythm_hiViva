@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:28b9e6822e80befd787c269694693323:1/1$ -->
+<!-- $TexturePacker:SmartUpdate:fe2ee08f9b308d53dad3ae2a055f0d73:1/1$ -->
 <TextureAtlas imagePath="hivivaBaseImages.png">
     <SubTexture name="back-button" x="680" y="248" width="107" height="67"/>
     <SubTexture name="bottom_gradient" x="1303" y="2" width="10" height="195"/>

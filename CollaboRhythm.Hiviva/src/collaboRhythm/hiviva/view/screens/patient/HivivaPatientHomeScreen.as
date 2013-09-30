@@ -84,7 +84,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._usableHeight = Constants.STAGE_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT - Constants.HEADER_HEIGHT;
 
 			this._lensBg.width = IMAGE_SIZE;
-			this._lensBg.scaleY = this._lens.scaleX;
+			this._lensBg.scaleY = this._lensBg.scaleX;
 			this._lensBg.x = (Constants.STAGE_WIDTH * 0.5) - (this._lensBg.width * 0.5);
 			this._lensBg.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._lensBg.height * 0.5);
 
@@ -556,6 +556,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			closeDownApplicationNotifications();
 
 			this._lensImageHolder.dispose();
+			this._lensBg.dispose();
+			this._lensBg = null;
 			this._lens.dispose();
 			this._lens = null;
 

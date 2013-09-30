@@ -1,7 +1,6 @@
 package collaboRhythm.hiviva.view
 {
 
-	import collaboRhythm.hiviva.controller.HivivaAppController;
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
