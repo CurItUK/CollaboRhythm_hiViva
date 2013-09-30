@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.controller
 	import com.distriqt.extension.message.events.MessageEvent;
 
 
+
 	public class HivivaAppController
 	{
 		private var _hivivaLocalStoreController:HivivaLocalStoreController;
