@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--~
+  ~ Copyright 2011 John Moore, Scott Gilroy
+  ~
+  ~ This file is part of CollaboRhythm.
+  ~
+  ~ CollaboRhythm is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+  ~ License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later
+  ~ version.
+  ~
+  ~ CollaboRhythm is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+  ~ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with CollaboRhythm.  If not, see
+  ~ <http://www.gnu.org/licenses/>.
+  -->
+<settings xmlns="http://collaborhythm.org/application/settings">
+	<mode>patient</mode>
+    <indivoServerBaseURL>http://10.177.130.79:8000</indivoServerBaseURL>
+	<!--<indivoServerBaseURL>http://indivo-dev.media.mit.edu:9291</indivoServerBaseURL>-->
+	<username>jsmith</username>
+	<password>jsmith</password>
+	<clinicianTeamMembers>
+		<clinicianTeamMember>shared-csantos@records.media.mit.edu</clinicianTeamMember>
+	</clinicianTeamMembers>
+	<primaryClinicianTeamMember>shared-csantos@records.media.mit.edu</primaryClinicianTeamMember>
+	<useFileTarget>true</useFileTarget>
+	<useTraceTarget>true</useTraceTarget>
+	<useSyslogTarget>false</useSyslogTarget>
+	<useGoogleAnalytics>false</useGoogleAnalytics>
+	<logSourceIdentifier>CollaboRhythmDefault</logSourceIdentifier>
+	<collaborationEnabled>false</collaborationEnabled>
+	<rtmpBaseURI>rtmfp://adrenaline.media.mit.edu</rtmpBaseURI>
+	<debuggingToolsEnabled>true</debuggingToolsEnabled>
+	<oauthChromeConsumerKey>collaboRhythmChrome</oauthChromeConsumerKey>
+	<oauthChromeConsumerSecret>collaboRhythmChrome_secret93452</oauthChromeConsumerSecret>
+	<pluginSearchPaths>
+		<!--<pluginSearchPath>$APPLICATION_STORAGE_DIRECTORY$/plugins/SchedulePluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_STORAGE_DIRECTORY$/plugins/HealthChartsPluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_STORAGE_DIRECTORY$/plugins/MedicationsPluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_STORAGE_DIRECTORY$/plugins/EquipmentPluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_STORAGE_DIRECTORY$/plugins/InsulinPluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_STORAGE_DIRECTORY$/plugins/InsulinTitrationSupportPluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_STORAGE_DIRECTORY$/plugins</pluginSearchPath>-->
+		<!-- The following paths are to allow the plugins to load during development without deploying them -->
+		<!--<pluginSearchPath>$APPLICATION_DIRECTORY$/../../CollaboRhythm.Plugins.Schedule/bin-debug</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/../../CollaboRhythm.Plugins.HealthCharts/bin-debug</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/../../CollaboRhythm.Plugins.Medications/bin-debug</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/../../CollaboRhythm.Plugins.Equipment/bin-debug</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/../../CollaboRhythm.Plugins.Medications.Insulin/bin-debug</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/../../CollaboRhythm.Plugins.InsulinTitrationSupport/bin-debug</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/../../CollaboRhythm.Plugins.ForaD40b/bin-debug</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/../../CollaboRhythm.Plugins.Messages/bin-debug</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/../../CollaboRhythm.Plugins.Problems.HIV/bin-debug</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/../../CollaboRhythm.Plugins.BloodPressure/bin-debug</pluginSearchPath>-->
+		<!-- This path is for the plugins that are installed with the application -->
+		<!--<pluginSearchPath>$APPLICATION_DIRECTORY$/plugins/SchedulePluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/plugins/HealthChartsPluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/plugins/MedicationsPluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/plugins/EquipmentPluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/plugins/InsulinPluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/plugins/InsulinTitrationSupportPluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/plugins/HIVPluginModule.swf</pluginSearchPath>
+		<pluginSearchPath>$APPLICATION_DIRECTORY$/plugins</pluginSearchPath>-->
+	</pluginSearchPaths>
+	<demoModeEnabled>true</demoModeEnabled>
+	<adherenceVoidingEnabled>true</adherenceVoidingEnabled>
+	<includeAdherenceVoidingMenuItem>true</includeAdherenceVoidingMenuItem>
+	<targetDate>2011-08-14T10:40:00-5:00</targetDate>
+	<demoDatePresets>
+		<demoDatePreset>2011-07-14T09:10:00-5:00</demoDatePreset>
+		<demoDatePreset>2011-07-17T00:20:00Z</demoDatePreset>
+		<demoDatePreset>2011-07-26T09:20:00-5:00</demoDatePreset>
+		<demoDatePreset>2011-08-13T10:40:00-5:00</demoDatePreset>
+	</demoDatePresets>
+	<appGroups>
+		<appGroup id="mainWidgets">
+			<appDescriptors>
+				<!--<appDescriptor>collaboRhythm.plugins.schedule.controller::ScheduleAppController</appDescriptor>-->
+			</appDescriptors>
+		</appGroup>
+		<appGroup id="buttonWidgets">
+			<appDescriptors>
+				<!--<appDescriptor>collaboRhythm.plugins.healthCharts.controller::HealthChartsAppController</appDescriptor>
+				<appDescriptor>collaboRhythm.plugins.messages.controller::MessagesAppController</appDescriptor>
+				<appDescriptor>collaboRhythm.plugins.insulinTitrationSupport.controller::InsulinTitrationFAQAppController</appDescriptor>
+				<appDescriptor>collaboRhythm.plugins.problems.HIV.controller::HIVAppController</appDescriptor>-->
+			</appDescriptors>
+		</appGroup>
+	</appGroups>
+</settings>
