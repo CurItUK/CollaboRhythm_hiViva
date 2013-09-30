@@ -68,6 +68,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _preloader:PreloaderSpinner;
 		private var _userMedSchedPopup:HivivaPopUp;
 
+		private var _renderTexture:RenderTexture;
+
 
 		public function HivivaPatientHomeScreen():void
 		{
@@ -491,13 +493,17 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var sourceBm:Bitmap = e.target.content as Bitmap;
 			var blurValue:int = 20 - int(0.2 * this._adherencePercent);
-			var rendertexture:RenderTexture = new RenderTexture(Constants.STAGE_WIDTH, this._usableHeight);
+			this._renderTexture = new RenderTexture(Constants.STAGE_WIDTH, this._usableHeight);
 			var canvas:Image = new Image(Texture.fromBitmap(sourceBm , false));
+
+			sourceBm.bitmapData.dispose();
+			sourceBm = null;
+
 			cropToFit(canvas, Constants.STAGE_WIDTH, this._usableHeight);
 			canvas.x = (Constants.STAGE_WIDTH / 2) - (canvas.width / 2);
-			rendertexture.draw(canvas);
+			this._renderTexture.draw(canvas);
 
-			var galleryImage:Image = new Image(rendertexture);
+			var galleryImage:Image = new Image(this._renderTexture);
 			galleryImage.addEventListener(Event.ADDED_TO_STAGE, removePreloder);
 			galleryImage.filter = new BlurFilter(blurValue, blurValue);
 			galleryImage.blendMode = BlendMode.NORMAL;
@@ -505,8 +511,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			var homeLensMask:Image = new Image(Main.assets.getTexture("v2_homePageMask"));
 			homeLensMask.blendMode = BlendMode.ERASE;
 
-			rendertexture.draw(galleryImage);
-			rendertexture.draw(homeLensMask);
+			this._renderTexture.draw(galleryImage);
+			this._renderTexture.draw(homeLensMask);
 
 			this._lensImageHolder.addChild(galleryImage);
 			this._lensImageHolder.y =(this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._lensImageHolder.height * 0.5);
@@ -560,6 +566,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._lensBg = null;
 			this._lens.dispose();
 			this._lens = null;
+
+			this._renderTexture.dispose();
+			this._renderTexture = null;
 
 			super.dispose();
 			System.gc();

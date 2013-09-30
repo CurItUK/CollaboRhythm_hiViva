@@ -22,8 +22,6 @@ package collaboRhythm.hiviva.controller
 			initMailFunctionality();
 		}
 
-
-
 		private function initLocalStore():void
 		{
 			_hivivaLocalStoreController = new HivivaLocalStoreController();
