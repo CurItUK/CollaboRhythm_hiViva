@@ -46,7 +46,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _patientProfileData:XML;
 		private var _patientHistoryData:XML;
 		private var _adherenceLabel:Label;
-//		private var _tolerabilityLabel:Label;
+		private var _tolerabilityLabel:Label;
 		private var _reportAndMessage:BoxedButtons;
 		private var _weekNavHolder:ScrollContainer;
 		private var _weekText:Label;
@@ -131,20 +131,60 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._adherenceLabel = new Label();
 			this._adherenceLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
-//			this._adherenceLabel.text = "Overall adherence:  " + Main.selectedHCPPatientProfile.adherence + "%";
-			this._adherenceLabel.text = HivivaModifier.getSummaryStringFromPatientData(Main.selectedHCPPatientProfile);
-			this.addChild(this._adherenceLabel);
 
-//			this._tolerabilityLabel = new Label();
-//			this._tolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_LABEL;
-//			this._tolerabilityLabel.text = "Overall tolerability:  " + Main.selectedHCPPatientProfile.tolerability + "%";
-//			this.addChild(this._tolerabilityLabel);
+			this._tolerabilityLabel = new Label();
+			this._tolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
+
+			var adherence:Number = Main.selectedHCPPatientProfile.adherence;
+			var tolerability:Number = Main.selectedHCPPatientProfile.tolerability;
+
+			// if patient has no medication history
+			if (adherence == -1 && tolerability == -1)
+			{
+				this._adherenceLabel.text = "No data exists";
+				this._tolerabilityLabel.text = "for this patient";
+			}
+			else
+			{
+				this._adherenceLabel.text = "Overall adherence: ";
+				this._tolerabilityLabel.text = "Overall tolerability: ";
+			}
+
+			this.addChild(this._adherenceLabel);
+			this.addChild(this._tolerabilityLabel);
 
 			this._reportAndMessage = new BoxedButtons();
 			this._reportAndMessage.addEventListener(starling.events.Event.TRIGGERED, reportAndMessageHandler);
 			this._reportAndMessage.scale = this.dpiScale;
 			this._reportAndMessage.labels = ["Generate report", "Send message"];
 			this.addChild(this._reportAndMessage);
+		}
+
+		private function getSummaryStringFromPatientData(patientData:XML):String
+		{
+			var summaryStr:String;
+
+			var adherence:String = patientData.adherence;
+			var tolerability:String = patientData.tolerability;
+
+			// if patient has no medication history
+			if (adherence == "-1" && tolerability == "-1")
+			{
+				summaryStr = "No data exists \nfor this patient";
+			}
+
+			// if patient has missed recording their schedule within the predefined history
+			if (adherence > "-1" && tolerability == "-1")
+			{
+				summaryStr = "Adherence: " + adherence + "%\n" + "Tolerability: None";
+			}
+
+			if (adherence > "-1" && tolerability > "-1")
+			{
+				summaryStr = "Adherence: " + adherence + "%\n" + "Tolerability: " + tolerability + "%";
+			}
+
+			return summaryStr;
 		}
 
 		private function drawPatientProfile():void
@@ -161,15 +201,40 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._patientEmail.x = this._patientImageBg.x + this._patientImageBg.width + gap;
 			this._patientEmail.y = this._patientImageBg.y;
 
-			this._adherenceLabel.width = innerWidth - this._adherenceLabel.x;
+//			this._tolerabilityLabel.width = innerWidth - this._tolerabilityLabel.x;
+			this._tolerabilityLabel.validate();
+			this._tolerabilityLabel.x = this._patientEmail.x;
+			this._tolerabilityLabel.y = this._patientImageBg.y + this._patientImageBg.height - this._tolerabilityLabel.height;
+
+//			this._adherenceLabel.width = innerWidth - this._adherenceLabel.x;
 			this._adherenceLabel.validate();
 			this._adherenceLabel.x = this._patientEmail.x;
-			this._adherenceLabel.y = this._patientImageBg.y + (this._patientImageBg.height * 0.5) - (this._adherenceLabel.height * 0.5);
+			this._adherenceLabel.y = this._tolerabilityLabel.y - this._adherenceLabel.height;
 
-//			this._tolerabilityLabel.width = innerWidth - this._tolerabilityLabel.x;
-//			this._tolerabilityLabel.validate();
-//			this._tolerabilityLabel.x = this._patientEmail.x;
-//			this._tolerabilityLabel.y = this._patientImageBg.y + this._patientImageBg.height - this._tolerabilityLabel.height;
+			var adherence:Number = Main.selectedHCPPatientProfile.adherence;
+			var tolerability:Number = Main.selectedHCPPatientProfile.tolerability;
+
+			// if patient has no medication history
+			if (adherence > -1)
+			{
+				var adherenceValueLabel:Label = new Label();
+				adherenceValueLabel.name = HivivaThemeConstants.SUBHEADER_LABEL;
+				adherenceValueLabel.text = adherence + "%";
+				addChild(adherenceValueLabel);
+				adherenceValueLabel.validate();
+				adherenceValueLabel.x = this._adherenceLabel.x + this._adherenceLabel.width;
+				adherenceValueLabel.y = this._tolerabilityLabel.y - adherenceValueLabel.height;
+			}
+
+			// if patient has missed recording their schedule within the predefined history
+			if (tolerability > -1)
+			{
+				_tolerabilityLabel.text = "Overall tolerability: " + tolerability + "%";
+			}
+			else
+			{
+				_tolerabilityLabel.text = "Overall tolerability: None";
+			}
 
 			this._reportAndMessage.width = innerWidth;
 			this._reportAndMessage.validate();
@@ -190,12 +255,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._weekNavHolder.addChild(_viewLabel);
 
 			_leftArrow = new Button();
-			_leftArrow.name = HivivaThemeConstants.CALENDAR_ARROWS;
+			_leftArrow.name = HivivaThemeConstants.LESS_THAN_ARROWS_BUTTON;
 			_leftArrow.addEventListener(starling.events.Event.TRIGGERED, leftArrowHandler);
 			this._weekNavHolder.addChild(_leftArrow);
 
 			_rightArrow = new Button();
-			_rightArrow.name = HivivaThemeConstants.CALENDAR_ARROWS;
+			_rightArrow.name = HivivaThemeConstants.LESS_THAN_ARROWS_BUTTON;
 			_rightArrow.addEventListener(starling.events.Event.TRIGGERED, rightArrowHandler);
 			this._weekNavHolder.addChild(_rightArrow);
 			this._rightArrow.scaleX = -1;
@@ -242,11 +307,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function drawTableAndNav():void
 		{
 			this._weekNavHolder.x = this.actualWidth * 0.35;
-			this._weekNavHolder.y = this._reportAndMessage.y + this._reportAndMessage.height + PADDING;
+			this._weekNavHolder.y = this._reportAndMessage.y + this._reportAndMessage.height + (PADDING * 0.5);
 			this._weekNavHolder.width = this.actualWidth - this._weekNavHolder.x;
 			this._weekNavHolder.validate();
 
-			_patientAdherenceTable.y = this._weekNavHolder.y + this._weekNavHolder.height + PADDING;
+			_patientAdherenceTable.y = this._weekNavHolder.y + this._weekNavHolder.height + (PADDING * 0.5);
 			_patientAdherenceTable.width = Constants.STAGE_WIDTH;
 			_patientAdherenceTable.height = this.actualHeight - _patientAdherenceTable.y;
 			_patientAdherenceTable.validate();

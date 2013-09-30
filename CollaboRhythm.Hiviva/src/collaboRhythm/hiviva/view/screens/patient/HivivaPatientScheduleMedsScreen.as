@@ -193,11 +193,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			if(itemsValidated == _timeListItems.length)
 			{
 
-				this._saveToProfileBtn = new BoxedButtons();
-				this._saveToProfileBtn.scale = this.dpiScale;
+				this._saveToProfileBtn = new BoxedButtons(HivivaThemeConstants.ADD_TO_PROFILE_BUTTON);
+//				this._saveToProfileBtn.scale = this.dpiScale;
 				this._saveToProfileBtn.labels = ["Add to my profile"];
 				this._saveToProfileBtn.addEventListener(starling.events.Event.TRIGGERED, saveProfileBtnHandler);
 				this.addChild(this._saveToProfileBtn);
+				this._saveToProfileBtn.validate();
 
 				this._saveToProfileBtn.x = this._horizontalPadding;
 				this._saveToProfileBtn.width = this._innerWidth;

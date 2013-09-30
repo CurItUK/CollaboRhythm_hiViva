@@ -50,6 +50,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _messagesButton:TopNavButton;
 		private var _badgesButton:TopNavButton;
 		private var _homeImageInstructions:Label;
+		private var _lensBg:Image;
 		private var _lens:Image;
 		private var _lensImageHolder:Sprite;
 		private var _dayDiff:Number;
@@ -81,6 +82,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.height = Constants.HEADER_HEIGHT;
 
 			this._usableHeight = Constants.STAGE_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT - Constants.HEADER_HEIGHT;
+
+			this._lensBg.width = IMAGE_SIZE;
+			this._lensBg.scaleY = this._lens.scaleX;
+			this._lensBg.x = (Constants.STAGE_WIDTH * 0.5) - (this._lensBg.width * 0.5);
+			this._lensBg.y = (this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._lensBg.height * 0.5);
 
 			this._lens.width = IMAGE_SIZE;
 			this._lens.scaleY = this._lens.scaleX;
@@ -180,16 +186,19 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.title = " ";
 			addChild(this._header);
 
+			this._lensBg = new Image(Main.assets.getTexture("v2_home_lens_bg"));
+			addChild(this._lensBg);
+
 			this._lensImageHolder = new Sprite();
 			addChild(this._lensImageHolder);
-
-			this._lens = new Image(Main.assets.getTexture("home_lens"));
-			addChild(this._lens);
 
 			this._homeImageInstructions = new Label();
 			this._homeImageInstructions.name = HivivaThemeConstants.HOME_LENS_LABEL;
 			this._homeImageInstructions.text = "Go to profile then Homepage Photo to upload or set your home page image \n\nThe clarity of this image will adjust to how well you stay on track with your medication.";
 			addChild(this._homeImageInstructions);
+
+			this._lens = new Image(Main.assets.getTexture("home_lens"));
+			addChild(this._lens);
 
 			this._messagesButton = new TopNavButton();
 //			this._messagesButton.hivivaImage = new Image(Main.assets.getTexture("top_nav_icon_02"));
@@ -347,6 +356,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					this._adherencePercent = HivivaStartup.patientAdherenceVO.percentage;
 
 					this._homeImageInstructions.visible = false;
+					this._lensBg.visible = false;
 
 					HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
 					HivivaStartup.hivivaAppController.hivivaLocalStoreController.getGalleryImages();
@@ -356,6 +366,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				else
 				{
 					this._homeImageInstructions.visible = true;
+					this._lensBg.visible = true;
 				}
 				trace("gallery_submission_timestamp = " + timeStamp);
 			}
@@ -363,6 +374,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				trace("date stamp not there");
 				this._homeImageInstructions.visible = true;
+				this._lensBg.visible = true;
 			}
 		}
 
@@ -449,12 +461,14 @@ package collaboRhythm.hiviva.view.screens.patient
 				{
 					trace("no images available");
 					this._homeImageInstructions.visible = true;
+					this._lensBg.visible = true;
 				}
 			}
 			else
 			{
 				trace("no images available");
 				this._homeImageInstructions.visible = true;
+				this._lensBg.visible = true;
 			}
 		}
 

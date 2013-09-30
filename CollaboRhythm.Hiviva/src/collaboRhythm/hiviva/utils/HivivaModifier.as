@@ -16,7 +16,7 @@ package collaboRhythm.hiviva.utils
 		{
 		}
 
-		public static function getSummaryStringFromPatientData(patientData:XML):String
+		/*public static function getSummaryStringFromPatientData(patientData:XML):String
 		{
 			var summaryStr:String;
 
@@ -41,7 +41,7 @@ package collaboRhythm.hiviva.utils
 			}
 
 			return summaryStr;
-		}
+		}*/
 
 		public static function getAppIdWithGuid(guid:String):String
 		{

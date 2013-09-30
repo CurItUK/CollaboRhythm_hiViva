@@ -7,6 +7,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaStartup;
+	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
@@ -16,7 +17,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import feathers.controls.Radio;
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
+	import feathers.display.Scale9Image;
+	import feathers.textures.Scale9Textures;
+
+	import flash.geom.Rectangle;
+
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 
 	import starling.events.Event;
 
@@ -36,6 +43,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _scheduleDoseAmounts:ListCollection;
 		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
+		private var _bg:Scale9Image;
 
 		public function HivivaHCPDisplaySettings()
 		{
@@ -46,17 +54,34 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.draw();
 
+			var radioPadding:Number = (Constants.PADDING_LEFT * 3);
+
+			this._adherenceRadio.x = radioPadding;
+			this._tolerabilityRadio.x = radioPadding;
+
 			this._ascendingRadio.y = this._adherenceRadio.y;
-			this._ascendingRadio.x = this._innerWidth * 0.5;
+			this._ascendingRadio.x = this._innerWidth - radioPadding - this._ascendingRadio.width;
 
 			this._descendingRadio.y = this._tolerabilityRadio.y;
-			this._descendingRadio.x = this._innerWidth * 0.5;
+			this._descendingRadio.x = this._ascendingRadio.x;
 
 			this._fromInstructionsLabel.y = this._descendingRadio.y + this._descendingRadio.height + this._componentGap;
 			this._fromPickerList.y = this._fromInstructionsLabel.y + this._fromInstructionsLabel.height + this._componentGap;
 
 			this._content.height = this._cancelAndSave.y - this._content.y - this._componentGap;
 			this._content.validate();
+
+			if(this._bg == null)
+			{
+				var bgTexture:Scale9Textures = new Scale9Textures(Main.assets.getTexture("input_field"), new Rectangle(11,11,32,32));
+				this._bg = new Scale9Image(bgTexture, this.dpiScale);
+				this._bg.touchable = false;
+				this._content.addChildAt(this._bg,0);
+				this._bg.x = Constants.PADDING_LEFT;
+				this._bg.y = this._instructionsLabel.y + this._instructionsLabel.height + (this._componentGap * 0.5);
+				this._bg.width = this._innerWidth;
+				this._bg.height = this._fromInstructionsLabel.y - this._bg.y - (this._componentGap * 0.5);
+			}
 		}
 
 		override protected function preValidateContent():void
@@ -96,7 +121,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._subHeaderLabel);
 
 			this._instructionsLabel = new Label();
-			this._instructionsLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
+//			this._instructionsLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._instructionsLabel.text = "Order my patients by:";
 			this._content.addChild(this._instructionsLabel);
 
@@ -125,7 +150,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._descendingRadio);
 
 			this._fromInstructionsLabel = new Label();
-			this._fromInstructionsLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
+//			this._fromInstructionsLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
 			this._fromInstructionsLabel.text = "Show patient data from:";
 			this._content.addChild(this._fromInstructionsLabel);
 

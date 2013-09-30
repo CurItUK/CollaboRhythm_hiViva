@@ -20,9 +20,11 @@ package collaboRhythm.hiviva.view.components
 		private var _btnHolder:ScrollContainer;
 		private var _labels:Array = [];
 		private var _scale:Number = 1;
+		private var _buttonThemeStyle:String;
 
-		public function BoxedButtons()
+		public function BoxedButtons(buttonThemeStyle:String = "")
 		{
+			_buttonThemeStyle = buttonThemeStyle;
 			super();
 		}
 
@@ -67,6 +69,7 @@ package collaboRhythm.hiviva.view.components
 			for (var i:int = 0; i < loop; i++)
 			{
 				btn = new Button();
+				if(_buttonThemeStyle.length > 0) btn.name = _buttonThemeStyle;
 				btn.addEventListener(Event.TRIGGERED, buttonHandler);
 				btn.label = _labels[i];
 				this._btnHolder.addChild(btn);

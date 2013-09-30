@@ -48,6 +48,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
 		private var _calendar:Calendar;
+		private var _superscript:Label;
 
 		public function HivivaPatientTestResultsScreen()
 		{
@@ -65,6 +66,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._content.validate();
 			// property here is for show / hide validation
 			this._contentHeight = this._content.height;
+
+			// add superscript 3 to mm
+			_superscript = new Label();
+			_superscript.name = HivivaThemeConstants.CELL_SMALL_WHITE_LABEL;
+			_superscript.text = "3";
+			this._cd4Count.addChild(_superscript);
+
+			_superscript.x = this._cd4Count._labelRight.x + this._cd4Count._labelRight.width;
+			_superscript.y = this._cd4Count._labelRight.y;
 		}
 
 		override protected function preValidateContent():void
@@ -72,12 +82,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			super.preValidateContent();
 
 			this._cd4Count._labelLeft.text = "CD4 Count:";
-			this._cd4Count._labelRight.text = "Cells/mm3";
+			this._cd4Count._labelRight.text = "Cells/mm";
 			this._cd4Count._input.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
 			labelAndInputDrawProperties(this._cd4Count);
 
 			this._viralLoad._labelLeft.text = "Viral load:";
-			this._viralLoad._labelRight.text = "Copies/ML";
+			this._viralLoad._labelRight.text = "Copies/ml";
 			this._viralLoad._input.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
 			labelAndInputDrawProperties(this._viralLoad);
 

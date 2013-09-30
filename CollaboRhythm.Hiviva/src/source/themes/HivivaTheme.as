@@ -337,6 +337,7 @@ package source.themes
 		protected var buttonCalendarDayCellSkinTexture:Texture;
 
 		protected var buttonCalendarArrowsTexture:Texture;
+		protected var buttonLessThanArrowsTexture:Texture;
 
 		protected var buttonVirusSettingsTexture:Texture;
 
@@ -685,6 +686,8 @@ package source.themes
 //			this.buttonCalendarArrowsTexture = Main.assets.getTexture('calendar_arrow');
 			this.buttonCalendarArrowsTexture = Main.assets.getTexture('v2_calendar_arrow');
 
+			this.buttonLessThanArrowsTexture = Main.assets.getTexture('v2_icon_lessthan');
+
 			// new asset
 			this.buttonVirusSettingsTexture = Main.assets.getTexture('v2_virus_settings_button');
 
@@ -856,7 +859,9 @@ package source.themes
 			this.setInitializerForClass(Button, calendarButtonInitializer, HivivaThemeConstants.CALENDAR_BUTTON);
 			this.setInitializerForClass(Button, calendarDayCellButtonInitializer, HivivaThemeConstants.CALENDAR_DAY_CELL);
 			this.setInitializerForClass(Button, calendarArrowsButtonInitializer, HivivaThemeConstants.CALENDAR_ARROWS);
+			this.setInitializerForClass(Button, lessThanArrowsButtonInitializer, HivivaThemeConstants.LESS_THAN_ARROWS_BUTTON);
 			this.setInitializerForClass(Button, virusSettingsButtonInitializer, HivivaThemeConstants.VIRUS_SETTINGS_BUTTON);
+			this.setInitializerForClass(Button, addToProfileButtonInitializer, HivivaThemeConstants.ADD_TO_PROFILE_BUTTON);
 
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, homeFooterGroupInitializer, "home-footer-buttons");
@@ -1340,6 +1345,34 @@ package source.themes
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 
+		protected function addToProfileButtonInitializer(button:Button):void
+		{
+			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
+			skinSelector.defaultValue = this.borderlessButtonUpSkinTextures;
+//			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
+//			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+//			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+//			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			skinSelector.imageProperties =
+			{
+				width: 76 * this.scale,
+				height: 76 * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.defaultIcon = new Image (Main.assets.getTexture("v2_icon_adduser"));
+
+			button.defaultLabelProperties.textFormat = this.defaultButtonLabelBftf;
+
+			button.paddingTop = button.paddingBottom = 8 * this.scale;
+			button.paddingLeft = button.paddingRight = 30 * this.scale;
+			button.gap = 12 * this.scale;
+			button.minWidth = button.minHeight = 88 * this.scale;
+			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
+		}
+
 		protected function homeButtonInitializer(button:Button):void
 		{
 			var skinWidth:Number = this.buttonHomeSkinTexture.width;
@@ -1591,6 +1624,27 @@ package source.themes
 			var skinHeight:Number = this.buttonCalendarArrowsTexture.height;
 			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
 			skinSelector.defaultValue = this.buttonCalendarArrowsTexture;
+			skinSelector.imageProperties =
+			{
+				width: skinWidth * this.scale,
+				height: skinHeight * this.scale,
+				textureScale: this.scale
+			};
+
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.minWidth = skinWidth * this.scale;
+			button.minHeight = skinHeight * this.scale;
+			button.minTouchWidth = 88 * this.scale;
+			button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function lessThanArrowsButtonInitializer(button:Button):void
+		{
+			var skinWidth:Number = this.buttonLessThanArrowsTexture.width;
+			var skinHeight:Number = this.buttonLessThanArrowsTexture.height;
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			skinSelector.defaultValue = this.buttonLessThanArrowsTexture;
 			skinSelector.imageProperties =
 			{
 				width: skinWidth * this.scale,

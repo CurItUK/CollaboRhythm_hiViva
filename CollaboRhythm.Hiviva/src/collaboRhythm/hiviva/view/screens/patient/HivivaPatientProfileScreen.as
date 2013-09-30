@@ -158,13 +158,16 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function drawAppid():void
 		{
+			var menuBtn:Button = this._menuBtnGroup.getChildAt(0) as Button;
+
 			this._appIdLabel.validate();
-			this._appIdLabel.x = Constants.PADDING_LEFT;
+//			this._appIdLabel.x = Constants.PADDING_LEFT;
+			this._appIdLabel.x = menuBtn.paddingLeft;
 			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + Constants.PADDING_TOP;
 			this._appIdLabel.visible = true;
 
 			this._appId.validate();
-			this._appId.x = this.actualWidth - Constants.PADDING_RIGHT - this._appId.width;
+			this._appId.x = this.actualWidth - menuBtn.paddingLeft - this._appId.width;
 			this._appId.y = this._appIdLabel.y;
 			this._appId.visible = true;
 		}

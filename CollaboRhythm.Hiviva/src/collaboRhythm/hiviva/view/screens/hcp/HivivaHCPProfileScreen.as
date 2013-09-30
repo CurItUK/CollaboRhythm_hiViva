@@ -42,14 +42,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._header.initTrueTitle();
 
 			drawMenuBtnGroup();
-
-			this._appIdLabel.validate();
-			this._appIdLabel.x = Constants.PADDING_LEFT;
-			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + Constants.PADDING_TOP;
-
-			this._appId.validate();
-			this._appId.x = this.actualWidth - Constants.PADDING_RIGHT - this._appId.width;
-			this._appId.y = this._appIdLabel.y;
 		}
 
 		private function drawMenuBtnGroup():void
@@ -65,6 +57,23 @@ package collaboRhythm.hiviva.view.screens.hcp
 				img.width = this.actualWidth;
 				img.height = patternHeight;
 			}
+			drawAppid();
+		}
+
+		private function drawAppid():void
+		{
+			var menuBtn:Button = this._menuBtnGroup.getChildAt(0) as Button;
+
+			this._appIdLabel.validate();
+//			this._appIdLabel.x = Constants.PADDING_LEFT;
+			this._appIdLabel.x = menuBtn.paddingLeft;
+			this._appIdLabel.y = this._menuBtnGroup.y + this._menuBtnGroup.height + Constants.PADDING_TOP;
+			this._appIdLabel.visible = true;
+
+			this._appId.validate();
+			this._appId.x = this.actualWidth - menuBtn.paddingLeft - this._appId.width;
+			this._appId.y = this._appIdLabel.y;
+			this._appId.visible = true;
 		}
 
 		override protected function initialize():void
@@ -84,27 +93,16 @@ package collaboRhythm.hiviva.view.screens.hcp
 			addChild(this._header);
 
 			this._appIdLabel = new Label();
+			this._appIdLabel.visible = false;
 			this._appIdLabel.name = HivivaThemeConstants.APPID_LABEL;
 			this._appIdLabel.text = "Your app ID";
 			addChild(this._appIdLabel);
 
 			this._appId = new Label();
+			this._appId.visible = false;
 			this._appId.name = HivivaThemeConstants.APPID_LABEL;
+			this._appId.text = HivivaStartup.userVO.appId;
 			addChild(this._appId);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.getAppId();
-		}
-
-		private function getAppId(e:LocalDataStoreEvent):void
-		{
-			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_ID_LOAD_COMPLETE,getAppId);
-
-			var appIdData:String = e.data.app_id;
-			this._appId.text = appIdData;
-
-			this._appId.validate();
-			this._appId.x = this.actualWidth - Constants.PADDING_RIGHT - this._appId.width;
-			this._appId.y = this._appIdLabel.y;
 		}
 
 		private function initProfileMenuButtons():void
@@ -176,7 +174,5 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			this.dispatchEventWith("navGoHome");
 		}
-
-
 	}
 }

@@ -44,6 +44,8 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 		private var _viralLoad:Number;
 		private var _trueResults:Object;
 
+		private const SLIDER_SPACING:Number = 15;
+
 		public function VirusSettingsControl(adherence:Number , cd4Count:Number , viralLoad:Number , trueResults:Object)
 		{
 			this._adherence = adherence;
@@ -62,7 +64,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this._adheranceSlider.validate();
 			this._adheranceSlider.width = sliderWidth;
 			this._adheranceSlider.x = Constants.STAGE_WIDTH - Constants.PADDING_RIGHT - this._adheranceSlider.width;
-			this._adheranceSlider.y = 0;
+			this._adheranceSlider.y = SLIDER_SPACING;
 
 			this._adheranceLabel.validate();
 			this._adheranceLabel.width = labelWidth;
@@ -75,14 +77,14 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this._adheranceResultLabel.y = this._adheranceSlider.y + (this._adheranceSlider.height * 0.5) - (this._adheranceResultLabel.height * 0.5);
 
 			this._seperator1.width = Constants.STAGE_WIDTH;
-			this._seperator1.y = this._adheranceSlider.y + this._adheranceSlider.height;
+			this._seperator1.y = this._adheranceSlider.y + this._adheranceSlider.height + SLIDER_SPACING;
 
 
 
 			this._viralLoadSlider.validate();
 			this._viralLoadSlider.width = sliderWidth;
 			this._viralLoadSlider.x = Constants.STAGE_WIDTH - Constants.PADDING_RIGHT - this._viralLoadSlider.width;
-			this._viralLoadSlider.y = this._seperator1.y;
+			this._viralLoadSlider.y = this._seperator1.y + SLIDER_SPACING;
 
 			this._viralLoadLabel.validate();
 			this._viralLoadLabel.width = labelWidth;
@@ -95,14 +97,14 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this._viralLoadResultLabel.y = this._viralLoadSlider.y + (this._viralLoadSlider.height * 0.5) - (this._viralLoadResultLabel.height * 0.5);
 
 			this._seperator2.width = Constants.STAGE_WIDTH;
-			this._seperator2.y = this._viralLoadSlider.y + this._viralLoadSlider.height;
+			this._seperator2.y = this._viralLoadSlider.y + this._viralLoadSlider.height + SLIDER_SPACING;
 
 
 
 			this._CD4CountSlider.validate();
 			this._CD4CountSlider.width = sliderWidth;
 			this._CD4CountSlider.x = Constants.STAGE_WIDTH - Constants.PADDING_RIGHT - this._CD4CountSlider.width;
-			this._CD4CountSlider.y = this._seperator2.y;
+			this._CD4CountSlider.y = this._seperator2.y + SLIDER_SPACING;
 
 			this._CD4CountLabel.validate();
 			this._CD4CountLabel.width = labelWidth;
@@ -115,7 +117,7 @@ package collaboRhythm.hiviva.view.screens.patient.VirusModel
 			this._CD4CountResultLabel.y = this._CD4CountSlider.y + (this._CD4CountSlider.height * 0.5) - (this._CD4CountResultLabel.height * 0.5);
 
 			this._seperator3.width = Constants.STAGE_WIDTH;
-			this._seperator3.y = this._CD4CountSlider.y + this._CD4CountSlider.height;
+			this._seperator3.y = this._CD4CountSlider.y + this._CD4CountSlider.height + SLIDER_SPACING;
 
 
 			this._resteBtn.width = this._minimiseBtn.width = Constants.STAGE_WIDTH * 0.35;

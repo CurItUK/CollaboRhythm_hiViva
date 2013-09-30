@@ -65,6 +65,8 @@ package collaboRhythm.hiviva.global
 		public static const CALENDAR_BUTTON:String							= "calendar-button";
 		public static const CALENDAR_DAY_CELL:String						= "calendar-day-cell";
 		public static const CALENDAR_ARROWS:String							= "calendar-arrows";
+		public static const LESS_THAN_ARROWS_BUTTON:String					= "calendar-arrows-button";
 		public static const VIRUS_SETTINGS_BUTTON:String					= "virus-settings-button";
+		public static const ADD_TO_PROFILE_BUTTON:String					= "add-to-profile-button";
 	}
 }

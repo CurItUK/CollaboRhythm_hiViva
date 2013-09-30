@@ -100,7 +100,7 @@ package collaboRhythm.hiviva.view.screens
 
 			this._adherenceTolerabilityLabel = new Label();
 			this._adherenceTolerabilityLabel.name = HivivaThemeConstants.BODY_BOLD_WHITE_LABEL;
-			this._adherenceTolerabilityLabel.text = HivivaModifier.getSummaryStringFromPatientData(patientData);
+			this._adherenceTolerabilityLabel.text = getSummaryStringFromPatientData(patientData);
 			addChild(this._adherenceTolerabilityLabel);
 
 			this._viewProfileBtn = new Button();
@@ -116,22 +116,22 @@ package collaboRhythm.hiviva.view.screens
 		{
 			var summaryStr:String;
 
-			var adherence:String = patientData.adherence;
-			var tolerability:String = patientData.tolerability;
+			var adherence:Number = patientData.adherence;
+			var tolerability:Number = patientData.tolerability;
 
 			// if patient has no medication history
-			if (adherence == "-1" && tolerability == "-1")
+			if (adherence == -1 && tolerability == -1)
 			{
 				summaryStr = "No data exists \nfor this patient";
 			}
 
 			// if patient has missed recording their schedule within the predefined history
-			if (adherence > "-1" && tolerability == "-1")
+			if (adherence > -1 && tolerability == -1)
 			{
 				summaryStr = "Adherence: " + adherence + "%\n" + "Tolerability: None";
 			}
 
-			if (adherence > "-1" && tolerability > "-1")
+			if (adherence > -1 && tolerability > -1)
 			{
 				summaryStr = "Adherence: " + adherence + "%\n" + "Tolerability: " + tolerability + "%";
 			}
