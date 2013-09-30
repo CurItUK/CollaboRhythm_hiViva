@@ -494,6 +494,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var rendertexture:RenderTexture = new RenderTexture(Constants.STAGE_WIDTH, this._usableHeight);
 			var canvas:Image = new Image(Texture.fromBitmap(sourceBm , false));
 			cropToFit(canvas, Constants.STAGE_WIDTH, this._usableHeight);
+			canvas.x = (Constants.STAGE_WIDTH / 2) - (canvas.width / 2);
 			rendertexture.draw(canvas);
 
 			var galleryImage:Image = new Image(rendertexture);
