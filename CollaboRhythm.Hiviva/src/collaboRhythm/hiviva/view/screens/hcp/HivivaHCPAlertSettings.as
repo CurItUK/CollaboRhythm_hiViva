@@ -61,6 +61,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._content.height = this._cancelAndSave.y - this._content.y - this._componentGap;
 			this._content.validate();
+
+
+			this._adherenceRow.x =
+			this._tolerabilityRow.x = Constants.PADDING_LEFT * 4;
+
 		}
 
 		override protected function preValidateContent():void
@@ -95,7 +100,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._content.addChild(this._requestsCheck);
 			this._requestsCheck.visible = false;
 
-			this._lessThanTexture = Main.assets.getTexture('calendar_arrow');
+			this._lessThanTexture = Main.assets.getTexture('v2_icon_lessthan');
 			initializeAdherenceRow();
 			initializeTolerabilityRow();
 
