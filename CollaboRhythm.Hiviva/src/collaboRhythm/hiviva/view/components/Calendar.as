@@ -9,7 +9,14 @@ package collaboRhythm.hiviva.view.components
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.media.Assets;
 
+	import feathers.core.PopUpManager;
+
+	import feathers.display.Scale3Image;
+	import feathers.textures.Scale3Textures;
+
 	import source.themes.HivivaTheme;
+
+	import starling.display.DisplayObject;
 
 	import starling.utils.AssetManager;
 	import feathers.controls.Button;
@@ -41,7 +48,7 @@ package collaboRhythm.hiviva.view.components
 		private var _arrowRight:Button;
 		private var _closeBtn:Button;
 		private var _scale:Number;
-		private var _monthSelect:Quad;
+		private var _monthSelect:Scale3Image;
 		private var _dayValue:uint;
 		private var _monthValue:uint;
 		private var _yearValue:uint;
@@ -51,14 +58,14 @@ package collaboRhythm.hiviva.view.components
 		private var stageWidth:int;
 		private var stageHeight:int;
 		private var monthsList:Array;
-		private var arrowGap:uint;
 		private var _month:Label;
 		private var _currentDate:Date = new Date();
 		private var _calendarType:String;
 
 		private var now:Date;
 
-
+		private const ARROW_GAP:Number = 130;
+		private const DAY_CELL_START_Y:Number = 250;
 
 		public function Calendar()
 		{
@@ -69,6 +76,7 @@ package collaboRhythm.hiviva.view.components
 
 		override protected function draw():void
 		{
+			super.draw();
 			initCalendar()
 		}
 
@@ -77,19 +85,26 @@ package collaboRhythm.hiviva.view.components
 			stageWidth   = Constants.STAGE_WIDTH;
 		    stageHeight  = Constants.STAGE_HEIGHT;
 
-			arrowGap = 130;
+		}
 
+		public static function calendarOverlayFactory():DisplayObject
+		{
+			var bg:Quad = new Quad(Constants.STAGE_WIDTH,Constants.STAGE_HEIGHT,0x000000);
+			bg.alpha = 0.01;
+			return bg;
 		}
 		
 		private function initCalendar():void
 		{
+
 			setCurrentDate();
 			createDayHolderCells();
-			createDayNameLabels();
 			populateDayCellsWithData();
 		//	createMonthChooser();
 		//	createYearChooser();
+			createDayNameLabels();
 			createNavigationBar();
+			createCurrentMonthNameLabel();
 		}
 		
 		private function setCurrentDate():void
@@ -145,7 +160,7 @@ package collaboRhythm.hiviva.view.components
 				cell.validate();
 				
 				cell.x = (this.width - cell.width * 7 ) / 2 + (cell.width * (i - (Math.floor(i/7) * 7)));
-				cell.y = 250 + (cell.height * Math.floor(i/7));
+				cell.y = DAY_CELL_START_Y + (cell.height * Math.floor(i/7));
 
 				this._allDayCells.push(cell);
 
@@ -154,45 +169,34 @@ package collaboRhythm.hiviva.view.components
 
 		private function createNavigationBar():void
 		{
-
-			_monthSelect = new Quad(stageWidth, 100, 0x4c5f76, false);
-			_monthSelect.y = 100;
+			_monthSelect = new Scale3Image(new Scale3Textures(Main.assets.getTexture("v2_top_bar"),1,3));
+			_monthSelect.width = Constants.STAGE_WIDTH;
 			this.addChild(_monthSelect);
-
-//			var arrowTexture:Texture = Assets.getTexture('ArrowPng');
 
 			_arrowLeft = new Button();
 			_arrowLeft.name = HivivaThemeConstants.CALENDAR_ARROWS;
-//			_arrowLeft.defaultSkin = new Image(arrowTexture);
-			_arrowRight = new Button();
-//			_arrowRight.defaultSkin = new Image(arrowTexture);
-			_arrowRight.name = HivivaThemeConstants.CALENDAR_ARROWS;
-
+			this._arrowLeft.addEventListener(starling.events.Event.TRIGGERED, leftArrowPressed);
 			this.addChild(_arrowLeft);
-			this.addChild(_arrowRight);
-
 			_arrowLeft.x = 50;
-			_arrowLeft.y = arrowGap;
+			_arrowLeft.y = ARROW_GAP;
 
+			_arrowRight = new Button();
+			_arrowRight.name = HivivaThemeConstants.CALENDAR_ARROWS;
+			this._arrowRight.addEventListener(starling.events.Event.TRIGGERED, rightArrowPressed);
+			this.addChild(_arrowRight);
 			this._arrowRight.x = stageWidth - 50;
-			this._arrowRight.y = arrowGap;
+			this._arrowRight.y = ARROW_GAP;
 			this._arrowRight.scaleX = -1;
 
-			this._arrowLeft.addEventListener(starling.events.Event.TRIGGERED, leftArrowPressed);
-			this._arrowRight.addEventListener(starling.events.Event.TRIGGERED, rightArrowPressed);
-
-
+			_arrowLeft.validate();
+			_monthSelect.y = ARROW_GAP + (_arrowLeft.height / 2) - (_monthSelect.height / 2);
 
 			this._closeBtn = new Button();
 		    this._closeBtn.name = HivivaThemeConstants.CLOSE_BUTTON;
-
-
 			this._closeBtn.addEventListener(starling.events.Event.TRIGGERED, closeBtnPressed);
-			this._closeBtn.x = stageWidth - this._closeBtn.width - arrowGap + 30 ;
+			this._closeBtn.x = stageWidth - this._closeBtn.width - ARROW_GAP + 30 ;
 			this._closeBtn.y = this._closeBtn.height + 10 ;
 			addChild(this._closeBtn);
-
-			createCurrentMonthNameLabel();
 
 		}
 
@@ -244,7 +248,7 @@ package collaboRhythm.hiviva.view.components
 				_month = new Label();
 				_month.name = HivivaThemeConstants.CALENDAR_MONTH_LABEL;
 				_month.text = HivivaModifier.Months[_monthValue] + " " + _yearValue;
-				_month.width = stageWidth - 2*arrowGap;
+				_month.width = stageWidth - 2*ARROW_GAP;
 			 	_month.x = stageWidth/2 - _month.width/2;
 				_month.y = 125;
 				_month.validate();
@@ -260,6 +264,7 @@ package collaboRhythm.hiviva.view.components
 		
 		private function createDayNameLabels():void
 		{
+			var startx:Number = this._allDayCells[0].x;
 			this._cellWidth = this._allDayCells[0].width;
 			for (var i:uint = 0 ; i < 7; i++)
 			{
@@ -271,8 +276,8 @@ package collaboRhythm.hiviva.view.components
 				days.validate();
 				days.width = this._cellWidth;
 				
-				days.x = 10 + (this._cellWidth * i);
-				days.y = 200;
+				days.x = startx + (this._cellWidth * i);
+				days.y = DAY_CELL_START_Y - days.height;
 
 			}
 		}

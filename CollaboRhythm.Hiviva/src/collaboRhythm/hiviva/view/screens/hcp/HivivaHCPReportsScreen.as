@@ -289,7 +289,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._calendar.width = this.actualWidth;
 			this._calendar.cType = "start";
 
-			this._calendar.validate();
+//			this._calendar.validate();
 
 			if(this._calendarActive) this._calendar.resetCalendar();
 
@@ -304,7 +304,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._calendar.width = this.actualWidth;
 			this._calendar.cType = "finish";
 
-			this._calendar.validate();
+//			this._calendar.validate();
 
 			if(this._calendarActive) this._calendar.resetCalendar();
 

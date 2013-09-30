@@ -252,7 +252,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			PopUpManager.addPopUp(this._calendar,true,false);
 			this._calendar.width = this.actualWidth;
 			this._calendar.cType = "start";
-			this._calendar.validate();
+//			this._calendar.validate();
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 
@@ -262,7 +262,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			PopUpManager.addPopUp(this._calendar,true,false);
 			this._calendar.width = this.actualWidth;
 			this._calendar.cType = "finish";
-			this._calendar.validate();
+//			this._calendar.validate();
 			//PopUpManager.centerPopUp(this._calendar);
 		}
 

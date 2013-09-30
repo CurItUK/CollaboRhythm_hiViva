@@ -214,6 +214,7 @@
             <filename>../temp/v2_top_nav_icon_03.png</filename>
             <filename>../temp/v2_top_nav_icon_02.png</filename>
             <filename>../temp/v2_homePageMask.png</filename>
+            <filename>../temp/v2_top_bar.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -160,7 +160,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			PopUpManager.addPopUp(this._calendar,true,false);
 			this._calendar.width = this.actualWidth;
-			this._calendar.validate();
+//			this._calendar.validate();
 		}
 
 		private function calendarButtonHandler(e:FeathersScreenEvent):void

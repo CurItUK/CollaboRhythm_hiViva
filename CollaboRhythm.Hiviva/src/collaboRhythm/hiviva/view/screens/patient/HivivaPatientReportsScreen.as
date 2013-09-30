@@ -19,6 +19,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import flash.text.SoftKeyboardType;
 
+	import starling.display.DisplayObject;
+
 	import starling.events.Event;
 
 	public class HivivaPatientReportsScreen extends ValidationScreen
@@ -219,9 +221,10 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._activeCalendarInput = this._startDateInput._input;
 			this._calendar.cType = "start";
 
-			PopUpManager.addPopUp(this._calendar,true,false);
+			PopUpManager.addPopUp(this._calendar,true,false,Calendar.calendarOverlayFactory);
 			this._calendar.width = this.actualWidth;
-			this._calendar.validate();
+			this._calendar.height = this.actualHeight;
+//			this._calendar.validate();
 
 			if(this._calendarActive) this._calendar.resetCalendar();
 
@@ -236,9 +239,10 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._activeCalendarInput = this._finishDateInput._input;
 			this._calendar.cType = "finish";
 
-			PopUpManager.addPopUp(this._calendar,true,false);
+			PopUpManager.addPopUp(this._calendar,true,false,Calendar.calendarOverlayFactory);
 			this._calendar.width = this.actualWidth;
-			this._calendar.validate();
+			this._calendar.height = this.actualHeight;
+//			this._calendar.validate();
 
 
 			if(this._calendarActive) this._calendar.resetCalendar();

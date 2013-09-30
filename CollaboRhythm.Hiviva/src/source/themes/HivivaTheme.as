@@ -1609,8 +1609,8 @@ package source.themes
 */
 
 
-			button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont,30, 0x454545);
-			button.disabledLabelProperties.textFormat = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont,30, 0xaeaeae);
+			button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 30, 0x454545);
+			button.disabledLabelProperties.textFormat = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 30, 0xaeaeae);
 
 			button.minWidth = skinWidth * this.scale;
 			button.minHeight = skinHeight * this.scale;
