@@ -243,7 +243,7 @@
             <filename>../temp/clock_face_hand.png</filename>
             <filename>../temp/clock_segment.png</filename>
             <filename>../temp/clock_face.png</filename>
-            <filename>../temp/pillbox.png</filename>
+            <filename>../temp/clock_face_hand_shadow.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

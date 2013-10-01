@@ -22,7 +22,9 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
+	import starling.utils.Color;
 
 	public class HivivaPatientClockScreen extends Screen
 	{
@@ -30,7 +32,9 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var IMAGE_SIZE:Number;
 		private var _clockFace:Image;
 		private var _clockHand:Image;
+		private var _clockHandShadow:Image;
 		private var _clockHandHolder:Sprite;
+		private var _clockHandShadowHolder:Sprite;
 		private var _usableHeight:Number;
 		private var _clockHandCenterPoint:Number;
 		private var _clockTimer:Timer;
@@ -65,6 +69,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._clockFace.x = (this.actualWidth * 0.5) - (this._clockFace.width * 0.5);
 			this._clockFace.y = headerHeight + (this._usableHeight * 0.5) - (this._clockFace.height * 0.5);
 
+			this._clockHandShadowHolder.width = this._clockFace.width;
+			this._clockHandShadowHolder.scaleY = this._clockHandShadowHolder.scaleX;
+
+			this._clockHandShadowHolder.x = this._clockFace.x + this._clockFace.width / 2;
+			this._clockHandShadowHolder.y = this._clockFace.y + this._clockFace.height / 2 - this._clockHandCenterPoint + 10; // the shadow depth
+
 			this._clockHandHolder.width = this._clockFace.width;
 			this._clockHandHolder.scaleY = this._clockHandHolder.scaleX;
 
@@ -90,15 +100,23 @@ package collaboRhythm.hiviva.view.screens.patient
 			tabletHolder  = new Sprite();
 			this.addChild(tabletHolder);
 
-			this._clockHand = new Image(Main.assets.getTexture("clock_face_hand"));
+			this._clockHandShadowHolder = new Sprite();
+			this._clockHandShadowHolder.touchable = false;
+			this.addChild(this._clockHandShadowHolder);
+
+			this._clockHandShadow = new Image(Main.assets.getTexture("clock_face_hand_shadow"));
+			this._clockHandShadowHolder.addChild(this._clockHandShadow);
+			this._clockHandShadow.x = -this._clockHandShadow.width / 2;
+			this._clockHandShadow.y = -this._clockHandShadow.height / 2;
+
 			this._clockHandHolder = new Sprite();
 			this._clockHandHolder.touchable = false;
-			this._clockHandHolder.addChild(this._clockHand);
-
-			this._clockHand.x = -this._clockHand.width / 2;
-			this._clockHand.y = -this._clockHand.height / 2;
 			this.addChild(this._clockHandHolder);
 
+			this._clockHand = new Image(Main.assets.getTexture("clock_face_hand"));
+			this._clockHandHolder.addChild(this._clockHand);
+			this._clockHand.x = -this._clockHand.width / 2;
+			this._clockHand.y = -this._clockHand.height / 2;
 		}
 
 		private function initClockHandRotation():void
@@ -115,6 +133,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var currentTime:Number = currentDate.getHours();
 
 			this._clockHandHolder.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * currentTime);
+			this._clockHandShadowHolder.rotation = HivivaModifier.degreesToRadians(CLOCK_ANGLE_DEGREES * currentTime);
 		}
 
 		private function initClockMedication():void
@@ -143,7 +162,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._tablets = new Vector.<Sprite>();
 
 			var medLoop:uint = this._medicationResponse.DCUserMedication.length();
-			var clockHandSpacing:Number = 20;
+			var clockHandSpacing:Number = 50;
 
 			for(var i:uint = 0 ; i < medLoop ; i++)
 			{
@@ -249,6 +268,9 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._clockHand.dispose();
 			this._clockHand = null;
+
+			this._clockHandShadow.dispose();
+			this._clockHandShadow = null;
 
 			super.dispose();
 

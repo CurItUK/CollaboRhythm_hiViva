@@ -64,13 +64,15 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._contentLayout.paddingLeft = this._contentLayout.paddingRight = 0;
 
-			this._feelingQuestion.width = Constants.STAGE_WIDTH;
+//			this._feelingQuestion.width = Constants.STAGE_WIDTH;
 			this._feelingSlider.width = this._innerWidth * 0.8;
 		}
 
 		override protected function postValidateContent():void
 		{
 			super.postValidateContent();
+
+			this._feelingQuestion.x = (Constants.STAGE_WIDTH * 0.5) - (this._feelingQuestion.width * 0.5);
 
 			this._feelingSlider.x = (this.actualWidth * 0.5) - (this._feelingSlider.width * 0.5);
 			this._feelingSlider.y -= this._componentGap;
@@ -101,7 +103,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._header.title = "Take Medication";
 
 			this._feelingQuestion = new Label();
-			this._feelingQuestion.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
+			this._feelingQuestion.name = HivivaThemeConstants.MEDICINE_BRANDNAME_WHITE_LABEL;
 			this._feelingQuestion.text = "How am I feeling on my meds today?";
 			this._content.addChild(this._feelingQuestion);
 
@@ -220,10 +222,14 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._submitButton.width = this._innerWidth * 0.25;
 				this._submitButton.validate();
 				this._submitButton.x = (Constants.STAGE_WIDTH * 0.5) - (this._submitButton.width * 0.5);
-				this._submitButton.y = this._content.height - this._submitButton.height;
+				this._submitButton.y = this._content.height - this._submitButton.height - 15;
 
 				this._takeMedicationCellHolder.height = this._submitButton.y - this._takeMedicationCellHolder.y;
 				this._takeMedicationCellHolder.validate();
+			}
+			else
+			{
+				this._submitButton.visible = true;
 			}
 
 			writeAdherenceBySelectedCell((DisplayObject(e.currentTarget).parent) as SelectMedicationCell);
@@ -248,6 +254,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function submitButtonHandler(e:Event):void
 		{
+			this._submitButton.visible = false;
+
 			writeTolerability();
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
@@ -276,7 +284,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			trace(this._medicationData);
 			HivivaStartup.patientAdherenceVO.percentage = HivivaModifier.calculateDailyAdherence(this._medicationData.DCUserMedication.Schedule.DCMedicationSchedule);
 			trace("patientAdherenceVO " + HivivaStartup.patientAdherenceVO.percentage);
-
 		}
 
 		override public function dispose():void

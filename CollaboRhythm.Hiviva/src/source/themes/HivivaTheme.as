@@ -559,7 +559,7 @@ package source.themes
 			this.medicineBrandnameDarkLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 30 * this.scale, Color.WHITE);
 			this.splashFooterLabelBftf = new BitmapFontTextFormat(this.raisedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.calendarMonthLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 40 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR,TextFormatAlign.CENTER);
-			this.feelingSliderLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 20 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+			this.feelingSliderLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 18 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.appIdLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR,TextFormatAlign.CENTER);
 			this.instructionsLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 20 * this.scale, HivivaThemeConstants.LIGHT_FONT_COLOUR);
 			this.calendarDaysLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
@@ -2393,13 +2393,15 @@ package source.themes
 
 			input.minWidth = input.minHeight = 66 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
-			input.padding = 15 * this.scale;
+			input.padding = 18 * this.scale;
+			input.paddingBottom = 0;
 			input.textEditorFactory = function():ITextEditor
 			{
 			    var editor:StageTextTextEditor = new StageTextTextEditor();
 			    editor.fontFamily = "Helvetica Neue,Helvetica";
 			    editor.fontSize = 25 * scale;
 			    editor.color = HivivaThemeConstants.WHITE_FONT_COLOUR;
+//			    editor.color = 0x124166;
 			    return editor;
 			};
 			/*
