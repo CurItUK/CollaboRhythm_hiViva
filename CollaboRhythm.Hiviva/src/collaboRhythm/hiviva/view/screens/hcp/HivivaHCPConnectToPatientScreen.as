@@ -4,22 +4,17 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
-
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
-	import feathers.controls.Button;
 
+	import feathers.controls.Button;
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
-
-	import feathers.core.ToggleGroup;
 	import feathers.layout.VerticalLayout;
-
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-
 
 	public class HivivaHCPConnectToPatientScreen extends Screen
 	{
@@ -65,26 +60,26 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._addConnectionButton = new Button();
 			this._addConnectionButton.label = "Add a connection";
-			this._addConnectionButton.addEventListener(starling.events.Event.TRIGGERED, onAddConnection);
+			this._addConnectionButton.addEventListener(Event.TRIGGERED, onAddConnection);
 			addChild(this._addConnectionButton);
 
 			this._backButton = new Button();
 			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			this._patientCellContainer = new ScrollContainer();
 		}
 
-		private function backBtnHandler(e:starling.events.Event = null):void
+		private function backBtnHandler(e:Event = null):void
 		{
 			clearDownHCPList();
 			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
 		}
 
-		private function onAddConnection(e:starling.events.Event):void
+		private function onAddConnection(e:Event):void
 		{
 			clearDownHCPList();
 			this.owner.showScreen(HivivaScreens.HCP_ADD_PATIENT);
@@ -203,6 +198,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 //				this._patientCellRadioGroup.removeAllItems();
 				this._patientCellContainer.removeChildren();
 			}
+		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE, getApprovedConnectionsCompleteHandler);
+			super.dispose();
 		}
 	}
 }

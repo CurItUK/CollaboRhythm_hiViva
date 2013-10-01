@@ -58,6 +58,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _stageWebView:StageWebView
 		private var _applicationController:HivivaAppController;
 		private var _settingsData:Object;
+		private var _calendarActive:Boolean;
 
 
 		private var _pdfPopupContainer:HivivaPDFPopUp;
@@ -114,7 +115,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		override protected function initialize():void
 		{
 			super.initialize();
-
+			this._calendarActive = false;
 			this._header.title = "Generate Reports";
 
 			this._backButton = new Button();
@@ -243,29 +244,36 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function calendarButtonHandler(e:FeathersScreenEvent):void
 		{
 			PopUpManager.removePopUp(this._calendar);
-			this._activeCalendarInput.text = e.evtData.date;
+			if(e.evtData.date != "" ) this._activeCalendarInput.text = e.evtData.date;
 		}
 
 		private function startDateCalendarHandler(e:Event):void
 		{
 			this._activeCalendarInput = this._startDateInput._input;
-			PopUpManager.addPopUp(this._calendar,true,false);
-			this._calendar.width = this.actualWidth;
 			this._calendar.cType = "start";
-//			this._calendar.validate();
-			//PopUpManager.centerPopUp(this._calendar);
+
+			PopUpManager.addPopUp(this._calendar,true,false,Calendar.calendarOverlayFactory);
+			this._calendar.width = this.actualWidth;
+			this._calendar.height = this.actualHeight;
+
+			if(this._calendarActive) this._calendar.resetCalendar();
+
+			this._calendarActive = true;
 		}
 
 		private function finishDateCalendarHandler(e:Event):void
 		{
 			this._activeCalendarInput = this._finishDateInput._input;
-			PopUpManager.addPopUp(this._calendar,true,false);
-			this._calendar.width = this.actualWidth;
 			this._calendar.cType = "finish";
-//			this._calendar.validate();
-			//PopUpManager.centerPopUp(this._calendar);
-		}
 
+			PopUpManager.addPopUp(this._calendar,true,false,Calendar.calendarOverlayFactory);
+			this._calendar.width = this.actualWidth;
+			this._calendar.height = this.actualHeight;
+
+			if(this._calendarActive) this._calendar.resetCalendar();
+
+			this._calendarActive = true;
+		}
 
 		private function backBtnHandler(e:Event):void
 		{

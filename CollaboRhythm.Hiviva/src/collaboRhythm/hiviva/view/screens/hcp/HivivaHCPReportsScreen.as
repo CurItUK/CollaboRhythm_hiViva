@@ -279,37 +279,35 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private function calendarButtonHandler(e:FeathersScreenEvent):void
 		{
 			PopUpManager.removePopUp(this._calendar);
-			this._activeCalendarInput.text = e.evtData.date;
+			if(e.evtData.date != "" ) this._activeCalendarInput.text = e.evtData.date;
 		}
 
 		private function startDateCalendarHandler(e:Event):void
 		{
 			this._activeCalendarInput = this._startDateInput._input;
-			PopUpManager.addPopUp(this._calendar,true,false);
-			this._calendar.width = this.actualWidth;
 			this._calendar.cType = "start";
 
-//			this._calendar.validate();
+			PopUpManager.addPopUp(this._calendar,true,false,Calendar.calendarOverlayFactory);
+			this._calendar.width = this.actualWidth;
+			this._calendar.height = this.actualHeight;
 
 			if(this._calendarActive) this._calendar.resetCalendar();
 
 			this._calendarActive = true;
-			//PopUpManager.centerPopUp(this._calendar);
 		}
 
 		private function finishDateCalendarHandler(e:Event):void
 		{
 			this._activeCalendarInput = this._finishDateInput._input;
-			PopUpManager.addPopUp(this._calendar,true,false);
-			this._calendar.width = this.actualWidth;
 			this._calendar.cType = "finish";
 
-//			this._calendar.validate();
+			PopUpManager.addPopUp(this._calendar,true,false,Calendar.calendarOverlayFactory);
+			this._calendar.width = this.actualWidth;
+			this._calendar.height = this.actualHeight;
 
 			if(this._calendarActive) this._calendar.resetCalendar();
 
 			this._calendarActive = true;
-			//PopUpManager.centerPopUp(this._calendar);
 		}
 
 		private function patientSelectedHandler(e:Event):void

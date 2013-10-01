@@ -293,5 +293,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 			PopUpManager.removePopUp(this._requestPopupContainer);
 			backBtnHandler();
 		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE , getPatientCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
+
+			super.dispose();
+		}
 	}
 }

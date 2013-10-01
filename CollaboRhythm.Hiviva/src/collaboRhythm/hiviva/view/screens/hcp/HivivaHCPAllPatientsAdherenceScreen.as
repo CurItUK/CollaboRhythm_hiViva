@@ -2,7 +2,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 {
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.PatientAdherenceChart;
 
@@ -39,33 +38,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.addChild(this._header);
 		}
 
-/*		private function getApprovedConnections():void
-		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE, getApprovedConnectionsHandler);
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnections();
-			this._remoteCallMade = true;
-		}
-
-		private function getApprovedConnectionsHandler(e:RemoteDataStoreEvent):void
-		{
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE, getApprovedConnectionsHandler);
-
-			var xmlList:XMLList = e.data.xmlResponse.DCConnection;
-			var loop:uint = xmlList.length();
-			if (loop > 0)
-			{
-				for (var i:int = 0; i < xmlList.length(); i++)
-				{
-					this._patientData.push(HivivaModifier.establishToFromId(xmlList[i]));
-				}
-				getAllWeeklyMedicationHistory();
-			}
-			else
-			{
-				trace("no connected patients");
-			}
-		}*/
-
 		private function getAllWeeklyMedicationHistory():void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_ALL_WEEKLY_MEDICATION_HISTORY_COMPLETE, getAllWeeklyMedicationHistoryCompleteHandler);
@@ -100,6 +72,12 @@ package collaboRhythm.hiviva.view.screens.hcp
 			patientAdherenceChart.height = Constants.STAGE_HEIGHT - Constants.HEADER_HEIGHT - Constants.FOOTER_BTNGROUP_HEIGHT;
 			patientAdherenceChart.validate();
 			patientAdherenceChart.initChart();
+		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_ALL_WEEKLY_MEDICATION_HISTORY_COMPLETE, getAllWeeklyMedicationHistoryCompleteHandler);
+			super.dispose();
 		}
 
 	}

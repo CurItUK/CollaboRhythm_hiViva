@@ -499,7 +499,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		override public function dispose():void
 		{
-
 			this._patientImageBg.dispose();
 			if(this._photoHolder != null)
 			{
@@ -512,6 +511,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._patientImageBg = null;
 			this._photoHolder = null;
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DAILY_MEDICATION_HISTORY_RANGE_COMPLETE,getDailyMedicationHistoryRangeCompleteHandler);
 
 			super.dispose();
 		}

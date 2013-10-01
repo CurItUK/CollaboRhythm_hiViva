@@ -125,7 +125,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._date._input.isEnabled = false;
 
 			this._calendar = new Calendar();
-			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler)
+			this._calendar.addEventListener(FeathersScreenEvent.CALENDAR_BUTTON_TRIGGERED, calendarButtonHandler);
 
 			this._dateButton = new Button();
 			this._dateButton.addEventListener(Event.TRIGGERED, dateCalendarHandler);
@@ -158,15 +158,15 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function dateCalendarHandler(e:Event):void
 		{
-			PopUpManager.addPopUp(this._calendar,true,false);
+			PopUpManager.addPopUp(this._calendar,true,false,Calendar.calendarOverlayFactory);
 			this._calendar.width = this.actualWidth;
-//			this._calendar.validate();
+			this._calendar.height = this.actualHeight;
 		}
 
 		private function calendarButtonHandler(e:FeathersScreenEvent):void
 		{
 			PopUpManager.removePopUp(this._calendar);
-			this._date._input.text = e.evtData.date;
+			if(e.evtData.date != "" ) this._date._input.text = e.evtData.date;
 		}
 
 		private function cancelAndSaveHandler(e:Event):void
