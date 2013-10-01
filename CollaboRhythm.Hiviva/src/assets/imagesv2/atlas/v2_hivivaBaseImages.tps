@@ -215,7 +215,7 @@
             <filename>../temp/v2_top_nav_icon_02.png</filename>
             <filename>../temp/v2_homePageMask.png</filename>
             <filename>../temp/v2_top_bar.png</filename>
-            <filename>../temp/v2_calendar_topbar.png</filename>
+            <filename>../temp/v2_calendar_day_bg.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

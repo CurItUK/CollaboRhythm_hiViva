@@ -99,6 +99,7 @@ package source.themes
 	import feathers.text.BitmapFontTextFormat;
 	import feathers.textures.Scale3Textures;
 	import feathers.textures.Scale9Textures;
+	import feathers.textures.Scale9Textures;
 
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
@@ -334,7 +335,7 @@ package source.themes
 
 		protected var buttonCalendarSkinTexture:Texture;
 
-		protected var buttonCalendarDayCellSkinTexture:Texture;
+		protected var buttonCalendarDayCellSkinTexture:Scale9Textures;
 
 		protected var buttonCalendarArrowsTexture:Texture;
 		protected var buttonLessThanArrowsTexture:Texture;
@@ -681,7 +682,7 @@ package source.themes
 //			this.buttonCalendarSkinTexture = Main.assets.getTexture("calendar-button");
 			this.buttonCalendarSkinTexture = Main.assets.getTexture("v2_calendar-button");
 
-			this.buttonCalendarDayCellSkinTexture = Main.assets.getTexture("calendar_day_cell");
+			this.buttonCalendarDayCellSkinTexture = new Scale9Textures(Main.assets.getTexture("calendar_day_cell"), new Rectangle(1,2,83,81));
 
 //			this.buttonCalendarArrowsTexture = Main.assets.getTexture('calendar_arrow');
 			this.buttonCalendarArrowsTexture = Main.assets.getTexture('v2_calendar_arrow');
@@ -1585,14 +1586,12 @@ package source.themes
 
 		protected function calendarDayCellButtonInitializer(button:Button):void
 		{
-			var skinWidth:Number = this.buttonCalendarDayCellSkinTexture.width;
-			var skinHeight:Number = this.buttonCalendarDayCellSkinTexture.height;
-			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
+			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
 			skinSelector.defaultValue = this.buttonCalendarDayCellSkinTexture;
 			skinSelector.imageProperties =
 			{
-				width: skinWidth * this.scale,
-				height: skinHeight * this.scale,
+				width: 84 * this.scale,
+				height: 85 * this.scale,
 				textureScale: this.scale
 			};
 
@@ -1612,8 +1611,8 @@ package source.themes
 			button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 30, 0x454545);
 			button.disabledLabelProperties.textFormat = new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 30, 0xaeaeae);
 
-			button.minWidth = skinWidth * this.scale;
-			button.minHeight = skinHeight * this.scale;
+			button.minWidth = 84 * this.scale;
+			button.minHeight = 85 * this.scale;
 			button.minTouchWidth = 88 * this.scale;
 			button.minTouchHeight = 88 * this.scale;
 		}
