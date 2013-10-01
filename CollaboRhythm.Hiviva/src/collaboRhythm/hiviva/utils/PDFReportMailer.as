@@ -16,6 +16,7 @@ package collaboRhythm.hiviva.utils
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 
 	import org.alivepdf.layout.Orientation;
@@ -27,6 +28,8 @@ package collaboRhythm.hiviva.utils
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
+	import starling.display.Stage;
 
 
 	public class PDFReportMailer
@@ -72,10 +75,17 @@ package collaboRhythm.hiviva.utils
 
 			var bp:Bitmap = new Bitmap(result);
 
-			this._pdfReport.addImage(bp);
 
 
-			this._pdfReport.addCell( 200, 20,this._bodyText)
+
+			//this._pdfReport.addImage(bp);
+			this._pdfReport.addImage(new Bitmap(copyDisplayObjectToBitmap(this._displayObject)));
+
+
+
+
+
+			//this._pdfReport.addCell( 200, 20,this._bodyText)
 			//this._pdfReport.writeText(12,this._bodyText);
 
 			var fileStream:FileStream = new FileStream();
@@ -92,27 +102,28 @@ package collaboRhythm.hiviva.utils
 			mailPDFFile(this._reportFile.nativePath);
 		}
 
-		/*public static function copyToBitmap(disp:DisplayObject, scl:Number=1.0):BitmapData
-		 {
-		 var rc:Rectangle = new Rectangle();
-		 disp.getBounds(disp, rc);
 
-		 var stage:Stage= Starling.current.stage;
-		 var rs:RenderSupport = new RenderSupport();
+		private function copyDisplayObjectToBitmap(disp:DisplayObject , scl:Number = 1.0):BitmapData
+		{
+			var rc:Rectangle = new Rectangle();
+			disp.getBounds(disp, rc);
 
-		 rs.clear();
-		 rs.scaleMatrix(scl, scl);
-		 rs.setOrthographicProjection(0, 0, stage.stageWidth, stage.stageHeight);
-		 rs.translateMatrix(-rc.x, -rc.y); // move to 0,0
-		 disp.render(rs, 1.0);
-		 rs.finishQuadBatch();
+			var stage:Stage = Starling.current.stage;
+			var rs:RenderSupport = new RenderSupport();
 
-		 var outBmp:BitmapData = new BitmapData(rc.width*scl, rc.height*scl, true);
-		 Starling.context.drawToBitmapData(outBmp);
+			rs.clear();
+			rs.scaleMatrix(scl, scl);
+			rs.setOrthographicProjection(0, 0, stage.stageWidth, stage.stageHeight);
+			rs.translateMatrix(-rc.x, -rc.y); // move to 0,0
+			disp.render(rs, 1.0);
+			rs.finishQuadBatch();
 
-		 return outBmp;
-		 }
-		 /*
+			var outBmp:BitmapData = new BitmapData(rc.width*scl, rc.height*scl, true , 0x00000000);
+			Starling.context.drawToBitmapData(outBmp);
+
+			return outBmp;
+		}
+
 
 		private function mailPDFFile(filePath:String):void
 		{
