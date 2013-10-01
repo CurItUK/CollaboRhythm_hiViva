@@ -103,6 +103,8 @@ package collaboRhythm.hiviva.model
 
 			var evt:LocalDataStoreEvent = new LocalDataStoreEvent(LocalDataStoreEvent.APPLICATION_RESET_COMPLETE);
 			this.dispatchEvent(evt);
+
+
 		}
 
 		private function dataFileOpenHandler(e:SQLEvent):void
