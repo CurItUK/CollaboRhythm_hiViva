@@ -91,6 +91,7 @@ package collaboRhythm.hiviva.view.components
 			writeAverageLabel();
 			this.validate();
 			initTiledBackground();
+
 		}
 
 		private function calculateXAxisBreakDown():void

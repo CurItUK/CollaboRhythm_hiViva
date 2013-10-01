@@ -300,8 +300,19 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function sendPDFInit():void
 		{
-			this._PDFReportMailer = new PDFReportMailer(this._emailAddress , _bodyLabel.text , this._adherenceReportChart);
-		}
+			var reportObject:Array = [];
+			if(this._adherenceIsChecked)
+			{
+				reportObject.push(this._adherenceReportChart);
+				reportObject.push(this._adherenceReportTable);
+			}
+
+			if(this._feelingIsChecked) reportObject.push(this._tolerabilityReportChart);
+			if(this._cd4IsChecked || this._viralLoadIsChecked) reportObject.push(this._reportTable);
+
+
+			this._PDFReportMailer = new PDFReportMailer(this._emailAddress , _bodyLabel.text , reportObject);
+		}                                                                                                                                                                                                   ;
 
 		public function get parentScreen():String
 		{
