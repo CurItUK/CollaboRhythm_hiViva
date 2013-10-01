@@ -4,24 +4,19 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.LabelAndInput;
 	import collaboRhythm.hiviva.view.Main;
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
-	import collaboRhythm.hiviva.view.media.Assets;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
 	import feathers.controls.Check;
 	import feathers.controls.Label;
 	import feathers.core.FeathersControl;
-	import feathers.layout.AnchorLayout;
 
 	import flash.text.SoftKeyboardType;
-
-	import source.themes.HivivaTheme;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -106,13 +101,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._cancelAndSave = new BoxedButtons();
 			this._cancelAndSave.labels = ["Cancel","Save"];
-			this._cancelAndSave.addEventListener(starling.events.Event.TRIGGERED, cancelAndSaveHandler);
+			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
 			addChild(this._cancelAndSave);
 
 			this._backButton = new Button();
 			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
@@ -226,7 +221,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._tolerabilityRow.height = this._tolerabilityLabelInput.height;
 		}
 
-		private function cancelAndSaveHandler(e:starling.events.Event):void
+		private function cancelAndSaveHandler(e:Event):void
 		{
 			var button:String = e.data.button;
 
@@ -302,10 +297,11 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function addAlertSettingsCompleteHandler(e:RemoteDataStoreEvent):void
 		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ADD_ALERT_SETTINGS_COMPLETE, addAlertSettingsCompleteHandler);
 			showFormValidation("Your alert settings have been saved");
 		}
 
-		private function backBtnHandler(e:starling.events.Event = null):void
+		private function backBtnHandler(e:Event = null):void
 		{
 			if(_parentScreen != null)
 			{
@@ -348,6 +344,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 		public function set parentScreen(value:String):void
 		{
 			_parentScreen = value;
+		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ADD_ALERT_SETTINGS_COMPLETE, addAlertSettingsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_ALERT_SETTINGS_COMPLETE, getAlertSettingsCompleteHandler);
+			super.dispose();
 		}
 	}
 }

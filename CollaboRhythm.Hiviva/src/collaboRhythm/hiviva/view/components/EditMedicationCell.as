@@ -96,5 +96,12 @@ package collaboRhythm.hiviva.view.components
 		{
 			_medicationId = value;
 		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.DELETE_PATIENT_MEDICATION_COMPLETE , deleteMedicationCompleteHandler);
+
+			super.dispose();
+		}
 	}
 }

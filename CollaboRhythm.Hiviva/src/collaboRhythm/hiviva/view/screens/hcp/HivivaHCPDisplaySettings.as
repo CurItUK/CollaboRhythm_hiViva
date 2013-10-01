@@ -4,7 +4,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
-	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
@@ -12,7 +11,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
- 	import feathers.controls.Label;
+	import feathers.controls.Label;
 	import feathers.controls.PickerList;
 	import feathers.controls.Radio;
 	import feathers.core.ToggleGroup;
@@ -23,10 +22,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import flash.geom.Rectangle;
 
 	import starling.display.DisplayObject;
-	import starling.display.Image;
-
 	import starling.events.Event;
-
 
 	public class HivivaHCPDisplaySettings extends ValidationScreen
 	{
@@ -170,13 +166,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._cancelAndSave = new BoxedButtons();
 			this._cancelAndSave.labels = ["Cancel","Save"];
-			this._cancelAndSave.addEventListener(starling.events.Event.TRIGGERED, cancelAndSaveHandler);
+			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
 			addChild(this._cancelAndSave);
 
 			this._backButton = new Button();
 			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
@@ -234,7 +230,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 		}
 
-		private function cancelAndSaveHandler(e:starling.events.Event):void
+		private function cancelAndSaveHandler(e:Event):void
 		{
 			var button:String = e.data.button;
 
@@ -293,9 +289,17 @@ package collaboRhythm.hiviva.view.screens.hcp
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
 		}*/
 
-		private function backBtnHandler(e:starling.events.Event):void
+		private function backBtnHandler(e:Event):void
 		{
 			this.owner.showScreen(HivivaScreens.HCP_PROFILE_SCREEN);
+		}
+
+		override public function dispose():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_DISPLAY_SETTINGS_COMPLETE , getDisplaySettingsCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.ADD_DISPLAY_SETTINGS_COMPLETE , addDisplaySettingsCompleteHandler);
+//			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
+			super.dispose();
 		}
 
 	}
