@@ -112,7 +112,7 @@ package collaboRhythm.hiviva.utils
 
 		 return outBmp;
 		 }
-		 /*
+		 */
 
 		private function mailPDFFile(filePath:String):void
 		{

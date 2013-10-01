@@ -49,7 +49,8 @@ package collaboRhythm.hiviva.view.components
 		private var _arrowRight:Button;
 		private var _closeBtn:Button;
 		private var _scale:Number;
-		private var _monthSelect:Scale3Image;
+		private var _navBarBg:Scale3Image;
+		private var _dayNamesBg:Scale3Image
 		private var _dayValue:uint;
 		private var _monthValue:uint;
 		private var _yearValue:uint;
@@ -65,8 +66,7 @@ package collaboRhythm.hiviva.view.components
 
 		private var now:Date;
 
-		private const ARROW_GAP:Number = 130;
-		private const DAY_CELL_START_Y:Number = 250;
+		private const NAVBAR_START_Y:Number = 100;
 
 		public function Calendar()
 		{
@@ -97,15 +97,16 @@ package collaboRhythm.hiviva.view.components
 		
 		private function initCalendar():void
 		{
+			_navBarBg = new Scale3Image(new Scale3Textures(Main.assets.getTexture("v2_top_bar"),1,3));
+			_dayNamesBg = new Scale3Image(new Scale3Textures(Main.assets.getTexture("v2_calendar_day_bg"),1,3));
 
 			setCurrentDate();
 			createDayHolderCells();
 			populateDayCellsWithData();
 		//	createMonthChooser();
 		//	createYearChooser();
-			createDayNameLabels();
 			createNavigationBar();
-			createCurrentMonthNameLabel();
+			createDayNameLabels();
 		}
 		
 		private function setCurrentDate():void
@@ -151,9 +152,9 @@ package collaboRhythm.hiviva.view.components
 
 		private function createDayHolderCells():void
 		{
+			var startY:Number  = NAVBAR_START_Y + _navBarBg.height + _dayNamesBg.height;
 			for(var i:uint = 0 ; i < 42 ; i++)
 			{
-
 				var cell:Button = new Button();
 				cell.name = HivivaThemeConstants.CALENDAR_DAY_CELL;
 				cell.isEnabled = false;
@@ -161,43 +162,50 @@ package collaboRhythm.hiviva.view.components
 				cell.validate();
 				
 				cell.x = (this.width - cell.width * 7 ) / 2 + (cell.width * (i - (Math.floor(i/7) * 7)));
-				cell.y = DAY_CELL_START_Y + (cell.height * Math.floor(i/7));
+				cell.y = startY + (cell.height * Math.floor(i/7));
 
 				this._allDayCells.push(cell);
-
 			}
 		}
 
 		private function createNavigationBar():void
 		{
-			_monthSelect = new Scale3Image(new Scale3Textures(Main.assets.getTexture("v2_top_bar"),1,3));
-			_monthSelect.width = Constants.STAGE_WIDTH;
-			this.addChild(_monthSelect);
+			_navBarBg.y = NAVBAR_START_Y;
+			_navBarBg.width = Constants.STAGE_WIDTH;
+			this.addChild(_navBarBg);
 
+			createCurrentMonthNameLabel();
+			createArrowButtons();
+
+			this._closeBtn = new Button();
+//		    this._closeBtn.name = HivivaThemeConstants.CLOSE_BUTTON;
+			this._closeBtn.addEventListener(starling.events.Event.TRIGGERED, closeBtnPressed);
+//			this._closeBtn.x = stageWidth - this._closeBtn.width - NAVBAR_START_Y + 30 ;
+//			this._closeBtn.y = this._closeBtn.height + 10 ;
+			this._closeBtn.width = Constants.STAGE_WIDTH;
+			this._closeBtn.height = Constants.STAGE_HEIGHT;
+			this._closeBtn.alpha = 0.01;
+			addChildAt(this._closeBtn,0);
+		}
+
+		private function createArrowButtons():void
+		{
 			_arrowLeft = new Button();
 			_arrowLeft.name = HivivaThemeConstants.CALENDAR_ARROWS;
 			this._arrowLeft.addEventListener(starling.events.Event.TRIGGERED, leftArrowPressed);
 			this.addChild(_arrowLeft);
+			_arrowLeft.validate();
 			_arrowLeft.x = 50;
-			_arrowLeft.y = ARROW_GAP;
+			_arrowLeft.y = _navBarBg.y + (_navBarBg.height / 2) - (_arrowLeft.height / 2);
 
 			_arrowRight = new Button();
 			_arrowRight.name = HivivaThemeConstants.CALENDAR_ARROWS;
 			this._arrowRight.addEventListener(starling.events.Event.TRIGGERED, rightArrowPressed);
 			this.addChild(_arrowRight);
+			_arrowRight.validate();
 			this._arrowRight.x = stageWidth - 50;
-			this._arrowRight.y = ARROW_GAP;
+			this._arrowRight.y = _navBarBg.y + (_navBarBg.height / 2) - (_arrowRight.height / 2);
 			this._arrowRight.scaleX = -1;
-
-			_arrowLeft.validate();
-			_monthSelect.y = ARROW_GAP + (_arrowLeft.height / 2) - (_monthSelect.height / 2);
-
-			this._closeBtn = new Button();
-		    this._closeBtn.name = HivivaThemeConstants.CLOSE_BUTTON;
-			this._closeBtn.addEventListener(starling.events.Event.TRIGGERED, closeBtnPressed);
-			this._closeBtn.x = stageWidth - this._closeBtn.width - ARROW_GAP + 30 ;
-			this._closeBtn.y = this._closeBtn.height + 10 ;
-			addChild(this._closeBtn);
 
 		}
 
@@ -243,18 +251,17 @@ package collaboRhythm.hiviva.view.components
 
 		private function createCurrentMonthNameLabel():void
 		{
-				_monthValue = _currentDate.getMonth();
-				_yearValue = _currentDate.getFullYear();
+			_monthValue = _currentDate.getMonth();
+			_yearValue = _currentDate.getFullYear();
 
-				_month = new Label();
-				_month.name = HivivaThemeConstants.CALENDAR_MONTH_LABEL;
-				_month.text = HivivaModifier.Months[_monthValue] + " " + _yearValue;
-				_month.width = stageWidth - 2*ARROW_GAP;
-			 	_month.x = stageWidth/2 - _month.width/2;
-				_month.y = 125;
-				_month.validate();
+			_month = new Label();
+			_month.name = HivivaThemeConstants.CALENDAR_MONTH_LABEL;
+			_month.text = HivivaModifier.Months[_monthValue] + " " + _yearValue;
+			this.addChild(_month);
+			_month.width = Constants.STAGE_WIDTH;
+			_month.validate();
+			_month.y = _navBarBg.y + (_navBarBg.height / 2) - (_month.height / 2);
 
-				this.addChild(_month);
 		}
 
 		private function updateMonthNameLabel():void
@@ -269,12 +276,12 @@ package collaboRhythm.hiviva.view.components
 
 			var startx:Number = this._allDayCells[0].x;
 
-			var bg:Scale3Image = new Scale3Image(new Scale3Textures(Main.assets.getTexture("v2_calendar_topbar"),1,3));
-			bg.x = startx;
+			_dayNamesBg.x = startx;
+			_dayNamesBg.y = _navBarBg.y + _navBarBg.height;
+			_dayNamesBg.width = this._cellWidth * 7;
+			addChild(_dayNamesBg);
 
-			bg.width = this._cellWidth * 7;
-			addChild(bg);
-
+			var centerY:Number = _dayNamesBg.y + (_dayNamesBg.height / 2);
 			for (var i:uint = 0 ; i < 7; i++)
 			{
 				var days:Label = new Label();
@@ -286,9 +293,8 @@ package collaboRhythm.hiviva.view.components
 				days.width = this._cellWidth;
 				
 				days.x = startx + (this._cellWidth * i);
-				days.y = DAY_CELL_START_Y - days.height;
+				days.y = centerY - (days.height / 2);
 			}
-			bg.y = days.y;
 		}
 		
 		private function populateDayCellsWithData():void

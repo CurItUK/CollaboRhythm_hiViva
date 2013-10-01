@@ -524,7 +524,7 @@ package collaboRhythm.hiviva.view.screens.patient
 						_renderTexture.draw(galleryImage);
 						_renderTexture.draw(homeLensMask);
 					}
-			)
+			);
 
 
 			this._lensImageHolder.addChild(galleryImage);
@@ -582,8 +582,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._lens.dispose();
 			this._lens = null;
 
-			this._renderTexture.dispose();
-			this._renderTexture = null;
+			if(this._renderTexture != null)
+			{
+				this._renderTexture.dispose();
+				this._renderTexture = null;
+			}
 
 			super.dispose();
 			System.gc();

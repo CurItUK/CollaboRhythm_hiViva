@@ -5,6 +5,8 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
+	import feathers.display.Scale3Image;
+	import feathers.textures.Scale3Textures;
 
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
@@ -14,7 +16,8 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	public class ValidationScreen extends BaseScreen
 	{
-		private var _validationBg:Image;
+//		private var _validationBg:Image;
+		private var _validationBg:Scale3Image;
 		private var _validationLabel:Label;
 		private var _closeValidationButton:Button;
 		protected var _isValidationActive:Boolean = false;
@@ -55,7 +58,8 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			super.initialize();
 
-			this._validationBg = new Image(Main.assets.getTexture("validation_bg"));
+//			this._validationBg = new Image(Main.assets.getTexture("validation_bg"));
+			this._validationBg = new Scale3Image(new Scale3Textures(Main.assets.getTexture("v2_top_bar"),1,3));
 			this._validationBg.visible = false;
 			addChild(this._validationBg);
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:8fa2c416e45dc0327ea855ec9061fe3e:1/1$ -->
+<!-- $TexturePacker:SmartUpdate:b2030d375dd73f1f16885b6470aaa77b:1/1$ -->
 <TextureAtlas imagePath="v2_hivivaBaseImages.png">
     <SubTexture name="v2_back-button" x="1376" y="2" width="107" height="70"/>
     <SubTexture name="v2_button_list_arrows" x="21" y="2" width="10" height="21"/>
     <SubTexture name="v2_calendar-button" x="1012" y="2" width="54" height="54"/>
     <SubTexture name="v2_calendar_arrow" x="216" y="2" width="26" height="43"/>
-    <SubTexture name="v2_calendar_topbar" x="7" y="2" width="5" height="50"/>
+    <SubTexture name="v2_calendar_day_bg" x="7" y="2" width="5" height="48"/>
     <SubTexture name="v2_clock_face" x="565" y="525" width="606" height="659"/>
     <SubTexture name="v2_clock_icon" x="93" y="2" width="22" height="23"/>
     <SubTexture name="v2_clock_segment" x="181" y="291" width="215" height="56"/>
