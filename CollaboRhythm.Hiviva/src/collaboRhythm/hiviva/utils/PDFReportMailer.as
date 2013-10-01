@@ -16,6 +16,7 @@ package collaboRhythm.hiviva.utils
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 
 	import org.alivepdf.layout.Orientation;
@@ -27,6 +28,8 @@ package collaboRhythm.hiviva.utils
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
+	import starling.display.Stage;
 
 
 	public class PDFReportMailer
@@ -37,13 +40,15 @@ package collaboRhythm.hiviva.utils
 
 		private var _emailAddress:String;
 		private var _bodyText:String;
-		private var _displayObject:FeathersControl;
 
-		public function PDFReportMailer(emailAddress:String , bodyText:String , displayReport:FeathersControl)
+		private var _reportObjects:Array;
+
+		public function PDFReportMailer(emailAddress:String , bodyText:String , reportObjects:Array)
 		{
 			this._emailAddress = emailAddress;
 			this._bodyText = bodyText;
-			this._displayObject = displayReport;
+			this._reportObjects = reportObjects;
+
 			createAndSavePDF();
 		}
 
@@ -55,27 +60,21 @@ package collaboRhythm.hiviva.utils
 			trace("createAndSavePDF " +   HivivaStartup.hivivaStartup.starFW.stage.height , HivivaStartup.hivivaStartup.starFW.stage.width)
 
 
+			 var loop:uint = this._reportObjects.length;
+			for(var i:uint = 0 ; i < loop ; i++)
+			{
+				this._pdfReport.addImage(new Bitmap(copyDisplayObjectToBitmap(this._reportObjects[i] , 0.8) , "auto" , true));
+			}
+
+
+
+			//this._pdfReport.addImage(new Bitmap(copyDisplayObjectToBitmap(this._displayObject , 0.8) , "auto" , true));
 
 
 
 
 
-
-			var support:RenderSupport = new RenderSupport();
-			RenderSupport.clear(0xff00ff , 1.0);
-			support.setOrthographicProjection(0,0,640, 2000);
-			HivivaStartup.hivivaStartup.starFW.stage.render(support, 1.0);
-			support.finishQuadBatch();
-
-			var result:BitmapData = new BitmapData(HivivaStartup.hivivaStartup.starFW.stage.width, 2000, true);
-			HivivaStartup.hivivaStartup.starFW.context.drawToBitmapData(result);
-
-			var bp:Bitmap = new Bitmap(result);
-
-			this._pdfReport.addImage(bp);
-
-
-			this._pdfReport.addCell( 200, 20,this._bodyText)
+			//this._pdfReport.addCell( 200, 20,this._bodyText)
 			//this._pdfReport.writeText(12,this._bodyText);
 
 			var fileStream:FileStream = new FileStream();
@@ -92,27 +91,28 @@ package collaboRhythm.hiviva.utils
 			mailPDFFile(this._reportFile.nativePath);
 		}
 
-		/*public static function copyToBitmap(disp:DisplayObject, scl:Number=1.0):BitmapData
-		 {
-		 var rc:Rectangle = new Rectangle();
-		 disp.getBounds(disp, rc);
 
-		 var stage:Stage= Starling.current.stage;
-		 var rs:RenderSupport = new RenderSupport();
+		private function copyDisplayObjectToBitmap(disp:DisplayObject , scl:Number = 1.0):BitmapData
+		{
+			var rc:Rectangle = new Rectangle();
+			disp.getBounds(disp, rc);
 
-		 rs.clear();
-		 rs.scaleMatrix(scl, scl);
-		 rs.setOrthographicProjection(0, 0, stage.stageWidth, stage.stageHeight);
-		 rs.translateMatrix(-rc.x, -rc.y); // move to 0,0
-		 disp.render(rs, 1.0);
-		 rs.finishQuadBatch();
+			var stage:Stage = Starling.current.stage;
+			var rs:RenderSupport = new RenderSupport();
 
-		 var outBmp:BitmapData = new BitmapData(rc.width*scl, rc.height*scl, true);
-		 Starling.context.drawToBitmapData(outBmp);
+			rs.clear(0x226db7 , 1.0);
+			rs.scaleMatrix(scl, scl);
+			rs.setOrthographicProjection(0, 0, stage.stageWidth, stage.stageHeight);
+			rs.translateMatrix(-rc.x, -rc.y); // move to 0,0
+			disp.render(rs, 1.0);
+			rs.finishQuadBatch();
 
-		 return outBmp;
-		 }
-		 */
+			var outBmp:BitmapData = new BitmapData(rc.width*scl, rc.height*scl, true);
+			Starling.context.drawToBitmapData(outBmp);
+
+			return outBmp;
+		}
+
 
 		private function mailPDFFile(filePath:String):void
 		{
