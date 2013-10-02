@@ -35,7 +35,7 @@
     <filename>CollaboRhythmHivivaApplication</filename>
 
     <!-- The name that is displayed in the AIR application installer. May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <name>CollaboRhythmHivivaApplication</name>
+	<name>inch</name>
 
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade.
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
@@ -152,7 +152,7 @@
 		<image72x72>assets/images/icons/Icon-72.png</image72x72>
 		<image96x96>assets/images/icons/Icon-96.png</image96x96>
 		<image100x100>assets/images/icons/Icon-Small-50@2x.png</image100x100>
-		<image114x114>assets/images/icons/Icon-144.png</image114x114>
+		<image114x114>assets/images/icons/Icon@2x.png</image114x114>
 		<image128x128>assets/images/icons/Icon-128.png</image128x128>
 		<image144x144>assets/images/icons/Icon-144.png</image144x144>
 		<image512x512>assets/images/icons/iTunesArtwork.png</image512x512>
