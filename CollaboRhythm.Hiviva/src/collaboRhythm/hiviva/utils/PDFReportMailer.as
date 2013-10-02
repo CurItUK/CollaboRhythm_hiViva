@@ -7,6 +7,8 @@ package collaboRhythm.hiviva.utils
 
 	import feathers.core.FeathersControl;
 
+	import feathers.core.FeathersControl;
+
 	import flash.display.Bitmap;
 
 	import flash.display.BitmapData;
@@ -19,7 +21,14 @@ package collaboRhythm.hiviva.utils
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 
+	import org.alivepdf.display.Display;
+	import org.alivepdf.display.PageMode;
+	import org.alivepdf.layout.Layout;
+	import org.alivepdf.layout.Mode;
+
 	import org.alivepdf.layout.Orientation;
+	import org.alivepdf.layout.Position;
+	import org.alivepdf.layout.Resize;
 	import org.alivepdf.layout.Size;
 	import org.alivepdf.layout.Unit;
 	import org.alivepdf.pdf.PDF;
@@ -40,14 +49,13 @@ package collaboRhythm.hiviva.utils
 
 		private var _emailAddress:String;
 		private var _bodyText:String;
-
 		private var _reportObjects:Array;
 
-		public function PDFReportMailer(emailAddress:String , bodyText:String , reportObjects:Array)
+		private var _reportContainer:FeathersControl;
+
+		public function PDFReportMailer(reportContainer:FeathersControl)
 		{
-			this._emailAddress = emailAddress;
-			this._bodyText = bodyText;
-			this._reportObjects = reportObjects;
+			this._reportContainer =  reportContainer;
 
 			createAndSavePDF();
 		}
@@ -55,16 +63,31 @@ package collaboRhythm.hiviva.utils
 		private function createAndSavePDF():void
 		{
 			this._pdfReport = new PDF( Orientation.PORTRAIT, Unit.MM, Size.A4 );
+			this._pdfReport.setDisplayMode(Display.FULL_PAGE , Layout.SINGLE_PAGE , PageMode.USE_NONE , 1);
 			this._pdfReport.addPage();
+
+			//this._pdfReport.moveTo(0,0);
 
 			trace("createAndSavePDF " +   HivivaStartup.hivivaStartup.starFW.stage.height , HivivaStartup.hivivaStartup.starFW.stage.width)
 
+			var bitmap:Bitmap =  new Bitmap(copyDisplayObjectToBitmap(this._reportContainer, 0.8), "auto" , true);
 
-			 var loop:uint = this._reportObjects.length;
+			this._pdfReport.setStartingPage(1);
+			this._pdfReport.addImage(bitmap , new Resize ( Mode.FIT_TO_PAGE, Position.CENTERED ) );
+
+			this._pdfReport.addPage();
+			this._pdfReport.addPage();
+			this._pdfReport.addPage();
+			this._pdfReport.addPage();
+
+			/*
+			var loop:uint = this._reportObjects.length;
 			for(var i:uint = 0 ; i < loop ; i++)
 			{
+				trace("report object heights "  + this._reportObjects[i].height);
 				this._pdfReport.addImage(new Bitmap(copyDisplayObjectToBitmap(this._reportObjects[i] , 0.8) , "auto" , true));
 			}
+			*/
 
 
 

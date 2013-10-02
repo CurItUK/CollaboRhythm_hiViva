@@ -167,6 +167,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._content.y = Constants.HEADER_HEIGHT + Constants.PADDING_TOP;
 			this._content.height = this._cancelAndSend.y - this._content.y - Constants.PADDING_BOTTOM;
 
+
 			_bodyLabel = new Label();
 			this._content.addChild(_bodyLabel);
 
@@ -300,6 +301,9 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function sendPDFInit():void
 		{
+			/*
+
+
 			var reportObject:Array = [];
 			if(this._adherenceIsChecked)
 			{
@@ -310,8 +314,13 @@ package collaboRhythm.hiviva.view.screens.shared
 			if(this._feelingIsChecked) reportObject.push(this._tolerabilityReportChart);
 			if(this._cd4IsChecked || this._viralLoadIsChecked) reportObject.push(this._reportTable);
 
+			this._content.height = 3000;
 
-			this._PDFReportMailer = new PDFReportMailer(this._emailAddress , _bodyLabel.text , reportObject);
+
+			//this._PDFReportMailer = new PDFReportMailer(this._emailAddress , _bodyLabel.text , reportObject);
+			this._PDFReportMailer = new PDFReportMailer(this._content);
+
+			*/
 		}                                                                                                                                                                                                   ;
 
 		public function get parentScreen():String
