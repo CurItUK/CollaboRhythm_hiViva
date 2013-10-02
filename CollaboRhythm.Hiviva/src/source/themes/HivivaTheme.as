@@ -531,7 +531,7 @@ package source.themes
 			this.engravedLighterRegularBitmapFont = TextField.getBitmapFont("engraved-lighter-regular");
 			this.engravedLighterBoldBitmapFont = TextField.getBitmapFont("engraved-lighter-bold");
 			this.engravedLightestBoldBitmapFont = TextField.getBitmapFont("engraved-lightest-bold");
-			this.raisedLighterBoldBitmapFont = TextField.getBitmapFont("raised-lighter-bold");
+//			this.raisedLighterBoldBitmapFont = TextField.getBitmapFont("raised-lighter-bold");
 			// blue theme
 			this.v2raisedWhiteBoldBitmapFont = TextField.getBitmapFont("v2-raised-white-bold");
 			this.v2raisedWhiteRegularBitmapFont = TextField.getBitmapFont("v2-raised-white-regular");
@@ -557,7 +557,7 @@ package source.themes
 			this.validationLabelBftf = new BitmapFontTextFormat(this.engravedLighterRegularBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.medicineBrandnameWhiteLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 30 * this.scale, Color.WHITE);
 			this.medicineBrandnameDarkLabelBftf = new BitmapFontTextFormat(this.engravedMediumBoldBitmapFont, 30 * this.scale, Color.WHITE);
-			this.splashFooterLabelBftf = new BitmapFontTextFormat(this.raisedLighterBoldBitmapFont, 24 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
+//			this.splashFooterLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 24 * this.scale, Color.WHITE, TextFormatAlign.CENTER);
 			this.calendarMonthLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 40 * this.scale, HivivaThemeConstants.LIGHTEST_FONT_COLOUR,TextFormatAlign.CENTER);
 			this.feelingSliderLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 18 * this.scale, Color.WHITE,TextFormatAlign.CENTER);
 			this.appIdLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 * this.scale, HivivaThemeConstants.WHITE_FONT_COLOUR,TextFormatAlign.CENTER);
@@ -1202,8 +1202,26 @@ package source.themes
 
 		protected function splashFooterLabelInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.splashFooterLabelBftf;
-			label.textRendererProperties.wordWrap = true;
+//			label.textRendererProperties.textFormat = this.splashFooterLabelBftf;
+//			label.textRendererProperties.wordWrap = true;
+			label.textRendererFactory = function():ITextRenderer
+			{
+				var labelRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+
+				//styles here
+				var tf:TextFormat = new TextFormat();
+				tf.font = "ExoMediumItalic";
+				tf.size = 24 * scale;
+				tf.color = 0xFFFFFF;
+				tf.italic = true;
+				tf.align = TextFormatAlign.CENTER;
+
+				labelRenderer.wordWrap = true;
+				labelRenderer.embedFonts = true;
+				labelRenderer.textFormat = tf;
+
+				return labelRenderer;
+			};
 		}
 
 		protected  function calenderMonthLabelInitializer(label:Label):void
@@ -1463,13 +1481,13 @@ package source.themes
 
 				//styles here
 				labelRenderer.embedFonts = true;
-				labelRenderer.textFormat = new TextFormat("ExoBold", 22 * scale, 0xFFFFFF, false, false, true);
+				labelRenderer.textFormat = new TextFormat("ExoMediumItalic", 22 * scale, 0xFFFFFF, false, true, true);
 
 				return labelRenderer;
 			};
 
 			button.minWidth = 88 * this.scale;
-			button.minHeight = 88 * this.scale;
+			button.minHeight = 66 * this.scale;
 			button.minTouchWidth = 88 * this.scale;
 			button.minTouchHeight = 88 * this.scale;
 		}
@@ -1964,7 +1982,7 @@ package source.themes
 //			skinSelector.defaultValue = this.seperatorLineTexture;
 			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
 			skinSelector.defaultValue = Main.assets.getTexture("v2_menulist");
-			skinSelector.setValueForState(Main.assets.getTexture("v2_menulist_o"), Button.STATE_DOWN, false);
+//			skinSelector.setValueForState(Main.assets.getTexture("v2_menulist_o"), Button.STATE_DOWN, false);
 			skinSelector.imageProperties =
 			{
 				width: 561 * this.scale,

@@ -12,10 +12,14 @@ package collaboRhythm.hiviva.view.screens.shared
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
+	import feathers.controls.ScrollContainer;
 	import feathers.controls.TextInput;
+	import feathers.display.Scale9Image;
 	import feathers.events.FeathersEventType;
+	import feathers.textures.Scale9Textures;
 
 	import flash.events.TimerEvent;
+	import flash.geom.Rectangle;
 	import flash.system.System;
 	import flash.text.SoftKeyboardType;
 	import flash.utils.Timer;
@@ -31,7 +35,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		//private var _appType:String;
 		private var _splashBg:Image;
 		private var _logo:Image;
-		private var _footer:Label;
+		private var _strapLine:Label;
 		private var _termsButton:Button;
 		private var _privacyButton:Button;
 		private var _hcpButton:Button;
@@ -86,16 +90,17 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._splashBg.touchable = false;
 			addChild(this._splashBg);
 
-			this._logo = new Image(Main.assets.getTexture("logo"));
+//			this._logo = new Image(Main.assets.getTexture("logo"));
+			this._logo = new Image(Main.assets.getTexture("v2_logo"));
 			this._logo.touchable = false;
 			addChild(this._logo);
 
-			this._footer = new Label();
-			this._footer.name = HivivaThemeConstants.SPLASH_FOOTER_LABEL;
-			this._footer.text = "An extension of MIT's CollaboRhythm project";
-			this._footer.alpha = 0.56;
-			this._footer.touchable = false;
-			addChild(this._footer);
+			this._strapLine = new Label();
+			this._strapLine.name = HivivaThemeConstants.SPLASH_FOOTER_LABEL;
+			this._strapLine.text = "stay in-charge of your regimen";
+			this._strapLine.alpha = 0.56;
+			this._strapLine.touchable = false;
+			addChild(this._strapLine);
 
 			this._termsButton = new Button();
 			this._termsButton.name = HivivaThemeConstants.SPLASH_FOOTER_BUTTON;
@@ -115,22 +120,22 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._splashBg.width = Constants.STAGE_WIDTH;
 			this._splashBg.height = Constants.STAGE_HEIGHT;
 
-			this._logo.width = Constants.STAGE_WIDTH * 0.5;
+			this._logo.width = Constants.STAGE_WIDTH * 0.9;
 			this._logo.scaleY = this._logo.scaleX;
 			this._logo.x = (Constants.STAGE_WIDTH * 0.5) - (this._logo.width * 0.5);
 			this._logo.y = (Constants.STAGE_HEIGHT * 0.33) - (this._logo.height * 0.5);
 
 			this._termsButton.validate();
 			this._privacyButton.validate();
-			this._footer.validate();
+			this._strapLine.validate();
+
+			this._strapLine.width = Constants.STAGE_WIDTH;
+			this._strapLine.y = this._logo.y + this._logo.height - 30;
 
 			this._termsButton.y = this._privacyButton.y = Constants.STAGE_HEIGHT - padding - this._termsButton.height;
 			this._termsButton.x = Constants.STAGE_WIDTH * 0.5;
 			this._termsButton.x -= (this._termsButton.width + this._privacyButton.width + padding) * 0.5;
 			this._privacyButton.x = this._termsButton.x + this._termsButton.width + padding;
-
-			this._footer.width = Constants.STAGE_WIDTH;
-			this._footer.y = this._termsButton.y - padding - this._footer.height;
 		}
 
 		private function initButtons():void
@@ -155,7 +160,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._patientButton.validate();
 			this._hcpButton.width = this._patientButton.width = Constants.STAGE_WIDTH * 0.5;
 			this._hcpButton.x = Constants.STAGE_WIDTH * 0.5;
-			this._hcpButton.y = this._patientButton.y = this._footer.y - this._hcpButton.height;
+			this._hcpButton.y = this._patientButton.y = this._privacyButton.y - this._hcpButton.height;
 		}
 
 		private function hcpButtonHandler(e:Event):void
@@ -206,18 +211,20 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function initLogin():void
 		{
-
 			if(HivivaStartup.hivivaAppController.hivivaLocalStoreController.service.userAuthenticationVO.enabled)
 			{
-				var startY:Number = (Constants.STAGE_HEIGHT * 0.33) - (this._logo.height * 0.5) + this._logo.height + 20;
+				var passBg:Scale9Image = new Scale9Image(new Scale9Textures(Main.assets.getTexture("v2_home_password_panel"), new Rectangle(1,33,638,319)));
+				addChild(passBg);
+				passBg.y = (Constants.STAGE_HEIGHT * 0.33) - (this._logo.height * 0.5) + this._logo.height;
 
 				this._loginLabel = new Label();
-				this._loginLabel.name = HivivaThemeConstants.SPLASH_FOOTER_LABEL;
+				this._loginLabel.name = HivivaThemeConstants.MEDICINE_BRANDNAME_WHITE_LABEL;
 				this._loginLabel.text = "Please enter password to login";
 				addChild(this._loginLabel);
-				this._loginLabel.width = Constants.STAGE_WIDTH;
+//				this._loginLabel.width = Constants.STAGE_WIDTH;
 				this._loginLabel.validate();
-				this._loginLabel.y = startY;
+				this._loginLabel.x = (Constants.STAGE_WIDTH / 2) - (this._loginLabel.width / 2);
+				this._loginLabel.y = passBg.y + 50;
 
 				this._passwordInput = new TextInput();
 				this._passwordInput.addEventListener(FeathersEventType.FOCUS_IN, passwordInputFocusInHandler);
@@ -227,7 +234,7 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._passwordInput.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
 				this._passwordInput.textEditorProperties.textAlign = TextAlign.CENTER;
 				addChild(this._passwordInput);
-				this._passwordInput.width = Constants.STAGE_WIDTH * 0.5;
+				this._passwordInput.width = this._loginLabel.width;
 				this._passwordInput.validate();
 				this._passwordInput.x = (Constants.STAGE_WIDTH * 0.5) - (this._passwordInput.width * 0.5);
 				this._passwordInput.y = this._loginLabel.y + this._loginLabel.height + 20;
@@ -242,6 +249,7 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._forgotPasscodeBtn.y = this._passwordInput.y + this._passwordInput.height +3;
 
 				this._loginButton = new Button();
+				this._loginButton.name = HivivaThemeConstants.BORDER_BUTTON;
 				this._loginButton.label = "Sign in";
 				this._loginButton.addEventListener(Event.TRIGGERED, confirmButtonHandler);
 				addChild(this._loginButton);
@@ -249,6 +257,8 @@ package collaboRhythm.hiviva.view.screens.shared
 				this._loginButton.validate();
 				this._loginButton.x = (Constants.STAGE_WIDTH * 0.5) - (this._loginButton.width * 0.5);
 				this._loginButton.y = this._forgotPasscodeBtn.y + this._forgotPasscodeBtn.height + 2;
+
+				passBg.height = (this._loginButton.y + this._loginButton.height + 60) - passBg.y;
 
 				this._passwordInput.setFocus();
 

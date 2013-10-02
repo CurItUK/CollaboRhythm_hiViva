@@ -26,23 +26,26 @@
             <entry library-id="e3c14341-461c-430b-ac2f-fbfb09fce56d">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-id="56e1dbfe-5a3a-4d00-b905-dc8fde52a01b">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="4.6.0 - (AIR 3.4)" />
         </dependencies>
         <compiler-options />
         <packaging-air-desktop />
-        <packaging-android use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
+        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
-            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/app_resources" path-in-package="app_resources" />
           </files-to-package>
         </packaging-android>
         <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
-            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/resources" path-in-package="resources" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/app_resources" path-in-package="app_resources" />
           </files-to-package>
           <AirSigningOptions keystore-path="$MODULE_DIR$/certificates/ios/iOS_dev.p12" provisioning-profile-path="$MODULE_DIR$/certificates/ios/iOS_Team_Development_Profile.mobileprovision" />
         </packaging-ios>
@@ -62,7 +65,7 @@
       <library type="flex">
         <properties id="d8fa7b08-8beb-4872-a84e-9d2446958e82" />
         <CLASSES>
-          <root url="file://$FEATHERS_HOME$" />
+          <root url="file://$MODULE_DIR$/../../../Flash Frameworks/feathers-1.1.0/source" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -82,7 +85,7 @@
       <library type="flex">
         <properties id="b35f1336-7694-4acc-bb9a-226799948b69" />
         <CLASSES>
-          <root url="file://$STARLING_HOME$" />
+          <root url="file://$MODULE_DIR$/../../../Flash Frameworks/PrimaryFeather-Starling-Framework-0ac3592/starling/src" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -123,6 +126,16 @@
         <properties id="7bfb2307-aefe-4eba-b5be-069985cb5bc2" />
         <CLASSES>
           <root url="file://$MODULE_DIR$/src/source/mailer" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="56e1dbfe-5a3a-4d00-b905-dc8fde52a01b" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/com.distriqt.Message.ane!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
