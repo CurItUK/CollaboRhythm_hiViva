@@ -60,6 +60,23 @@ package collaboRhythm.hiviva.utils
 			return appId;
 		}
 
+		public static function getNameWithGuid(guid:String):String
+		{
+			var name:String;
+			var patientData:Array = HivivaStartup.connectionsVO.users;
+
+			for (var i:int = 0; i < patientData.length; i++)
+			{
+				if(patientData[i].guid == guid)
+				{
+					name = patientData[i].name;
+					break;
+				}
+			}
+
+			return name;
+		}
+
 		public static function establishToFromId(idsToCompare:XML):Object
 		{
 			var whoEstablishConnection:Object = [];

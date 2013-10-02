@@ -168,7 +168,7 @@ package collaboRhythm.hiviva.view.components
 				xAxisPosition = this._horizontalSegmentWidth * weekCount;
 
 				bottomAxisValue = new Label();
-				bottomAxisValue.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
+				bottomAxisValue.name = HivivaThemeConstants.FEELING_SLIDER_LABEL;
 				bottomAxisValue.text = HivivaModifier.addPrecedingZero((_weeks[weekCount].getMonth() + 1).toString()) + "/" +
 						HivivaModifier.addPrecedingZero(_weeks[weekCount].getDate().toString());
 				addChild(bottomAxisValue);
@@ -318,7 +318,7 @@ package collaboRhythm.hiviva.view.components
 			for (var i:int = 0; i < _scheduleHistoryData.length(); i++)
 			{
 				adherenceData = {};
-				adherenceData.patient = HivivaModifier.getAppIdWithGuid(_scheduleHistoryData[i].HealthUserGuid);
+				adherenceData.patient = HivivaModifier.getNameWithGuid(_scheduleHistoryData[i].HealthUserGuid);
 				adherenceData.adherence = [];
 
 				medicationSchedule = _scheduleHistoryData[i]..DCMedicationSchedule;

@@ -88,8 +88,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._instructionsLabel.width = this._innerWidth;
 			this._fromInstructionsLabel.width = this._innerWidth;
 
-			this._ascendingRadio.width =  this._innerWidth/2;
-			this._descendingRadio..width =  this._innerWidth/2;
+			this._ascendingRadio.width =  this._innerWidth/3;
+			this._descendingRadio..width =  this._innerWidth/3;
 
 
 			this._cancelAndSave.width = this._innerWidth;
