@@ -13,6 +13,9 @@ package collaboRhythm.hiviva.global
 		[Embed(source="/assets/fonts/exo-light.ttf", fontName="ExoLight", mimeType="application/x-font", embedAsCFF="false")]
 		public static const ExoLightFont:Class;
 
+		[Embed(source="/assets/fonts/exo-medium-italic.ttf", fontName="ExoMediumItalic", mimeType="application/x-font", embedAsCFF="false")]
+		public static const ExoMediumItalicFont:Class;
+
 		// colours (not to be used with bitmap fonts with effects applied!)
 		// grey theme
 		public static const DARK_FONT_COLOUR:uint							= 0x293d54;

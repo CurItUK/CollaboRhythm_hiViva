@@ -141,11 +141,22 @@
 
     <!-- The icon the system uses for the application. For at least one resolution, specify the path to a PNG file included in the AIR package. Optional. -->
 	<icon>
-
+		<image16x16>assets/images/icons/Icon-Small-16.png</image16x16>
+		<image29x29>assets/images/icons/Icon-Small.png</image29x29>
+		<image32x32>assets/images/icons/CollaboRhythm_icon_white_32.png</image32x32>
 		<image36x36>assets/images/icons/CollaboRhythm_icon_white_36.png</image36x36>
 		<image48x48>assets/images/icons/CollaboRhythm_icon_white_48.png</image48x48>
+		<image50x50>assets/images/icons/Icon-Small-50.png</image50x50>
+		<image57x57>assets/images/icons/Icon.png</image57x57>
+		<image58x58>assets/images/icons/Icon-Small@2x.png</image58x58>
 		<image72x72>assets/images/icons/Icon-72.png</image72x72>
-
+		<image96x96>assets/images/icons/Icon-96.png</image96x96>
+		<image100x100>assets/images/icons/Icon-Small-50@2x.png</image100x100>
+		<image114x114>assets/images/icons/Icon-144.png</image114x114>
+		<image128x128>assets/images/icons/Icon-128.png</image128x128>
+		<image144x144>assets/images/icons/Icon-144.png</image144x144>
+		<image512x512>assets/images/icons/iTunesArtwork.png</image512x512>
+		<image1024x1024>assets/images/icons/iTunesArtwork@2x.png</image1024x1024>
 	</icon>
 
 

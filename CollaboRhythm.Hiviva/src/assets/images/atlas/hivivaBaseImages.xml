@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:25a84aad992d0487422bfa759ff67cb0:1/1$ -->
+<!-- $TexturePacker:SmartUpdate:4012af4216050a457422f75a5134ed36:1/1$ -->
 <TextureAtlas imagePath="hivivaBaseImages.png">
     <SubTexture name="back-button" x="680" y="248" width="107" height="67"/>
     <SubTexture name="bottom_gradient" x="1303" y="2" width="10" height="195"/>
     <SubTexture name="button" x="2" y="360" width="202" height="76"/>
     <SubTexture name="button_borderless" x="1089" y="360" width="292" height="79"/>
-    <SubTexture name="calendar-button" x="1705" y="2" width="54" height="54"/>
+    <SubTexture name="calendar-button" x="1649" y="2" width="54" height="54"/>
     <SubTexture name="calendar_arrow" x="401" y="2" width="27" height="41"/>
     <SubTexture name="calendar_day_cell" x="789" y="248" width="85" height="85"/>
-    <SubTexture name="clock_face" x="2" y="1349" width="604" height="658"/>
+    <SubTexture name="clock_face" x="608" y="1349" width="604" height="658"/>
     <SubTexture name="clock_face_hand" x="1430" y="743" width="604" height="604"/>
+    <SubTexture name="clock_face_hand_shadow" x="2" y="1349" width="604" height="604"/>
     <SubTexture name="clock_icon" x="169" y="2" width="22" height="23"/>
     <SubTexture name="clock_segment" x="970" y="248" width="215" height="56"/>
     <SubTexture name="close_button" x="1924" y="2" width="60" height="60"/>
@@ -29,10 +30,10 @@
     <SubTexture name="footer_icon_5" x="1315" y="2" width="52" height="43"/>
     <SubTexture name="footer_icon_6" x="1369" y="2" width="50" height="46"/>
     <SubTexture name="footer_icon_7" x="1055" y="2" width="52" height="41"/>
-    <SubTexture name="footer_icon_active" x="336" y="360" width="128" height="135"/>
-    <SubTexture name="footer_icon_base" x="206" y="360" width="128" height="135"/>
+    <SubTexture name="footer_icon_active" x="206" y="360" width="128" height="135"/>
+    <SubTexture name="footer_icon_base" x="336" y="360" width="128" height="135"/>
     <SubTexture name="header_line" x="6" y="2" width="10" height="3"/>
-    <SubTexture name="home_lens" x="608" y="1349" width="637" height="634"/>
+    <SubTexture name="home_lens" x="1214" y="1349" width="637" height="634"/>
     <SubTexture name="icon_art" x="430" y="2" width="36" height="31"/>
     <SubTexture name="icon_cinema" x="965" y="2" width="42" height="36"/>
     <SubTexture name="icon_history" x="468" y="2" width="38" height="35"/>
@@ -40,26 +41,25 @@
     <SubTexture name="icon_sports" x="926" y="2" width="37" height="40"/>
     <SubTexture name="icon_travel" x="508" y="2" width="36" height="37"/>
     <SubTexture name="icon_upload" x="40" y="2" width="16" height="22"/>
-    <SubTexture name="input_field" x="1649" y="2" width="54" height="54"/>
+    <SubTexture name="input_field" x="1705" y="2" width="54" height="54"/>
     <SubTexture name="logo" x="644" y="743" width="318" height="334"/>
     <SubTexture name="message_icon_alert" x="193" y="2" width="26" height="22"/>
-    <SubTexture name="message_icon_compose" x="1583" y="248" width="130" height="110"/>
+    <SubTexture name="message_icon_compose" x="1187" y="248" width="130" height="110"/>
     <SubTexture name="message_icon_req" x="277" y="2" width="32" height="25"/>
-    <SubTexture name="message_icon_sent" x="1451" y="248" width="130" height="110"/>
+    <SubTexture name="message_icon_sent" x="1319" y="248" width="130" height="110"/>
     <SubTexture name="patient-profile-nav-button-pattern" x="214" y="248" width="72" height="72"/>
     <SubTexture name="patient-profile-nav-button" x="140" y="248" width="72" height="72"/>
-    <SubTexture name="pillbox" x="1247" y="1349" width="640" height="654"/>
     <SubTexture name="pillbox_icon" x="98" y="2" width="21" height="20"/>
     <SubTexture name="popup_panel" x="964" y="743" width="464" height="349"/>
-    <SubTexture name="radiobtn" x="1109" y="2" width="46" height="47"/>
-    <SubTexture name="radiobtn_checked" x="1157" y="2" width="46" height="47"/>
+    <SubTexture name="radiobtn" x="1206" y="2" width="46" height="47"/>
+    <SubTexture name="radiobtn_checked" x="1109" y="2" width="46" height="47"/>
     <SubTexture name="screen_base" x="361" y="512" width="200" height="200"/>
     <SubTexture name="settings_above_effect" x="181" y="512" width="178" height="178"/>
     <SubTexture name="side_nav_base" x="910" y="360" width="177" height="131"/>
     <SubTexture name="side_nav_icon_01" x="2" y="512" width="177" height="132"/>
     <SubTexture name="side_nav_icon_02" x="1741" y="360" width="177" height="132"/>
-    <SubTexture name="side_nav_icon_03" x="1562" y="360" width="177" height="132"/>
-    <SubTexture name="side_nav_icon_04" x="1383" y="360" width="177" height="132"/>
+    <SubTexture name="side_nav_icon_03" x="1383" y="360" width="177" height="132"/>
+    <SubTexture name="side_nav_icon_04" x="1562" y="360" width="177" height="132"/>
     <SubTexture name="snakey_thing" x="1051" y="512" width="231" height="229"/>
     <SubTexture name="splash_button_01" x="1284" y="512" width="320" height="199"/>
     <SubTexture name="splash_button_02" x="1606" y="512" width="320" height="199"/>
@@ -70,26 +70,26 @@
     <SubTexture name="star4" x="288" y="248" width="76" height="80"/>
     <SubTexture name="suberscript_circle" x="247" y="2" width="28" height="28"/>
     <SubTexture name="superscript_circle" x="1009" y="2" width="44" height="44"/>
-    <SubTexture name="tablet1" x="774" y="2" width="36" height="38"/>
-    <SubTexture name="tablet10" x="584" y="2" width="36" height="38"/>
-    <SubTexture name="tablet2" x="888" y="2" width="36" height="38"/>
-    <SubTexture name="tablet3" x="736" y="2" width="36" height="38"/>
-    <SubTexture name="tablet4" x="812" y="2" width="36" height="38"/>
+    <SubTexture name="tablet1" x="736" y="2" width="36" height="38"/>
+    <SubTexture name="tablet10" x="774" y="2" width="36" height="38"/>
+    <SubTexture name="tablet2" x="850" y="2" width="36" height="38"/>
+    <SubTexture name="tablet3" x="698" y="2" width="36" height="38"/>
+    <SubTexture name="tablet4" x="546" y="2" width="36" height="38"/>
     <SubTexture name="tablet5" x="660" y="2" width="36" height="38"/>
     <SubTexture name="tablet6" x="622" y="2" width="36" height="38"/>
-    <SubTexture name="tablet7" x="698" y="2" width="36" height="38"/>
-    <SubTexture name="tablet8" x="850" y="2" width="36" height="38"/>
-    <SubTexture name="tablet9" x="546" y="2" width="36" height="38"/>
+    <SubTexture name="tablet7" x="812" y="2" width="36" height="38"/>
+    <SubTexture name="tablet8" x="888" y="2" width="36" height="38"/>
+    <SubTexture name="tablet9" x="584" y="2" width="36" height="38"/>
     <SubTexture name="tick" x="221" y="2" width="24" height="26"/>
-    <SubTexture name="tick_box" x="1205" y="2" width="47" height="46"/>
+    <SubTexture name="tick_box" x="1157" y="2" width="47" height="46"/>
     <SubTexture name="tick_box_active" x="1254" y="2" width="47" height="46"/>
     <SubTexture name="toggle_switch" x="68" y="248" width="70" height="70"/>
     <SubTexture name="toggle_track" x="1834" y="2" width="88" height="35"/>
     <SubTexture name="top_gradient" x="1637" y="2" width="10" height="244"/>
     <SubTexture name="top_gradient_home" x="1625" y="2" width="10" height="244"/>
-    <SubTexture name="top_nav_icon_01" x="1187" y="248" width="130" height="110"/>
-    <SubTexture name="top_nav_icon_02" x="1715" y="248" width="130" height="110"/>
-    <SubTexture name="top_nav_icon_03" x="1319" y="248" width="130" height="110"/>
+    <SubTexture name="top_nav_icon_01" x="1715" y="248" width="130" height="110"/>
+    <SubTexture name="top_nav_icon_02" x="1451" y="248" width="130" height="110"/>
+    <SubTexture name="top_nav_icon_03" x="1583" y="248" width="130" height="110"/>
     <SubTexture name="validation_bg" x="2" y="743" width="640" height="101"/>
     <SubTexture name="verticle_line" x="2" y="2" width="2" height="10"/>
     <SubTexture name="vs_brand_ring" x="612" y="360" width="144" height="144"/>

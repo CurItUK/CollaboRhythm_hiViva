@@ -5,7 +5,10 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.view.HivivaHeader;
 
 	import feathers.controls.Button;
+	import feathers.controls.ButtonGroup;
 	import feathers.controls.Screen;
+	import feathers.controls.ScrollContainer;
+	import feathers.data.ListCollection;
 
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
@@ -15,11 +18,8 @@ package collaboRhythm.hiviva.view.screens.shared
 
 	public class HivivaResourceScreen extends Screen
 	{
-		private const LINKS:Array = ["http://www.google.com/","http://www.pharmiwebsolutions.com/"];
-
 		private var _header:HivivaHeader;
-		private var _btn1:Button;
-		private var _btn2:Button;
+		private var _btnGroup:ButtonGroup;
 
 		public function HivivaResourceScreen()
 		{
@@ -35,11 +35,9 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._header.height = Constants.HEADER_HEIGHT;
 			this._header.initTrueTitle();
 
-			this._btn1.y = Constants.HEADER_HEIGHT;
-			this._btn1.validate();
-
-			this._btn2.y = this._btn1.y + this._btn1.height + 10;
-			this._btn2.validate();
+			this._btnGroup.width = Constants.STAGE_WIDTH;
+			_btnGroup.validate();
+			_btnGroup.y = (Constants.STAGE_HEIGHT / 2) - (_btnGroup.height / 2);
 		}
 
 		override protected function initialize():void
@@ -55,26 +53,25 @@ package collaboRhythm.hiviva.view.screens.shared
 			homeBtn.addEventListener(Event.TRIGGERED, homeBtnHandler);
 			this._header.leftItems = new <DisplayObject>[homeBtn];
 
-
-			_btn1 = new Button();
-			_btn1.addEventListener(Event.TRIGGERED, launchLink1);
-			_btn1.label = "link 1";
-			addChild(_btn1);
-
-			_btn2 = new Button();
-			_btn2.addEventListener(Event.TRIGGERED, launchLink2);
-			_btn2.label = "link 2";
-			addChild(_btn2);
+			_btnGroup = new ButtonGroup();
+			_btnGroup.customFirstButtonName = HivivaThemeConstants.SPLASH_FOOTER_BUTTON;
+			_btnGroup.customButtonName = HivivaThemeConstants.SPLASH_FOOTER_BUTTON;
+			_btnGroup.customLastButtonName = HivivaThemeConstants.SPLASH_FOOTER_BUTTON;
+			_btnGroup.dataProvider = new ListCollection(
+				[
+					{ label: "http://www.aids.gov/hiv-aids-basics", triggered: launchLink},
+					{ label: "http://www.thebody.com", triggered: launchLink},
+					{ label: "http://www.cdc.gov/hiv/", triggered: launchLink},
+					{ label: "http://m.aidsinfo.nih.gov/", triggered: launchLink}
+				]
+			);
+			addChild(_btnGroup);
+			this._btnGroup.direction = ButtonGroup.DIRECTION_VERTICAL;
 		}
 
-		private function launchLink1(e:Event):void
+		private function launchLink(e:Event):void
 		{
-			navigateToURL(new URLRequest(LINKS[0]));
-		}
-
-		private function launchLink2(e:Event):void
-		{
-			navigateToURL(new URLRequest(LINKS[1]));
+			navigateToURL(new URLRequest(Button(e.target).label));
 		}
 
 		private function homeBtnHandler(e:Event):void

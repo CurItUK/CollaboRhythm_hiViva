@@ -148,15 +148,9 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../temp/v2_home_password_panel.png</filename>
             <filename>../temp/v2_icon_adduser.png</filename>
             <filename>../temp/v2_icon_lessthan.png</filename>
             <filename>../temp/v2_menulist.png</filename>
-            <filename>../temp/v2_menulist_bottom.png</filename>
-            <filename>../temp/v2_menulist_bottom_o.png</filename>
-            <filename>../temp/v2_menulist_o.png</filename>
-            <filename>../temp/v2_menulist_top.png</filename>
-            <filename>../temp/v2_menulist_top_o.png</filename>
             <filename>../temp/v2_pill_icon_tick.png</filename>
             <filename>../temp/v2_side_nav_base.png</filename>
             <filename>../temp/v2_close_button.png</filename>
@@ -216,6 +210,8 @@
             <filename>../temp/v2_homePageMask.png</filename>
             <filename>../temp/v2_top_bar.png</filename>
             <filename>../temp/v2_calendar_day_bg.png</filename>
+            <filename>../temp/v2_logo.png</filename>
+            <filename>../temp/v2_home_password_panel.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
