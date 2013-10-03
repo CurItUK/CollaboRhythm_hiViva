@@ -490,21 +490,20 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function galleryImageLoadCompleteHandler(e:flash.events.Event):void
 		{
-
-
 			var sourceBm:Bitmap = e.target.content as Bitmap;
 			var blurValue:int = 20 - int(0.2 * this._adherencePercent);
+
 			this._renderTexture = new RenderTexture(Constants.STAGE_WIDTH, this._usableHeight);
 			var canvas:Image = new Image(Texture.fromBitmap(sourceBm , false));
 
 			sourceBm.bitmapData.dispose();
 			sourceBm = null;
 
-
-			cropToFit(canvas, Constants.STAGE_WIDTH, this._usableHeight);
+//			cropToFit(canvas, Constants.STAGE_WIDTH, this._usableHeight);
 			canvas.x = (Constants.STAGE_WIDTH / 2) - (canvas.width / 2);
 
 			var galleryImage:Image = new Image(this._renderTexture);
+//			galleryImage.width = Constants.STAGE_WIDTH;
 			galleryImage.addEventListener(Event.ADDED_TO_STAGE, removePreloder);
 
 			if(this._adherencePercent != 100)
@@ -514,6 +513,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 
 			var homeLensMask:Image = new Image(Main.assets.getTexture("v2_homePageMask"));
+//			homeLensMask.width = Constants.STAGE_WIDTH;
 			homeLensMask.blendMode = BlendMode.ERASE;
 
 			this._renderTexture.drawBundled
@@ -528,6 +528,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 
 			this._lensImageHolder.addChild(galleryImage);
+			this._lensImageHolder.width = Constants.STAGE_WIDTH;
 			this._lensImageHolder.y =(this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._lensImageHolder.height * 0.5);
 
 			this._lensImageHolder.flatten();

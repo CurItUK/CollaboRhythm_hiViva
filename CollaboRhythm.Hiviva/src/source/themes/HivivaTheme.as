@@ -318,7 +318,8 @@ package source.themes
 
 		protected var buttonSideNavTexture:Texture;
 
-		protected var buttonPatientProfileNavTexture:Scale9Textures;
+//		protected var buttonPatientProfileNavTexture:Scale9Textures;
+		protected var buttonPatientProfileNavTexture:Texture;
 
 		protected var buttonSplash1SkinTexture:Texture;
 		protected var buttonSplash2SkinTexture:Texture;
@@ -659,7 +660,8 @@ package source.themes
 //			this.buttonSideNavTexture = Main.assets.getTexture("side_nav_base");
 			this.buttonSideNavTexture = Main.assets.getTexture("v2_side_nav_base");
 
-			this.buttonPatientProfileNavTexture = new Scale9Textures(Main.assets.getTexture("patient-profile-nav-button"), new Rectangle(0,0,72,72));
+//			this.buttonPatientProfileNavTexture = new Scale9Textures(Main.assets.getTexture("patient-profile-nav-button"), new Rectangle(1,1,70,70));
+			this.buttonPatientProfileNavTexture = Main.assets.getTexture("patient-profile-nav-button");
 
 //			this.buttonHomeSkinTexture = Main.assets.getTexture("footer_icon_1");
 			this.buttonHomeSkinTexture = Main.assets.getTexture("v2_footer_icon_1");
@@ -1772,13 +1774,13 @@ package source.themes
 		protected function patientProfileNavGroupInitializer(button:Button):void
 		{
 			const assetHeight:Number = 88;
-			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
 			skinSelector.defaultValue = this.buttonPatientProfileNavTexture;
-			skinSelector.imageProperties =
+			/*skinSelector.imageProperties =
 			{
 				height: assetHeight * this.scale,
 				textureScale: this.scale
-			};
+			};*/
 			button.stateToSkinFunction = skinSelector.updateValue;
 
 
@@ -1789,9 +1791,9 @@ package source.themes
 
 			button.paddingLeft = 44 * this.scale;
 
-			button.minWidth = assetHeight * this.scale;
+//			button.minWidth = assetHeight * this.scale;
 			button.minHeight = assetHeight * this.scale;
-			button.minTouchWidth = assetHeight * this.scale;
+//			button.minTouchWidth = assetHeight * this.scale;
 			button.minTouchHeight = assetHeight * this.scale;
 		}
 

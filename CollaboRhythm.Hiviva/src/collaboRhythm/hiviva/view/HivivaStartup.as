@@ -14,6 +14,8 @@ package collaboRhythm.hiviva.view
 
 	import flash.display.Sprite;
 	import flash.display.Bitmap;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 
@@ -53,10 +55,13 @@ package collaboRhythm.hiviva.view
 		{
 			removeEventListener(flash.events.Event.ADDED_TO_STAGE, onAdded);
 
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode	 = StageScaleMode.NO_SCALE;
+
 			_background =  new _Background();
 			_background.smoothing = true;
-			_background.width = Constants.STAGE_WIDTH;
-			_background.height = Constants.STAGE_HEIGHT;
+			_background.width = stage.fullScreenWidth;
+			_background.height = stage.fullScreenHeight;
 			addChild(_background);
 
 			_hivivaStartup = this;
