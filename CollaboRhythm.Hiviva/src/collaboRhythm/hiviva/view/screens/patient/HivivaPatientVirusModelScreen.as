@@ -108,6 +108,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			headerBg.setTexCoords(2,new Point(0,clipRatio));
 			headerBg.setTexCoords(3,new Point(1,clipRatio));
 			addChild(headerBg);
+			headerBg.width = Constants.STAGE_WIDTH;
 			headerBg.height = Constants.HEADER_HEIGHT;
 
 			/*this._topGrad = new TiledImage(Main.assets.getTexture("top_gradient"));
@@ -280,7 +281,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._virusBg = new TiledImage(Main.assets.getTexture("v2_fixed_base"));
 			this._virusBg.width = Constants.STAGE_WIDTH;
 			this._virusBg.height = 615;
-			this._virusBg.flatten();
 
 			this._virusHolder.addChild(this._virusBg);
 			initVirusSimulation();

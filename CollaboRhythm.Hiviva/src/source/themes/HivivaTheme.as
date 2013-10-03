@@ -99,7 +99,6 @@ package source.themes
 	import feathers.text.BitmapFontTextFormat;
 	import feathers.textures.Scale3Textures;
 	import feathers.textures.Scale9Textures;
-	import feathers.textures.Scale9Textures;
 
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
@@ -349,7 +348,8 @@ package source.themes
 
 		protected var inputFieldSkinTexture:Scale9Textures;
 
-		protected var feelingSliderTrackSkinTextures:Scale9Textures;
+//		protected var feelingSliderTrackSkinTextures:Scale9Textures;
+		protected var feelingSliderTrackSkinTextures:Texture;
 		protected var feelingSliderSwitchSkinTextures:Texture;
 
 		protected var pickerListButtonIconTexture:Texture;
@@ -703,7 +703,7 @@ package source.themes
 			this.inputFieldSkinTexture = new Scale9Textures(Main.assets.getTexture("input_field"), new Rectangle(11,11,32,32));
 
 //			this.feelingSliderTrackSkinTextures = new Scale9Textures(Main.assets.getTexture("feeling_slider_track"), new Rectangle(50,46,386,2));
-			this.feelingSliderTrackSkinTextures = new Scale9Textures(Main.assets.getTexture("v2_feeling_slider_track"), new Rectangle(50,46,386,2));
+			this.feelingSliderTrackSkinTextures = Main.assets.getTexture("v2_feeling_slider_track");
 			this.feelingSliderSwitchSkinTextures = Main.assets.getTexture("feeling_slider_switch");
 
 
@@ -2350,8 +2350,7 @@ package source.themes
 		protected function feelingSliderInitializer(slider:Slider):void
 		{
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
-
-			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
+			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
 			skinSelector.defaultValue = this.feelingSliderTrackSkinTextures;
 			skinSelector.imageProperties =
 			{

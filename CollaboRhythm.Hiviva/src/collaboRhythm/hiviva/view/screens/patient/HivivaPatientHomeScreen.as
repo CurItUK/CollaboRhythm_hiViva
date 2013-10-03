@@ -499,11 +499,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			sourceBm.bitmapData.dispose();
 			sourceBm = null;
 
-//			cropToFit(canvas, Constants.STAGE_WIDTH, this._usableHeight);
+			cropToFit(canvas, Constants.STAGE_WIDTH, this._usableHeight);
 			canvas.x = (Constants.STAGE_WIDTH / 2) - (canvas.width / 2);
 
 			var galleryImage:Image = new Image(this._renderTexture);
-//			galleryImage.width = Constants.STAGE_WIDTH;
+			galleryImage.width = Constants.STAGE_WIDTH;
 			galleryImage.addEventListener(Event.ADDED_TO_STAGE, removePreloder);
 
 			if(this._adherencePercent != 100)
@@ -513,17 +513,17 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 
 			var homeLensMask:Image = new Image(Main.assets.getTexture("v2_homePageMask"));
-//			homeLensMask.width = Constants.STAGE_WIDTH;
+			homeLensMask.width = Constants.STAGE_WIDTH;
 			homeLensMask.blendMode = BlendMode.ERASE;
 
 			this._renderTexture.drawBundled
 			(
-					function():void
-					{
-						_renderTexture.draw(canvas);
-						_renderTexture.draw(galleryImage);
-						_renderTexture.draw(homeLensMask);
-					}
+				function():void
+				{
+					_renderTexture.draw(canvas);
+					_renderTexture.draw(galleryImage);
+					_renderTexture.draw(homeLensMask);
+				}
 			);
 
 
