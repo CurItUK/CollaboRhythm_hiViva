@@ -143,7 +143,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._userMedSchedPopup = new HivivaPopUp();
 			this._userMedSchedPopup.buttons = ["Enter medicines","Do later"];
 			this._userMedSchedPopup.addEventListener(Event.TRIGGERED, userMedSchedPopupHandler);
-			this._userMedSchedPopup.width = Constants.STAGE_WIDTH * 0.75;
+//			this._userMedSchedPopup.width = Constants.STAGE_WIDTH * 0.75;
 			this._userMedSchedPopup.validate();
 			this._userMedSchedPopup.message = "You will need to input your daily medicines to begin";
 

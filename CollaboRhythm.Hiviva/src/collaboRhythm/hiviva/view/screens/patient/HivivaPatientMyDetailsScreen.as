@@ -23,6 +23,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _photoContainer:ImageUploader;
 		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
+		private var _parentScreen:String;
 
 		private const USER_PROFILE_IMAGE:String = "userprofileimage.jpg";
 
@@ -118,8 +119,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			switch(button)
 			{
 				case "Cancel" :
-					this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
-					hideFormValidation();
+					backBtnHandler();
 					break;
 				case "Save" :
 					var formValidation:String = patientMyDetailsCheck();
@@ -136,10 +136,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
-		private function backBtnHandler(e:Event):void
+		private function backBtnHandler(e:Event = null):void
 		{
-			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
-			hideFormValidation();
+			if(_parentScreen != null)
+			{
+				this.owner.showScreen(_parentScreen);
+			}
+			else
+			{
+				this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
+			}
 		}
 
 		private function patientMyDetailsCheck():String
@@ -206,6 +212,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_COMPLETE , getPatientCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_FULLNAME_SAVE_COMPLETE, saveUserFullnameHandler);
 			super.dispose();
+		}
+
+		public function get parentScreen():String
+		{
+			return _parentScreen;
+		}
+
+		public function set parentScreen(value:String):void
+		{
+			_parentScreen = value;
 		}
 	}
 }

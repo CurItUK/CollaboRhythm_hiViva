@@ -12,6 +12,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.view.screens.MessageInboxResultCell;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPAlertSettings;
 	import collaboRhythm.hiviva.view.screens.hcp.HivivaHCPPatientProfileScreen;
+	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientMyDetailsScreen;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -140,9 +141,6 @@ package collaboRhythm.hiviva.view.screens.shared
 			this.addChild(this._messageLabel);
 			if(!_isSent) addChild(this._options);
 
-			this._statusResponse = new HivivaPopUp();
-			this._statusResponse.buttons = ["Ok"];
-
 			if(HivivaStartup.userVO.type == "HCP") dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
 		}
 
@@ -198,8 +196,25 @@ package collaboRhythm.hiviva.view.screens.shared
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.ignoreConnection(_messageData.FromUserGuid);
 					break;
 				case "Accept" :
-					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
-					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(_messageData.FromUserGuid);
+					if(HivivaStartup.userVO.type != "HCP")
+					{
+						if(HivivaStartup.userVO.fullName.length > 0)
+						{
+							trace("accepted!");
+//							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
+//							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(_messageData.FromUserGuid);
+						}
+						else
+						{
+							initStatusResponsePopup("Please create a profile in order to accept the connection request", "Create profile", createProfileCallBack);
+						}
+					}
+					else
+					{
+						trace("accepted!");
+//						HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
+//						HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(_messageData.FromUserGuid);
+					}
 					break;
 				case "Go to patient" :
 					setSelectedHCPPatientProfile();
@@ -221,6 +236,24 @@ package collaboRhythm.hiviva.view.screens.shared
 					break;
 				default :
 					callBack();
+					break;
+			}
+		}
+
+		private function createProfileCallBack(e:Event):void
+		{
+			var btn:String = e.data.button;
+			switch(btn)
+			{
+				case "Create profile" :
+					if(owner.hasScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN))
+					{
+						owner.removeScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
+					}
+					owner.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen, null, {parentScreen:owner.activeScreenID}));
+					owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
+				case "Close" :
+					PopUpManager.removePopUp(_statusResponse);
 					break;
 			}
 		}
@@ -247,11 +280,11 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			if(e.data.xmlResponse.StatusCode == "1")
 			{
-				initStatusResponsePopup("Message deleted", callBack);
+				initStatusResponsePopup("Message deleted", "Ok", callBack);
 			}
 			else
 			{
-				initStatusResponsePopup("Error! " + e.data.xmlResponse.Message, callBack);
+				initStatusResponsePopup("Error! " + e.data.xmlResponse.Message, "Ok", callBack);
 			}
 		}
 
@@ -263,7 +296,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			if(e.data.xmlResponse.StatusCode == "1")
 			{
-				initStatusResponsePopup("Success! You are now connected to " + user + " (" + _messageData.FromAppId + ")", callBack);
+				initStatusResponsePopup("Success! You are now connected to " + user + " (" + _messageData.FromAppId + ")", "Ok", callBack);
 				/*if(HivivaStartup.userVO.type == "HCP")
 				{
 					HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
@@ -272,7 +305,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			}
 			else
 			{
-				initStatusResponsePopup("Error! " + e.data.xmlResponse.Message, callBack);
+				initStatusResponsePopup("Error! " + e.data.xmlResponse.Message, "Ok", callBack);
 			}
 		}
 
@@ -284,17 +317,19 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			if(e.data.xmlResponse.StatusCode == "1")
 			{
-				initStatusResponsePopup("You have ignored the connection request from " + user + " (" + _messageData.FromAppId + ")", callBack);
+				initStatusResponsePopup("You have ignored the connection request from " + user + " (" + _messageData.FromAppId + ")", "Ok", callBack);
 			}
 			else
 			{
-				initStatusResponsePopup("Error! " + e.data.xmlResponse.Message, callBack);
+				initStatusResponsePopup("Error! " + e.data.xmlResponse.Message, "Ok", callBack);
 			}
 		}
 
-		private function initStatusResponsePopup(message:String, callBack:Function):void
+		private function initStatusResponsePopup(message:String, buttonName:String, callBackFunc:Function):void
 		{
-			this._statusResponse.addEventListener(Event.TRIGGERED, callBack);
+			this._statusResponse = new HivivaPopUp();
+			this._statusResponse.buttons = [buttonName];
+			this._statusResponse.addEventListener(Event.TRIGGERED, callBackFunc);
 			this._statusResponse.message = message;
 			this._statusResponse.validate();
 
