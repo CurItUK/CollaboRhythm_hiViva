@@ -301,6 +301,8 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function sendPDFInit():void
 		{
+
+
 			/*
 
 
