@@ -208,13 +208,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				this._messageCells[i].width = Constants.STAGE_WIDTH;
 			}
-/*
-
-			for (var j:int = 0; j < this._alertCells.length; j++)
-			{
-				this._alertCells[j].width = this.actualWidth;
-			}
-*/
 
 			this._cellContainer.validate();
 		}

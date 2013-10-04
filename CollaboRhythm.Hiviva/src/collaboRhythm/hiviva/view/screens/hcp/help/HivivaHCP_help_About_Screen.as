@@ -27,13 +27,13 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  = "hiVIVA is an application for smartphones to help HIV patients track how they take their medication.  " +
+		private var _pageString : String  = "INCHarge is an application for smartphones to help HIV patients track how they take their medication.  " +
 				"Medication adherence is needed to protect the health of people living with HIV and prevent the spread of HIV. Medication is daily, " +
-				"for life, and may have unpleasant side effects. This application connects patients and providers, focussing on education and positive " +
-				"reinforcement to support adherence. \n \n hiVIVA is built on the MIT Media Lab’s CollaboRhythm platform. Initial development of the app was " +
-				"performed by a diverse group of HIV clinicians with technical support in the MIT Media Center, with continuing development by " +
-				"participants from MIT, Healthcare for the Homeless in Boston, ViiV, PharmiWeb Solutions, Baltimore City Health Department, " +
-				"and the East Africa AIDS Project."
+				"for life, and may have unpleasant side effects. This application connects patients and providers, focussing on education and " +
+				"positive reinforcement to support adherence. \n \n INCHarge is built on the MIT Media Lab’s CollaboRhythm platform. Initial " +
+				"development of the app was performed by a diverse group of HIV clinicians with technical support in the MIT Media Center, with " +
+				"continuing development by participants from MIT, Healthcare for the Homeless in Boston, ViiV, PharmiWeb Solutions, Baltimore City " +
+				"Health Department, and the East Africa AIDS Project.";
 		public function HivivaHCP_help_About_Screen()
 		{
 			super();

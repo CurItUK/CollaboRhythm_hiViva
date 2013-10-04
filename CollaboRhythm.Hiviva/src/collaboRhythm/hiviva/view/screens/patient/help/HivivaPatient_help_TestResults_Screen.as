@@ -27,9 +27,9 @@ package collaboRhythm.hiviva.view.screens.patient.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  = 		"In your profile you can record your most recent test results for " +
-				"CD4 count and viral load, with the date of when these were taken. Previous test results (if recorded) " +
-				"are available via the reports function."
+		private var _pageString : String  = "In your profile you can record your most recent test results for CD4 count " +
+				"and viral load, with the date of when these were taken. Previous test results (if recorded) are " +
+				"available via the reports function.";
 
 
 		public function HivivaPatient_help_TestResults_Screen()

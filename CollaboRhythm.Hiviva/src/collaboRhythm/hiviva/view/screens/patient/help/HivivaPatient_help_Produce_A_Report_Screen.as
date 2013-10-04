@@ -28,10 +28,9 @@ package collaboRhythm.hiviva.view.screens.patient.help
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
 		private var _pageString : String  =  "Once you have input your data into the application, you produce a report " +
-						   "to summarize the information you have input over a chosen date range. " +
-						   "You can filter the data so that you can select only what you want to see each " +
-				   "time you produce the report. The report can be sent via email to yourself or a recipient " +
-				   "of your choice (e.g. your provider) as a PDF file."
+				"to summarize the information you have input over a chosen date range. You can filter the data so that " +
+				"you can select only what you want to see each time you produce the report. The report can be sent via " +
+				"email to yourself or a recipient of your choice (e.g. your provider) as a PDF file.";
 
 
 		public function HivivaPatient_help_Produce_A_Report_Screen()

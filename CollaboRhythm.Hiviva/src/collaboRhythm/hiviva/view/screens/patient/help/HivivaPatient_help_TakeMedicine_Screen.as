@@ -27,12 +27,11 @@ package collaboRhythm.hiviva.view.screens.patient.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  = "You can view your regimen either on a clock face or within a table. " +
-						"The page loads with the clock face, showing how many meds are taken at what time. " +
-						"This can be switched to the tabular view of how many tablets per medication, " +
-						"morning or afternoon, via the " +
-				"slider at the top. On the Take Medication page, you can indicate " +
-				"whether you have taken your medication in line with your prescribed regimen."
+		private var _pageString : String  = "You can view your regimen either on a clock face or within a table. The " +
+				"page loads with the clock face, showing how many meds are taken at what time. This can be switched to " +
+				"the tabular view of how many tablets per medication, morning or afternoon, via the slider at the top. " +
+				"On the Take Medication page, you can indicate whether you have taken your medication in line with your " +
+				"prescribed regimen.";
 
 
 		public function HivivaPatient_help_TakeMedicine_Screen()

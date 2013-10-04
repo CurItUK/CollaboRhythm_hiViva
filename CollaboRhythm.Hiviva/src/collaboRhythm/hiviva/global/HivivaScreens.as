@@ -41,6 +41,8 @@ package collaboRhythm.hiviva.global
 		public static const PATIENT_HELP_DAILY_MEDICINES_SCREEN:String				= "patient_help_DailyMedicines_Screen";
 
 		public static const PATIENT_HELP_HOMEPAGE_PHOTO_SCREEN:String				= "patient_help_HomePagePhoto_Screen";
+		public static const PATIENT_HELP_TAKE_MEDICATION_SCREEN:String				= "patient_help_Take_Medication_Screen";
+		public static const PATIENT_HELP_CREATE_PROFILE_SCREEN:String				= "patient_help_Create_Profile_Screen";
 		public static const PATIENT_HELP_CONNECT_TO_CARE_PROVIDER_SCREEN:String		= "patient_help_Connect_To_Care_Provider_Screen";
 
 

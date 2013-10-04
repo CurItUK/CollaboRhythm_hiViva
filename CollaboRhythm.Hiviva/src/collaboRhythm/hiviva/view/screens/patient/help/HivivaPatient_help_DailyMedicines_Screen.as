@@ -27,9 +27,9 @@ package collaboRhythm.hiviva.view.screens.patient.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  = "Within Daily medicines, select your HIV regimen from the medication database and input how many " +
-				"tablets, how many times a day, and what time you are required to take your medication " +
-				"according to your prescribed regimen."
+		private var _pageString : String  = "Within Daily medicines, select your HIV regimen from the medication " +
+				"database and input how many tablets, how many times a day, and what time you are required to take your " +
+				"medication according to your prescribed regimen.";
 
 
 		public function HivivaPatient_help_DailyMedicines_Screen()

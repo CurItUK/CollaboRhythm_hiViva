@@ -27,15 +27,11 @@ package collaboRhythm.hiviva.view.screens.patient.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  = "Select your homepage photo, which acts as an indicator of your daily adherence. " +
-				"The photo will become clearer as your daily adherence level increases. \n\nYou can select up to 7 photos " +
-				"from preloaded images or upload a personal photo from your phone’s camera roll. " +
-				"The image on your homepage rotates on a daily basis, depending on how many you " +
-				"have selected within your profile."
-
-
-
-
+		private var _pageString : String  = "Select your homepage photo, which acts as an indicator of your daily " +
+				"adherence. The photo will become clearer as your daily adherence level increases.\n\n" +
+				"You can select up to 7 photos from preloaded images or upload a personal photo from your phone’s " +
+				"camera roll. The image on your homepage rotates on a daily basis, depending on how many you have " +
+				"selected within your profile.";
 
 		public function HivivaPatient_help_HomePagePhoto_Screen()
 		{

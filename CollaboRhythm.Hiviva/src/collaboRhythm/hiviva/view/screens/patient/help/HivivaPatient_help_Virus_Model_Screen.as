@@ -27,12 +27,14 @@ package collaboRhythm.hiviva.view.screens.patient.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  = "The virus model is an illustrative simulation of the protection that your medications offer your immune system (CD4 cells) from " +
-				"the HIV in your body. The model uses your profile’s test results and adherence level to depict your current level of " +
-				"protection. You can adjust the sliders to see how this changes as levels drop or increase. The default position " +
-				"will always be based on the inputs you make into the app.\n\nAs adherence decreases, you will notice that more of the virus attaches " +
-				"to the CD4 cells and the strength of the medication circular shield weakens. The number of virus molecules and CD4 cells are " +
-				"in proportion with your test results (approximately 1% of the values up to a maximum)."
+		private var _pageString : String  = "The virus model is an illustrative simulation of the protection that your " +
+				"medications offer your immune system (CD4 cells) from the HIV in your body. The model uses your " +
+				"profile’s test results and adherence level to depict your current level of protection. You can adjust " +
+				"the sliders to see how this changes as levels drop or increase. The default position will always be " +
+				"based on the inputs you make into the app.\n\n" +
+				"As adherence decreases, you will notice that more of the virus attaches to the CD4 cells and the " +
+				"strength of the medication circular shield weakens. The number of virus molecules and CD4 cells are in " +
+				"proportion with your test results (approximately 1% of the values up to a maximum).";
 
 
 		public function HivivaPatient_help_Virus_Model_Screen()

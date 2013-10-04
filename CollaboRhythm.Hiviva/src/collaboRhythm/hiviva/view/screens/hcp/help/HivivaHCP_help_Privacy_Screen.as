@@ -30,25 +30,21 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  =  "A number of precautions are in place to preserve privacy.\n\n"+
-                "Patients and care providers are assigned a unique identifier for their app profile.  " +
-                "If you wish to make a connection, your connection will require this identifier to " +
-                "find you specifically.  The only key connecting the identifier with patient name should " +
-                "be secured in a locked cabinet of the study of the provider treating that patient.\n\n"+
-		        "The app has a password in addition to any password that a user may already have established " +
-				"on his or her smart phone. This level of protection does not limit access " +
-				"to other applications, but does prevent others from viewing screens within the HIV " +
-				"medication adherence application that reveal its purpose and, therefore, " +
-				"the HIV status of the user. \n\n"+
-				"All patient data will be stored on a centrally managed database server that is password " +
-				"protected and kept in a locked server room in London, UK. Only a coded identifier will be " +
-				"stored with each patient’s adherence data on the server. This means that no identifiable " +
-				"health information will be stored on any of the cell phones or the server at any time. This " +
-				"additional privacy protection mechanism will ensure that data cannot be linked to an individual " +
-				"patient. \n\n"+
-				"All patient data sent between cell phone and server will be encrypted using industry standard 128-bit encryption. " +
-				"This means that, even if data is intercepted between the device and the server, no identifiable health " +
-				"information is available. "
+		private var _pageString : String  =  "A number of precautions are in place to preserve privacy.\n\n" +
+				"Patients and care providers are assigned a unique identifier for their app profile (app I.D.).  If you " +
+				"wish to make a connection, your connection will require this identifier to find you specifically.   " +
+				"Patients names will be displayed with their app I.D. on the HCP side of the app once a connection has " +
+				"been made.\n\n" +
+		        "The app has a password in addition to any password that a user may already have established on his or " +
+				"her smart phone or tablet. This level of protection does not limit access to other applications, but " +
+				"does prevent others from viewing screens within the HIV medication adherence application that reveal " +
+				"its purpose and, therefore, the HIV status of the user. \n\n" +
+				"All patient data will be stored on a centrally managed database server that is password protected and " +
+				"kept in a locked server room in London, UK.  Patients’ names and app I.D.’s will be stored with their " +
+				"adherence data on the server. \n\n" +
+				"All patient data sent between cell phone and server will be encrypted using industry standard 128-bit " +
+				"encryption. This means that, even if data is intercepted between the device and the server, no " +
+				"identifiable health information is available.";
 
 
 

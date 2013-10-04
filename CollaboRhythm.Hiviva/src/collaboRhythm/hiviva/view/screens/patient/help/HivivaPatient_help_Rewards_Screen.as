@@ -27,9 +27,8 @@ package collaboRhythm.hiviva.view.screens.patient.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  = 	"The app will reward you for periods of 100% adherence. " +
-				"Notifications are displayed on the homepage of the application. " +
-				"Previously attained kudos can be viewed in the submenu."
+		private var _pageString : String  = "The app will reward you for periods of 100% adherence. Notifications are " +
+				"displayed on the homepage of the application. Previously attained kudos can be viewed in the submenu.";
 
 		public function HivivaPatient_help_Rewards_Screen()
 		{

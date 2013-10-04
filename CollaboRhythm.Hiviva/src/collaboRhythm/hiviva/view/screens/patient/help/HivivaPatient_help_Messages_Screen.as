@@ -27,8 +27,8 @@ package collaboRhythm.hiviva.view.screens.patient.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  = 		"Messages from your care provider (if connected) are available in the submenu. " +
-				"Notifications of new messages appear on the homepage of the app."
+		private var _pageString : String  =  "Messages from your care provider (if connected) are available in the " +
+				"submenu. Notifications of new messages appear on the homepage of the app.";
 
 
 		public function HivivaPatient_help_Messages_Screen()

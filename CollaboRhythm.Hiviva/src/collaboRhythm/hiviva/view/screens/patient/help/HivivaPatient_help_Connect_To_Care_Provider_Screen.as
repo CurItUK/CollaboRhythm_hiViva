@@ -27,13 +27,14 @@ package collaboRhythm.hiviva.view.screens.patient.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  = "You can connect to your care provider if they also install the app on their phone. " +
-				"Connect by searching their unique identification code, which they will be able to give " +
-				"you once they have installed the app too. Your care provider will have to accept your request " +
-				"to connect in order to start sharing data. If you wish your care provider to connect to you, you " +
-				"will need to provide them with the unique identifier from your application. \n\nWhen patient and care provider " +
-				"agree to share data, providers can see levels of patient adherence and how patients are feeling. They can " +
-				"return pre-defined validations or cautions to the patient, such as reminders to see the provider. "
+		private var _pageString : String  = "You can connect to your care provider if they also install the app on their" +
+				" phone. Connect by searching their unique identification code, which they will be able to give you once" +
+				" they have installed the app too. Your care provider will have to accept your request to connect in " +
+				"order to start sharing data. If you wish your care provider to connect to you, you will need to provide" +
+				" them with the unique identifier from your application.\n\n" +
+				"When patient and care provider agree to share data, providers can see levels of patient adherence and " +
+				"how patients are feeling. They can return pre-defined validations or cautions to the patient, such as " +
+				"reminders to see the provider.";
 
 
 		public function HivivaPatient_help_Connect_To_Care_Provider_Screen()

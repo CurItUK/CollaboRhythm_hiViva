@@ -54,6 +54,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientViewMedicationScreen;
 	import collaboRhythm.hiviva.view.screens.patient.HivivaPatientVirusModelScreen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Connect_To_Care_Provider_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Create_Profile_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_DailyMedicines_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_GettingStarted_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_HomePagePhoto_Screen;
@@ -63,6 +64,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Rewards_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_SeeAdherence_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_TakeMedicine_Screen;
+	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Take_Medication_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_TestResults_Screen;
 	import collaboRhythm.hiviva.view.screens.patient.help.HivivaPatient_help_Virus_Model_Screen;
 	import collaboRhythm.hiviva.view.screens.shared.HivivaResourceScreen;
@@ -508,6 +510,8 @@ package collaboRhythm.hiviva.view
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_GETTINGSTARTED_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_GettingStarted_Screen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_DAILY_MEDICINES_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_DailyMedicines_Screen, {navGoHome:goBackToMainScreen}));
 		    this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_HOMEPAGE_PHOTO_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_HomePagePhoto_Screen, {navGoHome:goBackToMainScreen}));
+		    this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_TAKE_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_Take_Medication_Screen, {navGoHome:goBackToMainScreen}));
+		    this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_CREATE_PROFILE_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_Create_Profile_Screen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_CONNECT_TO_CARE_PROVIDER_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_Connect_To_Care_Provider_Screen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_TEST_RESULTS_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_TestResults_Screen, {navGoHome:goBackToMainScreen}));
 			this._settingsNav.addScreen(HivivaScreens.PATIENT_HELP_TAKE_MEDICINE_SCREEN, new ScreenNavigatorItem(HivivaPatient_help_TakeMedicine_Screen, {navGoHome:goBackToMainScreen}));

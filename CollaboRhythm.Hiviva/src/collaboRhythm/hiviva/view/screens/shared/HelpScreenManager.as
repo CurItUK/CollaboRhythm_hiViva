@@ -82,6 +82,12 @@ package collaboRhythm.hiviva.view.screens.shared
 				case "homepagephoto" :
 					__s = String(HivivaScreens.PATIENT_HELP_HOMEPAGE_PHOTO_SCREEN);
 					break;
+				case "takemedication" :
+					__s = String(HivivaScreens.PATIENT_HELP_TAKE_MEDICATION_SCREEN);
+					break;
+				case "createprofile" :
+					__s = String(HivivaScreens.PATIENT_HELP_CREATE_PROFILE_SCREEN);
+					break;
 				case "connecttocareprovider" :
 					__s = String(HivivaScreens.PATIENT_HELP_CONNECT_TO_CARE_PROVIDER_SCREEN);
 					break;
