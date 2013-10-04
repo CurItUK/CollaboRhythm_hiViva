@@ -30,9 +30,9 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  =  " On your homepage, patients’ values are included and ordered according to your " +
-				"profile display settings. The Patient adherence page allows you to see your patients’ " +
-				"average weekly adherence levels over the previous 5 weeks."
+		private var _pageString : String  =  "On your homepage, patients’ values are included and ordered according to " +
+				"your profile display settings. The Patient adherence page allows you to see your patients’ average " +
+				"weekly adherence levels over the previous 5 weeks.";
 
 
 

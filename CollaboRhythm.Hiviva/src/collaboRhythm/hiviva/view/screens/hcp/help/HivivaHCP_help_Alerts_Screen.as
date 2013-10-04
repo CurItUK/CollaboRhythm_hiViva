@@ -30,8 +30,8 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  =  "In alerts, you can set rules for when you would like to receive in-app messages about your patients’" +
-		" adherence and tolerability. These alerts will show up as messages in the app."
+		private var _pageString : String  =  "In alerts, you can set rules for when you would like to receive in-app " +
+				"messages about your patients’ adherence and tolerability. These alerts will show up as messages in the app.";
 
 
 

@@ -39,7 +39,7 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 			this._scaledPadding = (this.actualWidth * 0.04) * this.dpiScale;
 
 			this._header.width = Constants.STAGE_WIDTH;
-			this._header.height = Constants.HEADER_HEIGHT;
+			this._header.height = Constants.HEADER_HEIGHT * 1.5;
 			this._header.initTrueTitle();
 
 			drawMenuBtnGroup();
@@ -49,7 +49,7 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 		{
 			super.initialize();
 			this._header = new HivivaHeader();
-			this._header.title = "What Can I Do \nwith HiVIVA" //this._title;
+			this._header.title = "What Can I Do \nwith INCHarge" //this._title;
 			addChild(this._header);
 			this._tilesInBtns = new <TiledImage>[];
 			this._menuBtnGroup = new ButtonGroup();

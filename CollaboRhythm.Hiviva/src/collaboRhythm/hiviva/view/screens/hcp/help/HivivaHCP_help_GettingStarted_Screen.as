@@ -71,9 +71,9 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 		{
 			var lc:ListCollection = new ListCollection(
 					[
-						{name: "hcphelpdisplaySettings", label: "Display Settings"},
+						{name: "hcphelpdisplaySettings", label: "Display settings"},
 						{name: "hcphelpAlertsScreen", label: "Alerts"},
-						{name: "hcphelpConnectToPatientScreen", label: "Connect to Patient"}
+						{name: "hcphelpConnectToPatientScreen", label: "Connect to patient"}
 					]
 			);
 

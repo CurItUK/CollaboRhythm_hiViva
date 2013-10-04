@@ -31,14 +31,11 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
 		private var _pageString : String  =  "You can connect to your patients by searching for their unique " +
-				"identification number – they will need to provide this to you " +
-				"from their version of the app.\n\n"+
-                 "For the Beta release no personally identifiable information is being displayed within " +
-				"the app. In order to know which patient is aligned to which identification number, you will " +
-				"need to keep a record of each patient name against their number. This should be kept secure " +
-				"in order to protect patient privacy.\n\n"+
-				"If you wish your patient to connect to you, you will need to provide them with the unique identifier " +
-				"from your application."
+				"identification number – they will need to provide this to you from their version of the app. Within the " +
+				"app, the patients’ names will be displayed with their app I.D. so that you can identify a patient with " +
+				"their data.\n\n" +
+                "If you wish your patient to connect to you, you will need to provide them with the unique identifier " +
+				"from your application.";
 
 
 

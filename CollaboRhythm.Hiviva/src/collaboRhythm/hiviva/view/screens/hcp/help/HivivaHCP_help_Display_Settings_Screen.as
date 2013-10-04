@@ -27,8 +27,8 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  ="The display settings dictate how your connected patients are ranked on your homepage. You can prioritize" +
-				" adherence or tolerability values in either ascending or descending order."
+		private var _pageString : String  = "The display settings dictate how your connected patients are ranked on your" +
+				" homepage. You can prioritize adherence or tolerability values in either ascending or descending order.";
 
 
 

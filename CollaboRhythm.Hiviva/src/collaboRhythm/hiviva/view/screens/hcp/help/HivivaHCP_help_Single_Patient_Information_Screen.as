@@ -30,14 +30,11 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  =   "When you select a patient on the homepage, you can view their adherence and tolerability record for " +
-				"the previous week. Patients use a slider scale to gauge their tolerability. The slider is designed to be " +
-				"used alongside taking medication to give an overall picture of how well the patient is tolerating his/her " +
-				"medication. The position is assigned a numerical value on a scale of 0-5 in order to build a comparative " +
-				"picture of day to day tolerability of medication."
-
-
-
+		private var _pageString : String  =  "When you select a patient on the homepage, you can view their adherence " +
+				"and tolerability record for the previous week. Patients use a slider scale to gauge their tolerability." +
+				" The slider is designed to be used alongside taking medication to give an overall picture of how well " +
+				"the patient is tolerating his/her medication. The position is assigned a percentage value in order to " +
+				" a comparative picture of day to day tolerability of medication.";
 
 		public function HivivaHCP_help_Single_Patient_Information_Screen()
 		{

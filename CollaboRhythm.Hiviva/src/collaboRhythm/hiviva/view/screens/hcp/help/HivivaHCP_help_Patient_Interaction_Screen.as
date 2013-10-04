@@ -31,7 +31,7 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
 		private var _pageString : String  =  "Based on the patient information, you can send pre-defined validations or " +
-				                             "cautions to the patient, such as reminders to make an office appointment."
+				"cautions to the patient, such as reminders to make an office appointment.";
 
 
 

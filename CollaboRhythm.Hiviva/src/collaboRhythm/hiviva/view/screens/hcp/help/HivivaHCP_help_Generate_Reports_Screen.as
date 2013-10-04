@@ -30,9 +30,9 @@ package collaboRhythm.hiviva.view.screens.hcp.help
 		private var _scrollText:ScrollText;
 		private var _backButton:Button;
 		private var _scaledPadding:Number;
-		private var _pageString : String  =   "You can generate a report to summarize the information the patient has input over a chosen date range. " +
-				"You can filter the data to tailor the report to your requirements. The report is generated as a PDF file, " +
-				"which you can then send via email."
+		private var _pageString : String  =   "You can generate a report to summarize the information the patient has " +
+				"input over a chosen date range. You can filter the data to tailor the report to your requirements. " +
+				"The report is generated as a PDF file, which you can then send via email. ";
 
 
 		public function HivivaHCP_help_Generate_Reports_Screen()
