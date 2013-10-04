@@ -103,7 +103,7 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					hcpSentMessage.isSent = true;
 					hcpSentMessage.guid = this._allSentMessages[i].MessageGuid;
 					hcpSentMessage.primaryText = this._allSentMessages[i].Message;
-					hcpSentMessage.secondaryText = fullName + " (" + HivivaModifier.getAppIdWithGuid(this._allSentMessages[i].UserGuid) + ")";
+					hcpSentMessage.secondaryText = fullName/* + " (" + HivivaModifier.getAppIdWithGuid(this._allSentMessages[i].UserGuid) + ")"*/;
 					hcpSentMessage.dateText = this._allSentMessages[i].SentDate;
 					hcpSentMessage.addEventListener(FeathersScreenEvent.MESSAGE_READ, messageSelectedHandler);
 					this._cellContainer.addChild(hcpSentMessage);

@@ -166,7 +166,8 @@ package collaboRhythm.hiviva.view.screens.hcp.messages
 					connectionRequest = new MessageInboxResultCell();
 					connectionRequest.messageType = MessageInboxResultCell.CONNECTION_REQUEST_TYPE;
 					connectionRequest.guid = this._pendingConnections[i].FromUserGuid;
-					connectionRequest.primaryText = fullName + " (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
+//					connectionRequest.primaryText = fullName + " (" + this._pendingConnections[i].FromAppId + ") has requested to connect";
+					connectionRequest.primaryText = fullName + " has requested to connect";
 //					hcpMessage.secondaryText = this._allReceivedMessages[i].Name;
 					connectionRequest.dateText = this._pendingConnections[i].SentDate;
 					connectionRequest.addEventListener(FeathersScreenEvent.MESSAGE_READ, messageSelectedHandler);

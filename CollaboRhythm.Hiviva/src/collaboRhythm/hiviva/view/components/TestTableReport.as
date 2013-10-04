@@ -10,14 +10,17 @@ package collaboRhythm.hiviva.view.components
 
 	import feathers.core.FeathersControl;
 	import feathers.display.TiledImage;
+	import feathers.text.BitmapFontTextFormat;
 
 	import starling.display.BlendMode;
 	import starling.display.Image;
 
 	import starling.display.Quad;
 	import starling.display.Sprite;
+	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
+	import starling.utils.Color;
 
 	public class TestTableReport extends FeathersControl
 	{
@@ -223,27 +226,33 @@ package collaboRhythm.hiviva.view.components
 
 			this._verticalSegmentHeight = sampleLabel.height;
 			this._fullCellHeight = this._verticalSegmentHeight + (this._cellPadding * 2);
-			this._tableHeight = this._fullCellHeight * (_testData.dataLength + 1);
+			// _testData.dataLength + 1 changed to _testData.dataLength + 2 for double lined table header
+			this._tableHeight = this._fullCellHeight * (_testData.dataLength + 2);
 
 			this._tableHolder.removeChild(sampleLabel);
 
-			drawTableCell("Date", 0, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
+//			drawTableCell("Date", 0, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
+			drawHeaderCell("Date", 0);
 			drawValues(_testData.dates, 0);
 
 			switch(this._dataCategory)
 			{
 				case DATA_ALL :
-					drawTableCell("CD4 count", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
+//					drawTableCell("CD4 count\n(cells/mm3)", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
+					drawHeaderCell("CD4 count", _fullColumnWidth);
 					drawValues(_testData.cd4s, _fullColumnWidth);
-					drawTableCell("Viral Load", _fullColumnWidth * 2, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
+//					drawTableCell("Viral load\n(copies/ml)", _fullColumnWidth * 2, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
+					drawHeaderCell("Viral load", _fullColumnWidth * 2);
 					drawValues(_testData.viralLoads, _fullColumnWidth * 2);
 					break;
 				case DATA_CD4 :
-					drawTableCell("CD4 count", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
+//					drawTableCell("CD4 count\n(cells/mm3)", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
+					drawHeaderCell("CD4 count", _fullColumnWidth);
 					drawValues(_testData.cd4s, _fullColumnWidth);
 					break;
 				case DATA_VIRAL_LOAD :
-					drawTableCell("Viral Load", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
+//					drawTableCell("Viral load\n(copies/ml)", _fullColumnWidth, this._tableStartY, false, HivivaThemeConstants.BODY_BOLD_DARK_LABEL);
+					drawHeaderCell("Viral load", _fullColumnWidth);
 					drawValues(_testData.viralLoads, _fullColumnWidth);
 					break;
 			}
@@ -270,11 +279,83 @@ package collaboRhythm.hiviva.view.components
 			var value:String;
 			for (var i:int = 0; i < _testData.dataLength; i++)
 			{
-				yPos = this._tableStartY + (_fullCellHeight * (i + 1));
+				// i + 1 changed to i + 2 for double lined table header
+				yPos = this._tableStartY + (_fullCellHeight * (i + 2));
 				value = data[i];
 
 				drawTableCell(value, xPos, yPos, i % 2 == 0, HivivaThemeConstants.BODY_DARK_LABEL);
 			}
+		}
+
+		private function drawHeaderCell(value:String, xPos:Number):void
+		{
+			var valueLabel:Label;
+			var unitsLabel1:Label;
+			var unitsLabel2:Label;
+			var unitsSuperscriptLabel:Label;
+			var horizLineTexture:Texture = Main.assets.getTexture("header_line");
+			var horizontalLine:Image;
+			var vertLineTexture:Texture = Main.assets.getTexture("verticle_line");
+			var verticalLine:Image;
+
+			valueLabel = new Label();
+			valueLabel.text = value;
+			valueLabel.name = HivivaThemeConstants.BODY_BOLD_DARK_LABEL;
+			this._tableHolder.addChild(valueLabel);
+			valueLabel.validate();
+			valueLabel.width = this._horizontalSegmentWidth;
+			valueLabel.x = xPos + this._cellPadding;
+			valueLabel.y = this._tableStartY + this._cellPadding;
+
+			if(value == "CD4 count")
+			{
+				unitsLabel1 = new Label();
+				unitsLabel1.name = HivivaThemeConstants.BODY_BOLD_DARK_LABEL;
+				unitsLabel1.text = "(cells/mm";
+				this._tableHolder.addChild(unitsLabel1);
+				unitsLabel1.x = valueLabel.x;
+				unitsLabel1.y = valueLabel.y + valueLabel.height;
+				unitsLabel1.validate();
+
+				unitsSuperscriptLabel = new Label();
+				unitsSuperscriptLabel.text = "3";
+				this._tableHolder.addChild(unitsSuperscriptLabel);
+				unitsSuperscriptLabel.textRendererProperties.textFormat = new BitmapFontTextFormat(TextField.getBitmapFont("engraved-medium-bold"), 18, Color.WHITE);
+				unitsSuperscriptLabel.x = unitsLabel1.x + unitsLabel1.width;
+				unitsSuperscriptLabel.y = unitsLabel1.y;
+				unitsSuperscriptLabel.validate();
+
+				unitsLabel2 = new Label();
+				unitsLabel2.name = HivivaThemeConstants.BODY_BOLD_DARK_LABEL;
+				unitsLabel2.text = ")";
+				this._tableHolder.addChild(unitsLabel2);
+				unitsLabel2.x = unitsSuperscriptLabel.x + unitsSuperscriptLabel.width;
+				unitsLabel2.y = unitsLabel1.y;
+				unitsLabel2.validate();
+			}
+
+			if(value == "Viral load")
+			{
+				unitsLabel1 = new Label();
+				unitsLabel1.name = HivivaThemeConstants.BODY_BOLD_DARK_LABEL;
+				unitsLabel1.text = "(copies/ml)";
+				this._tableHolder.addChild(unitsLabel1);
+				unitsLabel1.x = valueLabel.x;
+				unitsLabel1.y = valueLabel.y + valueLabel.height;
+				unitsLabel1.validate();
+			}
+
+			horizontalLine = new Image(horizLineTexture);
+			this._tableHolder.addChild(horizontalLine);
+			horizontalLine.width = _fullColumnWidth;
+			horizontalLine.x = xPos;
+			horizontalLine.y = this._tableStartY;
+
+			verticalLine = new Image(vertLineTexture);
+			this._tableHolder.addChild(verticalLine);
+			verticalLine.height = _fullCellHeight * 2;
+			verticalLine.x = xPos;
+			verticalLine.y = this._tableStartY;
 		}
 
 		private function drawTableCell(value:String, xPos:Number, yPos:Number, drawLighter:Boolean = false, labelClass:String = ""):void

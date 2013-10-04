@@ -316,24 +316,30 @@ package collaboRhythm.hiviva.view.screens.hcp
 			_patientAdherenceTable.height = this.actualHeight - _patientAdherenceTable.y;
 			_patientAdherenceTable.validate();
 			getDailyMedicationHistoryRange();
+			manageWeekNav();
 		}
 
 		private function leftArrowHandler(e:starling.events.Event):void
 		{
-			if(this._currWeekBeginning.getTime() > this._earliestWeekBeginning.getTime())
-			{
-				this._currWeekBeginning.date -= 7;
-				getDailyMedicationHistoryRange();
-			}
+			this._currWeekBeginning.date -= 7;
+			getDailyMedicationHistoryRange();
+			manageWeekNav();
 		}
 
 		private function rightArrowHandler(e:starling.events.Event):void
 		{
-			if(this._currWeekBeginning.getTime() < this._latestWeekBeginning.getTime())
-			{
-				this._currWeekBeginning.date += 7;
-				getDailyMedicationHistoryRange();
-			}
+			this._currWeekBeginning.date += 7;
+			getDailyMedicationHistoryRange();
+			manageWeekNav();
+		}
+
+		private function manageWeekNav():void
+		{
+			this._leftArrow.isEnabled = this._currWeekBeginning.getTime() >= this._earliestWeekBeginning.getTime();
+			this._leftArrow.alpha = this._leftArrow.isEnabled ? 1 : 0.3;
+
+			this._rightArrow.isEnabled = this._currWeekBeginning.getTime() <= this._latestWeekBeginning.getTime();
+			this._rightArrow.alpha = this._rightArrow.isEnabled ? 1 : 0.3;
 		}
 
 		private function getDailyMedicationHistoryRange():void

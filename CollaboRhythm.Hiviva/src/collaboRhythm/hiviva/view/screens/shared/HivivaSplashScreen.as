@@ -97,7 +97,7 @@ package collaboRhythm.hiviva.view.screens.shared
 
 			this._strapLine = new Label();
 			this._strapLine.name = HivivaThemeConstants.SPLASH_FOOTER_LABEL;
-			this._strapLine.text = "stay in-charge of your regimen";
+			this._strapLine.text = "in charge of your medication";
 			this._strapLine.alpha = 0.56;
 			this._strapLine.touchable = false;
 			addChild(this._strapLine);
