@@ -24,6 +24,9 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.events.IOErrorEvent;
 	import flash.events.TimerEvent;
 	import flash.filesystem.File;
+	import flash.geom.Rectangle;
+
+	import starling.core.Starling;
 
 	import starling.display.BlendMode;
 
@@ -490,7 +493,15 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function galleryImageLoadCompleteHandler(e:flash.events.Event):void
 		{
+			/*var oldViewport:Rectangle = Starling.current.viewPort;
+			var nativeStageWidth:Number = Starling.current.nativeStage.fullScreenWidth;
+			var nativeStageHeight:Number = Starling.current.nativeStage.fullScreenHeight;
+			Starling.current.viewPort = new Rectangle(0,0,nativeStageWidth,nativeStageHeight);*/
+
+
 			var sourceBm:Bitmap = e.target.content as Bitmap;
+			trace("sourceBm.height = " + sourceBm.height);
+			trace("sourceBm.width = " + sourceBm.width);
 			var blurValue:int = 20 - int(0.2 * this._adherencePercent);
 
 			this._renderTexture = new RenderTexture(Constants.STAGE_WIDTH, this._usableHeight);
@@ -533,6 +544,17 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._lensImageHolder.flatten();
 
+			trace("canvas.height = " + canvas.height);
+			trace("canvas.width = " + canvas.width);
+			trace("galleryImage.height = " + galleryImage.height);
+			trace("galleryImage.width = " + galleryImage.width);
+			trace("homeLensMask.height = " + homeLensMask.height);
+			trace("homeLensMask.width = " + homeLensMask.width);
+			trace("_lensImageHolder.height = " + _lensImageHolder.height);
+			trace("_lensImageHolder.width = " + _lensImageHolder.width);
+
+
+//			Starling.current.viewPort = oldViewport;
 		}
 
 		private function initHomeScreenPreloader():void
