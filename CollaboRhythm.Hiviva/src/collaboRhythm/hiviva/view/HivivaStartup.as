@@ -20,6 +20,7 @@ package collaboRhythm.hiviva.view
 	import flash.geom.Rectangle;
 
 	import flash.system.Capabilities;
+	import flash.text.engine.RenderingMode;
 
 
 	import starling.core.Starling;
@@ -97,15 +98,17 @@ package collaboRhythm.hiviva.view
 					new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight),
 					ScaleMode.SHOW_ALL);
 
-			_starFW = new Starling(Main, stage, viewPort);
+			_starFW = new Starling(Main, stage, viewPort , null , "auto" , "baseline");
 			_starFW.stage.stageWidth  = stageWidth;
 			_starFW.stage.stageHeight = stageHeight;
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			_starFW.start();
+
 		}
 
 		private function starlingRootCreatedHandler(e:starling.events.Event):void
 		{
+			trace("driverInfo " + _starFW.context.driverInfo);
 			_starFW.removeEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 
 			this._assets = new AssetManager();

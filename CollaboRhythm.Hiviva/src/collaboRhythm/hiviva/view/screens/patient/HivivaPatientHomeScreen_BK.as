@@ -1,3 +1,19 @@
+/**
+ * Copyright 2013 John Moore, Scott Gilroy
+ *
+ * This file is part of CollaboRhythm.
+ *
+ * CollaboRhythm is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * CollaboRhythm is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with CollaboRhythm.  If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package collaboRhythm.hiviva.view.screens.patient
 {
 
@@ -26,7 +42,6 @@ package collaboRhythm.hiviva.view.screens.patient
 	import flash.events.IOErrorEvent;
 	import flash.events.TimerEvent;
 	import flash.filesystem.File;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
 	import starling.core.RenderSupport;
@@ -54,7 +69,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 
-	public class HivivaPatientHomeScreen extends Screen
+	public class HivivaPatientHomeScreen_BK extends Screen
 	{
 		private var _header:HivivaHeader;
 		private var _messagesButton:TopNavButton;
@@ -81,7 +96,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _renderTexture:RenderTexture;
 
 
-		public function HivivaPatientHomeScreen():void
+		public function HivivaPatientHomeScreen_BK():void
 		{
 
 		}
@@ -546,9 +561,13 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			//this.addChild(canvasBlurred);
 
-			this.removeChild(spHolder);
-			canvas.dispose();
-			spHolder.dispose();
+			//this.removeChild(spHolder);
+			//canvas.dispose();
+			//spHolder.dispose();
+
+
+
+
 
 
 			var homeLensMask:Image = new Image(Main.assets.getTexture("v2_homePageMask"));
@@ -559,7 +578,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					function():void
 					{
 						_renderTexture.draw(canvasBlurred);
-						_renderTexture.draw(homeLensMask);
+						//_renderTexture.draw(homeLensMask);
 					}
 			);
 
@@ -569,8 +588,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._lensImageHolder.addChild(galleryImage);
 			this._lensImageHolder.y =(this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._lensImageHolder.height * 0.5);
 			this._lensImageHolder.flatten();
-
-
 
 
 		}
@@ -657,10 +674,9 @@ package collaboRhythm.hiviva.view.screens.patient
 			var support:RenderSupport = new RenderSupport();
 			RenderSupport.clear();
 			support.setOrthographicProjection(0, 0 ,nativeWidth/scale, nativeHeight/scale);
-			support.setOrthographicProjection(0, 0 ,Starling.current.stage.stageWidth, Starling.current.stage.stageHeight);
 			support.applyBlendMode(true);
 			support.transformMatrix(sprite.root);
-			support.translateMatrix( -resultRect.x, -resultRect.y);
+			support.translateMatrix( resultRect.x, -resultRect.y);
 
 			var result:BitmapData = new BitmapData(resultRect.width * scale, resultRect.height * scale, true, 0x00000000);
 
@@ -678,40 +694,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			context.drawToBitmapData(result);
 
 			return result;
-		}
-
-		public static function copyAsBitmapData3( displayObject : DisplayObject, transparentBackground : Boolean = false, backgroundColor : uint = 0xcccccc ) : BitmapData
-		{
-			var resultRect : Rectangle = new Rectangle();
-			displayObject.getBounds( displayObject, resultRect );
-
-			var result : BitmapData = new BitmapData( Starling.current.stage.stageWidth, Starling.current.stage.stageHeight, transparentBackground, backgroundColor );
-			var context : Context3D = Starling.context;
-
-			var support : RenderSupport = new RenderSupport();
-//			RenderSupport.clear();
-			var stage:Stage= Starling.current.stage;
-			RenderSupport.clear(stage.color,0.0);
-
-			support.setOrthographicProjection(0,0, Starling.current.stage.stageWidth, Starling.current.stage.stageHeight );
-
-			support.applyBlendMode( true );
-			support.translateMatrix( -resultRect.x, -resultRect.y );
-			support.pushMatrix();
-			support.blendMode = displayObject.blendMode;
-
-			displayObject.render(support, 1.0 );
-
-			support.popMatrix();
-
-			support.finishQuadBatch();
-			context.drawToBitmapData( result );
-
-			var croppedRes:BitmapData = new BitmapData(displayObject.width, displayObject.height, true, 0x00000000 );
-			//croppedRes.copyPixels(result, resultRect, new Point(0,0));
-			croppedRes.threshold(result, new Rectangle(0,0,displayObject.width, displayObject.height), new Point(0,0), "==", stage.color, 0x0000ff00, 0x0000ff, true);
-
-			return croppedRes;
 		}
 
 
