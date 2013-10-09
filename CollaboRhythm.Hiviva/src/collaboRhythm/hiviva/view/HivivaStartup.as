@@ -98,7 +98,7 @@ package collaboRhythm.hiviva.view
 					new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight),
 					ScaleMode.SHOW_ALL);
 
-			_starFW = new Starling(Main, stage, viewPort , null , "auto" , "baseline");
+			_starFW = new Starling(Main, stage , viewPort);
 			_starFW.stage.stageWidth  = stageWidth;
 			_starFW.stage.stageHeight = stageHeight;
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);

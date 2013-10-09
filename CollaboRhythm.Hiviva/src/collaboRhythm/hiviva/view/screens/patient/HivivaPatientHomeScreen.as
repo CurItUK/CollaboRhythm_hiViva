@@ -17,6 +17,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.core.PopUpManager;
+	import feathers.system.DeviceCapabilities;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -35,6 +36,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	import starling.display.BlendMode;
 	import starling.display.Stage;
+	import starling.textures.Texture;
 	import starling.utils.getNextPowerOfTwo;
 
 //	import flash.filters.BitmapFilter;
@@ -56,6 +58,9 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	public class HivivaPatientHomeScreen extends Screen
 	{
+		[Embed(source="/assets/imagesv2/temp/v2_homePageMask.png")]
+		public static const HomePageMaskPng:Class;
+
 		private var _header:HivivaHeader;
 		private var _messagesButton:TopNavButton;
 		private var _badgesButton:TopNavButton;
@@ -500,66 +505,116 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function galleryImageLoadCompleteHandler(e:flash.events.Event):void
 		{
-
 			var maskHoleDimensions:Number = 572;
-			var scaleFactor:Number;
+//			var scaleFactor:Number;
 
 			var blurValue:int = 20 - int(0.2 * this._adherencePercent);
 			var sourceBm:Bitmap = e.target.content as Bitmap;
+			var canvasTexture:Texture = Texture.fromBitmap(sourceBm , false , false);
+			var canvas:Image = new Image(canvasTexture);
 
-
-			if (sourceBm.height >= sourceBm.width)
+			if (canvas.height >= canvas.width)
 			{
-				sourceBm.width = maskHoleDimensions;
-				sourceBm.scaleY = sourceBm.scaleX;
-				scaleFactor = sourceBm.scaleX;
+				canvas.width = maskHoleDimensions;
+				canvas.scaleY = canvas.scaleX;
+//				scaleFactor = sourceBm.scaleX;
 			}
 			else
 			{
-				sourceBm.height = maskHoleDimensions;
-				sourceBm.scaleX = sourceBm.scaleY;
-				scaleFactor = sourceBm.scaleY;
+				canvas.height = maskHoleDimensions;
+				canvas.scaleX = canvas.scaleY;
+//				scaleFactor = sourceBm.scaleY;
 			}
 
-			var mat:Matrix = new Matrix();
-			mat.scale(scaleFactor, scaleFactor);
+//			var mat:Matrix = new Matrix();
+//			mat.scale(scaleFactor, scaleFactor);
+//
+//			var bitmapdata:BitmapData = new BitmapData(maskHoleDimensions, maskHoleDimensions , true , 0x000000);
+//			bitmapdata.draw(sourceBm , mat);
 
-			var bitmapdata:BitmapData = new BitmapData(maskHoleDimensions, maskHoleDimensions , true , 0x000000);
-			bitmapdata.draw(sourceBm , mat);
-
-
-			this._renderTexture = new RenderTexture(Constants.STAGE_WIDTH, this._usableHeight);
-
-			var canvasTexture:Texture = Texture.fromBitmapData(bitmapdata , false , false);
-			var canvas:Image = new Image(canvasTexture);
 			canvas.filter = new BlurFilter(blurValue, blurValue);
+			canvas.blendMode = BlendMode.NORMAL;
 
-			var spHolder:Sprite = new Sprite();
-			spHolder.addChild(canvas);
-			this.addChild(spHolder);
+			PopUpManager.addPopUp(canvas, false, false);
 
-			var canvasBlurredTexture:Texture = Texture.fromBitmapData(copyAsBitmapData(spHolder) , false , false , Starling.contentScaleFactor) ;
+//			var spHolder:Sprite = new Sprite();
+//			spHolder.addChild(canvas);
+//			this.addChild(spHolder);
+
+			var canvasBlurredTexture:Texture = Texture.fromBitmapData(copyStageAsBitmapData(/*Starling.contentScaleFactor*/) , false/* , false , Starling.contentScaleFactor*/) ;
 			var canvasBlurred:Image = new Image(canvasBlurredTexture);
+
+			// clip away bg
+			// targetSize / currentImageSize
+
+			var viewport:Rectangle = Starling.current.viewPort;
+			var right:Number = maskHoleDimensions / viewport.width;
+			var bottom:Number = maskHoleDimensions / viewport.height;
+			canvasBlurred.setTexCoords(0, new Point(0, 0));
+			canvasBlurred.setTexCoords(1, new Point(right, 0));
+			canvasBlurred.setTexCoords(2, new Point(0, bottom));
+			canvasBlurred.setTexCoords(3, new Point(right, bottom));
+			canvasBlurred.width = canvasBlurred.height = maskHoleDimensions;
+
 			canvasBlurred.blendMode = BlendMode.NORMAL;
-			canvasBlurred.x = (Constants.STAGE_WIDTH / 2) - (canvasBlurred.width/2);
-			canvasBlurred.y = (this._usableHeight / 2) - (canvasBlurred.height / 2);
+//			canvasBlurred.x = (Constants.STAGE_WIDTH / 2) - (canvasBlurred.width/2);
+//			canvasBlurred.y = (this._usableHeight / 2) - (canvasBlurred.height / 2);
 
-			//this.addChild(canvasBlurred);
-
-			this.removeChild(spHolder);
-			canvas.dispose();
-			spHolder.dispose();
+			addChild(canvasBlurred);
 
 
-			var homeLensMask:Image = new Image(Main.assets.getTexture("v2_homePageMask"));
-			homeLensMask.blendMode = BlendMode.ERASE;
+			PopUpManager.removePopUp(canvas, true);
 
+//			this.removeChild(spHolder);
+//			canvas.dispose();
+//			spHolder.dispose();
+
+
+
+
+
+
+
+/*
+			var hlmSource:Bitmap = new HomePageMaskPng() as Bitmap;
+
+			hlmSource.height = this._usableHeight;
+			hlmSource.scaleX = hlmSource.scaleY;
+			scaleFactor = hlmSource.scaleY;
+
+			var mat1:Matrix = new Matrix();
+			mat1.scale(scaleFactor, scaleFactor);
+
+			var bitmapdata1:BitmapData = new BitmapData(hlmSource.width, hlmSource.height , true , 0x000000);
+			bitmapdata1.draw(hlmSource , mat1);
+
+			var hlmSourceTexture:Texture = Texture.fromBitmapData(bitmapdata1 , false , false);
+			var homeLensMask:Image = new Image(hlmSourceTexture);
+
+			var hlmHolder:Sprite = new Sprite();
+			hlmHolder.addChild(homeLensMask);
+			this.addChild(hlmHolder);
+
+			var homeLensMaskTexture:Texture = Texture.fromBitmapData(copyAsBitmapData(hlmHolder) , false , false , Starling.contentScaleFactor) ;
+			var homeLensMaskImage:Image = new Image(homeLensMaskTexture);
+			homeLensMaskImage.blendMode = BlendMode.ERASE;
+
+			this.addChild(homeLensMaskImage);
+
+			this.removeChild(hlmHolder);
+			homeLensMask.dispose();
+			hlmHolder.dispose();*/
+
+
+
+
+			/*this._renderTexture = new RenderTexture(Constants.STAGE_WIDTH, this._usableHeight);
 			this._renderTexture.drawBundled
 			(
 					function():void
 					{
 						_renderTexture.draw(canvasBlurred);
-						_renderTexture.draw(homeLensMask);
+						_renderTexture.draw(homeLensMaskImage);
 					}
 			);
 
@@ -568,11 +623,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._lensImageHolder.addChild(galleryImage);
 			this._lensImageHolder.y =(this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._lensImageHolder.height * 0.5);
-			this._lensImageHolder.flatten();
-
-
-
-
+			this._lensImageHolder.flatten();*/
 		}
 
 		private function initHomeScreenPreloader():void
@@ -627,7 +678,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			var nativeWidth:Number = Starling.current.stage.stageWidth  * scale;
 			var nativeHeight:Number = Starling.current.stage.stageHeight * scale;
 
-			rs.clear(0x226db7 , 1.0);
+			rs.clear(0x226db7);
+
 			//rs.scaleMatrix(upScale, upScale);
 
 			rs.setOrthographicProjection(0, 0, nativeWidth/scale, nativeHeight/scale);
@@ -635,7 +687,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			disp.render(rs, 1.0);
 			rs.finishQuadBatch();
 
-			var outBmp:BitmapData = new BitmapData(rc.width * 1.25, rc.height * 1.25, true);
+			var outBmp:BitmapData = new BitmapData(rc.width * scale, rc.height * scale, true);
 			Starling.context.drawToBitmapData(outBmp);
 
 			return outBmp;
@@ -654,10 +706,28 @@ package collaboRhythm.hiviva.view.screens.patient
 			var nativeWidth:Number = Starling.current.stage.stageWidth  * scale;
 			var nativeHeight:Number = Starling.current.stage.stageHeight * scale;
 
+			var nativeStage:flash.display.Stage = Starling.current.nativeStage;
+			var nativeStageWidth:Number = nativeStage.fullScreenWidth;
+
+			var heightOffset:Number;
+			// is iPhone Retina
+			/*if(nativeStageWidth == 960 && DeviceCapabilities.isPhone(nativeStage))
+			{
+				heightOffset = 0;
+			}
+			else*/
+			{
+//				heightOffset = ((resultRect.height / 2) * scale) - ((nativeStage.fullScreenHeight - 960) / 2);
+				heightOffset = 0;
+			}
+
 			var support:RenderSupport = new RenderSupport();
 			RenderSupport.clear();
-			support.setOrthographicProjection(0, 0 ,nativeWidth/scale, nativeHeight/scale);
-			support.setOrthographicProjection(0, 0 ,Starling.current.stage.stageWidth, Starling.current.stage.stageHeight);
+
+//			mProjectionMatrix.setTo(2.0/width, 0, 0, -2.0/height, -(2*x + width) / width, (2*y + height) / height)
+
+			support.setOrthographicProjection(0, -heightOffset ,nativeWidth/scale, nativeHeight/scale);
+//			support.setOrthographicProjection(0, 0 ,Starling.current.stage.stageWidth, Starling.current.stage.stageHeight);
 			support.applyBlendMode(true);
 			support.transformMatrix(sprite.root);
 			support.translateMatrix( -resultRect.x, -resultRect.y);
@@ -712,6 +782,26 @@ package collaboRhythm.hiviva.view.screens.patient
 			croppedRes.threshold(result, new Rectangle(0,0,displayObject.width, displayObject.height), new Point(0,0), "==", stage.color, 0x0000ff00, 0x0000ff, true);
 
 			return croppedRes;
+		}
+		// Screenshot to BitmapData
+		public static function copyStageAsBitmapData(scl:Number=1.0):BitmapData
+		{
+			var stage:Stage = Starling.current.stage;
+			var viewport:Rectangle = Starling.current.viewPort;
+
+			var rs:RenderSupport = new RenderSupport();
+
+			rs.clear(/*stage.color, 1.0*/);
+			rs.scaleMatrix(scl, scl);
+			rs.setOrthographicProjection(0, 0, viewport.width, viewport.height);
+
+			stage.render(rs, 1.0);
+			rs.finishQuadBatch();
+
+			var outBmp:BitmapData = new BitmapData(viewport.width * scl, viewport.height * scl, true);
+			Starling.context.drawToBitmapData(outBmp);
+
+			return outBmp;
 		}
 
 
