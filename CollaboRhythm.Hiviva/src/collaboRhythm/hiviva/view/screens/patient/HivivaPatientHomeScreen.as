@@ -2,13 +2,11 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 
 	import collaboRhythm.hiviva.global.Constants;
-	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.NotificationsEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.PreloaderSpinner;
@@ -18,37 +16,21 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.core.PopUpManager;
-	import feathers.system.DeviceCapabilities;
 
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.Loader;
-	import flash.display.PixelSnapping;
-	import flash.display3D.Context3D;
 	import flash.events.IOErrorEvent;
 	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
-	import starling.core.RenderSupport;
-
-	import starling.core.Starling;
-
-	import starling.display.BlendMode;
-	import starling.display.Stage;
-	import starling.textures.Texture;
-	import starling.utils.getNextPowerOfTwo;
-
-//	import flash.filters.BitmapFilter;
-	//import flash.filters.BitmapFilterQuality;
-	//import flash.filters.BlurFilter;
-	import flash.geom.Matrix;
 	import flash.net.URLRequest;
 	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
 	import flash.system.System;
 
+	import starling.core.Starling;
+	import starling.display.BlendMode;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -509,7 +491,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			//imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, galleryImageLoadCompleteHandler);
-			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
+			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageLoadFailed);
 			imageLoader.load(new URLRequest(url) , loaderContext);
 		}
 
@@ -602,7 +584,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		}
 
 
-		private function imageLoadFailed(e:flash.events.IOErrorEvent):void
+		private function imageLoadFailed(e:IOErrorEvent):void
 		{
 			trace("Image load failed.");
 			showAddMedicationPopup();
