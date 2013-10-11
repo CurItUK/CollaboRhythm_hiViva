@@ -9,6 +9,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.NotificationsEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 	import collaboRhythm.hiviva.view.components.PreloaderSpinner;
 	import collaboRhythm.hiviva.view.components.TopNavButton;
@@ -58,8 +59,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 	public class HivivaPatientHomeScreen extends Screen
 	{
-		[Embed(source="/assets/imagesv2/temp/v2_homePageMask.png")]
-		public static const HomePageMaskPng:Class;
+		/*[Embed(source="/assets/imagesv2/temp/v2_homePageMask.png")]
+		public static const HomePageMaskPng:Class;*/
 
 		private var _header:HivivaHeader;
 		private var _messagesButton:TopNavButton;
@@ -82,7 +83,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _badgesAwarded:Number = 0;
 		private var _preloader:PreloaderSpinner;
 		private var _userMedSchedPopup:HivivaPopUp;
-
+		private var _medicationPopupNeedShowing:Boolean;
 		private var _renderTexture:RenderTexture;
 
 
@@ -138,18 +139,24 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 
 			var medicationData:XML = e.data.xmlResponse;
+			_medicationPopupNeedShowing = medicationData.children().length() == 0;
+		}
 
-			if(medicationData.children().length() == 0)
+		private function showAddMedicationPopup():void
+		{
+			if (_medicationPopupNeedShowing)
 			{
-				if(!this.owner.hasScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN)) this.owner.addScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientEditMedsScreen));
-				if(!this.owner.hasScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN)) this.owner.addScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN, new ScreenNavigatorItem(HivivaPatientAddMedsScreen));
+				if (!this.owner.hasScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN)) this.owner.addScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN,
+						new ScreenNavigatorItem(HivivaPatientEditMedsScreen));
+				if (!this.owner.hasScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN)) this.owner.addScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN,
+						new ScreenNavigatorItem(HivivaPatientAddMedsScreen));
 				initAddMedicationPopup();
 			}
 			else
 			{
 				// remove screen if returning from edit meds screen
-				if(this.owner.hasScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN)) this.owner.removeScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
-				if(this.owner.hasScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN)) this.owner.removeScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN);
+				if (this.owner.hasScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN)) this.owner.removeScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
+				if (this.owner.hasScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN)) this.owner.removeScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN);
 			}
 		}
 
@@ -384,6 +391,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				{
 					this._homeImageInstructions.visible = true;
 					this._lensBg.visible = true;
+					showAddMedicationPopup();
 				}
 				trace("gallery_submission_timestamp = " + timeStamp);
 			}
@@ -392,6 +400,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				trace("date stamp not there");
 				this._homeImageInstructions.visible = true;
 				this._lensBg.visible = true;
+				showAddMedicationPopup();
 			}
 		}
 
@@ -479,6 +488,7 @@ package collaboRhythm.hiviva.view.screens.patient
 					trace("no images available");
 					this._homeImageInstructions.visible = true;
 					this._lensBg.visible = true;
+					showAddMedicationPopup();
 				}
 			}
 			else
@@ -486,13 +496,13 @@ package collaboRhythm.hiviva.view.screens.patient
 				trace("no images available");
 				this._homeImageInstructions.visible = true;
 				this._lensBg.visible = true;
+				showAddMedicationPopup();
 			}
 		}
 
 		private function doImageLoad(url:String):void
 		{
-
-			initHomeScreenPreloader()
+			initHomeScreenPreloader();
 			var loaderContext:LoaderContext = new LoaderContext();
 			loaderContext.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
 			var imageLoader:Loader = new Loader();
@@ -506,7 +516,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function galleryImageLoadCompleteHandler(e:flash.events.Event):void
 		{
 			var maskHoleDimensions:Number = 572;
-//			var scaleFactor:Number;
 
 			var blurValue:int = 20 - int(0.2 * this._adherencePercent);
 			var sourceBm:Bitmap = e.target.content as Bitmap;
@@ -515,38 +524,31 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			if (canvas.height >= canvas.width)
 			{
-				canvas.width = maskHoleDimensions;
+				// + 40 for maximum blur
+				canvas.width = maskHoleDimensions + 40;
 				canvas.scaleY = canvas.scaleX;
-//				scaleFactor = sourceBm.scaleX;
+				// center the y pos because height is bigger
+				canvas.y = (maskHoleDimensions / 2) - (canvas.height / 2);
 			}
 			else
 			{
-				canvas.height = maskHoleDimensions;
+				// + 40 for maximum blur
+				canvas.height = maskHoleDimensions + 40;
 				canvas.scaleX = canvas.scaleY;
-//				scaleFactor = sourceBm.scaleY;
+				// center the x pos because width is bigger
+				canvas.x = (maskHoleDimensions / 2) - (canvas.width / 2);
 			}
-
-//			var mat:Matrix = new Matrix();
-//			mat.scale(scaleFactor, scaleFactor);
-//
-//			var bitmapdata:BitmapData = new BitmapData(maskHoleDimensions, maskHoleDimensions , true , 0x000000);
-//			bitmapdata.draw(sourceBm , mat);
 
 			canvas.filter = new BlurFilter(blurValue, blurValue);
 			canvas.blendMode = BlendMode.NORMAL;
 
 			PopUpManager.addPopUp(canvas, false, false);
-
-//			var spHolder:Sprite = new Sprite();
-//			spHolder.addChild(canvas);
-//			this.addChild(spHolder);
-
-			var canvasBlurredTexture:Texture = Texture.fromBitmapData(copyStageAsBitmapData(/*Starling.contentScaleFactor*/) , false/* , false , Starling.contentScaleFactor*/) ;
+			var canvasBlurredTexture:Texture = Texture.fromBitmapData(HivivaModifier.copyStageAsBitmapData(), false);
 			var canvasBlurred:Image = new Image(canvasBlurredTexture);
+			PopUpManager.removePopUp(canvas);
 
 			// clip away bg
 			// targetSize / currentImageSize
-
 			var viewport:Rectangle = Starling.current.viewPort;
 			var right:Number = maskHoleDimensions / viewport.width;
 			var bottom:Number = maskHoleDimensions / viewport.height;
@@ -557,58 +559,15 @@ package collaboRhythm.hiviva.view.screens.patient
 			canvasBlurred.width = canvasBlurred.height = maskHoleDimensions;
 
 			canvasBlurred.blendMode = BlendMode.NORMAL;
-//			canvasBlurred.x = (Constants.STAGE_WIDTH / 2) - (canvasBlurred.width/2);
-//			canvasBlurred.y = (this._usableHeight / 2) - (canvasBlurred.height / 2);
+			canvasBlurred.x = (Constants.STAGE_WIDTH / 2) - (canvasBlurred.width / 2);
+			canvasBlurred.y = (this._usableHeight / 2) - (canvasBlurred.height / 2);
 
-			addChild(canvasBlurred);
-
-
-			PopUpManager.removePopUp(canvas, true);
-
-//			this.removeChild(spHolder);
-//			canvas.dispose();
-//			spHolder.dispose();
-
-
-
-
-
-
-
-/*
-			var hlmSource:Bitmap = new HomePageMaskPng() as Bitmap;
-
-			hlmSource.height = this._usableHeight;
-			hlmSource.scaleX = hlmSource.scaleY;
-			scaleFactor = hlmSource.scaleY;
-
-			var mat1:Matrix = new Matrix();
-			mat1.scale(scaleFactor, scaleFactor);
-
-			var bitmapdata1:BitmapData = new BitmapData(hlmSource.width, hlmSource.height , true , 0x000000);
-			bitmapdata1.draw(hlmSource , mat1);
-
-			var hlmSourceTexture:Texture = Texture.fromBitmapData(bitmapdata1 , false , false);
-			var homeLensMask:Image = new Image(hlmSourceTexture);
-
-			var hlmHolder:Sprite = new Sprite();
-			hlmHolder.addChild(homeLensMask);
-			this.addChild(hlmHolder);
-
-			var homeLensMaskTexture:Texture = Texture.fromBitmapData(copyAsBitmapData(hlmHolder) , false , false , Starling.contentScaleFactor) ;
-			var homeLensMaskImage:Image = new Image(homeLensMaskTexture);
+			var homeLensMaskImage:Image = new Image(Main.assets.getTexture("v2_homePageMask"));
+			homeLensMaskImage.width = Constants.STAGE_WIDTH;
+			homeLensMaskImage.scaleY = homeLensMaskImage.scaleX;
 			homeLensMaskImage.blendMode = BlendMode.ERASE;
 
-			this.addChild(homeLensMaskImage);
-
-			this.removeChild(hlmHolder);
-			homeLensMask.dispose();
-			hlmHolder.dispose();*/
-
-
-
-
-			/*this._renderTexture = new RenderTexture(Constants.STAGE_WIDTH, this._usableHeight);
+			this._renderTexture = new RenderTexture(Constants.STAGE_WIDTH, this._usableHeight);
 			this._renderTexture.drawBundled
 			(
 					function():void
@@ -623,7 +582,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._lensImageHolder.addChild(galleryImage);
 			this._lensImageHolder.y =(this._usableHeight * 0.5) + Constants.HEADER_HEIGHT - (this._lensImageHolder.height * 0.5);
-			this._lensImageHolder.flatten();*/
+			this._lensImageHolder.flatten();
 		}
 
 		private function initHomeScreenPreloader():void
@@ -638,173 +597,16 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			this._preloader.disposePreloader();
 			this.removeChild(this._preloader);
+
+			showAddMedicationPopup();
 		}
 
 
 		private function imageLoadFailed(e:flash.events.IOErrorEvent):void
 		{
 			trace("Image load failed.");
+			showAddMedicationPopup();
 		}
-
-
-		private function cropToFit(img:Object, w:Number, h:Number):void
-		{
-			if (img.height >= img.width)
-			{
-				// portrait
-				img.width = w;
-				img.scaleY = img.scaleX;
-			}
-			else
-			{
-				// landscape
-				img.height = h;
-				img.scaleX = img.scaleY;
-			}
-		}
-
-		private function copyDisplayObjectToBitmap(disp:DisplayObject , scl:Number = 1.0):BitmapData
-		{
-			var rc:Rectangle = new Rectangle();
-			disp.getBounds(disp, rc);
-
-			var stage:Stage = Starling.current.stage;
-			var rs:RenderSupport = new RenderSupport();
-
-			trace("copyDisplayObjectToBitmap " + Starling.contentScaleFactor)
-
-			var scale:Number = Starling.contentScaleFactor;
-			var upScale:Number = 1 + (1 - scale);
-			var nativeWidth:Number = Starling.current.stage.stageWidth  * scale;
-			var nativeHeight:Number = Starling.current.stage.stageHeight * scale;
-
-			rs.clear(0x226db7);
-
-			//rs.scaleMatrix(upScale, upScale);
-
-			rs.setOrthographicProjection(0, 0, nativeWidth/scale, nativeHeight/scale);
-			rs.translateMatrix(-rc.x, -rc.y); // move to 0,0
-			disp.render(rs, 1.0);
-			rs.finishQuadBatch();
-
-			var outBmp:BitmapData = new BitmapData(rc.width * scale, rc.height * scale, true);
-			Starling.context.drawToBitmapData(outBmp);
-
-			return outBmp;
-		}
-
-
-		public static function copyAsBitmapData(sprite:starling.display.DisplayObject):BitmapData
-		{
-			if (sprite == null) return null;
-
-			var resultRect:Rectangle = new Rectangle();
-			sprite.getBounds(sprite, resultRect);
-
-			var context:Context3D = Starling.context;
-			var scale:Number = Starling.contentScaleFactor;
-			var nativeWidth:Number = Starling.current.stage.stageWidth  * scale;
-			var nativeHeight:Number = Starling.current.stage.stageHeight * scale;
-
-			var nativeStage:flash.display.Stage = Starling.current.nativeStage;
-			var nativeStageWidth:Number = nativeStage.fullScreenWidth;
-
-			var heightOffset:Number;
-			// is iPhone Retina
-			/*if(nativeStageWidth == 960 && DeviceCapabilities.isPhone(nativeStage))
-			{
-				heightOffset = 0;
-			}
-			else*/
-			{
-//				heightOffset = ((resultRect.height / 2) * scale) - ((nativeStage.fullScreenHeight - 960) / 2);
-				heightOffset = 0;
-			}
-
-			var support:RenderSupport = new RenderSupport();
-			RenderSupport.clear();
-
-//			mProjectionMatrix.setTo(2.0/width, 0, 0, -2.0/height, -(2*x + width) / width, (2*y + height) / height)
-
-			support.setOrthographicProjection(0, -heightOffset ,nativeWidth/scale, nativeHeight/scale);
-//			support.setOrthographicProjection(0, 0 ,Starling.current.stage.stageWidth, Starling.current.stage.stageHeight);
-			support.applyBlendMode(true);
-			support.transformMatrix(sprite.root);
-			support.translateMatrix( -resultRect.x, -resultRect.y);
-
-			var result:BitmapData = new BitmapData(resultRect.width * scale, resultRect.height * scale, true, 0x00000000);
-
-			support.pushMatrix();
-			//support.pushBlendMode();
-
-			support.blendMode = sprite.blendMode;
-			support.transformMatrix(sprite);
-			sprite.render(support, 1.0);
-			support.popMatrix();
-			//support.popBlendMode();
-
-			support.finishQuadBatch();
-
-			context.drawToBitmapData(result);
-
-			return result;
-		}
-
-		public static function copyAsBitmapData3( displayObject : DisplayObject, transparentBackground : Boolean = false, backgroundColor : uint = 0xcccccc ) : BitmapData
-		{
-			var resultRect : Rectangle = new Rectangle();
-			displayObject.getBounds( displayObject, resultRect );
-
-			var result : BitmapData = new BitmapData( Starling.current.stage.stageWidth, Starling.current.stage.stageHeight, transparentBackground, backgroundColor );
-			var context : Context3D = Starling.context;
-
-			var support : RenderSupport = new RenderSupport();
-//			RenderSupport.clear();
-			var stage:Stage= Starling.current.stage;
-			RenderSupport.clear(stage.color,0.0);
-
-			support.setOrthographicProjection(0,0, Starling.current.stage.stageWidth, Starling.current.stage.stageHeight );
-
-			support.applyBlendMode( true );
-			support.translateMatrix( -resultRect.x, -resultRect.y );
-			support.pushMatrix();
-			support.blendMode = displayObject.blendMode;
-
-			displayObject.render(support, 1.0 );
-
-			support.popMatrix();
-
-			support.finishQuadBatch();
-			context.drawToBitmapData( result );
-
-			var croppedRes:BitmapData = new BitmapData(displayObject.width, displayObject.height, true, 0x00000000 );
-			//croppedRes.copyPixels(result, resultRect, new Point(0,0));
-			croppedRes.threshold(result, new Rectangle(0,0,displayObject.width, displayObject.height), new Point(0,0), "==", stage.color, 0x0000ff00, 0x0000ff, true);
-
-			return croppedRes;
-		}
-		// Screenshot to BitmapData
-		public static function copyStageAsBitmapData(scl:Number=1.0):BitmapData
-		{
-			var stage:Stage = Starling.current.stage;
-			var viewport:Rectangle = Starling.current.viewPort;
-
-			var rs:RenderSupport = new RenderSupport();
-
-			rs.clear(/*stage.color, 1.0*/);
-			rs.scaleMatrix(scl, scl);
-			rs.setOrthographicProjection(0, 0, viewport.width, viewport.height);
-
-			stage.render(rs, 1.0);
-			rs.finishQuadBatch();
-
-			var outBmp:BitmapData = new BitmapData(viewport.width * scl, viewport.height * scl, true);
-			Starling.context.drawToBitmapData(outBmp);
-
-			return outBmp;
-		}
-
-
 
 		override public function dispose():void
 		{

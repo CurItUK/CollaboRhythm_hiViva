@@ -2,10 +2,18 @@ package collaboRhythm.hiviva.utils
 {
 	import collaboRhythm.hiviva.view.HivivaStartup;
 
+	import flash.display.BitmapData;
+
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 
+	import starling.core.RenderSupport;
+
+	import starling.core.Starling;
+
 	import starling.display.Image;
+	import starling.display.Stage;
 
 	public class HivivaModifier
 	{
@@ -16,32 +24,25 @@ package collaboRhythm.hiviva.utils
 		{
 		}
 
-		/*public static function getSummaryStringFromPatientData(patientData:XML):String
+		public static function copyStageAsBitmapData(scl:Number=1.0):BitmapData
 		{
-			var summaryStr:String;
+			var stage:Stage = Starling.current.stage;
+			var viewport:Rectangle = Starling.current.viewPort;
 
-			var adherence:String = patientData.adherence;
-			var tolerability:String = patientData.tolerability;
+			var rs:RenderSupport = new RenderSupport();
 
-			// if patient has no medication history
-			if (adherence == "-1" && tolerability == "-1")
-			{
-				summaryStr = "No data exists \nfor this patient";
-			}
+			rs.clear();
+			rs.scaleMatrix(scl, scl);
+			rs.setOrthographicProjection(0, 0, viewport.width, viewport.height);
 
-			// if patient has missed recording their schedule within the predefined history
-			if (adherence > "-1" && tolerability == "-1")
-			{
-				summaryStr = "Adherence: " + adherence + "%\n" + "Tolerability: None";
-			}
+			stage.render(rs, 1.0);
+			rs.finishQuadBatch();
 
-			if (adherence > "-1" && tolerability > "-1")
-			{
-				summaryStr = "Adherence: " + adherence + "%\n" + "Tolerability: " + tolerability + "%";
-			}
+			var outBmp:BitmapData = new BitmapData(viewport.width * scl, viewport.height * scl, true);
+			Starling.context.drawToBitmapData(outBmp);
 
-			return summaryStr;
-		}*/
+			return outBmp;
+		}
 
 		public static function getAppIdWithGuid(guid:String):String
 		{
