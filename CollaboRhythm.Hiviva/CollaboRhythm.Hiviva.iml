@@ -14,9 +14,6 @@
             <entry library-id="b35f1336-7694-4acc-bb9a-226799948b69">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="90f4fa36-af6b-422b-afbe-daad00f7ec06">
-              <dependency linkage="Merged" />
-            </entry>
             <entry library-id="940ef901-debb-49dc-b1cd-6db6e6977d1b">
               <dependency linkage="Merged" />
             </entry>
@@ -26,28 +23,34 @@
             <entry library-id="e3c14341-461c-430b-ac2f-fbfb09fce56d">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="56e1dbfe-5a3a-4d00-b905-dc8fde52a01b">
+            <entry library-id="41e82298-3a95-461a-a926-47ad67c9554f">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="c3f5cf3e-7cc7-4d0d-93a2-b153a47136da">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="d4a8d686-cf56-46e6-886a-8ed7a5c2c6ec">
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="4.6.0 - (AIR 3.4)" />
+          <sdk name="Air_3.8" />
         </dependencies>
         <compiler-options />
         <packaging-air-desktop />
-        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="INCH">
+        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/app_resources" path-in-package="app_resources" />
           </files-to-package>
         </packaging-android>
-        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="INCH">
+        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/app_resources" path-in-package="app_resources" />
           </files-to-package>
-          <AirSigningOptions keystore-path="$MODULE_DIR$/certificates/ios/iOS_dev.p12" provisioning-profile-path="$MODULE_DIR$/certificates/ios/iOS_Team_Development_Profile.mobileprovision" />
+          <AirSigningOptions keystore-path="$MODULE_DIR$/certificates/ios_barry_dev/iphone_dev.p12" provisioning-profile-path="$MODULE_DIR$/certificates/ios_barry_dev/iOS_Team_Development_Profile.mobileprovision" />
         </packaging-ios>
       </configuration>
     </configurations>
@@ -59,13 +62,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="4.6.0 - (AIR 3.4)" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="Air_3.8" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
         <properties id="d8fa7b08-8beb-4872-a84e-9d2446958e82" />
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../Flash Frameworks/feathers-1.1.0/source" />
+          <root url="file://$FEATHERS_HOME$" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -85,17 +88,7 @@
       <library type="flex">
         <properties id="b35f1336-7694-4acc-bb9a-226799948b69" />
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../Flash Frameworks/PrimaryFeather-Starling-Framework-0ac3592/starling/src" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="90f4fa36-af6b-422b-afbe-daad00f7ec06" />
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/AlivePDF.swc!/" />
+          <root url="file://$STARLING_HOME$" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -133,9 +126,29 @@
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="56e1dbfe-5a3a-4d00-b905-dc8fde52a01b" />
+        <properties id="41e82298-3a95-461a-a926-47ad67c9554f" />
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/com.distriqt.Message.ane!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="c3f5cf3e-7cc7-4d0d-93a2-b153a47136da" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/purePDF.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="d4a8d686-cf56-46e6-886a-8ed7a5c2c6ec" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/purePDFont.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
