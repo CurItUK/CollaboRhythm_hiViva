@@ -200,9 +200,9 @@ package collaboRhythm.hiviva.view.screens.shared
 					{
 						if(HivivaStartup.userVO.fullName.length > 0)
 						{
-							trace("accepted!");
-//							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
-//							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(_messageData.FromUserGuid);
+//							trace("accepted!");
+							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_APPROVE_COMPLETE, approveConnectionHandler);
+							HivivaStartup.hivivaAppController.hivivaRemoteStoreController.approveConnection(_messageData.FromUserGuid);
 						}
 						else
 						{
