@@ -8,14 +8,28 @@ package collaboRhythm.hiviva.view.screens.shared
 	import collaboRhythm.hiviva.utils.PDFReportMailer;
 	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.components.AdherenceChartReport;
-	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.components.AdherenceTableReport;
+	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.components.PreloaderSpinner;
 	import collaboRhythm.hiviva.view.components.TestTableReport;
 	import collaboRhythm.hiviva.view.components.TolerabilityChartReport;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
+
+	import flash.utils.ByteArray;
+
+	import org.purepdf.elements.Paragraph;
+
+	import org.purepdf.elements.RectangleElement;
+
+	import org.purepdf.pdf.PageSize;
+	import org.purepdf.pdf.PdfDocument;
+	import org.purepdf.pdf.PdfRectangle;
+	import org.purepdf.pdf.PdfWriter;
+	import org.purepdf.pdf.fonts.BaseFont;
+	import org.purepdf.pdf.fonts.FontsResourceFactory;
+	import org.purepdf.resources.BuiltinFonts;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -49,6 +63,9 @@ package collaboRhythm.hiviva.view.screens.shared
 		private var _noTestResults:Boolean = false;
 		private var _preloader:PreloaderSpinner;
 
+		private var _pdfDocument: PdfDocument;
+		private var _pdfWriter: PdfWriter;
+		private var _pdfBuffer: ByteArray;
 		private var _PDFReportMailer:PDFReportMailer;
 
 		public function ReportPreview()
@@ -109,7 +126,11 @@ package collaboRhythm.hiviva.view.screens.shared
 			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.HIDE_MAIN_NAV,true));
 
 			initHomeScreenPreloader();
+
+			initPDFDocument();
 		}
+
+
 
 		private function initHomeScreenPreloader():void
 		{
@@ -121,6 +142,17 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			this._preloader.disposePreloader();
 			this.removeChild(this._preloader);
+		}
+
+		private function initPDFDocument():void
+		{
+			FontsResourceFactory.getInstance().registerFont( BaseFont.HELVETICA, new BuiltinFonts.HELVETICA() );
+			FontsResourceFactory.getInstance().registerFont( BaseFont.HELVETICA_BOLD, new BuiltinFonts.HELVETICA_BOLD() );
+
+			this._pdfBuffer = new ByteArray();
+			this._pdfWriter = PdfWriter.create( this._pdfBuffer, PageSize.A4  );
+			this._pdfDocument = this._pdfWriter.pdfDocument;
+			this._pdfDocument.open();
 		}
 
 		private function getSettingsFromVO():void
@@ -171,16 +203,16 @@ package collaboRhythm.hiviva.view.screens.shared
 			_bodyLabel = new Label();
 			this._content.addChild(_bodyLabel);
 
-			this._adherenceReportChart = new AdherenceChartReport();
+			this._adherenceReportChart = new AdherenceChartReport(this._pdfDocument);
 			this._content.addChild(this._adherenceReportChart);
 
 			this._adherenceReportTable = new AdherenceTableReport();
 			this._content.addChild(this._adherenceReportTable);
 
-			this._tolerabilityReportChart = new TolerabilityChartReport();
+			this._tolerabilityReportChart = new TolerabilityChartReport(this._pdfDocument);
 			this._content.addChild(this._tolerabilityReportChart);
 
-			this._reportTable = new TestTableReport();
+			this._reportTable = new TestTableReport(this._pdfDocument);
 			this._content.addChild(this._reportTable);
 
 			this._layoutApplied = true;
@@ -296,33 +328,25 @@ package collaboRhythm.hiviva.view.screens.shared
 			_bodyLabel.x = Constants.PADDING_LEFT;
 			_bodyLabel.width = Constants.INNER_WIDTH;
 			this._content.validate();
+
+			trace("PurePDF: " + this._pdfDocument.getInfo());
+			trace("PurePDF: " + this._pdfDocument.pageSize);
+
+			this._pdfDocument.newPage();
+
+			this._pdfDocument.setMargins(0,0,0,0);
+			this._pdfDocument.add(new Paragraph(_bodyLabel.text));
+
+
 			removePreloader();
 		}
 
 		private function sendPDFInit():void
 		{
+			this._pdfDocument.close();
 
-
-			/*
-
-
-			var reportObject:Array = [];
-			if(this._adherenceIsChecked)
-			{
-				reportObject.push(this._adherenceReportChart);
-				reportObject.push(this._adherenceReportTable);
-			}
-
-			if(this._feelingIsChecked) reportObject.push(this._tolerabilityReportChart);
-			if(this._cd4IsChecked || this._viralLoadIsChecked) reportObject.push(this._reportTable);
-
-			this._content.height = 3000;
-
-
-			//this._PDFReportMailer = new PDFReportMailer(this._emailAddress , _bodyLabel.text , reportObject);
-			this._PDFReportMailer = new PDFReportMailer(this._content);
-
-			*/
+			this._PDFReportMailer = new PDFReportMailer();
+			this._PDFReportMailer.createAndSavePDF(this._pdfBuffer);
 		}                                                                                                                                                                                                   ;
 
 		public function get parentScreen():String

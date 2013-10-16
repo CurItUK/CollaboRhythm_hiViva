@@ -12,6 +12,21 @@ package collaboRhythm.hiviva.view.components
 	import feathers.display.TiledImage;
 	import feathers.text.BitmapFontTextFormat;
 
+	import org.purepdf.elements.Element;
+
+	import org.purepdf.elements.Paragraph;
+	import org.purepdf.elements.Phrase;
+
+	import org.purepdf.elements.RectangleElement;
+	import org.purepdf.pdf.ColumnText;
+	import org.purepdf.pdf.PageSize;
+
+	import org.purepdf.pdf.PdfContentByte;
+
+	import org.purepdf.pdf.PdfDocument;
+	import org.purepdf.pdf.PdfPCell;
+	import org.purepdf.pdf.PdfPTable;
+
 	import starling.display.BlendMode;
 	import starling.display.Image;
 
@@ -45,8 +60,13 @@ package collaboRhythm.hiviva.view.components
 		public static const DATA_CD4:String = "Cd4 count";
 		public static const DATA_VIRAL_LOAD:String = "Viral load";
 
-		public function TestTableReport()
+		private var _pdfDocument:PdfDocument;
+		private var _resultsViralLoadA:Array = [];
+		private var _resultsCD4A:Array = [];
+
+		public function TestTableReport(pdfDocument:PdfDocument)
 		{
+			this._pdfDocument = pdfDocument;
 			super();
 		}
 
@@ -85,6 +105,8 @@ package collaboRhythm.hiviva.view.components
 			this.setSizeInternal(this._tableWidth, this._tableStartY + this._tableHeight, true);
 			initGreyBg();
 			this.validate();
+
+			generatePDFVersion();
 		}
 
 		private function initGreyBg():void
@@ -407,6 +429,39 @@ package collaboRhythm.hiviva.view.components
 			tableBg.x = this._tableStartX;
 			tableBg.y = this._tableStartY;
 			swapChildren(this._tableHolder,tableBg);
+		}
+
+		private function generatePDFVersion():void
+		{
+			trace("PurePDF: " + this._pdfDocument.getInfo());
+			trace("PurePDF: " + this._pdfDocument.pageSize);
+
+			this._pdfDocument.newPage();
+			this._pdfDocument.setMargins(0,0,0,0);
+			var cb:PdfContentByte = this._pdfDocument.getDirectContent();
+			var pagesize:RectangleElement = PageSize.create(595, 842);
+
+			var cell: PdfPCell;
+			var table: PdfPTable;
+
+			table = new PdfPTable(3);
+			//cell = PdfPCell.fromPhrase( new Paragraph("header with colspan 3"));
+			//cell.colspan = (3);
+			//table.addCell(cell);
+			table.addStringCell("Date");
+			table.addStringCell("CD4 Count(Cells/mm3");
+			table.addStringCell("Viral Load(copies/ml)");
+
+
+
+			table.addStringCell("1.2");
+			table.addStringCell("2.2");
+			table.addStringCell("3.2");
+			var widths: Vector.<Number> = Vector.<Number>([ 72, 72, 144 ]);
+			table.setTotalWidths( widths );
+			table.lockedWidth = true;
+			this._pdfDocument.add(table);
+
 		}
 
 		public function get patientData():XMLList

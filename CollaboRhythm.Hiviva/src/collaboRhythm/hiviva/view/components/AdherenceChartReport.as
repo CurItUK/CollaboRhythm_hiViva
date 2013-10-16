@@ -2,16 +2,22 @@ package collaboRhythm.hiviva.view.components
 {
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.utils.HivivaModifier;
-	import collaboRhythm.hiviva.view.HivivaStartup;
 	import collaboRhythm.hiviva.view.Main;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import feathers.controls.Label;
 	import feathers.core.FeathersControl;
 	import feathers.display.TiledImage;
 
+	import flash.geom.Matrix;
 	import flash.utils.Dictionary;
+
+	import org.purepdf.colors.RGBColor;
+	import org.purepdf.elements.Element;
+	import org.purepdf.elements.RectangleElement;
+	import org.purepdf.pdf.PageSize;
+	import org.purepdf.pdf.PdfContentByte;
+	import org.purepdf.pdf.PdfDocument;
+	import org.purepdf.pdf.fonts.BaseFont;
 
 	import starling.display.BlendMode;
 	import starling.display.Image;
@@ -49,8 +55,16 @@ package collaboRhythm.hiviva.view.components
 		private var _xAxisSegmentWidth:Number;
 		private var _xAxisTotal:Number;
 
-		public function AdherenceChartReport()
+		private var _pdfDocument:PdfDocument;
+		private var _plotPointsA:Array = [];
+		private var _leftAxisDetails:Array = [];
+		private var _leftAxisLinesA:Array = [];
+		private var _rightAxisLinesA:Array = [];
+		private var _rightAxisDetails:Array = [];
+
+		public function AdherenceChartReport(pdfDocument:PdfDocument)
 		{
+			this._pdfDocument = pdfDocument;
 			super();
 		}
 
@@ -90,6 +104,7 @@ package collaboRhythm.hiviva.view.components
 			drawPlotPoints();
 			this.validate();
 			initTiledBackground();
+			generatePDFVersion();
 		}
 
 		private function calculateXAxisBreakDown():void
@@ -243,6 +258,7 @@ package collaboRhythm.hiviva.view.components
 					plotCircles.graphics.beginFill(LINE_COLOUR);
 					plotCircles.graphics.drawCircle(this._chartStartX + (this._daySegmentWidth * dayCount),plotStartY - valueY,PLOT_GIRTH * 2);
 					plotCircles.graphics.endFill();
+					this._plotPointsA.push({x:this._chartStartX + (this._daySegmentWidth * dayCount) , y:plotStartY - valueY});
 				}
 				else
 				{
@@ -308,6 +324,10 @@ package collaboRhythm.hiviva.view.components
 			leftAxisLabel.rotation = deg2rad(-90);
 			leftAxisLabel.x = leftAxisTop.x + (leftAxisTop.width * 0.5) - (leftAxisLabel.height * 0.5);
 			leftAxisLabel.y = this._chartStartY + (this._chartHeight * 0.5) + (leftAxisLabel.width * 0.5);
+
+			_leftAxisDetails.push({x:leftAxisTop.x , y:leftAxisTop.y , text:leftAxisTop.text});
+			_leftAxisDetails.push({x:leftAxisBottom.x , y:leftAxisBottom.y , text:leftAxisBottom.text});
+			_leftAxisDetails.push({x:leftAxisLabel.x , y:leftAxisLabel.y , text:leftAxisLabel.text});
 		}
 
 		private function initLeftAxisLines():void
@@ -323,6 +343,7 @@ package collaboRhythm.hiviva.view.components
 				horizontalLine.x = this._chartStartX;
 				horizontalLine.y = this._chartStartY + (verticalSegmentHeight * verticalSegmentCount);
 				horizontalLine.width = this._chartWidth;
+				this._leftAxisLinesA.push({x:horizontalLine.x , y:horizontalLine.y , width:horizontalLine.width});   //PDF DATA
 			}
 		}
 		private function initBottomAxisValuesAndLines():void
@@ -357,6 +378,8 @@ package collaboRhythm.hiviva.view.components
 				verticalLine.x = this._chartStartX + xAxisPosition;
 				verticalLine.y = this._chartStartY;
 				verticalLine.height = this._chartHeight;
+				this._rightAxisLinesA.push({x:verticalLine.x , y:verticalLine.y , height:verticalLine.height})     //PDF DATA
+				this._rightAxisDetails.push({x:bottomAxisValue.x , y:bottomAxisValue.y , text:bottomAxisValue.text})
 				// every even segment
 				if ((segmentCount / 2).toString().indexOf('.') > -1)
 				{
@@ -402,6 +425,156 @@ package collaboRhythm.hiviva.view.components
 			bottomAxisGrad.x = this._chartStartX;
 			bottomAxisGrad.y = this._chartStartY + this._chartHeight;
 		}
+
+
+		private function generatePDFVersion():void
+		{
+			trace("PurePDF: " + this._pdfDocument.getInfo());
+			trace("PurePDF: " + this._pdfDocument.pageSize);
+
+			this._pdfDocument.newPage();
+			this._pdfDocument.setMargins(0,0,0,0);
+			var cb:PdfContentByte = this._pdfDocument.getDirectContent();
+			var pagesize:RectangleElement = PageSize.create(595, 842);
+
+			cb.setTransform( new Matrix( 1, 0, 0, -1, 0, pagesize.height ))
+
+			//Draw Backing
+			cb.saveState();
+
+			cb.setColorFill(new RGBColor(255,0,0));
+			cb.circle(this._chartStartX,this._chartStartY,4);
+			cb.circle(this._chartStartX + this._chartWidth,this._chartStartY,4);
+			cb.circle(this._chartStartX,this._chartStartY + this._chartHeight,4);
+			cb.circle(595,842,4);
+
+			cb.fillStroke();
+
+			cb.restoreState();
+
+			cb.saveState();
+			var r: RectangleElement = new RectangleElement( this._chartStartX, this._chartStartY, this._chartStartX + this._chartWidth , this._chartStartY + this._chartHeight);
+			r.borderSides = RectangleElement.ALL;
+			r.borderColor = new RGBColor(153,153,153);
+			r.backgroundColor = new RGBColor(204,204,204);
+			r.borderWidth = 0.25;
+
+			cb.rectangle( r );
+			cb.restoreState();
+
+
+
+
+
+
+			//left axis lines
+			cb.saveState();
+			cb.setLineWidth(0.25);
+			cb.setColorStroke(new RGBColor(153,153,153));
+
+			var loop2:uint =   this._leftAxisLinesA.length;
+			for(var j:uint = 0 ; j < loop2 ; j++)
+			{
+				cb.moveTo(this._leftAxisLinesA[j].x , (this._leftAxisLinesA[j].y));
+				cb.lineTo(this._leftAxisLinesA[j].width + this._chartStartX , (this._leftAxisLinesA[j].y));
+				cb.stroke();
+			}
+			cb.restoreState();
+
+
+
+
+			//vert axis lines
+			cb.saveState();
+			cb.setLineWidth(0.25);
+			cb.setColorStroke(new RGBColor(153,153,153));
+
+			var loop3:uint =   this._rightAxisLinesA.length;
+			for(var s:uint = 0 ; s < loop3 ; s++)
+			{
+				cb.moveTo(this._rightAxisLinesA[s].x , this._rightAxisLinesA[s].y);
+				cb.lineTo(this._rightAxisLinesA[s].x , this._rightAxisLinesA[s].height + this._chartStartY);
+				cb.stroke();
+			}
+			cb.restoreState();
+
+
+			//Draw line Points
+			cb.saveState();
+			cb.setLineWidth(1);
+			cb.moveTo(this._plotPointsA[0].x , (this._plotPointsA[0].y));
+
+			var loop:uint =   this._plotPointsA.length;
+			for(var l:uint = 0 ; l < loop ; l++)
+			{
+				cb.lineTo(this._plotPointsA[l].x , (this._plotPointsA[l].y));
+			}
+			cb.stroke();
+			cb.restoreState();
+
+			//Draw Circle Points
+			cb.saveState();
+			for(var m:uint = 0 ; m < loop ; m++)
+			{
+				cb.setColorFill(new RGBColor(0,0,0));
+				cb.circle(this._plotPointsA[m].x , (this._plotPointsA[m].y),4);
+				cb.fillStroke();
+			}
+			cb.restoreState();
+
+
+
+			cb.setTransform(new Matrix( 1, 0, 0, -1, -1, pagesize.height ));
+
+			//Draw Chart Title
+
+			var bf:BaseFont = BaseFont.createFont( BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED );
+			cb.setFontAndSize(bf, 8);
+			cb.saveState();
+			cb.beginText();
+			cb.moveText(this._chartStartX, 842-this._chartStartY);
+			cb.showText("Overall Adherence");
+			cb.endText();
+			cb.restoreState();
+
+			//bottom axis text
+			cb.setFontAndSize(bf, 8);
+			cb.saveState();
+			var loop4:uint =  this._rightAxisDetails.length;
+			for(var v:uint = 0 ; v <loop4 ; v++)
+			{
+				cb.beginText();
+				cb.showTextAligned( Element.ALIGN_LEFT, _rightAxisDetails[v].text, _rightAxisDetails[v].x, 842-_rightAxisDetails[v].y + this._chartStartY, 90 );
+				cb.endText();
+			}
+			cb.restoreState();
+
+			//left axis top
+			cb.saveState();
+			cb.beginText();
+			cb.moveText(_leftAxisDetails[0].x, 842-_leftAxisDetails[0].y);
+			cb.showText(_leftAxisDetails[0].text);
+			cb.endText();
+			cb.restoreState();
+
+			//left axis bottom
+			cb.saveState();
+			cb.beginText();
+			cb.moveText(_leftAxisDetails[1].x, 842-_leftAxisDetails[1].y);
+			cb.showText(_leftAxisDetails[1].text);
+			cb.endText();
+			cb.restoreState();
+
+			//left axis center
+			cb.saveState();
+			cb.beginText();
+			cb.showTextAligned( Element.ALIGN_LEFT, _leftAxisDetails[2].text, _leftAxisDetails[2].x, 842-_leftAxisDetails[2].y, 90 );
+			cb.endText();
+			cb.restoreState();
+
+
+		}
+
 
 		public function get startDate():Date
 		{
