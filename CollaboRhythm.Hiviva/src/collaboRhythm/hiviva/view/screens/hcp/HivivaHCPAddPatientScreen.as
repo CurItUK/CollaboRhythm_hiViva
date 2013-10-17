@@ -97,7 +97,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this.addChild(this._appIDLabel);
 
 			this._searchInput = new TextInput();
-			this._searchInput.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
+//			this._searchInput.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
 			addChild(this._searchInput);
 
 			this._searchButton = new Button();
