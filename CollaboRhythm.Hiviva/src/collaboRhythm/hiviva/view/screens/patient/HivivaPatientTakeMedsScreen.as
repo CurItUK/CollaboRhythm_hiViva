@@ -17,6 +17,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.Scroller;
 	import feathers.controls.Slider;
 	import feathers.layout.VerticalLayout;
 
@@ -246,8 +247,9 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			this._takeMedicationCellHolder.y = this._feelingSliderRightLabel.y + this._feelingSliderRightLabel.height + PADDING;
 			this._takeMedicationCellHolder.width = Constants.STAGE_WIDTH;
-			this._takeMedicationCellHolder.height = this._customHeight - this._takeMedicationCellHolder.y;
+			this._takeMedicationCellHolder.height = this._customHeight - Constants.HEADER_HEIGHT - this._takeMedicationCellHolder.y;
 
+//			this._takeMedicationCellHolder.verticalScrollPolicy = Scroller.SCROLL_POLICY_ON;
 			this._takeMedicationCellHolder.layout = new VerticalLayout();
 			this._takeMedicationCellHolder.validate();
 		}

@@ -238,9 +238,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE , addMedicationCompleteHandler);
 
-			trace("medication : " + medicationResult.name + " added");
-
-
 			clearDownListArrayObect();
 			this._owner.showScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
 
