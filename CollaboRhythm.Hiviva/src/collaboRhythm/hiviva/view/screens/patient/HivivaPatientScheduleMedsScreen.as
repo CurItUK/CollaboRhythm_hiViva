@@ -33,6 +33,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _scheduleDoseList:PickerList;
 		private var _timeListItems:Array = [];
 		private var _tabletListItems:Array = [];
+		private var _medicationData:XML;
 
 		public function HivivaPatientScheduleMedsScreen()
 		{
@@ -238,9 +239,45 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE , addMedicationCompleteHandler);
 
+			trace("medication : " + medicationResult.name + " added");
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
+		}
+
+		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+
+			_medicationData = e.data.xmlResponse;
+			var medicationCount:uint = _medicationData.DCUserMedication.length();
+			var medicationSchedule:XMLList;
+			var medicationScheduleCount:uint;
+			for(var i:uint = 0 ; i < medicationCount ; i++)
+			{
+				// if the current medication is the one we just added
+				if(_medicationData.DCUserMedication[i].MedicationName == medicationResult.name)
+				{
+					medicationSchedule = _medicationData.DCUserMedication[i].Schedule.DCMedicationSchedule;
+					medicationScheduleCount = medicationSchedule.length();
+					for(var j:uint = 0 ; j < medicationScheduleCount ; j++)
+					{
+						medicationSchedule.Taken = "false";
+					}
+					break;
+				}
+			}
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.takeMedication(_medicationData);
+		}
+
+		private function takePatientMedicationCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
+			trace("medicine schedule updated");
+
 			clearDownListArrayObect();
 			this._owner.showScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
-
 		}
 
 		private function clearDownListArrayObect():void
@@ -296,6 +333,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		override public function dispose():void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE , addMedicationCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.TAKE_PATIENT_MEDICATION_COMPLETE , takePatientMedicationCompleteHandler);
 			super.dispose();
 		}
 	}

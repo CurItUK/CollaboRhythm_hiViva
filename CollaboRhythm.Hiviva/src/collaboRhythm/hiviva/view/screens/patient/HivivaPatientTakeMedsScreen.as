@@ -15,6 +15,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
 	import feathers.controls.Button;
+	import feathers.controls.Check;
 	import feathers.controls.Label;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.Scroller;
@@ -62,37 +63,14 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function preValidateContent():void
 		{
 			super.preValidateContent();
-
 			this._contentLayout.paddingLeft = this._contentLayout.paddingRight = 0;
-
-//			this._feelingQuestion.width = Constants.STAGE_WIDTH;
 			this._feelingSlider.width = this._innerWidth * 0.8;
 		}
 
 		override protected function postValidateContent():void
 		{
 			super.postValidateContent();
-
-			this._feelingQuestion.x = (Constants.STAGE_WIDTH * 0.5) - (this._feelingQuestion.width * 0.5);
-
-			this._feelingSlider.x = (this.actualWidth * 0.5) - (this._feelingSlider.width * 0.5);
-			this._feelingSlider.y -= this._componentGap;
-
-			this._feelingSliderLeftImage.y = this._feelingSliderRightImage.y = this._feelingSlider.y + (this._feelingSlider.height * 0.5)
-			this._feelingSliderLeftImage.x = this._feelingSlider.x - this._feelingSliderLeftImage.width;
-			this._feelingSliderLeftImage.y -= this._feelingSliderLeftImage.height * 0.5;
-
-			this._feelingSliderRightImage.x = this._feelingSlider.x + this._feelingSlider.width;
-			this._feelingSliderRightImage.y -= this._feelingSliderRightImage.height * 0.5;
-
-			this._feelingSliderLeftLabel.x = this._feelingSliderLeftImage.x + (this._feelingSliderLeftImage.width * 0.5) - (this._feelingSliderLeftLabel.width * 0.5);
-			this._feelingSliderLeftLabel.y = this._feelingSlider.y + this._feelingSlider.height;
-
-			this._feelingSliderCenterLabel.x = this._feelingSlider.x + (this._feelingSlider.width * 0.5) - (this._feelingSliderCenterLabel.width * 0.5);
-			this._feelingSliderCenterLabel.y = this._feelingSlider.y + this._feelingSlider.height;
-
-			this._feelingSliderRightLabel.x = this._feelingSliderRightImage.x + (this._feelingSliderRightImage.width * 0.5) - (this._feelingSliderRightLabel.width * 0.5);
-			this._feelingSliderRightLabel.y = this._feelingSlider.y + this._feelingSlider.height;
+			drawFeelingSlider();
 			// scroll not needed for this screen
 			killContentScroll();
 		}
@@ -100,9 +78,13 @@ package collaboRhythm.hiviva.view.screens.patient
 		override protected function initialize():void
 		{
 			super.initialize();
-
+			initFeelingSlider();
+			feelingStuffVisible(false);
 			this._header.title = "Take Medication";
+		}
 
+		private function initFeelingSlider():void
+		{
 			this._feelingQuestion = new Label();
 			this._feelingQuestion.name = HivivaThemeConstants.MEDICINE_BRANDNAME_WHITE_LABEL;
 			this._feelingQuestion.text = "How am I feeling on my meds today?";
@@ -118,6 +100,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._feelingSlider.page = 10;
 			this._feelingSlider.direction = Slider.DIRECTION_HORIZONTAL;
 			this._feelingSlider.liveDragging = false;
+			this._feelingSlider.addEventListener(Event.CHANGE, dataChangeHandler);
 			this._content.addChild(this._feelingSlider);
 
 //			this._feelingSliderLeftImage = new Image(Main.assets.getTexture("feeling_slider_cloud"));
@@ -142,9 +125,30 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._feelingSliderRightLabel.name = HivivaThemeConstants.FEELING_SLIDER_LABEL;
 			this._feelingSliderRightLabel.text = "AWESOME";
 			this._content.addChild(this._feelingSliderRightLabel);
+		}
 
-			this._takeMedicationCellHolder = new ScrollContainer();
-			this._content.addChild(this._takeMedicationCellHolder);
+		private function drawFeelingSlider():void
+		{
+			this._feelingQuestion.x = (Constants.STAGE_WIDTH * 0.5) - (this._feelingQuestion.width * 0.5);
+
+			this._feelingSlider.x = (this.actualWidth * 0.5) - (this._feelingSlider.width * 0.5);
+			this._feelingSlider.y -= this._componentGap;
+
+			this._feelingSliderLeftImage.y = this._feelingSliderRightImage.y = this._feelingSlider.y + (this._feelingSlider.height * 0.5)
+			this._feelingSliderLeftImage.x = this._feelingSlider.x - this._feelingSliderLeftImage.width;
+			this._feelingSliderLeftImage.y -= this._feelingSliderLeftImage.height * 0.5;
+
+			this._feelingSliderRightImage.x = this._feelingSlider.x + this._feelingSlider.width;
+			this._feelingSliderRightImage.y -= this._feelingSliderRightImage.height * 0.5;
+
+			this._feelingSliderLeftLabel.x = this._feelingSliderLeftImage.x + (this._feelingSliderLeftImage.width * 0.5) - (this._feelingSliderLeftLabel.width * 0.5);
+			this._feelingSliderLeftLabel.y = this._feelingSlider.y + this._feelingSlider.height;
+
+			this._feelingSliderCenterLabel.x = this._feelingSlider.x + (this._feelingSlider.width * 0.5) - (this._feelingSliderCenterLabel.width * 0.5);
+			this._feelingSliderCenterLabel.y = this._feelingSlider.y + this._feelingSlider.height;
+
+			this._feelingSliderRightLabel.x = this._feelingSliderRightImage.x + (this._feelingSliderRightImage.width * 0.5) - (this._feelingSliderRightLabel.width * 0.5);
+			this._feelingSliderRightLabel.y = this._feelingSlider.y + this._feelingSlider.height;
 		}
 
 		private function checkMedicationScheduleExist():void
@@ -184,8 +188,38 @@ package collaboRhythm.hiviva.view.screens.patient
 						this._medicationSchedule.push(medObj);
 					}
 				}
+				this._takeMedicationCellHolder = new ScrollContainer();
+				this._content.addChild(this._takeMedicationCellHolder);
 				populateMedications();
+				feelingStuffVisible(true);
 			}
+			else
+			{
+				initAlertText();
+			}
+		}
+
+		private function feelingStuffVisible(isVisible:Boolean):void
+		{
+			this._feelingQuestion.visible =
+			this._feelingSlider.visible =
+			this._feelingSliderLeftImage.visible =
+			this._feelingSliderRightImage.visible =
+			this._feelingSliderLeftLabel.visible =
+			this._feelingSliderCenterLabel.visible =
+			this._feelingSliderRightLabel.visible = isVisible;
+		}
+
+		private function initAlertText():void
+		{
+			var _alertLabel:Label = new Label();
+			_alertLabel.name = HivivaThemeConstants.BODY_CENTERED_LABEL;
+			_alertLabel.text = "No medication data found. Please add a medication";
+
+			addChild(_alertLabel);
+			_alertLabel.validate();
+			_alertLabel.width = Constants.STAGE_WIDTH;
+			_alertLabel.y = Constants.HEADER_HEIGHT + ((this._customHeight - Constants.HEADER_HEIGHT) / 2) - (_alertLabel.height / 2);
 		}
 
 		private function populateMedications():void
@@ -202,17 +236,17 @@ package collaboRhythm.hiviva.view.screens.patient
 				takeMedicationCell.doseDetails = HivivaModifier.getNeatTabletText(this._medicationSchedule[i].tablet_count) + " " + HivivaModifier.getNeatTime(this._medicationSchedule[i].time);
 				takeMedicationCell.width = Constants.STAGE_WIDTH;
 				this._takeMedicationCellHolder.addChild(takeMedicationCell);
-				takeMedicationCell.checkBox.addEventListener(Event.TRIGGERED, medCellChangeHandler);
+				takeMedicationCell.checkBox.addEventListener(Event.TRIGGERED, dataChangeHandler);
 				if(this._medicationSchedule[i].tablet_taken == "true")
 				{
 					takeMedicationCell.checkBox.isSelected = true;
 					takeMedicationCell.validate();
 				}
 			}
-			drawResults()
+			drawResults();
 		}
 
-		private function medCellChangeHandler(e:Event):void
+		private function dataChangeHandler(e:Event):void
 		{
 			if (this._submitButton == null)
 			{
@@ -233,11 +267,12 @@ package collaboRhythm.hiviva.view.screens.patient
 				this._submitButton.visible = true;
 			}
 
-			writeAdherenceBySelectedCell((DisplayObject(e.currentTarget).parent) as SelectMedicationCell);
+			if(e.currentTarget is Check) writeAdherenceBySelectedCell((DisplayObject(e.currentTarget).parent) as SelectMedicationCell);
 		}
 
 		private function writeAdherenceBySelectedCell(selectMedicationCell:SelectMedicationCell):void
 		{
+
 			var dcUserMedication:XML = XML(this._medicationData.DCUserMedication.(UserMedicationGuid == selectMedicationCell.medicationGuid));
 			var dcUserSchedule:XML = XML(dcUserMedication.Schedule.DCMedicationSchedule.(MedicationScheduleID == selectMedicationCell.medicationScheduleId));
 			dcUserSchedule.Taken = !selectMedicationCell.checkBox.isSelected;

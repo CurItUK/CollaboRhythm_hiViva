@@ -190,7 +190,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			for (var i:uint = 0; i < medicationsLoop; i++)
 			{
 				editMedicationCell = new EditMedicationCell();
-				editMedicationCell.addEventListener(Event.REMOVED_FROM_STAGE, editMedicationCellRemoved);
+				editMedicationCell.addEventListener(FeathersScreenEvent.MEDICATION_DELETE_TRIGGERED, editMedicationCellDelete);
 				editMedicationCell.medicationId = this._medications[i].medication_guid;
 				editMedicationCell.scale = this.dpiScale;
 				editMedicationCell.brandName = HivivaModifier.getBrandName(this._medications[i].medication_name);
@@ -249,6 +249,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._addMedBtnBordered.x = this._horizontalPadding;
 			this._addMedBtnBordered.y = this._seperator.y + this._componentGap;
+
+
 		}
 
 		private function drawMedications():void
@@ -308,51 +310,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._addMedBtnBoxed.x = this._horizontalPadding;
 		}
 
-		private function editMedicationCellRemoved(e:Event):void
+		private function editMedicationCellDelete(e:Event):void
 		{
 			var currEditMedicationCell:EditMedicationCell = e.target as EditMedicationCell;
-			currEditMedicationCell.removeEventListener(Event.REMOVED_FROM_STAGE, editMedicationCellRemoved);
-			trace("medication cell removed");
+			currEditMedicationCell.removeEventListener(FeathersScreenEvent.MEDICATION_DELETE_TRIGGERED, editMedicationCellDelete);
 
-			this._content.layout = this._contentLayout;
+			// remove everything else for a absolute reset
+			this._content.removeChildren();
 
-			this._horizontalPadding = (this.actualWidth * 0.04) * this.dpiScale;
-			this._verticalPadding = (this.actualHeight * 0.02) * this.dpiScale;
-			this._componentGap = (this.actualHeight * 0.04) * this.dpiScale;
-
-			this._header.width = this.actualWidth;
-			this._header.initTrueTitle();
-
-			this._contentHeight = this._customHeight > 0 ? this._customHeight : this.actualHeight;
-			this._contentHeight -= (this._header.y + this._header.height);
-
-			this._content.y = this._header.y + this._header.height;
-			this._content.width = this.actualWidth - this._horizontalPadding;
-			this._content.height = this._contentHeight - this._verticalPadding;
-
-			this._contentLayout.paddingLeft = this._contentLayout.paddingRight = this._horizontalPadding;
-			this._contentLayout.paddingTop = this._contentLayout.paddingBottom = this._verticalPadding;
-			this._contentLayout.gap = this._componentGap;
-
-			//previous pre-validate
-
-			drawMedications();
-
-			this._content.width = this.actualWidth;
-
-			this._contentLayout.paddingLeft = this._contentLayout.paddingRight = 0;
-			this._contentLayout.paddingTop = this._contentLayout.paddingBottom = 0;
-			this._contentLayout.gap = 0;
-
-			this._content.validate();
-
-			//previous post-validate
-
-			this._seperator.width = this.actualWidth;
-
-			this._addMedBtnBordered.x = this._horizontalPadding;
-			this._addMedBtnBordered.y = this._seperator.y + this._componentGap;
-
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
 		}
 
 		private function addMedBtnHandler(e:Event):void
