@@ -1,6 +1,7 @@
 package collaboRhythm.hiviva.view.components
 {
 
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.view.HivivaStartup;
@@ -74,6 +75,8 @@ package collaboRhythm.hiviva.view.components
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.DELETE_PATIENT_MEDICATION_COMPLETE , deleteMedicationCompleteHandler);
 			trace("medication with id:" + _medicationId + " deleted.");
+
+			dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.MEDICATION_DELETE_TRIGGERED));
 			this.removeFromParent(true);
 		}
 
