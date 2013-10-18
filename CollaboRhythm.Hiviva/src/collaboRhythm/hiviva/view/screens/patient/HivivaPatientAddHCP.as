@@ -14,6 +14,8 @@ package collaboRhythm.hiviva.view.screens.patient
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.TextInput;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
+	import feathers.controls.text.TextFieldTextEditor;
+	import feathers.core.ITextEditor;
 	import feathers.core.PopUpManager;
 	import feathers.core.ToggleGroup;
 	import feathers.layout.VerticalLayout;
@@ -100,10 +102,8 @@ package collaboRhythm.hiviva.view.screens.patient
 			this.addChild(this._appIDLabel);
 
 			this._searchInput = new TextInput();
-			//this._searchInput.textEditorProperties.softKeyboardType = SoftKeyboardType.NUMBER;
 			this._searchInput.textEditorProperties.restrict = "0-9\\-";
 			this._searchInput.textEditorProperties.maxChars = 11;
-			//this._searchInput.addEventListener( Event.CHANGE, searchInputChangeHandler );
 			addChild(this._searchInput);
 
 			this._searchButton = new Button();
@@ -132,22 +132,6 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._resultInfo.y = this._searchInput.y + this._searchInput.height + (scaledPadding * 0.5);
 			this._resultInfo.x = horizontalAlign;
 			this._resultInfo.width = this.actualWidth - scaledPadding - horizontalAlign;
-		}
-
-		private function searchInputChangeHandler(event:Event):void
-		{
-
-			this._searchInput.selectRange(this._searchInput.text.length);
-			this._searchInput.validate();
-			if(this._searchInput.text.length == 3)
-			{
-				trace("searchInputChangeHandler " + this._searchInput.text.length);
-				this._searchInput.text += "-";
-				trace("searchInputChangeHandler " + this._searchInput.text.length);
-				this._searchInput.selectRange(this._searchInput.text.length);
-				this._searchInput.setFocus();
-			}
-
 		}
 
 		private function doSearchHcp(e:Event):void
