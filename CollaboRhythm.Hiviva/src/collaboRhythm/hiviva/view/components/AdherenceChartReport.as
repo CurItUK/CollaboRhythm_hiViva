@@ -433,6 +433,7 @@ package collaboRhythm.hiviva.view.components
 			trace("PurePDF: " + this._pdfDocument.pageSize);
 
 			this._pdfDocument.newPage();
+			trace("generatePDFVersion " + this._pdfDocument.getCurrentPage());
 			this._pdfDocument.setMargins(0,0,0,0);
 			var cb:PdfContentByte = this._pdfDocument.getDirectContent();
 			var pagesize:RectangleElement = PageSize.create(595, 842);

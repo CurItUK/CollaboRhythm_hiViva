@@ -33,18 +33,18 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="Air_3.8" />
+          <sdk name="AIR_3.8" />
         </dependencies>
         <compiler-options />
         <packaging-air-desktop />
-        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="CollaboRhythm_Hiviva">
+        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-android-descriptor.xml" package-file-name="INCH">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/app_resources" path-in-package="app_resources" />
           </files-to-package>
         </packaging-android>
-        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="CollaboRhythm_Hiviva">
+        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/CollaboRhythmHivivaApplication-ios-desciptor.xml" package-file-name="INCH">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/media" path-in-package="media" />
@@ -62,13 +62,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Air_3.8" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="AIR_3.8" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
         <properties id="d8fa7b08-8beb-4872-a84e-9d2446958e82" />
         <CLASSES>
-          <root url="file://$FEATHERS_HOME$" />
+          <root url="file://$MODULE_DIR$/../../../Frameworks/as/feathers-1.1.0/source" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -88,7 +88,7 @@
       <library type="flex">
         <properties id="b35f1336-7694-4acc-bb9a-226799948b69" />
         <CLASSES>
-          <root url="file://$STARLING_HOME$" />
+          <root url="file://$MODULE_DIR$/../../../Frameworks/as/PrimaryFeather-Starling-Framework-0ac3592/starling/src" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
