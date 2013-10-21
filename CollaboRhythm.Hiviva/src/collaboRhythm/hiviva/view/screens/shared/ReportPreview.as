@@ -203,16 +203,16 @@ package collaboRhythm.hiviva.view.screens.shared
 			_bodyLabel = new Label();
 			this._content.addChild(_bodyLabel);
 
-			this._adherenceReportChart = new AdherenceChartReport(this._pdfDocument);
+			this._adherenceReportChart = new AdherenceChartReport();
 			this._content.addChild(this._adherenceReportChart);
 
 			this._adherenceReportTable = new AdherenceTableReport();
 			this._content.addChild(this._adherenceReportTable);
 
-			this._tolerabilityReportChart = new TolerabilityChartReport(this._pdfDocument);
+			this._tolerabilityReportChart = new TolerabilityChartReport();
 			this._content.addChild(this._tolerabilityReportChart);
 
-			this._reportTable = new TestTableReport(this._pdfDocument);
+			this._reportTable = new TestTableReport();
 			this._content.addChild(this._reportTable);
 
 			this._layoutApplied = true;
@@ -328,26 +328,29 @@ package collaboRhythm.hiviva.view.screens.shared
 			_bodyLabel.x = Constants.PADDING_LEFT;
 			_bodyLabel.width = Constants.INNER_WIDTH;
 			this._content.validate();
-
-			trace("PurePDF: " + this._pdfDocument.getInfo());
-			trace("PurePDF: " + this._pdfDocument.pageSize);
-
-			this._pdfDocument.newPage();
-
-			this._pdfDocument.setMargins(0,0,0,0);
-			this._pdfDocument.add(new Paragraph(_bodyLabel.text));
-
-
 			removePreloader();
 		}
 
 		private function sendPDFInit():void
 		{
-			this._pdfDocument.close();
+			this._pdfDocument.newPage();
+			this._pdfDocument.setMargins(36,36,36,36);
+			this._pdfDocument.add(new Paragraph(_bodyLabel.text + "\n\n\n\n"));
+			if(_bodyLabel.text !=  "No Data found for this patient within the selected date range")
+			{
+				if(this._adherenceIsChecked)
+				{
+					this._adherenceReportTable.generatePDFVersion(this._pdfDocument);
+					this._adherenceReportChart.generatePDFVersion(this._pdfDocument);
+				}
+				if(this._feelingIsChecked) this._tolerabilityReportChart.generatePDFVersion(this._pdfDocument);
+				if(!_noTestResults) this._reportTable.generatePDFVersion(this._pdfDocument);
+			}
 
-			this._PDFReportMailer = new PDFReportMailer();
+			this._pdfDocument.close();
+			this._PDFReportMailer = new PDFReportMailer(this._emailAddress);
 			this._PDFReportMailer.createAndSavePDF(this._pdfBuffer);
-		}                                                                                                                                                                                                   ;
+		}
 
 		public function get parentScreen():String
 		{

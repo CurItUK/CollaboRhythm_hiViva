@@ -12,26 +12,29 @@ package collaboRhythm.hiviva.utils
 	public class PDFReportMailer
 	{
 
-		public function PDFReportMailer()
-		{
+		private var _emailAddress:String;
+		private var _outfile:File;
 
+		public function PDFReportMailer(emailAddress:String)
+		{
+		  this._emailAddress = emailAddress;
 		}
 
 		public function createAndSavePDF(data:ByteArray):void
 		{
 
-			var outFile:File = File.applicationStorageDirectory.resolvePath("report.pdf");
+			this._outfile = File.applicationStorageDirectory.resolvePath("report.pdf");
 			var outStream:FileStream = new FileStream();
 			outStream.addEventListener(Event.CLOSE, fileSaveCompleteHandler);
-			outStream.openAsync(outFile, FileMode.WRITE);
+			outStream.openAsync(this._outfile, FileMode.WRITE);
 			outStream.writeBytes(data, 0, data.length);
 			outStream.close();
 		}
 
 		private function fileSaveCompleteHandler(event:Event):void
 		{
-			trace("PDF Complete");
-			//mailPDFFile(this._reportFile.nativePath);
+			trace("PDF Complete " + this._outfile.nativePath);
+			mailPDFFile(this._outfile.nativePath);
 		}
 
 		private function mailPDFFile(filePath:String):void
@@ -39,7 +42,7 @@ package collaboRhythm.hiviva.utils
 			if (Message.isMailSupported)
 			{
 
-				var email:String = "email address here..."; //this._emailAddress;
+				var email:String =  this._emailAddress
 
 				Message.service.sendMailWithOptions(
 						"Patient Report",

@@ -12,6 +12,17 @@ package collaboRhythm.hiviva.view.components
 
 	import flash.utils.Dictionary;
 
+	import org.purepdf.elements.Paragraph;
+
+	import org.purepdf.elements.RectangleElement;
+	import org.purepdf.pdf.PageSize;
+
+	import org.purepdf.pdf.PdfContentByte;
+
+	import org.purepdf.pdf.PdfDocument;
+	import org.purepdf.pdf.PdfPCell;
+	import org.purepdf.pdf.PdfPTable;
+
 	import starling.display.BlendMode;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -34,6 +45,10 @@ package collaboRhythm.hiviva.view.components
 		private var _firstRowHeight:Number;
 		private var _greyBg:TiledImage;
 		private var _bg:Sprite;
+
+		private var _medsDataA:Array = [];
+		private var _medsDataAverageA:Array = [];
+		private var _overallAvg:Number;
 
 		public function AdherenceTableReport()
 		{
@@ -135,6 +150,7 @@ package collaboRhythm.hiviva.view.components
 					});
 
 					medIds.push(medicationId);
+					this._medsDataA.push(medicationCell.brandName + "\n" + medicationCell.genericName);
 				}
 			}
 
@@ -217,6 +233,8 @@ package collaboRhythm.hiviva.view.components
 			}
 
 			drawTableCell(String(Math.round(overallAverage / medicationLength)), medicationLength);
+
+			this._overallAvg = overallAverage;
 		}
 
 		private function extractAdherence(currDay:Date, rowData:Object):Number
@@ -271,6 +289,8 @@ package collaboRhythm.hiviva.view.components
 			valueLabel.validate();
 			valueLabel.x = this._columnWidth + this._cellPadding;
 			valueLabel.y = ypos - (valueLabel.height * 0.5);
+
+			this._medsDataAverageA.push(valueLabel.text);
 		}
 
 		private function initTableBackground():void
@@ -319,6 +339,48 @@ package collaboRhythm.hiviva.view.components
 				verticalLine.height = this._totalHeight;
 				verticalLine.x = horPosLines[j];
 			}
+		}
+
+		public function generatePDFVersion(pdfDocument:PdfDocument):void
+		{
+			trace("PurePDF: " + pdfDocument.getInfo());
+			trace("PurePDF: " + pdfDocument.pageSize);
+
+
+			var cb:PdfContentByte = pdfDocument.getDirectContent();
+			var pagesize:RectangleElement = PageSize.create(595, 842);
+
+			var cell: PdfPCell;
+			var table: PdfPTable;
+
+
+
+			table = new PdfPTable(2);
+
+			cell = PdfPCell.fromPhrase( new Paragraph("Adherence for this period (%)"));
+			cell.colspan = (2);
+			cell.fixedHeight = 30;
+			table.addCell(cell);
+
+			var medsLoop:uint =  this._medsDataA.length;
+			for(var i:uint = 0 ; i <medsLoop ; i++)
+			{
+				table.addStringCell(this._medsDataA[i]);
+				table.addStringCell(this._medsDataAverageA[i]);
+			}
+
+
+			table.addStringCell("Average");
+			table.addStringCell(String(this._overallAvg));
+			var widths: Vector.<Number> = Vector.<Number>([ 220, 220 ]);
+			table.setTotalWidths( widths );
+
+			table.lockedWidth = true;
+
+			pdfDocument.add(table);
+
+
+
 		}
 
 		public function get medications():XMLList

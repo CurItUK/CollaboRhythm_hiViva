@@ -58,16 +58,14 @@ package collaboRhythm.hiviva.view.components
 		private var _xAxisSegmentWidth:Number;
 		private var _xAxisTotal:Number;
 
-		private var _pdfDocument:PdfDocument;
 		private var _plotPointsA:Array = [];
 		private var _leftAxisDetails:Array = [];
 		private var _leftAxisLinesA:Array = [];
 		private var _rightAxisLinesA:Array = [];
 		private var _rightAxisDetails:Array = [];
 
-		public function TolerabilityChartReport(pdfDocument:PdfDocument)
+		public function TolerabilityChartReport()
 		{
-			this._pdfDocument = pdfDocument;
 			super();
 		}
 
@@ -108,7 +106,6 @@ package collaboRhythm.hiviva.view.components
 			writeAverageLabel();
 			this.validate();
 			initTiledBackground();
-			generatePDFVersion();
 
 		}
 
@@ -459,74 +456,62 @@ package collaboRhythm.hiviva.view.components
 		}
 
 
-		private function generatePDFVersion():void
+		public function generatePDFVersion(pdfDocument:PdfDocument):void
 		{
-			trace("PurePDF: " + this._pdfDocument.getInfo());
-			trace("PurePDF: " + this._pdfDocument.pageSize);
+			trace("PurePDF: " + pdfDocument.getInfo());
+			trace("PurePDF: " + pdfDocument.pageSize);
+			trace("PurePDF: TOL this._chartStartY " + this._chartStartY);
 
-			this._pdfDocument.newPage();
+			pdfDocument.newPage();
+			pdfDocument.setMargins(36,36,36,36);
 
-			this._pdfDocument.setMargins(0,0,0,0);
-			var cb:PdfContentByte = this._pdfDocument.getDirectContent();
+			var cb:PdfContentByte = pdfDocument.getDirectContent();
 			var pagesize:RectangleElement = PageSize.create(595, 842);
+
+			var tolCompensateDiff:Number = 62;
+			var xCompensate:Number = 40;
+			var yCompensate:Number = 100 - tolCompensateDiff;
 
 			cb.setTransform( new Matrix( 1, 0, 0, -1, 0, pagesize.height ))
 
 			//Draw Backing
-			cb.saveState();
 
-			cb.setColorFill(new RGBColor(255,0,0));
-			cb.circle(this._chartStartX,this._chartStartY,4);
-			cb.circle(this._chartStartX + this._chartWidth,this._chartStartY,4);
-			cb.circle(this._chartStartX,this._chartStartY + this._chartHeight,4);
-			cb.circle(595,842,4);
-
-			cb.fillStroke();
-
-			cb.restoreState();
 
 			cb.saveState();
-			var r: RectangleElement = new RectangleElement( this._chartStartX, this._chartStartY, this._chartStartX + this._chartWidth , this._chartStartY + this._chartHeight);
+			var r: RectangleElement = new RectangleElement( this._chartStartX - xCompensate, this._chartStartY + yCompensate, this._chartStartX + this._chartWidth - xCompensate , this._chartStartY + this._chartHeight + yCompensate);
 			r.borderSides = RectangleElement.ALL;
-			r.borderColor = new RGBColor(153,153,153);
-			r.backgroundColor = new RGBColor(204,204,204);
+			r.borderColor = new RGBColor(204,204,204);
+			r.backgroundColor = new RGBColor(245,245,245);
 			r.borderWidth = 0.25;
 
 			cb.rectangle( r );
 			cb.restoreState();
 
-
-
-
-
-
 			//left axis lines
 			cb.saveState();
 			cb.setLineWidth(0.25);
-			cb.setColorStroke(new RGBColor(153,153,153));
+			cb.setColorStroke(new RGBColor(204,204,204));
 
 			var loop2:uint =   this._leftAxisLinesA.length;
 			for(var j:uint = 0 ; j < loop2 ; j++)
 			{
-				cb.moveTo(this._leftAxisLinesA[j].x , (this._leftAxisLinesA[j].y));
-				cb.lineTo(this._leftAxisLinesA[j].width + this._chartStartX , (this._leftAxisLinesA[j].y));
+				cb.moveTo(this._leftAxisLinesA[j].x - xCompensate , (this._leftAxisLinesA[j].y + yCompensate));
+				cb.lineTo(this._leftAxisLinesA[j].width + this._chartStartX - xCompensate , (this._leftAxisLinesA[j].y + yCompensate));
 				cb.stroke();
 			}
 			cb.restoreState();
 
 
-
-
 			//vert axis lines
 			cb.saveState();
 			cb.setLineWidth(0.25);
-			cb.setColorStroke(new RGBColor(153,153,153));
+			cb.setColorStroke(new RGBColor(204,204,204));
 
 			var loop3:uint =   this._rightAxisLinesA.length;
 			for(var s:uint = 0 ; s < loop3 ; s++)
 			{
-				cb.moveTo(this._rightAxisLinesA[s].x , this._rightAxisLinesA[s].y);
-				cb.lineTo(this._rightAxisLinesA[s].x , this._rightAxisLinesA[s].height + this._chartStartY);
+				cb.moveTo(this._rightAxisLinesA[s].x - xCompensate , this._rightAxisLinesA[s].y + yCompensate);
+				cb.lineTo(this._rightAxisLinesA[s].x - xCompensate , this._rightAxisLinesA[s].height + this._chartStartY + yCompensate);
 				cb.stroke();
 			}
 			cb.restoreState();
@@ -535,12 +520,12 @@ package collaboRhythm.hiviva.view.components
 			//Draw line Points
 			cb.saveState();
 			cb.setLineWidth(1);
-			cb.moveTo(this._plotPointsA[0].x , (this._plotPointsA[0].y));
+			cb.moveTo(this._plotPointsA[0].x - xCompensate , (this._plotPointsA[0].y + yCompensate));
 
 			var loop:uint =   this._plotPointsA.length;
 			for(var l:uint = 0 ; l < loop ; l++)
 			{
-				cb.lineTo(this._plotPointsA[l].x , (this._plotPointsA[l].y));
+				cb.lineTo(this._plotPointsA[l].x - xCompensate , (this._plotPointsA[l].y + yCompensate));
 			}
 			cb.stroke();
 			cb.restoreState();
@@ -550,7 +535,7 @@ package collaboRhythm.hiviva.view.components
 			for(var m:uint = 0 ; m < loop ; m++)
 			{
 				cb.setColorFill(new RGBColor(0,0,0));
-				cb.circle(this._plotPointsA[m].x , (this._plotPointsA[m].y),4);
+				cb.circle(this._plotPointsA[m].x - xCompensate , (this._plotPointsA[m].y + yCompensate),4);
 				cb.fillStroke();
 			}
 			cb.restoreState();
@@ -562,10 +547,10 @@ package collaboRhythm.hiviva.view.components
 			//Draw Chart Title
 
 			var bf:BaseFont = BaseFont.createFont( BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED );
-			cb.setFontAndSize(bf, 8);
+			cb.setFontAndSize(bf, 20);
 			cb.saveState();
 			cb.beginText();
-			cb.moveText(this._chartStartX, 842-this._chartStartY);
+			cb.moveText(this._chartStartX + 130, 842 - this._chartStartY - yCompensate + 30);
 			cb.showText("Overall Tolerability");
 			cb.endText();
 			cb.restoreState();
@@ -577,40 +562,41 @@ package collaboRhythm.hiviva.view.components
 			for(var v:uint = 0 ; v <loop4 ; v++)
 			{
 				cb.beginText();
-				cb.showTextAligned( Element.ALIGN_LEFT, _rightAxisDetails[v].text, _rightAxisDetails[v].x, 842-_rightAxisDetails[v].y - 64 + this._chartStartY, 90 );
+				cb.showTextAligned( Element.ALIGN_RIGHT, _rightAxisDetails[v].text, _rightAxisDetails[v].x - xCompensate + 16, 842-_rightAxisDetails[0].y - yCompensate + this._chartStartY + 10 - tolCompensateDiff, 90 );
 				cb.endText();
 			}
 			cb.restoreState();
 
-			//Tolerability Lable
 
-			cb.saveState();
-			cb.beginText();
-			cb.moveText(this._averageLabel.x, 842-this._averageLabel.y - 36);
-			cb.showText(this._averageLabel.text);
-			cb.endText();
-			cb.restoreState();
 
 			//left axis top
 			cb.saveState();
 			cb.beginText();
-			cb.moveText(_leftAxisDetails[0].x, 842-_leftAxisDetails[0].y);
-			cb.showText(_leftAxisDetails[0].text);
+			cb.showTextAligned( Element.ALIGN_RIGHT, _leftAxisDetails[0].text, _leftAxisDetails[0].x + xCompensate , 842-_leftAxisDetails[0].y - yCompensate - 15 , 0);
 			cb.endText();
 			cb.restoreState();
 
 			//left axis bottom
 			cb.saveState();
 			cb.beginText();
-			cb.moveText(_leftAxisDetails[1].x, 842-_leftAxisDetails[1].y);
-			cb.showText(_leftAxisDetails[1].text);
+			cb.showTextAligned( Element.ALIGN_RIGHT, _leftAxisDetails[1].text, _leftAxisDetails[1].x + xCompensate , 842-_leftAxisDetails[1].y - yCompensate - 15 , 0);
 			cb.endText();
 			cb.restoreState();
 
 			//left axis center
+			cb.setFontAndSize(bf, 20);
 			cb.saveState();
 			cb.beginText();
-			cb.showTextAligned( Element.ALIGN_LEFT, _leftAxisDetails[2].text, _leftAxisDetails[2].x, 842-_leftAxisDetails[2].y, 90 );
+			cb.showTextAligned( Element.ALIGN_LEFT, _leftAxisDetails[2].text, _leftAxisDetails[2].x, 842-_leftAxisDetails[2].y + 50 + tolCompensateDiff, 90 );
+			cb.endText();
+			cb.restoreState();
+
+			//Tolerability Lable
+
+			cb.setFontAndSize(bf, 14);
+			cb.saveState();
+			cb.beginText();
+			cb.showTextAligned( Element.ALIGN_LEFT, this._averageLabel.text, _leftAxisDetails[1].x + xCompensate , 842 - _leftAxisDetails[1].y - 200 , 0);
 			cb.endText();
 			cb.restoreState();
 

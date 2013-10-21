@@ -26,6 +26,7 @@ package collaboRhythm.hiviva.view.components
 	import org.purepdf.pdf.PdfDocument;
 	import org.purepdf.pdf.PdfPCell;
 	import org.purepdf.pdf.PdfPTable;
+	import org.purepdf.pdf.fonts.BaseFont;
 
 	import starling.display.BlendMode;
 	import starling.display.Image;
@@ -60,13 +61,13 @@ package collaboRhythm.hiviva.view.components
 		public static const DATA_CD4:String = "Cd4 count";
 		public static const DATA_VIRAL_LOAD:String = "Viral load";
 
-		private var _pdfDocument:PdfDocument;
 		private var _resultsViralLoadA:Array = [];
 		private var _resultsCD4A:Array = [];
 
-		public function TestTableReport(pdfDocument:PdfDocument)
+		private var _resultsDataA:Array = [];
+
+		public function TestTableReport()
 		{
-			this._pdfDocument = pdfDocument;
 			super();
 		}
 
@@ -106,7 +107,6 @@ package collaboRhythm.hiviva.view.components
 			initGreyBg();
 			this.validate();
 
-			generatePDFVersion();
 		}
 
 		private function initGreyBg():void
@@ -431,36 +431,54 @@ package collaboRhythm.hiviva.view.components
 			swapChildren(this._tableHolder,tableBg);
 		}
 
-		private function generatePDFVersion():void
+		public function generatePDFVersion(pdfDocument:PdfDocument):void
 		{
-			trace("PurePDF: " + this._pdfDocument.getInfo());
-			trace("PurePDF: " + this._pdfDocument.pageSize);
+			trace("PurePDF: " + pdfDocument.getInfo());
+			trace("PurePDF: " + pdfDocument.pageSize);
 
-			this._pdfDocument.newPage();
-			this._pdfDocument.setMargins(0,0,0,0);
-			var cb:PdfContentByte = this._pdfDocument.getDirectContent();
+			pdfDocument.newPage();
+			pdfDocument.setMargins(36,36,36,36);
+			var cb:PdfContentByte = pdfDocument.getDirectContent();
 			var pagesize:RectangleElement = PageSize.create(595, 842);
+
+
 
 			var cell: PdfPCell;
 			var table: PdfPTable;
 
+			cb.moveTo(36 , 60);
+			cb.moveText(36,60);
+
+			cb.beginText();
+			cb.moveText(50, 50);
+
 			table = new PdfPTable(3);
-			//cell = PdfPCell.fromPhrase( new Paragraph("header with colspan 3"));
-			//cell.colspan = (3);
-			//table.addCell(cell);
+			table.spacingBefore = 30;
+			cell = PdfPCell.fromPhrase( new Paragraph("Test Results"));
+			cell.fixedHeight = 30;
+			cell.colspan = (3);
+
+			table.addCell(cell);
 			table.addStringCell("Date");
 			table.addStringCell("CD4 Count(Cells/mm3");
 			table.addStringCell("Viral Load(copies/ml)");
 
+			var testLoop:uint = _testData.dates.length;
+			for(var i:uint = 0; i<testLoop ; i++)
+			{
+				table.addStringCell(_testData.dates[i]);
+				table.addStringCell(_testData.cd4s[i]);
+				table.addStringCell(_testData.viralLoads[i]);
+			}
 
 
-			table.addStringCell("1.2");
-			table.addStringCell("2.2");
-			table.addStringCell("3.2");
-			var widths: Vector.<Number> = Vector.<Number>([ 72, 72, 144 ]);
+			var widths: Vector.<Number> = Vector.<Number>([ 150, 150, 150 ]);
 			table.setTotalWidths( widths );
 			table.lockedWidth = true;
-			this._pdfDocument.add(table);
+
+			pdfDocument.add(table);
+
+			cb.endText();
 
 		}
 
