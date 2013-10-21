@@ -274,11 +274,7 @@ package collaboRhythm.hiviva.view.components
 								{
 									percentTaken = columnData[i].data.PercentTaken;
 								}
-
-								if(tolerability < Number(columnData[i].data.Tolerability))
-								{
-									tolerability = Number(columnData[i].data.Tolerability);
-								}
+								tolerability = Number(columnData[i].data.Tolerability);
 							}
 						}
 						else
@@ -294,7 +290,7 @@ package collaboRhythm.hiviva.view.components
 						percentTaken = -1;
 						tolerability = -1;
 					}
-
+//					trace(currWeekDay.toDateString() + " :::::::::::::: FINAL Tolerability :::::::::::::: " + tolerability);
 					// create adherence cell
 					cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
 					this._dataContainer.addChild(cell);
@@ -330,16 +326,32 @@ package collaboRhythm.hiviva.view.components
 		{
 			var rowData:Object = this._rowsData[this._rowsData.length - 1];
 			var cell:Sprite;
+			var tolDataLength:uint = this._dailyTolerabilityData.length;
+//			var highestTolData:Array = [];
+			var dayHighestTolVal:Number;
 
 			for (var dayCount:int = 0; dayCount < 7; dayCount++)
 			{
+				dayHighestTolVal = -1;
+				for (var tolDataCount:int = 0; tolDataCount < tolDataLength; tolDataCount++)
+				{
+					if(this._dailyTolerabilityData[tolDataCount].day == dayCount)
+					{
+						if(dayHighestTolVal < 0)
+						{
+							dayHighestTolVal = this._dailyTolerabilityData[tolDataCount].value;
+						}
+					}
+				}
+
 				cell = createCell(rowData.cellHeight, this._dataColumnsWidth * dayCount, rowData.y);
 				this._dataContainer.addChild(cell);
 
 				var cellLabel:Label = new Label();
 				cellLabel.width = this._dataColumnsWidth;
 				cellLabel.name = HivivaThemeConstants.PATIENT_DATA_LIGHTER_LABEL;
-				cellLabel.text = this._dailyTolerabilityData[dayCount].value > -1 ? String(this._dailyTolerabilityData[dayCount].value) : "-";
+//				cellLabel.text = this._dailyTolerabilityData[dayCount].value > -1 ? String(this._dailyTolerabilityData[dayCount].value) : "-";
+				cellLabel.text = dayHighestTolVal > -1 ? String(dayHighestTolVal) : "-";
 				cell.addChild(cellLabel);
 				cellLabel.validate();
 				cellLabel.y = (cell.height * 0.5) - (cellLabel.height * 0.5);
