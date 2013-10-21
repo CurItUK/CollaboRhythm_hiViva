@@ -103,9 +103,8 @@ package collaboRhythm.hiviva.view.screens.patient
 				enableAutoHomePageMessageCheck();
 				getAllMessagesFromRemoteService();
 				checkForNewBadges();
-				getGalleryTimeStamp();
-				getApprovedConnections();
 				checkMedicationScheduleExist();
+				getApprovedConnections();
 				this._asynchronousCallMade = true;
 			}
 		}
@@ -122,6 +121,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			var medicationData:XML = e.data.xmlResponse;
 			_medicationPopupNeedShowing = medicationData.children().length() == 0;
+			getGalleryTimeStamp();
 		}
 
 		private function showAddMedicationPopup():void

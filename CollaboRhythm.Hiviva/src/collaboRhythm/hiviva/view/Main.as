@@ -385,9 +385,8 @@ package collaboRhythm.hiviva.view
 
 			if(this._settingBounceCount < 3)
 			{
-				Starling.juggler.tween(this._settingsBtn, 0.5, {
+				Starling.juggler.tween(this._settingsBtn, 0.3, {
 					transition : Transitions.EASE_OUT,
-					delay : 2,
 					x : startBounceX,
 					onComplete : doSettingBtnBounce
 				});
@@ -402,7 +401,7 @@ package collaboRhythm.hiviva.view
 		private function doSettingBtnBounce():void
 		{
 			this._settingBounceCount++;
-			Starling.juggler.tween(this._settingsBtn, 1, {
+			Starling.juggler.tween(this._settingsBtn, 0.6, {
 				transition : Transitions.EASE_OUT_BOUNCE,
 				x : 0,
 				onComplete : startSettingBtnBounce
