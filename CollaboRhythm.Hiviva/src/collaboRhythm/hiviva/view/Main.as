@@ -553,7 +553,14 @@ package collaboRhythm.hiviva.view
 
 		private function settingsNavHandler(e:FeathersScreenEvent):void
 		{
-			if(_settingsOpen) settingsBtnHandler();
+			/*if(_settingsOpen)
+			{
+				settingsBtnHandler();
+			}*/
+
+			Starling.juggler.removeTweens(this._screenHolder);
+			this._screenHolder.x = 0;
+			this._settingsOpen = false;
 
 			if(!this._settingsNav.contains(this._screenBackground)) this._settingsNav.addChild(this._screenBackground);
 			this._settingsNav.showScreen(e.message);
