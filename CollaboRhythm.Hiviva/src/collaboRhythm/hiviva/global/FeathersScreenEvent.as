@@ -17,6 +17,7 @@ package collaboRhythm.hiviva.global
 		public static const MEDICATION_DELETE_TRIGGERED:String			= "medicationDeleteTriggered";
 		public static const PRELOADER_ONPOGRESS:String					= "onProgress";
 		public static const PRELOADER_ON_COMPLETE:String	            = "onComplete";
+		public static const SHOW_SETTINGS_ANIMATION:String				= "showSettingsAnimation";
 
 		public static const MESSAGE_READ:String							= "messageRead";
 		public static const MESSAGE_SELECT:String						= "messageSelect";

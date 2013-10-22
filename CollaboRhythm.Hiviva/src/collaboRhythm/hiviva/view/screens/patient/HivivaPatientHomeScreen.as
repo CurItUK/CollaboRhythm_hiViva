@@ -2,6 +2,7 @@ package collaboRhythm.hiviva.view.screens.patient
 {
 
 	import collaboRhythm.hiviva.global.Constants;
+	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
@@ -139,6 +140,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				// remove screen if returning from edit meds screen
 				if (this.owner.hasScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN)) this.owner.removeScreen(HivivaScreens.PATIENT_EDIT_MEDICATION_SCREEN);
 				if (this.owner.hasScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN)) this.owner.removeScreen(HivivaScreens.PATIENT_ADD_MEDICATION_SCREEN);
+				dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_SETTINGS_ANIMATION, true));
 			}
 		}
 
@@ -168,6 +170,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				case "Do later" :
 				case "Close" :
 					PopUpManager.removePopUp(this._userMedSchedPopup);
+					dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_SETTINGS_ANIMATION, true));
 			}
 		}
 

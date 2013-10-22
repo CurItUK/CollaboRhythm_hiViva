@@ -159,6 +159,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			{
 				// remove screen if returning from profile screen
 				if(this.owner.hasScreen(HivivaScreens.HCP_MY_DETAILS_SCREEN)) this.owner.removeScreen(HivivaScreens.HCP_MY_DETAILS_SCREEN);
+				dispatchEvent(new FeathersScreenEvent(FeathersScreenEvent.SHOW_SETTINGS_ANIMATION, true));
 			}
 		}
 
@@ -337,6 +338,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function userSignupScreen(e:Event):void
 		{
+			// forced signup screen no matter what button the user presses
 			this.owner.showScreen(HivivaScreens.HCP_MY_DETAILS_SCREEN);
 			PopUpManager.removePopUp(this._userSignupPopupContent);
 		}
