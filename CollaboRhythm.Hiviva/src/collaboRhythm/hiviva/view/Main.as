@@ -363,7 +363,7 @@ package collaboRhythm.hiviva.view
 			this._settingsBtn.width = (Constants.STAGE_WIDTH * 0.2);
 			this._settingsBtn.scaleY = this._settingsBtn.scaleX;
 
-			// add event listener to dispatch when uer visits homepage and triggers the relevant scenario
+			// event received from homescreens at custom points
 			addEventListener(FeathersScreenEvent.SHOW_SETTINGS_ANIMATION, userNeedsToViewSettingsAnimation);
 
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_LOAD_COMPLETE, getViewedSettingsAnimationHandler);
@@ -374,44 +374,45 @@ package collaboRhythm.hiviva.view
 		{
 			removeEventListener(FeathersScreenEvent.SHOW_SETTINGS_ANIMATION, userNeedsToViewSettingsAnimation);
 			_showSettingAnimation = true;
-			startSettingBtnBounce();
+			startSettingsBtnAnimation();
 		}
 
 		private function getViewedSettingsAnimationHandler(e:LocalDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_LOAD_COMPLETE, getViewedSettingsAnimationHandler);
 			_settingsAnimationIsViewed = String(e.data.settingsAnimationIsViewed);
-			startSettingBtnBounce();
+			startSettingsBtnAnimation();
 		}
 
-		private function startSettingBtnBounce():void
+		private function startSettingsBtnAnimation():void
 		{
-			const startBounceX:Number = (Constants.STAGE_WIDTH * 0.05);
 			if(_showSettingAnimation && _settingsAnimationIsViewed == "false")
 			{
-				if(this._settingBounceCount < 3)
-				{
-					Starling.juggler.tween(this._settingsBtn, 0.3, {
-						transition : Transitions.EASE_OUT,
-						x : startBounceX,
-						onComplete : doSettingBtnBounce
-					});
-				}
-				else
-				{
-					HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_SAVE_COMPLETE, setViewedSettingsAnimationHandler);
-					HivivaStartup.hivivaAppController.hivivaLocalStoreController.setViewedSettingsAnimation();
-				}
+				HivivaStartup.hivivaAppController.hivivaLocalStoreController.addEventListener(LocalDataStoreEvent.VIEWED_SETTINGS_ANIMATION_SAVE_COMPLETE, setViewedSettingsAnimationHandler);
+				HivivaStartup.hivivaAppController.hivivaLocalStoreController.setViewedSettingsAnimation();
+				startSettingsBtnBounce();
 			}
 		}
 
-		private function doSettingBtnBounce():void
+		private function startSettingsBtnBounce():void
+		{
+			if (this._settingBounceCount < 3)
+			{
+				Starling.juggler.tween(this._settingsBtn, 0.3, {
+					transition: Transitions.EASE_OUT,
+					x: Constants.STAGE_WIDTH * 0.05,
+					onComplete: endSettingBtnBounce
+				});
+			}
+		}
+
+		private function endSettingBtnBounce():void
 		{
 			this._settingBounceCount++;
 			Starling.juggler.tween(this._settingsBtn, 0.6, {
 				transition : Transitions.EASE_OUT_BOUNCE,
 				x : 0,
-				onComplete : startSettingBtnBounce
+				onComplete : startSettingsBtnBounce
 			});
 		}
 
