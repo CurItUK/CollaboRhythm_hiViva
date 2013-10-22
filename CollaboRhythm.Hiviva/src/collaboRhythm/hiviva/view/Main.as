@@ -122,7 +122,7 @@ package collaboRhythm.hiviva.view
 		private static var _selectedHCPPatientProfile:XML;
 		private static var _assets:AssetManager;
 		private static var _footerBtnGroupHeight:Number;
-
+		private static var _parentOfPatientMyDetailsScreen:String;
 
 
 		public function Main()
@@ -697,6 +697,16 @@ package collaboRhythm.hiviva.view
 		public function set popupManagerHolder(value:Sprite):void
 		{
 			_popupManagerHolder = value;
+		}
+
+		public static function get parentOfPatientMyDetailsScreen():String
+		{
+			return _parentOfPatientMyDetailsScreen;
+		}
+
+		public static function set parentOfPatientMyDetailsScreen(value:String):void
+		{
+			_parentOfPatientMyDetailsScreen = value;
 		}
 	}
 }

@@ -206,7 +206,7 @@ package collaboRhythm.hiviva.view.screens.shared
 						}
 						else
 						{
-							initStatusResponsePopup("Please create a profile in order to accept the connection request", "Create profile", createProfileCallBack);
+							initStatusResponsePopup("Please create a profile in order to accept the connection request", "Create profile", createPatientProfileCallBack);
 						}
 					}
 					else
@@ -240,17 +240,18 @@ package collaboRhythm.hiviva.view.screens.shared
 			}
 		}
 
-		private function createProfileCallBack(e:Event):void
+		private function createPatientProfileCallBack(e:Event):void
 		{
 			var btn:String = e.data.button;
 			switch(btn)
 			{
 				case "Create profile" :
-					if(owner.hasScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN))
+					/*if(owner.hasScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN))
 					{
 						owner.removeScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
 					}
-					owner.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen, null, {parentScreen:owner.activeScreenID}));
+					owner.addScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN, new ScreenNavigatorItem(HivivaPatientMyDetailsScreen, null, {parentScreen:owner.activeScreenID}));*/
+					Main.parentOfPatientMyDetailsScreen = owner.activeScreenID;
 					owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
 				case "Close" :
 					PopUpManager.removePopUp(_statusResponse);

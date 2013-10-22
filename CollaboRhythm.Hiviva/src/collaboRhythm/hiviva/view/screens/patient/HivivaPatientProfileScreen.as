@@ -194,6 +194,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			switch(btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons")))
 			{
 				case "details" :
+					Main.parentOfPatientMyDetailsScreen = owner.activeScreenID;
 					this.owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
 					break;
 				case "photo" :

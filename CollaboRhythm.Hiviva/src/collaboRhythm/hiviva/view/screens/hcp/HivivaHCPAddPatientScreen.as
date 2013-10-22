@@ -262,7 +262,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
 
-			var msg:String = "An error occurred please try again.";
+			var msg:String;
 			var responseStatus:String = e.data.xmlResponse.StatusCode;
 
 			switch (responseStatus)
@@ -271,8 +271,20 @@ package collaboRhythm.hiviva.view.screens.hcp
 					msg = "A request to connect has been sent.";
 					break;
 
+				case "3" :
+					msg = "No user found with this App ID.";
+					break;
+
+				case "4" :
+					msg = "The input was invalid. Please Check the App ID.";
+					break;
+
 				case "5" :
-					msg = "Pending connection already exists.";
+					msg = "Connection already exists.";
+					break;
+
+				default :
+					msg = "An error occurred please try again.";
 					break;
 			}
 
