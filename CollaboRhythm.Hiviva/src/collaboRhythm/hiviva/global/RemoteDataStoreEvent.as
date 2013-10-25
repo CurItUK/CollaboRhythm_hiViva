@@ -7,6 +7,8 @@ package collaboRhythm.hiviva.global
 
 		//Users
 		public static const SAVE_USER_COMPLETE:String									= "saveUserComplete";
+		public static const SAVE_USER_PICTURE_COMPLETE:String							= "saveUserPictureComplete";
+		public static const GET_USER_PICTURE_COMPLETE:String							= "getUserPictureComplete";
 		public static const CREATE_USER_COMPLETE:String									= "createUserComplete";
 		public static const GET_SERVER_DATE_COMPLETE:String								= "getServerDateComplete";
 

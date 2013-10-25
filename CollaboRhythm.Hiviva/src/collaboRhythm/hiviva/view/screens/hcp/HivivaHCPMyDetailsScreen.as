@@ -1,5 +1,6 @@
 package collaboRhythm.hiviva.view.screens.hcp
 {
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.FeathersScreenEvent;
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
@@ -11,6 +12,8 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
+
+	import flash.text.AutoCapitalize;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -25,8 +28,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
 		private var _isThisFromHome:Boolean;
-
-		private const USER_PROFILE_IMAGE:String = "userprofileimage.jpg";
 
 
 		public function HivivaHCPMyDetailsScreen()
@@ -71,7 +72,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 			this._isThisFromHome = this.owner.hasScreen(HivivaScreens.HCP_HOME_SCREEN);
 
-			this._header.title = "Edit profile";
+			this._header.title = this._isThisFromHome ? "Create Profile" : "Edit profile";
 
 			this._instructionsText = new Label();
 //			this._instructionsText.text = "Profile required in order to connect to a care provider";
@@ -82,11 +83,13 @@ package collaboRhythm.hiviva.view.screens.hcp
 //			this._firstNameInput.scale = this.dpiScale;
 			this._firstNameInput.labelStructure = "left";
 			this._content.addChild(this._firstNameInput);
+			this._firstNameInput._input.textEditorProperties.autoCapitalize = AutoCapitalize.WORD;
 
 			this._lastNameInput = new LabelAndInput();
 //			this._lastNameInput.scale = this.dpiScale;
 			this._lastNameInput.labelStructure = "left";
 			this._content.addChild(this._lastNameInput);
+			this._lastNameInput._input.textEditorProperties.autoCapitalize = AutoCapitalize.WORD;
 
 			this._photoTitle = new Label();
 			this._photoTitle.name = HivivaThemeConstants.SUBHEADER_LABEL;
@@ -96,7 +99,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._photoContainer = new ImageUploader();
 			this._photoContainer.defaultImage = "v2_profile_img";
 //			this._photoContainer.scale = this.dpiScale;
-			this._photoContainer.fileName = USER_PROFILE_IMAGE;
+			this._photoContainer.fileName = Constants.USER_PROFILE_IMAGE;
 			this._content.addChild(this._photoContainer);
 			this._photoContainer.getMainImage();
 

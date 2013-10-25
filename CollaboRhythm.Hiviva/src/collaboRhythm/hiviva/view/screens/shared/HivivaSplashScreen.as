@@ -146,7 +146,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			this._hcpButton = new Button();
 			this._hcpButton.name = HivivaThemeConstants.SPLASH_HCP_BUTTON;
-			this._hcpButton.label = "I’m a healthcare \nprofessional \nor carer";
+			this._hcpButton.label = "I'm a healthcare \nprofessional \nor carer";
 			this._hcpButton.addEventListener(Event.TRIGGERED , hcpButtonHandler);
 
 			this._patientButton = new Button();

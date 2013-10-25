@@ -70,6 +70,12 @@ package collaboRhythm.hiviva.view.screens.shared
 			super.preValidateContent();
 			this._cancelAndSave.width = this._innerWidth;
 			this._passcodeInstruction2.width = this._innerWidth;
+			this._questions.width = this._innerWidth;
+		}
+
+		override protected function postValidateContent():void
+		{
+			super.postValidateContent();
 		}
 
 		private function backBtnHandler(e:Event):void
@@ -206,8 +212,7 @@ package collaboRhythm.hiviva.view.screens.shared
 						{text: "What was the name of your elementary / primary school?" },
 						{text: "What is the name of the company of your first job?" },
 						{text: "What is your preferred musical genre?" },
-						{text: "What is your mother's middle name?" },
-						{text: "What is the name of the company of your first job?" }
+						{text: "What is your mother's middle name?" }
 					]
 			);
 
@@ -218,9 +223,9 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._questions.selectedIndex = -1;
 			this._questions.addEventListener(Event.CHANGE , questionsListSelectedHandler);
 			this._content.addChild(this._questions);
-			this._questions.width = this._innerWidth;
-			this._questions.validate();
-			this._questions.y = this._questionsTitle.y + this._questionsTitle.height + 30;
+//			this._questions.width = this._innerWidth;
+//			this._questions.validate();
+//			this._questions.y = this._questionsTitle.y + this._questionsTitle.height + 30;
 		}
 
 		private function questionsListSelectedHandler(event:Event):void

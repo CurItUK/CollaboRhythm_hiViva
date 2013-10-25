@@ -119,7 +119,8 @@ package source.themes
 	import starling.textures.TextureSmoothing;
 	import starling.utils.Color;
 
-	public class HivivaTheme extends DisplayListWatcher
+	public class
+	HivivaTheme extends DisplayListWatcher
 
 	{
 

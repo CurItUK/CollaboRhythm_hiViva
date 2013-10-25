@@ -636,6 +636,9 @@ package collaboRhythm.hiviva.view
 			this._screenHolder.dispose();
 			this._screenHolder = null;
 
+			ImageUploader.removeUploadedImageFile(Constants.USER_PROFILE_IMAGE);
+			ImageUploader.removeUploadedImageFile(Constants.CUSTOM_HOME_IMAGE);
+
 			HivivaStartup.patientAdherenceVO.percentage = 0;
 			HivivaStartup.connectionsVO.users = [];
 			HivivaStartup.reportVO.settingsData = null;

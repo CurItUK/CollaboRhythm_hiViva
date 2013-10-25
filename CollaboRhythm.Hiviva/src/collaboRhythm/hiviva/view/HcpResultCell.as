@@ -172,6 +172,7 @@ package collaboRhythm.hiviva.view
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.CONNECTION_DELETE_COMPLETE , deleteConnectionCompleteHandler);
 			trace("Connection with id:" + hcpData.guid + " deleted.");
 			this.removeFromParent(true);
+			// add dispatch event and handle delete in parent
 
 //			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
 //			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getApprovedConnectionsWithSummary();

@@ -23,6 +23,11 @@ package collaboRhythm.hiviva.global
 		public static const APP_TYPE_PATIENT:String							= "Patient";
 		public static const APP_TYPE_HCP:String 							= "HCP";
 
+		//local images
+
+		public static const USER_PROFILE_IMAGE:String 						= "userprofileimage.jpg";
+		public static const CUSTOM_HOME_IMAGE:String 						= "homepageimage.jpg";
+
 		//Notifications
 		public static const HOMEPAGE_MESSAGE_CHECK_TIME:Number 				= 20000;   //20 seconds
 		public static const GLOBAL_CHECK_DATETIME:Number 					= 600000;  //10 minutes

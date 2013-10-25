@@ -109,7 +109,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 
 			_connectToPatientBtn = new BoxedButtons();
-			_connectToPatientBtn.labels = ["Connect to patient"];
+			_connectToPatientBtn.labels = [" Connect to patient "];
 			_connectToPatientBtn.addEventListener(Event.TRIGGERED, connectToPatientBtnHandler);
 			this.addChild(_connectToPatientBtn);
 

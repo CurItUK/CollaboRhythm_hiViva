@@ -244,30 +244,26 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var patientsList:Array = HivivaStartup.connectionsVO.users;
 			var loop:uint = patientsList.length;
 			var list:Array = [];
+			var patientObj:Object;
 			if(loop > 0)
 			{
 				for (var listCount:int = 0; listCount < loop; listCount++)
 				{
-					var name:String = patientsList[listCount].name + " (" + patientsList[listCount].appid + ")";
-					var appid:String = patientsList[listCount].appid;
-					var guid:String = patientsList[listCount].guid;
-
-					var patientObj:Object = {
-						name:name,
-						appid:appid,
-						guid:guid
+					patientObj = {
+						label:patientsList[listCount].name + " (" + patientsList[listCount].appid + ")",
+						name:patientsList[listCount].name,
+						appid:patientsList[listCount].appid,
+						guid:patientsList[listCount].guid
 					};
 					list.push(patientObj);
 				}
 
-				var patients:ListCollection = new ListCollection( list );
-
-				this._patientPickerList.dataProvider = patients;
+				this._patientPickerList.dataProvider = new ListCollection(list);
 				this._patientPickerList.prompt = "Select patient";
 				this._patientPickerList.isEnabled = true;
 				this._patientPickerList.selectedIndex = -1;
-				this._patientPickerList.listProperties.@itemRendererProperties.labelField = "name";
-				this._patientPickerList.labelField = "name";
+				this._patientPickerList.listProperties.@itemRendererProperties.labelField = "label";
+				this._patientPickerList.labelField = "label";
 			}
 			else
 			{
@@ -319,9 +315,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 
 		private function previewSendHandler(e:Event):void
 		{
-			//TODO move PDF creating into UTILS class
-			//TODO move fileStream - report PDF file creation to local service class
-
 			var formValidation:String = patientReportsCheck();
 			if(formValidation.length == 0)
 			{
@@ -337,7 +330,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 					endDate:this._finishDateInput._input.text,
 					patientGuid:selectedPatient.guid,
 					patientAppId:selectedPatient.appid,
-					patientFullName:selectedPatient.fullName,
+					patientFullName:selectedPatient.name,
 					emailAddress:this._emailInput.text
 				};
 				if(this.owner.hasScreen(HivivaScreens.REPORT_PREVIEW))

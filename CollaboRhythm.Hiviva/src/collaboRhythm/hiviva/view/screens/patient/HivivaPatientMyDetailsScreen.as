@@ -1,6 +1,6 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
-	import collaboRhythm.hiviva.global.HivivaScreens;
+	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
@@ -8,8 +8,18 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
+	import com.adobe.images.JPGEncoder;
+
 	import feathers.controls.Button;
 	import feathers.controls.Label;
+
+	import flash.text.AutoCapitalize;
+
+	import flash.utils.ByteArray;
+
+	import mx.utils.Base64Decoder;
+
+	import mx.utils.Base64Encoder;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -23,13 +33,13 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _photoContainer:ImageUploader;
 		private var _cancelAndSave:BoxedButtons;
 		private var _backButton:Button;
-
-		private const USER_PROFILE_IMAGE:String = "userprofileimage.jpg";
+		private var _serviceCount:uint = 0;
+		private var _serviceLength:uint = 2;
+		private var _validationMessages:Array = [];
 
 
 		public function HivivaPatientMyDetailsScreen()
 		{
-
 		}
 
 		override protected function draw():void
@@ -78,11 +88,13 @@ package collaboRhythm.hiviva.view.screens.patient
 //			this._firstNameInput.scale = this.dpiScale;
 			this._firstNameInput.labelStructure = "left";
 			this._content.addChild(this._firstNameInput);
+			this._firstNameInput._input.textEditorProperties.autoCapitalize = AutoCapitalize.WORD;
 
 			this._lastNameInput = new LabelAndInput();
 //			this._lastNameInput.scale = this.dpiScale;
 			this._lastNameInput.labelStructure = "left";
 			this._content.addChild(this._lastNameInput);
+			this._lastNameInput._input.textEditorProperties.autoCapitalize = AutoCapitalize.WORD;
 
 			this._photoTitle = new Label();
 			this._photoTitle.name = HivivaThemeConstants.SUBHEADER_LABEL;
@@ -92,7 +104,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._photoContainer = new ImageUploader();
 			this._photoContainer.defaultImage = "v2_profile_img";
 //			this._photoContainer.scale = this.dpiScale;
-			this._photoContainer.fileName = USER_PROFILE_IMAGE;
+			this._photoContainer.fileName = Constants.USER_PROFILE_IMAGE;
 			this._content.addChild(this._photoContainer);
 			this._photoContainer.getMainImage();
 
@@ -155,13 +167,33 @@ package collaboRhythm.hiviva.view.screens.patient
 			var guid:String = HivivaStartup.userVO.guid;
 			var firstName:String = this._firstNameInput._input.text;
 			var lastName:String = this._lastNameInput._input.text;
-
 			var user:XML =
 					<DCHealthUser>
 						<UserGuid>{guid}</UserGuid>
 						<FirstName>{firstName}</FirstName>
 						<LastName>{lastName}</LastName>
 					</DCHealthUser>;
+
+			var pictureByteArray:ByteArray = this._photoContainer.savableImageBytes;
+
+			var base64Encoder:Base64Encoder = new Base64Encoder();
+			base64Encoder.encodeBytes(pictureByteArray);
+
+			var pictureByteString:String = base64Encoder.toString();
+
+			var pictureData:XML;
+
+			if(pictureByteArray.length > 0)
+			{
+				pictureData =
+						<DCPictureFile>
+							<PictureName>{guid + ".jpg"}</PictureName>
+							<PictureStream>Boo!!!</PictureStream>
+						</DCPictureFile>;
+
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.SAVE_USER_PICTURE_COMPLETE, saveUserPictureCompleteHandler);
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.saveUserPicture(pictureData);
+			}
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.SAVE_USER_COMPLETE, saveUserCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.saveUser(user);
@@ -176,6 +208,13 @@ package collaboRhythm.hiviva.view.screens.patient
 			showFormValidation("User profile saved");
 		}
 
+		private function saveUserPictureCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.SAVE_USER_PICTURE_COMPLETE, saveUserCompleteHandler);
+// currently empty string
+			trace(e.data.xmlResponse);
+		}
+
 		private function saveUserFullnameHandler(e:LocalDataStoreEvent):void
 		{
 			HivivaStartup.hivivaAppController.hivivaLocalStoreController.removeEventListener(LocalDataStoreEvent.APP_FULLNAME_SAVE_COMPLETE, saveUserFullnameHandler);
@@ -188,6 +227,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatient(HivivaStartup.userVO.appId);
 
 			this._photoContainer.getMainImage();
+
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserPicture();
+		}
+
+		private function getUserPictureCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
+// currently empty string
+			trace(e.data.xmlResponse);
 		}
 
 		private function getPatientCompleteHandler(e:RemoteDataStoreEvent):void
@@ -197,6 +246,16 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._firstNameInput._input.text = e.data.xmlResponse.FirstName;
 			this._lastNameInput._input.text = e.data.xmlResponse.LastName;
 		}
+
+		/*override public function showFormValidation(valStr:String):void
+		{
+			_validationMessages.push(valStr);
+			_serviceCount++;
+			if(this._serviceCount == this._serviceLength)
+			{
+				super.showFormValidation(_validationMessages.join(",\n"));
+			}
+		}*/
 
 		public override function dispose():void
 		{

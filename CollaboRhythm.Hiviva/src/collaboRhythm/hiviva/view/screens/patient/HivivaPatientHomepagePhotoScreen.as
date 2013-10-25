@@ -33,7 +33,6 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _customImageWasDeleted:Boolean = false;
 
 		private const GALLERY_CATEGORIES:Array = ["sport","music","cinema","history","travel","art"];
-		private const CUSTOM_HOME_IMAGE:String = "homepageimage.jpg";
 
 		public function HivivaPatientHomepagePhotoScreen()
 		{
@@ -107,7 +106,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._photoContainer.defaultImage = "v2_profile_img";
 			this._photoContainer.addEventListener("uploadedImageChanged", imageChangedHandler);
 //			this._photoContainer.scale = this.dpiScale;
-			this._photoContainer.fileName = CUSTOM_HOME_IMAGE;
+			this._photoContainer.fileName = Constants.CUSTOM_HOME_IMAGE;
 			this._content.addChild(this._photoContainer);
 			this._photoContainer.getMainImage();
 
@@ -211,11 +210,11 @@ package collaboRhythm.hiviva.view.screens.patient
 			{
 				if(Math.random() < 0.5)
 				{
-					allImageData.push(CUSTOM_HOME_IMAGE);
+					allImageData.push(Constants.CUSTOM_HOME_IMAGE);
 				}
 				else
 				{
-					allImageData.unshift(CUSTOM_HOME_IMAGE);
+					allImageData.unshift(Constants.CUSTOM_HOME_IMAGE);
 				}
 			}
 			// basic randomisation

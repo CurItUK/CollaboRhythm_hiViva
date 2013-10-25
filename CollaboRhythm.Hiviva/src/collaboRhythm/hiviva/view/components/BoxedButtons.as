@@ -74,7 +74,7 @@ package collaboRhythm.hiviva.view.components
 				btn.label = _labels[i];
 				this._btnHolder.addChild(btn);
 				btn.validate();
-				btn.width = btn.width < minButtonWidth ? minButtonWidth : btn.width;
+				btn.width = btn.width <= minButtonWidth ? minButtonWidth : btn.width;
 			}
 
 			this._btnHolder.height = btn.height * 1.8;

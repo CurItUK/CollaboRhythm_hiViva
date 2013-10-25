@@ -48,6 +48,34 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
+		public function saveUserPicture(pictureData:XML):void
+		{
+			service.addEventListener(RemoteDataStoreEvent.SAVE_USER_PICTURE_COMPLETE , saveUserPictureCompleteHandler);
+			service.saveUserPicture(pictureData);
+		}
+
+		private function saveUserPictureCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.SAVE_USER_PICTURE_COMPLETE , saveUserPictureCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.SAVE_USER_PICTURE_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
+		public function getUserPicture():void
+		{
+			service.addEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE , getUserPictureCompleteHandler);
+			service.getUserPicture();
+		}
+
+		private function getUserPictureCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			service.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE , getUserPictureCompleteHandler);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE);
+			evt.data = e.data;
+			this.dispatchEvent(evt);
+		}
+
 		public function addUserMedication(medicationName:String , medicationSchedule:String):void
 		{
 			service.addEventListener(RemoteDataStoreEvent.ADD_MEDICATION_COMPLETE , addMedicationCompleteHandler);

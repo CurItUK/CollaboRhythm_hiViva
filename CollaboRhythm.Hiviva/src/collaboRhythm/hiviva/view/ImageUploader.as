@@ -53,6 +53,7 @@ package collaboRhythm.hiviva.view
 		private var _outStream:FileStream;
 		private var _deleteTarget:File;
 		private var _radiansOffset:Number;
+		private var _savableImageBytes:ByteArray = new ByteArray();
 
 		private const IMAGE_SIZE:Number = 150;
 		private const PADDING:Number = 32;
@@ -162,6 +163,15 @@ package collaboRhythm.hiviva.view
 			return main.exists;
 		}
 
+		public static function removeUploadedImageFile(file_name:String):void
+		{
+			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + file_name);
+			if(temp.exists) temp.deleteFile();
+
+			var main:File = File.applicationStorageDirectory.resolvePath(file_name);
+			if(main.exists) main.deleteFile();
+		}
+
 		private function uploadButtonHandler(e:starling.events.Event):void
 		{
 			if (CameraRoll.supportsBrowseForImage)
@@ -208,7 +218,7 @@ package collaboRhythm.hiviva.view
 
 		private function readMediaData():void
 		{
-		    var loadedImageBytes:ByteArray = new ByteArray();
+			var loadedImageBytes:ByteArray = new ByteArray();
 			this._dataSource.readBytes( loadedImageBytes );
 
 			setCorrectedRotationFromExifInfo(loadedImageBytes);
@@ -278,9 +288,10 @@ package collaboRhythm.hiviva.view
 		private function imageLoadedFromBytes(e:flash.events.Event):void
 		{
 			trace("Image loaded from bytes.");
-			var suitableBm:Bitmap = getSuitableBitmap(e.target.content as Bitmap);
-			var savableImageBytes:ByteArray = suitableBm.bitmapData.encode(new Rectangle(0,0,suitableBm.width,suitableBm.height), new JPEGEncoderOptions(100));
-			writeByteArrayToFile(savableImageBytes);
+			var suitableBm:Bitmap = fixRawBitmap(e.target.content as Bitmap);
+			_savableImageBytes.clear();
+			_savableImageBytes = suitableBm.bitmapData.encode(new Rectangle(0,0,suitableBm.width,suitableBm.height), new JPEGEncoderOptions(100));
+			writeByteArrayToFile(_savableImageBytes);
 			createPreviewFromBitmap(suitableBm);
 		}
 
@@ -288,11 +299,9 @@ package collaboRhythm.hiviva.view
 		{
 			this._imageHolder = new Image(Texture.fromBitmap(suitableBm));
 			HivivaModifier.clipImage(this._imageHolder);
-			this._imageHolder.width = this._imageHolder.height = IMAGE_SIZE * this._scale;
-//			constrainToProportion(this._imageHolder, IMAGE_SIZE * this._scale);
+			this._imageHolder.height = this._imageHolder.width = IMAGE_SIZE;
 			this._imageHolder.x = this._defaultImageHolder.x;
 			this._imageHolder.y = this._defaultImageHolder.y;
-//			this._imageHolder.rotation = _radiansOffset;
 			if (!contains(this._imageHolder)) addChild(this._imageHolder);
 		}
 
@@ -301,17 +310,25 @@ package collaboRhythm.hiviva.view
 			trace("Image load failed.");
 		}
 
-		private function getSuitableBitmap(sourceBm:Bitmap):Bitmap
+		private function fixRawBitmap(sourceBm:Bitmap):Bitmap
 		{
 			var bm:Bitmap;
 			var bmd:BitmapData;
 			var m:Matrix = new Matrix();
 
 			// if source bitmap is larger than starling size limit of 2048x2048 than resize
-			if (sourceBm.width >= 2048 || sourceBm.height >= 2048)
+			if (sourceBm.width >= IMAGE_SIZE || sourceBm.height >= IMAGE_SIZE)
 			{
-				// TODO: may need to remove size adjustment from bm! only adjust the data (needs formula)
-				constrainToProportion(sourceBm, 2040);
+				if (sourceBm.height >= sourceBm.width)
+				{
+					sourceBm.height = IMAGE_SIZE;
+					sourceBm.scaleX = sourceBm.scaleY;
+				}
+				else
+				{
+					sourceBm.width = IMAGE_SIZE;
+					sourceBm.scaleY = sourceBm.scaleX;
+				}
 				m.scale(sourceBm.scaleX, sourceBm.scaleY);
 			}
 			m.rotate(_radiansOffset);
@@ -339,20 +356,6 @@ package collaboRhythm.hiviva.view
 			bmd.draw(sourceBm, m, null, BlendMode.NORMAL, null, true);
 			bm = new Bitmap(bmd, 'auto', true);
 			return bm;
-		}
-
-		private function constrainToProportion(img:Object, size:Number):void
-		{
-			if (img.height >= img.width)
-			{
-				img.height = size;
-				img.scaleX = img.scaleY;
-			}
-			else
-			{
-				img.width = size;
-				img.scaleY = img.scaleX;
-			}
 		}
 
 		private function writeByteArrayToFile(imageBytes:ByteArray):void
@@ -401,6 +404,16 @@ package collaboRhythm.hiviva.view
 		public function set defaultImage(value:String):void
 		{
 			_defaultImage = value;
+		}
+
+		public function get savableImageBytes():ByteArray
+		{
+			return _savableImageBytes;
+		}
+
+		public function set savableImageBytes(value:ByteArray):void
+		{
+			_savableImageBytes = value;
 		}
 	}
 }

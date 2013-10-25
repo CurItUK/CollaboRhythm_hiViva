@@ -65,6 +65,45 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt)
 		}
 
+		public function saveUserPicture(pictureData:XML):void
+		{
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_SAVE_USER_PICTURE);
+			urlRequest.data = pictureData.toXMLString();
+			urlRequest.contentType = "text/xml";
+			urlRequest.method = URLRequestMethod.POST;
+
+			trace("saveUserPicture " + urlRequest.url);
+			urlLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, saveUserPictureCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function saveUserPictureCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.SAVE_USER_PICTURE_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
+		public function getUserPicture():void
+		{
+			var query:String = "userAppId=" + HivivaStartup.userVO.appId;
+			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_USER_PICTURE + query);
+			trace("getUserPicture " + urlRequest.url);
+			urlLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, getUserPictureCompleteHandler);
+			urlLoader.load(urlRequest);
+		}
+
+		private function getUserPictureCompleteHandler(e:Event):void
+		{
+			var xmlResponse:XML = new XML(e.target.data);
+			var evt:RemoteDataStoreEvent = new RemoteDataStoreEvent(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE);
+			evt.data.xmlResponse = xmlResponse;
+			this.dispatchEvent(evt)
+		}
+
 		public function addUserMedication(medicationName:String , medicationSchedule:String):void
 		{
 			var query:String = "userGuid=" + HivivaStartup.userVO.guid + "&medicationInformation=medicationname:" + medicationName + "," + "schedule:" + medicationSchedule;

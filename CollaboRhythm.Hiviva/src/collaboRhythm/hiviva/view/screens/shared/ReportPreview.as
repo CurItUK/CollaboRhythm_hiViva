@@ -311,9 +311,13 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function initBodyLabel():void
 		{
+			var patientNameExists:Boolean = this._patientFullName != null && this._patientFullName.length > 0;
+			var patientId:String = (patientNameExists ? this._patientFullName : "patient") + " (" + this._patientAppId + ")";
+			var dateRange:String = HivivaModifier.getCalendarStringFromDate(this._startDate) + " - " + HivivaModifier.getCalendarStringFromDate(this._endDate);
+
 			if(_noMedicationHistory && _noTestResults)
 			{
-				_bodyLabel.text = "No Data found for this patient within the selected date range";
+				_bodyLabel.text = "No Data found for " + patientId + " between the time period: " + dateRange;
 			}
 			else
 			{
@@ -321,8 +325,8 @@ package collaboRhythm.hiviva.view.screens.shared
 								 	"To: " + this._emailAddress + "\n\n" +
 								 	"Date: " + HivivaModifier.getCalendarStringFromDate(HivivaStartup.userVO.serverDate) + "\n\n" +
 									"Subject: Patient Report\n\n" +
-									"Please find below details of " + (HivivaStartup.userVO.fullName.length > 0 ? this._patientFullName : "patient") + " (" + this._patientAppId + ") record of their HIV tracking via the INCHarge application.\n\n" +
-									"This covers the time period between: " + HivivaModifier.getCalendarStringFromDate(this._startDate) + " - " + HivivaModifier.getCalendarStringFromDate(this._endDate);
+									"Please find below details of " + patientId + " record of their HIV tracking via the INCHarge application.\n\n" +
+									"This covers the time period between: " + dateRange;
 			}
 
 			_bodyLabel.x = Constants.PADDING_LEFT;
