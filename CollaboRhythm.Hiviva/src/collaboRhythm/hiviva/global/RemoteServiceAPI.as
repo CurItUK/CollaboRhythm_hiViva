@@ -7,7 +7,7 @@ package collaboRhythm.hiviva.global
 		public static const RS_SAVE_USER:String = 									"WSHealthUser.svc/SaveUser?";
 		public static const RS_GET_SERVER_DATE:String = 							"WSHealthUser.svc/CurrentDateTime";
 		public static const RS_GET_USER_PICTURE:String = 							"WSHealthUser.svc/RetrieveUserPicture?";
-		public static const RS_SAVE_USER_PICTURE:String = 							"WSHealthUser.svc/SaveUserPicture?";
+		public static const RS_SAVE_USER_PICTURE:String = 							"WSHealthUser.svc/SaveUserPicture";
 
 		//Medications
 		public static const RS_ADD_MEDICATION:String = 								"WSUserMedication.svc/AddUserMedication?";

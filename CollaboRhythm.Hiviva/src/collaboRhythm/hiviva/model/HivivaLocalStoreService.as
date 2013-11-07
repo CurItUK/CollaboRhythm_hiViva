@@ -262,12 +262,14 @@ package collaboRhythm.hiviva.model
 								<guid>{appGuid}</guid>
 								<tolerability>{tolerability}</tolerability>
 								<adherence>{adherence}</adherence>
-								<picture>dummy.png</picture>
+								<picture>media/hcps/dummy.png</picture>
 							</patient>
 					);
 					this._connectionsVO.users.push(data);
 				}
 			}
+
+
 
 			trace('connectionsVO.users updated');
 		}

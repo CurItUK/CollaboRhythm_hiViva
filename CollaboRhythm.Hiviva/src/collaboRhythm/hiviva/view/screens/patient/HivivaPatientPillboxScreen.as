@@ -31,7 +31,8 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _pmTableYloc:Number;
 		private var _pillboxYCellSpacing:Number;
 		private var _medicationResponse:XML;
-		private var _tablets:Vector.<Sprite>
+		private var _tablets:Vector.<Sprite>;
+		private var _remoteCallMade:Boolean = false;
 
 		public function HivivaPatientPillboxScreen()
 		{
@@ -58,7 +59,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._amTableYloc = this._pillBox.y + this._pillboxYCellSpacing + 20;
 			this._pmTableYloc = this._pillBox.y + this._pillboxYCellSpacing + 20;
-			initPillboxMedication();
+			if(!_remoteCallMade) initPillboxMedication();
 		}
 
 		override protected function initialize():void
@@ -74,6 +75,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_PATIENT_MEDICATION_COMPLETE, getPatientMedicationListComplete);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getPatientMedicationList();
+
+			_remoteCallMade = true;
 		}
 
 		private function getPatientMedicationListComplete(e:RemoteDataStoreEvent):void
@@ -123,27 +126,34 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			trace("buildTabletAMCells " + _amMedication.length);
 			var daysLoop:uint = 7;
-
+			var tablet:Image;
+			var tabletCount:SuperscriptCircle;
+			var virtualWidth:Number;
+			var tabletCountXOnTablet:Number;
 			for(var j:uint=0  ; j <daysLoop ; j++)
 			{
 				var loop:uint = _amMedication.length;
 				for (var i:uint = 0; i < loop; i++)
 				{
-					var tablet:Image = new Image(Main.assets.getTexture("tablet" + _amMedication[i].medicationId));
-					var tabletCount:SuperscriptCircle = new SuperscriptCircle();
-					tabletCount.text = _amMedication[i].scheduleData.Count;
-
+					tablet = new Image(Main.assets.getTexture("tablet" + _amMedication[i].medicationId));
 					this.addChild(tablet);
-					this.addChild(tabletCount);
-					tablet.x = this._amTableXloc + (i * tablet.width) + 10;
-					tablet.y = this._amTableYloc + this._pillboxYCellSpacing * j;
-					tabletCount.x = tablet.x + tablet.width/3;
-					tabletCount.y = tablet.y - tablet.height/2;
+					tabletCountXOnTablet = tablet.width / 3;
 
+					tabletCount = new SuperscriptCircle();
+					tabletCount.text = _amMedication[i].scheduleData.Count;
+					this.addChild(tabletCount);
+					tabletCount.validate();
+
+					virtualWidth = tabletCountXOnTablet + tabletCount.width - 15;
+					tablet.x = this._amTableXloc + (i * virtualWidth) + 10;
+					tablet.y = this._amTableYloc + this._pillboxYCellSpacing * j;
+					tabletCount.x = tablet.x + tabletCountXOnTablet;
+					tabletCount.y = tablet.y - tablet.height/2;
+/*
 					var tickCell:Sprite = new Sprite();
 					var takenTick:Image = new Image(Main.assets.getTexture("v2_pill_icon_tick"));
 
-					/*
+
 					tickCell.addChild(takenTick);
 					takenTick.y = -takenTick.width/2;
 					takenTick.x = -takenTick.height/2;
@@ -162,21 +172,28 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			trace("buildTabletAMCells " + _pmMedication.length);
 			var daysLoop:uint = 7;
-
+			var tablet:Image;
+			var tabletCount:SuperscriptCircle;
+			var virtualWidth:Number;
+			var tabletCountXOnTablet:Number;
 			for(var j:uint=0  ; j <daysLoop ; j++)
 			{
 				var loop:uint = _pmMedication.length;
 				for (var i:uint = 0; i < loop; i++)
 				{
-					var tablet:Image = new Image(Main.assets.getTexture("tablet" + _pmMedication[i].medicationId));
-					var tabletCount:SuperscriptCircle = new SuperscriptCircle();
-					tabletCount.text = _pmMedication[i].scheduleData.Count;
-
+					tablet = new Image(Main.assets.getTexture("tablet" + _pmMedication[i].medicationId));
 					this.addChild(tablet);
+					tabletCountXOnTablet = tablet.width / 3;
+
+					tabletCount = new SuperscriptCircle();
+					tabletCount.text = _pmMedication[i].scheduleData.Count;
 					this.addChild(tabletCount);
-					tablet.x = this._pmTableXloc + (i * tablet.width) + 10;
+					tabletCount.validate();
+
+					virtualWidth = tabletCountXOnTablet + tabletCount.width - 15;
+					tablet.x = this._pmTableXloc + (i * virtualWidth) + 10;
 					tablet.y = this._pmTableYloc + this._pillboxYCellSpacing * j;
-					tabletCount.x = tablet.x + tablet.width/3;
+					tabletCount.x = tablet.x + tabletCountXOnTablet;
 					tabletCount.y = tablet.y - tablet.height/2;
 				}
 			}

@@ -156,7 +156,7 @@ package collaboRhythm.hiviva.view.screens
 			var imageLoader:Loader = new Loader();
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
-			imageLoader.load(new URLRequest(url));
+			imageLoader.load(new URLRequest(patientData.picture));
 		}
 
 		private function imageLoaded(e:flash.events.Event):void

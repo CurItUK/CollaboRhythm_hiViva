@@ -8,33 +8,24 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.model.vo.PatientAdherenceVO;
 	import collaboRhythm.hiviva.model.vo.ReportVO;
 	import collaboRhythm.hiviva.model.vo.UserVO;
-	import collaboRhythm.hiviva.view.media.Assets;
 
 	import flash.desktop.NativeApplication;
-
-	import flash.display.Sprite;
 	import flash.display.Bitmap;
+	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
-
 	import flash.system.Capabilities;
-	import flash.text.engine.RenderingMode;
-
 
 	import starling.core.Starling;
 	import starling.events.Event;
+	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
 
-	import starling.textures.Texture;
-
-
-
-	[SWF(backgroundColor="0x000000" , frameRate="60")]
-
+	[SWF(backgroundColor="0x000000" , frameRate="60" , height="960" , width="640")]
 	public class HivivaStartup extends Sprite
 	{
 		[Embed(source="/assets/images/temp/splash_bg.jpg")]
@@ -61,8 +52,6 @@ package collaboRhythm.hiviva.view
 
 			_background =  new _Background();
 			_background.smoothing = true;
-			_background.width = stage.fullScreenWidth;
-			_background.height = stage.fullScreenHeight;
 			addChild(_background);
 
 			_hivivaStartup = this;
@@ -85,25 +74,29 @@ package collaboRhythm.hiviva.view
 
 		private function initStarling():void
 		{
+			_background.width = Constants.IS_DESKTOP ? stage.stageWidth : stage.fullScreenWidth;
+			_background.height = Constants.IS_DESKTOP ? stage.stageHeight : stage.fullScreenHeight;
 
 			var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
 			Starling.multitouchEnabled = true;
 			Starling.handleLostContext = !iOS;
 
-			var stageWidth:int   = Constants.STAGE_WIDTH;
-			var stageHeight:int  = Constants.STAGE_HEIGHT;
+			var origStageWidth:int   = Constants.STAGE_WIDTH;
+			var origStageHeight:int  = Constants.STAGE_HEIGHT;
 
 			var viewPort:Rectangle = RectangleUtil.fit(
-					new Rectangle(0, 0, stageWidth, stageHeight),
+					new Rectangle(0, 0, origStageWidth, origStageHeight),
 					new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight),
 					ScaleMode.SHOW_ALL);
 
+//			Constants.STAGE_WIDTH = viewPort.width;
+//			Constants.STAGE_HEIGHT = viewPort.height;
+
 			_starFW = new Starling(Main, stage , viewPort);
-			_starFW.stage.stageWidth  = stageWidth;
-			_starFW.stage.stageHeight = stageHeight;
+			_starFW.stage.stageWidth  = origStageWidth;
+			_starFW.stage.stageHeight = origStageHeight;
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 			_starFW.start();
-
 		}
 
 		private function starlingRootCreatedHandler(e:starling.events.Event):void
@@ -111,7 +104,7 @@ package collaboRhythm.hiviva.view
 			trace("driverInfo " + _starFW.context.driverInfo);
 			_starFW.removeEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 
-			this._assets = new AssetManager();
+			this._assets = new AssetManager(1);
 
 			var bgTexture:Texture = Texture.fromBitmap(_background,  false, false, 1);
 			var main:Main = Starling.current.root as Main;

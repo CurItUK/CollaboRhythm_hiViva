@@ -318,7 +318,7 @@ package collaboRhythm.hiviva.view.components
 			for (var i:int = 0; i < _scheduleHistoryData.length(); i++)
 			{
 				adherenceData = {};
-				adherenceData.patient = HivivaModifier.getNameWithGuid(_scheduleHistoryData[i].HealthUserGuid);
+				adherenceData.patient = HivivaModifier.getUserXmlWithGuid(_scheduleHistoryData[i].HealthUserGuid).name;
 				adherenceData.adherence = [];
 
 				medicationSchedule = _scheduleHistoryData[i]..DCMedicationSchedule;

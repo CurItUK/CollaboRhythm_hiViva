@@ -241,7 +241,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			this._reportAndMessage.x = scaledPadding;
 			this._reportAndMessage.y = this._patientImageBg.y + this._patientImageBg.height + gap;
 
-			doImageLoad("media/patients/" + _patientProfileData.picture);
+			doImageLoad(Main.selectedHCPPatientProfile.picture);
 		}
 
 		private function initTableAndNav():void

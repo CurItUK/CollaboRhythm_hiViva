@@ -81,9 +81,7 @@ package collaboRhythm.hiviva.view.screens.patient
 						break;
 				}
 
-				img.width = item.width;
-				img.height = item.height;
-				button.addChild(img);
+				button.defaultIcon = img;
 			};
 
 			this.addChild(this._sideBtnGroup);

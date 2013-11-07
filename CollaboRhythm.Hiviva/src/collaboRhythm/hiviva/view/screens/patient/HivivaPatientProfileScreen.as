@@ -246,6 +246,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			switch(btn)
 			{
 				case "Sign up" :
+					Main.parentOfPatientMyDetailsScreen = owner.activeScreenID;
 					this.owner.showScreen(HivivaScreens.PATIENT_MY_DETAILS_SCREEN);
 				case "Close" :
 					PopUpManager.removePopUp(this._userSignupPopupContent);

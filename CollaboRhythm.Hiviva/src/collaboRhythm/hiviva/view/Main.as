@@ -263,10 +263,8 @@ package collaboRhythm.hiviva.view
 
 		private function initfeathersTheme():void
 		{
-			//var isDesktop:Boolean = true;
-			var isDesktop:Boolean = false;
-			var _hivivaTheme:HivivaTheme = new HivivaTheme(this.stage, false);
-			this._scaleFactor = isDesktop ? 1 : _hivivaTheme.scale;
+			var _hivivaTheme:HivivaTheme = new HivivaTheme(this.stage, !Constants.IS_DESKTOP);
+			this._scaleFactor = Constants.IS_DESKTOP ? 1 : _hivivaTheme.scale;
 			_footerBtnGroupHeight = Constants.FOOTER_BTNGROUP_HEIGHT * this._scaleFactor;
 		}
 
@@ -346,6 +344,7 @@ package collaboRhythm.hiviva.view
 		}
 
 		protected function drawScreenBackground():void
+
 		{
 			this._screenBackground = new MainBackground();
 			this._screenBackground.draw();
@@ -360,8 +359,8 @@ package collaboRhythm.hiviva.view
 			this._settingsBtn.defaultIcon = new Image(_assets.getTexture("v2_top_nav_icon_01"));
 			this._settingsBtn.addEventListener(Event.TRIGGERED , settingsBtnHandler);
 			this._screenHolder.addChild(this._settingsBtn);
-			this._settingsBtn.width = (Constants.STAGE_WIDTH * 0.2);
-			this._settingsBtn.scaleY = this._settingsBtn.scaleX;
+//			this._settingsBtn.width = (Constants.STAGE_WIDTH * 0.2);
+//			this._settingsBtn.scaleY = this._settingsBtn.scaleX;
 
 			// event received from homescreens at custom points
 			addEventListener(FeathersScreenEvent.SHOW_SETTINGS_ANIMATION, userNeedsToViewSettingsAnimation);

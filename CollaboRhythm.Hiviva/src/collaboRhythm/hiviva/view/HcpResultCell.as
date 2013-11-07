@@ -3,6 +3,7 @@ package collaboRhythm.hiviva.view
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -14,6 +15,7 @@ package collaboRhythm.hiviva.view
 	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.IOErrorEvent;
+	import flash.filesystem.File;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
@@ -25,7 +27,7 @@ package collaboRhythm.hiviva.view
 
 	public class HcpResultCell extends FeathersControl
 	{
-		private var _scale:Number;
+		private var _scale:Number = 1;
 		public function set scale(value:Number):void
 		{
 			this._scale = value;
@@ -63,6 +65,7 @@ package collaboRhythm.hiviva.view
 		private var _hcpName:Label;
 		private var _hcpEmail:Label;
 		private var _hcpDelete:Button;
+		private var _remoteCallMade:Boolean = false;
 		//public var _hcpSelect:Radio;
 
 		private const IMAGE_SIZE:Number = 80;
@@ -77,11 +80,11 @@ package collaboRhythm.hiviva.view
 		{
 			var scaledPadding:Number = PADDING * this._scale,
 				gap:Number = scaledPadding * 0.5;
-				fullHeight:Number;
 
 			super.draw();
 
-			doImageLoad("media/hcps/" + hcpData.picture);
+			if(!_remoteCallMade) doImageLoad();
+
 			this._hcpName.validate();
 			this._hcpEmail.validate();
 			//this._hcpSelect.padding = 0;
@@ -183,13 +186,37 @@ package collaboRhythm.hiviva.view
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
 		}*/
 
-		private function doImageLoad(url:String):void
+		private function doImageLoad():void
 		{
 			var imageLoader:Loader = new Loader();
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
 			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
-			imageLoader.load(new URLRequest(url));
+			imageLoader.load(new URLRequest(hcpData.picture));
+
+			/*HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserPicture(hcpData.guid);
+			_remoteCallMade = true;*/
 		}
+
+		/*private function getUserPictureCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
+
+			var pictureStream:String;
+			var getUserDataXml:XML = e.data.xmlResponse as XML;
+			if(getUserDataXml.children().length() > 0)
+			{
+				pictureStream = getUserDataXml.PictureStream;
+				if(pictureStream.length > 0)
+				{
+					hcpData.picture = HivivaModifier.getProfilePictureUrlFromXml(getUserDataXml);
+				}
+			}
+			var imageLoader:Loader = new Loader();
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, imageLoaded);
+			imageLoader.contentLoaderInfo.addEventListener(flash.events.IOErrorEvent.IO_ERROR, imageLoadFailed);
+			imageLoader.load(new URLRequest(hcpData.picture));
+		}*/
 
 		private function imageLoaded(e:flash.events.Event):void
 		{
@@ -248,6 +275,8 @@ package collaboRhythm.hiviva.view
 
 		override public function dispose():void
 		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.CONNECTION_DELETE_COMPLETE , deleteConnectionCompleteHandler);
+//			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
 			this._hcpImageBg.dispose();
 			this._photoHolder.dispose();
 			removeChildren(0,-1,true);

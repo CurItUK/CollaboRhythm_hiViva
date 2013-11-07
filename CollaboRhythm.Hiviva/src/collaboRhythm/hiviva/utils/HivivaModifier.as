@@ -3,10 +3,16 @@ package collaboRhythm.hiviva.utils
 	import collaboRhythm.hiviva.view.HivivaStartup;
 
 	import flash.display.BitmapData;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+
+	import mx.utils.Base64Decoder;
 
 	import starling.core.RenderSupport;
 
@@ -22,6 +28,69 @@ package collaboRhythm.hiviva.utils
 
 		public function HivivaModifier()
 		{
+		}
+
+		public static function getProfilePictureUrlFromXml(getUserDataXml:XML):String
+		{
+			var pictureUrl:String;
+			var pictureFile:File;
+			var pictureModDate:Date;
+			var today:Date = HivivaStartup.userVO.serverDate;
+			today.setHours(0,0,0);
+			if (getUserDataXml.children().length() > 0)
+			{
+				// if the user has a profile photo
+				if (String(getUserDataXml.PictureStream).length > 0)
+				{
+					pictureFile = File.applicationStorageDirectory.resolvePath(getUserDataXml.PictureName);
+					if (pictureFile.exists)
+					{
+						pictureModDate = pictureFile.modificationDate;
+						pictureModDate.setHours(0, 0, 0);
+
+						// if the picture was retrieved before today re-retrieve it from server else use the local version
+						if (pictureModDate.getTime() <= today.getTime())
+						{
+							HivivaModifier.saveUserPictureToAppStorage(getUserDataXml.PictureName,
+									getUserDataXml.PictureStream);
+						}
+					}
+					else
+					{
+						HivivaModifier.saveUserPictureToAppStorage(getUserDataXml.PictureName,
+								getUserDataXml.PictureStream);
+					}
+					pictureUrl = pictureFile.url;
+				}
+				else
+				{
+					pictureUrl = "media/hcps/dummy.png";
+				}
+			}
+			else
+			{
+				pictureUrl = "media/hcps/dummy.png";
+			}
+			return pictureUrl;
+		}
+
+		public static function saveUserPictureToAppStorage(pictureName:String,pictureStream:String):void
+		{
+			var base64Deccoder:Base64Decoder = new Base64Decoder();
+			base64Deccoder.decode(pictureStream);
+
+			var getUserPictureBytes:ByteArray = base64Deccoder.toByteArray();
+
+			var getUserPictureFile:File = File.applicationStorageDirectory.resolvePath(pictureName);
+
+			var outStream:FileStream = new FileStream();
+			// open output file stream in WRITE mode
+			outStream.open(getUserPictureFile, FileMode.WRITE);
+			// write out the file
+			trace('this._outStream.writeBytes()');
+			outStream.writeBytes(getUserPictureBytes, 0, getUserPictureBytes.length);
+			// close it
+			outStream.close();
 		}
 
 		public static function copyStageAsBitmapData(scl:Number=1.0):BitmapData
@@ -61,21 +130,21 @@ package collaboRhythm.hiviva.utils
 			return appId;
 		}
 
-		public static function getNameWithGuid(guid:String):String
+		public static function getUserXmlWithGuid(guid:String):XML
 		{
-			var name:String;
+			var user:XML;
 			var patientData:Array = HivivaStartup.connectionsVO.users;
 
 			for (var i:int = 0; i < patientData.length; i++)
 			{
 				if(patientData[i].guid == guid)
 				{
-					name = patientData[i].name;
+					user = patientData[i];
 					break;
 				}
 			}
 
-			return name;
+			return user;
 		}
 
 		public static function establishToFromId(idsToCompare:XML):Object
@@ -631,7 +700,7 @@ package collaboRhythm.hiviva.utils
 			return history;
 		}
 
-		public static function getFinalStartAndEndDatesFromXmlList(medicationsXml:XMLList):Object
+		public static function getFinalStartAndEndDatesFromXmlList(medicationsXml:XMLList, ifEndTodayCallBack:Function = null):Object
 		{
 			var serverDate:Date = HivivaStartup.userVO.serverDate;
 			var startAndEndDates:Object = {};
@@ -644,18 +713,12 @@ package collaboRhythm.hiviva.utils
 			var today:Date = new Date(serverDate.getFullYear(),serverDate.getMonth(),serverDate.getDate(),0,0,0,0);
 			var currStartDate:Date;
 			var currEndDate:Date;
+			var endDateIsToday:Boolean = false;
 			for (var j:int = 0; j < medicationsXml.length(); j++)
 			{
 				currStartDate = HivivaModifier.getDateFromIsoString(medicationsXml[j].StartDate, false);
-				currEndDate = (String(medicationsXml[j].Stopped)) ==
-						"true" ? HivivaModifier.getDateFromIsoString(medicationsXml[j].EndDate, false) : today;
-
 				currStartDate.setHours(0,0,0,0);
-				currEndDate.setHours(0,0,0,0);
-
 				if(prevStartDate == null) prevStartDate = new Date(currStartDate.getTime());
-				if(prevEndDate == null) prevEndDate = new Date(currEndDate.getTime());
-
 				if (prevStartDate.getTime() < currStartDate.getTime())
 				{
 					startAndEndDates.earliestSchedule = prevStartDate.getTime();
@@ -664,27 +727,41 @@ package collaboRhythm.hiviva.utils
 				{
 					startAndEndDates.earliestSchedule = currStartDate.getTime();
 				}
+				prevStartDate = new Date(currStartDate.getFullYear(), currStartDate.getMonth(), currStartDate.getDate(),0,0,0,0);
 
-				if (prevEndDate.getTime() > currEndDate.getTime())
+				// if any medication is NOT stopped kill endate check and set it to today
+				if(String(medicationsXml[j].Stopped) == "false" && !endDateIsToday)
 				{
-					startAndEndDates.latestSchedule = prevEndDate.getTime();
+					endDateIsToday = true;
+				}
+				if(!endDateIsToday)
+				{
+					currEndDate = HivivaModifier.getDateFromIsoString(medicationsXml[j].EndDate, false);
+					currEndDate.setHours(0,0,0,0);
+					if(prevEndDate == null) prevEndDate = new Date(currEndDate.getTime());
+					if (prevEndDate.getTime() > currEndDate.getTime())
+					{
+						startAndEndDates.latestSchedule = prevEndDate.getTime();
+					}
+					else
+					{
+						startAndEndDates.latestSchedule = currEndDate.getTime();
+					}
+					prevEndDate = new Date(currEndDate.getFullYear(), currEndDate.getMonth(), currEndDate.getDate(),0,0,0,0);
 				}
 				else
 				{
-					startAndEndDates.latestSchedule = currEndDate.getTime();
+					startAndEndDates.latestSchedule = today.getTime();
 				}
 
-				prevStartDate = new Date(currStartDate.getFullYear(), currStartDate.getMonth(), currStartDate.getDate(),0,0,0,0);
-				prevEndDate = new Date(currEndDate.getFullYear(), currEndDate.getMonth(), currEndDate.getDate(),0,0,0,0);
+				// debug
+				/*var earliestSchedule:Date = new Date();
+				earliestSchedule.setTime(startAndEndDates.earliestSchedule);
+				var latestSchedule:Date = new Date();
+				latestSchedule.setTime(startAndEndDates.latestSchedule);
+				trace('ultimate start date = ' + earliestSchedule.toDateString());
+				trace('ultimate end date = ' + latestSchedule.toDateString());*/
 			}
-
-			// debug
-			/*var earliestSchedule:Date = new Date();
-			earliestSchedule.setTime(startAndEndDates.earliestSchedule);
-			var latestSchedule:Date = new Date();
-			latestSchedule.setTime(startAndEndDates.latestSchedule);
-			trace('ultimate start date = ' + earliestSchedule.toDateString());
-			trace('ultimate end date = ' + latestSchedule.toDateString());*/
 
 			return startAndEndDates;
 		}

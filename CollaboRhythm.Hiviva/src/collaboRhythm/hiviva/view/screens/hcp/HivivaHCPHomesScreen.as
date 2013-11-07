@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.NotificationsEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.HivivaHeader;
 	import collaboRhythm.hiviva.view.HivivaPopUp;
 	import collaboRhythm.hiviva.view.HivivaStartup;
@@ -46,6 +47,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		private var _pendingConnectionLoaded:Boolean = false;
 		private var _alertsLoaded:Boolean = false;
 		private var _userSignupPopupContent:HivivaPopUp;
+		private var _userPictureCount:int;
 
 		public function HivivaHCPHomesScreen()
 		{
@@ -185,7 +187,48 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
 
-			drawApprovedConnectionsWithSummary();
+			if(HivivaStartup.connectionsVO.users.length > 0)
+			{
+				_userPictureCount = 0;
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
+				getUserPicture();
+			}
+		}
+
+		private function getUserPicture():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserPicture(HivivaStartup.connectionsVO.users[_userPictureCount].guid);
+		}
+
+		private function getUserPictureCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			var user:XML;
+			var pictureName:String;
+			var userGuid:String;
+			var pictureStream:String;
+			var getUserDataXml:XML = e.data.xmlResponse as XML;
+			if(getUserDataXml.children().length() > 0)
+			{
+				pictureStream = getUserDataXml.PictureStream;
+				if(pictureStream.length > 0)
+				{
+					pictureName = getUserDataXml.PictureName;
+					userGuid = pictureName.substring(0,pictureName.indexOf(".jpg"));
+					user = HivivaModifier.getUserXmlWithGuid(userGuid);
+					user.picture = HivivaModifier.getProfilePictureUrlFromXml(getUserDataXml);
+				}
+			}
+
+			_userPictureCount++;
+			if(_userPictureCount < HivivaStartup.connectionsVO.users.length)
+			{
+				getUserPicture();
+			}
+			else
+			{
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
+				drawApprovedConnectionsWithSummary();
+			}
 		}
 
 		private function enableAutoHomePageMessageCheck():void
@@ -349,6 +392,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_WITH_SUMMARY_COMPLETE, getApprovedConnectionsWithSummaryHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_HCP_ALERTS_COMPLETE, getHCPAlertsHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_PENDING_CONNECTIONS_COMPLETE, getPendingConnectionsHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
 			if(this._userSignupPopupContent != null) this._userSignupPopupContent.removeEventListener(Event.TRIGGERED, userSignupScreen);
 			super.dispose();
 		}

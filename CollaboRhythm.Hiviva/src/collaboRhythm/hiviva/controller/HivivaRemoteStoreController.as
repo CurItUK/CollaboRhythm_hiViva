@@ -62,10 +62,10 @@ package collaboRhythm.hiviva.controller
 			this.dispatchEvent(evt);
 		}
 
-		public function getUserPicture():void
+		public function getUserPicture(userGuid:String):void
 		{
 			service.addEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE , getUserPictureCompleteHandler);
-			service.getUserPicture();
+			service.getUserPicture(userGuid);
 		}
 
 		private function getUserPictureCompleteHandler(e:RemoteDataStoreEvent):void

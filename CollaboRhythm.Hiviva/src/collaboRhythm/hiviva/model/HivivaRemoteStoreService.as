@@ -86,9 +86,9 @@ package collaboRhythm.hiviva.model
 			this.dispatchEvent(evt)
 		}
 
-		public function getUserPicture():void
+		public function getUserPicture(userGuid:String):void
 		{
-			var query:String = "userAppId=" + HivivaStartup.userVO.appId;
+			var query:String = "userGuid=" + userGuid;
 			var urlRequest:URLRequest = new URLRequest(RS_BASE_URL + RemoteServiceAPI.RS_GET_USER_PICTURE + query);
 			trace("getUserPicture " + urlRequest.url);
 			urlLoader = new URLLoader();

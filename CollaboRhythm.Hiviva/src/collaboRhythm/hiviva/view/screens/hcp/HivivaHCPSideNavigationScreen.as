@@ -74,9 +74,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 						break;
 				}
 
-				img.width = item.width;
-				img.height = item.height;
-				button.addChild(img);
+				button.defaultIcon = img;
 			};
 
 			this.addChild(this._sideBtnGroup);

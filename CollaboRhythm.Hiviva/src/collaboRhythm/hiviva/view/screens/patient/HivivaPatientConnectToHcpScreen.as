@@ -27,6 +27,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _hcpCellRadioGroup:ToggleGroup;
 		private var _hcpFilteredList:Array = [];
 		private var _hcpConnected:Boolean;
+		private var _userPictureCount:int;
 
 		private const PADDING:Number = 20;
 
@@ -99,12 +100,12 @@ package collaboRhythm.hiviva.view.screens.patient
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedHCPCompleteHandler);
 
 			var xml:XML = e.data.xmlResponse;
+			var loop:uint = xml.children().length();
 
-			if(xml.children().length() > 0)
+			if(loop > 0)
 			{
 				clearDownPatientList();
 				HivivaStartup.connectionsVO.users = [];
-				var loop:uint = xml.children().length();
 				var approvedHCPList:XMLList  = xml.DCConnection;
 				for(var i:uint = 0 ; i <loop ; i++)
 				{
@@ -121,17 +122,57 @@ package collaboRhythm.hiviva.view.screens.patient
 								<email>{appId}</email>
 								<appid>{appId}</appid>
 								<guid>{appGuid}</guid>
-								<picture>dummy.png</picture>
+								<picture>media/hcps/dummy.png</picture>
 								<establishedConnection>{userEstablishedConnection}</establishedConnection>
 							</patient>
 					);
 					HivivaStartup.connectionsVO.users.push(data);
 				}
-				initResults();
+//				initResults();
 			}
 			else
 			{
 				trace("No Approved Connections");
+			}
+
+			_userPictureCount = 0;
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
+			getUserPicture();
+		}
+
+		private function getUserPicture():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserPicture(HivivaStartup.connectionsVO.users[_userPictureCount].guid);
+		}
+
+		private function getUserPictureCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			var user:XML;
+			var pictureName:String;
+			var userGuid:String;
+			var pictureStream:String;
+			var getUserDataXml:XML = e.data.xmlResponse as XML;
+			if(getUserDataXml.children().length() > 0)
+			{
+				pictureStream = getUserDataXml.PictureStream;
+				if(pictureStream.length > 0)
+				{
+					pictureName = getUserDataXml.PictureName;
+					userGuid = pictureName.substring(0,pictureName.indexOf(".jpg"));
+					user = HivivaModifier.getUserXmlWithGuid(userGuid);
+					user.picture = HivivaModifier.getProfilePictureUrlFromXml(getUserDataXml);
+				}
+			}
+
+			_userPictureCount++;
+			if(_userPictureCount < HivivaStartup.connectionsVO.users.length)
+			{
+				getUserPicture();
+			}
+			else
+			{
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
+				initResults();
 			}
 		}
 
@@ -149,7 +190,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				hcpCell = new HcpResultCell();
 				hcpCell.hcpData = currItem;
 				hcpCell.isResult = false;
-				hcpCell.scale = this.dpiScale;
+//				hcpCell.scale = this.dpiScale;
 				this._hcpCellContainer.addChild(hcpCell);
 				//this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
 			}
@@ -202,6 +243,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		override public function dispose():void
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_APPROVED_CONNECTIONS_COMPLETE , getApprovedHCPCompleteHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
 			super.dispose();
 		}
 	}

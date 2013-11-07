@@ -59,10 +59,10 @@ package collaboRhythm.hiviva.view.screens.shared
 			_btnGroup.customLastButtonName = HivivaThemeConstants.SPLASH_FOOTER_BUTTON;
 			_btnGroup.dataProvider = new ListCollection(
 				[
-					{ label: "http://www.aids.gov/hiv-aids-basics", triggered: launchLink},
-					{ label: "http://www.thebody.com", triggered: launchLink},
-					{ label: "http://www.cdc.gov/hiv/", triggered: launchLink},
-					{ label: "http://m.aidsinfo.nih.gov/", triggered: launchLink}
+					{ label: "http://www.aids.gov/hiv-aids-basics   ", triggered: launchLink},
+					{ label: "http://www.thebody.com   ", triggered: launchLink},
+					{ label: "http://www.cdc.gov/hiv/   ", triggered: launchLink},
+					{ label: "http://m.aidsinfo.nih.gov/   ", triggered: launchLink}
 				]
 			);
 			addChild(_btnGroup);

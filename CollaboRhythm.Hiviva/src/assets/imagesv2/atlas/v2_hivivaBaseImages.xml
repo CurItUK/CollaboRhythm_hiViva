@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:6d66be9f4da06009bc2781ece196ea71:1/1$ -->
+<!-- $TexturePacker:SmartUpdate:005830682987530fde908cf066ca1823:1/1$ -->
 <TextureAtlas imagePath="v2_hivivaBaseImages.png">
-    <SubTexture name="v2_back-button" x="1449" y="3" width="107" height="70"/>
+    <SubTexture name="v2_back-button" x="1769" y="3" width="107" height="70"/>
     <SubTexture name="v2_button_list_arrows" x="28" y="3" width="10" height="21"/>
     <SubTexture name="v2_calendar-button" x="1075" y="3" width="54" height="54"/>
     <SubTexture name="v2_calendar_arrow" x="241" y="3" width="26" height="43"/>
-    <SubTexture name="v2_calendar_day_bg" x="10" y="3" width="5" height="48"/>
-    <SubTexture name="v2_clock_face" x="582" y="432" width="606" height="659"/>
-    <SubTexture name="v2_clock_icon" x="108" y="3" width="22" height="23"/>
-    <SubTexture name="v2_clock_segment" x="365" y="296" width="215" height="56"/>
+    <SubTexture name="v2_calendar_day_bg" x="19" y="3" width="5" height="48"/>
+    <SubTexture name="v2_clock_face" x="3" y="574" width="606" height="659"/>
+    <SubTexture name="v2_clock_icon" x="134" y="3" width="22" height="23"/>
+    <SubTexture name="v2_clock_segment" x="1712" y="98" width="215" height="56"/>
     <SubTexture name="v2_close_button" x="1133" y="3" width="60" height="60"/>
-    <SubTexture name="v2_delete_icon" x="335" y="3" width="29" height="36"/>
+    <SubTexture name="v2_delete_icon" x="368" y="3" width="29" height="36"/>
     <SubTexture name="v2_edit_icon" x="401" y="3" width="32" height="32"/>
-    <SubTexture name="v2_feeling_slider_cloud" x="134" y="3" width="22" height="16"/>
+    <SubTexture name="v2_feeling_slider_cloud" x="108" y="3" width="22" height="16"/>
     <SubTexture name="v2_feeling_slider_sun" x="160" y="3" width="22" height="23"/>
-    <SubTexture name="v2_feeling_slider_track" x="584" y="296" width="486" height="92"/>
-    <SubTexture name="v2_fixed_base" x="1113" y="142" width="150" height="150"/>
+    <SubTexture name="v2_feeling_slider_track" x="3" y="252" width="486" height="92"/>
+    <SubTexture name="v2_fixed_base" x="1377" y="98" width="150" height="150"/>
     <SubTexture name="v2_footer_icon_1" x="792" y="3" width="52" height="48"/>
     <SubTexture name="v2_footer_icon_2" x="686" y="3" width="48" height="50"/>
-    <SubTexture name="v2_footer_icon_3" x="904" y="3" width="53" height="48"/>
+    <SubTexture name="v2_footer_icon_3" x="961" y="3" width="53" height="48"/>
     <SubTexture name="v2_footer_icon_4" x="738" y="3" width="50" height="51"/>
     <SubTexture name="v2_footer_icon_5" x="1018" y="3" width="53" height="43"/>
     <SubTexture name="v2_footer_icon_6" x="848" y="3" width="52" height="47"/>
-    <SubTexture name="v2_footer_icon_7" x="961" y="3" width="53" height="41"/>
-    <SubTexture name="v2_footer_icon_active" x="1688" y="3" width="128" height="135"/>
-    <SubTexture name="v2_footer_icon_base" x="1820" y="3" width="128" height="135"/>
-    <SubTexture name="v2_homePageMask" x="647" y="1095" width="640" height="725"/>
-    <SubTexture name="v2_home_lens_bg" x="1192" y="432" width="637" height="634"/>
-    <SubTexture name="v2_home_password_panel" x="3" y="1095" width="640" height="391"/>
+    <SubTexture name="v2_footer_icon_7" x="904" y="3" width="53" height="41"/>
+    <SubTexture name="v2_footer_icon_active" x="3" y="98" width="128" height="135"/>
+    <SubTexture name="v2_footer_icon_base" x="135" y="98" width="128" height="135"/>
+    <SubTexture name="v2_homePageMask" x="647" y="1237" width="640" height="725"/>
+    <SubTexture name="v2_home_lens_bg" x="613" y="574" width="637" height="634"/>
+    <SubTexture name="v2_home_password_panel" x="3" y="1237" width="640" height="391"/>
     <SubTexture name="v2_icon_adduser" x="84" y="3" width="20" height="19"/>
-    <SubTexture name="v2_icon_art" x="517" y="3" width="36" height="31"/>
+    <SubTexture name="v2_icon_art" x="437" y="3" width="36" height="31"/>
     <SubTexture name="v2_icon_cinema" x="640" y="3" width="42" height="36"/>
     <SubTexture name="v2_icon_history" x="598" y="3" width="38" height="35"/>
-    <SubTexture name="v2_icon_lessthan" x="368" y="3" width="29" height="39"/>
+    <SubTexture name="v2_icon_lessthan" x="335" y="3" width="29" height="39"/>
     <SubTexture name="v2_icon_music" x="271" y="3" width="27" height="36"/>
     <SubTexture name="v2_icon_sports" x="557" y="3" width="37" height="40"/>
     <SubTexture name="v2_icon_travel" x="477" y="3" width="36" height="37"/>
     <SubTexture name="v2_icon_upload" x="42" y="3" width="16" height="22"/>
-    <SubTexture name="v2_logo" x="3" y="432" width="575" height="318"/>
-    <SubTexture name="v2_menulist" x="1074" y="296" width="561" height="99"/>
-    <SubTexture name="v2_message_icon_compose" x="137" y="142" width="130" height="110"/>
-    <SubTexture name="v2_message_icon_sent" x="3" y="142" width="130" height="110"/>
-    <SubTexture name="v2_pill_icon_tick" x="437" y="3" width="36" height="38"/>
-    <SubTexture name="v2_pillbox" x="1291" y="1095" width="640" height="654"/>
+    <SubTexture name="v2_logo" x="1058" y="252" width="575" height="318"/>
+    <SubTexture name="v2_menulist" x="493" y="252" width="561" height="99"/>
+    <SubTexture name="v2_message_icon_compose" x="669" y="98" width="130" height="110"/>
+    <SubTexture name="v2_message_icon_sent" x="803" y="98" width="130" height="110"/>
+    <SubTexture name="v2_pill_icon_tick" x="517" y="3" width="36" height="38"/>
+    <SubTexture name="v2_pillbox" x="1254" y="574" width="640" height="654"/>
     <SubTexture name="v2_pillbox_icon" x="186" y="3" width="23" height="22"/>
     <SubTexture name="v2_popup_help" x="302" y="3" width="29" height="29"/>
-    <SubTexture name="v2_profile_img" x="673" y="142" width="140" height="140"/>
-    <SubTexture name="v2_side_nav_base" x="1629" y="142" width="177" height="131"/>
-    <SubTexture name="v2_side_nav_icon_01" x="1810" y="142" width="177" height="132"/>
-    <SubTexture name="v2_side_nav_icon_02" x="3" y="296" width="177" height="132"/>
-    <SubTexture name="v2_side_nav_icon_03" x="184" y="296" width="177" height="132"/>
-    <SubTexture name="v2_side_nav_icon_04" x="1448" y="142" width="177" height="132"/>
-    <SubTexture name="v2_side_nav_icon_05" x="1267" y="142" width="177" height="132"/>
-    <SubTexture name="v2_toggle_switch" x="1265" y="3" width="70" height="70"/>
-    <SubTexture name="v2_toggle_track" x="1560" y="3" width="124" height="71"/>
-    <SubTexture name="v2_top_bar" x="19" y="3" width="5" height="91"/>
-    <SubTexture name="v2_top_nav_icon_01" x="271" y="142" width="130" height="110"/>
-    <SubTexture name="v2_top_nav_icon_02" x="539" y="142" width="130" height="110"/>
-    <SubTexture name="v2_top_nav_icon_03" x="405" y="142" width="130" height="110"/>
+    <SubTexture name="v2_profile_img" x="937" y="98" width="140" height="140"/>
+    <SubTexture name="v2_side_nav_base" x="1531" y="98" width="177" height="131"/>
+    <SubTexture name="v2_side_nav_icon_01" x="1453" y="3" width="60" height="60"/>
+    <SubTexture name="v2_side_nav_icon_02" x="1389" y="3" width="60" height="60"/>
+    <SubTexture name="v2_side_nav_icon_03" x="1325" y="3" width="60" height="60"/>
+    <SubTexture name="v2_side_nav_icon_04" x="1261" y="3" width="60" height="60"/>
+    <SubTexture name="v2_side_nav_icon_05" x="1197" y="3" width="60" height="60"/>
+    <SubTexture name="v2_toggle_switch" x="1585" y="3" width="70" height="70"/>
+    <SubTexture name="v2_toggle_track" x="1880" y="3" width="124" height="71"/>
+    <SubTexture name="v2_top_bar" x="10" y="3" width="5" height="91"/>
+    <SubTexture name="v2_top_nav_icon_01" x="267" y="98" width="130" height="110"/>
+    <SubTexture name="v2_top_nav_icon_02" x="535" y="98" width="130" height="110"/>
+    <SubTexture name="v2_top_nav_icon_03" x="401" y="98" width="130" height="110"/>
     <SubTexture name="v2_verticle_line" x="3" y="3" width="3" height="10"/>
-    <SubTexture name="v2_virus_settings_button" x="1339" y="3" width="106" height="69"/>
-    <SubTexture name="v2_vs_brand_ring" x="965" y="142" width="144" height="144"/>
-    <SubTexture name="v2_vs_cd4" x="817" y="142" width="144" height="144"/>
+    <SubTexture name="v2_virus_settings_button" x="1659" y="3" width="106" height="69"/>
+    <SubTexture name="v2_vs_brand_ring" x="1229" y="98" width="144" height="144"/>
+    <SubTexture name="v2_vs_cd4" x="1081" y="98" width="144" height="144"/>
     <SubTexture name="v2_vs_minimize_icon" x="62" y="3" width="18" height="21"/>
     <SubTexture name="v2_vs_reset_icon" x="213" y="3" width="24" height="21"/>
-    <SubTexture name="v2_vs_virus" x="1197" y="3" width="64" height="64"/>
+    <SubTexture name="v2_vs_virus" x="1517" y="3" width="64" height="64"/>
 </TextureAtlas>

@@ -53,7 +53,7 @@ package collaboRhythm.hiviva.view
 		private var _outStream:FileStream;
 		private var _deleteTarget:File;
 		private var _radiansOffset:Number;
-		private var _savableImageBytes:ByteArray = new ByteArray();
+		private var _savableImageBytes:ByteArray;
 
 		private const IMAGE_SIZE:Number = 150;
 		private const PADDING:Number = 32;
@@ -81,6 +81,7 @@ package collaboRhythm.hiviva.view
 			this._trashButton.y = (this._bg.height / 2) - (this._trashButton.height / 2);
 
 			this._uploadButton.validate();
+			this._uploadButton.width += this._uploadButton.defaultIcon.width;
 			this._uploadButton.x =  this._trashButton.x - scaledPadding - this._uploadButton.width;
 			this._uploadButton.y = (this._bg.height / 2) - (this._uploadButton.height / 2);
 
@@ -106,7 +107,7 @@ package collaboRhythm.hiviva.view
 //			this._uploadButton.defaultIcon = new Image(Main.assets.getTexture("icon_upload"));
 			this._uploadButton.defaultIcon = new Image(Main.assets.getTexture("v2_icon_upload"));
 			this._uploadButton.iconPosition = Button.ICON_POSITION_LEFT;
-			this._uploadButton.label = "UPLOAD PHOTO   ";
+			this._uploadButton.label = "UPLOAD PHOTO";
 			this._uploadButton.addEventListener(starling.events.Event.TRIGGERED, uploadButtonHandler);
 			addChild(this._uploadButton);
 
@@ -134,6 +135,12 @@ package collaboRhythm.hiviva.view
 				this._imageHolder.texture.dispose();
 				this._imageHolder.dispose();
 				this._imageHolder = null;
+			}
+
+			if(this._savableImageBytes != null)
+			{
+				this._savableImageBytes.clear();
+				this._savableImageBytes = null;
 			}
 
 			this._trashButton.visible = false;
@@ -289,9 +296,13 @@ package collaboRhythm.hiviva.view
 		{
 			trace("Image loaded from bytes.");
 			var suitableBm:Bitmap = fixRawBitmap(e.target.content as Bitmap);
-			_savableImageBytes.clear();
+			if(_savableImageBytes != null)
+			{
+				_savableImageBytes.clear();
+				_savableImageBytes = null;
+			}
 			_savableImageBytes = suitableBm.bitmapData.encode(new Rectangle(0,0,suitableBm.width,suitableBm.height), new JPEGEncoderOptions(100));
-			writeByteArrayToFile(_savableImageBytes);
+			writeSavableBytesToFile();
 			createPreviewFromBitmap(suitableBm);
 		}
 
@@ -316,10 +327,10 @@ package collaboRhythm.hiviva.view
 			var bmd:BitmapData;
 			var m:Matrix = new Matrix();
 
-			// if source bitmap is larger than starling size limit of 2048x2048 than resize
+			// if source bitmap is larger than IMAGE_SIZE than resize so smaller side is equal to IMAGE_SIZE
 			if (sourceBm.width >= IMAGE_SIZE || sourceBm.height >= IMAGE_SIZE)
 			{
-				if (sourceBm.height >= sourceBm.width)
+				if (sourceBm.height <= sourceBm.width)
 				{
 					sourceBm.height = IMAGE_SIZE;
 					sourceBm.scaleX = sourceBm.scaleY;
@@ -358,16 +369,15 @@ package collaboRhythm.hiviva.view
 			return bm;
 		}
 
-		private function writeByteArrayToFile(imageBytes:ByteArray):void
+		private function writeSavableBytesToFile():void
 		{
-			trace('writeByteArrayToFile');
 			var temp:File = File.applicationStorageDirectory.resolvePath("temp" + this._fileName);
 			this._outStream = new FileStream();
 			// open output file stream in WRITE mode
 			this._outStream.open(temp, FileMode.WRITE);
 			// write out the file
 			trace('this._outStream.writeBytes()');
-			this._outStream.writeBytes(imageBytes, 0, imageBytes.length);
+			this._outStream.writeBytes(_savableImageBytes, 0, _savableImageBytes.length);
 			// close it
 			trace('this._outStream.close()');
 			this._outStream.close();

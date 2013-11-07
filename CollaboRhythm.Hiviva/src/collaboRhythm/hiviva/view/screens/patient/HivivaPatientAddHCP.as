@@ -4,6 +4,7 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.HivivaScreens;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
+	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.view.*;
 
 	import feathers.controls.Button;
@@ -48,7 +49,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _requestPopup:VerticalCenteredPopUpContentManager;
 		private var _requestPopupContainer:HivivaPopUp;
 		private var _appIDLabel:Label;
-
+		private var _userPictureCount:int;
 
 
 		private const PADDING:Number = 20;
@@ -161,19 +162,68 @@ package collaboRhythm.hiviva.view.screens.patient
 							<email>{appId}</email>
 							<appid>{appId}</appid>
 							<guid>{appGuid}</guid>
-							<picture>dummy.png</picture>
+							<picture>media/hcps/dummy.png</picture>
 						</hcp>
 				);
 				this._hcpFilteredList.push(hcpList);
 				this._resultInfo.text = "Registered care provider " + this._hcpFilteredList[0].appid + " found.";
 				this._resultInfo.validate();
 
-				initResults();
+//				initResults();
 			}
 			else
 			{
 				this._resultInfo.text = "0 registered care providers found";
 				this._resultInfo.validate();
+			}
+
+			_userPictureCount = 0;
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
+			getUserPicture();
+		}
+
+		private function getUserPicture():void
+		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserPicture(_hcpFilteredList[_userPictureCount].guid);
+		}
+
+		private function getUserPictureCompleteHandler(e:RemoteDataStoreEvent):void
+		{
+			var user:XMLList;
+			var pictureName:String;
+			var userGuid:String;
+			var pictureStream:String;
+			var getUserDataXml:XML = e.data.xmlResponse as XML;
+			if(getUserDataXml.children().length() > 0)
+			{
+				pictureStream = getUserDataXml.PictureStream;
+				if(pictureStream.length > 0)
+				{
+					pictureName = getUserDataXml.PictureName;
+					userGuid = pictureName.substring(0,pictureName.indexOf(".jpg"));
+
+					for (var i:int = 0; i < _hcpFilteredList.length; i++)
+					{
+						if(_hcpFilteredList[i].guid == userGuid)
+						{
+							user = _hcpFilteredList[i];
+							break;
+						}
+					}
+
+					user.picture = HivivaModifier.getProfilePictureUrlFromXml(getUserDataXml);
+				}
+			}
+
+			_userPictureCount++;
+			if(_userPictureCount < _hcpFilteredList.length)
+			{
+				getUserPicture();
+			}
+			else
+			{
+				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
+				initResults();
 			}
 		}
 
@@ -190,7 +240,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				hcpCell = new HcpResultCell();
 				hcpCell.hcpData = currItem;
 				hcpCell.isResult = true;
-				hcpCell.scale = this.dpiScale;
+//				hcpCell.scale = this.dpiScale;
 				this._hcpCellContainer.addChild(hcpCell);
 				//this._hcpCellRadioGroup.addItem(hcpCell._hcpSelect);
 			}
@@ -304,6 +354,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_HCP_COMPLETE , getHCPCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.ESTABLISH_CONNECTION_COMPLETE , establishConnectionHandler);
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
 			super.dispose();
 		}
 	}

@@ -2,8 +2,8 @@ package collaboRhythm.hiviva.global
 {
 	public class Constants
 	{
-		public static const STAGE_WIDTH:int  								= 640;
-		public static const STAGE_HEIGHT:int 								= 960;
+		private static var _STAGE_WIDTH:int  								= 640;
+		private static var _STAGE_HEIGHT:int 								= 960;
 		public static const SETTING_MENU_WIDTH:int							= 177;
 
 		public static const PADDING_TOP:int 								= 30;
@@ -35,7 +35,26 @@ package collaboRhythm.hiviva.global
 		public static const DISTRIQT_ANE_DEVELOPER_LIC:String				= "d388a3da05b0c1c0c98a78fd86340859a1499cabIV0Xb7nTsBupZSNRoqJvlee+vhpkvQ/VmmMqR++6gN5TgdEPmFJFcSpBXmEXfcspu/SrLRpAHc3nD/SUpYCWhg==";
 
 
+		public static const IS_DESKTOP:Boolean								= false;
 
+		public static function get STAGE_WIDTH():int
+		{
+			return _STAGE_WIDTH;
+		}
 
+		public static function set STAGE_WIDTH(value:int):void
+		{
+			_STAGE_WIDTH = value;
+		}
+
+		public static function get STAGE_HEIGHT():int
+		{
+			return _STAGE_HEIGHT;
+		}
+
+		public static function set STAGE_HEIGHT(value:int):void
+		{
+			_STAGE_HEIGHT = value;
+		}
 	}
 }
