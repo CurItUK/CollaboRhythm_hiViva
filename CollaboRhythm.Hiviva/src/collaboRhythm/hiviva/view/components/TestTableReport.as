@@ -12,6 +12,10 @@ package collaboRhythm.hiviva.view.components
 	import feathers.display.TiledImage;
 	import feathers.text.BitmapFontTextFormat;
 
+	import org.purepdf.Font;
+
+	import org.purepdf.elements.Chunk;
+
 	import org.purepdf.elements.Element;
 
 	import org.purepdf.elements.Paragraph;
@@ -460,8 +464,20 @@ package collaboRhythm.hiviva.view.components
 
 			table.addCell(cell);
 			table.addStringCell("Date");
-			table.addStringCell("CD4 Count(Cells/mm3");
-			table.addStringCell("Viral Load(copies/ml)");
+
+			var superscriptFont:Font = new Font(Font.HELVETICA , 8 );
+			var cubeChunk:Chunk = new Chunk("CD4 Count (Cells/mm");
+			var chunkSuperscript:Chunk = new Chunk("3" , superscriptFont);
+			var bracketChunk:Chunk = new Chunk(")");
+			var phrase:Phrase = new Phrase(null,null,30);
+
+			chunkSuperscript.setTextRise(4.0);
+			phrase.add(cubeChunk);
+			phrase.add(chunkSuperscript);
+			phrase.add(bracketChunk);
+
+			table.addPhraseCell(phrase);
+			table.addStringCell("Viral Load (copies/ml)");
 
 			var testLoop:uint = _testData.dates.length;
 			for(var i:uint = 0; i<testLoop ; i++)

@@ -2,8 +2,8 @@ package collaboRhythm.hiviva.controller
 {
 	import collaboRhythm.hiviva.global.Constants;
 
-//	import com.distriqt.extension.message.Message;
-//	import com.distriqt.extension.message.events.MessageEvent;
+	import com.distriqt.extension.message.Message;
+	import com.distriqt.extension.message.events.MessageEvent;
 
 
 
@@ -44,13 +44,13 @@ package collaboRhythm.hiviva.controller
 		{
 			try
 			{
-				/*Message.init(Constants.DISTRIQT_ANE_DEVELOPER_LIC);
+				Message.init(Constants.DISTRIQT_ANE_DEVELOPER_LIC);
 				trace("PDFReportMailer Message Supported: " + String(Message.isSupported));
 				trace("PDFReportMailer Message Version: " + String(Message.service.version));
 				trace("PDFReportMailer Mail Supported: " + String(Message.isMailSupported));
 
 				Message.service.addEventListener(MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR , messageErrorHandler);
-				Message.service.addEventListener(MessageEvent.MESSAGE_MAIL_COMPOSE , messageComposeHandler);*/
+				Message.service.addEventListener(MessageEvent.MESSAGE_MAIL_COMPOSE , messageComposeHandler);
 
 			}
 			catch (e:Error)
@@ -59,15 +59,15 @@ package collaboRhythm.hiviva.controller
 			}
 		}
 
-		/*private function messageComposeHandler(event:MessageEvent):void
+		private function messageComposeHandler(event:MessageEvent):void
 		{
 			trace(event);
-		}*/
+		}
 
-		/*private function messageErrorHandler(event:MessageEvent):void
+		private function messageErrorHandler(event:MessageEvent):void
 		{
 			trace(event);
-		}*/
+		}
 
 		public function get hivivaNotificationsController():HivivaNotificationsController
 		{

@@ -371,7 +371,7 @@ package collaboRhythm.hiviva.view.components
 
 
 			table.addStringCell("Average");
-			table.addStringCell(String(this._overallAvg));
+			table.addStringCell(String(Math.round(this._overallAvg)));
 			var widths: Vector.<Number> = Vector.<Number>([ 220, 220 ]);
 			table.setTotalWidths( widths );
 

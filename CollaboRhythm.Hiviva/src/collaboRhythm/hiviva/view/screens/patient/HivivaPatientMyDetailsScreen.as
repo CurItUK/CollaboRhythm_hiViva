@@ -1,6 +1,5 @@
 package collaboRhythm.hiviva.view.screens.patient
 {
-	import collaboRhythm.hiviva.global.Constants;
 	import collaboRhythm.hiviva.global.HivivaThemeConstants;
 	import collaboRhythm.hiviva.global.LocalDataStoreEvent;
 	import collaboRhythm.hiviva.global.RemoteDataStoreEvent;
@@ -9,34 +8,16 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.view.components.BoxedButtons;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
 
-	import com.adobe.images.JPGEncoder;
-
 	import feathers.controls.Button;
 	import feathers.controls.Label;
-
-	import flash.display.Bitmap;
-
-	import flash.display.BitmapData;
-	import flash.events.Event;
-	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
 
 	import flash.text.AutoCapitalize;
 	import flash.utils.ByteArray;
 
-	import flash.utils.ByteArray;
-
-	import mx.utils.Base64Decoder;
-
 	import mx.utils.Base64Encoder;
 
-	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
-	import starling.display.Image;
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	public class HivivaPatientMyDetailsScreen extends ValidationScreen
 	{
@@ -125,7 +106,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._photoContainer.getMainImage();
 
 			this._cancelAndSave = new BoxedButtons();
-			this._cancelAndSave.addEventListener(starling.events.Event.TRIGGERED, cancelAndSaveHandler);
+			this._cancelAndSave.addEventListener(Event.TRIGGERED, cancelAndSaveHandler);
 			this._cancelAndSave.scale = this.dpiScale;
 			this._cancelAndSave.labels = ["Cancel", "Save"];
 			this._content.addChild(this._cancelAndSave);
@@ -133,14 +114,14 @@ package collaboRhythm.hiviva.view.screens.patient
 			this._backButton = new Button();
 			this._backButton.name = HivivaThemeConstants.BACK_BUTTON;
 			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, backBtnHandler);
+			this._backButton.addEventListener(Event.TRIGGERED, backBtnHandler);
 
 			this._header.leftItems = new <DisplayObject>[_backButton];
 
 			populateOldData();
 		}
 
-		private function cancelAndSaveHandler(e:starling.events.Event):void
+		private function cancelAndSaveHandler(e:Event):void
 		{
 			var button:String = e.data.button;
 			switch(button)
@@ -162,7 +143,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			}
 		}
 
-		private function backBtnHandler(e:starling.events.Event = null):void
+		private function backBtnHandler(e:Event = null):void
 		{
 			this.owner.showScreen(Main.parentOfPatientMyDetailsScreen);
 		}
