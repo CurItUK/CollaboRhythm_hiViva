@@ -107,13 +107,13 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._termsButton = new Button();
 			this._termsButton.addEventListener(Event.TRIGGERED, function(e:Event):void{navigateToURL(new URLRequest("https://inch.pharmiwebsolutions.com/docs/terms_conditions.htm"));});
 			this._termsButton.name = HivivaThemeConstants.SPLASH_FOOTER_BUTTON;
-			this._termsButton.label = "Terms of Use   ";
+			this._termsButton.label = "Terms of Use";
 			addChild(this._termsButton);
 
 			this._privacyButton = new Button();
 			this._privacyButton.addEventListener(Event.TRIGGERED, function(e:Event):void{navigateToURL(new URLRequest("https://inch.pharmiwebsolutions.com/docs/privacy_policy.htm"));});
 			this._privacyButton.name = HivivaThemeConstants.SPLASH_FOOTER_BUTTON;
-			this._privacyButton.label = "Privacy Policy   ";
+			this._privacyButton.label = "Privacy Policy";
 			addChild(this._privacyButton);
 		}
 
