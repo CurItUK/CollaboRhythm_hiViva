@@ -204,16 +204,19 @@ package collaboRhythm.hiviva.view
 			this._imagePromise = e.data;
 			this._dataSource = this._imagePromise.open();
 
-			if (this._imagePromise.isAsync)
+			if (this._dataSource != null)
 			{
-				trace( "Asynchronous media promise." );
-				var eventSource:IEventDispatcher = this._dataSource as IEventDispatcher;
-				eventSource.addEventListener( flash.events.Event.COMPLETE, onMediaLoaded );
-			}
-			else
-			{
-				trace( "Synchronous media promise." );
-				readMediaData();
+				if (this._imagePromise.isAsync)
+				{
+					trace( "Asynchronous media promise." );
+					var eventSource:IEventDispatcher = this._dataSource as IEventDispatcher;
+					eventSource.addEventListener( flash.events.Event.COMPLETE, onMediaLoaded );
+				}
+				else
+				{
+					trace( "Synchronous media promise." );
+					readMediaData();
+				}
 			}
 		}
 
