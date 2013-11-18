@@ -896,7 +896,8 @@ package source.themes
 		{
 			text.embedFonts = true;
 //			text.textFormat = new TextFormat("ExoRegular", 24 * this.scale, 0x2d435c);
-//			text.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0); <<< doesnt work!			text.textFormat = new TextFormat("ExoRegular", 24, HivivaThemeConstants.WHITE_FONT_COLOUR);
+//			text.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0); <<< doesnt work!
+			text.textFormat = new TextFormat("ExoRegular", 24, HivivaThemeConstants.WHITE_FONT_COLOUR);
 			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
 			text.paddingRight = 36 * this.scale;
 		}

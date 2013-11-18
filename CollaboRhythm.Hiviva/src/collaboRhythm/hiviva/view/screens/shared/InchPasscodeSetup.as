@@ -292,6 +292,7 @@ package collaboRhythm.hiviva.view.screens.shared
 			this._userAuthenticationVO.enabled = true;
 			this._userAuthenticationVO.passcode =   this._passcodeFieldGenerator1.inputsToPasscode();
 			this._userAuthenticationVO.answer = this._answerInput.text;
+			this._userAuthenticationVO.questionId =  this._questions.selectedIndex;
 			showFormValidation("Passcode saved OK");
 
 		}

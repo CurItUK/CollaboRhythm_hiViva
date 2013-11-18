@@ -44,7 +44,7 @@ package collaboRhythm.hiviva.view.screens.shared
 		override protected function initialize():void
 		{
 			super.initialize();
-			this._header.title = "Fogotten your passcode?";
+			this._header.title = "Forgotten your passcode?";
 
 
 			this._backButton = new Button();

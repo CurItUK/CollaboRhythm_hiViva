@@ -83,7 +83,7 @@ package collaboRhythm.hiviva.view.screens.patient
 						{name: "about", label: "About"},
 						{name: "privacy", label: "Privacy"},
 						{name: "gettingstarted", label: "Getting Started"},
-						{name: "whatcanIdowithhiviva", label: "What can I do with hiVIVA?"}
+						{name: "whatcanIdowithhiviva", label: "What can I do with INCHarge?"}
 					]
 			);
 

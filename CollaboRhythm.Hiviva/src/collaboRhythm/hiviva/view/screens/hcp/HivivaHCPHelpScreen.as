@@ -92,7 +92,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 						{name: "hcpabout", label: "About"},
 						{name: "hcpprivacy", label: "Privacy"},
 						{name: "hcpgettingstarted", label: "Getting Started"},
-						{name: "hcpwhatcanIdowithhiviva", label: "What can I do with hiVIVA?"}
+						{name: "hcpwhatcanIdowithhiviva", label: "What can I do with INCHarge?"}
 					]
 			);
 
