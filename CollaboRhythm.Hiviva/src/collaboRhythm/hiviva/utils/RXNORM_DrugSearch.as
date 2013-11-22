@@ -17,6 +17,7 @@ package collaboRhythm.hiviva.utils
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(flash.events.Event.COMPLETE, queryDrugName_completeHandler);
 			urlLoader.load(urlRequest);
+			trace(urlRequest.url)
 		}
 
 		private function queryDrugName_completeHandler(e:flash.events.Event):void

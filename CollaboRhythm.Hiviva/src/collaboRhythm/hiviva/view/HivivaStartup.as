@@ -90,7 +90,7 @@ package collaboRhythm.hiviva.view
 					ScaleMode.SHOW_ALL);
 
 //			Constants.STAGE_WIDTH = viewPort.width;
-//			Constants.STAGE_HEIGHT = viewPort.height;
+//			Constants.STAGE_HEIGHT = viewPort.height;                     n
 
 			_starFW = new Starling(Main, stage , viewPort);
 			_starFW.stage.stageWidth  = origStageWidth;

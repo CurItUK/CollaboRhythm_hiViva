@@ -121,25 +121,25 @@ package collaboRhythm.hiviva.view.screens.hcp
 					);
 					this._patientFilteredList.push(hcpList);
 				}
-//				initResults();
+				_userPictureCount = 0;
+
+				getUserPicture();
 			}
 			else
 			{
 				trace("No Approved Connections");
 			}
-
-			_userPictureCount = 0;
-			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
-			getUserPicture();
 		}
 
 		private function getUserPicture():void
 		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.addEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
 			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.getUserPicture(_patientFilteredList[_userPictureCount].guid);
 		}
 
 		private function getUserPictureCompleteHandler(e:RemoteDataStoreEvent):void
 		{
+			HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
 			var user:XMLList;
 			var pictureName:String;
 			var userGuid:String;
@@ -173,7 +173,6 @@ package collaboRhythm.hiviva.view.screens.hcp
 			}
 			else
 			{
-				HivivaStartup.hivivaAppController.hivivaRemoteStoreController.removeEventListener(RemoteDataStoreEvent.GET_USER_PICTURE_COMPLETE, getUserPictureCompleteHandler);
 				initResults();
 			}
 		}

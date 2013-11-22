@@ -82,8 +82,10 @@ package collaboRhythm.hiviva.view.screens.patient
 				alertMessage = badgeXml.AlertMessage;
 				alertDays = badgeXml.AlertDays;
 				endDate = HivivaModifier.getDateFromIsoString(badgeXml.AlertDate);
+				endDate.date--;
 				startDate = new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),endDate.getHours(),endDate.getMinutes(),endDate.getSeconds(),endDate.getMilliseconds());
-				startDate.date -= alertDays;
+				//TODO fix on webservice side
+				startDate.date -= alertDays - 1;
 				dateRange = HivivaModifier.getPrettyStringFromDate(startDate,false) + " - " + HivivaModifier.getPrettyStringFromDate(endDate,false);
 
 				if(badgeXml.Read == "false")
