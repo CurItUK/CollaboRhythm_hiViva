@@ -137,8 +137,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var __arr : Array =  new Array();
 			var btn:Button = e.target as Button;
 
-			trace(btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons")));
-			var _searchString : String = btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons"))
+			var _searchString : String = btn.name;
 			var scrManager : HelpScreenManager =  new HelpScreenManager(e);
 			scrManager._sNav = this.owner;
 

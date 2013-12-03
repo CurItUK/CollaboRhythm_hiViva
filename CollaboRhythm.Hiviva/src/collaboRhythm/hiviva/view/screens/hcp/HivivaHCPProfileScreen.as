@@ -145,7 +145,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var btn:Button = e.target as Button;
 
 			// when refactoring to own class we can use a local instance instead of storing the identifier in btn.name
-			switch(btn.name.substring(0 ,btn.name.indexOf(" patient-profile-nav-buttons")))
+			switch(btn.name)
 			{
 				case "edit" :
 //					this.owner.showScreen(HivivaScreens.HCP_EDIT_PROFILE);

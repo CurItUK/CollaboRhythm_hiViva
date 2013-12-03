@@ -120,7 +120,7 @@ package collaboRhythm.hiviva.view.screens
 			this._secondaryLabel.name = HivivaThemeConstants.CELL_SMALL_WHITE_LABEL;
 			this._secondaryLabel.text = _secondaryText;
 
-			this._icon = new Image(Texture.empty());
+			this._icon = new Image(Texture.empty(35,22));
 
 			this._dateLabel = new Label();
 			this._dateLabel.name = HivivaThemeConstants.CELL_SMALL_WHITE_LABEL;

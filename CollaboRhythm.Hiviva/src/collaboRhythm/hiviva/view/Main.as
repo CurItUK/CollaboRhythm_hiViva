@@ -291,8 +291,6 @@ package collaboRhythm.hiviva.view
 			this._splashNavBg.draw();
 			this._splashScreenNav.addChildAt(this._splashNavBg , 0);
 
-
-
 			this._splashScreenNav.addScreen(HivivaScreens.SPLASH_SCREEN, new ScreenNavigatorItem(HivivaSplashScreen , {complete:splashComplete} , {backgroundTexture:Texture.fromTexture(this._splashBgTexture)}));
 			this._splashScreenNav.addScreen(HivivaScreens.PASSCODE_RECOVER_QUESTION_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverQuestion));
 			this._splashScreenNav.addScreen(HivivaScreens.PASSCODE_RECOVER_UPDATE_SCREEN, new ScreenNavigatorItem(InchPasscodeRecoverUpdate));

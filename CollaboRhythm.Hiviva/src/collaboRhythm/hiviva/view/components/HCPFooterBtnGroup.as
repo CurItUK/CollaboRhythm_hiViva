@@ -94,7 +94,7 @@ package collaboRhythm.hiviva.view.components
 			if(!btn.isSelected)
 			{
 				// when refactoring to own class we can use a local property instead of storing the identifier in btn.name
-				switch(btn.name.substring(0 ,btn.name.indexOf(" home-footer-buttons")))
+				switch(btn.name)
 				{
 					case "home" :
 						this._mainScreenNav.showScreen(HivivaScreens.HCP_HOME_SCREEN);
