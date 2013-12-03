@@ -87,7 +87,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 			var navAwayEvent:FeathersScreenEvent = new FeathersScreenEvent(FeathersScreenEvent.NAVIGATE_AWAY);
 			var btn:Button = e.target as Button;
 			// when refactoring to own class we can use a local instance instead of storing the identifier in btn.name
-			switch(btn.name.substring(0 ,btn.name.indexOf(" side-nav-buttons")))
+			switch(btn.name)
 			{
 				case "profile" :
 					navAwayEvent.message = HivivaScreens.HCP_PROFILE_SCREEN;
