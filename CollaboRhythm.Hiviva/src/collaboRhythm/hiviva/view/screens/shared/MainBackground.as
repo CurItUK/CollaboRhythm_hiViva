@@ -28,6 +28,8 @@ package collaboRhythm.hiviva.view.screens.shared
 		{
 			var bgTexture:Texture = Main.assets.getTexture("main_bg");
 
+
+
 			var blueBase:Image = new Image(bgTexture);
 			blueBase.width = Constants.STAGE_WIDTH;
 			blueBase.height = Constants.STAGE_HEIGHT;

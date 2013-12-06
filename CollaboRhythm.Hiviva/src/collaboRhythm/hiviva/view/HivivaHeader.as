@@ -74,6 +74,7 @@ package collaboRhythm.hiviva.view
 			//styles here
 			titleRenderer.embedFonts = true;
 			titleRenderer.isHTML = true;
+
 //			titleRenderer.textFormat = new TextFormat("ExoLight", Math.round(this._fontSize * this._scale), 0x293d54);
 //			titleRenderer.filter = BlurFilter.createDropShadow(1,1.5,0xFFFFFF,0.5,0);
 			titleRenderer.textFormat = new TextFormat("ExoLight", Math.round(this._fontSize * this._scale), HivivaThemeConstants.WHITE_FONT_COLOUR);

@@ -77,9 +77,10 @@ package collaboRhythm.hiviva.view
 			_background.width = Constants.IS_DESKTOP ? stage.stageWidth : stage.fullScreenWidth;
 			_background.height = Constants.IS_DESKTOP ? stage.stageHeight : stage.fullScreenHeight;
 
-			var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
+			//var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
 			Starling.multitouchEnabled = true;
-			Starling.handleLostContext = !iOS;
+			Starling.handleLostContext = true;
+
 
 			var origStageWidth:int   = Constants.STAGE_WIDTH;
 			var origStageHeight:int  = Constants.STAGE_HEIGHT;
@@ -105,6 +106,8 @@ package collaboRhythm.hiviva.view
 			_starFW.removeEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 
 			this._assets = new AssetManager(1);
+			this._assets.addEventListener(starling.events.Event.TEXTURES_RESTORED , texturesRestored);
+
 
 			var bgTexture:Texture = Texture.fromBitmap(_background,  false, false, 1);
 			var main:Main = Starling.current.root as Main;
@@ -116,6 +119,11 @@ package collaboRhythm.hiviva.view
 
 			NativeApplication.nativeApplication.addEventListener(flash.events.Event.ACTIVATE, activate);
 			NativeApplication.nativeApplication.addEventListener(flash.events.Event.DEACTIVATE, deActivate);
+		}
+
+		public function texturesRestored(e:starling.events.Event):void
+		{
+			trace("starling.events.Event.TEXTURES_RESTORED");
 		}
 
 		public static function get hivivaStartup():HivivaStartup
