@@ -179,7 +179,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initializeShowMedications():void
 		{
-			this._header.title = "Your daily medicines";
+			this._header.title = "Your daily medicines ";
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
 
@@ -206,7 +206,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._addMedBtnBordered = new Button();
 			this._addMedBtnBordered.name = HivivaThemeConstants.BORDER_BUTTON;
-			this._addMedBtnBordered.label = "Add a medicine";
+			this._addMedBtnBordered.label = "Add a medicine  ";
 			this._addMedBtnBordered.addEventListener(Event.TRIGGERED, addMedBtnHandler);
 			this._content.addChild(this._addMedBtnBordered);
 
@@ -249,6 +249,8 @@ package collaboRhythm.hiviva.view.screens.patient
 
 			this._addMedBtnBordered.x = this._horizontalPadding;
 			this._addMedBtnBordered.y = this._seperator.y + this._componentGap;
+			this._addMedBtnBordered.label = "Add a medicine  ";
+			this._addMedBtnBordered.validate();
 
 
 		}
@@ -273,7 +275,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function initializeEnterRegimen():void
 		{
-			this._header.title = "Enter your regimen";
+			this._header.title = "Enter your regimen ";
 			this._header.width = this.actualWidth;
 			this._header.initTrueTitle();
 
