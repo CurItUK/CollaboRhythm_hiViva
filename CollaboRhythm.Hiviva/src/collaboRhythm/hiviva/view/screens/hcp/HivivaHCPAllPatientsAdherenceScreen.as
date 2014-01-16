@@ -34,7 +34,7 @@ package collaboRhythm.hiviva.view.screens.hcp
 		{
 			super.initialize();
 			this._header = new HivivaHeader();
-			this._header.title = "Adherence: patients";
+			this._header.title = "Adherence: patients ";
 			this.addChild(this._header);
 		}
 
