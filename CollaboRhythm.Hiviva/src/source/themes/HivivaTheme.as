@@ -305,7 +305,7 @@ package source.themes
 					this._originalDPI = ORIGINAL_DPI_IPHONE_RETINA;
 				}
 			}
-			this.scale = scaledDPI / this._originalDPI;
+			//this.scale = scaledDPI / this._originalDPI;
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
 			// Bitmap Fonts
