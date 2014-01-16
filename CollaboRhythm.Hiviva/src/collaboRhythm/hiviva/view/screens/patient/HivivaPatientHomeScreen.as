@@ -506,6 +506,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var blurValue:int = 20 - int(0.2 * this._adherencePercent);
 			var sourceBm:Bitmap = e.target.content as Bitmap;
 			var canvasTexture:Texture = Texture.fromBitmap(sourceBm , false , false);
+
 			var canvas:Image = new Image(canvasTexture);
 
 			if (canvas.height >= canvas.width)
