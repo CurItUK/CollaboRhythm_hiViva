@@ -178,6 +178,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private function backBtnHandler(e:Event = null):void
 		{
 			HivivaStartup.galleryDataVO.changed = false;
+			HivivaStartup.galleryDataVO.imageData = [];
 			this.owner.showScreen(HivivaScreens.PATIENT_PROFILE_SCREEN);
 		}
 
@@ -244,6 +245,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			localStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_TIMESTAMP_SAVE_COMPLETE,setGalleryTimeStampHandler);
 
 			HivivaStartup.galleryDataVO.changed = false;
+
 			draw();
 
 			showFormValidation("Your selection has been saved");
@@ -259,6 +261,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		{
 			localStoreController.removeEventListener(LocalDataStoreEvent.GALLERY_IMAGES_LOAD_COMPLETE,getGalleryImagesHandler);
 			this._imageUrls = e.data.imageUrls;
+
 			try
 			{
 				if(this._imageUrls != null)
