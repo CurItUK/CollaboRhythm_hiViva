@@ -141,7 +141,6 @@ package collaboRhythm.hiviva.view
 			var appDir:File = File.applicationDirectory;
 
 			// texture Atlas
-//			_assets.enqueue(appDir.resolvePath("assets/images/atlas/homePagePhoto.atf"),appDir.resolvePath("assets/images/atlas/homePagePhoto.xml"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/hivivaBaseImages.png"),appDir.resolvePath("assets/images/atlas/hivivaBaseImages.xml"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/atlas/v2_hivivaBaseImages.png"),appDir.resolvePath("assets/imagesv2/atlas/v2_hivivaBaseImages.xml"));
 			_assets.enqueue(appDir.resolvePath("assets/images/atlas/ApplePreloader.png"),appDir.resolvePath("assets/images/atlas/ApplePreloader.xml"));
@@ -161,74 +160,7 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lightest-bold.png"),appDir.resolvePath("assets/fonts/engraved-lightest-bold.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/engraved-lighter-regular.png"),appDir.resolvePath("assets/fonts/engraved-lighter-regular.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-lighter-bold.png"),appDir.resolvePath("assets/fonts/raised-lighter-bold.fnt"));
-			// standalone assets
-			// blue theme
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/main_bg.jpg"));
-			/*_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_verticle_line.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_base.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_active.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_1.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_2.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_3.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_4.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_5.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_6.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_footer_icon_7.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_top_nav_icon_01.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_top_nav_icon_02.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_top_nav_icon_03.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_icon_01.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_icon_02.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_icon_03.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_icon_04.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_icon_05.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_virus_settings_button.png"));
-//			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_minimize_icon.png"));
-//			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_reset_icon.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_clock_icon.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_pillbox_icon.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_toggle_switch.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_toggle_track.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_feeling_slider_track.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_pillbox.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_back-button.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_calendar_arrow.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_calendar-button.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_clock_face.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_feeling_slider_cloud.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_feeling_slider_sun.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_fixed_base.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_art.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_cinema.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_history.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_music.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_sports.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_travel.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_upload.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_brand_ring.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_cd4.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_vs_virus.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_profile_img.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_message_icon_sent.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_message_icon_compose.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_edit_icon.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_delete_icon.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_close_button.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_side_nav_base.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_pill_icon_tick.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, (see pickerlist in theme)
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_bottom.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, (see pickerlist in theme)
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_bottom_o.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_o.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_top.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_top_o.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_menulist_top_o.png")); // NEEDS TO BE ADDED IN FUNCTIONALITY, CURRENTLY NOT IN USE
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_lessthan.png"));
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_icon_adduser.png"));// NEEDS ADDING WHERE? ASK ANDY
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_home_password_panel.png"));// NEEDS ADDING WHERE? SEE LATEST SCREENS
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_home_lens_bg.png"));// NEEDS ADDING WHERE? SEE LATEST SCREENS
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_clock_segment.png"));// NEEDS ADDING WHERE? SEE LATEST SCREENS
-			_assets.enqueue(appDir.resolvePath("assets/imagesv2/temp/v2_button_list_arrows.png"));// NEEDS ADDING WHERE? PICKER LIST BUTTON*/
 
 			this._preloader = new HivivaPreloaderWithBackground(0xFFFFFFF , 100 , 5 , Texture.fromTexture(this._splashBgTexture));
 			this._preloader.init();
