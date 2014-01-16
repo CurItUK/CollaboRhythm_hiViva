@@ -94,6 +94,7 @@ package collaboRhythm.hiviva.view
 //			Constants.STAGE_HEIGHT = viewPort.height;                     n
 
 			_starFW = new Starling(Main, stage , viewPort);
+			_starFW.makeCurrent();
 			_starFW.stage.stageWidth  = origStageWidth;
 			_starFW.stage.stageHeight = origStageHeight;
 			_starFW.addEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
@@ -106,6 +107,8 @@ package collaboRhythm.hiviva.view
 			_starFW.removeEventListener(starling.events.Event.ROOT_CREATED, starlingRootCreatedHandler);
 
 			this._assets = new AssetManager(1);
+			this._assets.verbose = true;
+
 			this._assets.addEventListener(starling.events.Event.TEXTURES_RESTORED , texturesRestored);
 
 
