@@ -6,6 +6,7 @@ package collaboRhythm.hiviva.view.screens.shared
 	import starling.display.BlendMode;
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 
@@ -16,6 +17,12 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		public function MainBackground()
 		{
+			this.addEventListener(Event.REMOVED_FROM_STAGE, onBackgroundRemovedHandler);
+		}
+
+		private function onBackgroundRemovedHandler(event:Event):void
+		{
+			trace("2014 - ::: BG - Background removed");
 		}
 
 		public function draw():void
@@ -26,9 +33,8 @@ package collaboRhythm.hiviva.view.screens.shared
 
 		private function drawBlueBg():void
 		{
+
 			var bgTexture:Texture = Main.assets.getTexture("main_bg");
-
-
 
 			var blueBase:Image = new Image(bgTexture);
 			blueBase.width = Constants.STAGE_WIDTH;
@@ -44,6 +50,8 @@ package collaboRhythm.hiviva.view.screens.shared
 			settingEffect.smoothing = TextureSmoothing.NONE;
 			settingEffect.blendMode = BlendMode.MULTIPLY;
 			_blueBgHolder.addChild(settingEffect);
+
+
 		}
 	}
 }

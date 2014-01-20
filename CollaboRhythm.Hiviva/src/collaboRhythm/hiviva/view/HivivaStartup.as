@@ -15,6 +15,7 @@ package collaboRhythm.hiviva.view
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.UncaughtErrorEvent;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 
@@ -41,6 +42,9 @@ package collaboRhythm.hiviva.view
 		public function HivivaStartup()
 		{
 			addEventListener(flash.events.Event.ADDED_TO_STAGE, onAdded);
+			this.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, function(event:UncaughtErrorEvent):void {
+				trace(event.error, "Uncaught Error: " + event.error.message);
+			});
 		}
 
 		private function onAdded(e:flash.events.Event):void
@@ -117,8 +121,8 @@ package collaboRhythm.hiviva.view
 			main.initMain(this._assets , bgTexture);
 
 			removeChild(_background);
-			_background.bitmapData.dispose();
-			_background = null;
+			//_background.bitmapData.dispose();
+			//_background = null;
 
 			NativeApplication.nativeApplication.addEventListener(flash.events.Event.ACTIVATE, activate);
 			NativeApplication.nativeApplication.addEventListener(flash.events.Event.DEACTIVATE, deActivate);

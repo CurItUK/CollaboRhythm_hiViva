@@ -82,7 +82,12 @@ package collaboRhythm.hiviva.view
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.core.PopUpManager;
 
+	import flash.display.StageDisplayState;
+
+	import flash.events.MediaEvent;
+
 	import flash.filesystem.File;
+	import flash.media.CameraRoll;
 	import flash.system.System;
 
 	import source.themes.HivivaTheme;
@@ -162,6 +167,7 @@ package collaboRhythm.hiviva.view
 			_assets.enqueue(appDir.resolvePath("assets/fonts/raised-lighter-bold.png"),appDir.resolvePath("assets/fonts/raised-lighter-bold.fnt"));
 			_assets.enqueue(appDir.resolvePath("assets/imagesv2/main_bg.jpg"));
 
+
 			this._preloader = new HivivaPreloaderWithBackground(0xFFFFFFF , 100 , 5 , Texture.fromTexture(this._splashBgTexture));
 			this._preloader.init();
 			this._preloader.y = 0;
@@ -169,22 +175,56 @@ package collaboRhythm.hiviva.view
 			this._preloader.validate();
 			this.addChild(this._preloader);
 
+
 			_assets.loadQueue(preloaderOnProgress);
 		}
 
 		private function preloaderOnProgress(ratio:Number):void
 		{
+
 			this._preloader._width = ratio * Constants.STAGE_WIDTH;
 			this._preloader._ratio = ratio;
 			this._preloader.dispatchEventWith(FeathersScreenEvent.PRELOADER_ONPOGRESS);
 
+
 			if (ratio == 1)
 			{
+
 				this._preloader.dispose();
 				removeChild(this._preloader);
 				this._preloader = null;
+
+
+				//cameraRollTest();
 				startup();
 			}
+		}
+
+		private function cameraRollTest():void
+		{
+			if (CameraRoll.supportsBrowseForImage)
+			{
+				trace("Browsing for image...");
+				var mediaSource:CameraRoll = new CameraRoll();
+				mediaSource.addEventListener(MediaEvent.SELECT, imageSelected);
+				mediaSource.addEventListener(flash.events.Event.CANCEL, browseCanceled);
+				mediaSource.browseForImage();
+			}
+			else
+			{
+				trace("Browsing in camera roll is not supported.");
+			}
+		}
+
+		private function imageSelected(e:MediaEvent):void
+		{
+			trace("Image selected...");
+		}
+
+		private function browseCanceled(e:flash.events.Event):void
+		{
+			trace("Image browse canceled.");
+			Starling.current.nativeStage.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 		}
 
 		private function startup():void

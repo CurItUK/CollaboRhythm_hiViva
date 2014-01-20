@@ -13,6 +13,7 @@ package collaboRhythm.hiviva.view
 	import flash.display.BlendMode;
 	import flash.display.JPEGEncoderOptions;
 	import flash.display.Loader;
+	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -29,6 +30,8 @@ package collaboRhythm.hiviva.view
 	import flash.utils.IDataInput;
 
 	import jp.shichiseki.exif.ExifInfo;
+
+	import starling.core.Starling;
 
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -198,6 +201,7 @@ package collaboRhythm.hiviva.view
 		private function imageSelected(e:MediaEvent):void
 		{
 			trace("Image selected...");
+			Starling.current.nativeStage.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 
 			deleteImageData();
 
@@ -271,6 +275,7 @@ package collaboRhythm.hiviva.view
 		private function browseCanceled(e:flash.events.Event):void
 		{
 			trace("Image browse canceled.");
+			Starling.current.nativeStage.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 		}
 
 		private function loadImageFromUrl(url:String):void
