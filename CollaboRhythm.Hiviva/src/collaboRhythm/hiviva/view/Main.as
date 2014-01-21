@@ -200,33 +200,6 @@ package collaboRhythm.hiviva.view
 			}
 		}
 
-		private function cameraRollTest():void
-		{
-			if (CameraRoll.supportsBrowseForImage)
-			{
-				trace("Browsing for image...");
-				var mediaSource:CameraRoll = new CameraRoll();
-				mediaSource.addEventListener(MediaEvent.SELECT, imageSelected);
-				mediaSource.addEventListener(flash.events.Event.CANCEL, browseCanceled);
-				mediaSource.browseForImage();
-			}
-			else
-			{
-				trace("Browsing in camera roll is not supported.");
-			}
-		}
-
-		private function imageSelected(e:MediaEvent):void
-		{
-			trace("Image selected...");
-		}
-
-		private function browseCanceled(e:flash.events.Event):void
-		{
-			trace("Image browse canceled.");
-			Starling.current.nativeStage.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
-		}
-
 		private function startup():void
 		{
 			initfeathersTheme();
