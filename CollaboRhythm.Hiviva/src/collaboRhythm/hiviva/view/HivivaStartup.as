@@ -94,8 +94,6 @@ package collaboRhythm.hiviva.view
 					new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight),
 					ScaleMode.SHOW_ALL);
 
-//			Constants.STAGE_WIDTH = viewPort.width;
-//			Constants.STAGE_HEIGHT = viewPort.height;                     n
 
 			_starFW = new Starling(Main, stage , viewPort);
 			_starFW.makeCurrent();
