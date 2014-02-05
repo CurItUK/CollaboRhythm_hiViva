@@ -7,6 +7,8 @@ package collaboRhythm.hiviva.view.screens.patient
 	import collaboRhythm.hiviva.global.RXNORMEvent;
 	import collaboRhythm.hiviva.utils.HivivaModifier;
 	import collaboRhythm.hiviva.utils.RXNORM_DrugSearch;
+	import collaboRhythm.hiviva.view.components.MedicationCell;
+	import collaboRhythm.hiviva.view.components.PreloaderSpinner;
 	import collaboRhythm.hiviva.view.components.SelectMedicationCell;
 	import collaboRhythm.hiviva.view.components.ToggleMedicationCell;
 	import collaboRhythm.hiviva.view.screens.shared.ValidationScreen;
@@ -43,6 +45,7 @@ package collaboRhythm.hiviva.view.screens.patient
 		private var _medicationContainer:ScrollContainer;
 		private var _medicationXMLList:XMLList;
 		private var _selectedMedicationId:int;
+		private var _preloader:PreloaderSpinner;
 
 		public function HivivaPatientAddMedsScreen()
 		{
@@ -116,6 +119,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var formValidation:String = patientAddMedsSearchCheck();
 			if(formValidation.length == 0)
 			{
+				initPreloader();
 				var drugSearch:RXNORM_DrugSearch = new RXNORM_DrugSearch();
 				drugSearch.addEventListener(RXNORMEvent.DATA_LOAD_COMPLETE , drugSearchLoadHandler);
 				drugSearch.findDrug(this._medicationSearchInput.text);
@@ -137,6 +141,7 @@ package collaboRhythm.hiviva.view.screens.patient
 
 		private function drugSearchLoadHandler(e:RXNORMEvent):void
 		{
+			removePreloder();
 			medicationXMLList = e.data.medicationList as XMLList;
 			if(medicationXMLList.length() == 0)
 			{
@@ -154,6 +159,7 @@ package collaboRhythm.hiviva.view.screens.patient
 				}
 
 				this._medicationContainer = new ScrollContainer();
+
 				this._medicationContainer.width = this.actualWidth;
 				this._medicationContainer.y = this._content.y + this._medicationSearchInput.y + this._medicationSearchInput.height + this._componentGap;
 				this._medicationContainer.layout = new VerticalLayout();
@@ -168,7 +174,7 @@ package collaboRhythm.hiviva.view.screens.patient
 			var medicationsLoop:uint = this._medicationXMLList.length();
 			for (var i:uint = 0; i < medicationsLoop; i++)
 			{
-				var foundMedication:ToggleMedicationCell = new ToggleMedicationCell();
+				var foundMedication:ToggleMedicationCell = new ToggleMedicationCell(MedicationCell.WHITE_THEME_LITE);
 				foundMedication.addEventListener(FeathersScreenEvent.MEDICATION_RADIO_TRIGGERED, medicationRadioTriggerHandler);
 				foundMedication.scale = this.dpiScale;
 				foundMedication.medicationId = i;
@@ -228,6 +234,20 @@ package collaboRhythm.hiviva.view.screens.patient
 				this.owner.addScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN, screenNavigatorItem);
 			}
 			this.owner.showScreen(HivivaScreens.PATIENT_SCHEDULE_MEDICATION_SCREEN);
+		}
+
+		private function initPreloader():void
+		{
+			this._preloader = new PreloaderSpinner();
+			this.addChild(this._preloader) ;
+			this._preloader.y = this.actualHeight/2 - this._preloader.height/2;
+			this._preloader.x = this.actualWidth/2 - this._preloader.width/2;
+		}
+
+		private function removePreloder():void
+		{
+			this._preloader.disposePreloader();
+			this.removeChild(this._preloader);
 		}
 
 		override public function dispose():void

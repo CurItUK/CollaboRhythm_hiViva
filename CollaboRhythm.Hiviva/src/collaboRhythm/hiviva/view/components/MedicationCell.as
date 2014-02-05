@@ -30,6 +30,7 @@ package collaboRhythm.hiviva.view.components
 		protected var _theme:String;
 		public static const WHITE_THEME:String = "whiteTheme";
 		public static const DARK_THEME:String = "darkTheme";
+		public static const WHITE_THEME_LITE:String = "whiteLiteTheme";
 
 
 		public function MedicationCell(theme:String = MedicationCell.WHITE_THEME)
@@ -90,6 +91,7 @@ package collaboRhythm.hiviva.view.components
 //			this._genericNameLabel.name = HivivaThemeConstants.CELL_SMALL_LABEL;
 			this._genericNameLabel.text = this._genericName;
 
+
 			switch(_theme)
 			{
 				case MedicationCell.WHITE_THEME :
@@ -100,7 +102,13 @@ package collaboRhythm.hiviva.view.components
 					this._brandNameLabel.name = HivivaThemeConstants.MEDICINE_BRANDNAME_DARK_LABEL;
 					this._genericNameLabel.name = HivivaThemeConstants.CELL_SMALL_DARK_LABEL;
 					break;
+				 case MedicationCell.WHITE_THEME_LITE :
+					 this._brandNameLabel.name = HivivaThemeConstants.MEDICINE_BRANDNAME_WHITE_LABEL;
+					// this._genericNameLabel.name = HivivaThemeConstants.CELL_SMALL_WHITE_LABEL;
+				 break;
 			}
+
+
 
 
 			this.addChild(this._brandNameLabel);

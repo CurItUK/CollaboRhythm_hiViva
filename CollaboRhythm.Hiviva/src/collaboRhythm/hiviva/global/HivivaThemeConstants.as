@@ -40,6 +40,7 @@ package collaboRhythm.hiviva.global
 		public static const HOME_LENS_LABEL:String							= "home-lens-label";
 		public static const VALIDATION_LABEL:String							= "validation-label";
 		public static const MEDICINE_BRANDNAME_WHITE_LABEL:String			= "medicine-brandname-white-label";
+		public static const MEDICINE_LIST_BRANDNAME_WHITE_LABEL:String		= "medicine-list-brandname-white-label";
 		public static const MEDICINE_BRANDNAME_DARK_LABEL:String			= "medicine-brandname-dark-label";
 		public static const SPLASH_FOOTER_LABEL:String						= "splash-footer-label";
 		public static const CALENDAR_MONTH_LABEL:String						= "calender-month-label";

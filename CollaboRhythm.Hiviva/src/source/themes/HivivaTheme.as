@@ -151,6 +151,7 @@ package source.themes
 		protected var headerBoldBftf:BitmapFontTextFormat;
 		protected var subHeaderBftf:BitmapFontTextFormat;
 		protected var bodyWhiteBftf:BitmapFontTextFormat;
+		protected var bodyWhiteBoldMedicineListBftf:BitmapFontTextFormat;
 		protected var bodyDarkBftf:BitmapFontTextFormat;
 		protected var popupBftf:BitmapFontTextFormat;
 		protected var pickerListBftf:BitmapFontTextFormat;
@@ -383,6 +384,8 @@ package source.themes
 			this.galleryButtonLabelBftf = new BitmapFontTextFormat(this.v2EngravedMedarkBoldBitmapFont, 24,
 					Color.WHITE);
 			this.backButtonLabelBftf = new BitmapFontTextFormat(this.v2raisedWhiteBoldBitmapFont, 24, Color.WHITE);
+			this.bodyWhiteBoldMedicineListBftf =  new BitmapFontTextFormat(this.normalUncolouredBoldBitmapFont, 22, Color.WHITE);
+
 			// Bitmap Font TextFormats (replaced for blue theme)
 //			this.appIdLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 30 , HivivaThemeConstants.LIGHT_FONT_COLOUR,TextFormatAlign.CENTER);
 //			this.instructionsLabelBftf = new BitmapFontTextFormat(this.normalUncolouredRegularBitmapFont, 20 , HivivaThemeConstants.LIGHT_FONT_COLOUR);
@@ -535,6 +538,7 @@ package source.themes
 			this.setInitializerForClass(Label, homeLensLabelInitializer, HivivaThemeConstants.HOME_LENS_LABEL);
 			this.setInitializerForClass(Label, validationLabelInitializer, HivivaThemeConstants.VALIDATION_LABEL);
 			this.setInitializerForClass(Label, medicineBrandnameWhiteLabelInitializer, HivivaThemeConstants.MEDICINE_BRANDNAME_WHITE_LABEL);
+			this.setInitializerForClass(Label, medicineListBrandnameWhiteLabelInitializer, HivivaThemeConstants.MEDICINE_LIST_BRANDNAME_WHITE_LABEL);
 			this.setInitializerForClass(Label, medicineBrandnameDarkLabelInitializer, HivivaThemeConstants.MEDICINE_BRANDNAME_DARK_LABEL);
 			this.setInitializerForClass(Label, splashFooterLabelInitializer, HivivaThemeConstants.SPLASH_FOOTER_LABEL);
 			this.setInitializerForClass(Label, calenderMonthLabelInitializer, HivivaThemeConstants.CALENDAR_MONTH_LABEL);
@@ -805,6 +809,12 @@ package source.themes
 		protected function medicineBrandnameWhiteLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.medicineBrandnameWhiteLabelBftf;
+			label.textRendererProperties.wordWrap = true;
+		}
+
+		protected function medicineListBrandnameWhiteLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.bodyWhiteBoldMedicineListBftf;
 			label.textRendererProperties.wordWrap = true;
 		}
 
